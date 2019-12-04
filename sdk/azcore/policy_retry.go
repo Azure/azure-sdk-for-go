@@ -12,27 +12,12 @@ import (
 	"time"
 )
 
-// RetryPolicy tells the pipeline what kind of retry policy to use. See the RetryPolicy* constants.
-type RetryPolicy int32
-
-const (
-	// RetryPolicyExponential tells the pipeline to use an exponential back-off retry policy
-	RetryPolicyExponential RetryPolicy = 0
-
-	// RetryPolicyFixed tells the pipeline to use a fixed back-off retry policy
-	RetryPolicyFixed RetryPolicy = 1
-)
-
 const (
 	defaultMaxTries = 4
 )
 
 // RetryOptions configures the retry policy's behavior.
 type RetryOptions struct {
-	// Policy tells the pipeline what kind of retry policy to use. See the RetryPolicy* constants.\
-	// A value of zero means that you accept our default policy.
-	Policy RetryPolicy
-
 	// MaxTries specifies the maximum number of attempts an operation will be tried before producing an error (0=default).
 	// A value of zero means that you accept our default policy. A value of 1 means 1 try and no retries.
 	MaxTries int32
@@ -40,13 +25,12 @@ type RetryOptions struct {
 	// TryTimeout indicates the maximum time allowed for any single try of an HTTP request.
 	// A value of zero means that you accept our default timeout. NOTE: When transferring large amounts
 	// of data, the default TryTimeout will probably not be sufficient. You should override this value
-	// based on the bandwidth available to the host machine and proximity to the Storage service. A good
+	// based on the bandwidth available to the host machine and proximity to the service. A good
 	// starting point may be something like (60 seconds per MB of anticipated-payload-size).
 	TryTimeout time.Duration
 
 	// RetryDelay specifies the amount of delay to use before retrying an operation (0=default).
-	// When RetryPolicy is specified as RetryPolicyExponential, the delay increases exponentially
-	// with each retry up to a maximum specified by MaxRetryDelay.
+	// The delay increases exponentially with each retry up to a maximum specified by MaxRetryDelay.
 	// If you specify 0, then you must also specify 0 for MaxRetryDelay.
 	// If you specify RetryDelay, then you must also specify MaxRetryDelay, and MaxRetryDelay should be
 	// equal to or greater than RetryDelay.
@@ -75,11 +59,10 @@ var (
 
 func (o RetryOptions) defaults() RetryOptions {
 	// We assume the following:
-	// 1. o.Policy should either be RetryPolicyExponential or RetryPolicyFixed
-	// 2. o.MaxTries >= 0
-	// 3. o.TryTimeout, o.RetryDelay, and o.MaxRetryDelay >=0
-	// 4. o.RetryDelay <= o.MaxRetryDelay
-	// 5. Both o.RetryDelay and o.MaxRetryDelay must be 0 or neither can be 0
+	// 1. o.MaxTries >= 0
+	// 2. o.TryTimeout, o.RetryDelay, and o.MaxRetryDelay >=0
+	// 3. o.RetryDelay <= o.MaxRetryDelay
+	// 4. Both o.RetryDelay and o.MaxRetryDelay must be 0 or neither can be 0
 
 	if len(o.StatusCodes) == 0 {
 		o.StatusCodes = StatusCodesForRetry[:]
@@ -95,19 +78,11 @@ func (o RetryOptions) defaults() RetryOptions {
 	if o.MaxTries == 0 {
 		o.MaxTries = defaultMaxTries
 	}
-	switch o.Policy {
-	default:
-		fallthrough
-	case RetryPolicyExponential:
-		IfDefault(&o.TryTimeout, 1*time.Minute)
-		IfDefault(&o.RetryDelay, 4*time.Second)
-		IfDefault(&o.MaxRetryDelay, 120*time.Second)
 
-	case RetryPolicyFixed:
-		IfDefault(&o.TryTimeout, 1*time.Minute)
-		IfDefault(&o.RetryDelay, 30*time.Second)
-		IfDefault(&o.MaxRetryDelay, 120*time.Second)
-	}
+	IfDefault(&o.TryTimeout, 1*time.Minute)
+	IfDefault(&o.RetryDelay, 4*time.Second)
+	IfDefault(&o.MaxRetryDelay, 120*time.Second)
+
 	return o
 }
 
@@ -120,16 +95,7 @@ func (o RetryOptions) calcDelay(try int32) time.Duration { // try is >=1; never 
 		return result
 	}
 
-	delay := time.Duration(0)
-	switch o.Policy {
-	default:
-		fallthrough
-	case RetryPolicyExponential:
-		delay = time.Duration(pow(2, try)-1) * o.RetryDelay
-
-	case RetryPolicyFixed:
-		delay = o.RetryDelay
-	}
+	delay := time.Duration(pow(2, try)-1) * o.RetryDelay
 
 	// Introduce some jitter:  [0.0, 1.0) / 2 = [0.0, 0.5) + 0.8 = [0.8, 1.3)
 	delay = time.Duration(delay.Seconds() * (rand.Float64()/2 + 0.8) * float64(time.Second)) // NOTE: We want math/rand; not crypto/rand
@@ -162,10 +128,11 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		defer rwbody.realClose()
 	}
 	try := int32(1)
+	shouldLog := Log().Should(LogRetryPolicy)
 	for {
 		resp = nil // reset
-		if Log().Should(LogRetry) {
-			Log().Write(LogRetry, fmt.Sprintf("\n=====> Try=%d\n", try))
+		if shouldLog {
+			Log().Write(LogRetryPolicy, fmt.Sprintf("\n=====> Try=%d\n", try))
 		}
 
 		// For each try, seek to the beginning of the Body stream. We do this even for the 1st try because
@@ -180,8 +147,8 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		tryCtx, tryCancel := context.WithTimeout(ctx, p.options.TryTimeout)
 		resp, err = req.Do(tryCtx) // Make the request
 		tryCancel()
-		if Log().Should(LogRetry) {
-			Log().Write(LogRetry, fmt.Sprintf("Err=%v, response=%v\n", err, resp))
+		if shouldLog {
+			Log().Write(LogRetryPolicy, fmt.Sprintf("Err=%v, response=%v\n", err, resp))
 		}
 
 		if err == nil && !resp.HasStatusCode(p.options.StatusCodes...) {
@@ -208,8 +175,8 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		if !ok {
 			delay = p.options.calcDelay(try)
 		}
-		if Log().Should(LogRetry) {
-			Log().Write(LogRetry, fmt.Sprintf("Try=%d, Delay=%v\n", try, delay))
+		if shouldLog {
+			Log().Write(LogRetryPolicy, fmt.Sprintf("Try=%d, Delay=%v\n", try, delay))
 		}
 		select {
 		case <-time.After(delay):

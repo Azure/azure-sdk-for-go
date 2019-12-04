@@ -2,8 +2,9 @@
 //
 // Personalizer Service is an Azure Cognitive Service that makes it easy to target content and experiences without
 // complex pre-analysis or cleanup of past data. Given a context and featurized content, the Personalizer Service
-// returns your content in a ranked list. As rewards are sent in response to the ranked list, the reinforcement
-// learning algorithm will improve the model and improve performance of future rank calls.
+// returns which content item to show to users in rewardActionId. As rewards are sent in response to the use of
+// rewardActionId, the reinforcement learning algorithm will improve the model and improve performance of future rank
+// calls.
 package personalizer
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -51,7 +52,8 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 	}
 }
 
-// Rank sends the rank request.
+// Rank submit a Personalizer rank request, to get which of the provided actions should be used in the provided
+// context.
 // Parameters:
 // rankRequest - a Personalizer request.
 func (client BaseClient) Rank(ctx context.Context, rankRequest RankRequest) (result RankResponse, err error) {

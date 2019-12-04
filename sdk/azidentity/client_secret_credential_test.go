@@ -46,7 +46,7 @@ func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if reqQueryParams[qpClientSecret][0] != secret {
 		t.Fatalf("Unexpected secret in the client_secret header")
 	}
-	if reqQueryParams[qpScope][0] != url.QueryEscape(scope) {
+	if reqQueryParams[qpScope][0] != scope {
 		t.Fatalf("Unexpected scope in scope header")
 	}
 	if req.Request.URL.Host != defaultTestAuthorityHost {

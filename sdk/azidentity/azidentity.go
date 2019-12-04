@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -158,14 +159,26 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 
 	// retry policy for MSI is not end-user configurable
 	retryOpts := azcore.RetryOptions{
-		MaxTries: 5,
+		MaxTries:   5,
+		RetryDelay: 2 * time.Second,
+		StatusCodes: append(azcore.StatusCodesForRetry[:],
+			http.StatusNotFound,
+			http.StatusGone,
+			// all remaining 5xx
+			http.StatusNotImplemented,
+			http.StatusHTTPVersionNotSupported,
+			http.StatusVariantAlsoNegotiates,
+			http.StatusInsufficientStorage,
+			http.StatusLoopDetected,
+			http.StatusNotExtended,
+			http.StatusNetworkAuthenticationRequired),
 	}
 
 	return azcore.NewPipeline(
 		o.HTTPClient,
 		azcore.NewTelemetryPolicy(o.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),
-		NewMSIRetryPolicy(retryOpts),
+		azcore.NewRetryPolicy(retryOpts),
 		azcore.NewRequestLogPolicy(o.LogOptions))
 }
 

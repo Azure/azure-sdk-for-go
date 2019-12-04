@@ -78,7 +78,7 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *manage
 	options = options.setDefaultValues()
 	// TODO document the use of these variables
 	return &managedIdentityClient{
-		pipeline:               newDefaultMSIPipeline(options),
+		pipeline:               newDefaultMSIPipeline(*options),
 		imdsAPIVersion:         imdsAPIVersion,
 		imdsAvailableTimeoutMS: 500,
 		msiType:                unknown,

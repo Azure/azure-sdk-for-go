@@ -51,7 +51,7 @@ type aadIdentityClient struct {
 // will be used to retrieve tokens and authenticate
 func newAADIdentityClient(options *TokenCredentialOptions) *aadIdentityClient {
 	options = options.setDefaultValues()
-	return &aadIdentityClient{options: *options, pipeline: newDefaultPipeline(options)}
+	return &aadIdentityClient{options: *options, pipeline: newDefaultPipeline(*options)}
 }
 
 // Authenticate creates a client secret authentication request and returns the resulting Access Token or

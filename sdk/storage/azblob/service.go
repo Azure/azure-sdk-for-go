@@ -37,7 +37,10 @@ type ServiceClientOptions struct {
 	Telemetry azcore.TelemetryOptions
 }
 
-func NewServiceClient(endpoint string, cred azcore.Credential, options ServiceClientOptions) (*ServiceClient, error) {
+func NewServiceClient(endpoint string, cred azcore.Credential, options *ServiceClientOptions) (*ServiceClient, error) {
+	if options == nil {
+		options = &ServiceClientOptions{}
+	}
 	p := azcore.NewPipeline(options.HTTPClient,
 		azcore.NewTelemetryPolicy(options.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),

@@ -129,7 +129,7 @@ func (c *TokenCredentialOptions) setDefaultValues() *TokenCredentialOptions {
 }
 
 // NewDefaultPipeline creates a Pipeline using the specified pipeline options
-func newDefaultPipeline(o *TokenCredentialOptions) azcore.Pipeline {
+func newDefaultPipeline(o TokenCredentialOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {
 		o.HTTPClient = azcore.DefaultHTTPClientTransport()
 	}
@@ -144,7 +144,7 @@ func newDefaultPipeline(o *TokenCredentialOptions) azcore.Pipeline {
 
 // NewDefaultMSIPipeline creates a Pipeline using the specified pipeline options needed
 // for a Managed Identity, such as a MSI specific retry policy
-func newDefaultMSIPipeline(o *ManagedIdentityCredentialOptions) azcore.Pipeline {
+func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {
 		o.HTTPClient = azcore.DefaultHTTPClientTransport()
 	}

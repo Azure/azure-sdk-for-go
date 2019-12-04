@@ -23,12 +23,10 @@ import (
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
 // storage account's name and either its primary or secondary key.
 func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
-	bytes, err := base64.StdEncoding.DecodeString(accountKey)
-	if err != nil {
-		return nil, fmt.Errorf("decode account key: %w", err)
-	}
 	c := SharedKeyCredential{accountName: accountName}
-	c.accountKey.Store(bytes)
+	if err := c.SetAccountKey(accountKey); err != nil {
+		return nil, err
+	}
 	return &c, nil
 }
 
@@ -45,8 +43,18 @@ func (c *SharedKeyCredential) AccountName() string {
 	return c.accountName
 }
 
-// ComputeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
-func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (base64String string) {
+// SetAccountKey replaces the existing account key with the specified account key.
+func (c *SharedKeyCredential) SetAccountKey(accountKey string) error {
+	bytes, err := base64.StdEncoding.DecodeString(accountKey)
+	if err != nil {
+		return fmt.Errorf("decode account key: %w", err)
+	}
+	c.accountKey.Store(bytes)
+	return nil
+}
+
+// computeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
+func (c *SharedKeyCredential) computeHMACSHA256(message string) (base64String string) {
 	h := hmac.New(sha256.New, c.accountKey.Load().([]byte))
 	h.Write([]byte(message))
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
@@ -164,7 +172,7 @@ func (c *SharedKeyCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOp
 		if err != nil {
 			return nil, err
 		}
-		signature := c.ComputeHMACSHA256(stringToSign)
+		signature := c.computeHMACSHA256(stringToSign)
 		authHeader := strings.Join([]string{"SharedKey ", c.AccountName(), ":", signature}, "")
 		req.Request.Header[azcore.HeaderAuthorization] = []string{authHeader}
 

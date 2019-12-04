@@ -98,8 +98,21 @@ func (e *ChainedCredentialError) Error() string {
 
 // TokenCredentialOptions to configure requests made to Azure Identity Services
 type TokenCredentialOptions struct {
-	PipelineOptions azcore.PipelineOptions
-	AuthorityHost   *url.URL // The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	AuthorityHost *url.URL
+
+	// HTTPClient sets the transport for making HTTP requests.
+	// Leave this as nil to use the default HTTP transport.
+	HTTPClient azcore.Transport
+
+	// LogOptions configures the built-in request logging policy behavior.
+	LogOptions azcore.RequestLogOptions
+
+	// Retry configures the built-in retry policy behavior.
+	Retry azcore.RetryOptions
+
+	// Telemetry configures the built-in telemetry policy behavior.
+	Telemetry azcore.TelemetryOptions
 }
 
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
@@ -116,7 +129,7 @@ func (c *TokenCredentialOptions) setDefaultValues() *TokenCredentialOptions {
 }
 
 // NewDefaultPipeline creates a Pipeline using the specified pipeline options
-func newDefaultPipeline(o azcore.PipelineOptions) azcore.Pipeline {
+func newDefaultPipeline(o TokenCredentialOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {
 		o.HTTPClient = azcore.DefaultHTTPClientTransport()
 	}
@@ -131,19 +144,21 @@ func newDefaultPipeline(o azcore.PipelineOptions) azcore.Pipeline {
 
 // NewDefaultMSIPipeline creates a Pipeline using the specified pipeline options needed
 // for a Managed Identity, such as a MSI specific retry policy
-func newDefaultMSIPipeline(o azcore.PipelineOptions) azcore.Pipeline {
+func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {
 		o.HTTPClient = azcore.DefaultHTTPClientTransport()
 	}
 
-	// Set defaults needed for MSI retry policy
-	o.Retry.MaxTries = 5
+	// retry policy for MSI is not end-user configurable
+	retryOpts := azcore.RetryOptions{
+		MaxTries: 5,
+	}
 
 	return azcore.NewPipeline(
 		o.HTTPClient,
 		azcore.NewTelemetryPolicy(o.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),
-		NewMSIRetryPolicy(o.Retry),
+		NewMSIRetryPolicy(retryOpts),
 		azcore.NewRequestLogPolicy(o.LogOptions))
 }
 

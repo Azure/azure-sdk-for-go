@@ -43,6 +43,14 @@ func TestEnvironmentCredential_TenantIDNotSet(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}
+	err = os.Setenv("AZURE_CLIENT_ID", clientID)
+	if err != nil {
+		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
+	}
+	err = os.Setenv("AZURE_CLIENT_SECRET", secret)
+	if err != nil {
+		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
+	}
 	_, err = NewEnvironmentCredential(nil)
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")

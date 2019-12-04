@@ -26,7 +26,7 @@ func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
 	cred := NewClientSecretCredential(tenantID, clientID, secret, nil)
 	req, err := cred.client.createClientSecretAuthRequest(cred.tenantID, cred.clientID, cred.clientSecret, []string{scope})
 	if err != nil {
-		t.Fatalf("Unexpectedly received an error: %w", err)
+		t.Fatalf("Unexpectedly received an error: %v", err)
 	}
 	if req.Request.Header.Get(azcore.HeaderContentType) != azcore.HeaderURLEncoded {
 		t.Fatalf("Unexpected value for Content-Type header")

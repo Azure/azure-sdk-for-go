@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	certificatePath      = "certificate.pem"
+	certificatePath      = "testdata/certificate.pem"
 	wrongCertificatePath = "wrong_certificate_path.pem"
 )
 
@@ -130,7 +130,7 @@ func TestClientCertificateCredential_GetTokenCheckPrivateKeyBlocks(t *testing.T)
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "new_token", "expires_in": 3600}`)))
 	srvURL := srv.URL()
-	cred, err := NewClientCertificateCredential(tenantID, clientID, "certificate_formatB.pem", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_formatB.pem", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -145,7 +145,7 @@ func TestClientCertificateCredential_GetTokenCheckCertificateBlocks(t *testing.T
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "new_token", "expires_in": 3600}`)))
 	srvURL := srv.URL()
-	cred, err := NewClientCertificateCredential(tenantID, clientID, "certificate_formatA.pem", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_formatA.pem", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -160,7 +160,7 @@ func TestClientCertificateCredential_GetTokenEmptyCertificate(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "new_token", "expires_in": 3600}`)))
 	srvURL := srv.URL()
-	cred, err := NewClientCertificateCredential(tenantID, clientID, "certificate_empty.pem", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_empty.pem", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -175,7 +175,7 @@ func TestClientCertificateCredential_GetTokenNoPrivateKey(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "new_token", "expires_in": 3600}`)))
 	srvURL := srv.URL()
-	cred, err := NewClientCertificateCredential(tenantID, clientID, "certificate_nokey.pem", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_nokey.pem", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azidentity
 
 import (
@@ -11,3 +14,7 @@ func TestIMDSEndpointParse(t *testing.T) {
 		t.Fatalf("Failed to parse the IMDS endpoint: %v", err)
 	}
 }
+
+// func TestNewDefaultMSIPipeline(t *testing.T) {
+// 	p := newDefaultMSIPipeline(ManagedIdentityCredentialOptions{})
+// }

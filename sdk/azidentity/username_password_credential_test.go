@@ -14,20 +14,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-const (
-	tenantID                 = "expected_tenant"
-	clientID                 = "expected_client"
-	secret                   = "secret"
-	wrongSecret              = "wrong_secret"
-	tokenValue               = "new_token"
-	tokenExpiresIn           = "3600"
-	scope                    = "http://storage.azure.com/.default"
-	defaultTestAuthorityHost = "login.microsoftonline.com"
-)
-
-func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
-	cred := NewClientSecretCredential(tenantID, clientID, secret, nil)
-	req, err := cred.client.createClientSecretAuthRequest(cred.tenantID, cred.clientID, cred.clientSecret, []string{scope})
+func TestUsernamePasswordCredential_CreateAuthRequestSuccess(t *testing.T) {
+	cred := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", nil)
+	req, err := cred.client.createUsernamePasswordAuthRequest(cred.tenantID, cred.clientID, cred.username, cred.password, []string{scope})
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
 	}
@@ -43,11 +32,20 @@ func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to parse query params in request")
 	}
+	if reqQueryParams[qpResponseType][0] != "token" {
+		t.Fatalf("Unexpected response type")
+	}
+	if reqQueryParams[qpGrantType][0] != "password" {
+		t.Fatalf("Unexpected grant type")
+	}
 	if reqQueryParams[qpClientID][0] != clientID {
 		t.Fatalf("Unexpected client ID in the client_id header")
 	}
-	if reqQueryParams[qpClientSecret][0] != secret {
-		t.Fatalf("Unexpected secret in the client_secret header")
+	if reqQueryParams[qpUsername][0] != "username" {
+		t.Fatalf("Unexpected username in the username header")
+	}
+	if reqQueryParams[qpPassword][0] != "password" {
+		t.Fatalf("Unexpected password in the password header")
 	}
 	if reqQueryParams[qpScope][0] != scope {
 		t.Fatalf("Unexpected scope in scope header")
@@ -60,37 +58,37 @@ func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
 	}
 }
 
-func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
+func TestUsernamePasswordCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "ey0....", "expires_in": 3600}`)))
 	srvURL := srv.URL()
-	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
 }
 
-func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
+func TestUsernamePasswordCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srvURL := srv.URL()
-	cred := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred := NewUsernamePasswordCredential(tenantID, clientID, "username", "wrong_password", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
 }
 
-func TestClientSecretCredential_CreateAuthRequestFail(t *testing.T) {
+func TestUsernamePasswordCredential_CreateAuthRequestFail(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srvURL := srv.URL()
 	srvURL.Host = "ht @"
-	cred := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")

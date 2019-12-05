@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -136,7 +135,6 @@ func TestManagedIdentityCredential_GetTokenUnknownFail(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	// testURL := srv.URL()
 	_ = os.Setenv("MSI_ENDPOINT", "https://t .com")
 	msiCred := NewManagedIdentityCredential("", newDefaultManagedIdentityOptions())
 	msiCred.client = newTestManagedIdentityClient(&ManagedIdentityCredentialOptions{HTTPClient: srv})
@@ -150,41 +148,9 @@ func newTestManagedIdentityClient(options *ManagedIdentityCredentialOptions) *ma
 	options = options.setDefaultValues()
 	// TODO document the use of these variables
 	return &managedIdentityClient{
-		pipeline:               newDefaultTestMSIPipeline(options),
+		pipeline:               newDefaultMSIPipeline(*options),
 		imdsAPIVersion:         imdsAPIVersion,
 		imdsAvailableTimeoutMS: 500,
 		msiType:                unknown,
 	}
-}
-
-// NewDefaultMSIPipeline creates a Pipeline using the specified pipeline options needed
-// for a Managed Identity, such as a MSI specific retry policy
-func newDefaultTestMSIPipeline(o *ManagedIdentityCredentialOptions) azcore.Pipeline {
-	if o.HTTPClient == nil {
-		o.HTTPClient = azcore.DefaultHTTPClientTransport()
-	}
-
-	// retry policy for MSI is not end-user configurable
-	retryOpts := azcore.RetryOptions{
-		MaxTries:   5,
-		RetryDelay: 2 * time.Second,
-		StatusCodes: append(azcore.StatusCodesForRetry[:],
-			http.StatusNotFound,
-			http.StatusGone,
-			// all remaining 5xx
-			http.StatusNotImplemented,
-			http.StatusHTTPVersionNotSupported,
-			http.StatusVariantAlsoNegotiates,
-			http.StatusInsufficientStorage,
-			http.StatusLoopDetected,
-			http.StatusNotExtended,
-			http.StatusNetworkAuthenticationRequired),
-	}
-
-	return azcore.NewPipeline(
-		o.HTTPClient,
-		azcore.NewTelemetryPolicy(o.Telemetry),
-		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(retryOpts),
-		azcore.NewRequestLogPolicy(o.LogOptions))
 }

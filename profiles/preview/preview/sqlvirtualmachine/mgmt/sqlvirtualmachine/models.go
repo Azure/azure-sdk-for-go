@@ -118,6 +118,7 @@ type SQLServerLicenseType = original.SQLServerLicenseType
 
 const (
 	AHUB SQLServerLicenseType = original.AHUB
+	DR   SQLServerLicenseType = original.DR
 	PAYG SQLServerLicenseType = original.PAYG
 )
 

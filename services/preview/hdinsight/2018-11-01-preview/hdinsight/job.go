@@ -361,7 +361,7 @@ func (client JobClient) ListAfterJobID(ctx context.Context, jobid string, numrec
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: numrecords,
 			Constraints: []validation.Constraint{{Target: "numrecords", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "numrecords", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "numrecords", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("hdinsight.JobClient", "ListAfterJobID", err.Error())
 	}
 

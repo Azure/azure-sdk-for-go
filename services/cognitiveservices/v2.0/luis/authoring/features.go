@@ -287,11 +287,11 @@ func (client FeaturesClient) List(ctx context.Context, appID uuid.UUID, versionI
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}},
 		{TargetValue: take,
 			Constraints: []validation.Constraint{{Target: "take", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: int64(500), Chain: nil},
-					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+					{Target: "take", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("authoring.FeaturesClient", "List", err.Error())
 	}
@@ -389,11 +389,11 @@ func (client FeaturesClient) ListApplicationVersionPatternFeatures(ctx context.C
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}},
 		{TargetValue: take,
 			Constraints: []validation.Constraint{{Target: "take", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: int64(500), Chain: nil},
-					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+					{Target: "take", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("authoring.FeaturesClient", "ListApplicationVersionPatternFeatures", err.Error())
 	}
@@ -490,11 +490,11 @@ func (client FeaturesClient) ListPhraseLists(ctx context.Context, appID uuid.UUI
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}},
 		{TargetValue: take,
 			Constraints: []validation.Constraint{{Target: "take", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: int64(500), Chain: nil},
-					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+					{Target: "take", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("authoring.FeaturesClient", "ListPhraseLists", err.Error())
 	}

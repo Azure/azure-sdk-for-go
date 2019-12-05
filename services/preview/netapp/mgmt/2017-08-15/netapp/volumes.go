@@ -71,7 +71,7 @@ func (client VolumesClient) CreateOrUpdate(ctx context.Context, body Volume, res
 						{Target: "body.VolumeProperties.CreationToken", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "body.VolumeProperties.UsageThreshold", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "body.VolumeProperties.UsageThreshold", Name: validation.InclusiveMaximum, Rule: int64(109951162777600), Chain: nil},
-								{Target: "body.VolumeProperties.UsageThreshold", Name: validation.InclusiveMinimum, Rule: 107374182400, Chain: nil},
+								{Target: "body.VolumeProperties.UsageThreshold", Name: validation.InclusiveMinimum, Rule: int64(107374182400), Chain: nil},
 							}},
 					}}}},
 		{TargetValue: resourceGroupName,

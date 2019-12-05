@@ -106,3 +106,11 @@ type OperationsClientAPI interface {
 }
 
 var _ OperationsClientAPI = (*policyinsights.OperationsClient)(nil)
+
+// PolicyMetadataClientAPI contains the set of methods on the PolicyMetadataClient type.
+type PolicyMetadataClientAPI interface {
+	GetResource(ctx context.Context, resourceName string) (result policyinsights.PolicyMetadata, err error)
+	List(ctx context.Context, top *int32) (result policyinsights.PolicyMetadataCollectionPage, err error)
+}
+
+var _ PolicyMetadataClientAPI = (*policyinsights.PolicyMetadataClient)(nil)

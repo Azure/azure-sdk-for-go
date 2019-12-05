@@ -532,6 +532,14 @@ const (
 	SapHanaAuthenticationTypeWindows SapHanaAuthenticationType = original.SapHanaAuthenticationTypeWindows
 )
 
+type SapHanaPartitionOption = original.SapHanaPartitionOption
+
+const (
+	SapHanaPartitionOptionNone                      SapHanaPartitionOption = original.SapHanaPartitionOptionNone
+	SapHanaPartitionOptionPhysicalPartitionsOfTable SapHanaPartitionOption = original.SapHanaPartitionOptionPhysicalPartitionsOfTable
+	SapHanaPartitionOptionSapHanaDynamicRange       SapHanaPartitionOption = original.SapHanaPartitionOptionSapHanaDynamicRange
+)
+
 type SapTablePartitionOption = original.SapTablePartitionOption
 
 const (
@@ -1393,6 +1401,8 @@ type CustomActivityTypeProperties = original.CustomActivityTypeProperties
 type CustomDataSourceLinkedService = original.CustomDataSourceLinkedService
 type CustomDataset = original.CustomDataset
 type CustomSetupBase = original.CustomSetupBase
+type DWCopyCommandDefaultValue = original.DWCopyCommandDefaultValue
+type DWCopyCommandSettings = original.DWCopyCommandSettings
 type DataFlow = original.DataFlow
 type DataFlowDebugCommandPayload = original.DataFlowDebugCommandPayload
 type DataFlowDebugCommandRequest = original.DataFlowDebugCommandRequest
@@ -1890,6 +1900,7 @@ type SapEccResourceDatasetTypeProperties = original.SapEccResourceDatasetTypePro
 type SapEccSource = original.SapEccSource
 type SapHanaLinkedService = original.SapHanaLinkedService
 type SapHanaLinkedServiceProperties = original.SapHanaLinkedServiceProperties
+type SapHanaPartitionSettings = original.SapHanaPartitionSettings
 type SapHanaSource = original.SapHanaSource
 type SapHanaTableDataset = original.SapHanaTableDataset
 type SapHanaTableDatasetTypeProperties = original.SapHanaTableDatasetTypeProperties
@@ -2365,6 +2376,9 @@ func PossibleSapCloudForCustomerSinkWriteBehaviorValues() []SapCloudForCustomerS
 }
 func PossibleSapHanaAuthenticationTypeValues() []SapHanaAuthenticationType {
 	return original.PossibleSapHanaAuthenticationTypeValues()
+}
+func PossibleSapHanaPartitionOptionValues() []SapHanaPartitionOption {
+	return original.PossibleSapHanaPartitionOptionValues()
 }
 func PossibleSapTablePartitionOptionValues() []SapTablePartitionOption {
 	return original.PossibleSapTablePartitionOptionValues()

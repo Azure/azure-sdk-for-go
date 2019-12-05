@@ -48,7 +48,7 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 // serviceName - the name of the Service resource.
 // appName - the name of the App resource.
 // appResource - parameters for the create or update operation
-func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource *AppResource) (result AppsCreateOrUpdateFuture, err error) {
+func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource) (result AppsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdate")
 		defer func() {
@@ -61,25 +61,23 @@ func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: appResource,
-			Constraints: []validation.Constraint{{Target: "appResource", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "appResource.Properties", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "appResource.Properties.TemporaryDisk", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "appResource.Properties.TemporaryDisk.SizeInGB", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "appResource.Properties.TemporaryDisk.SizeInGB", Name: validation.InclusiveMaximum, Rule: int64(5), Chain: nil},
-								{Target: "appResource.Properties.TemporaryDisk.SizeInGB", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
-							}},
+			Constraints: []validation.Constraint{{Target: "appResource.Properties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "appResource.Properties.TemporaryDisk", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "appResource.Properties.TemporaryDisk.SizeInGB", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "appResource.Properties.TemporaryDisk.SizeInGB", Name: validation.InclusiveMaximum, Rule: int64(5), Chain: nil},
+							{Target: "appResource.Properties.TemporaryDisk.SizeInGB", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 						}},
-						{Target: "appResource.Properties.PersistentDisk", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "appResource.Properties.PersistentDisk.SizeInGB", Name: validation.Null, Rule: false,
-								Chain: []validation.Constraint{{Target: "appResource.Properties.PersistentDisk.SizeInGB", Name: validation.InclusiveMaximum, Rule: int64(50), Chain: nil},
-									{Target: "appResource.Properties.PersistentDisk.SizeInGB", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
-								}},
-								{Target: "appResource.Properties.PersistentDisk.UsedInGB", Name: validation.Null, Rule: false,
-									Chain: []validation.Constraint{{Target: "appResource.Properties.PersistentDisk.UsedInGB", Name: validation.InclusiveMaximum, Rule: int64(50), Chain: nil},
-										{Target: "appResource.Properties.PersistentDisk.UsedInGB", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
-									}},
-							}},
 					}},
+					{Target: "appResource.Properties.PersistentDisk", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "appResource.Properties.PersistentDisk.SizeInGB", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "appResource.Properties.PersistentDisk.SizeInGB", Name: validation.InclusiveMaximum, Rule: int64(50), Chain: nil},
+								{Target: "appResource.Properties.PersistentDisk.SizeInGB", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
+							}},
+							{Target: "appResource.Properties.PersistentDisk.UsedInGB", Name: validation.Null, Rule: false,
+								Chain: []validation.Constraint{{Target: "appResource.Properties.PersistentDisk.UsedInGB", Name: validation.InclusiveMaximum, Rule: int64(50), Chain: nil},
+									{Target: "appResource.Properties.PersistentDisk.UsedInGB", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
+								}},
+						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("appplatform.AppsClient", "CreateOrUpdate", err.Error())
 	}
@@ -100,7 +98,7 @@ func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AppsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource *AppResource) (*http.Request, error) {
+func (client AppsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"appName":           autorest.Encode("path", appName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -118,11 +116,8 @@ func (client AppsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGro
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}", pathParameters),
+		autorest.WithJSON(appResource),
 		autorest.WithQueryParameters(queryParameters))
-	if appResource != nil {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithJSON(appResource))
-	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -518,7 +513,7 @@ func (client AppsClient) ListComplete(ctx context.Context, resourceGroupName str
 // serviceName - the name of the Service resource.
 // appName - the name of the App resource.
 // appResource - parameters for the update operation
-func (client AppsClient) Update(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource *AppResource) (result AppsUpdateFuture, err error) {
+func (client AppsClient) Update(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource) (result AppsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Update")
 		defer func() {
@@ -545,7 +540,7 @@ func (client AppsClient) Update(ctx context.Context, resourceGroupName string, s
 }
 
 // UpdatePreparer prepares the Update request.
-func (client AppsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource *AppResource) (*http.Request, error) {
+func (client AppsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"appName":           autorest.Encode("path", appName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -563,11 +558,8 @@ func (client AppsClient) UpdatePreparer(ctx context.Context, resourceGroupName s
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}", pathParameters),
+		autorest.WithJSON(appResource),
 		autorest.WithQueryParameters(queryParameters))
-	if appResource != nil {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithJSON(appResource))
-	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

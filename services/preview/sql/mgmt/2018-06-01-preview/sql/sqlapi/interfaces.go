@@ -55,6 +55,13 @@ type ManagedInstanceVulnerabilityAssessmentsClientAPI interface {
 
 var _ ManagedInstanceVulnerabilityAssessmentsClientAPI = (*sql.ManagedInstanceVulnerabilityAssessmentsClient)(nil)
 
+// ManagedInstanceOperationsClientAPI contains the set of methods on the ManagedInstanceOperationsClient type.
+type ManagedInstanceOperationsClientAPI interface {
+	ListByManagedInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceOperationListResultPage, err error)
+}
+
+var _ ManagedInstanceOperationsClientAPI = (*sql.ManagedInstanceOperationsClient)(nil)
+
 // ServerVulnerabilityAssessmentsClientAPI contains the set of methods on the ServerVulnerabilityAssessmentsClient type.
 type ServerVulnerabilityAssessmentsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerVulnerabilityAssessment) (result sql.ServerVulnerabilityAssessment, err error)
@@ -139,3 +146,13 @@ type PrivateEndpointConnectionsClientAPI interface {
 }
 
 var _ PrivateEndpointConnectionsClientAPI = (*sql.PrivateEndpointConnectionsClient)(nil)
+
+// ServerAzureADAdministratorsClientAPI contains the set of methods on the ServerAzureADAdministratorsClient type.
+type ServerAzureADAdministratorsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerAzureADAdministrator) (result sql.ServerAzureADAdministratorsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministratorsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministrator, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.AdministratorListResultPage, err error)
+}
+
+var _ ServerAzureADAdministratorsClientAPI = (*sql.ServerAzureADAdministratorsClient)(nil)

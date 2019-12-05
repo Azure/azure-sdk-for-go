@@ -68,7 +68,7 @@ func (client Client) CreateOrUpdate(ctx context.Context, resourceGroupName strin
 				Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.RealtimeConfiguration", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.RealtimeConfiguration.MaxConcurrentCalls", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.RealtimeConfiguration.MaxConcurrentCalls", Name: validation.InclusiveMaximum, Rule: int64(200), Chain: nil},
-							{Target: "createOrUpdatePayload.Properties.RealtimeConfiguration.MaxConcurrentCalls", Name: validation.InclusiveMinimum, Rule: 4, Chain: nil},
+							{Target: "createOrUpdatePayload.Properties.RealtimeConfiguration.MaxConcurrentCalls", Name: validation.InclusiveMinimum, Rule: int64(4), Chain: nil},
 						}},
 					}},
 					{Target: "createOrUpdatePayload.Properties.MachineLearningWorkspace", Name: validation.Null, Rule: false,

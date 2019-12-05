@@ -327,7 +327,7 @@ func (client WorkspacesClient) List(ctx context.Context, maxResults *int32) (res
 		{TargetValue: maxResults,
 			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
-					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("batchai.WorkspacesClient", "List", err.Error())
 	}
@@ -456,7 +456,7 @@ func (client WorkspacesClient) ListByResourceGroup(ctx context.Context, resource
 		{TargetValue: maxResults,
 			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
-					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("batchai.WorkspacesClient", "ListByResourceGroup", err.Error())
 	}

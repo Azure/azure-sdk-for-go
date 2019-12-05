@@ -481,6 +481,21 @@ func PossibleReasonCodeValues() []ReasonCode {
 	return []ReasonCode{NotAvailableForSubscription, QuotaID}
 }
 
+// RoutingChoice enumerates the values for routing choice.
+type RoutingChoice string
+
+const (
+	// InternetRouting ...
+	InternetRouting RoutingChoice = "InternetRouting"
+	// MicrosoftRouting ...
+	MicrosoftRouting RoutingChoice = "MicrosoftRouting"
+)
+
+// PossibleRoutingChoiceValues returns an array of possible values for the RoutingChoice const type.
+func PossibleRoutingChoiceValues() []RoutingChoice {
+	return []RoutingChoice{InternetRouting, MicrosoftRouting}
+}
+
 // Services enumerates the values for services.
 type Services string
 
@@ -877,6 +892,19 @@ func (acp *AccountCreateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// AccountInternetEndpoints the URIs that are used to perform a retrieval of a public blob, file, web or
+// dfs object via a internet routing endpoint.
+type AccountInternetEndpoints struct {
+	// Blob - READ-ONLY; Gets the blob endpoint.
+	Blob *string `json:"blob,omitempty"`
+	// File - READ-ONLY; Gets the file endpoint.
+	File *string `json:"file,omitempty"`
+	// Web - READ-ONLY; Gets the web endpoint.
+	Web *string `json:"web,omitempty"`
+	// Dfs - READ-ONLY; Gets the dfs endpoint.
+	Dfs *string `json:"dfs,omitempty"`
+}
+
 // AccountKey an access key for the storage account.
 type AccountKey struct {
 	// KeyName - READ-ONLY; Name of the key.
@@ -1040,6 +1068,23 @@ func NewAccountListResultPage(getNextPage func(context.Context, AccountListResul
 	return AccountListResultPage{fn: getNextPage}
 }
 
+// AccountMicrosoftEndpoints the URIs that are used to perform a retrieval of a public blob, queue, table,
+// web or dfs object via a microsoft routing endpoint.
+type AccountMicrosoftEndpoints struct {
+	// Blob - READ-ONLY; Gets the blob endpoint.
+	Blob *string `json:"blob,omitempty"`
+	// Queue - READ-ONLY; Gets the queue endpoint.
+	Queue *string `json:"queue,omitempty"`
+	// Table - READ-ONLY; Gets the table endpoint.
+	Table *string `json:"table,omitempty"`
+	// File - READ-ONLY; Gets the file endpoint.
+	File *string `json:"file,omitempty"`
+	// Web - READ-ONLY; Gets the web endpoint.
+	Web *string `json:"web,omitempty"`
+	// Dfs - READ-ONLY; Gets the dfs endpoint.
+	Dfs *string `json:"dfs,omitempty"`
+}
+
 // AccountProperties properties of the storage account.
 type AccountProperties struct {
 	// ProvisioningState - READ-ONLY; Gets the status of the storage account at the time the operation was called. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateResolvingDNS', 'ProvisioningStateSucceeded'
@@ -1082,6 +1127,8 @@ type AccountProperties struct {
 	LargeFileSharesState LargeFileSharesState `json:"largeFileSharesState,omitempty"`
 	// PrivateEndpointConnections - READ-ONLY; List of private endpoint connection associated with the specified storage account
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	// RoutingPreference - Maintains information about the network routing choice opted by the user for data transfer
+	RoutingPreference *RoutingPreference `json:"routingPreference,omitempty"`
 }
 
 // AccountPropertiesCreateParameters the parameters used to create the storage account.
@@ -1102,6 +1149,8 @@ type AccountPropertiesCreateParameters struct {
 	IsHnsEnabled *bool `json:"isHnsEnabled,omitempty"`
 	// LargeFileSharesState - Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'
 	LargeFileSharesState LargeFileSharesState `json:"largeFileSharesState,omitempty"`
+	// RoutingPreference - Maintains information about the network routing choice opted by the user for data transfer
+	RoutingPreference *RoutingPreference `json:"routingPreference,omitempty"`
 }
 
 // AccountPropertiesUpdateParameters the parameters used when updating a storage account.
@@ -1120,6 +1169,8 @@ type AccountPropertiesUpdateParameters struct {
 	NetworkRuleSet *NetworkRuleSet `json:"networkAcls,omitempty"`
 	// LargeFileSharesState - Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'
 	LargeFileSharesState LargeFileSharesState `json:"largeFileSharesState,omitempty"`
+	// RoutingPreference - Maintains information about the network routing choice opted by the user for data transfer
+	RoutingPreference *RoutingPreference `json:"routingPreference,omitempty"`
 }
 
 // AccountRegenerateKeyParameters the parameters used to regenerate the storage account key.
@@ -1428,6 +1479,8 @@ type BlobServiceProperties struct {
 	autorest.Response `json:"-"`
 	// BlobServicePropertiesProperties - The properties of a storage account’s Blob service.
 	*BlobServicePropertiesProperties `json:"properties,omitempty"`
+	// Sku - READ-ONLY; Sku name and tier.
+	Sku *Sku `json:"sku,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -1462,6 +1515,15 @@ func (bsp *BlobServiceProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				bsp.BlobServicePropertiesProperties = &blobServiceProperties
+			}
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				bsp.Sku = &sku
 			}
 		case "id":
 			if v != nil {
@@ -1508,8 +1570,6 @@ type BlobServicePropertiesProperties struct {
 	AutomaticSnapshotPolicyEnabled *bool `json:"automaticSnapshotPolicyEnabled,omitempty"`
 	// ChangeFeed - The blob service properties for change feed events.
 	ChangeFeed *ChangeFeed `json:"changeFeed,omitempty"`
-	// ContainerDeleteRetentionPolicy - The blob service properties for container soft delete.
-	ContainerDeleteRetentionPolicy *DeleteRetentionPolicy `json:"containerDeleteRetentionPolicy,omitempty"`
 }
 
 // ChangeFeed the blob service properties for change feed events.
@@ -1622,11 +1682,11 @@ type DateAfterModification struct {
 	DaysAfterModificationGreaterThan *float64 `json:"daysAfterModificationGreaterThan,omitempty"`
 }
 
-// DeleteRetentionPolicy the blob service properties for soft delete.
+// DeleteRetentionPolicy the service properties for soft delete.
 type DeleteRetentionPolicy struct {
-	// Enabled - Indicates whether DeleteRetentionPolicy is enabled for the Blob service.
+	// Enabled - Indicates whether DeleteRetentionPolicy is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
-	// Days - Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365.
+	// Days - Indicates the number of days that the deleted item should be retained. The minimum specified value can be 1 and the maximum value can be 365.
 	Days *int32 `json:"days,omitempty"`
 }
 
@@ -1683,6 +1743,10 @@ type Endpoints struct {
 	Web *string `json:"web,omitempty"`
 	// Dfs - READ-ONLY; Gets the dfs endpoint.
 	Dfs *string `json:"dfs,omitempty"`
+	// MicrosoftEndpoints - Gets the microsoft routing storage endpoints.
+	MicrosoftEndpoints *AccountMicrosoftEndpoints `json:"microsoftEndpoints,omitempty"`
+	// InternetEndpoints - Gets the internet routing storage endpoints
+	InternetEndpoints *AccountInternetEndpoints `json:"internetEndpoints,omitempty"`
 }
 
 // ErrorResponse an error response from the storage resource provider.
@@ -1705,6 +1769,8 @@ type FileServiceProperties struct {
 	autorest.Response `json:"-"`
 	// FileServicePropertiesProperties - The properties of File services in storage account.
 	*FileServicePropertiesProperties `json:"properties,omitempty"`
+	// Sku - READ-ONLY; Sku name and tier.
+	Sku *Sku `json:"sku,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -1739,6 +1805,15 @@ func (fsp *FileServiceProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				fsp.FileServicePropertiesProperties = &fileServiceProperties
+			}
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				fsp.Sku = &sku
 			}
 		case "id":
 			if v != nil {
@@ -2101,7 +2176,7 @@ type FileShareProperties struct {
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// Metadata - A name-value pair to associate with the share as metadata.
 	Metadata map[string]*string `json:"metadata"`
-	// ShareQuota - The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120).
+	// ShareQuota - The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
 	ShareQuota *int32 `json:"shareQuota,omitempty"`
 }
 
@@ -3097,6 +3172,17 @@ type Restriction struct {
 	ReasonCode ReasonCode `json:"reasonCode,omitempty"`
 }
 
+// RoutingPreference routing preference defines the type of network, either microsoft or internet routing
+// to be used to deliver the user data, the default option is microsoft routing
+type RoutingPreference struct {
+	// RoutingChoice - Routing Choice defines the kind of network routing opted by the user. Possible values include: 'MicrosoftRouting', 'InternetRouting'
+	RoutingChoice RoutingChoice `json:"routingChoice,omitempty"`
+	// PublishMicrosoftEndpoints - A boolean flag which indicates whether microsoft routing storage endpoints are to be published
+	PublishMicrosoftEndpoints *bool `json:"publishMicrosoftEndpoints,omitempty"`
+	// PublishInternetEndpoints - A boolean flag which indicates whether internet routing storage endpoints are to be published
+	PublishInternetEndpoints *bool `json:"publishInternetEndpoints,omitempty"`
+}
+
 // ServiceSasParameters the parameters to list service SAS credentials of a specific resource.
 type ServiceSasParameters struct {
 	// CanonicalizedResource - The canonical path to the signed resource.
@@ -3145,9 +3231,26 @@ type ServiceSpecification struct {
 
 // Sku the SKU of the storage account.
 type Sku struct {
-	// Name - Gets or sets the SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was called accountType. Possible values include: 'StandardLRS', 'StandardGRS', 'StandardRAGRS', 'StandardZRS', 'PremiumLRS', 'PremiumZRS', 'StandardGZRS', 'StandardRAGZRS'
+	// Name - Possible values include: 'StandardLRS', 'StandardGRS', 'StandardRAGRS', 'StandardZRS', 'PremiumLRS', 'PremiumZRS', 'StandardGZRS', 'StandardRAGZRS'
 	Name SkuName `json:"name,omitempty"`
-	// Tier - READ-ONLY; Gets the SKU tier. This is based on the SKU name. Possible values include: 'Standard', 'Premium'
+	// Tier - Possible values include: 'Standard', 'Premium'
+	Tier SkuTier `json:"tier,omitempty"`
+}
+
+// SKUCapability the capability information in the specified SKU, including file encryption, network ACLs,
+// change notification, etc.
+type SKUCapability struct {
+	// Name - READ-ONLY; The name of capability, The capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
+	Name *string `json:"name,omitempty"`
+	// Value - READ-ONLY; A string value to indicate states of given capability. Possibly 'true' or 'false'.
+	Value *string `json:"value,omitempty"`
+}
+
+// SkuInformation storage SKU and its properties
+type SkuInformation struct {
+	// Name - Possible values include: 'StandardLRS', 'StandardGRS', 'StandardRAGRS', 'StandardZRS', 'PremiumLRS', 'PremiumZRS', 'StandardGZRS', 'StandardRAGZRS'
+	Name SkuName `json:"name,omitempty"`
+	// Tier - Possible values include: 'Standard', 'Premium'
 	Tier SkuTier `json:"tier,omitempty"`
 	// ResourceType - READ-ONLY; The type of the resource, usually it is 'storageAccounts'.
 	ResourceType *string `json:"resourceType,omitempty"`
@@ -3161,20 +3264,11 @@ type Sku struct {
 	Restrictions *[]Restriction `json:"restrictions,omitempty"`
 }
 
-// SKUCapability the capability information in the specified SKU, including file encryption, network ACLs,
-// change notification, etc.
-type SKUCapability struct {
-	// Name - READ-ONLY; The name of capability, The capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
-	Name *string `json:"name,omitempty"`
-	// Value - READ-ONLY; A string value to indicate states of given capability. Possibly 'true' or 'false'.
-	Value *string `json:"value,omitempty"`
-}
-
 // SkuListResult the response from the List Storage SKUs operation.
 type SkuListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Get the list result of storage SKUs and their properties.
-	Value *[]Sku `json:"value,omitempty"`
+	Value *[]SkuInformation `json:"value,omitempty"`
 }
 
 // TagProperty a tag of the LegalHold of a blob container.

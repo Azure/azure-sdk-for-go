@@ -3419,8 +3419,8 @@ func (client AppsClient) CreateOrUpdateVnetConnectionSlotResponder(resp *http.Re
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app to delete.
 // deleteMetrics - if true, web app metrics are also deleted.
-// deleteEmptyServerFarm - specify true if the App Service plan will be empty after app deletion and you want
-// to delete the empty App Service plan. By default, the empty App Service plan is not deleted.
+// deleteEmptyServerFarm - specify false if you want to keep empty App Service plan. By default, empty App
+// Service plan is deleted.
 func (client AppsClient) Delete(ctx context.Context, resourceGroupName string, name string, deleteMetrics *bool, deleteEmptyServerFarm *bool) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Delete")
@@ -28103,7 +28103,7 @@ func (client AppsClient) UpdateDiagnosticLogsConfig(ctx context.Context, resourc
 						Chain: []validation.Constraint{{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.Null, Rule: false,
 								Chain: []validation.Constraint{{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.InclusiveMaximum, Rule: int64(100), Chain: nil},
-									{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.InclusiveMinimum, Rule: 25, Chain: nil},
+									{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.InclusiveMinimum, Rule: int64(25), Chain: nil},
 								}},
 							}},
 						}},
@@ -28209,7 +28209,7 @@ func (client AppsClient) UpdateDiagnosticLogsConfigSlot(ctx context.Context, res
 						Chain: []validation.Constraint{{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.Null, Rule: false,
 								Chain: []validation.Constraint{{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.InclusiveMaximum, Rule: int64(100), Chain: nil},
-									{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.InclusiveMinimum, Rule: 25, Chain: nil},
+									{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.InclusiveMinimum, Rule: int64(25), Chain: nil},
 								}},
 							}},
 						}},

@@ -399,6 +399,13 @@ const (
 	VersionAndAboveSignature Type = original.VersionAndAboveSignature
 )
 
+type UnmaskedIPLoggingStatus = original.UnmaskedIPLoggingStatus
+
+const (
+	UnmaskedIPLoggingStatusDisabled UnmaskedIPLoggingStatus = original.UnmaskedIPLoggingStatusDisabled
+	UnmaskedIPLoggingStatusEnabled  UnmaskedIPLoggingStatus = original.UnmaskedIPLoggingStatusEnabled
+)
+
 type ValueType = original.ValueType
 
 const (
@@ -497,6 +504,7 @@ type DiscoveredSecuritySolutionListIterator = original.DiscoveredSecuritySolutio
 type DiscoveredSecuritySolutionListPage = original.DiscoveredSecuritySolutionListPage
 type DiscoveredSecuritySolutionProperties = original.DiscoveredSecuritySolutionProperties
 type DiscoveredSecuritySolutionsClient = original.DiscoveredSecuritySolutionsClient
+type ETag = original.ETag
 type ExternalSecuritySolution = original.ExternalSecuritySolution
 type ExternalSecuritySolutionKind1 = original.ExternalSecuritySolutionKind1
 type ExternalSecuritySolutionList = original.ExternalSecuritySolutionList
@@ -613,6 +621,7 @@ type SubAssessmentListPage = original.SubAssessmentListPage
 type SubAssessmentProperties = original.SubAssessmentProperties
 type SubAssessmentStatus = original.SubAssessmentStatus
 type SubAssessmentsClient = original.SubAssessmentsClient
+type Tags = original.Tags
 type TagsResource = original.TagsResource
 type Task = original.Task
 type TaskList = original.TaskList
@@ -632,6 +641,7 @@ type TopologyResourceProperties = original.TopologyResourceProperties
 type TopologySingleResource = original.TopologySingleResource
 type TopologySingleResourceChild = original.TopologySingleResourceChild
 type TopologySingleResourceParent = original.TopologySingleResourceParent
+type TrackedResource = original.TrackedResource
 type UpdateIoTSecuritySolutionProperties = original.UpdateIoTSecuritySolutionProperties
 type UpdateIotSecuritySolutionData = original.UpdateIotSecuritySolutionData
 type UserDefinedResourcesProperties = original.UserDefinedResourcesProperties
@@ -1097,6 +1107,9 @@ func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
+}
+func PossibleUnmaskedIPLoggingStatusValues() []UnmaskedIPLoggingStatus {
+	return original.PossibleUnmaskedIPLoggingStatusValues()
 }
 func PossibleValueTypeValues() []ValueType {
 	return original.PossibleValueTypeValues()

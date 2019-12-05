@@ -65,7 +65,7 @@ func (client VirtualMachineImageTemplatesClient) CreateOrUpdate(ctx context.Cont
 					{Target: "parameters.ImageTemplateProperties.Distribute", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.ImageTemplateProperties.BuildTimeoutInMinutes", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.ImageTemplateProperties.BuildTimeoutInMinutes", Name: validation.InclusiveMaximum, Rule: int64(960), Chain: nil},
-							{Target: "parameters.ImageTemplateProperties.BuildTimeoutInMinutes", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+							{Target: "parameters.ImageTemplateProperties.BuildTimeoutInMinutes", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 						}},
 				}}}},
 		{TargetValue: imageTemplateName,

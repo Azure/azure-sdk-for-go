@@ -29,6 +29,13 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type CompositePathSortOrder = original.CompositePathSortOrder
+
+const (
+	Ascending  CompositePathSortOrder = original.Ascending
+	Descending CompositePathSortOrder = original.Descending
+)
+
 type ConflictResolutionMode = original.ConflictResolutionMode
 
 const (
@@ -120,6 +127,15 @@ const (
 	PrimaryAggregationTypeTotal   PrimaryAggregationType = original.PrimaryAggregationTypeTotal
 )
 
+type SpatialType = original.SpatialType
+
+const (
+	SpatialTypeLineString   SpatialType = original.SpatialTypeLineString
+	SpatialTypeMultiPolygon SpatialType = original.SpatialTypeMultiPolygon
+	SpatialTypePoint        SpatialType = original.SpatialTypePoint
+	SpatialTypePolygon      SpatialType = original.SpatialTypePolygon
+)
+
 type TriggerOperation = original.TriggerOperation
 
 const (
@@ -157,6 +173,7 @@ type Capability = original.Capability
 type CassandraKeyspaceCreateUpdateParameters = original.CassandraKeyspaceCreateUpdateParameters
 type CassandraKeyspaceCreateUpdateProperties = original.CassandraKeyspaceCreateUpdateProperties
 type CassandraKeyspaceGetProperties = original.CassandraKeyspaceGetProperties
+type CassandraKeyspaceGetPropertiesResource = original.CassandraKeyspaceGetPropertiesResource
 type CassandraKeyspaceGetResults = original.CassandraKeyspaceGetResults
 type CassandraKeyspaceListResult = original.CassandraKeyspaceListResult
 type CassandraKeyspaceResource = original.CassandraKeyspaceResource
@@ -172,6 +189,7 @@ type CassandraSchema = original.CassandraSchema
 type CassandraTableCreateUpdateParameters = original.CassandraTableCreateUpdateParameters
 type CassandraTableCreateUpdateProperties = original.CassandraTableCreateUpdateProperties
 type CassandraTableGetProperties = original.CassandraTableGetProperties
+type CassandraTableGetPropertiesResource = original.CassandraTableGetPropertiesResource
 type CassandraTableGetResults = original.CassandraTableGetResults
 type CassandraTableListResult = original.CassandraTableListResult
 type CassandraTableResource = original.CassandraTableResource
@@ -181,6 +199,7 @@ type CollectionPartitionClient = original.CollectionPartitionClient
 type CollectionPartitionRegionClient = original.CollectionPartitionRegionClient
 type CollectionRegionClient = original.CollectionRegionClient
 type Column = original.Column
+type CompositePath = original.CompositePath
 type ConflictResolutionPolicy = original.ConflictResolutionPolicy
 type ConsistencyPolicy = original.ConsistencyPolicy
 type ContainerPartitionKey = original.ContainerPartitionKey
@@ -214,12 +233,14 @@ type FailoverPolicy = original.FailoverPolicy
 type GremlinDatabaseCreateUpdateParameters = original.GremlinDatabaseCreateUpdateParameters
 type GremlinDatabaseCreateUpdateProperties = original.GremlinDatabaseCreateUpdateProperties
 type GremlinDatabaseGetProperties = original.GremlinDatabaseGetProperties
+type GremlinDatabaseGetPropertiesResource = original.GremlinDatabaseGetPropertiesResource
 type GremlinDatabaseGetResults = original.GremlinDatabaseGetResults
 type GremlinDatabaseListResult = original.GremlinDatabaseListResult
 type GremlinDatabaseResource = original.GremlinDatabaseResource
 type GremlinGraphCreateUpdateParameters = original.GremlinGraphCreateUpdateParameters
 type GremlinGraphCreateUpdateProperties = original.GremlinGraphCreateUpdateProperties
 type GremlinGraphGetProperties = original.GremlinGraphGetProperties
+type GremlinGraphGetPropertiesResource = original.GremlinGraphGetPropertiesResource
 type GremlinGraphGetResults = original.GremlinGraphGetResults
 type GremlinGraphListResult = original.GremlinGraphListResult
 type GremlinGraphResource = original.GremlinGraphResource
@@ -244,12 +265,14 @@ type MetricValue = original.MetricValue
 type MongoDBCollectionCreateUpdateParameters = original.MongoDBCollectionCreateUpdateParameters
 type MongoDBCollectionCreateUpdateProperties = original.MongoDBCollectionCreateUpdateProperties
 type MongoDBCollectionGetProperties = original.MongoDBCollectionGetProperties
+type MongoDBCollectionGetPropertiesResource = original.MongoDBCollectionGetPropertiesResource
 type MongoDBCollectionGetResults = original.MongoDBCollectionGetResults
 type MongoDBCollectionListResult = original.MongoDBCollectionListResult
 type MongoDBCollectionResource = original.MongoDBCollectionResource
 type MongoDBDatabaseCreateUpdateParameters = original.MongoDBDatabaseCreateUpdateParameters
 type MongoDBDatabaseCreateUpdateProperties = original.MongoDBDatabaseCreateUpdateProperties
 type MongoDBDatabaseGetProperties = original.MongoDBDatabaseGetProperties
+type MongoDBDatabaseGetPropertiesResource = original.MongoDBDatabaseGetPropertiesResource
 type MongoDBDatabaseGetResults = original.MongoDBDatabaseGetResults
 type MongoDBDatabaseListResult = original.MongoDBDatabaseListResult
 type MongoDBDatabaseResource = original.MongoDBDatabaseResource
@@ -299,12 +322,14 @@ type Resource = original.Resource
 type SQLContainerCreateUpdateParameters = original.SQLContainerCreateUpdateParameters
 type SQLContainerCreateUpdateProperties = original.SQLContainerCreateUpdateProperties
 type SQLContainerGetProperties = original.SQLContainerGetProperties
+type SQLContainerGetPropertiesResource = original.SQLContainerGetPropertiesResource
 type SQLContainerGetResults = original.SQLContainerGetResults
 type SQLContainerListResult = original.SQLContainerListResult
 type SQLContainerResource = original.SQLContainerResource
 type SQLDatabaseCreateUpdateParameters = original.SQLDatabaseCreateUpdateParameters
 type SQLDatabaseCreateUpdateProperties = original.SQLDatabaseCreateUpdateProperties
 type SQLDatabaseGetProperties = original.SQLDatabaseGetProperties
+type SQLDatabaseGetPropertiesResource = original.SQLDatabaseGetPropertiesResource
 type SQLDatabaseGetResults = original.SQLDatabaseGetResults
 type SQLDatabaseListResult = original.SQLDatabaseListResult
 type SQLDatabaseResource = original.SQLDatabaseResource
@@ -324,24 +349,29 @@ type SQLResourcesUpdateSQLDatabaseThroughputFuture = original.SQLResourcesUpdate
 type SQLStoredProcedureCreateUpdateParameters = original.SQLStoredProcedureCreateUpdateParameters
 type SQLStoredProcedureCreateUpdateProperties = original.SQLStoredProcedureCreateUpdateProperties
 type SQLStoredProcedureGetProperties = original.SQLStoredProcedureGetProperties
+type SQLStoredProcedureGetPropertiesResource = original.SQLStoredProcedureGetPropertiesResource
 type SQLStoredProcedureGetResults = original.SQLStoredProcedureGetResults
 type SQLStoredProcedureListResult = original.SQLStoredProcedureListResult
 type SQLStoredProcedureResource = original.SQLStoredProcedureResource
 type SQLTriggerCreateUpdateParameters = original.SQLTriggerCreateUpdateParameters
 type SQLTriggerCreateUpdateProperties = original.SQLTriggerCreateUpdateProperties
 type SQLTriggerGetProperties = original.SQLTriggerGetProperties
+type SQLTriggerGetPropertiesResource = original.SQLTriggerGetPropertiesResource
 type SQLTriggerGetResults = original.SQLTriggerGetResults
 type SQLTriggerListResult = original.SQLTriggerListResult
 type SQLTriggerResource = original.SQLTriggerResource
 type SQLUserDefinedFunctionCreateUpdateParameters = original.SQLUserDefinedFunctionCreateUpdateParameters
 type SQLUserDefinedFunctionCreateUpdateProperties = original.SQLUserDefinedFunctionCreateUpdateProperties
 type SQLUserDefinedFunctionGetProperties = original.SQLUserDefinedFunctionGetProperties
+type SQLUserDefinedFunctionGetPropertiesResource = original.SQLUserDefinedFunctionGetPropertiesResource
 type SQLUserDefinedFunctionGetResults = original.SQLUserDefinedFunctionGetResults
 type SQLUserDefinedFunctionListResult = original.SQLUserDefinedFunctionListResult
 type SQLUserDefinedFunctionResource = original.SQLUserDefinedFunctionResource
+type SpatialSpec = original.SpatialSpec
 type TableCreateUpdateParameters = original.TableCreateUpdateParameters
 type TableCreateUpdateProperties = original.TableCreateUpdateProperties
 type TableGetProperties = original.TableGetProperties
+type TableGetPropertiesResource = original.TableGetPropertiesResource
 type TableGetResults = original.TableGetResults
 type TableListResult = original.TableListResult
 type TableResource = original.TableResource
@@ -350,6 +380,7 @@ type TableResourcesCreateUpdateTableFuture = original.TableResourcesCreateUpdate
 type TableResourcesDeleteTableFuture = original.TableResourcesDeleteTableFuture
 type TableResourcesUpdateTableThroughputFuture = original.TableResourcesUpdateTableThroughputFuture
 type ThroughputSettingsGetProperties = original.ThroughputSettingsGetProperties
+type ThroughputSettingsGetPropertiesResource = original.ThroughputSettingsGetPropertiesResource
 type ThroughputSettingsGetResults = original.ThroughputSettingsGetResults
 type ThroughputSettingsResource = original.ThroughputSettingsResource
 type ThroughputSettingsUpdateParameters = original.ThroughputSettingsUpdateParameters
@@ -493,6 +524,9 @@ func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string, s
 func NewWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
+func PossibleCompositePathSortOrderValues() []CompositePathSortOrder {
+	return original.PossibleCompositePathSortOrderValues()
+}
 func PossibleConflictResolutionModeValues() []ConflictResolutionMode {
 	return original.PossibleConflictResolutionModeValues()
 }
@@ -525,6 +559,9 @@ func PossiblePartitionKindValues() []PartitionKind {
 }
 func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 	return original.PossiblePrimaryAggregationTypeValues()
+}
+func PossibleSpatialTypeValues() []SpatialType {
+	return original.PossibleSpatialTypeValues()
 }
 func PossibleTriggerOperationValues() []TriggerOperation {
 	return original.PossibleTriggerOperationValues()

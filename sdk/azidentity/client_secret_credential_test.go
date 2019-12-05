@@ -83,3 +83,16 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
 }
+
+func TestClientSecretCredential_CreateAuthRequestFail(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
+	srvURL := srv.URL()
+	srvURL.Host = "ht @"
+	cred := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
+	}
+}

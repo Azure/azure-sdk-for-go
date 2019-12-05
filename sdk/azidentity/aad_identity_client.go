@@ -159,12 +159,10 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, 
 	if err != nil {
 		return nil, err
 	}
-
 	clientAssertion, err := createClientAssertionJWT(clientID, urlStr, clientCertificate)
 	if err != nil {
 		return nil, err
 	}
-
 	data := url.Values{}
 	data.Set(qpGrantType, "client_credentials")
 	data.Set(qpResponseType, "token")

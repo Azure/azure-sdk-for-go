@@ -7,44 +7,12 @@ import (
 	"context"
 	"errors"
 	"net/http"
-	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-func initEnvironmentVarsForTest() error {
-	err := os.Setenv("AZURE_TENANT_ID", tenantID)
-	if err != nil {
-		return err
-	}
-	err = os.Setenv("AZURE_CLIENT_ID", clientID)
-	if err != nil {
-		return err
-	}
-	err = os.Setenv("AZURE_CLIENT_SECRET", secret)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func resetEnvironmentVarsForTest() error {
-	err := os.Setenv("AZURE_TENANT_ID", "")
-	if err != nil {
-		return err
-	}
-	err = os.Setenv("AZURE_CLIENT_ID", "")
-	if err != nil {
-		return err
-	}
-	err = os.Setenv("AZURE_CLIENT_SECRET", "")
-	if err != nil {
-		return err
-	}
-	return nil
-}
 func TestChainedTokenCredential_InstantiateSuccess(t *testing.T) {
 	err := initEnvironmentVarsForTest()
 	if err != nil {

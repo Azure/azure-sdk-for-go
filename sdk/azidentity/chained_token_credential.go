@@ -21,13 +21,11 @@ func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedToken
 	if len(sources) == 0 {
 		return nil, &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: "Length of sources cannot be 0"}
 	}
-
 	for _, source := range sources {
 		if source == nil {
 			return nil, &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: "Sources cannot contain a nil TokenCredential"}
 		}
 	}
-
 	return &ChainedTokenCredential{sources: sources}, nil
 }
 
@@ -36,7 +34,6 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 	var token *azcore.AccessToken
 	var err error
 	var errList []*CredentialUnavailableError
-
 	for i := 0; i < len(c.sources); i++ {
 		var credErr *CredentialUnavailableError
 		token, err = c.sources[i].GetToken(ctx, opts)
@@ -50,12 +47,10 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 			return token, nil
 		}
 	}
-
 	// This condition should never be true
 	if token == nil && len(errList) == 0 {
 		return nil, nil
 	}
-
 	return nil, &ChainedCredentialError{ErrorList: errList}
 }
 

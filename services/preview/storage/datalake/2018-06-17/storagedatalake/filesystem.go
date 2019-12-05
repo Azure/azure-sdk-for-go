@@ -66,7 +66,7 @@ func (client FilesystemClient) Create(ctx context.Context, filesystem string, xM
 				Chain: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("storagedatalake.FilesystemClient", "Create", err.Error())
 	}
 
@@ -190,7 +190,7 @@ func (client FilesystemClient) Delete(ctx context.Context, filesystem string, if
 				Chain: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("storagedatalake.FilesystemClient", "Delete", err.Error())
 	}
 
@@ -307,7 +307,7 @@ func (client FilesystemClient) GetProperties(ctx context.Context, filesystem str
 				Chain: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("storagedatalake.FilesystemClient", "GetProperties", err.Error())
 	}
 
@@ -417,13 +417,13 @@ func (client FilesystemClient) List(ctx context.Context, prefix string, continua
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: maxResults,
 			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}},
 		{TargetValue: xMsClientRequestID,
 			Constraints: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Empty, Rule: false,
 				Chain: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("storagedatalake.FilesystemClient", "List", err.Error())
 	}
 
@@ -549,7 +549,7 @@ func (client FilesystemClient) SetProperties(ctx context.Context, filesystem str
 				Chain: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("storagedatalake.FilesystemClient", "SetProperties", err.Error())
 	}
 

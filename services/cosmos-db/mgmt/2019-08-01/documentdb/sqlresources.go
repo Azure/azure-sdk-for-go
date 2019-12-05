@@ -75,7 +75,7 @@ func (client SQLResourcesClient) CreateUpdateSQLContainer(ctx context.Context, r
 						{Target: "createUpdateSQLContainerParameters.SQLContainerCreateUpdateProperties.Resource.PartitionKey", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "createUpdateSQLContainerParameters.SQLContainerCreateUpdateProperties.Resource.PartitionKey.Version", Name: validation.Null, Rule: false,
 								Chain: []validation.Constraint{{Target: "createUpdateSQLContainerParameters.SQLContainerCreateUpdateProperties.Resource.PartitionKey.Version", Name: validation.InclusiveMaximum, Rule: int64(2), Chain: nil},
-									{Target: "createUpdateSQLContainerParameters.SQLContainerCreateUpdateProperties.Resource.PartitionKey.Version", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+									{Target: "createUpdateSQLContainerParameters.SQLContainerCreateUpdateProperties.Resource.PartitionKey.Version", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 								}},
 							}},
 					}},

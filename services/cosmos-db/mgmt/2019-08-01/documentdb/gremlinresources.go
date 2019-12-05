@@ -175,7 +175,7 @@ func (client GremlinResourcesClient) CreateUpdateGremlinGraph(ctx context.Contex
 						{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Resource.PartitionKey", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Resource.PartitionKey.Version", Name: validation.Null, Rule: false,
 								Chain: []validation.Constraint{{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Resource.PartitionKey.Version", Name: validation.InclusiveMaximum, Rule: int64(2), Chain: nil},
-									{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Resource.PartitionKey.Version", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+									{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Resource.PartitionKey.Version", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 								}},
 							}},
 					}},

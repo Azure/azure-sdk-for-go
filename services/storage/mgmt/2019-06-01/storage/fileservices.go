@@ -262,7 +262,7 @@ func (client FileServicesClient) SetServiceProperties(ctx context.Context, resou
 				Chain: []validation.Constraint{{Target: "parameters.FileServicePropertiesProperties.ShareDeleteRetentionPolicy", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.FileServicePropertiesProperties.ShareDeleteRetentionPolicy.Days", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.FileServicePropertiesProperties.ShareDeleteRetentionPolicy.Days", Name: validation.InclusiveMaximum, Rule: int64(365), Chain: nil},
-							{Target: "parameters.FileServicePropertiesProperties.ShareDeleteRetentionPolicy.Days", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+							{Target: "parameters.FileServicePropertiesProperties.ShareDeleteRetentionPolicy.Days", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 						}},
 					}},
 				}}}}}); err != nil {

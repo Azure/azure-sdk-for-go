@@ -72,6 +72,7 @@ const (
 type ServerVersion = original.ServerVersion
 
 const (
+	EightFullStopZero ServerVersion = original.EightFullStopZero
 	FiveFullStopSeven ServerVersion = original.FiveFullStopSeven
 	FiveFullStopSix   ServerVersion = original.FiveFullStopSix
 )

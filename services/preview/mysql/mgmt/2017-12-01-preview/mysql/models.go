@@ -68,6 +68,19 @@ func PossibleGeoRedundantBackupValues() []GeoRedundantBackup {
 	return []GeoRedundantBackup{Disabled, Enabled}
 }
 
+// IdentityType enumerates the values for identity type.
+type IdentityType string
+
+const (
+	// SystemAssigned ...
+	SystemAssigned IdentityType = "SystemAssigned"
+)
+
+// PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
+func PossibleIdentityTypeValues() []IdentityType {
+	return []IdentityType{SystemAssigned}
+}
+
 // OperationOrigin enumerates the values for operation origin.
 type OperationOrigin string
 
@@ -121,6 +134,8 @@ func PossibleServerStateValues() []ServerState {
 type ServerVersion string
 
 const (
+	// EightFullStopZero ...
+	EightFullStopZero ServerVersion = "8.0"
 	// FiveFullStopSeven ...
 	FiveFullStopSeven ServerVersion = "5.7"
 	// FiveFullStopSix ...
@@ -129,7 +144,7 @@ const (
 
 // PossibleServerVersionValues returns an array of possible values for the ServerVersion const type.
 func PossibleServerVersionValues() []ServerVersion {
-	return []ServerVersion{FiveFullStopSeven, FiveFullStopSix}
+	return []ServerVersion{EightFullStopZero, FiveFullStopSeven, FiveFullStopSix}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -816,6 +831,16 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// ResourceIdentity azure Active Directory identity configuration for a resource.
+type ResourceIdentity struct {
+	// PrincipalID - READ-ONLY; The Azure Active Directory principal id.
+	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
+	// Type - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the resource. Possible values include: 'SystemAssigned'
+	Type IdentityType `json:"type,omitempty"`
+	// TenantID - READ-ONLY; The Azure Active Directory tenant id.
+	TenantID *uuid.UUID `json:"tenantId,omitempty"`
+}
+
 // SecurityAlertPolicyProperties properties of a security alert policy.
 type SecurityAlertPolicyProperties struct {
 	// State - Specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'ServerSecurityAlertPolicyStateEnabled', 'ServerSecurityAlertPolicyStateDisabled'
@@ -837,6 +862,8 @@ type SecurityAlertPolicyProperties struct {
 // Server represents a server.
 type Server struct {
 	autorest.Response `json:"-"`
+	// Identity - The Azure Active Directory identity of the server.
+	Identity *ResourceIdentity `json:"identity,omitempty"`
 	// Sku - The SKU (pricing tier) of the server.
 	Sku *Sku `json:"sku,omitempty"`
 	// ServerProperties - Properties of the server.
@@ -856,6 +883,9 @@ type Server struct {
 // MarshalJSON is the custom marshaler for Server.
 func (s Server) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if s.Identity != nil {
+		objectMap["identity"] = s.Identity
+	}
 	if s.Sku != nil {
 		objectMap["sku"] = s.Sku
 	}
@@ -880,6 +910,15 @@ func (s *Server) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "identity":
+			if v != nil {
+				var identity ResourceIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				s.Identity = &identity
+			}
 		case "sku":
 			if v != nil {
 				var sku Sku
@@ -1188,7 +1227,7 @@ type ServerListResult struct {
 type ServerProperties struct {
 	// AdministratorLogin - The administrator's login name of a server. Can only be specified when the server is being created (and is required for creation).
 	AdministratorLogin *string `json:"administratorLogin,omitempty"`
-	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven'
+	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven', 'EightFullStopZero'
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
@@ -1219,7 +1258,7 @@ type BasicServerPropertiesForCreate interface {
 
 // ServerPropertiesForCreate the properties used to create a new server.
 type ServerPropertiesForCreate struct {
-	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven'
+	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven', 'EightFullStopZero'
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
@@ -1333,7 +1372,7 @@ type ServerPropertiesForDefaultCreate struct {
 	AdministratorLogin *string `json:"administratorLogin,omitempty"`
 	// AdministratorLoginPassword - The password of the administrator login.
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
-	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven'
+	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven', 'EightFullStopZero'
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
@@ -1403,7 +1442,7 @@ func (spfdc ServerPropertiesForDefaultCreate) AsBasicServerPropertiesForCreate()
 type ServerPropertiesForGeoRestore struct {
 	// SourceServerID - The source server id to restore from.
 	SourceServerID *string `json:"sourceServerId,omitempty"`
-	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven'
+	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven', 'EightFullStopZero'
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
@@ -1469,7 +1508,7 @@ func (spfgr ServerPropertiesForGeoRestore) AsBasicServerPropertiesForCreate() (B
 type ServerPropertiesForReplica struct {
 	// SourceServerID - The master server id to create replica from.
 	SourceServerID *string `json:"sourceServerId,omitempty"`
-	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven'
+	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven', 'EightFullStopZero'
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
@@ -1537,7 +1576,7 @@ type ServerPropertiesForRestore struct {
 	SourceServerID *string `json:"sourceServerId,omitempty"`
 	// RestorePointInTime - Restore point creation time (ISO8601 format), specifying the time to restore from.
 	RestorePointInTime *date.Time `json:"restorePointInTime,omitempty"`
-	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven'
+	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven', 'EightFullStopZero'
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
@@ -1881,7 +1920,7 @@ type ServerUpdateParametersProperties struct {
 	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
 	// AdministratorLoginPassword - The password of the administrator login.
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
-	// Version - The version of a server. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven'
+	// Version - The version of a server. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven', 'EightFullStopZero'
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`

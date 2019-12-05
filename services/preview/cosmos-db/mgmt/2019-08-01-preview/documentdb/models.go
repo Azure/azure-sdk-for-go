@@ -31,6 +31,21 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2019-08-01-preview/documentdb"
 
+// CompositePathSortOrder enumerates the values for composite path sort order.
+type CompositePathSortOrder string
+
+const (
+	// Ascending ...
+	Ascending CompositePathSortOrder = "Ascending"
+	// Descending ...
+	Descending CompositePathSortOrder = "Descending"
+)
+
+// PossibleCompositePathSortOrderValues returns an array of possible values for the CompositePathSortOrder const type.
+func PossibleCompositePathSortOrderValues() []CompositePathSortOrder {
+	return []CompositePathSortOrder{Ascending, Descending}
+}
+
 // ConflictResolutionMode enumerates the values for conflict resolution mode.
 type ConflictResolutionMode string
 
@@ -222,6 +237,25 @@ const (
 // PossiblePrimaryAggregationTypeValues returns an array of possible values for the PrimaryAggregationType const type.
 func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 	return []PrimaryAggregationType{PrimaryAggregationTypeAverage, PrimaryAggregationTypeLast, PrimaryAggregationTypeMaximum, PrimaryAggregationTypeMinimum, PrimaryAggregationTypeNone, PrimaryAggregationTypeTotal}
+}
+
+// SpatialType enumerates the values for spatial type.
+type SpatialType string
+
+const (
+	// SpatialTypeLineString ...
+	SpatialTypeLineString SpatialType = "LineString"
+	// SpatialTypeMultiPolygon ...
+	SpatialTypeMultiPolygon SpatialType = "MultiPolygon"
+	// SpatialTypePoint ...
+	SpatialTypePoint SpatialType = "Point"
+	// SpatialTypePolygon ...
+	SpatialTypePolygon SpatialType = "Polygon"
+)
+
+// PossibleSpatialTypeValues returns an array of possible values for the SpatialType const type.
+func PossibleSpatialTypeValues() []SpatialType {
+	return []SpatialType{SpatialTypeLineString, SpatialTypeMultiPolygon, SpatialTypePoint, SpatialTypePolygon}
 }
 
 // TriggerOperation enumerates the values for trigger operation.
@@ -461,6 +495,11 @@ func (ckcup CassandraKeyspaceCreateUpdateProperties) MarshalJSON() ([]byte, erro
 
 // CassandraKeyspaceGetProperties the properties of an Azure Cosmos DB Cassandra keyspace
 type CassandraKeyspaceGetProperties struct {
+	Resource *CassandraKeyspaceGetPropertiesResource `json:"resource,omitempty"`
+}
+
+// CassandraKeyspaceGetPropertiesResource ...
+type CassandraKeyspaceGetPropertiesResource struct {
 	// ID - Name of the Cosmos DB Cassandra keyspace
 	ID *string `json:"id,omitempty"`
 	// Rid - READ-ONLY; A system generated property. A unique identifier.
@@ -884,6 +923,11 @@ func (ctcup CassandraTableCreateUpdateProperties) MarshalJSON() ([]byte, error) 
 
 // CassandraTableGetProperties the properties of an Azure Cosmos DB Cassandra table
 type CassandraTableGetProperties struct {
+	Resource *CassandraTableGetPropertiesResource `json:"resource,omitempty"`
+}
+
+// CassandraTableGetPropertiesResource ...
+type CassandraTableGetPropertiesResource struct {
 	// ID - Name of the Cosmos DB Cassandra table
 	ID *string `json:"id,omitempty"`
 	// DefaultTTL - Time to live of the Cosmos DB Cassandra table
@@ -1030,6 +1074,14 @@ type Column struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Type of the Cosmos DB Cassandra table column
 	Type *string `json:"type,omitempty"`
+}
+
+// CompositePath ...
+type CompositePath struct {
+	// Path - The path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard (/path/*)
+	Path *string `json:"path,omitempty"`
+	// Order - Sort order for composite paths. Possible values include: 'Ascending', 'Descending'
+	Order CompositePathSortOrder `json:"order,omitempty"`
 }
 
 // ConflictResolutionPolicy the conflict resolution policy for the container.
@@ -1830,6 +1882,11 @@ func (gdcup GremlinDatabaseCreateUpdateProperties) MarshalJSON() ([]byte, error)
 
 // GremlinDatabaseGetProperties the properties of an Azure Cosmos DB SQL database
 type GremlinDatabaseGetProperties struct {
+	Resource *GremlinDatabaseGetPropertiesResource `json:"resource,omitempty"`
+}
+
+// GremlinDatabaseGetPropertiesResource ...
+type GremlinDatabaseGetPropertiesResource struct {
 	// ID - Name of the Cosmos DB Gremlin database
 	ID *string `json:"id,omitempty"`
 	// Rid - READ-ONLY; A system generated property. A unique identifier.
@@ -2075,6 +2132,11 @@ func (ggcup GremlinGraphCreateUpdateProperties) MarshalJSON() ([]byte, error) {
 
 // GremlinGraphGetProperties the properties of an Azure Cosmos DB Gremlin graph
 type GremlinGraphGetProperties struct {
+	Resource *GremlinGraphGetPropertiesResource `json:"resource,omitempty"`
+}
+
+// GremlinGraphGetPropertiesResource ...
+type GremlinGraphGetPropertiesResource struct {
 	// ID - Name of the Cosmos DB Gremlin graph
 	ID *string `json:"id,omitempty"`
 	// IndexingPolicy - The configuration of the indexing policy. By default, the indexing is automatic for all document paths within the graph
@@ -2408,6 +2470,10 @@ type IndexingPolicy struct {
 	IncludedPaths *[]IncludedPath `json:"includedPaths,omitempty"`
 	// ExcludedPaths - List of paths to exclude from indexing
 	ExcludedPaths *[]ExcludedPath `json:"excludedPaths,omitempty"`
+	// CompositeIndexes - List of composite path list
+	CompositeIndexes *[][]CompositePath `json:"compositeIndexes,omitempty"`
+	// SpatialIndexes - List of spatial specifics
+	SpatialIndexes *[]SpatialSpec `json:"spatialIndexes,omitempty"`
 }
 
 // Location a region in which the Azure Cosmos DB database account is deployed.
@@ -2623,6 +2689,11 @@ func (mdccup MongoDBCollectionCreateUpdateProperties) MarshalJSON() ([]byte, err
 
 // MongoDBCollectionGetProperties the properties of an Azure Cosmos DB MongoDB collection
 type MongoDBCollectionGetProperties struct {
+	Resource *MongoDBCollectionGetPropertiesResource `json:"resource,omitempty"`
+}
+
+// MongoDBCollectionGetPropertiesResource ...
+type MongoDBCollectionGetPropertiesResource struct {
 	// ID - Name of the Cosmos DB MongoDB collection
 	ID *string `json:"id,omitempty"`
 	// ShardKey - A key-value pair of shard keys to be applied for the request.
@@ -2637,8 +2708,8 @@ type MongoDBCollectionGetProperties struct {
 	Etag *string `json:"_etag,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for MongoDBCollectionGetProperties.
-func (mdcgp MongoDBCollectionGetProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for MongoDBCollectionGetPropertiesResource.
+func (mdcgp MongoDBCollectionGetPropertiesResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mdcgp.ID != nil {
 		objectMap["id"] = mdcgp.ID
@@ -2906,6 +2977,11 @@ func (mddcup MongoDBDatabaseCreateUpdateProperties) MarshalJSON() ([]byte, error
 
 // MongoDBDatabaseGetProperties the properties of an Azure Cosmos DB MongoDB database
 type MongoDBDatabaseGetProperties struct {
+	Resource *MongoDBDatabaseGetPropertiesResource `json:"resource,omitempty"`
+}
+
+// MongoDBDatabaseGetPropertiesResource ...
+type MongoDBDatabaseGetPropertiesResource struct {
 	// ID - Name of the Cosmos DB MongoDB database
 	ID *string `json:"id,omitempty"`
 	// Rid - READ-ONLY; A system generated property. A unique identifier.
@@ -3757,6 +3833,14 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// SpatialSpec ...
+type SpatialSpec struct {
+	// Path - The path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard (/path/*)
+	Path *string `json:"path,omitempty"`
+	// Types - List of path's spatial type
+	Types *[]SpatialType `json:"types,omitempty"`
+}
+
 // SQLContainerCreateUpdateParameters parameters to create and update Cosmos DB container.
 type SQLContainerCreateUpdateParameters struct {
 	// SQLContainerCreateUpdateProperties - Properties to create and update Azure Cosmos DB container.
@@ -3878,6 +3962,11 @@ func (sccup SQLContainerCreateUpdateProperties) MarshalJSON() ([]byte, error) {
 
 // SQLContainerGetProperties the properties of an Azure Cosmos DB container
 type SQLContainerGetProperties struct {
+	Resource *SQLContainerGetPropertiesResource `json:"resource,omitempty"`
+}
+
+// SQLContainerGetPropertiesResource ...
+type SQLContainerGetPropertiesResource struct {
 	// ID - Name of the Cosmos DB SQL container
 	ID *string `json:"id,omitempty"`
 	// IndexingPolicy - The configuration of the indexing policy. By default, the indexing is automatic for all document paths within the container
@@ -4142,6 +4231,11 @@ func (sdcup SQLDatabaseCreateUpdateProperties) MarshalJSON() ([]byte, error) {
 
 // SQLDatabaseGetProperties the properties of an Azure Cosmos DB SQL database
 type SQLDatabaseGetProperties struct {
+	Resource *SQLDatabaseGetPropertiesResource `json:"resource,omitempty"`
+}
+
+// SQLDatabaseGetPropertiesResource ...
+type SQLDatabaseGetPropertiesResource struct {
 	// ID - Name of the Cosmos DB SQL database
 	ID *string `json:"id,omitempty"`
 	// Rid - READ-ONLY; A system generated property. A unique identifier.
@@ -4709,6 +4803,11 @@ func (sspcup SQLStoredProcedureCreateUpdateProperties) MarshalJSON() ([]byte, er
 
 // SQLStoredProcedureGetProperties the properties of an Azure Cosmos DB StoredProcedure
 type SQLStoredProcedureGetProperties struct {
+	Resource *SQLStoredProcedureGetPropertiesResource `json:"resource,omitempty"`
+}
+
+// SQLStoredProcedureGetPropertiesResource ...
+type SQLStoredProcedureGetPropertiesResource struct {
 	// ID - Name of the Cosmos DB SQL storedProcedure
 	ID *string `json:"id,omitempty"`
 	// Body - Body of the Stored Procedure
@@ -4958,6 +5057,11 @@ func (stcup SQLTriggerCreateUpdateProperties) MarshalJSON() ([]byte, error) {
 
 // SQLTriggerGetProperties the properties of an Azure Cosmos DB trigger
 type SQLTriggerGetProperties struct {
+	Resource *SQLTriggerGetPropertiesResource `json:"resource,omitempty"`
+}
+
+// SQLTriggerGetPropertiesResource ...
+type SQLTriggerGetPropertiesResource struct {
 	// ID - Name of the Cosmos DB SQL trigger
 	ID *string `json:"id,omitempty"`
 	// Body - Body of the Trigger
@@ -5216,6 +5320,11 @@ func (sudfcup SQLUserDefinedFunctionCreateUpdateProperties) MarshalJSON() ([]byt
 
 // SQLUserDefinedFunctionGetProperties the properties of an Azure Cosmos DB userDefinedFunction
 type SQLUserDefinedFunctionGetProperties struct {
+	Resource *SQLUserDefinedFunctionGetPropertiesResource `json:"resource,omitempty"`
+}
+
+// SQLUserDefinedFunctionGetPropertiesResource ...
+type SQLUserDefinedFunctionGetPropertiesResource struct {
 	// ID - Name of the Cosmos DB SQL userDefinedFunction
 	ID *string `json:"id,omitempty"`
 	// Body - Body of the User Defined Function
@@ -5465,6 +5574,11 @@ func (tcup TableCreateUpdateProperties) MarshalJSON() ([]byte, error) {
 
 // TableGetProperties the properties of an Azure Cosmos Table
 type TableGetProperties struct {
+	Resource *TableGetPropertiesResource `json:"resource,omitempty"`
+}
+
+// TableGetPropertiesResource ...
+type TableGetPropertiesResource struct {
 	// ID - Name of the Cosmos DB table
 	ID *string `json:"id,omitempty"`
 	// Rid - READ-ONLY; A system generated property. A unique identifier.
@@ -5671,12 +5785,23 @@ func (future *TableResourcesUpdateTableThroughputFuture) Result(client TableReso
 
 // ThroughputSettingsGetProperties the properties of an Azure Cosmos DB resource throughput
 type ThroughputSettingsGetProperties struct {
+	Resource *ThroughputSettingsGetPropertiesResource `json:"resource,omitempty"`
+}
+
+// ThroughputSettingsGetPropertiesResource ...
+type ThroughputSettingsGetPropertiesResource struct {
 	// Throughput - Value of the Cosmos DB resource throughput
 	Throughput *int32 `json:"throughput,omitempty"`
 	// MinimumThroughput - READ-ONLY; The minimum throughput of the resource
 	MinimumThroughput *string `json:"minimumThroughput,omitempty"`
 	// OfferReplacePending - READ-ONLY; The throughput replace is pending
 	OfferReplacePending *string `json:"offerReplacePending,omitempty"`
+	// Rid - READ-ONLY; A system generated property. A unique identifier.
+	Rid *string `json:"_rid,omitempty"`
+	// Ts - READ-ONLY; A system generated property that denotes the last updated timestamp of the resource.
+	Ts interface{} `json:"_ts,omitempty"`
+	// Etag - READ-ONLY; A system generated property representing the resource etag required for optimistic concurrency control.
+	Etag *string `json:"_etag,omitempty"`
 }
 
 // ThroughputSettingsGetResults an Azure Cosmos DB resource throughput.

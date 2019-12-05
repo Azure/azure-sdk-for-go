@@ -69,11 +69,11 @@ func (client HubsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 				Chain: []validation.Constraint{{Target: "parameters.HubPropertiesFormat.HubBillingInfo", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.HubPropertiesFormat.HubBillingInfo.MinUnits", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.HubPropertiesFormat.HubBillingInfo.MinUnits", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
-							{Target: "parameters.HubPropertiesFormat.HubBillingInfo.MinUnits", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+							{Target: "parameters.HubPropertiesFormat.HubBillingInfo.MinUnits", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 						}},
 						{Target: "parameters.HubPropertiesFormat.HubBillingInfo.MaxUnits", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "parameters.HubPropertiesFormat.HubBillingInfo.MaxUnits", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
-								{Target: "parameters.HubPropertiesFormat.HubBillingInfo.MaxUnits", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+								{Target: "parameters.HubPropertiesFormat.HubBillingInfo.MaxUnits", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 							}},
 					}},
 				}}}}}); err != nil {

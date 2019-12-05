@@ -72,7 +72,7 @@ func (client UsageDetailsByDepartmentClient) List(ctx context.Context, departmen
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
-					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("consumption.UsageDetailsByDepartmentClient", "List", err.Error())
 	}
@@ -222,7 +222,7 @@ func (client UsageDetailsByDepartmentClient) ListByBillingPeriod(ctx context.Con
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
-					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("consumption.UsageDetailsByDepartmentClient", "ListByBillingPeriod", err.Error())
 	}

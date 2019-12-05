@@ -816,7 +816,7 @@ func (client AppsClient) CopyProductionSlot(ctx context.Context, resourceGroupNa
 						}},
 						{Target: "copySlotEntity.SiteConfig.PreWarmedInstanceCount", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "copySlotEntity.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
-								{Target: "copySlotEntity.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+								{Target: "copySlotEntity.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 							}},
 					}}}}}); err != nil {
 		return result, validation.NewError("web.AppsClient", "CopyProductionSlot", err.Error())
@@ -917,7 +917,7 @@ func (client AppsClient) CopySlotSlot(ctx context.Context, resourceGroupName str
 						}},
 						{Target: "copySlotEntity.SiteConfig.PreWarmedInstanceCount", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "copySlotEntity.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
-								{Target: "copySlotEntity.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+								{Target: "copySlotEntity.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 							}},
 					}}}}}); err != nil {
 		return result, validation.NewError("web.AppsClient", "CopySlotSlot", err.Error())
@@ -1744,7 +1744,7 @@ func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 						}},
 						{Target: "siteEnvelope.SiteProperties.SiteConfig.PreWarmedInstanceCount", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
-								{Target: "siteEnvelope.SiteProperties.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+								{Target: "siteEnvelope.SiteProperties.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 							}},
 					}},
 					{Target: "siteEnvelope.SiteProperties.CloningInfo", Name: validation.Null, Rule: false,
@@ -1846,7 +1846,7 @@ func (client AppsClient) CreateOrUpdateConfiguration(ctx context.Context, resour
 					}},
 					{Target: "siteConfig.SiteConfig.PreWarmedInstanceCount", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "siteConfig.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
-							{Target: "siteConfig.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+							{Target: "siteConfig.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("web.AppsClient", "CreateOrUpdateConfiguration", err.Error())
@@ -1947,7 +1947,7 @@ func (client AppsClient) CreateOrUpdateConfigurationSlot(ctx context.Context, re
 					}},
 					{Target: "siteConfig.SiteConfig.PreWarmedInstanceCount", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "siteConfig.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
-							{Target: "siteConfig.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+							{Target: "siteConfig.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("web.AppsClient", "CreateOrUpdateConfigurationSlot", err.Error())
@@ -2976,7 +2976,7 @@ func (client AppsClient) CreateOrUpdateSlot(ctx context.Context, resourceGroupNa
 						}},
 						{Target: "siteEnvelope.SiteProperties.SiteConfig.PreWarmedInstanceCount", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
-								{Target: "siteEnvelope.SiteProperties.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+								{Target: "siteEnvelope.SiteProperties.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 							}},
 					}},
 					{Target: "siteEnvelope.SiteProperties.CloningInfo", Name: validation.Null, Rule: false,
@@ -30952,7 +30952,7 @@ func (client AppsClient) UpdateDiagnosticLogsConfig(ctx context.Context, resourc
 						Chain: []validation.Constraint{{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.Null, Rule: false,
 								Chain: []validation.Constraint{{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.InclusiveMaximum, Rule: int64(100), Chain: nil},
-									{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.InclusiveMinimum, Rule: 25, Chain: nil},
+									{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.InclusiveMinimum, Rule: int64(25), Chain: nil},
 								}},
 							}},
 						}},
@@ -31058,7 +31058,7 @@ func (client AppsClient) UpdateDiagnosticLogsConfigSlot(ctx context.Context, res
 						Chain: []validation.Constraint{{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.Null, Rule: false,
 								Chain: []validation.Constraint{{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.InclusiveMaximum, Rule: int64(100), Chain: nil},
-									{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.InclusiveMinimum, Rule: 25, Chain: nil},
+									{Target: "siteLogsConfig.SiteLogsConfigProperties.HTTPLogs.FileSystem.RetentionInMb", Name: validation.InclusiveMinimum, Rule: int64(25), Chain: nil},
 								}},
 							}},
 						}},

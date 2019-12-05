@@ -1312,7 +1312,7 @@ func (client RemediationsClient) ListDeploymentsAtManagementGroup(ctx context.Co
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("policyinsights.RemediationsClient", "ListDeploymentsAtManagementGroup", err.Error())
 	}
 
@@ -1438,7 +1438,7 @@ func (client RemediationsClient) ListDeploymentsAtResource(ctx context.Context, 
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("policyinsights.RemediationsClient", "ListDeploymentsAtResource", err.Error())
 	}
 
@@ -1564,7 +1564,7 @@ func (client RemediationsClient) ListDeploymentsAtResourceGroup(ctx context.Cont
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("policyinsights.RemediationsClient", "ListDeploymentsAtResourceGroup", err.Error())
 	}
 
@@ -1690,7 +1690,7 @@ func (client RemediationsClient) ListDeploymentsAtSubscription(ctx context.Conte
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("policyinsights.RemediationsClient", "ListDeploymentsAtSubscription", err.Error())
 	}
 
@@ -1815,7 +1815,7 @@ func (client RemediationsClient) ListForManagementGroup(ctx context.Context, man
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("policyinsights.RemediationsClient", "ListForManagementGroup", err.Error())
 	}
 
@@ -1943,7 +1943,7 @@ func (client RemediationsClient) ListForResource(ctx context.Context, resourceID
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("policyinsights.RemediationsClient", "ListForResource", err.Error())
 	}
 
@@ -2071,7 +2071,7 @@ func (client RemediationsClient) ListForResourceGroup(ctx context.Context, subsc
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("policyinsights.RemediationsClient", "ListForResourceGroup", err.Error())
 	}
 
@@ -2199,7 +2199,7 @@ func (client RemediationsClient) ListForSubscription(ctx context.Context, subscr
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("policyinsights.RemediationsClient", "ListForSubscription", err.Error())
 	}
 

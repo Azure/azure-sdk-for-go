@@ -70,7 +70,7 @@ func (client ServerEndpointsClient) Create(ctx context.Context, resourceGroupNam
 			Constraints: []validation.Constraint{{Target: "parameters.ServerEndpointCreateParametersProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.ServerEndpointCreateParametersProperties.VolumeFreeSpacePercent", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.ServerEndpointCreateParametersProperties.VolumeFreeSpacePercent", Name: validation.InclusiveMaximum, Rule: int64(100), Chain: nil},
-						{Target: "parameters.ServerEndpointCreateParametersProperties.VolumeFreeSpacePercent", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+						{Target: "parameters.ServerEndpointCreateParametersProperties.VolumeFreeSpacePercent", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 					}},
 				}}}}}); err != nil {
 		return result, validation.NewError("storagesync.ServerEndpointsClient", "Create", err.Error())

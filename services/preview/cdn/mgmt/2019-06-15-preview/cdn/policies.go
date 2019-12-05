@@ -69,7 +69,7 @@ func (client PoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 				Chain: []validation.Constraint{{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings.DefaultCustomBlockResponseStatusCode", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings.DefaultCustomBlockResponseStatusCode", Name: validation.InclusiveMaximum, Rule: int64(599), Chain: nil},
-							{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings.DefaultCustomBlockResponseStatusCode", Name: validation.InclusiveMinimum, Rule: 200, Chain: nil},
+							{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings.DefaultCustomBlockResponseStatusCode", Name: validation.InclusiveMinimum, Rule: int64(200), Chain: nil},
 						}},
 						{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings.DefaultCustomBlockResponseBody", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings.DefaultCustomBlockResponseBody", Name: validation.Pattern, Rule: `^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$`, Chain: nil}}},

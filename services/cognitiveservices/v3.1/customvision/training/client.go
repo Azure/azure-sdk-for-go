@@ -1713,7 +1713,7 @@ func (client BaseClient) GetImagePerformances(ctx context.Context, projectID uui
 		{TargetValue: take,
 			Constraints: []validation.Constraint{{Target: "take", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: int64(256), Chain: nil},
-					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+					{Target: "take", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("training.BaseClient", "GetImagePerformances", err.Error())
 	}
@@ -2542,7 +2542,7 @@ func (client BaseClient) GetTaggedImages(ctx context.Context, projectID uuid.UUI
 		{TargetValue: take,
 			Constraints: []validation.Constraint{{Target: "take", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: int64(256), Chain: nil},
-					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+					{Target: "take", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("training.BaseClient", "GetTaggedImages", err.Error())
 	}
@@ -2814,7 +2814,7 @@ func (client BaseClient) GetUntaggedImages(ctx context.Context, projectID uuid.U
 		{TargetValue: take,
 			Constraints: []validation.Constraint{{Target: "take", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: int64(256), Chain: nil},
-					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+					{Target: "take", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("training.BaseClient", "GetUntaggedImages", err.Error())
 	}

@@ -119,6 +119,178 @@ func (client ProductsClient) GetResponder(resp *http.Response) (result Product, 
 	return
 }
 
+// GetProduct returns the specified product.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
+// productName - name of the product.
+// deviceConfiguration - device configuration.
+func (client ProductsClient) GetProduct(ctx context.Context, resourceGroup string, registrationName string, productName string, deviceConfiguration *DeviceConfiguration) (result Product, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsClient.GetProduct")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetProductPreparer(ctx, resourceGroup, registrationName, productName, deviceConfiguration)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "GetProduct", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetProductSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "GetProduct", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetProductResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "GetProduct", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetProductPreparer prepares the GetProduct request.
+func (client ProductsClient) GetProductPreparer(ctx context.Context, resourceGroup string, registrationName string, productName string, deviceConfiguration *DeviceConfiguration) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"productName":      autorest.Encode("path", productName),
+		"registrationName": autorest.Encode("path", registrationName),
+		"resourceGroup":    autorest.Encode("path", resourceGroup),
+		"subscriptionId":   autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	deviceConfiguration.DeviceVersion = nil
+	deviceConfiguration.IdentitySystem = ""
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/products/{productName}/GetProduct", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if deviceConfiguration != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(deviceConfiguration))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetProductSender sends the GetProduct request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProductsClient) GetProductSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetProductResponder handles the response to the GetProduct request. The method always
+// closes the http.Response Body.
+func (client ProductsClient) GetProductResponder(resp *http.Response) (result Product, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetProducts returns a list of products.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
+// deviceConfiguration - device configuration.
+func (client ProductsClient) GetProducts(ctx context.Context, resourceGroup string, registrationName string, deviceConfiguration *DeviceConfiguration) (result ProductList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsClient.GetProducts")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetProductsPreparer(ctx, resourceGroup, registrationName, deviceConfiguration)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "GetProducts", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetProductsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "GetProducts", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetProductsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "GetProducts", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetProductsPreparer prepares the GetProducts request.
+func (client ProductsClient) GetProductsPreparer(ctx context.Context, resourceGroup string, registrationName string, deviceConfiguration *DeviceConfiguration) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"registrationName": autorest.Encode("path", registrationName),
+		"resourceGroup":    autorest.Encode("path", resourceGroup),
+		"subscriptionId":   autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	deviceConfiguration.DeviceVersion = nil
+	deviceConfiguration.IdentitySystem = ""
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/products/_all/GetProducts", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if deviceConfiguration != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(deviceConfiguration))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetProductsSender sends the GetProducts request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProductsClient) GetProductsSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetProductsResponder handles the response to the GetProducts request. The method always
+// closes the http.Response Body.
+func (client ProductsClient) GetProductsResponder(resp *http.Response) (result ProductList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // List returns a list of products.
 // Parameters:
 // resourceGroup - name of the resource group.
@@ -303,6 +475,95 @@ func (client ProductsClient) ListDetailsSender(req *http.Request) (*http.Respons
 // ListDetailsResponder handles the response to the ListDetails request. The method always
 // closes the http.Response Body.
 func (client ProductsClient) ListDetailsResponder(resp *http.Response) (result ExtendedProduct, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UploadLog returns the specified product.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
+// productName - name of the product.
+// marketplaceProductLogUpdate - update details for product log.
+func (client ProductsClient) UploadLog(ctx context.Context, resourceGroup string, registrationName string, productName string, marketplaceProductLogUpdate *MarketplaceProductLogUpdate) (result ProductLog, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsClient.UploadLog")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UploadLogPreparer(ctx, resourceGroup, registrationName, productName, marketplaceProductLogUpdate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "UploadLog", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UploadLogSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "UploadLog", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UploadLogResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "azurestack.ProductsClient", "UploadLog", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UploadLogPreparer prepares the UploadLog request.
+func (client ProductsClient) UploadLogPreparer(ctx context.Context, resourceGroup string, registrationName string, productName string, marketplaceProductLogUpdate *MarketplaceProductLogUpdate) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"productName":      autorest.Encode("path", productName),
+		"registrationName": autorest.Encode("path", registrationName),
+		"resourceGroup":    autorest.Encode("path", resourceGroup),
+		"subscriptionId":   autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	marketplaceProductLogUpdate.Operation = nil
+	marketplaceProductLogUpdate.Status = nil
+	marketplaceProductLogUpdate.Error = nil
+	marketplaceProductLogUpdate.Details = nil
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/products/{productName}/uploadProductLog", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if marketplaceProductLogUpdate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(marketplaceProductLogUpdate))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UploadLogSender sends the UploadLog request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProductsClient) UploadLogSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// UploadLogResponder handles the response to the UploadLog request. The method always
+// closes the http.Response Body.
+func (client ProductsClient) UploadLogResponder(resp *http.Response) (result ProductLog, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

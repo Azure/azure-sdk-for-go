@@ -67,7 +67,7 @@ func (client DimensionsClient) ListByBillingAccount(ctx context.Context, billing
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
-					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("costmanagement.DimensionsClient", "ListByBillingAccount", err.Error())
 	}
@@ -171,7 +171,7 @@ func (client DimensionsClient) ListByDepartment(ctx context.Context, billingAcco
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
-					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("costmanagement.DimensionsClient", "ListByDepartment", err.Error())
 	}
@@ -276,7 +276,7 @@ func (client DimensionsClient) ListByEnrollmentAccount(ctx context.Context, bill
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
-					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("costmanagement.DimensionsClient", "ListByEnrollmentAccount", err.Error())
 	}
@@ -380,7 +380,7 @@ func (client DimensionsClient) ListByManagementGroup(ctx context.Context, manage
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
-					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("costmanagement.DimensionsClient", "ListByManagementGroup", err.Error())
 	}
@@ -483,7 +483,7 @@ func (client DimensionsClient) ListByResourceGroup(ctx context.Context, resource
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
-					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("costmanagement.DimensionsClient", "ListByResourceGroup", err.Error())
 	}
@@ -586,7 +586,7 @@ func (client DimensionsClient) ListBySubscription(ctx context.Context, filter st
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
-					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("costmanagement.DimensionsClient", "ListBySubscription", err.Error())
 	}

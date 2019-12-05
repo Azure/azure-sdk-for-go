@@ -73,7 +73,7 @@ func (client UsageDetailsByEnrollmentAccountClient) List(ctx context.Context, en
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
-					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("consumption.UsageDetailsByEnrollmentAccountClient", "List", err.Error())
 	}
@@ -223,7 +223,7 @@ func (client UsageDetailsByEnrollmentAccountClient) ListByBillingPeriod(ctx cont
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
-					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("consumption.UsageDetailsByEnrollmentAccountClient", "ListByBillingPeriod", err.Error())
 	}

@@ -31,8 +31,8 @@ type UsernamePasswordCredential struct {
 // - username: A user's account username
 // - password: A user's account password
 // - options: The options configure the management of the requests sent to the Azure Active Directory service.
-func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *TokenCredentialOptions) (*UsernamePasswordCredential, error) {
-	return &UsernamePasswordCredential{tenantID: tenantID, clientID: clientID, username: username, password: password, client: newAADIdentityClient(options)}, nil
+func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *TokenCredentialOptions) *UsernamePasswordCredential {
+	return &UsernamePasswordCredential{tenantID: tenantID, clientID: clientID, username: username, password: password, client: newAADIdentityClient(options)}
 }
 
 // GetToken obtains a token from the Azure Active Directory service, using the specified username and password.

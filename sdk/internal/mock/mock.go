@@ -35,6 +35,14 @@ func NewServer() (*Server, func()) {
 	return &s, func() { s.srv.Close() }
 }
 
+// NewTLSServer creates a new Server object.
+// The returned close func must be called when the server is no longer needed.
+func NewTLSServer() (*Server, func()) {
+	s := Server{}
+	s.srv = httptest.NewTLSServer(http.HandlerFunc(s.serveHTTP))
+	return &s, func() { s.srv.Close() }
+}
+
 // returns true if the next response is an error response
 func (s *Server) isErrorResp() bool {
 	if s.static == nil && len(s.resp) == 0 {

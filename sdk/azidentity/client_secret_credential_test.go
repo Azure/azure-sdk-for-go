@@ -75,7 +75,7 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
-	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
+	srv.SetResponse(mock.WithBody([]byte(`{"error": "invalid_client","error_description": "Invalid client secret is provided.","error_codes": [7000215],"timestamp": "2019-12-01 19:00:00Z","trace_id": "2d091b0","correlation_id": "a999","error_uri": "https://login.contoso.com/error?code=7000215"}`)), mock.WithStatusCode(http.StatusUnauthorized))
 	srvURL := srv.URL()
 	cred := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})

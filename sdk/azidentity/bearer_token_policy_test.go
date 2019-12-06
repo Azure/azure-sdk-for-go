@@ -14,7 +14,7 @@ import (
 
 const (
 	accessTokenRespSuccess    = `{"access_token": "new_token", "expires_in": 3600}`
-	accessTokenRespError      = `{"access_token": 0, "expires_in": 3600}`
+	accessTokenRespMalformed  = `{"access_token": 0, "expires_in": 3600}`
 	accessTokenRespShortLived = `{"access_token": "new_token", "expires_in": 0}`
 )
 
@@ -22,7 +22,7 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusCreated))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srvURL := srv.URL()
 	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	pipeline := azcore.NewPipeline(
@@ -64,11 +64,11 @@ func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespShortLived)))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusCreated))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespShortLived)))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusCreated))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespShortLived)))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusCreated))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 
 	srvURL := srv.URL()
 	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})

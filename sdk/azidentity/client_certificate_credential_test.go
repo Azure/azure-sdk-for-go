@@ -189,7 +189,7 @@ func TestBearerPolicy_ClientCertificateCredential(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusCreated))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srvURL := srv.URL()
 	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	if err != nil {

@@ -121,7 +121,7 @@ func TestBearerPolicy_ChainedTokenCredential(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusCreated))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srvURL := srv.URL()
 	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	chainedCred, err := NewChainedTokenCredential(cred)

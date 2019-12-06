@@ -142,7 +142,7 @@ func TestBearerPolicy_ManagedIdentityCredential(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusCreated))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	testURL := srv.URL()
 	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
 	cred := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})

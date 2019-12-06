@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -63,24 +64,50 @@ func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
 func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "ey0....", "expires_in": 3600}`)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srvURL := srv.URL()
 	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
+		t.Fatalf("Expected an empty error but received: %v", err)
 	}
 }
 
 func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
-	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
+	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
 	srvURL := srv.URL()
 	cred := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
+	}
+	var authFailed *AuthenticationFailedError
+	if !errors.As(err, &authFailed) {
+		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
+	} else {
+		if len(authFailed.Message) == 0 {
+			t.Fatalf("Did not receive an error message")
+		}
+		if len(authFailed.Description) == 0 {
+			t.Fatalf("Did not receive an error description")
+		}
+		if len(authFailed.Timestamp) == 0 {
+			t.Fatalf("Did not receive a timestamp")
+		}
+		if len(authFailed.TraceID) == 0 {
+			t.Fatalf("Did not receive a TraceID")
+		}
+		if len(authFailed.CorrelationID) == 0 {
+			t.Fatalf("Did not receive a CorrelationID")
+		}
+		if len(authFailed.URI) == 0 {
+			t.Fatalf("Did not receive an error URI")
+		}
+		if authFailed.Response == nil {
+			t.Fatalf("Did not receive an error response")
+		}
 	}
 }
 

@@ -61,7 +61,7 @@ func TestUsernamePasswordCredential_CreateAuthRequestSuccess(t *testing.T) {
 func TestUsernamePasswordCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "ey0....", "expires_in": 3600}`)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srvURL := srv.URL()
 	cred := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
@@ -92,5 +92,26 @@ func TestUsernamePasswordCredential_CreateAuthRequestFail(t *testing.T) {
 	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
+	}
+}
+
+func TestBearerPolicy_UsernamePasswordCredential(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	srvURL := srv.URL()
+	cred := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	pipeline := azcore.NewPipeline(
+		srv,
+		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
+		azcore.NewUniqueRequestIDPolicy(),
+		azcore.NewRetryPolicy(azcore.RetryOptions{}),
+		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
+		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
+	req := pipeline.NewRequest(http.MethodGet, srv.URL())
+	_, err := req.Do(context.Background())
+	if err != nil {
+		t.Fatalf("Expected an empty error but receive: %v", err)
 	}
 }

@@ -105,9 +105,8 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMockFail(t *testing.T) {
 // 		}
 // 		srv, close := mock.NewServer()
 // 		defer close()
-// 		srv.AppendResponse(mock.WithBody([]byte(`{"access_token": tokenValue, "expires_in": 3600}`)))
-// 		msiCred := NewManagedIdentityCredential("", newDefaultManagedIdentityOptions())
-// 		msiCred.client = newTestManagedIdentityClient(&ManagedIdentityCredentialOptions{HTTPClient: srv})
+// 		srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+// 		msiCred := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
 // 		_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 // 		if err == nil {
 // 			t.Fatalf("Cannot run IMDS test in this environment")

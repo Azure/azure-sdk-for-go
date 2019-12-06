@@ -32,7 +32,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellMock(t *testing.T) {
 	}
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "ey0....", "expires_in": 3600}`)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	testURL := srv.URL()
 	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
 	msiCred := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})
@@ -66,7 +66,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMock(t *testing.T) {
 	}
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "ey0....", "expires_in": 3600}`)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	testURL := srv.URL()
 	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
 	_ = os.Setenv("MSI_SECRET", "secret")
@@ -105,9 +105,8 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMockFail(t *testing.T) {
 // 		}
 // 		srv, close := mock.NewServer()
 // 		defer close()
-// 		srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "ey0....", "expires_in": 3600}`)))
-// 		msiCred := NewManagedIdentityCredential("", newDefaultManagedIdentityOptions())
-// 		msiCred.client = newTestManagedIdentityClient(&ManagedIdentityCredentialOptions{HTTPClient: srv})
+// 		srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+// 		msiCred := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
 // 		_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 // 		if err == nil {
 // 			t.Fatalf("Cannot run IMDS test in this environment")
@@ -142,8 +141,8 @@ func TestManagedIdentityCredential_GetTokenUnknownFail(t *testing.T) {
 func TestBearerPolicy_ManagedIdentityCredential(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "ey0....", "expires_in": 3600}`)))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusCreated))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	testURL := srv.URL()
 	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
 	cred := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})
@@ -168,7 +167,7 @@ func TestManagedIdentityCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	}
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": 0, "expires_in": 3600}`)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
 	testURL := srv.URL()
 	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
 	msiCred := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})

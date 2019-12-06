@@ -66,7 +66,7 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	}
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "new_token", "expires_in": 3600}`)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srvURL := srv.URL()
 	secCred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	envCred, err := NewEnvironmentCredential(&TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
@@ -110,5 +110,34 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	}
 	if len(err.Error()) == 0 {
 		t.Fatalf("Did not create an appropriate error message")
+	}
+}
+
+func TestBearerPolicy_ChainedTokenCredential(t *testing.T) {
+	err := initEnvironmentVarsForTest()
+	if err != nil {
+		t.Fatalf("Unable to initialize environment variables. Received: %v", err)
+	}
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	srvURL := srv.URL()
+	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	chainedCred, err := NewChainedTokenCredential(cred)
+	if err != nil {
+		t.Fatalf("Received an error when attempting to instantiate ChainedTokenCredential: %v", err)
+	}
+	pipeline := azcore.NewPipeline(
+		srv,
+		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
+		azcore.NewUniqueRequestIDPolicy(),
+		azcore.NewRetryPolicy(azcore.RetryOptions{}),
+		chainedCred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
+		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
+	req := pipeline.NewRequest(http.MethodGet, srv.URL())
+	_, err = req.Do(context.Background())
+	if err != nil {
+		t.Fatalf("Expected an empty error but receive: %v", err)
 	}
 }

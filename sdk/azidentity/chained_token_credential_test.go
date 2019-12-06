@@ -84,7 +84,7 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	if tk.Token != tokenValue {
 		t.Fatalf("Received an incorrect access token")
 	}
-	if tk.ExpiresIn != "3600" {
+	if tk.ExpiresIn != tokenExpiresIn {
 		t.Fatalf("Received an incorrect time in the response")
 	}
 }

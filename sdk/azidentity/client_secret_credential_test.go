@@ -20,7 +20,7 @@ const (
 	secret                   = "secret"
 	wrongSecret              = "wrong_secret"
 	tokenValue               = "new_token"
-	tokenExpiresIn           = "3600"
+	tokenExpiresIn           = 3600
 	scope                    = "http://storage.azure.com/.default"
 	defaultTestAuthorityHost = "login.microsoftonline.com"
 )
@@ -63,7 +63,7 @@ func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
 func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "ey0....", "expires_in": 3600}`)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srvURL := srv.URL()
 	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})

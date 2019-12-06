@@ -43,6 +43,9 @@ func TestChainedTokenCredential_NilCredentialInChain(t *testing.T) {
 		if !errors.As(err, &unavailableError) {
 			t.Fatalf("Actual error: %v, Expected error: %v, wrong type %T", err, unavailableError, err)
 		}
+		if len(err.Error()) == 0 {
+			t.Fatalf("Did not create an appropriate error message")
+		}
 	}
 }
 
@@ -86,7 +89,7 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	}
 }
 
-func TestChainedTokenCredential_GetToken(t *testing.T) {
+func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
@@ -104,5 +107,8 @@ func TestChainedTokenCredential_GetToken(t *testing.T) {
 	var chainedError *ChainedCredentialError
 	if !errors.As(err, &chainedError) {
 		t.Fatalf("Expected Error Type: ChainedCredentialError, ReceivedErrorType: %T", err)
+	}
+	if len(err.Error()) == 0 {
+		t.Fatalf("Did not create an appropriate error message")
 	}
 }

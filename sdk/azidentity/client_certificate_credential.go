@@ -5,7 +5,6 @@ package azidentity
 
 import (
 	"context"
-	"fmt"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -29,7 +28,7 @@ type ClientCertificateCredential struct {
 func NewClientCertificateCredential(tenantID string, clientID string, clientCertificate string, options *TokenCredentialOptions) (*ClientCertificateCredential, error) {
 	_, err := os.Stat(clientCertificate)
 	if err != nil {
-		return nil, fmt.Errorf("Certificate file not found in path: %s", clientCertificate)
+		return nil, &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: "Certificate file not found in path: " + clientCertificate}
 	}
 	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, clientCertificate: clientCertificate, client: newAADIdentityClient(options)}, nil
 }

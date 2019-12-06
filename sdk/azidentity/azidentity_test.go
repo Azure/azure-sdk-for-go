@@ -6,6 +6,8 @@ package azidentity
 import (
 	"net/url"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 func Test_AuthorityHost_Parse(t *testing.T) {
@@ -13,4 +15,17 @@ func Test_AuthorityHost_Parse(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to parse default authority host: %v", err)
 	}
+}
+
+func Test_NonNilTokenCredentialOptsNilAuthorityHost(t *testing.T) {
+	opts := &TokenCredentialOptions{Retry: azcore.RetryOptions{MaxTries: 6}}
+	opts = opts.setDefaultValues()
+
+	if opts.AuthorityHost == nil {
+		t.Fatalf("Did not set default authority host")
+	}
+}
+
+func Test_newDefaultMSIPipelineNilOpts(t *testing.T) {
+	// _ := newDefaultMSIPipeline(ManagedIdentityCredentialOptions{})
 }

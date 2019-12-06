@@ -81,7 +81,6 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 		return c.createAccessToken(resp)
 	}
 
-	// TODO reproduce nil response error
 	return nil, newAuthenticationFailedError(resp)
 }
 
@@ -193,12 +192,12 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, 
 func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, tenantID string, clientID string, username string, password string, scopes []string) (*azcore.AccessToken, error) {
 	msg, err := c.createUsernamePasswordAuthRequest(tenantID, clientID, username, password, scopes)
 	if err != nil {
-		return nil, fmt.Errorf("AuthenticateUsernamePassword: %w", err)
+		return nil, err
 	}
 
 	resp, err := msg.Do(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("AuthenticateUsernamePassword: %w", err)
+		return nil, err
 	}
 
 	// This should never happen under normal conditions

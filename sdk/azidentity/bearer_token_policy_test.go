@@ -13,6 +13,7 @@ import (
 )
 
 const (
+	accessTokenRespError      = `{"error": "invalid_client","error_description": "Invalid client secret is provided.","error_codes": [7000215],"timestamp": "2019-12-01 19:00:00Z","trace_id": "2d091b0","correlation_id": "a999","error_uri": "https://login.contoso.com/error?code=7000215"}`
 	accessTokenRespSuccess    = `{"access_token": "new_token", "expires_in": 3600}`
 	accessTokenRespMalformed  = `{"access_token": 0, "expires_in": 3600}`
 	accessTokenRespShortLived = `{"access_token": "new_token", "expires_in": 0}`

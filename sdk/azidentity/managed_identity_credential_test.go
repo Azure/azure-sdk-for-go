@@ -167,7 +167,7 @@ func TestManagedIdentityCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	}
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespError)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
 	testURL := srv.URL()
 	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
 	msiCred := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})

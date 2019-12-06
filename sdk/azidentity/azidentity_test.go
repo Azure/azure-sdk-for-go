@@ -25,7 +25,3 @@ func Test_NonNilTokenCredentialOptsNilAuthorityHost(t *testing.T) {
 		t.Fatalf("Did not set default authority host")
 	}
 }
-
-func Test_newDefaultMSIPipelineNilOpts(t *testing.T) {
-	// _ := newDefaultMSIPipeline(ManagedIdentityCredentialOptions{})
-}

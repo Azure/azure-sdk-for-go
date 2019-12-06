@@ -14,3 +14,7 @@ func TestIMDSEndpointParse(t *testing.T) {
 		t.Fatalf("Failed to parse the IMDS endpoint: %v", err)
 	}
 }
+
+// func TestNewDefaultMSIPipeline(t *testing.T) {
+// 	p := newDefaultMSIPipeline(ManagedIdentityCredentialOptions{})
+// }

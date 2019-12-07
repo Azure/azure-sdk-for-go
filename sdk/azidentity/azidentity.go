@@ -34,6 +34,11 @@ func init() {
 	defaultTokenCredentialOpts = &TokenCredentialOptions{AuthorityHost: defaultAuthorityHostURL}
 }
 
+type internalAccessToken struct {
+	Token     string      `json:"access_token"`
+	ExpiresIn json.Number `json:"expires_in"`
+}
+
 // AuthenticationFailedError is a struct used to marshal responses when authentication has failed
 type AuthenticationFailedError struct {
 	Message       string `json:"error"`

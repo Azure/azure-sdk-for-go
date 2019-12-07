@@ -115,17 +115,19 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 }
 
 func (c *aadIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
-	value := &azcore.AccessToken{}
+	value := &internalAccessToken{}
+	accessToken := &azcore.AccessToken{}
 	if err := json.Unmarshal(res.Payload, &value); err != nil {
-		return nil, fmt.Errorf("azcore.AccessToken: %w", err)
+		return nil, fmt.Errorf("internalAccessToken: %w", err)
 	}
 	t, err := value.ExpiresIn.Int64()
 	if err != nil {
 		return nil, err
 	}
 	// NOTE: look at go-autorest
-	value.ExpiresOn = time.Now().Add(time.Second * time.Duration(t)).UTC()
-	return value, nil
+	accessToken.Token = value.Token
+	accessToken.ExpiresOn = time.Now().Add(time.Second * time.Duration(t)).UTC()
+	return accessToken, nil
 }
 
 func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.Request, error) {

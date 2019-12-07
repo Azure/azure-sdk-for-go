@@ -135,9 +135,10 @@ func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, msiType msi
 }
 
 func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
-	value := azcore.AccessToken{}
+	value := internalAccessToken{}
+	accessToken := &azcore.AccessToken{}
 	if err := json.Unmarshal(res.Payload, &value); err != nil {
-		return nil, fmt.Errorf("azcore.AccessToken: %w", err)
+		return nil, fmt.Errorf("internalAccessToken: %w", err)
 	}
 	// CP: This will change based on the MSI type
 	t, err := value.ExpiresIn.Int64()
@@ -145,8 +146,9 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 		return nil, err
 	}
 	// NOTE: look at go-autorest
-	value.ExpiresOn = time.Now().Add(time.Second * time.Duration(t)).UTC()
-	return &value, nil
+	accessToken.Token = value.Token
+	accessToken.ExpiresOn = time.Now().Add(time.Second * time.Duration(t)).UTC()
+	return accessToken, nil
 }
 
 func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID string, scopes []string) (*azcore.Request, error) {

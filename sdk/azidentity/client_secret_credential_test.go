@@ -21,7 +21,6 @@ const (
 	secret                   = "secret"
 	wrongSecret              = "wrong_secret"
 	tokenValue               = "new_token"
-	tokenExpiresIn           = "3600"
 	scope                    = "http://storage.azure.com/.default"
 	defaultTestAuthorityHost = "login.microsoftonline.com"
 )

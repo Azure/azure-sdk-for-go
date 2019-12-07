@@ -8,6 +8,7 @@ import (
 	"errors"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -84,7 +85,8 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	if tk.Token != tokenValue {
 		t.Fatalf("Received an incorrect access token")
 	}
-	if tk.ExpiresIn != tokenExpiresIn {
+	emptyTime := time.Time{}
+	if tk.ExpiresOn == emptyTime {
 		t.Fatalf("Received an incorrect time in the response")
 	}
 }

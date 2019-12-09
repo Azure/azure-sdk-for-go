@@ -463,7 +463,10 @@ func (client VirtualMachinesClient) DeleteResponder(resp *http.Response) (result
 }
 
 // Generalize sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine
-// before performing this operation
+// before performing this operation. <br>For Windows, please refer to [Create a managed image of a generalized VM in
+// Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource).<br>For Linux, please
+// refer to [How to create an image of a virtual machine or
+// VHD](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image).
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.

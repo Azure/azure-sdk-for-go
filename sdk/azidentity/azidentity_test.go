@@ -4,6 +4,7 @@
 package azidentity
 
 import (
+	"fmt"
 	"net/url"
 	"testing"
 
@@ -24,4 +25,9 @@ func Test_NonNilTokenCredentialOptsNilAuthorityHost(t *testing.T) {
 	if opts.AuthorityHost == nil {
 		t.Fatalf("Did not set default authority host")
 	}
+}
+
+func TestSuffix(t *testing.T) {
+	str := scopesToResource("https://storage.azure.com/.default")
+	fmt.Println(str)
 }

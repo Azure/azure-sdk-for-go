@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -256,11 +257,10 @@ type DeviceCodeInfo struct {
 }
 **************************************************************/
 
-/*******************************************************
 const defaultSuffix = "/.default"
 
 func scopesToResource(scope string) string {
-	if strings.EndsWith(scope, defaultSuffix) {
+	if strings.HasSuffix(scope, defaultSuffix) {
 		return scope[:len(scope)-len(defaultSuffix)]
 	}
 	return scope
@@ -270,4 +270,3 @@ func resourceToScope(resource string) string {
 	resource += defaultSuffix
 	return resource
 }
-**********************************************************/

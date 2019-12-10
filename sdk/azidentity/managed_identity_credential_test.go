@@ -18,7 +18,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellLive(t *testing.T) {
 	if len(msiEndpoint) == 0 {
 		t.Skip()
 	}
-	msiCred := NewManagedIdentityCredential(clientID, newDefaultManagedIdentityOptions())
+	msiCred := NewManagedIdentityCredential(clientID, nil)
 	_, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to retrieve a token")

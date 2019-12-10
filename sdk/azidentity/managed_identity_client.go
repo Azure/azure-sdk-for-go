@@ -124,12 +124,7 @@ func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, msiType msi
 	if resp == nil {
 		return nil, &AuthenticationFailedError{AuthError: errors.New("Something unexpected happened with the request and received a nil response")}
 	}
-	// body, err := ioutil.ReadAll(resp.Payload)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	bodyStr := string(resp.Payload)
-	fmt.Println(bodyStr)
+
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}

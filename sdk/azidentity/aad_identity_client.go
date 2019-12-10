@@ -74,14 +74,14 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 
 	// This should never happen under normal conditions
 	if resp == nil {
-		return nil, &AuthenticationFailedError{Message: "Something unexpected happened with the request and received a nil response"}
+		return nil, &AuthenticationFailedError{AuthError: errors.New("Something unexpected happened with the request and received a nil response")}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
-	return nil, newAuthenticationFailedError(resp)
+	return nil, &AuthenticationFailedError{AuthError: newAuthenticationResponseError(resp)}
 }
 
 // AuthenticateCertificate creates a client certificate authentication request and returns an Access Token or
@@ -104,14 +104,14 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 
 	// This should never happen under normal conditions
 	if resp == nil {
-		return nil, &AuthenticationFailedError{Message: "Something unexpected happened with the request and received a nil response"}
+		return nil, &AuthenticationFailedError{AuthError: errors.New("Something unexpected happened with the request and received a nil response")}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
-	return nil, newAuthenticationFailedError(resp)
+	return nil, &AuthenticationFailedError{AuthError: newAuthenticationResponseError(resp)}
 }
 
 func (c *aadIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
@@ -204,14 +204,14 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 
 	// This should never happen under normal conditions
 	if resp == nil {
-		return nil, &AuthenticationFailedError{Message: "Something unexpected happened with the request and received a nil response"}
+		return nil, &AuthenticationFailedError{AuthError: errors.New("Something unexpected happened with the request and received a nil response")}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
-	return nil, newAuthenticationFailedError(resp)
+	return nil, &AuthenticationFailedError{AuthError: newAuthenticationResponseError(resp)}
 }
 
 func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, clientID string, username string, password string, scopes []string) (*azcore.Request, error) {

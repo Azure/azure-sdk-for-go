@@ -5,8 +5,10 @@ package azidentity
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/url"
+	"reflect"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -35,12 +37,17 @@ func init() {
 }
 
 type internalAccessToken struct {
-	Token     string      `json:"access_token"`
-	ExpiresIn json.Number `json:"expires_in"`
+	Token        string      `json:"access_token"`
+	RefreshToken string      `json:"refresh_token"`
+	ExpiresIn    json.Number `json:"expires_in"`
+	ExpiresOn    string      `json:"expires_on"`
+	NotBefore    string      `json:"not_before"`
+	Resource     string      `json:"resource"`
+	TokenType    string      `json:"token_type"`
 }
 
-// AuthenticationFailedError is a struct used to marshal responses when authentication has failed
-type AuthenticationFailedError struct {
+// AuthenticationResponseError is a struct used to marshal responses when authentication has failed
+type AuthenticationResponseError struct {
 	Message       string `json:"error"`
 	Description   string `json:"error_description"`
 	Timestamp     string `json:"timestamp"`
@@ -50,7 +57,7 @@ type AuthenticationFailedError struct {
 	Response      *azcore.Response
 }
 
-func (e *AuthenticationFailedError) Error() string {
+func (e *AuthenticationResponseError) Error() string {
 	msg := e.Message
 	if len(e.Description) > 0 {
 		msg += " " + e.Description
@@ -58,13 +65,50 @@ func (e *AuthenticationFailedError) Error() string {
 	return msg
 }
 
+// AuthenticationFailedError is a struct used to marshal responses when authentication has failed
+type AuthenticationFailedError struct {
+	AuthError error
+}
+
 // IsNotRetriable allows retry policy to stop execution in case it receives a AuthenticationFailedError
 func (e *AuthenticationFailedError) IsNotRetriable() bool {
 	return true
 }
 
-func newAuthenticationFailedError(resp *azcore.Response) error {
-	authFailed := &AuthenticationFailedError{}
+func (e *AuthenticationFailedError) Error() string {
+	return e.AuthError.Error()
+}
+
+func As(err error, target interface{}) bool {
+	var authFailedErr *AuthenticationFailedError
+	if reflect.TypeOf(err) == reflect.TypeOf(authFailedErr) {
+		err = err.(*AuthenticationFailedError).AuthError
+	}
+
+	if target == nil {
+		panic("errors: target cannot be nil")
+	}
+	typ := reflect.TypeOf(target)
+	if typ.Kind() != reflect.Ptr {
+		panic("errors: target must be a pointer")
+	}
+	targetType := typ.Elem()
+	for {
+		if reflect.TypeOf(err) == targetType {
+			reflect.ValueOf(target).Elem().Set(reflect.ValueOf(err))
+			return true
+		}
+		if x, ok := err.(interface{ As(interface{}) bool }); ok && x.As(target) {
+			return true
+		}
+		if err = errors.Unwrap(err); err == nil {
+			return false
+		}
+	}
+}
+
+func newAuthenticationResponseError(resp *azcore.Response) error {
+	authFailed := &AuthenticationResponseError{}
 	err := json.Unmarshal(resp.Payload, authFailed)
 	if err != nil {
 		authFailed.Message = resp.Status
@@ -161,12 +205,17 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {
 		o.HTTPClient = azcore.DefaultHTTPClientTransport()
 	}
-
+	var statusCodes []int
 	// retry policy for MSI is not end-user configurable
 	retryOpts := azcore.RetryOptions{
 		MaxTries:   5,
 		RetryDelay: 2 * time.Second,
-		StatusCodes: append(azcore.StatusCodesForRetry[:],
+		StatusCodes: append(statusCodes,
+			http.StatusRequestTimeout,      // 408
+			http.StatusTooManyRequests,     // 429
+			http.StatusInternalServerError, // 500
+			http.StatusBadGateway,          // 502
+			http.StatusGatewayTimeout,      // 504
 			http.StatusNotFound,
 			http.StatusGone,
 			// all remaining 5xx

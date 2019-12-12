@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v37.1.0`
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| iotcentral | 2018-09-01 |
+
 ## `v37.0.0`
 
 ### New Packages

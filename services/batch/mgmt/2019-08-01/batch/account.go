@@ -41,7 +41,7 @@ func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountC
 	return AccountClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API
+// Create create a new Batch account with the specified parameters. Existing accounts cannot be updated with this API
 // and should instead be updated with the Update Batch Account API.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the Batch account.

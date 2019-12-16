@@ -640,13 +640,6 @@ type ElasticPoolOperationsClientAPI interface {
 
 var _ ElasticPoolOperationsClientAPI = (*sql.ElasticPoolOperationsClient)(nil)
 
-// CapabilitiesClientAPI contains the set of methods on the CapabilitiesClient type.
-type CapabilitiesClientAPI interface {
-	ListByLocation(ctx context.Context, locationName string, include sql.CapabilityGroup) (result sql.LocationCapabilities, err error)
-}
-
-var _ CapabilitiesClientAPI = (*sql.CapabilitiesClient)(nil)
-
 // DatabaseVulnerabilityAssessmentScansClientAPI contains the set of methods on the DatabaseVulnerabilityAssessmentScansClient type.
 type DatabaseVulnerabilityAssessmentScansClientAPI interface {
 	Export(ctx context.Context, resourceGroupName string, serverName string, databaseName string, scanID string) (result sql.DatabaseVulnerabilityAssessmentScansExport, err error)
@@ -861,6 +854,13 @@ type ServerAzureADAdministratorsClientAPI interface {
 }
 
 var _ ServerAzureADAdministratorsClientAPI = (*sql.ServerAzureADAdministratorsClient)(nil)
+
+// CapabilitiesClientAPI contains the set of methods on the CapabilitiesClient type.
+type CapabilitiesClientAPI interface {
+	ListByLocation(ctx context.Context, locationName string, include sql.CapabilityGroup) (result sql.LocationCapabilities, err error)
+}
+
+var _ CapabilitiesClientAPI = (*sql.CapabilitiesClient)(nil)
 
 // WorkloadGroupsClientAPI contains the set of methods on the WorkloadGroupsClient type.
 type WorkloadGroupsClientAPI interface {

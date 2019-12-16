@@ -3,9 +3,10 @@ package servicebus_test
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-service-bus-go"
 	"os"
 	"time"
+
+	"github.com/Azure/azure-service-bus-go"
 )
 
 func Example_scheduledMessage() {

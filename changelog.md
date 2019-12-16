@@ -1,7 +1,11 @@
 # Change Log
 
-## `head`
+## `v0.10.0`
 - add retry when Sender fails to recover
+- update settlement mode on sender
+- added support for creating a namespace via MSI
+- replace pack.am/amqp with github.com/Azure/go-amqp
+- bump common to version v3.0.0
 
 ## `v0.9.1`
 - bump common version to v2.1.0

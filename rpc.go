@@ -30,10 +30,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v2/rpc"
-	"github.com/Azure/azure-amqp-common-go/v2/uuid"
+	"github.com/Azure/azure-amqp-common-go/v3/rpc"
+	"github.com/Azure/azure-amqp-common-go/v3/uuid"
 	"github.com/devigned/tab"
-	"pack.ag/amqp"
+	"github.com/Azure/go-amqp"
 )
 
 type (

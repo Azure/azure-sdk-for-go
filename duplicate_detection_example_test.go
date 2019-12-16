@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v2/uuid"
+	"github.com/Azure/azure-amqp-common-go/v3/uuid"
 
 	"github.com/Azure/azure-service-bus-go"
 )

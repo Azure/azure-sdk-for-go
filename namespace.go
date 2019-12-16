@@ -29,14 +29,14 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/Azure/azure-amqp-common-go/v2/aad"
-	"github.com/Azure/azure-amqp-common-go/v2/auth"
-	"github.com/Azure/azure-amqp-common-go/v2/cbs"
-	"github.com/Azure/azure-amqp-common-go/v2/conn"
-	"github.com/Azure/azure-amqp-common-go/v2/sas"
+	"github.com/Azure/azure-amqp-common-go/v3/aad"
+	"github.com/Azure/azure-amqp-common-go/v3/auth"
+	"github.com/Azure/azure-amqp-common-go/v3/cbs"
+	"github.com/Azure/azure-amqp-common-go/v3/conn"
+	"github.com/Azure/azure-amqp-common-go/v3/sas"
+	"github.com/Azure/go-amqp"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"golang.org/x/net/websocket"
-	"pack.ag/amqp"
 )
 
 const (
@@ -49,7 +49,7 @@ const (
 	//`
 
 	// Version is the semantic version number
-	Version = "0.9.1"
+	Version = "0.10.0"
 
 	rootUserAgent = "/golang-service-bus"
 )

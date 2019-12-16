@@ -27,9 +27,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v2"
+	"github.com/Azure/azure-amqp-common-go/v3"
 	"github.com/devigned/tab"
-	"pack.ag/amqp"
+	"github.com/Azure/go-amqp"
 )
 
 type (

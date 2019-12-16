@@ -27,3 +27,5 @@ terraform.tfvars
 .idea
 
 vendor/
+
+.vscode/

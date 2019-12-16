@@ -29,7 +29,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v2/conn"
+	"github.com/Azure/azure-amqp-common-go/v3/conn"
 	rm "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources"
 	sbmgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest"
@@ -75,7 +75,7 @@ func (suite *BaseSuite) SetupSuite() {
 	setFromEnv := func(key string, target *string) {
 		v := os.Getenv(key)
 		if v == "" {
-			suite.FailNowf("Environment variable %q required for integration tests.", key)
+			suite.FailNowf("missing environment variable", "%q required for integration tests.", key)
 		}
 
 		*target = v

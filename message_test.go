@@ -3,10 +3,10 @@ package servicebus
 import (
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v2/uuid"
+	"github.com/Azure/azure-amqp-common-go/v3/uuid"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/mitchellh/mapstructure"
-	"pack.ag/amqp"
+	"github.com/Azure/go-amqp"
 )
 
 func (suite *serviceBusSuite) TestMapStructureEncode() {

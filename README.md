@@ -32,6 +32,11 @@ If you need to install Go, follow [the official instructions](https://golang.org
 
 Find up-to-date examples and documentation on [godoc.org](https://godoc.org/github.com/Azure/azure-service-bus-go#pkg-examples).
 
+### Running tests
+
+Most tests require a properly configured service bus in Azure.  The easiest way to set this up is to use the [Terraform](https://www.terraform.io/) deployment script.
+Running the integration tests will take longer than the default 10 mintues, please use a larger timeout `go test -timeout 30m`.
+
 ### Have questions?
 
 The developers of this library are all active on the [Gopher Slack](https://gophers.slack.com), it is likely easiest to 

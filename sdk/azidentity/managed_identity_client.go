@@ -11,7 +11,9 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -35,7 +37,7 @@ const (
 
 type msiType int
 
-const (
+const ( // todo rename
 	unknown     msiType = 0
 	imds        msiType = 1
 	appService  msiType = 2
@@ -46,23 +48,25 @@ const (
 // ManagedIdentityClient provides the base for authenticating with Managed Identities on Azure VMs and Cloud Shell
 // This type initializes a default azcore.Pipeline and IdentityClientOptions.
 type managedIdentityClient struct {
+	lock                   sync.RWMutex
 	options                TokenCredentialOptions
 	pipeline               azcore.Pipeline
 	imdsAPIVersion         string
-	imdsAvailableTimeoutMS int
+	imdsAvailableTimeoutMS int // todo CHANGE TO duration
 	msiType                msiType
 	endpoint               *url.URL
+	refreshToken           string
 }
 
 var (
-	imdsURL        *url.URL
+	imdsURL        *url.URL // these are initialized in the init func and are R/O afterwards
 	defaultMSIOpts *ManagedIdentityCredentialOptions
 )
 
 func init() {
 	// The error check is handled in managed_identity_client_test.go
 	imdsURL, _ = url.Parse(imdsEndpoint)
-	defaultMSIOpts = newDefaultManagedIdentityOptions()
+	defaultMSIOpts = newDefaultManagedIdentityOptions() // todo move to var initialization
 }
 
 func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
@@ -122,52 +126,66 @@ func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, msiType msi
 
 	// This should never happen under normal conditions
 	if resp == nil {
-		return nil, &AuthenticationFailedError{AuthError: errors.New("Something unexpected happened with the request and received a nil response")}
+		return nil, &AuthenticationFailedError{Err: errors.New("Something unexpected happened with the request and received a nil response")}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{AuthError: newAuthenticationResponseError(resp)}
+	return nil, &AuthenticationFailedError{Err: newAuthenticationResponseError(resp)}
 }
 
 func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
-	value := internalAccessToken{}
-	accessToken := &azcore.AccessToken{}
+	value := struct {
+		// these are the only fields that we use
+		Token        string      `json:"access_token"`
+		RefreshToken string      `json:"refresh_token"`
+		ExpiresIn    json.Number `json:"expires_in"`
+		ExpiresOn    string      `json:"expires_on"` // the value returned in this field varies between a number and a date string
+	}{}
 	if err := json.Unmarshal(res.Payload, &value); err != nil {
 		return nil, fmt.Errorf("internalAccessToken: %w", err)
 	}
-
-	if value.ExpiresIn == "" {
-		if value.ExpiresOn == "" {
-			return nil, &AuthenticationFailedError{AuthError: errors.New("did not receive a valid token expiration time")}
+	if value.ExpiresIn != "" {
+		expiresIn, err := value.ExpiresIn.Int64()
+		if err != nil {
+			return nil, err
 		}
-		accessToken.Token = value.Token
-		// TODO: missing here is parsing expires on to a time.Time value
-		return accessToken, nil
+		c.updateRefreshToken(value.RefreshToken)
+		ei := time.Now().Add(time.Second * time.Duration(expiresIn)).UTC()
+		fmt.Println(ei)
+		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(expiresIn)).UTC()}, nil
 	}
-	// CP: This will change based on the MSI type
-	t, err := value.ExpiresIn.Int64()
-	if err != nil {
+	if expiresOn, err := strconv.Atoi(value.ExpiresOn); err == nil {
+		c.updateRefreshToken(value.RefreshToken)
+		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(expiresOn)).UTC()}, nil
+	}
+	// this is the case when expires_on is a time string
+	// this is the format of the string coming from the service
+	if expiresOn, err := time.Parse("01/02/2006 15:04:05 PM +00:00", value.ExpiresOn); err == nil {
+		c.updateRefreshToken(value.RefreshToken)
+		eo := expiresOn.UTC()
+		return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
+	} else {
 		return nil, err
 	}
-	// NOTE: look at go-autorest
-	accessToken.Token = value.Token
-	accessToken.ExpiresOn = time.Now().Add(time.Second * time.Duration(t)).UTC()
-	return accessToken, nil
+}
+
+func (c *managedIdentityClient) updateRefreshToken(tk string) {
+	c.lock.Lock()
+	c.refreshToken = tk
+	c.lock.Unlock()
 }
 
 func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID string, scopes []string) (*azcore.Request, error) {
-	var req *azcore.Request
-	var err error
 	switch msiType {
 	case imds:
-		req = c.createIMDSAuthRequest(clientID, scopes)
+		return c.createIMDSAuthRequest(clientID, scopes), nil
 	case appService:
-		req = c.createAppServiceAuthRequest(clientID, scopes)
+		return c.createAppServiceAuthRequest(clientID, scopes), nil
 	case cloudShell:
-		req, err = c.createCloudShellAuthRequest(clientID, scopes)
+		return c.createCloudShellAuthRequest(clientID, scopes)
 	default:
 		errorMsg := ""
 		switch msiType {
@@ -179,8 +197,6 @@ func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID stri
 
 		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Make sure you are running in a valid Managed Identity Environment. Status: " + errorMsg}
 	}
-
-	return req, err
 }
 
 func (c *managedIdentityClient) createIMDSAuthRequest(clientID string, scopes []string) *azcore.Request {
@@ -239,7 +255,7 @@ func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error)
 			} else { // if ONLY the env var MSI_ENDPOINT is set the MsiType is CloudShell
 				c.msiType = cloudShell
 			}
-		} else if c.imdsAvailable(ctx) { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the MsiType is Imds
+		} else if c.imdsAvailable(ctx) { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the MsiType is Imds. This will timeout after 500 milliseconds
 			c.endpoint = imdsURL
 			c.msiType = imds
 		} else { // if MSI_ENDPOINT is NOT set and IMDS enpoint is not available ManagedIdentity is not available

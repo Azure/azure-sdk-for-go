@@ -70,7 +70,12 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMock(t *testing.T) {
 	}
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenAppServSuccess)))
+	srv.AppendResponse(mock.WithBody([]byte(`{
+		"access_token": "eyJ0eXAi…",
+		"expires_on": "09/14/2017 00:00:00 PM +00:00",
+		"resource": "https://vault.azure.net",
+		"token_type": "Bearer"
+	}`)))
 	testURL := srv.URL()
 	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
 	_ = os.Setenv("MSI_SECRET", "secret")

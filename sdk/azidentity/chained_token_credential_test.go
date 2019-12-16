@@ -107,7 +107,7 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 		t.Fatalf("Expected an error but did not receive one")
 	}
 	var chainedError *ChainedCredentialError
-	if !As(err, &chainedError) {
+	if !errors.As(err, &chainedError) {
 		t.Fatalf("Expected Error Type: ChainedCredentialError, ReceivedErrorType: %T", err)
 	}
 	if len(err.Error()) == 0 {

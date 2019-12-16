@@ -5,10 +5,8 @@ package azidentity
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
 	"net/url"
-	"reflect"
 	"strings"
 	"time"
 
@@ -68,7 +66,12 @@ func (e *AuthenticationResponseError) Error() string {
 
 // AuthenticationFailedError is a struct used to marshal responses when authentication has failed
 type AuthenticationFailedError struct {
-	AuthError error
+	Err     error
+	Message string
+}
+
+func (e *AuthenticationFailedError) Unwrap() error {
+	return e.Err
 }
 
 // IsNotRetriable allows retry policy to stop execution in case it receives a AuthenticationFailedError
@@ -77,35 +80,7 @@ func (e *AuthenticationFailedError) IsNotRetriable() bool {
 }
 
 func (e *AuthenticationFailedError) Error() string {
-	return e.AuthError.Error()
-}
-
-func As(err error, target interface{}) bool {
-	var authFailedErr *AuthenticationFailedError
-	if reflect.TypeOf(err) == reflect.TypeOf(authFailedErr) {
-		err = err.(*AuthenticationFailedError).AuthError
-	}
-
-	if target == nil {
-		panic("errors: target cannot be nil")
-	}
-	typ := reflect.TypeOf(target)
-	if typ.Kind() != reflect.Ptr {
-		panic("errors: target must be a pointer")
-	}
-	targetType := typ.Elem()
-	for {
-		if reflect.TypeOf(err) == targetType {
-			reflect.ValueOf(target).Elem().Set(reflect.ValueOf(err))
-			return true
-		}
-		if x, ok := err.(interface{ As(interface{}) bool }); ok && x.As(target) {
-			return true
-		}
-		if err = errors.Unwrap(err); err == nil {
-			return false
-		}
-	}
+	return e.Message
 }
 
 func newAuthenticationResponseError(resp *azcore.Response) error {
@@ -236,26 +211,6 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 		azcore.NewRetryPolicy(retryOpts),
 		azcore.NewRequestLogPolicy(o.LogOptions))
 }
-
-/*********************************************************************
-func newDeviceCodeInfo(dc DeviceCodeResult) DeviceCodeInfo {
-	return DeviceCodeInfo{UserCode: dc.UserCode, DeviceCode: dc.DeviceCode, VerificationUrl: dc.VerificationUri,
-		ExpiresOn: dc.ExpiresOn, Internal: dc.Interval, Message: dc.Message, ClientId: dc.ClientId, Scopes: dc.Scopes}
-}
-
-// Details of the device code to present to a user to allow them to authenticate through the device code authentication flow.
-type DeviceCodeInfo struct {
-	// JMR: Make all these private and add public getter methods?
-	UserCode        string        // User code returned by the service
-	DeviceCode      string        // Device code returned by the service
-	VerificationUrl string        // Verification URL where the user must navigate to authenticate using the device code and credentials. JMR: URL?
-	ExpiresOn       time.Duration // Time when the device code will expire.
-	Interval        int64         // Polling interval time to check for completion of authentication flow.
-	Message         string        // User friendly text response that can be used for display purpose.
-	ClientId        string        // Identifier of the client requesting device code.
-	Scopes          []string      // List of the scopes that would be held by token. JMR: Should be readonly
-}
-**************************************************************/
 
 const defaultSuffix = "/.default"
 

@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -82,7 +83,7 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
 	var authFailed *AuthenticationResponseError
-	if !As(err, &authFailed) {
+	if !errors.As(err, &authFailed) {
 		t.Fatalf("Expected: AuthenticationResponseError, Received: %T", err)
 	} else {
 		if len(authFailed.Message) == 0 {

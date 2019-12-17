@@ -32,8 +32,11 @@ const (
 type AppSku = original.AppSku
 
 const (
-	F1 AppSku = original.F1
-	S1 AppSku = original.S1
+	F1  AppSku = original.F1
+	S1  AppSku = original.S1
+	ST0 AppSku = original.ST0
+	ST1 AppSku = original.ST1
+	ST2 AppSku = original.ST2
 )
 
 type App = original.App

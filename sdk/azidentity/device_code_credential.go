@@ -13,6 +13,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+const (
+	deviceCodeGrantType = "urn:ietf:params:oauth:grant-type:device_code"
+)
+
 // DeviceCodeResult ...
 type DeviceCodeResult struct {
 	UserCode        string        `json:"user_code"`        // User code returned by the service
@@ -25,35 +29,18 @@ type DeviceCodeResult struct {
 	Scopes          []string      // List of the scopes that would be held by token. JMR: Should be readonly
 }
 
-// func newDeviceCodeInfo(dc DeviceCodeResult) DeviceCodeInfo {
-// 	return DeviceCodeInfo{UserCode: dc.UserCode, DeviceCode: dc.DeviceCode, VerificationURL: dc.VerificationURL,
-// 		ExpiresOn: dc.ExpiresOn, Interval: dc.Interval, Message: dc.Message, ClientID: dc.ClientID, Scopes: dc.Scopes}
-// }
-
-// // DeviceCodeInfo details of the device code to present to a user to allow them to authenticate through the device code authentication flow.
-// type DeviceCodeInfo struct {
-// 	// JMR: Make all these private and add public getter methods?
-// 	UserCode        string        // User code returned by the service
-// 	DeviceCode      string        // Device code returned by the service
-// 	VerificationURL string        // Verification URL where the user must navigate to authenticate using the device code and credentials. JMR: URL?
-// 	ExpiresOn       time.Duration // Time when the device code will expire.
-// 	Interval        int64         // Polling interval time to check for completion of authentication flow.
-// 	Message         string        // User friendly text response that can be used for display purpose.
-// 	ClientID        string        // Identifier of the client requesting device code.
-// 	Scopes          []string      // List of the scopes that would be held by token. JMR: Should be readonly
-// }
-
 // DeviceCodeCredential ...
 type DeviceCodeCredential struct {
 	client   *aadIdentityClient
-	tenantID string // Gets the Azure Active Directory tenant (directory) Id of the service principal
-	clientID string // Gets the client (application) ID of the service principal
-	callback func(string)
+	tenantID string       // Gets the Azure Active Directory tenant (directory) Id of the service principal
+	clientID string       // Gets the client (application) ID of the service principal
+	callback func(string) // Sends the user a message with a verification URL and device code to sign in to the login server
 }
 
-// NewDeviceCodeCredential constructs a new ClientSecretCredential with the details needed to authenticate against Azure Active Directory with a client secret.
+// NewDeviceCodeCredential constructs a new DeviceCodeCredential with the details needed to authenticate against Azure Active Directory with a device code.
 // tenantID: The Azure Active Directory tenant (directory) Id of the service principal.
 // clientID: The client (application) ID of the service principal.
+// callback: The callback function used to send the login message back to the user
 // options: allow to configure the management of the requests sent to the Azure Active Directory service.
 func NewDeviceCodeCredential(tenantID string, clientID string, callback func(string), options *TokenCredentialOptions) *DeviceCodeCredential {
 	return &DeviceCodeCredential{tenantID: tenantID, clientID: clientID, callback: callback, client: newAADIdentityClient(options)}
@@ -64,8 +51,7 @@ func NewDeviceCodeCredential(tenantID string, clientID string, callback func(str
 // ctx: The current request context
 // tenantID: The Azure Active Directory tenant (directory) Id of the service principal
 // clientID: The client (application) ID of the service principal
-// username: User's account username
-// password: User's account password
+// deviceCode: The device code associated with the request
 // scopes: The scopes required for the token
 func (c *aadIdentityClient) authenticateDeviceCode(ctx context.Context, tenantID string, clientID string, deviceCode string, scopes []string) (*azcore.AccessToken, error) {
 	msg, err := c.createDeviceCodeAuthRequest(tenantID, clientID, deviceCode, scopes)
@@ -97,7 +83,7 @@ func (c *aadIdentityClient) createDeviceCodeAuthRequest(tenantID string, clientI
 		return nil, err
 	}
 	data := url.Values{}
-	data.Set(qpGrantType, "urn:ietf:params:oauth:grant-type:device_code")
+	data.Set(qpGrantType, deviceCodeGrantType)
 	data.Set(qpClientID, clientID)
 	data.Set(qpDeviceCode, deviceCode)
 	data.Set(qpScope, strings.Join(scopes, " "))
@@ -114,7 +100,7 @@ func (c *aadIdentityClient) createDeviceCodeAuthRequest(tenantID string, clientI
 
 // GetToken ...
 func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	dc, err := requestNewDeviceCode(ctx, c.tenantID, c.clientID, opts.Scopes)
+	dc, err := c.client.requestNewDeviceCode(ctx, c.tenantID, c.clientID, opts.Scopes)
 	if err != nil {
 		return nil, err
 	}
@@ -130,6 +116,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 		} else {
 			switch authFailed.Message {
 			case "authorization_pending":
+				time.Sleep(time.Duration(dc.Interval) * time.Second)
 				continue
 			case "authorization_declined":
 				return nil, err
@@ -142,18 +129,16 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 				return nil, err
 			}
 		}
-		time.Sleep(5 * time.Second)
 	}
 	return nil, err
 
 }
 
-func requestNewDeviceCode(ctx context.Context, tenantID, clientID string, scopes []string) (*DeviceCodeResult, error) {
+func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, clientID string, scopes []string) (*DeviceCodeResult, error) {
 	if len(tenantID) == 0 { // if the user did not pass in a tenantID then the default value is set
 		tenantID = "organizations"
 	}
-	p := newDefaultPipeline(TokenCredentialOptions{})                     // create a default pipeline since this request is carried out before credential instantiation
-	urlStr := defaultAuthorityHost + tenantID + "/oauth2/v2.0/devicecode" // endpoint that will return a device code along with the other parameters in the DeviceCodeResult struct
+	urlStr := c.options.AuthorityHost.String() + tenantID + "/oauth2/v2.0/devicecode" // endpoint that will return a device code along with the other parameters in the DeviceCodeResult struct
 	urlFormat, err := url.Parse(urlStr)
 	if err != nil {
 		return nil, err
@@ -163,7 +148,7 @@ func requestNewDeviceCode(ctx context.Context, tenantID, clientID string, scopes
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := p.NewRequest(http.MethodPost, *urlFormat)
+	msg := c.pipeline.NewRequest(http.MethodPost, *urlFormat)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 	err = msg.SetBody(body)
 	if err != nil {
@@ -178,7 +163,7 @@ func requestNewDeviceCode(ctx context.Context, tenantID, clientID string, scopes
 		return nil, &AuthenticationFailedError{Err: errors.New("Something unexpected happened with the request and received a nil response")}
 	}
 	if resp.HasStatusCode(successStatusCodes[:]...) {
-		return createDeviceCodeAccessToken(resp)
+		return createDeviceCodeResult(resp)
 	}
 	return nil, &AuthenticationFailedError{Err: newAuthenticationResponseError(resp)}
 }
@@ -188,7 +173,7 @@ func (c *DeviceCodeCredential) AuthenticationPolicy(options azcore.Authenticatio
 	return newBearerTokenPolicy(c, options)
 }
 
-func createDeviceCodeAccessToken(res *azcore.Response) (*DeviceCodeResult, error) {
+func createDeviceCodeResult(res *azcore.Response) (*DeviceCodeResult, error) {
 	value := &DeviceCodeResult{}
 	if err := json.Unmarshal(res.Payload, &value); err != nil {
 		return nil, fmt.Errorf("internalAccessToken: %w", err)

@@ -25,37 +25,38 @@ type DeviceCodeResult struct {
 	Scopes          []string      // List of the scopes that would be held by token. JMR: Should be readonly
 }
 
-func newDeviceCodeInfo(dc DeviceCodeResult) DeviceCodeInfo {
-	return DeviceCodeInfo{UserCode: dc.UserCode, DeviceCode: dc.DeviceCode, VerificationURL: dc.VerificationURL,
-		ExpiresOn: dc.ExpiresOn, Interval: dc.Interval, Message: dc.Message, ClientID: dc.ClientID, Scopes: dc.Scopes}
-}
+// func newDeviceCodeInfo(dc DeviceCodeResult) DeviceCodeInfo {
+// 	return DeviceCodeInfo{UserCode: dc.UserCode, DeviceCode: dc.DeviceCode, VerificationURL: dc.VerificationURL,
+// 		ExpiresOn: dc.ExpiresOn, Interval: dc.Interval, Message: dc.Message, ClientID: dc.ClientID, Scopes: dc.Scopes}
+// }
 
-// DeviceCodeInfo details of the device code to present to a user to allow them to authenticate through the device code authentication flow.
-type DeviceCodeInfo struct {
-	// JMR: Make all these private and add public getter methods?
-	UserCode        string        // User code returned by the service
-	DeviceCode      string        // Device code returned by the service
-	VerificationURL string        // Verification URL where the user must navigate to authenticate using the device code and credentials. JMR: URL?
-	ExpiresOn       time.Duration // Time when the device code will expire.
-	Interval        int64         // Polling interval time to check for completion of authentication flow.
-	Message         string        // User friendly text response that can be used for display purpose.
-	ClientID        string        // Identifier of the client requesting device code.
-	Scopes          []string      // List of the scopes that would be held by token. JMR: Should be readonly
-}
+// // DeviceCodeInfo details of the device code to present to a user to allow them to authenticate through the device code authentication flow.
+// type DeviceCodeInfo struct {
+// 	// JMR: Make all these private and add public getter methods?
+// 	UserCode        string        // User code returned by the service
+// 	DeviceCode      string        // Device code returned by the service
+// 	VerificationURL string        // Verification URL where the user must navigate to authenticate using the device code and credentials. JMR: URL?
+// 	ExpiresOn       time.Duration // Time when the device code will expire.
+// 	Interval        int64         // Polling interval time to check for completion of authentication flow.
+// 	Message         string        // User friendly text response that can be used for display purpose.
+// 	ClientID        string        // Identifier of the client requesting device code.
+// 	Scopes          []string      // List of the scopes that would be held by token. JMR: Should be readonly
+// }
 
 // DeviceCodeCredential ...
 type DeviceCodeCredential struct {
 	client   *aadIdentityClient
 	tenantID string // Gets the Azure Active Directory tenant (directory) Id of the service principal
 	clientID string // Gets the client (application) ID of the service principal
+	callback func(string)
 }
 
 // NewDeviceCodeCredential constructs a new ClientSecretCredential with the details needed to authenticate against Azure Active Directory with a client secret.
 // tenantID: The Azure Active Directory tenant (directory) Id of the service principal.
 // clientID: The client (application) ID of the service principal.
 // options: allow to configure the management of the requests sent to the Azure Active Directory service.
-func NewDeviceCodeCredential(tenantID string, clientID string, options *TokenCredentialOptions, reqOpts azcore.TokenRequestOptions) *DeviceCodeCredential {
-	return &DeviceCodeCredential{tenantID: tenantID, clientID: clientID, client: newAADIdentityClient(options)}
+func NewDeviceCodeCredential(tenantID string, clientID string, callback func(string), options *TokenCredentialOptions) *DeviceCodeCredential {
+	return &DeviceCodeCredential{tenantID: tenantID, clientID: clientID, callback: callback, client: newAADIdentityClient(options)}
 }
 
 // AuthenticateDeviceCode creates a device code authentication request and returns an Access Token or
@@ -113,16 +114,15 @@ func (c *aadIdentityClient) createDeviceCodeAuthRequest(tenantID string, clientI
 
 // GetToken ...
 func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	dc, err := RequestNewDeviceCode(ctx, c.tenantID, c.clientID, opts.Scopes)
+	dc, err := requestNewDeviceCode(ctx, c.tenantID, c.clientID, opts.Scopes)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(dc)
-	// TODO / Problem need to return message here
+	c.callback(dc.Message)
 	for {
-		tk, err := c.client.authenticateDeviceCode(ctx, c.tenantID, c.clientID, dc.DeviceCode, opts.Scopes) // Problem 1: we would need scopes to be passed into the constructor
+		tk, err := c.client.authenticateDeviceCode(ctx, c.tenantID, c.clientID, dc.DeviceCode, opts.Scopes)
 		if err == nil {
-			return tk, err // Problem 2: we would need to have a field where we store the token
+			return tk, err
 		}
 		var authFailed *AuthenticationResponseError
 		if !errors.As(err, &authFailed) {
@@ -148,7 +148,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 
 }
 
-func RequestNewDeviceCode(ctx context.Context, tenantID, clientID string, scopes []string) (*DeviceCodeResult, error) {
+func requestNewDeviceCode(ctx context.Context, tenantID, clientID string, scopes []string) (*DeviceCodeResult, error) {
 	if len(tenantID) == 0 { // if the user did not pass in a tenantID then the default value is set
 		tenantID = "organizations"
 	}

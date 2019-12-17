@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v37.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| containerservice | 2019-11-01 |
+| deploymentmanager | 2019-11-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| containerservice | 2017-07-01<br/>2017-08-31<br/>2017-09-30<br/>2018-03-31 |
+| machinelearningservices | 2019-11-01 |
+
 ## `v37.1.0`
 
 ### Updated Packages

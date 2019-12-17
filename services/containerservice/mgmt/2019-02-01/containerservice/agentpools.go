@@ -100,6 +100,9 @@ func (client AgentPoolsClient) CreateOrUpdatePreparer(ctx context.Context, resou
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Name = nil
+	parameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

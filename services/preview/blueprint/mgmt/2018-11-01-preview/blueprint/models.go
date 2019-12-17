@@ -999,7 +999,7 @@ type AssignmentProperties struct {
 	// BlueprintID - ID of the published version of a blueprint definition.
 	BlueprintID *string `json:"blueprintId,omitempty"`
 	// Parameters - Blueprint assignment parameter values.
-	Parameters map[string]*ParameterValueBase `json:"parameters"`
+	Parameters map[string]*ParameterValue `json:"parameters"`
 	// ResourceGroups - Names and locations of resource group placeholders.
 	ResourceGroups map[string]*ResourceGroupValue `json:"resourceGroups"`
 	// Status - READ-ONLY; Status of blueprint assignment. This field is readonly.
@@ -1040,6 +1040,8 @@ func (ap AssignmentProperties) MarshalJSON() ([]byte, error) {
 
 // AssignmentStatus the status of a blueprint assignment. This field is readonly.
 type AssignmentStatus struct {
+	// ManagedResources - READ-ONLY; List of resources that were created by the blueprint assignment.
+	ManagedResources *[]string `json:"managedResources,omitempty"`
 	// TimeCreated - READ-ONLY; Creation time of this blueprint definition.
 	TimeCreated *date.Time `json:"timeCreated,omitempty"`
 	// LastModified - READ-ONLY; Last modified time of this blueprint definition.
@@ -1406,22 +1408,16 @@ type ParameterDefinitionMetadata struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// Description - Description of this parameter/resourceGroup.
 	Description *string `json:"description,omitempty"`
-	// StrongType - StrongType for UI to render rich experience during blueprint assignment.
+	// StrongType - StrongType for UI to render rich experience during blueprint assignment. Supported strong types are resourceType, principalId and location.
 	StrongType *string `json:"strongType,omitempty"`
 }
 
-// ParameterValue value for the specified parameter.
+// ParameterValue value for the specified parameter. Can be either 'value' or 'reference' but not both.
 type ParameterValue struct {
-	// Value - Actual value.
+	// Value - Parameter value as value type.
 	Value interface{} `json:"value,omitempty"`
-	// Description - Optional property. Establishes ParameterValueBase as a BaseClass.
-	Description *string `json:"description,omitempty"`
-}
-
-// ParameterValueBase base class for ParameterValue.
-type ParameterValueBase struct {
-	// Description - Optional property. Establishes ParameterValueBase as a BaseClass.
-	Description *string `json:"description,omitempty"`
+	// Reference - Parameter value as reference type.
+	Reference *SecretValueReference `json:"reference,omitempty"`
 }
 
 // PolicyAssignmentArtifact blueprint artifact that applies a Policy assignment.
@@ -1547,7 +1543,7 @@ type PolicyAssignmentArtifactProperties struct {
 	// PolicyDefinitionID - Azure resource ID of the policy definition.
 	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
 	// Parameters - Parameter values for the policy definition.
-	Parameters map[string]*ParameterValueBase `json:"parameters"`
+	Parameters map[string]*ParameterValue `json:"parameters"`
 	// ResourceGroup - Name of the resource group placeholder to which the policy will be assigned.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 }
@@ -2162,14 +2158,6 @@ type RoleAssignmentArtifactProperties struct {
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 }
 
-// SecretReferenceParameterValue the reference to a secret, if the parameter should be protected.
-type SecretReferenceParameterValue struct {
-	// Reference - Specifies the reference.
-	Reference *SecretValueReference `json:"reference,omitempty"`
-	// Description - Optional property. Establishes ParameterValueBase as a BaseClass.
-	Description *string `json:"description,omitempty"`
-}
-
 // SecretValueReference reference to a Key Vault secret.
 type SecretValueReference struct {
 	// KeyVault - Specifies the reference to a given Azure Key Vault.
@@ -2350,7 +2338,7 @@ type TemplateArtifactProperties struct {
 	// ResourceGroup - If applicable, the name of the resource group placeholder to which the Resource Manager template blueprint artifact will be deployed.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// Parameters - Resource Manager template blueprint artifact parameter values.
-	Parameters map[string]*ParameterValueBase `json:"parameters"`
+	Parameters map[string]*ParameterValue `json:"parameters"`
 }
 
 // MarshalJSON is the custom marshaler for TemplateArtifactProperties.

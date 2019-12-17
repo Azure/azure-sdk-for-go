@@ -81,32 +81,32 @@ type SummaryResults = original.SummaryResults
 type TrackedResourceModificationDetails = original.TrackedResourceModificationDetails
 type TypedErrorInfo = original.TypedErrorInfo
 
-func New() BaseClient {
-	return original.New()
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewOperationsClient() OperationsClient {
-	return original.NewOperationsClient()
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPolicyEventsClient() PolicyEventsClient {
-	return original.NewPolicyEventsClient()
+func NewPolicyEventsClient(subscriptionID string) PolicyEventsClient {
+	return original.NewPolicyEventsClient(subscriptionID)
 }
-func NewPolicyEventsClientWithBaseURI(baseURI string) PolicyEventsClient {
-	return original.NewPolicyEventsClientWithBaseURI(baseURI)
+func NewPolicyEventsClientWithBaseURI(baseURI string, subscriptionID string) PolicyEventsClient {
+	return original.NewPolicyEventsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPolicyStatesClient() PolicyStatesClient {
-	return original.NewPolicyStatesClient()
+func NewPolicyStatesClient(subscriptionID string) PolicyStatesClient {
+	return original.NewPolicyStatesClient(subscriptionID)
 }
-func NewPolicyStatesClientWithBaseURI(baseURI string) PolicyStatesClient {
-	return original.NewPolicyStatesClientWithBaseURI(baseURI)
+func NewPolicyStatesClientWithBaseURI(baseURI string, subscriptionID string) PolicyStatesClient {
+	return original.NewPolicyStatesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPolicyTrackedResourcesClient() PolicyTrackedResourcesClient {
-	return original.NewPolicyTrackedResourcesClient()
+func NewPolicyTrackedResourcesClient(subscriptionID string) PolicyTrackedResourcesClient {
+	return original.NewPolicyTrackedResourcesClient(subscriptionID)
 }
-func NewPolicyTrackedResourcesClientWithBaseURI(baseURI string) PolicyTrackedResourcesClient {
-	return original.NewPolicyTrackedResourcesClientWithBaseURI(baseURI)
+func NewPolicyTrackedResourcesClientWithBaseURI(baseURI string, subscriptionID string) PolicyTrackedResourcesClient {
+	return original.NewPolicyTrackedResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewPolicyTrackedResourcesQueryResultsIterator(page PolicyTrackedResourcesQueryResultsPage) PolicyTrackedResourcesQueryResultsIterator {
 	return original.NewPolicyTrackedResourcesQueryResultsIterator(page)
@@ -126,14 +126,14 @@ func NewRemediationListResultIterator(page RemediationListResultPage) Remediatio
 func NewRemediationListResultPage(getNextPage func(context.Context, RemediationListResult) (RemediationListResult, error)) RemediationListResultPage {
 	return original.NewRemediationListResultPage(getNextPage)
 }
-func NewRemediationsClient() RemediationsClient {
-	return original.NewRemediationsClient()
+func NewRemediationsClient(subscriptionID string) RemediationsClient {
+	return original.NewRemediationsClient(subscriptionID)
 }
-func NewRemediationsClientWithBaseURI(baseURI string) RemediationsClient {
-	return original.NewRemediationsClientWithBaseURI(baseURI)
+func NewRemediationsClientWithBaseURI(baseURI string, subscriptionID string) RemediationsClient {
+	return original.NewRemediationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
 	return original.PossiblePolicyStatesResourceValues()

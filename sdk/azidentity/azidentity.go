@@ -65,7 +65,13 @@ func (e *AuthenticationResponseError) Error() string {
 
 // AuthenticationFailedError is a struct used to marshal responses when authentication has failed
 type AuthenticationFailedError struct {
-	Err error
+	inner error
+	msg   string
+}
+
+// Unwrap method on AuthenticationFailedError provides access to the inner error
+func (e *AuthenticationFailedError) Unwrap() error {
+	return e.inner
 }
 
 // IsNotRetriable allows retry policy to stop execution in case it receives a AuthenticationFailedError
@@ -74,7 +80,7 @@ func (e *AuthenticationFailedError) IsNotRetriable() bool {
 }
 
 func (e *AuthenticationFailedError) Error() string {
-	return e.Err.Error()
+	return e.msg
 }
 
 func newAuthenticationResponseError(resp *azcore.Response) error {

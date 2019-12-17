@@ -87,7 +87,7 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
 	} else {
 		var respError *AuthenticationResponseError
-		if !errors.As(authFailed.Err, &respError) {
+		if !errors.As(authFailed.Unwrap(), &respError) {
 			t.Fatalf("Expected: AuthenticationResponseError, Received: %T", err)
 		} else {
 			if len(respError.Message) == 0 {

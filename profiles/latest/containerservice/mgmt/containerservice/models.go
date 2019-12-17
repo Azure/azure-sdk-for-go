@@ -22,7 +22,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-10-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-11-01/containerservice"
 )
 
 const (
@@ -39,7 +39,6 @@ const (
 type Kind = original.Kind
 
 const (
-	KindAADIdentityProvider                         Kind = original.KindAADIdentityProvider
 	KindOpenShiftManagedClusterBaseIdentityProvider Kind = original.KindOpenShiftManagedClusterBaseIdentityProvider
 )
 
@@ -124,6 +123,13 @@ const (
 	DockerCE   OrchestratorTypes = original.DockerCE
 	Kubernetes OrchestratorTypes = original.Kubernetes
 	Swarm      OrchestratorTypes = original.Swarm
+)
+
+type OutboundType = original.OutboundType
+
+const (
+	LoadBalancer       OutboundType = original.LoadBalancer
+	UserDefinedRouting OutboundType = original.UserDefinedRouting
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -352,6 +358,14 @@ type BaseClient = original.BaseClient
 type BasicOpenShiftManagedClusterBaseIdentityProvider = original.BasicOpenShiftManagedClusterBaseIdentityProvider
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type Componentsschemasagentpoolallof1 = original.Componentsschemasagentpoolallof1
+type Componentsschemascontainerserviceallof1 = original.Componentsschemascontainerserviceallof1
+type Componentsschemasmanagedclusteraccessprofileallof1 = original.Componentsschemasmanagedclusteraccessprofileallof1
+type Componentsschemasmanagedclusteragentpoolprofileallof1 = original.Componentsschemasmanagedclusteragentpoolprofileallof1
+type Componentsschemasmanagedclusterallof1 = original.Componentsschemasmanagedclusterallof1
+type Componentsschemasmanagedclusterpropertiespropertiesidentityprofileadditionalproperties = original.Componentsschemasmanagedclusterpropertiespropertiesidentityprofileadditionalproperties
+type Componentsschemasopenshiftmanagedclusteraadidentityproviderallof1 = original.Componentsschemasopenshiftmanagedclusteraadidentityproviderallof1
+type Componentsschemasopenshiftmanagedclusterallof1 = original.Componentsschemasopenshiftmanagedclusterallof1
 type ContainerService = original.ContainerService
 type ContainerServicesClient = original.ContainerServicesClient
 type ContainerServicesCreateOrUpdateFutureType = original.ContainerServicesCreateOrUpdateFutureType
@@ -370,6 +384,7 @@ type ManagedClusterAADProfile = original.ManagedClusterAADProfile
 type ManagedClusterAPIServerAccessProfile = original.ManagedClusterAPIServerAccessProfile
 type ManagedClusterAccessProfile = original.ManagedClusterAccessProfile
 type ManagedClusterAddonProfile = original.ManagedClusterAddonProfile
+type ManagedClusterAddonProfileIdentity = original.ManagedClusterAddonProfileIdentity
 type ManagedClusterAgentPoolProfile = original.ManagedClusterAgentPoolProfile
 type ManagedClusterAgentPoolProfileProperties = original.ManagedClusterAgentPoolProfileProperties
 type ManagedClusterIdentity = original.ManagedClusterIdentity
@@ -431,6 +446,7 @@ type SSHPublicKey = original.SSHPublicKey
 type ServicePrincipalProfile = original.ServicePrincipalProfile
 type SubResource = original.SubResource
 type TagsObject = original.TagsObject
+type UserAssignedIdentity = original.UserAssignedIdentity
 type VMDiagnostics = original.VMDiagnostics
 type WindowsProfile = original.WindowsProfile
 
@@ -520,6 +536,9 @@ func PossibleOpenShiftContainerServiceVMSizeValues() []OpenShiftContainerService
 }
 func PossibleOrchestratorTypesValues() []OrchestratorTypes {
 	return original.PossibleOrchestratorTypesValues()
+}
+func PossibleOutboundTypeValues() []OutboundType {
+	return original.PossibleOutboundTypeValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()

@@ -1,4 +1,4 @@
-// Package policyinsights implements the Azure ARM Policyinsights service API version .
+// Package policyinsights implements the Azure ARM Policyinsights service API version 2018-07-01-preview.
 //
 //
 package policyinsights
@@ -32,18 +32,20 @@ const (
 // BaseClient is the base client for Policyinsights.
 type BaseClient struct {
 	autorest.Client
-	BaseURI string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New() BaseClient {
-	return NewWithBaseURI(DefaultBaseURI)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:  autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI: baseURI,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

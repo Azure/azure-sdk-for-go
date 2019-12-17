@@ -183,6 +183,11 @@ func RequestNewDeviceCode(ctx context.Context, tenantID, clientID string, scopes
 	return nil, &AuthenticationFailedError{Err: newAuthenticationResponseError(resp)}
 }
 
+// AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.
+func (c *DeviceCodeCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+	return newBearerTokenPolicy(c, options)
+}
+
 func createDeviceCodeAccessToken(res *azcore.Response) (*DeviceCodeResult, error) {
 	value := &DeviceCodeResult{}
 	if err := json.Unmarshal(res.Payload, &value); err != nil {

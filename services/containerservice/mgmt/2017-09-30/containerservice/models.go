@@ -470,40 +470,23 @@ type AgentPoolProfile struct {
 	OsType OSType `json:"osType,omitempty"`
 }
 
-// ContainerService container service.
-type ContainerService struct {
-	autorest.Response `json:"-"`
+// Componentsschemascontainerserviceallof1 ...
+type Componentsschemascontainerserviceallof1 struct {
 	// Properties - Properties of the container service.
 	*Properties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
 }
 
-// MarshalJSON is the custom marshaler for ContainerService.
-func (cs ContainerService) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for Componentsschemascontainerserviceallof1.
+func (c Componentsschemascontainerserviceallof1) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if cs.Properties != nil {
-		objectMap["properties"] = cs.Properties
-	}
-	if cs.Location != nil {
-		objectMap["location"] = cs.Location
-	}
-	if cs.Tags != nil {
-		objectMap["tags"] = cs.Tags
+	if c.Properties != nil {
+		objectMap["properties"] = c.Properties
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for ContainerService struct.
-func (cs *ContainerService) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for Componentsschemascontainerserviceallof1 struct.
+func (c *Componentsschemascontainerserviceallof1) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -518,8 +501,133 @@ func (cs *ContainerService) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				cs.Properties = &properties
+				c.Properties = &properties
 			}
+		}
+	}
+
+	return nil
+}
+
+// Componentsschemasmanagedclusteraccessprofileallof1 ...
+type Componentsschemasmanagedclusteraccessprofileallof1 struct {
+	// AccessProfile - AccessProfile of a managed cluster.
+	*AccessProfile `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Componentsschemasmanagedclusteraccessprofileallof1.
+func (c Componentsschemasmanagedclusteraccessprofileallof1) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.AccessProfile != nil {
+		objectMap["properties"] = c.AccessProfile
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Componentsschemasmanagedclusteraccessprofileallof1 struct.
+func (c *Componentsschemasmanagedclusteraccessprofileallof1) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var accessProfile AccessProfile
+				err = json.Unmarshal(*v, &accessProfile)
+				if err != nil {
+					return err
+				}
+				c.AccessProfile = &accessProfile
+			}
+		}
+	}
+
+	return nil
+}
+
+// Componentsschemasmanagedclusterallof1 ...
+type Componentsschemasmanagedclusterallof1 struct {
+	// ManagedClusterProperties - Properties of a managed cluster.
+	*ManagedClusterProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Componentsschemasmanagedclusterallof1.
+func (c Componentsschemasmanagedclusterallof1) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.ManagedClusterProperties != nil {
+		objectMap["properties"] = c.ManagedClusterProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Componentsschemasmanagedclusterallof1 struct.
+func (c *Componentsschemasmanagedclusterallof1) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var managedClusterProperties ManagedClusterProperties
+				err = json.Unmarshal(*v, &managedClusterProperties)
+				if err != nil {
+					return err
+				}
+				c.ManagedClusterProperties = &managedClusterProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// ContainerService container service.
+type ContainerService struct {
+	autorest.Response `json:"-"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	// Properties - Properties of the container service.
+	*Properties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerService.
+func (cs ContainerService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cs.Location != nil {
+		objectMap["location"] = cs.Location
+	}
+	if cs.Tags != nil {
+		objectMap["tags"] = cs.Tags
+	}
+	if cs.Properties != nil {
+		objectMap["properties"] = cs.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ContainerService struct.
+func (cs *ContainerService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
 		case "id":
 			if v != nil {
 				var ID string
@@ -564,6 +672,15 @@ func (cs *ContainerService) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				cs.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var properties Properties
+				err = json.Unmarshal(*v, &properties)
+				if err != nil {
+					return err
+				}
+				cs.Properties = &properties
 			}
 		}
 	}
@@ -802,8 +919,6 @@ func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult
 // ManagedCluster managed cluster.
 type ManagedCluster struct {
 	autorest.Response `json:"-"`
-	// ManagedClusterProperties - Properties of a managed cluster.
-	*ManagedClusterProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
@@ -814,19 +929,21 @@ type ManagedCluster struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ManagedClusterProperties - Properties of a managed cluster.
+	*ManagedClusterProperties `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ManagedCluster.
 func (mc ManagedCluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mc.ManagedClusterProperties != nil {
-		objectMap["properties"] = mc.ManagedClusterProperties
-	}
 	if mc.Location != nil {
 		objectMap["location"] = mc.Location
 	}
 	if mc.Tags != nil {
 		objectMap["tags"] = mc.Tags
+	}
+	if mc.ManagedClusterProperties != nil {
+		objectMap["properties"] = mc.ManagedClusterProperties
 	}
 	return json.Marshal(objectMap)
 }
@@ -840,15 +957,6 @@ func (mc *ManagedCluster) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "properties":
-			if v != nil {
-				var managedClusterProperties ManagedClusterProperties
-				err = json.Unmarshal(*v, &managedClusterProperties)
-				if err != nil {
-					return err
-				}
-				mc.ManagedClusterProperties = &managedClusterProperties
-			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -894,6 +1002,15 @@ func (mc *ManagedCluster) UnmarshalJSON(body []byte) error {
 				}
 				mc.Tags = tags
 			}
+		case "properties":
+			if v != nil {
+				var managedClusterProperties ManagedClusterProperties
+				err = json.Unmarshal(*v, &managedClusterProperties)
+				if err != nil {
+					return err
+				}
+				mc.ManagedClusterProperties = &managedClusterProperties
+			}
 		}
 	}
 
@@ -903,8 +1020,6 @@ func (mc *ManagedCluster) UnmarshalJSON(body []byte) error {
 // ManagedClusterAccessProfile managed cluster Access Profile.
 type ManagedClusterAccessProfile struct {
 	autorest.Response `json:"-"`
-	// AccessProfile - AccessProfile of a managed cluster.
-	*AccessProfile `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
@@ -915,19 +1030,21 @@ type ManagedClusterAccessProfile struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// AccessProfile - AccessProfile of a managed cluster.
+	*AccessProfile `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ManagedClusterAccessProfile.
 func (mcap ManagedClusterAccessProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mcap.AccessProfile != nil {
-		objectMap["properties"] = mcap.AccessProfile
-	}
 	if mcap.Location != nil {
 		objectMap["location"] = mcap.Location
 	}
 	if mcap.Tags != nil {
 		objectMap["tags"] = mcap.Tags
+	}
+	if mcap.AccessProfile != nil {
+		objectMap["properties"] = mcap.AccessProfile
 	}
 	return json.Marshal(objectMap)
 }
@@ -941,15 +1058,6 @@ func (mcap *ManagedClusterAccessProfile) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "properties":
-			if v != nil {
-				var accessProfile AccessProfile
-				err = json.Unmarshal(*v, &accessProfile)
-				if err != nil {
-					return err
-				}
-				mcap.AccessProfile = &accessProfile
-			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -994,6 +1102,15 @@ func (mcap *ManagedClusterAccessProfile) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				mcap.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var accessProfile AccessProfile
+				err = json.Unmarshal(*v, &accessProfile)
+				if err != nil {
+					return err
+				}
+				mcap.AccessProfile = &accessProfile
 			}
 		}
 	}

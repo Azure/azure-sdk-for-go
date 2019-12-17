@@ -5,10 +5,8 @@ package azidentity
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
 	"net/url"
-	"reflect"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -67,7 +65,7 @@ func (e *AuthenticationResponseError) Error() string {
 
 // AuthenticationFailedError is a struct used to marshal responses when authentication has failed
 type AuthenticationFailedError struct {
-	AuthError error
+	Err error
 }
 
 // IsNotRetriable allows retry policy to stop execution in case it receives a AuthenticationFailedError
@@ -76,35 +74,7 @@ func (e *AuthenticationFailedError) IsNotRetriable() bool {
 }
 
 func (e *AuthenticationFailedError) Error() string {
-	return e.AuthError.Error()
-}
-
-func As(err error, target interface{}) bool {
-	var authFailedErr *AuthenticationFailedError
-	if reflect.TypeOf(err) == reflect.TypeOf(authFailedErr) {
-		err = err.(*AuthenticationFailedError).AuthError
-	}
-
-	if target == nil {
-		panic("errors: target cannot be nil")
-	}
-	typ := reflect.TypeOf(target)
-	if typ.Kind() != reflect.Ptr {
-		panic("errors: target must be a pointer")
-	}
-	targetType := typ.Elem()
-	for {
-		if reflect.TypeOf(err) == targetType {
-			reflect.ValueOf(target).Elem().Set(reflect.ValueOf(err))
-			return true
-		}
-		if x, ok := err.(interface{ As(interface{}) bool }); ok && x.As(target) {
-			return true
-		}
-		if err = errors.Unwrap(err); err == nil {
-			return false
-		}
-	}
+	return e.Err.Error()
 }
 
 func newAuthenticationResponseError(resp *azcore.Response) error {

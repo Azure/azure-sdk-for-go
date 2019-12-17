@@ -50,7 +50,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 	if token == nil && len(errList) == 0 {
 		return nil, nil
 	}
-	return nil, &AuthenticationFailedError{AuthError: &ChainedCredentialError{ErrorList: errList}}
+	return nil, &AuthenticationFailedError{Err: &ChainedCredentialError{ErrorList: errList}}
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on ChainedTokenCredential.

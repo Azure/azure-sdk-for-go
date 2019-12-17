@@ -82,30 +82,35 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
-	var authFailed *AuthenticationResponseError
+	var authFailed *AuthenticationFailedError
 	if !errors.As(err, &authFailed) {
 		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
 	} else {
-		if len(authFailed.Message) == 0 {
-			t.Fatalf("Did not receive an error message")
-		}
-		if len(authFailed.Description) == 0 {
-			t.Fatalf("Did not receive an error description")
-		}
-		if len(authFailed.Timestamp) == 0 {
-			t.Fatalf("Did not receive a timestamp")
-		}
-		if len(authFailed.TraceID) == 0 {
-			t.Fatalf("Did not receive a TraceID")
-		}
-		if len(authFailed.CorrelationID) == 0 {
-			t.Fatalf("Did not receive a CorrelationID")
-		}
-		if len(authFailed.URI) == 0 {
-			t.Fatalf("Did not receive an error URI")
-		}
-		if authFailed.Response == nil {
-			t.Fatalf("Did not receive an error response")
+		var respError *AuthenticationResponseError
+		if !errors.As(authFailed.Err, &respError) {
+			t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
+		} else {
+			if len(respError.Message) == 0 {
+				t.Fatalf("Did not receive an error message")
+			}
+			if len(respError.Description) == 0 {
+				t.Fatalf("Did not receive an error description")
+			}
+			if len(respError.Timestamp) == 0 {
+				t.Fatalf("Did not receive a timestamp")
+			}
+			if len(respError.TraceID) == 0 {
+				t.Fatalf("Did not receive a TraceID")
+			}
+			if len(respError.CorrelationID) == 0 {
+				t.Fatalf("Did not receive a CorrelationID")
+			}
+			if len(respError.URI) == 0 {
+				t.Fatalf("Did not receive an error URI")
+			}
+			if respError.Response == nil {
+				t.Fatalf("Did not receive an error response")
+			}
 		}
 	}
 }

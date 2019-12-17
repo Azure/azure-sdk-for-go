@@ -33,13 +33,13 @@ type PolicyStatesClient struct {
 }
 
 // NewPolicyStatesClient creates an instance of the PolicyStatesClient client.
-func NewPolicyStatesClient() PolicyStatesClient {
-	return NewPolicyStatesClientWithBaseURI(DefaultBaseURI)
+func NewPolicyStatesClient(subscriptionID string) PolicyStatesClient {
+	return NewPolicyStatesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPolicyStatesClientWithBaseURI creates an instance of the PolicyStatesClient client.
-func NewPolicyStatesClientWithBaseURI(baseURI string) PolicyStatesClient {
-	return PolicyStatesClient{NewWithBaseURI(baseURI)}
+func NewPolicyStatesClientWithBaseURI(baseURI string, subscriptionID string) PolicyStatesClient {
+	return PolicyStatesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListQueryResultsForManagementGroup queries policy states for the resources under the management group.

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## `v14.4.0`
+
+### Changes
+
+- Included APIVersion parameter on majority of resources.go functions
+
 ## `v14.3.0`
 
 ### Changes

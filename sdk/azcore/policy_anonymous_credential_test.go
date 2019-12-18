@@ -17,8 +17,8 @@ func TestAnonymousCredential(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
 	pl := NewPipeline(srv, AnonymousCredential().AuthenticationPolicy(AuthenticationPolicyOptions{}))
-	req := pl.NewRequest(http.MethodGet, srv.URL())
-	resp, err := req.Do(context.Background())
+	req := NewRequest(http.MethodGet, srv.URL())
+	resp, err := pl.Do(context.Background(), req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

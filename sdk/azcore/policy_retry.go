@@ -145,7 +145,7 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 
 		// Set the time for this particular retry operation and then Do the operation.
 		tryCtx, tryCancel := context.WithTimeout(ctx, p.options.TryTimeout)
-		resp, err = req.Do(tryCtx) // Make the request
+		resp, err = req.Next(tryCtx) // Make the request
 		tryCancel()
 		if shouldLog {
 			Log().Write(LogRetryPolicy, fmt.Sprintf("Err=%v, response=%v\n", err, resp))

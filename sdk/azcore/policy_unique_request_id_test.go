@@ -16,8 +16,7 @@ func TestUniqueRequestIDPolicy(t *testing.T) {
 	defer close()
 	srv.SetResponse()
 	pl := NewPipeline(srv, NewUniqueRequestIDPolicy())
-	req := pl.NewRequest(http.MethodGet, srv.URL())
-	resp, err := req.Do(context.Background())
+	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -31,10 +30,10 @@ func TestUniqueRequestIDPolicyUserDefined(t *testing.T) {
 	defer close()
 	srv.SetResponse()
 	pl := NewPipeline(srv, NewUniqueRequestIDPolicy())
-	req := pl.NewRequest(http.MethodGet, srv.URL())
+	req := NewRequest(http.MethodGet, srv.URL())
 	const customID = "my-custom-id"
 	req.Header.Set(xMsClientRequestID, customID)
-	resp, err := req.Do(context.Background())
+	resp, err := pl.Do(context.Background(), req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

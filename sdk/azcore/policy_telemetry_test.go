@@ -17,8 +17,7 @@ func TestPolicyTelemetryDefault(t *testing.T) {
 	defer close()
 	srv.SetResponse()
 	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
-	req := pl.NewRequest(http.MethodGet, srv.URL())
-	resp, err := req.Do(context.Background())
+	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -33,8 +32,7 @@ func TestPolicyTelemetryWithCustomInfo(t *testing.T) {
 	srv.SetResponse()
 	const testValue = "azcore_test"
 	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{Value: testValue}))
-	req := pl.NewRequest(http.MethodGet, srv.URL())
-	resp, err := req.Do(context.Background())
+	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

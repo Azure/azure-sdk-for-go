@@ -19,6 +19,7 @@ package resourcesapi
 
 import (
 	"context"
+
 	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-05-01/resources"
 	"github.com/Azure/go-autorest/autorest"
 )
@@ -73,8 +74,8 @@ var _ ProvidersClientAPI = (*resources.ProvidersClient)(nil)
 
 // ClientAPI contains the set of methods on the Client type.
 type ClientAPI interface {
-	CheckExistence(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (result autorest.Response, err error)
-	CheckExistenceByID(ctx context.Context, resourceID string) (result autorest.Response, err error)
+	CheckExistence(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, APIVersion string) (result autorest.Response, err error)
+	CheckExistenceByID(ctx context.Context, resourceID string, APIVersion string) (result autorest.Response, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, parameters resources.GenericResource) (result resources.CreateOrUpdateFuture, err error)
 	CreateOrUpdateByID(ctx context.Context, resourceID string, parameters resources.GenericResource) (result resources.CreateOrUpdateByIDFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (result resources.DeleteFuture, err error)

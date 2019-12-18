@@ -234,7 +234,9 @@ func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 		_, span := r.startConsumerSpanFromContext(ctx, optName)
 		span.Logger().Error(err)
 		r.lastError = err
-		r.doneListening()
+		if r.doneListening != nil {
+			r.doneListening()
+		}
 		return
 	}
 
@@ -249,7 +251,9 @@ func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 	if err := handler.Handle(ctx, event); err != nil {
 		// stop handling messages since the message consumer ran into an unexpected error
 		r.lastError = err
-		r.doneListening()
+		if r.doneListening != nil {
+			r.doneListening()
+		}
 		return
 	}
 
@@ -271,7 +275,9 @@ func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 		// be sure the final message disposition.
 		tab.For(ctx).Error(err)
 		r.lastError = err
-		r.doneListening()
+		if r.doneListening != nil {
+			r.doneListening()
+		}
 		return
 	}
 }

@@ -152,19 +152,14 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 		if err != nil {
 			return nil, err
 		}
-		c.updateRefreshToken(value.RefreshToken)
-		ei := time.Now().Add(time.Second * time.Duration(expiresIn)).UTC()
-		fmt.Println(ei)
 		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(expiresIn)).UTC()}, nil
 	}
 	if expiresOn, err := strconv.Atoi(value.ExpiresOn); err == nil {
-		c.updateRefreshToken(value.RefreshToken)
 		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(expiresOn)).UTC()}, nil
 	}
 	// this is the case when expires_on is a time string
 	// this is the format of the string coming from the service
 	if expiresOn, err := time.Parse("01/02/2006 15:04:05 PM +00:00", value.ExpiresOn); err == nil {
-		c.updateRefreshToken(value.RefreshToken)
 		eo := expiresOn.UTC()
 		return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
 	} else {
@@ -172,16 +167,10 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 	}
 }
 
-func (c *managedIdentityClient) updateRefreshToken(tk string) {
-	c.lock.Lock()
-	c.refreshToken = tk
-	c.lock.Unlock()
-}
-
 func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID string, scopes []string) (*azcore.Request, error) {
 	switch msiType {
 	case imds:
-		return c.createIMDSAuthRequest(clientID, scopes), nil
+		return c.createIMDSAuthRequest(scopes), nil
 	case appService:
 		return c.createAppServiceAuthRequest(clientID, scopes), nil
 	case cloudShell:
@@ -199,7 +188,7 @@ func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID stri
 	}
 }
 
-func (c *managedIdentityClient) createIMDSAuthRequest(clientID string, scopes []string) *azcore.Request {
+func (c *managedIdentityClient) createIMDSAuthRequest(scopes []string) *azcore.Request {
 	request := c.pipeline.NewRequest(http.MethodGet, *c.endpoint)
 	request.Header.Set(azcore.HeaderMetadata, "true")
 	q := request.URL.Query()

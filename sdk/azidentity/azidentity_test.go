@@ -4,7 +4,6 @@
 package azidentity
 
 import (
-	"fmt"
 	"net/url"
 	"testing"
 
@@ -29,5 +28,7 @@ func Test_NonNilTokenCredentialOptsNilAuthorityHost(t *testing.T) {
 
 func TestSuffix(t *testing.T) {
 	str := scopesToResource("https://storage.azure.com/.default")
-	fmt.Println(str)
+	if str != "https://storage.azure.com" {
+		t.Fatalf("Could not convert scope string to a proper resource string")
+	}
 }

@@ -46,7 +46,80 @@ func NewDeviceCodeCredential(tenantID string, clientID string, callback func(str
 	return &DeviceCodeCredential{tenantID: tenantID, clientID: clientID, callback: callback, client: newAADIdentityClient(options)}
 }
 
-// AuthenticateDeviceCode creates a device code authentication request and returns an Access Token or
+// GetToken obtains a token from the Azure Active Directory service, following the device code authentication
+// flow. This function first requests a device code and requests that the user login to continue authenticating.
+// This function will keep polling the service for a token meanwhile the user logs.
+// - scopes: The list of scopes for which the token will have access.
+// - ctx: controlling the request lifetime.
+// Returns an AccessToken which can be used to authenticate service client calls.
+func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+	dc, err := c.client.requestNewDeviceCode(ctx, c.tenantID, c.clientID, opts.Scopes)
+	if err != nil {
+		return nil, err
+	}
+	c.callback(dc.Message)
+	for {
+		tk, err := c.client.authenticateDeviceCode(ctx, c.tenantID, c.clientID, dc.DeviceCode, opts.Scopes)
+		if err == nil {
+			return tk, err
+		}
+		var authFailed *AuthenticationFailedError
+		if !errors.As(err, &authFailed) {
+			return nil, err
+		}
+		var authRespErr *AuthenticationResponseError
+		if !errors.As(authFailed.Unwrap(), &authRespErr) {
+			return nil, err
+		}
+		switch authRespErr.Message {
+		case "authorization_pending":
+			time.Sleep(time.Duration(dc.Interval) * time.Second)
+		default:
+			// Any other error should be returned
+			return nil, err
+		}
+	}
+}
+
+// AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.
+func (c *DeviceCodeCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+	return newBearerTokenPolicy(c, options)
+}
+
+func createDeviceCodeResult(res *azcore.Response) (*DeviceCodeResult, error) {
+	value := &DeviceCodeResult{}
+	if err := json.Unmarshal(res.Payload, &value); err != nil {
+		return nil, fmt.Errorf("DeviceCodeResult: %w", err)
+	}
+	return value, nil
+}
+
+func (c *aadIdentityClient) createDeviceCodeAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
+	value := struct {
+		// these are the only fields that we use
+		Token        string      `json:"access_token"`
+		RefreshToken string      `json:"refresh_token"`
+		ExpiresIn    json.Number `json:"expires_in"`
+		ExpiresOn    string      `json:"expires_on"` // the value returned in this field varies between a number and a date string
+	}{}
+	if err := json.Unmarshal(res.Payload, &value); err != nil {
+		return nil, fmt.Errorf("internal AccessToken: %w", err)
+	}
+	expiresIn, err := value.ExpiresIn.Int64()
+	if err != nil {
+		return nil, err
+	}
+	c.updateRefreshToken(value.RefreshToken)
+	return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(expiresIn)).UTC()}, nil
+}
+
+func (c *aadIdentityClient) updateRefreshToken(tk string) {
+	// c.lock.Lock()
+	// c.refreshToken = tk
+	// c.lock.Unlock()
+}
+
+// authenticateDeviceCode creates a device code authentication request and returns an Access Token or
 // an error in case of authentication failure.
 // ctx: The current request context
 // tenantID: The Azure Active Directory tenant (directory) Id of the service principal
@@ -66,17 +139,20 @@ func (c *aadIdentityClient) authenticateDeviceCode(ctx context.Context, tenantID
 
 	// This should never happen under normal conditions
 	if resp == nil {
-		return nil, &AuthenticationFailedError{Err: errors.New("Something unexpected happened with the request and received a nil response")}
+		return nil, &AuthenticationFailedError{Message: "Something unexpected happened with the request and received a nil response"}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
-		return c.createAccessToken(resp)
+		return c.createDeviceCodeAccessToken(resp)
 	}
 
 	return nil, &AuthenticationFailedError{Err: newAuthenticationResponseError(resp)}
 }
 
 func (c *aadIdentityClient) createDeviceCodeAuthRequest(tenantID string, clientID string, deviceCode string, scopes []string) (*azcore.Request, error) {
+	if len(tenantID) == 0 { // if the user did not pass in a tenantID then the default value is set
+		tenantID = "organizations"
+	}
 	urlStr := c.options.AuthorityHost.String() + tenantID + tokenEndpoint
 	urlFormat, err := url.Parse(urlStr)
 	if err != nil {
@@ -98,43 +174,27 @@ func (c *aadIdentityClient) createDeviceCodeAuthRequest(tenantID string, clientI
 	return msg, nil
 }
 
-// GetToken ...
-func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	dc, err := c.client.requestNewDeviceCode(ctx, c.tenantID, c.clientID, opts.Scopes)
+func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, clientID string, scopes []string) (*DeviceCodeResult, error) {
+	msg, err := c.createDeviceCodeNumberRequest(tenantID, clientID, scopes)
 	if err != nil {
 		return nil, err
 	}
-	c.callback(dc.Message)
-	for {
-		tk, err := c.client.authenticateDeviceCode(ctx, c.tenantID, c.clientID, dc.DeviceCode, opts.Scopes)
-		if err == nil {
-			return tk, err
-		}
-		var authFailed *AuthenticationResponseError
-		if !errors.As(err, &authFailed) {
-			return nil, err
-		} else {
-			switch authFailed.Message {
-			case "authorization_pending":
-				time.Sleep(time.Duration(dc.Interval) * time.Second)
-				continue
-			case "authorization_declined":
-				return nil, err
-			case "expired_token":
-				return nil, err
-			case "bad_verification_code":
-				return nil, err
-			default:
-				// Any other error should be returned
-				return nil, err
-			}
-		}
-	}
-	return nil, err
 
+	resp, err := msg.Do(ctx)
+	if err != nil {
+		return nil, err
+	}
+	// This should never happen under normal conditions
+	if resp == nil {
+		return nil, &AuthenticationFailedError{Err: errors.New("Something unexpected happened with the request and received a nil response")}
+	}
+	if resp.HasStatusCode(successStatusCodes[:]...) {
+		return createDeviceCodeResult(resp)
+	}
+	return nil, &AuthenticationFailedError{Err: newAuthenticationResponseError(resp)}
 }
 
-func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, clientID string, scopes []string) (*DeviceCodeResult, error) {
+func (c *aadIdentityClient) createDeviceCodeNumberRequest(tenantID string, clientID string, scopes []string) (*azcore.Request, error) {
 	if len(tenantID) == 0 { // if the user did not pass in a tenantID then the default value is set
 		tenantID = "organizations"
 	}
@@ -154,29 +214,5 @@ func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := msg.Do(ctx)
-	if err != nil {
-		return nil, err
-	}
-	// This should never happen under normal conditions
-	if resp == nil {
-		return nil, &AuthenticationFailedError{Err: errors.New("Something unexpected happened with the request and received a nil response")}
-	}
-	if resp.HasStatusCode(successStatusCodes[:]...) {
-		return createDeviceCodeResult(resp)
-	}
-	return nil, &AuthenticationFailedError{Err: newAuthenticationResponseError(resp)}
-}
-
-// AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.
-func (c *DeviceCodeCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return newBearerTokenPolicy(c, options)
-}
-
-func createDeviceCodeResult(res *azcore.Response) (*DeviceCodeResult, error) {
-	value := &DeviceCodeResult{}
-	if err := json.Unmarshal(res.Payload, &value); err != nil {
-		return nil, fmt.Errorf("internalAccessToken: %w", err)
-	}
-	return value, nil
+	return msg, nil
 }

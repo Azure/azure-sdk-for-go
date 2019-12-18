@@ -106,9 +106,35 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-	var chainedError *ChainedCredentialError
-	if !errors.As(err, &chainedError) {
-		t.Fatalf("Expected Error Type: ChainedCredentialError, ReceivedErrorType: %T", err)
+	var authErr *AuthenticationFailedError
+	if !errors.As(err, &authErr) {
+		t.Fatalf("Expected Error Type: AuthenticationFailedError, ReceivedErrorType: %T", err)
+	}
+	if len(err.Error()) == 0 {
+		t.Fatalf("Did not create an appropriate error message")
+	}
+}
+
+func TestChainedTokenCredential_GetTokenFailCredentialUnavailable(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
+	// testURL := srv.URL()
+	msiCred := NewManagedIdentityCredential("", nil)
+	cred, err := NewChainedTokenCredential(msiCred)
+	if err != nil {
+		t.Fatalf("Failed to create ChainedTokenCredential: %v", err)
+	}
+	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
+	}
+	var unavailableErr *CredentialUnavailableError
+	if !errors.As(err, &unavailableErr) {
+		t.Fatalf("Expected Error Type: CredentialUnavailableError, ReceivedErrorType: %T", err)
+	}
+	if len(unavailableErr.Error()) == 0 {
+		t.Fatalf("Failed to form a message for the ChainedCredentialError")
 	}
 	if len(err.Error()) == 0 {
 		t.Fatalf("Did not create an appropriate error message")

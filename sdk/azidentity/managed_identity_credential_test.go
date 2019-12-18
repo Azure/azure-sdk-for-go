@@ -14,7 +14,9 @@ import (
 )
 
 const (
-	msiScope = "https://storage.azure.com"
+	msiScope                   = "https://storage.azure.com"
+	appServiceTokenSuccessResp = `{"access_token": "new_token", "expires_on": "09/14/2017 00:00:00 PM +00:00", "resource": "https://vault.azure.net", "token_type": "Bearer"}`
+	expiresOnIntResp           = `{"access_token": "new_token", "refresh_token": "", "expires_in": "", "expires_on": "1560974028", "not_before": "1560970130", "resource": "https://vault.azure.net", "token_type": "Bearer"}`
 )
 
 func TestManagedIdentityCredential_GetTokenInCloudShellLive(t *testing.T) {
@@ -70,12 +72,25 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMock(t *testing.T) {
 	}
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(`{
-		"access_token": "eyJ0eXAi…",
-		"expires_on": "09/14/2017 00:00:00 PM +00:00",
-		"resource": "https://vault.azure.net",
-		"token_type": "Bearer"
-	}`)))
+	srv.AppendResponse(mock.WithBody([]byte(appServiceTokenSuccessResp)))
+	testURL := srv.URL()
+	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
+	_ = os.Setenv("MSI_SECRET", "secret")
+	msiCred := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	if err != nil {
+		t.Fatalf("Received an error when attempting to retrieve a token")
+	}
+}
+
+func TestManagedIdentityCredential_CreateAccessTokenExpiresOnInt(t *testing.T) {
+	err := resetEnvironmentVarsForTest()
+	if err != nil {
+		t.Fatalf("Unable to set environment variables")
+	}
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(expiresOnIntResp)))
 	testURL := srv.URL()
 	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
 	_ = os.Setenv("MSI_SECRET", "secret")
@@ -184,4 +199,26 @@ func TestManagedIdentityCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected a JSON marshal error but received nil")
 	}
+}
+
+func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
+	cred := NewManagedIdentityCredential(clientID, nil)
+	cred.client.endpoint = imdsURL
+	req := cred.client.createIMDSAuthRequest([]string{msiScope})
+	if req.Request.Header.Get(azcore.HeaderMetadata) != "true" {
+		t.Fatalf("Unexpected value for Content-Type header")
+	}
+	// queryValues, err :=
+	// if req.Request.URL.Query["api-version"] != imdsAPIVersion {
+	// 	t.Fatalf("Unexpected IMDS API version")
+	// }
+	// if reqQueryParams["resource"][0] != msiScope {
+	// 	t.Fatalf("Unexpected resource in resource query param")
+	// }
+	// if req.Request.URL.Host != imdsURL.Host {
+	// 	t.Fatalf("Unexpected default authority host")
+	// }
+	// if req.Request.URL.Scheme != "https" {
+	// 	t.Fatalf("Wrong request scheme")
+	// }
 }

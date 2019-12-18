@@ -7,7 +7,7 @@ import (
 	"net/url"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	azinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/azblob"
+	azinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/blob/2018-11-09/azblob/internal/azblob"
 )
 
 const (

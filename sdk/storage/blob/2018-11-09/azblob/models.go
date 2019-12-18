@@ -7,7 +7,7 @@ import (
 	"context"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	azinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/azblob"
+	azinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/blob/2018-11-09/azblob/internal/azblob"
 )
 
 // ListContainersIterator provides an abstraction for iterating over a collection of containers.

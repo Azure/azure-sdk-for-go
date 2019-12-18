@@ -187,6 +187,7 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 		MaxTries:   5,
 		RetryDelay: 2 * time.Second,
 		StatusCodes: append(statusCodes,
+			// The following status codes are a subset of those found in azcore.StatusCodesForRetry, these are the only ones specifically needed for MSI scenarios
 			http.StatusRequestTimeout,      // 408
 			http.StatusTooManyRequests,     // 429
 			http.StatusInternalServerError, // 500

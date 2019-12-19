@@ -34,8 +34,7 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 		azcore.NewRetryPolicy(azcore.RetryOptions{}),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	req := pipeline.NewRequest(http.MethodGet, srv.URL())
-	_, err := req.Do(context.Background())
+	_, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
 	if err != nil {
 		t.Fatalf("Expected nil error but received one")
 	}
@@ -55,8 +54,7 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 		azcore.NewRetryPolicy(azcore.RetryOptions{}),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	req := pipeline.NewRequest(http.MethodGet, srv.URL())
-	_, err := req.Do(context.Background())
+	_, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
@@ -81,12 +79,12 @@ func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 		azcore.NewRetryPolicy(azcore.RetryOptions{}),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	req := pipeline.NewRequest(http.MethodGet, srv.URL())
-	_, err := req.Do(context.Background())
+	req := azcore.NewRequest(http.MethodGet, srv.URL())
+	_, err := pipeline.Do(context.Background(), req)
 	if err != nil {
 		t.Fatalf("Expected nil error but received one")
 	}
-	_, err = req.Do(context.Background())
+	_, err = pipeline.Do(context.Background(), req)
 	if err != nil {
 		t.Fatalf("Expected nil error but received one")
 	}
@@ -107,8 +105,7 @@ func TestRetryPolicy_IsNotRetriable(t *testing.T) {
 		azcore.NewRetryPolicy(azcore.RetryOptions{}),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	req := pipeline.NewRequest(http.MethodGet, srv.URL())
-	_, err := req.Do(context.Background())
+	_, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
@@ -127,8 +124,7 @@ func TestRetryPolicy_HTTPRequest(t *testing.T) {
 		azcore.NewRetryPolicy(azcore.RetryOptions{}),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	req := pipeline.NewRequest(http.MethodGet, srv.URL())
-	_, err := req.Do(context.Background())
+	_, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}

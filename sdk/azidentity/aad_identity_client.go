@@ -67,7 +67,7 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 		return nil, err
 	}
 
-	resp, err := msg.Do(ctx)
+	resp, err := c.pipeline.Do(ctx, msg)
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +97,7 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 		return nil, err
 	}
 
-	resp, err := msg.Do(ctx)
+	resp, err := c.pipeline.Do(ctx, msg)
 	if err != nil {
 		return nil, err
 	}
@@ -144,7 +144,7 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clien
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := c.pipeline.NewRequest(http.MethodPost, *urlFormat)
+	msg := azcore.NewRequest(http.MethodPost, *urlFormat)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 	err = msg.SetBody(body)
 	if err != nil {
@@ -173,7 +173,7 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, 
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := c.pipeline.NewRequest(http.MethodPost, *urlFormat)
+	msg := azcore.NewRequest(http.MethodPost, *urlFormat)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 
 	err = msg.SetBody(body)
@@ -197,7 +197,7 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 		return nil, err
 	}
 
-	resp, err := msg.Do(ctx)
+	resp, err := c.pipeline.Do(ctx, msg)
 	if err != nil {
 		return nil, err
 	}
@@ -229,7 +229,7 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, c
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := c.pipeline.NewRequest(http.MethodPost, *urlFormat)
+	msg := azcore.NewRequest(http.MethodPost, *urlFormat)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 	err = msg.SetBody(body)
 	if err != nil {

@@ -16,8 +16,7 @@ func TestResponseUnmarshalXML(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte("<testXML><SomeInt>1</SomeInt><SomeString>s</SomeString></testXML>")))
 	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
-	req := pl.NewRequest(http.MethodGet, srv.URL())
-	resp, err := req.Do(context.Background())
+	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -38,8 +37,7 @@ func TestResponseFailureStatusCode(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusForbidden))
 	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
-	req := pl.NewRequest(http.MethodGet, srv.URL())
-	resp, err := req.Do(context.Background())
+	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

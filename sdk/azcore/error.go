@@ -4,7 +4,13 @@
 package azcore
 
 import (
+	"errors"
 	"fmt"
+)
+
+var (
+	// ErrNoMorePolicies is returned from Request.Next() if there are no more policies in the pipeline.
+	ErrNoMorePolicies = errors.New("no more policies")
 )
 
 // TODO: capture frame info for marshal, unmarshal, and parsing errors

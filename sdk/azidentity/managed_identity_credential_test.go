@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"net/http"
+	"net/url"
 	"os"
 	"testing"
 
@@ -207,17 +208,20 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 	if req.Request.Header.Get(azcore.HeaderMetadata) != "true" {
 		t.Fatalf("Unexpected value for Content-Type header")
 	}
-	// queryValues, err :=
-	// if req.Request.URL.Query["api-version"] != imdsAPIVersion {
-	// 	t.Fatalf("Unexpected IMDS API version")
-	// }
-	// if reqQueryParams["resource"][0] != msiScope {
-	// 	t.Fatalf("Unexpected resource in resource query param")
-	// }
-	// if req.Request.URL.Host != imdsURL.Host {
-	// 	t.Fatalf("Unexpected default authority host")
-	// }
-	// if req.Request.URL.Scheme != "https" {
-	// 	t.Fatalf("Wrong request scheme")
-	// }
+	reqQueryParams, err := url.ParseQuery(req.URL.RawQuery)
+	if err != nil {
+		t.Fatalf("Unable to parse IMDS query params: %v", err)
+	}
+	if reqQueryParams["api-version"][0] != imdsAPIVersion {
+		t.Fatalf("Unexpected IMDS API version")
+	}
+	if reqQueryParams["resource"][0] != msiScope {
+		t.Fatalf("Unexpected resource in resource query param")
+	}
+	if req.Request.URL.Host != imdsURL.Host {
+		t.Fatalf("Unexpected default authority host")
+	}
+	if req.Request.URL.Scheme != "http" {
+		t.Fatalf("Wrong request scheme")
+	}
 }

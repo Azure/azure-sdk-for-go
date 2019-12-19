@@ -60,7 +60,6 @@ func TestDefaultTokenCredential_NilOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Did not expect to receive an error in creating the credential")
 	}
-	// TODO CHECK this
 	if len(cred.sources) != 2 {
 		t.Fatalf("Length of ChainedTokenCredential sources for DefaultTokenCredential. Expected: 1, Received: %d", len(cred.sources))
 	}

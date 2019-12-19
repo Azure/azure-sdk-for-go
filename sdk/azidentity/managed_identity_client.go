@@ -12,7 +12,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -36,36 +35,33 @@ const (
 
 type msiType int
 
-const ( // todo rename
-	unknown     msiType = 0
-	imds        msiType = 1
-	appService  msiType = 2
-	cloudShell  msiType = 3
-	unavailable msiType = 4
+const (
+	msiTypeUnknown     msiType = 0
+	msiTypeIMDS        msiType = 1
+	msiTypeAppService  msiType = 2
+	msiTypeCloudShell  msiType = 3
+	msiTypeUnavailable msiType = 4
 )
 
 // ManagedIdentityClient provides the base for authenticating with Managed Identities on Azure VMs and Cloud Shell
 // This type initializes a default azcore.Pipeline and IdentityClientOptions.
 type managedIdentityClient struct {
-	lock                   sync.RWMutex
 	options                TokenCredentialOptions
 	pipeline               azcore.Pipeline
 	imdsAPIVersion         string
-	imdsAvailableTimeoutMS int // todo CHANGE TO duration
+	imdsAvailableTimeoutMS time.Duration
 	msiType                msiType
 	endpoint               *url.URL
-	refreshToken           string
 }
 
 var (
 	imdsURL        *url.URL // these are initialized in the init func and are R/O afterwards
-	defaultMSIOpts *ManagedIdentityCredentialOptions
+	defaultMSIOpts = newDefaultManagedIdentityOptions()
 )
 
 func init() {
-	// The error check is handled in managed_identity_client_test.go
+	// The error checked for in managed_identity_client_test.go and should not be ignored if the test fails
 	imdsURL, _ = url.Parse(imdsEndpoint)
-	defaultMSIOpts = newDefaultManagedIdentityOptions() // todo move to var initialization
 }
 
 func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
@@ -82,10 +78,10 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *manage
 	options = options.setDefaultValues()
 	// TODO document the use of these variables
 	return &managedIdentityClient{
-		pipeline:               newDefaultMSIPipeline(*options),
+		pipeline:               newDefaultMSIPipeline(*options), // a pipeline that includes
 		imdsAPIVersion:         imdsAPIVersion,
 		imdsAvailableTimeoutMS: 500,
-		msiType:                unknown,
+		msiType:                msiTypeUnknown,
 	}
 }
 
@@ -101,7 +97,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, clientID strin
 	}
 	// This condition should never be true since getMSIType returns an error in these cases
 	// if msi is unavailable or we were unable to determine the type return a nil access token
-	if currentMSI == unavailable || currentMSI == unknown {
+	if currentMSI == msiTypeUnavailable || currentMSI == msiTypeUnknown {
 		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
 	}
 
@@ -140,11 +136,11 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 		// these are the only fields that we use
 		Token        string      `json:"access_token"`
 		RefreshToken string      `json:"refresh_token"`
-		ExpiresIn    json.Number `json:"expires_in"`
+		ExpiresIn    json.Number `json:"expires_in"` // this field should always return the number of seconds for which a token is valid
 		ExpiresOn    string      `json:"expires_on"` // the value returned in this field varies between a number and a date string
 	}{}
 	if err := json.Unmarshal(res.Payload, &value); err != nil {
-		return nil, fmt.Errorf("internalAccessToken: %w", err)
+		return nil, fmt.Errorf("internal AccessToken: %w", err)
 	}
 	if value.ExpiresIn != "" {
 		expiresIn, err := value.ExpiresIn.Int64()
@@ -158,7 +154,7 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 	}
 	// this is the case when expires_on is a time string
 	// this is the format of the string coming from the service
-	if expiresOn, err := time.Parse("01/02/2006 15:04:05 PM +00:00", value.ExpiresOn); err == nil {
+	if expiresOn, err := time.Parse("01/02/2006 15:04:05 PM +00:00", value.ExpiresOn); err == nil { // the date string specified in the layout param of time.Parse cannot be changed, Golang expects whatever layout to always signify January 2, 2006 at 3:04 PM
 		eo := expiresOn.UTC()
 		return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
 	} else {
@@ -168,16 +164,16 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 
 func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID string, scopes []string) (*azcore.Request, error) {
 	switch msiType {
-	case imds:
+	case msiTypeIMDS:
 		return c.createIMDSAuthRequest(scopes), nil
-	case appService:
+	case msiTypeAppService:
 		return c.createAppServiceAuthRequest(clientID, scopes), nil
-	case cloudShell:
+	case msiTypeCloudShell:
 		return c.createCloudShellAuthRequest(clientID, scopes)
 	default:
 		errorMsg := ""
 		switch msiType {
-		case unavailable:
+		case msiTypeUnavailable:
 			errorMsg = "unavailable"
 		default:
 			errorMsg = "unknown"
@@ -205,7 +201,7 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(clientID string, sco
 	q.Add("api-version", appServiceMsiAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
 	if clientID != "" {
-		q.Add("client_id", clientID)
+		q.Add(qpClientID, clientID)
 	}
 	request.URL.RawQuery = q.Encode()
 
@@ -231,23 +227,23 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(clientID string, sco
 }
 
 func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error) {
-	if c.msiType == unknown { // if we haven't already determined the msi type
+	if c.msiType == msiTypeUnknown { // if we haven't already determined the msi type
 		if endpointEnvVar := os.Getenv(msiEndpointEnvironemntVariable); endpointEnvVar != "" { // if the env var MSI_ENDPOINT is set
 			endpoint, err := url.Parse(endpointEnvVar)
 			if err != nil {
-				return unknown, err
+				return msiTypeUnknown, err
 			}
 			c.endpoint = endpoint
 			if secretEnvVar := os.Getenv(msiSecretEnvironemntVariable); secretEnvVar != "" { // if BOTH the env vars MSI_ENDPOINT and MSI_SECRET are set the MsiType is AppService
-				c.msiType = appService
+				c.msiType = msiTypeAppService
 			} else { // if ONLY the env var MSI_ENDPOINT is set the MsiType is CloudShell
-				c.msiType = cloudShell
+				c.msiType = msiTypeCloudShell
 			}
 		} else if c.imdsAvailable(ctx) { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the MsiType is Imds. This will timeout after 500 milliseconds
 			c.endpoint = imdsURL
-			c.msiType = imds
+			c.msiType = msiTypeIMDS
 		} else { // if MSI_ENDPOINT is NOT set and IMDS enpoint is not available ManagedIdentity is not available
-			c.msiType = unavailable
+			c.msiType = msiTypeUnavailable
 			return c.msiType, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Make sure you are running in a valid Managed Identity Environment"}
 		}
 	}
@@ -255,7 +251,7 @@ func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error)
 }
 
 func (c *managedIdentityClient) imdsAvailable(ctx context.Context) bool {
-	tempCtx, cancel := context.WithTimeout(ctx, 500*time.Millisecond)
+	tempCtx, cancel := context.WithTimeout(ctx, c.imdsAvailableTimeoutMS*time.Millisecond)
 	defer cancel()
 	request := azcore.NewRequest(http.MethodGet, *imdsURL)
 	q := request.URL.Query()

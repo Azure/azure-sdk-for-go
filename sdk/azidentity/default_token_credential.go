@@ -9,15 +9,6 @@ const (
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 )
 
-// DefaultTokenCredential provides a default ChainedTokenCredential configuration for applications that will be deployed to Azure.  The following credential
-// types will be tried, in order:
-// - EnvironmentCredential
-// - ManagedIdentityCredential
-// Consult the documentation of these credential types for more information on how they attempt authentication.
-// type DefaultTokenCredential struct {
-// 	sources []azcore.TokenCredential
-// }
-
 // DefaultTokenCredentialOptions contain information that can configure Default Token Credentials
 type DefaultTokenCredentialOptions struct {
 	ExcludeEnvironmentCredential bool

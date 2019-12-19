@@ -132,10 +132,7 @@ func TestChainedTokenCredential_GetTokenFailCredentialUnavailable(t *testing.T) 
 		t.Fatalf("Expected Error Type: CredentialUnavailableError, ReceivedErrorType: %T", err)
 	}
 	if len(unavailableErr.Error()) == 0 {
-		t.Fatalf("Failed to form a message for the ChainedCredentialError")
-	}
-	if len(err.Error()) == 0 {
-		t.Fatalf("Did not create an appropriate error message")
+		t.Fatalf("Failed to form a message for the error")
 	}
 }
 

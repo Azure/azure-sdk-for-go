@@ -105,26 +105,9 @@ func (e *CredentialUnavailableError) Error() string {
 	return e.CredentialType + ": " + e.Message
 }
 
-// ChainedCredentialError an error specific to ChainedTokenCredential and DefaultTokenCredential
-// this error type will return a list of Credential Unavailable errors
-type ChainedCredentialError struct {
-	ErrorList []*CredentialUnavailableError
-}
-
 // IsNotRetriable allows retry policy to stop execution in case it receives a CredentialUnavailableError
 func (e *CredentialUnavailableError) IsNotRetriable() bool {
 	return true
-}
-
-func (e *ChainedCredentialError) Error() string {
-	if len(e.ErrorList) > 0 {
-		msg := ""
-		for _, err := range e.ErrorList {
-			msg += err.Error() + "\n"
-		}
-		return msg
-	}
-	return "Chained Token Credential: An unexpected error has occurred"
 }
 
 // TokenCredentialOptions to configure requests made to Azure Identity Services

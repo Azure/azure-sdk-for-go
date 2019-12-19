@@ -60,7 +60,7 @@ var (
 )
 
 func init() {
-	// The error checked for in managed_identity_client_test.go and should not be ignored if the test fails
+	// The error is checked for in managed_identity_client_test.go and should not be ignored if the test fails
 	imdsURL, _ = url.Parse(imdsEndpoint)
 }
 
@@ -76,12 +76,11 @@ func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
 // will be used to retrieve tokens and authenticate
 func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *managedIdentityClient {
 	options = options.setDefaultValues()
-	// TODO document the use of these variables
 	return &managedIdentityClient{
-		pipeline:               newDefaultMSIPipeline(*options), // a pipeline that includes
-		imdsAPIVersion:         imdsAPIVersion,
-		imdsAvailableTimeoutMS: 500,
-		msiType:                msiTypeUnknown,
+		pipeline:               newDefaultMSIPipeline(*options), // a pipeline that includes the specific requirements for MSI authentication, such as custom retry policy options
+		imdsAPIVersion:         imdsAPIVersion,                  // this field will be set to whatever value exists in the constant and is used when creating requests to IMDS
+		imdsAvailableTimeoutMS: 500,                             // we allow a timeout of 500 ms since the endpoint might be slow to respond
+		msiType:                msiTypeUnknown,                  // when creating a new managedIdentityClient, the current MSI type is unknown and will be tested for and replaced once authenticate() is called from GetToken on the credential side
 	}
 }
 

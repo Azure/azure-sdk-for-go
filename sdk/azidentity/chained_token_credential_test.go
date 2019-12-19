@@ -117,7 +117,6 @@ func TestChainedTokenCredential_GetTokenFailCredentialUnavailable(t *testing.T) 
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	// testURL := srv.URL()
 	msiCred := NewManagedIdentityCredential("", nil)
 	cred, err := NewChainedTokenCredential(msiCred)
 	if err != nil {

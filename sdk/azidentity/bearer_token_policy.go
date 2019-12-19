@@ -79,5 +79,5 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 		} // else { another go routine is refreshing the token, use previous token }
 	}
 	req.Request.Header.Set(azcore.HeaderAuthorization, b.header.Load())
-	return req.Do(ctx)
+	return req.Next(ctx)
 }

@@ -109,8 +109,7 @@ func TestBearerPolicy_UsernamePasswordCredential(t *testing.T) {
 		azcore.NewRetryPolicy(azcore.RetryOptions{}),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	req := pipeline.NewRequest(http.MethodGet, srv.URL())
-	_, err := req.Do(context.Background())
+	_, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
 	if err != nil {
 		t.Fatalf("Expected an empty error but receive: %v", err)
 	}

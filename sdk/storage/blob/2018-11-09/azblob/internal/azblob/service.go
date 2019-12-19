@@ -16,7 +16,7 @@ type Service struct{}
 
 // ListContainersCreateRequest prepares the ListContainersSegment request.
 func (Service) ListContainersCreateRequest(u *url.URL, p azcore.Pipeline, options *ListContainersOptions) *azcore.Request {
-	req := p.NewRequest(http.MethodGet, *u)
+	req := azcore.NewRequest(http.MethodGet, *u)
 	if options != nil {
 		if options.Prefix != nil && len(*options.Prefix) > 0 {
 			req.SetQueryParam("prefix", *options.Prefix)

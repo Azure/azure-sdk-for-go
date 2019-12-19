@@ -176,7 +176,7 @@ func (c *SharedKeyCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOp
 		authHeader := strings.Join([]string{"SharedKey ", c.AccountName(), ":", signature}, "")
 		req.Request.Header[azcore.HeaderAuthorization] = []string{authHeader}
 
-		response, err := req.Do(ctx)
+		response, err := req.Next(ctx)
 		if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
 			// Service failed to authenticate request, log it
 			azcore.Log().Write(azcore.LogError, "===== HTTP Forbidden status, String-to-Sign:\n"+stringToSign+"\n===============================\n")

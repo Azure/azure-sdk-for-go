@@ -23,7 +23,7 @@ func (iter *ListContainersIterator) NextPage(ctx context.Context) (*ListContaine
 		return nil, azcore.IterationDone
 	}
 	req := iter.client.s.ListContainersCreateRequest(iter.client.u, iter.client.p, iter.op)
-	resp, err := req.Do(ctx)
+	resp, err := iter.client.p.Do(ctx, req)
 	if err != nil {
 		return nil, err
 	}

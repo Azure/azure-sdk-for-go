@@ -37,7 +37,7 @@ func (r *Response) CheckStatusCode(statusCodes ...int) error {
 	return nil
 }
 
-// hasStatusCode returns true if the Response's status code is one of the specified values.
+// HasStatusCode returns true if the Response's status code is one of the specified values.
 func (r *Response) HasStatusCode(statusCodes ...int) bool {
 	if r == nil {
 		return false

@@ -22,10 +22,10 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 	defer close()
 	srv.SetResponse()
 	pl := NewPipeline(srv, NewRequestLogPolicy(RequestLogOptions{}))
-	req := pl.NewRequest(http.MethodGet, srv.URL())
+	req := NewRequest(http.MethodGet, srv.URL())
 	req.SetQueryParam("one", "fish")
 	req.SetQueryParam("sig", "redact")
-	resp, err := req.Do(context.Background())
+	resp, err := pl.Do(context.Background(), req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -70,10 +70,10 @@ func TestPolicyLoggingError(t *testing.T) {
 	defer close()
 	srv.SetError(errors.New("bogus error"))
 	pl := NewPipeline(srv, NewRequestLogPolicy(RequestLogOptions{}))
-	req := pl.NewRequest(http.MethodGet, srv.URL())
+	req := NewRequest(http.MethodGet, srv.URL())
 	req.Header.Add("header", "one")
 	req.Header.Add("Authorization", "redact")
-	resp, err := req.Do(context.Background())
+	resp, err := pl.Do(context.Background(), req)
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}

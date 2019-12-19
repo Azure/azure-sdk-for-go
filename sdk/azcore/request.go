@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"strings"
 )
 
 const (
@@ -42,10 +43,35 @@ func (ov opValues) get(value interface{}) bool {
 	return ok
 }
 
-// Do is called for each and every HTTP request. It passes the Context through all the Policy objects
-// (which can transform the Request's URL/query parameters/headers) and ultimately sends the
-// transformed HTTP request over the network.
-func (req *Request) Do(ctx context.Context) (*Response, error) {
+// NewRequest creates a new Request with the specified input.
+func NewRequest(httpMethod string, endpoint url.URL) *Request {
+	// removeEmptyPort strips the empty port in ":port" to ""
+	// as mandated by RFC 3986 Section 6.2.3.
+	// adapted from removeEmptyPort() in net/http.go
+	if strings.LastIndex(endpoint.Host, ":") > strings.LastIndex(endpoint.Host, "]") {
+		endpoint.Host = strings.TrimSuffix(endpoint.Host, ":")
+	}
+	return &Request{
+		Request: &http.Request{
+			Method:     httpMethod,
+			URL:        &endpoint,
+			Proto:      "HTTP/1.1",
+			ProtoMajor: 1,
+			ProtoMinor: 1,
+			Header:     http.Header{},
+			Host:       endpoint.Host,
+		},
+	}
+}
+
+// Next calls the next policy in the pipeline.
+// If there are no more policies, nil and ErrNoMorePolicies are returned.
+// This method is intended to be called from pipeline policies.
+// To send a request through a pipeline call Pipeline.Do().
+func (req *Request) Next(ctx context.Context) (*Response, error) {
+	if len(req.policies) == 0 {
+		return nil, ErrNoMorePolicies
+	}
 	nextPolicy := req.policies[0]
 	nextReq := *req
 	nextReq.policies = nextReq.policies[1:]

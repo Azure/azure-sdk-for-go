@@ -10,7 +10,7 @@ import "context"
 func AnonymousCredential() Credential {
 	return credentialFunc(func(AuthenticationPolicyOptions) Policy {
 		return PolicyFunc(func(ctx context.Context, req *Request) (*Response, error) {
-			return req.Do(ctx)
+			return req.Next(ctx)
 		})
 	})
 }

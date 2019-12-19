@@ -18,8 +18,7 @@ func TestDownloadBody(t *testing.T) {
 	srv.SetResponse(mock.WithBody([]byte(message)))
 	// download policy is automatically added during pipeline construction
 	pl := NewPipeline(srv)
-	req := pl.NewRequest(http.MethodGet, srv.URL())
-	resp, err := req.Do(context.Background())
+	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -38,9 +37,9 @@ func TestSkipBodyDownload(t *testing.T) {
 	srv.SetResponse(mock.WithBody([]byte(message)))
 	// download policy is automatically added during pipeline construction
 	pl := NewPipeline(srv)
-	req := pl.NewRequest(http.MethodGet, srv.URL())
+	req := NewRequest(http.MethodGet, srv.URL())
 	req.SkipBodyDownload()
-	resp, err := req.Do(context.Background())
+	resp, err := pl.Do(context.Background(), req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

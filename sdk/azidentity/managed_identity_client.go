@@ -115,7 +115,7 @@ func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, msiType msi
 		return nil, err
 	}
 
-	resp, err := msg.Do(ctx)
+	resp, err := c.pipeline.Do(ctx, msg)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +175,7 @@ func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID stri
 }
 
 func (c *managedIdentityClient) createIMDSAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
-	request := c.pipeline.NewRequest(http.MethodGet, *c.endpoint)
+	request := azcore.NewRequest(http.MethodGet, *c.endpoint)
 	request.Header.Set(azcore.HeaderMetadata, "true")
 	q := request.URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
@@ -186,7 +186,7 @@ func (c *managedIdentityClient) createIMDSAuthRequest(clientID string, scopes []
 }
 
 func (c *managedIdentityClient) createAppServiceAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
-	request := c.pipeline.NewRequest(http.MethodGet, *c.endpoint)
+	request := azcore.NewRequest(http.MethodGet, *c.endpoint)
 	request.Header.Set("secret", os.Getenv(msiSecretEnvironemntVariable))
 	q := request.URL.Query()
 	q.Add("api-version", appServiceMsiAPIVersion)
@@ -200,7 +200,7 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(clientID string, sco
 }
 
 func (c *managedIdentityClient) createCloudShellAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
-	request := c.pipeline.NewRequest(http.MethodPost, *c.endpoint)
+	request := azcore.NewRequest(http.MethodPost, *c.endpoint)
 	request.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 	request.Header.Set(azcore.HeaderMetadata, "true")
 	data := url.Values{}
@@ -244,10 +244,10 @@ func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error)
 func (c *managedIdentityClient) imdsAvailable(ctx context.Context) bool {
 	tempCtx, cancel := context.WithTimeout(ctx, 500*time.Millisecond)
 	defer cancel()
-	request := c.pipeline.NewRequest(http.MethodGet, *imdsURL)
+	request := azcore.NewRequest(http.MethodGet, *imdsURL)
 	q := request.URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
 	request.URL.RawQuery = q.Encode()
-	_, err := request.Do(tempCtx)
+	_, err := c.pipeline.Do(tempCtx, request)
 	return err == nil
 }

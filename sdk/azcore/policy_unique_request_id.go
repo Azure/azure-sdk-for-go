@@ -19,6 +19,6 @@ func NewUniqueRequestIDPolicy() Policy {
 			// Add a unique request ID if the caller didn't specify one already
 			req.Request.Header.Set(xMsClientRequestID, uuid.New().String())
 		}
-		return req.Do(ctx)
+		return req.Next(ctx)
 	})
 }

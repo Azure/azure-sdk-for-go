@@ -4,6 +4,8 @@
 package azcore
 
 import (
+	"context"
+	"errors"
 	"net/http"
 	"net/url"
 	"testing"
@@ -19,8 +21,7 @@ func TestRequestMarshalXML(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	pl := NewPipeline(nil)
-	req := pl.NewRequest(http.MethodPost, *u)
+	req := NewRequest(http.MethodPost, *u)
 	err = req.MarshalAsXML(testXML{SomeInt: 1, SomeString: "s"})
 	if err != nil {
 		t.Fatalf("marshal failure: %v", err)
@@ -33,5 +34,20 @@ func TestRequestMarshalXML(t *testing.T) {
 	}
 	if req.ContentLength == 0 {
 		t.Fatal("unexpected zero content length")
+	}
+}
+
+func TestRequestEmptyPipeline(t *testing.T) {
+	u, err := url.Parse("https://contoso.com")
+	if err != nil {
+		panic(err)
+	}
+	req := NewRequest(http.MethodPost, *u)
+	resp, err := req.Next(context.Background())
+	if resp != nil {
+		t.Fatal("expected nil response")
+	}
+	if !errors.Is(err, ErrNoMorePolicies) {
+		t.Fatalf("expected ErrNoMorePolicies, got %v", err)
 	}
 }

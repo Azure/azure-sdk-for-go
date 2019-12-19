@@ -65,7 +65,7 @@ func (p *requestLogPolicy) Do(ctx context.Context, req *Request) (*Response, err
 
 	// Set the time for this particular retry operation and then Do the operation.
 	tryStart := time.Now()
-	response, err := req.Do(ctx) // Make the request
+	response, err := req.Next(ctx) // Make the request
 	tryEnd := time.Now()
 	tryDuration := tryEnd.Sub(tryStart)
 	opDuration := tryEnd.Sub(opValues.start)

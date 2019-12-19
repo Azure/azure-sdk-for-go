@@ -132,21 +132,21 @@ func (c *aadIdentityClient) authenticateDeviceCode(ctx context.Context, tenantID
 		return nil, err
 	}
 
-	resp, err := msg.Do(ctx)
+	resp, err := c.pipeline.Do(ctx, msg)
 	if err != nil {
 		return nil, err
 	}
 
 	// This should never happen under normal conditions
 	if resp == nil {
-		return nil, &AuthenticationFailedError{Message: "Something unexpected happened with the request and received a nil response"}
+		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createDeviceCodeAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{Err: newAuthenticationResponseError(resp)}
+	return nil, &AuthenticationFailedError{inner: newAuthenticationResponseError(resp)}
 }
 
 func (c *aadIdentityClient) createDeviceCodeAuthRequest(tenantID string, clientID string, deviceCode string, scopes []string) (*azcore.Request, error) {
@@ -165,7 +165,7 @@ func (c *aadIdentityClient) createDeviceCodeAuthRequest(tenantID string, clientI
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := c.pipeline.NewRequest(http.MethodPost, *urlFormat)
+	msg := azcore.NewRequest(http.MethodPost, *urlFormat)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 	err = msg.SetBody(body)
 	if err != nil {
@@ -180,18 +180,18 @@ func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, 
 		return nil, err
 	}
 
-	resp, err := msg.Do(ctx)
+	resp, err := c.pipeline.Do(ctx, msg)
 	if err != nil {
 		return nil, err
 	}
 	// This should never happen under normal conditions
 	if resp == nil {
-		return nil, &AuthenticationFailedError{Err: errors.New("Something unexpected happened with the request and received a nil response")}
+		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
 	}
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return createDeviceCodeResult(resp)
 	}
-	return nil, &AuthenticationFailedError{Err: newAuthenticationResponseError(resp)}
+	return nil, &AuthenticationFailedError{inner: newAuthenticationResponseError(resp)}
 }
 
 func (c *aadIdentityClient) createDeviceCodeNumberRequest(tenantID string, clientID string, scopes []string) (*azcore.Request, error) {
@@ -208,7 +208,7 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(tenantID string, clien
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := c.pipeline.NewRequest(http.MethodPost, *urlFormat)
+	msg := azcore.NewRequest(http.MethodPost, *urlFormat)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 	err = msg.SetBody(body)
 	if err != nil {

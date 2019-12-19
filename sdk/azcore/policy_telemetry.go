@@ -35,7 +35,7 @@ func NewTelemetryPolicy(o TelemetryOptions) Policy {
 
 func (p telemetryPolicy) Do(ctx context.Context, req *Request) (*Response, error) {
 	req.Request.Header.Set(HeaderUserAgent, p.telemetryValue)
-	return req.Do(ctx)
+	return req.Next(ctx)
 }
 
 // NOTE: the ONLY function that should write to this variable is this func

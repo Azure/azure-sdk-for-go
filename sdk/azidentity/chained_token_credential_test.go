@@ -8,7 +8,6 @@ import (
 	"errors"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -85,8 +84,7 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	if tk.Token != tokenValue {
 		t.Fatalf("Received an incorrect access token")
 	}
-	emptyTime := time.Time{}
-	if tk.ExpiresOn == emptyTime {
+	if tk.ExpiresOn.IsZero() {
 		t.Fatalf("Received an incorrect time in the response")
 	}
 }
@@ -163,8 +161,7 @@ func TestBearerPolicy_ChainedTokenCredential(t *testing.T) {
 		azcore.NewRetryPolicy(azcore.RetryOptions{}),
 		chainedCred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	req := pipeline.NewRequest(http.MethodGet, srv.URL())
-	_, err = req.Do(context.Background())
+	_, err = pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
 	if err != nil {
 		t.Fatalf("Expected an empty error but receive: %v", err)
 	}

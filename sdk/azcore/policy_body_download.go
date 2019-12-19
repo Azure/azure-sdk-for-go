@@ -12,7 +12,7 @@ import (
 // newBodyDownloadPolicy creates a policy object that downloads the response's body to a []byte.
 func newBodyDownloadPolicy() Policy {
 	return PolicyFunc(func(ctx context.Context, req *Request) (*Response, error) {
-		resp, err := req.Do(ctx)
+		resp, err := req.Next(ctx)
 		if err != nil {
 			return resp, err
 		}

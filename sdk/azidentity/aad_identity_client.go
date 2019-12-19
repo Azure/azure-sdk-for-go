@@ -68,21 +68,21 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 		return nil, err
 	}
 
-	resp, err := msg.Do(ctx)
+	resp, err := c.pipeline.Do(ctx, msg)
 	if err != nil {
 		return nil, err
 	}
 
 	// This should never happen under normal conditions
 	if resp == nil {
-		return nil, &AuthenticationFailedError{Err: errors.New("Something unexpected happened with the request and received a nil response")}
+		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{Err: newAuthenticationResponseError(resp)}
+	return nil, &AuthenticationFailedError{inner: newAuthenticationResponseError(resp)}
 }
 
 // AuthenticateCertificate creates a client certificate authentication request and returns an Access Token or
@@ -98,21 +98,21 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 		return nil, err
 	}
 
-	resp, err := msg.Do(ctx)
+	resp, err := c.pipeline.Do(ctx, msg)
 	if err != nil {
 		return nil, err
 	}
 
 	// This should never happen under normal conditions
 	if resp == nil {
-		return nil, &AuthenticationFailedError{Err: errors.New("Something unexpected happened with the request and received a nil response")}
+		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{Err: newAuthenticationResponseError(resp)}
+	return nil, &AuthenticationFailedError{inner: newAuthenticationResponseError(resp)}
 }
 
 func (c *aadIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
@@ -145,7 +145,7 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clien
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := c.pipeline.NewRequest(http.MethodPost, *urlFormat)
+	msg := azcore.NewRequest(http.MethodPost, *urlFormat)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 	err = msg.SetBody(body)
 	if err != nil {
@@ -174,7 +174,7 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, 
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := c.pipeline.NewRequest(http.MethodPost, *urlFormat)
+	msg := azcore.NewRequest(http.MethodPost, *urlFormat)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 
 	err = msg.SetBody(body)
@@ -198,21 +198,21 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 		return nil, err
 	}
 
-	resp, err := msg.Do(ctx)
+	resp, err := c.pipeline.Do(ctx, msg)
 	if err != nil {
 		return nil, err
 	}
 
 	// This should never happen under normal conditions
 	if resp == nil {
-		return nil, &AuthenticationFailedError{Err: errors.New("Something unexpected happened with the request and received a nil response")}
+		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{Err: newAuthenticationResponseError(resp)}
+	return nil, &AuthenticationFailedError{inner: newAuthenticationResponseError(resp)}
 }
 
 func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, clientID string, username string, password string, scopes []string) (*azcore.Request, error) {
@@ -230,7 +230,7 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, c
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := c.pipeline.NewRequest(http.MethodPost, *urlFormat)
+	msg := azcore.NewRequest(http.MethodPost, *urlFormat)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 	err = msg.SetBody(body)
 	if err != nil {

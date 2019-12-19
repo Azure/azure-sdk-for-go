@@ -33,7 +33,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 		} else if err != nil { // if we receive some other type of error then we must stop looping and process the error accordingly
 			var authenticationFailed *AuthenticationFailedError
 			if errors.As(err, &authenticationFailed) { // if the error is an AuthenticationFailedError we return the error related to the invalid credential and append all of the other error messages received prior to this point
-				return nil, &AuthenticationFailedError{Message: "Received an AuthenticationFailedError, there is an invalid credential in the chain. " + createChainedErrorMessage(errList), Err: err}
+				return nil, &AuthenticationFailedError{msg: "Received an AuthenticationFailedError, there is an invalid credential in the chain. " + createChainedErrorMessage(errList), inner: err}
 			}
 			return nil, fmt.Errorf("Received an unexpected error: %w", err) // if we receive some other error type this is unexpected and we simple return the unexpected error
 		} else {

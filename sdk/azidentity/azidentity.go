@@ -66,12 +66,13 @@ func (e *AuthenticationResponseError) Error() string {
 
 // AuthenticationFailedError is a struct used to marshal responses when authentication has failed
 type AuthenticationFailedError struct {
-	Err     error
-	Message string
+	inner error
+	msg   string
 }
 
+// Unwrap method on AuthenticationFailedError provides access to the inner error
 func (e *AuthenticationFailedError) Unwrap() error {
-	return e.Err
+	return e.inner
 }
 
 // IsNotRetriable allows retry policy to stop execution in case it receives a AuthenticationFailedError
@@ -80,7 +81,7 @@ func (e *AuthenticationFailedError) IsNotRetriable() bool {
 }
 
 func (e *AuthenticationFailedError) Error() string {
-	return e.Message
+	return e.msg
 }
 
 func newAuthenticationResponseError(resp *azcore.Response) error {
@@ -187,6 +188,7 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 		MaxTries:   5,
 		RetryDelay: 2 * time.Second,
 		StatusCodes: append(statusCodes,
+			// The following status codes are a subset of those found in azcore.StatusCodesForRetry, these are the only ones specifically needed for MSI scenarios
 			http.StatusRequestTimeout,      // 408
 			http.StatusTooManyRequests,     // 429
 			http.StatusInternalServerError, // 500

@@ -5,7 +5,6 @@ package azidentity
 
 import (
 	"context"
-	"errors"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -32,7 +31,7 @@ func newBearerTokenPolicy(creds azcore.TokenCredential, opts azcore.Authenticati
 func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
 	if req.URL.Scheme != "https" {
 		// HTTPS must be used, otherwise the tokens are at the risk of being exposed
-		return nil, &AuthenticationFailedError{Err: errors.New("token credentials require a URL using the HTTPS protocol scheme")}
+		return nil, &AuthenticationFailedError{msg: "token credentials require a URL using the HTTPS protocol scheme"}
 	}
 	// check if the token is empty.  this will return true for
 	// the first read.  all other reads will block until the
@@ -78,5 +77,5 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 		} // else { another go routine is refreshing the token, use previous token }
 	}
 	req.Request.Header.Set(azcore.HeaderAuthorization, b.header.Load())
-	return req.Do(ctx)
+	return req.Next(ctx)
 }

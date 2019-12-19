@@ -6,7 +6,6 @@ package azidentity
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -122,7 +121,7 @@ func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, msiType msi
 
 	// This should never happen under normal conditions
 	if resp == nil {
-		return nil, &AuthenticationFailedError{inner: errors.New("Something unexpected happened with the request and received a nil response")}
+		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
@@ -141,7 +140,7 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 
 	if value.ExpiresIn == "" {
 		if value.ExpiresOn == "" {
-			return nil, &AuthenticationFailedError{inner: errors.New("did not receive a valid token expiration time")}
+			return nil, &AuthenticationFailedError{msg: "did not receive a valid token expiration time"}
 		}
 		accessToken.Token = value.Token
 		// TODO: missing here is parsing expires on to a time.Time value

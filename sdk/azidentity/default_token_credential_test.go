@@ -40,13 +40,13 @@ func TestDefaultTokenCredential_ExcludeAllCredentials(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}
-	var authFailedErr *AuthenticationFailedError
+	var credUnavailable *CredentialUnavailableError
 	_, err = NewDefaultTokenCredential(&DefaultTokenCredentialOptions{ExcludeEnvironmentCredential: false, ExcludeMSICredential: true})
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
 	}
-	if !errors.As(err, &authFailedErr) {
-		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
+	if !errors.As(err, &credUnavailable) {
+		t.Fatalf("Expected: CredentialUnavailableError, Received: %T", err)
 	}
 
 }

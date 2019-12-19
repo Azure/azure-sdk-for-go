@@ -98,7 +98,6 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, clientID strin
 	// This condition should never be true since getMSIType returns an error in these cases
 	// if msi is unavailable or we were unable to determine the type return a nil access token
 	if currentMSI == unavailable || currentMSI == unknown {
-		// CP: maybe this should be an auth failed error?
 		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
 	}
 
@@ -120,24 +119,32 @@ func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, msiType msi
 		return nil, err
 	}
 
+	// This should never happen under normal conditions
+	if resp == nil {
+		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
+	}
+
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
-	var authFailed AuthenticationFailedError
-	err = json.Unmarshal(resp.Payload, &authFailed)
-	if err != nil {
-		authFailed.Message = resp.Status
-		authFailed.Description = "Failed to unmarshal response: " + err.Error()
-	}
-	authFailed.Response = resp
-	return nil, &authFailed
+	return nil, &AuthenticationFailedError{inner: newAuthenticationResponseError(resp)}
 }
 
 func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
-	value := azcore.AccessToken{}
+	value := internalAccessToken{}
+	accessToken := &azcore.AccessToken{}
 	if err := json.Unmarshal(res.Payload, &value); err != nil {
-		return nil, fmt.Errorf("azcore.AccessToken: %w", err)
+		return nil, fmt.Errorf("internalAccessToken: %w", err)
+	}
+
+	if value.ExpiresIn == "" {
+		if value.ExpiresOn == "" {
+			return nil, &AuthenticationFailedError{msg: "did not receive a valid token expiration time"}
+		}
+		accessToken.Token = value.Token
+		// TODO: missing here is parsing expires on to a time.Time value
+		return accessToken, nil
 	}
 	// CP: This will change based on the MSI type
 	t, err := value.ExpiresIn.Int64()
@@ -145,8 +152,9 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 		return nil, err
 	}
 	// NOTE: look at go-autorest
-	value.ExpiresOn = time.Now().Add(time.Second * time.Duration(t)).UTC()
-	return &value, nil
+	accessToken.Token = value.Token
+	accessToken.ExpiresOn = time.Now().Add(time.Second * time.Duration(t)).UTC()
+	return accessToken, nil
 }
 
 func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID string, scopes []string) (*azcore.Request, error) {
@@ -154,9 +162,9 @@ func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID stri
 	var err error
 	switch msiType {
 	case imds:
-		req, err = c.createIMDSAuthRequest(clientID, scopes)
+		req = c.createIMDSAuthRequest(clientID, scopes)
 	case appService:
-		req, err = c.createAppServiceAuthRequest(clientID, scopes)
+		req = c.createAppServiceAuthRequest(clientID, scopes)
 	case cloudShell:
 		req, err = c.createCloudShellAuthRequest(clientID, scopes)
 	default:
@@ -174,7 +182,7 @@ func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID stri
 	return req, err
 }
 
-func (c *managedIdentityClient) createIMDSAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
+func (c *managedIdentityClient) createIMDSAuthRequest(clientID string, scopes []string) *azcore.Request {
 	request := azcore.NewRequest(http.MethodGet, *c.endpoint)
 	request.Header.Set(azcore.HeaderMetadata, "true")
 	q := request.URL.Query()
@@ -182,10 +190,10 @@ func (c *managedIdentityClient) createIMDSAuthRequest(clientID string, scopes []
 	q.Add("resource", strings.Join(scopes, " "))
 	request.URL.RawQuery = q.Encode()
 
-	return request, nil
+	return request
 }
 
-func (c *managedIdentityClient) createAppServiceAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
+func (c *managedIdentityClient) createAppServiceAuthRequest(clientID string, scopes []string) *azcore.Request {
 	request := azcore.NewRequest(http.MethodGet, *c.endpoint)
 	request.Header.Set("secret", os.Getenv(msiSecretEnvironemntVariable))
 	q := request.URL.Query()
@@ -196,7 +204,7 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(clientID string, sco
 	}
 	request.URL.RawQuery = q.Encode()
 
-	return request, nil
+	return request
 }
 
 func (c *managedIdentityClient) createCloudShellAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {

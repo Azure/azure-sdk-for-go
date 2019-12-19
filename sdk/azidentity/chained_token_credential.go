@@ -40,7 +40,6 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 		if errors.As(err, &credErr) {
 			errList = append(errList, credErr)
 		} else if err != nil {
-			// TODO: check this proposal
 			errList = append(errList, &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: err.Error()})
 			break
 		} else {
@@ -51,7 +50,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 	if token == nil && len(errList) == 0 {
 		return nil, nil
 	}
-	return nil, &ChainedCredentialError{ErrorList: errList}
+	return nil, &AuthenticationFailedError{inner: &ChainedCredentialError{ErrorList: errList}, msg: "Could not find any available credentials in chain"}
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on ChainedTokenCredential.

@@ -21,7 +21,6 @@ const (
 	secret                   = "secret"
 	wrongSecret              = "wrong_secret"
 	tokenValue               = "new_token"
-	tokenExpiresIn           = "3600"
 	scope                    = "http://storage.azure.com/.default"
 	defaultTestAuthorityHost = "login.microsoftonline.com"
 )
@@ -87,26 +86,31 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	if !errors.As(err, &authFailed) {
 		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
 	} else {
-		if len(authFailed.Message) == 0 {
-			t.Fatalf("Did not receive an error message")
-		}
-		if len(authFailed.Description) == 0 {
-			t.Fatalf("Did not receive an error description")
-		}
-		if len(authFailed.Timestamp) == 0 {
-			t.Fatalf("Did not receive a timestamp")
-		}
-		if len(authFailed.TraceID) == 0 {
-			t.Fatalf("Did not receive a TraceID")
-		}
-		if len(authFailed.CorrelationID) == 0 {
-			t.Fatalf("Did not receive a CorrelationID")
-		}
-		if len(authFailed.URI) == 0 {
-			t.Fatalf("Did not receive an error URI")
-		}
-		if authFailed.Response == nil {
-			t.Fatalf("Did not receive an error response")
+		var respError *AuthenticationResponseError
+		if !errors.As(authFailed.Unwrap(), &respError) {
+			t.Fatalf("Expected: AuthenticationResponseError, Received: %T", err)
+		} else {
+			if len(respError.Message) == 0 {
+				t.Fatalf("Did not receive an error message")
+			}
+			if len(respError.Description) == 0 {
+				t.Fatalf("Did not receive an error description")
+			}
+			if len(respError.Timestamp) == 0 {
+				t.Fatalf("Did not receive a timestamp")
+			}
+			if len(respError.TraceID) == 0 {
+				t.Fatalf("Did not receive a TraceID")
+			}
+			if len(respError.CorrelationID) == 0 {
+				t.Fatalf("Did not receive a CorrelationID")
+			}
+			if len(respError.URI) == 0 {
+				t.Fatalf("Did not receive an error URI")
+			}
+			if respError.Response == nil {
+				t.Fatalf("Did not receive an error response")
+			}
 		}
 	}
 }

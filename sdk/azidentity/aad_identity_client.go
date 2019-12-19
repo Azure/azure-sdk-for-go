@@ -74,14 +74,14 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 
 	// This should never happen under normal conditions
 	if resp == nil {
-		return nil, &AuthenticationFailedError{Message: "Something unexpected happened with the request and received a nil response"}
+		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
-	return nil, newAuthenticationFailedError(resp)
+	return nil, &AuthenticationFailedError{inner: newAuthenticationResponseError(resp)}
 }
 
 // AuthenticateCertificate creates a client certificate authentication request and returns an Access Token or
@@ -104,28 +104,30 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 
 	// This should never happen under normal conditions
 	if resp == nil {
-		return nil, &AuthenticationFailedError{Message: "Something unexpected happened with the request and received a nil response"}
+		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
-	return nil, newAuthenticationFailedError(resp)
+	return nil, &AuthenticationFailedError{inner: newAuthenticationResponseError(resp)}
 }
 
 func (c *aadIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
-	value := &azcore.AccessToken{}
+	value := &internalAccessToken{}
+	accessToken := &azcore.AccessToken{}
 	if err := json.Unmarshal(res.Payload, &value); err != nil {
-		return nil, fmt.Errorf("azcore.AccessToken: %w", err)
+		return nil, fmt.Errorf("internalAccessToken: %w", err)
 	}
 	t, err := value.ExpiresIn.Int64()
 	if err != nil {
 		return nil, err
 	}
 	// NOTE: look at go-autorest
-	value.ExpiresOn = time.Now().Add(time.Second * time.Duration(t)).UTC()
-	return value, nil
+	accessToken.Token = value.Token
+	accessToken.ExpiresOn = time.Now().Add(time.Second * time.Duration(t)).UTC()
+	return accessToken, nil
 }
 
 func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.Request, error) {
@@ -202,14 +204,14 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 
 	// This should never happen under normal conditions
 	if resp == nil {
-		return nil, &AuthenticationFailedError{Message: "Something unexpected happened with the request and received a nil response"}
+		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
-	return nil, newAuthenticationFailedError(resp)
+	return nil, &AuthenticationFailedError{inner: newAuthenticationResponseError(resp)}
 }
 
 func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, clientID string, username string, password string, scopes []string) (*azcore.Request, error) {

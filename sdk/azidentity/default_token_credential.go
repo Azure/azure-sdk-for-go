@@ -51,5 +51,5 @@ func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*Chained
 		return NewChainedTokenCredential(cred.sources...)
 	}
 
-	return nil, &AuthenticationFailedError{Message: "Failed to find any available credentials. Make sure you are running in a Managed Identity Environment or have set the appropriate environment variables"}
+	return nil, &CredentialUnavailableError{CredentialType: "Default Token Credential", Message: "Failed to find any available credentials. Make sure you are running in a Managed Identity Environment or have set the appropriate environment variables"}
 }

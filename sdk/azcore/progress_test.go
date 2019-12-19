@@ -25,14 +25,14 @@ func TestProgressReporting(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithBody(content))
 	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
-	req := pl.NewRequest(http.MethodGet, srv.URL())
+	req := NewRequest(http.MethodGet, srv.URL())
 	req.SkipBodyDownload()
 	var bytesSent int64
 	reqRpt := NewRequestBodyProgress(NopCloser(body), func(bytesTransferred int64) {
 		bytesSent = bytesTransferred
 	})
 	req.SetBody(reqRpt)
-	resp, err := req.Do(context.Background())
+	resp, err := pl.Do(context.Background(), req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

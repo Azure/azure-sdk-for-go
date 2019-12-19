@@ -23,6 +23,18 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// AutomationsClientAPI contains the set of methods on the AutomationsClient type.
+type AutomationsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, automationName string, automation security.Automation) (result security.Automation, err error)
+	Delete(ctx context.Context, resourceGroupName string, automationName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, automationName string) (result security.Automation, err error)
+	List(ctx context.Context) (result security.AutomationListPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.AutomationListPage, err error)
+	Validate(ctx context.Context, resourceGroupName string, automationName string, automation security.Automation) (result security.AutomationValidationStatus, err error)
+}
+
+var _ AutomationsClientAPI = (*security.AutomationsClient)(nil)
+
 // SubAssessmentsClientAPI contains the set of methods on the SubAssessmentsClient type.
 type SubAssessmentsClientAPI interface {
 	Get(ctx context.Context, scope string, assessmentName string, subAssessmentName string) (result security.SubAssessment, err error)

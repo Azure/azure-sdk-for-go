@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -114,9 +115,10 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 }
 
 func TestChainedTokenCredential_GetTokenFailCredentialUnavailable(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
+	err := os.Setenv("MSI_ENDPOINT", "")
+	if err != nil {
+		t.Fatalf("Failed to reset environment variable MSI_ENDPOINT")
+	}
 	msiCred := NewManagedIdentityCredential("", nil)
 	cred, err := NewChainedTokenCredential(msiCred)
 	if err != nil {

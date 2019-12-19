@@ -14,7 +14,8 @@ const (
 	deviceCodeGrantType = "urn:ietf:params:oauth:grant-type:device_code"
 )
 
-// DeviceCodeResult ...
+// DeviceCodeResult is used to store device code related information to help the user login to allow the device code flow to continue
+// to authenticate a user
 type DeviceCodeResult struct {
 	UserCode        string        `json:"user_code"`        // User code returned by the service
 	DeviceCode      string        `json:"device_code"`      // Device code returned by the service
@@ -26,7 +27,8 @@ type DeviceCodeResult struct {
 	Scopes          []string      // List of the scopes that would be held by token. JMR: Should be readonly
 }
 
-// DeviceCodeCredential ...
+// DeviceCodeCredential authenticates a user using the device code flow, and provides access tokens for that user account.
+// For more information on the device code authentication flow see https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code
 type DeviceCodeCredential struct {
 	client   *aadIdentityClient
 	tenantID string       // Gets the Azure Active Directory tenant (directory) Id of the service principal

@@ -14,8 +14,8 @@ const (
 	deviceCodeGrantType = "urn:ietf:params:oauth:grant-type:device_code"
 )
 
-// DeviceCodeResult is used to store device code related information to help the user login to allow the device code flow to continue
-// to authenticate a user
+// DeviceCodeResult is used to store device code related information to help the user login and allow the device code flow to continue
+// to request a token to authenticate a user
 type DeviceCodeResult struct {
 	UserCode        string        `json:"user_code"`        // User code returned by the service
 	DeviceCode      string        `json:"device_code"`      // Device code returned by the service

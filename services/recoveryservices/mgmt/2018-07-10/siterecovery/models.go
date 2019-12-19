@@ -3779,6 +3779,8 @@ type AzureVMDiskDetails struct {
 	VhdType *string `json:"vhdType,omitempty"`
 	// VhdID - The VHD id.
 	VhdID *string `json:"vhdId,omitempty"`
+	// DiskID - The disk resource id.
+	DiskID *string `json:"diskId,omitempty"`
 	// VhdName - VHD name.
 	VhdName *string `json:"vhdName,omitempty"`
 	// MaxSizeMB - Max side in MB.
@@ -3789,6 +3791,8 @@ type AzureVMDiskDetails struct {
 	TargetDiskName *string `json:"targetDiskName,omitempty"`
 	// LunID - Ordinal\LunId of the disk for the Azure VM.
 	LunID *string `json:"lunId,omitempty"`
+	// DiskEncryptionSetID - The DiskEncryptionSet ARM ID.
+	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
 }
 
 // ComputeSizeErrorDetails represents the error used to indicate why the target compute size is not
@@ -7306,6 +7310,8 @@ type HyperVReplicaAzureUpdateReplicationProtectedItemInput struct {
 	RecoveryAzureV2ResourceGroupID *string `json:"recoveryAzureV2ResourceGroupId,omitempty"`
 	// UseManagedDisks - A value indicating whether managed disks should be used during failover.
 	UseManagedDisks *string `json:"useManagedDisks,omitempty"`
+	// DiskIDToDiskEncryptionMap - The dictionary of disk resource Id to disk encryption set ARM Id.
+	DiskIDToDiskEncryptionMap map[string]*string `json:"diskIdToDiskEncryptionMap"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2'
 	InstanceType InstanceTypeBasicUpdateReplicationProtectedItemProviderInput `json:"instanceType,omitempty"`
 }
@@ -7322,6 +7328,9 @@ func (hvraurpii HyperVReplicaAzureUpdateReplicationProtectedItemInput) MarshalJS
 	}
 	if hvraurpii.UseManagedDisks != nil {
 		objectMap["useManagedDisks"] = hvraurpii.UseManagedDisks
+	}
+	if hvraurpii.DiskIDToDiskEncryptionMap != nil {
+		objectMap["diskIdToDiskEncryptionMap"] = hvraurpii.DiskIDToDiskEncryptionMap
 	}
 	if hvraurpii.InstanceType != "" {
 		objectMap["instanceType"] = hvraurpii.InstanceType
@@ -8638,6 +8647,8 @@ type InMageAzureV2DiskInputDetails struct {
 	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
 	// DiskType - The DiskType. Possible values include: 'StandardLRS', 'PremiumLRS', 'StandardSSDLRS'
 	DiskType DiskAccountType `json:"diskType,omitempty"`
+	// DiskEncryptionSetID - The DiskEncryptionSet ARM ID.
+	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
 }
 
 // InMageAzureV2EnableProtectionInput vMware Azure specific enable protection input.
@@ -8672,6 +8683,8 @@ type InMageAzureV2EnableProtectionInput struct {
 	TargetAzureV2ResourceGroupID *string `json:"targetAzureV2ResourceGroupId,omitempty"`
 	// DiskType - The DiskType. Possible values include: 'StandardLRS', 'PremiumLRS', 'StandardSSDLRS'
 	DiskType DiskAccountType `json:"diskType,omitempty"`
+	// DiskEncryptionSetID - The DiskEncryptionSet ARM ID.
+	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
 	InstanceType InstanceTypeBasicEnableProtectionProviderSpecificInput `json:"instanceType,omitempty"`
 }
@@ -8724,6 +8737,9 @@ func (imavepi InMageAzureV2EnableProtectionInput) MarshalJSON() ([]byte, error) 
 	}
 	if imavepi.DiskType != "" {
 		objectMap["diskType"] = imavepi.DiskType
+	}
+	if imavepi.DiskEncryptionSetID != nil {
+		objectMap["diskEncryptionSetId"] = imavepi.DiskEncryptionSetID
 	}
 	if imavepi.InstanceType != "" {
 		objectMap["instanceType"] = imavepi.InstanceType

@@ -19,15 +19,6 @@ type ChainedTokenCredential struct {
 
 // NewChainedTokenCredential creates an instance of ChainedTokenCredential with the specified TokenCredential sources.
 func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedTokenCredential, error) {
-	// if len(sources) == 0 {
-	// 	return nil, &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: "Length of sources cannot be 0"}
-	// }
-	// for _, source := range sources {
-	// 	if source == nil {
-	// 		return nil, &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: "Sources cannot contain a nil TokenCredential"}
-	// 	}
-	// }
-	// TODO remove error clean up
 	return &ChainedTokenCredential{sources: sources}, nil
 }
 
@@ -42,9 +33,9 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 		} else if err != nil { // if we receive some other type of error then we must stop looping and process the error accordingly
 			var authenticationFailed *AuthenticationFailedError
 			if errors.As(err, &authenticationFailed) { // if the error is an AuthenticationFailedError we return the error related to the invalid credential and append all of the other error messages received prior to this point
-				return nil, &AuthenticationFailedError{Message: "FAILURE MESSAGE HERE" + createChainedErrorMessage(errList), Err: err}
+				return nil, &AuthenticationFailedError{Message: "Received an AuthenticationFailedError, there is an invalid credential in the chain. " + createChainedErrorMessage(errList), Err: err}
 			}
-			return nil, fmt.Errorf("SOME ERROR MESSAGE HERE %w", err) // if we receive some other error type this is unexpected and we simple return the unexpected error
+			return nil, fmt.Errorf("Received an unexpected error: %w", err) // if we receive some other error type this is unexpected and we simple return the unexpected error
 		} else {
 			return token, nil // if we did not receive an error then we return the token
 		}
@@ -61,6 +52,7 @@ func (c *ChainedTokenCredential) AuthenticationPolicy(options azcore.Authenticat
 	return newBearerTokenPolicy(c, options)
 }
 
+// Helper function used to chain the error messages of the CredentialUnavailableError slice
 func createChainedErrorMessage(errList []*CredentialUnavailableError) string {
 	msg := ""
 	for _, err := range errList {

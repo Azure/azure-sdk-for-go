@@ -66,7 +66,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMock(t *testing.T) {
 	}
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenAppServSuccess)))
 	testURL := srv.URL()
 	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
 	_ = os.Setenv("MSI_SECRET", "secret")

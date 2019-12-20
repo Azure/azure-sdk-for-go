@@ -6,7 +6,6 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 	"os"
 	"testing"
@@ -128,13 +127,6 @@ func TestChainedTokenCredential_GetTokenFailCredentialUnavailable(t *testing.T) 
 	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
-	}
-	var authFailedErr *AuthenticationFailedError
-	if errors.As(err, &authFailedErr) {
-		fmt.Println(authFailedErr.Error())
-		fmt.Println(authFailedErr)
-		fmt.Println(msiCred.client.msiType)
-		t.Fatalf("Expected Error Type: Authen, ReceivedErrorType: %T", err)
 	}
 	var unavailableErr *CredentialUnavailableError
 	if !errors.As(err, &unavailableErr) {

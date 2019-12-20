@@ -128,11 +128,18 @@ func TestChainedTokenCredential_GetTokenFailCredentialUnavailable(t *testing.T) 
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-	var unavailableErr *CredentialUnavailableError
-	if !errors.As(err, &unavailableErr) {
-		t.Fatalf("Expected Error Type: CredentialUnavailableError, ReceivedErrorType: %T", err)
+	if msiCred.client.imdsAvailable(context.Background()) {
+		var authErr *AuthenticationFailedError
+		if !errors.As(err, &authErr) {
+			t.Fatalf("Expected Error Type: AuthenticationFailedError, ReceivedErrorType: %T", err)
+		}
+	} else {
+		var unavailableErr *CredentialUnavailableError
+		if !errors.As(err, &unavailableErr) {
+			t.Fatalf("Expected Error Type: CredentialUnavailableError, ReceivedErrorType: %T", err)
+		}
 	}
-	if len(unavailableErr.Error()) == 0 {
+	if len(err.Error()) == 0 {
 		t.Fatalf("Failed to form a message for the error")
 	}
 }

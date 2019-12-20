@@ -20,14 +20,11 @@ const (
 // DeviceCodeResult is used to store device code related information to help the user login and allow the device code flow to continue
 // to request a token to authenticate a user
 type DeviceCodeResult struct {
-	UserCode        string        `json:"user_code"`        // User code returned by the service
-	DeviceCode      string        `json:"device_code"`      // Device code returned by the service
-	VerificationURL string        `json:"verification_uri"` // Verification URL where the user must navigate to authenticate using the device code and credentials. JMR: URL?
-	ExpiresOn       time.Duration // Time when the device code will expire.
-	Interval        int64         `json:"interval"` // Polling interval time to check for completion of authentication flow.
-	Message         string        `json:"message"`  // User friendly text response that can be used for display purpose.
-	ClientID        string        // Identifier of the client requesting device code.
-	Scopes          []string      // List of the scopes that would be held by token. JMR: Should be readonly
+	UserCode        string `json:"user_code"`        // User code returned by the service
+	DeviceCode      string `json:"device_code"`      // Device code returned by the service
+	VerificationURL string `json:"verification_uri"` // Verification URL where the user must navigate to authenticate using the device code and credentials.
+	Interval        int64  `json:"interval"`         // Polling interval time to check for completion of authentication flow.
+	Message         string `json:"message"`          // User friendly text response that can be used for display purpose.
 }
 
 // DeviceCodeCredential authenticates a user using the device code flow, and provides access tokens for that user account.

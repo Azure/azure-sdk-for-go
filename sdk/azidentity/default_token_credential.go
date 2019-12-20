@@ -33,7 +33,7 @@ func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*Chained
 		if err == nil {
 			creds = append(creds, envCred)
 		}
-		errMsg += "Make sure you have set the environment variables necessary for authentication: AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET."
+		errMsg += err.Error()
 	}
 
 	if !options.ExcludeMSICredential {
@@ -43,5 +43,5 @@ func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*Chained
 	if len(creds) == 0 {
 		return nil, &CredentialUnavailableError{CredentialType: "Default Token Credential", Message: errMsg}
 	}
-	return NewChainedTokenCredential(creds...)
+	return NewChainedTokenCredential(creds...), nil
 }

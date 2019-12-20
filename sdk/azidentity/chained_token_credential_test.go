@@ -128,14 +128,14 @@ func TestChainedTokenCredential_GetTokenFailCredentialUnavailable(t *testing.T) 
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-	if msiCred.client.imdsAvailable(context.Background()) {
+	if msiCred.client.imdsAvailable(context.Background()) { // Adding a check for IMDS available to avoid errors if running in a managed identity environment
 		var authErr *AuthenticationFailedError
-		if !errors.As(err, &authErr) {
+		if !errors.As(err, &authErr) { // if running in a managed identity environment then the error will be an authentication failed error unless running in a managed identity environment that is allowed to query instance metadata
 			t.Fatalf("Expected Error Type: AuthenticationFailedError, ReceivedErrorType: %T", err)
 		}
 	} else {
 		var unavailableErr *CredentialUnavailableError
-		if !errors.As(err, &unavailableErr) {
+		if !errors.As(err, &unavailableErr) { // if running outside of a managed identity environment then the ChainedTokenCredential should return a CredentialUnavailableError since the only credential provided is unavailable for authentication
 			t.Fatalf("Expected Error Type: CredentialUnavailableError, ReceivedErrorType: %T", err)
 		}
 	}

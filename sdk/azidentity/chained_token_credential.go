@@ -18,8 +18,8 @@ type ChainedTokenCredential struct {
 }
 
 // NewChainedTokenCredential creates an instance of ChainedTokenCredential with the specified TokenCredential sources.
-func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedTokenCredential, error) {
-	return &ChainedTokenCredential{sources: sources}, nil
+func NewChainedTokenCredential(sources ...azcore.TokenCredential) *ChainedTokenCredential {
+	return &ChainedTokenCredential{sources: sources}
 }
 
 // GetToken sequentially calls TokenCredential.GetToken on all the specified sources, returning the first non default AccessToken.
@@ -40,7 +40,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 			return token, nil // if we did not receive an error then we return the token
 		}
 	}
-	// This condition should never be true
+	// this situation can occur when the length of sources is 0
 	if token == nil && len(errList) == 0 {
 		return nil, nil
 	}

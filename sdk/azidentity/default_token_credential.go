@@ -32,8 +32,9 @@ func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*Chained
 		envCred, err := NewEnvironmentCredential(nil)
 		if err == nil {
 			creds = append(creds, envCred)
+		} else {
+			errMsg += err.Error()
 		}
-		errMsg += err.Error()
 	}
 
 	if !options.ExcludeMSICredential {

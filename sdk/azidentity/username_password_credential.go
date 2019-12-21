@@ -3,9 +3,6 @@
 
 package azidentity
 
-// ------------------------ NOTES:
-// CP: To test this I need to create my own tenant in my own personal azure account create a user with auth permissions and an app registration.
-
 import (
 	"context"
 

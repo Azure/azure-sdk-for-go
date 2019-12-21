@@ -4,6 +4,7 @@
 package azidentity
 
 import (
+	"bufio"
 	"crypto"
 	"crypto/rand"
 	"crypto/rsa"
@@ -11,6 +12,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
@@ -36,12 +38,27 @@ type payloadJWT struct {
 // createClientAssertionJWT build the JWT header, payload and signature,
 // then returns a string for the JWT assertion
 func createClientAssertionJWT(clientID string, audience string, clientCertificate string) (string, error) {
-	// TODO: open cert file here and pass to spkiFingerprint and getPrivateKey
-	fingerprint, err := spkiFingerprint(clientCertificate)
+	cert, err := os.Open(clientCertificate)
+	defer cert.Close()
+	if err != nil { // here the error from os.Open is descriptive enough to be returned directly
+		return "", err
+	}
+	pemFileInfo, err := cert.Stat()
+	if err != nil {
+		return "", fmt.Errorf("Getting certificate file info: %w", err)
+	}
+	size := pemFileInfo.Size()
+
+	pemBytes := make([]byte, size)
+	buffer := bufio.NewReader(cert)
+	_, err = buffer.Read(pemBytes)
+	if err != nil {
+		return "", fmt.Errorf("Read PEM file bytes: %w", err)
+	}
+	fingerprint, err := spkiFingerprint(pemBytes)
 	if err != nil {
 		return "", err
 	}
-
 	headerData := headerJWT{
 		Typ: "JWT",
 		Alg: "RS256",
@@ -73,7 +90,7 @@ func createClientAssertionJWT(clientID string, audience string, clientCertificat
 	hashedSum := sha256.Sum256(hashed)
 	cryptoRand := rand.Reader
 
-	privateKey, err := getPrivateKey(clientCertificate)
+	privateKey, err := getPrivateKey(pemBytes)
 	if err != nil {
 		return "", err
 	}

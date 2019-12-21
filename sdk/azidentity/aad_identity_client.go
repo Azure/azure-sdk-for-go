@@ -4,7 +4,6 @@
 package azidentity
 
 import (
-	"bufio"
 	"context"
 	"crypto/rsa"
 	"crypto/x509"
@@ -14,7 +13,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 	"sync"
 	"time"
@@ -365,26 +363,7 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(tenantID string, clien
 	return msg, nil
 }
 
-func getPrivateKey(cert string) (*rsa.PrivateKey, error) {
-	privateKeyFile, err := os.Open(cert)
-	defer privateKeyFile.Close()
-	if err != nil {
-		return nil, fmt.Errorf("Opening certificate file path: %w", err)
-	}
-
-	pemFileInfo, err := privateKeyFile.Stat()
-	if err != nil {
-		return nil, fmt.Errorf("Getting certificate file info: %w", err)
-	}
-	size := pemFileInfo.Size()
-
-	pemBytes := make([]byte, size)
-	buffer := bufio.NewReader(privateKeyFile)
-	_, err = buffer.Read(pemBytes)
-	if err != nil {
-		return nil, fmt.Errorf("Read PEM file bytes: %w", err)
-	}
-
+func getPrivateKey(pemBytes []byte) (*rsa.PrivateKey, error) {
 	data, rest := pem.Decode([]byte(pemBytes))
 	const privateKeyBlock = "PRIVATE KEY"
 	// NOTE: check types of private keys

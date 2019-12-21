@@ -4,13 +4,11 @@
 package azidentity
 
 import (
-	"bufio"
 	"bytes"
 	"crypto/sha1"
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"os"
 )
 
 // fingerprint type wraps a byte slice that contains the corresponding SHA-1 fingerprint for the client's certificate
@@ -31,22 +29,7 @@ func (f fingerprint) String() string {
 
 // spkiFingerprint calculates the fingerprint of the certificate based on it's Subject Public Key Info with the SHA-1
 // signing algorithm.
-func spkiFingerprint(cert string) (fingerprint, error) {
-	privateKeyFile, err := os.Open(cert)
-	defer privateKeyFile.Close()
-	if err != nil { // TODO: check os error message
-		return fingerprint{}, fmt.Errorf("%s: %w", cert, err)
-	}
-
-	pemFileInfo, err := privateKeyFile.Stat()
-	if err != nil {
-		return fingerprint{}, err
-	}
-
-	var size int64 = pemFileInfo.Size()
-	pemBytes := make([]byte, size)
-	buffer := bufio.NewReader(privateKeyFile)
-	_, err = buffer.Read(pemBytes)
+func spkiFingerprint(pemBytes []byte) (fingerprint, error) {
 	// Get first block of PEM file
 	data, rest := pem.Decode([]byte(pemBytes))
 	const certificateBlock = "CERTIFICATE"

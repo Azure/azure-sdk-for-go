@@ -1249,10 +1249,8 @@ type AutomaticOSUpgradeProperties struct {
 type AutomaticRepairsPolicy struct {
 	// Enabled - Specifies whether automatic repairs should be enabled on the virtual machine scale set. The default value is false.
 	Enabled *bool `json:"enabled,omitempty"`
-	// GracePeriod - The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental repairs. The time duration should be specified in ISO 8601 format. The default value is 5 minutes (PT5M).
+	// GracePeriod - The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 30 minutes (PT30M), which is also the default value.
 	GracePeriod *string `json:"gracePeriod,omitempty"`
-	// MaxInstanceRepairsPercent - The percentage (capacity of scaleset) of virtual machines that will be simultaneously repaired. The default value is 20%.
-	MaxInstanceRepairsPercent *int32 `json:"maxInstanceRepairsPercent,omitempty"`
 }
 
 // AvailabilitySet specifies information about the availability set that the virtual machine should be

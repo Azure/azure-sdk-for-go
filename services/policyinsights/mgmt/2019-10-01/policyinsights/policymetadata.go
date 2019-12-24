@@ -32,13 +32,13 @@ type PolicyMetadataClient struct {
 }
 
 // NewPolicyMetadataClient creates an instance of the PolicyMetadataClient client.
-func NewPolicyMetadataClient(subscriptionID string) PolicyMetadataClient {
-	return NewPolicyMetadataClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewPolicyMetadataClient() PolicyMetadataClient {
+	return NewPolicyMetadataClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewPolicyMetadataClientWithBaseURI creates an instance of the PolicyMetadataClient client.
-func NewPolicyMetadataClientWithBaseURI(baseURI string, subscriptionID string) PolicyMetadataClient {
-	return PolicyMetadataClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewPolicyMetadataClientWithBaseURI(baseURI string) PolicyMetadataClient {
+	return PolicyMetadataClient{NewWithBaseURI(baseURI)}
 }
 
 // GetResource get policy metadata resource.

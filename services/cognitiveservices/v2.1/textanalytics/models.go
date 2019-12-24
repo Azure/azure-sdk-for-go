@@ -203,6 +203,7 @@ type RequestStatistics struct {
 
 // SentimentBatchResult ...
 type SentimentBatchResult struct {
+	autorest.Response `json:"-"`
 	// Documents - READ-ONLY; Response by document
 	Documents *[]SentimentBatchResultItem `json:"documents,omitempty"`
 	// Errors - READ-ONLY; Errors and Warnings by document
@@ -219,10 +220,4 @@ type SentimentBatchResultItem struct {
 	Score *float64 `json:"score,omitempty"`
 	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the document payload.
 	Statistics *DocumentStatistics `json:"statistics,omitempty"`
-}
-
-// SetObject ...
-type SetObject struct {
-	autorest.Response `json:"-"`
-	Value             interface{} `json:"value,omitempty"`
 }

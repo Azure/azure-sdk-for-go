@@ -42,7 +42,6 @@ type MultiLanguageInput = original.MultiLanguageInput
 type RequestStatistics = original.RequestStatistics
 type SentimentBatchResult = original.SentimentBatchResult
 type SentimentBatchResultItem = original.SentimentBatchResultItem
-type SetObject = original.SetObject
 
 func New(endpoint string) BaseClient {
 	return original.New(endpoint)

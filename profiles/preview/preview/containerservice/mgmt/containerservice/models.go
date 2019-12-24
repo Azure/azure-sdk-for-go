@@ -39,6 +39,7 @@ const (
 type Kind = original.Kind
 
 const (
+	KindAADIdentityProvider                         Kind = original.KindAADIdentityProvider
 	KindOpenShiftManagedClusterBaseIdentityProvider Kind = original.KindOpenShiftManagedClusterBaseIdentityProvider
 )
 
@@ -351,13 +352,6 @@ type BaseClient = original.BaseClient
 type BasicOpenShiftManagedClusterBaseIdentityProvider = original.BasicOpenShiftManagedClusterBaseIdentityProvider
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
-type Componentsschemasagentpoolallof1 = original.Componentsschemasagentpoolallof1
-type Componentsschemascontainerserviceallof1 = original.Componentsschemascontainerserviceallof1
-type Componentsschemasmanagedclusteraccessprofileallof1 = original.Componentsschemasmanagedclusteraccessprofileallof1
-type Componentsschemasmanagedclusteragentpoolprofileallof1 = original.Componentsschemasmanagedclusteragentpoolprofileallof1
-type Componentsschemasmanagedclusterallof1 = original.Componentsschemasmanagedclusterallof1
-type Componentsschemasopenshiftmanagedclusteraadidentityproviderallof1 = original.Componentsschemasopenshiftmanagedclusteraadidentityproviderallof1
-type Componentsschemasopenshiftmanagedclusterallof1 = original.Componentsschemasopenshiftmanagedclusterallof1
 type ContainerService = original.ContainerService
 type ContainerServicesClient = original.ContainerServicesClient
 type ContainerServicesCreateOrUpdateFutureType = original.ContainerServicesCreateOrUpdateFutureType

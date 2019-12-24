@@ -180,13 +180,17 @@ const (
 	SupportedEditions CapabilityGroup = "supportedEditions"
 	// SupportedElasticPoolEditions ...
 	SupportedElasticPoolEditions CapabilityGroup = "supportedElasticPoolEditions"
+	// SupportedInstancePoolEditions ...
+	SupportedInstancePoolEditions CapabilityGroup = "supportedInstancePoolEditions"
+	// SupportedManagedInstanceEditions ...
+	SupportedManagedInstanceEditions CapabilityGroup = "supportedManagedInstanceEditions"
 	// SupportedManagedInstanceVersions ...
 	SupportedManagedInstanceVersions CapabilityGroup = "supportedManagedInstanceVersions"
 )
 
 // PossibleCapabilityGroupValues returns an array of possible values for the CapabilityGroup const type.
 func PossibleCapabilityGroupValues() []CapabilityGroup {
-	return []CapabilityGroup{SupportedEditions, SupportedElasticPoolEditions, SupportedManagedInstanceVersions}
+	return []CapabilityGroup{SupportedEditions, SupportedElasticPoolEditions, SupportedInstancePoolEditions, SupportedManagedInstanceEditions, SupportedManagedInstanceVersions}
 }
 
 // CapabilityStatus enumerates the values for capability status.
@@ -898,6 +902,19 @@ func PossibleOperationOriginValues() []OperationOrigin {
 	return []OperationOrigin{OperationOriginSystem, OperationOriginUser}
 }
 
+// PauseDelayTimeUnit enumerates the values for pause delay time unit.
+type PauseDelayTimeUnit string
+
+const (
+	// Minutes ...
+	Minutes PauseDelayTimeUnit = "Minutes"
+)
+
+// PossiblePauseDelayTimeUnitValues returns an array of possible values for the PauseDelayTimeUnit const type.
+func PossiblePauseDelayTimeUnitValues() []PauseDelayTimeUnit {
+	return []PauseDelayTimeUnit{Minutes}
+}
+
 // PerformanceLevelUnit enumerates the values for performance level unit.
 type PerformanceLevelUnit string
 
@@ -1376,6 +1393,23 @@ const (
 // PossibleServiceObjectiveNameValues returns an array of possible values for the ServiceObjectiveName const type.
 func PossibleServiceObjectiveNameValues() []ServiceObjectiveName {
 	return []ServiceObjectiveName{ServiceObjectiveNameBasic, ServiceObjectiveNameDS100, ServiceObjectiveNameDS1000, ServiceObjectiveNameDS1200, ServiceObjectiveNameDS1500, ServiceObjectiveNameDS200, ServiceObjectiveNameDS2000, ServiceObjectiveNameDS300, ServiceObjectiveNameDS400, ServiceObjectiveNameDS500, ServiceObjectiveNameDS600, ServiceObjectiveNameDW100, ServiceObjectiveNameDW1000, ServiceObjectiveNameDW10000c, ServiceObjectiveNameDW1000c, ServiceObjectiveNameDW1200, ServiceObjectiveNameDW1500, ServiceObjectiveNameDW15000c, ServiceObjectiveNameDW1500c, ServiceObjectiveNameDW200, ServiceObjectiveNameDW2000, ServiceObjectiveNameDW2000c, ServiceObjectiveNameDW2500c, ServiceObjectiveNameDW300, ServiceObjectiveNameDW3000, ServiceObjectiveNameDW30000c, ServiceObjectiveNameDW3000c, ServiceObjectiveNameDW400, ServiceObjectiveNameDW500, ServiceObjectiveNameDW5000c, ServiceObjectiveNameDW600, ServiceObjectiveNameDW6000, ServiceObjectiveNameDW6000c, ServiceObjectiveNameDW7500c, ServiceObjectiveNameElasticPool, ServiceObjectiveNameFree, ServiceObjectiveNameP1, ServiceObjectiveNameP11, ServiceObjectiveNameP15, ServiceObjectiveNameP2, ServiceObjectiveNameP3, ServiceObjectiveNameP4, ServiceObjectiveNameP6, ServiceObjectiveNamePRS1, ServiceObjectiveNamePRS2, ServiceObjectiveNamePRS4, ServiceObjectiveNamePRS6, ServiceObjectiveNameS0, ServiceObjectiveNameS1, ServiceObjectiveNameS12, ServiceObjectiveNameS2, ServiceObjectiveNameS3, ServiceObjectiveNameS4, ServiceObjectiveNameS6, ServiceObjectiveNameS7, ServiceObjectiveNameS9, ServiceObjectiveNameSystem, ServiceObjectiveNameSystem0, ServiceObjectiveNameSystem1, ServiceObjectiveNameSystem2, ServiceObjectiveNameSystem2L, ServiceObjectiveNameSystem3, ServiceObjectiveNameSystem3L, ServiceObjectiveNameSystem4, ServiceObjectiveNameSystem4L}
+}
+
+// StorageAccountType enumerates the values for storage account type.
+type StorageAccountType string
+
+const (
+	// GRS ...
+	GRS StorageAccountType = "GRS"
+	// LRS ...
+	LRS StorageAccountType = "LRS"
+	// ZRS ...
+	ZRS StorageAccountType = "ZRS"
+)
+
+// PossibleStorageAccountTypeValues returns an array of possible values for the StorageAccountType const type.
+func PossibleStorageAccountTypeValues() []StorageAccountType {
+	return []StorageAccountType{GRS, LRS, ZRS}
 }
 
 // StorageKeyType enumerates the values for storage key type.
@@ -1895,6 +1929,22 @@ func (atsp AutomaticTuningServerProperties) MarshalJSON() ([]byte, error) {
 		objectMap["options"] = atsp.Options
 	}
 	return json.Marshal(objectMap)
+}
+
+// AutoPauseDelayTimeRange supported auto pause delay time range
+type AutoPauseDelayTimeRange struct {
+	// MinValue - READ-ONLY; Minimum value
+	MinValue *int32 `json:"minValue,omitempty"`
+	// MaxValue - READ-ONLY; Maximum value
+	MaxValue *int32 `json:"maxValue,omitempty"`
+	// StepSize - READ-ONLY; Step value for discrete values between the minimum value and the maximum value.
+	StepSize *int32 `json:"stepSize,omitempty"`
+	// Default - READ-ONLY; Default value is no value is provided
+	Default *int32 `json:"default,omitempty"`
+	// Unit - READ-ONLY; Unit of time that delay is expressed in. Possible values include: 'Minutes'
+	Unit PauseDelayTimeUnit `json:"unit,omitempty"`
+	// DoNotPauseValue - READ-ONLY; Value that is used to not pause (infinite delay before pause)
+	DoNotPauseValue *int32 `json:"doNotPauseValue,omitempty"`
 }
 
 // BackupLongTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the
@@ -4507,6 +4557,10 @@ type EditionCapability struct {
 	SupportedServiceLevelObjectives *[]ServiceObjectiveCapability `json:"supportedServiceLevelObjectives,omitempty"`
 	// ZoneRedundant - READ-ONLY; Whether or not zone redundancy is supported for the edition.
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+	// ReadScale - READ-ONLY; The read scale capability for the edition.
+	ReadScale *ReadScaleCapability `json:"readScale,omitempty"`
+	// SupportedStorageCapabilities - READ-ONLY; The list of supported storage capabilities for this edition
+	SupportedStorageCapabilities *[]StorageCapability `json:"supportedStorageCapabilities,omitempty"`
 	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
 	// Reason - The reason for the capability not being available.
@@ -5374,6 +5428,8 @@ type ElasticPoolPerformanceLevelCapability struct {
 	SupportedPerDatabaseMaxSizes *[]MaxSizeRangeCapability `json:"supportedPerDatabaseMaxSizes,omitempty"`
 	// SupportedPerDatabaseMaxPerformanceLevels - READ-ONLY; The list of supported per database max performance levels.
 	SupportedPerDatabaseMaxPerformanceLevels *[]ElasticPoolPerDatabaseMaxPerformanceLevelCapability `json:"supportedPerDatabaseMaxPerformanceLevels,omitempty"`
+	// ZoneRedundant - READ-ONLY; Whether or not zone redundancy is supported for the performance level.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
 	// Reason - The reason for the capability not being available.
@@ -7645,6 +7701,32 @@ func (IP *InstancePool) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// InstancePoolEditionCapability the instance pool capability
+type InstancePoolEditionCapability struct {
+	// Name - READ-ONLY; The instance pool version name.
+	Name *string `json:"name,omitempty"`
+	// SupportedFamilies - READ-ONLY; The supported families.
+	SupportedFamilies *[]InstancePoolFamilyCapability `json:"supportedFamilies,omitempty"`
+	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// InstancePoolFamilyCapability the instance pool family capability.
+type InstancePoolFamilyCapability struct {
+	// Name - READ-ONLY; Family name.
+	Name *string `json:"name,omitempty"`
+	// SupportedLicenseTypes - READ-ONLY; List of supported license types.
+	SupportedLicenseTypes *[]LicenseTypeCapability `json:"supportedLicenseTypes,omitempty"`
+	// SupportedVcoresValues - READ-ONLY; List of supported virtual cores values.
+	SupportedVcoresValues *[]InstancePoolVcoresCapability `json:"supportedVcoresValues,omitempty"`
+	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
 // InstancePoolListResult a list of Azure SQL instance pools.
 type InstancePoolListResult struct {
 	autorest.Response `json:"-"`
@@ -7895,6 +7977,20 @@ func (ipu InstancePoolUpdate) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = ipu.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// InstancePoolVcoresCapability the managed instance virtual cores capability.
+type InstancePoolVcoresCapability struct {
+	// Name - READ-ONLY; The virtual cores identifier.
+	Name *string `json:"name,omitempty"`
+	// Value - READ-ONLY; The virtual cores value.
+	Value *int32 `json:"value,omitempty"`
+	// StorageLimit - READ-ONLY; Storage limit.
+	StorageLimit *MaxSizeCapability `json:"storageLimit,omitempty"`
+	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
 }
 
 // Job a job.
@@ -11996,10 +12092,6 @@ type ManagedInstanceFamilyCapability struct {
 	SupportedLicenseTypes *[]LicenseTypeCapability `json:"supportedLicenseTypes,omitempty"`
 	// SupportedVcoresValues - READ-ONLY; List of supported virtual cores values.
 	SupportedVcoresValues *[]ManagedInstanceVcoresCapability `json:"supportedVcoresValues,omitempty"`
-	// IncludedMaxSize - READ-ONLY; Included size.
-	IncludedMaxSize *MaxSizeCapability `json:"includedMaxSize,omitempty"`
-	// SupportedStorageSizes - READ-ONLY; Storage size ranges.
-	SupportedStorageSizes *[]MaxSizeRangeCapability `json:"supportedStorageSizes,omitempty"`
 	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
 	// Reason - The reason for the capability not being available.
@@ -12680,6 +12772,14 @@ type ManagedInstanceVcoresCapability struct {
 	Name *string `json:"name,omitempty"`
 	// Value - READ-ONLY; The virtual cores value.
 	Value *int32 `json:"value,omitempty"`
+	// IncludedMaxSize - READ-ONLY; Included size.
+	IncludedMaxSize *MaxSizeCapability `json:"includedMaxSize,omitempty"`
+	// SupportedStorageSizes - READ-ONLY; Storage size ranges.
+	SupportedStorageSizes *[]MaxSizeRangeCapability `json:"supportedStorageSizes,omitempty"`
+	// InstancePoolSupported - READ-ONLY; True if this service objective is supported for managed instances in an instance pool.
+	InstancePoolSupported *bool `json:"instancePoolSupported,omitempty"`
+	// StandaloneSupported - READ-ONLY; True if this service objective is supported for standalone managed instances.
+	StandaloneSupported *bool `json:"standaloneSupported,omitempty"`
 	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
 	// Reason - The reason for the capability not being available.
@@ -12692,6 +12792,8 @@ type ManagedInstanceVersionCapability struct {
 	Name *string `json:"name,omitempty"`
 	// SupportedEditions - READ-ONLY; The list of supported managed instance editions.
 	SupportedEditions *[]ManagedInstanceEditionCapability `json:"supportedEditions,omitempty"`
+	// SupportedInstancePoolEditions - READ-ONLY; The list of supported instance pool editions.
+	SupportedInstancePoolEditions *[]InstancePoolEditionCapability `json:"supportedInstancePoolEditions,omitempty"`
 	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
 	// Reason - The reason for the capability not being available.
@@ -13339,6 +13441,16 @@ type MetricValue struct {
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Total - READ-ONLY; The total value of the metric.
 	Total *float64 `json:"total,omitempty"`
+}
+
+// MinCapacityCapability the min capacity capability
+type MinCapacityCapability struct {
+	// Value - READ-ONLY; Min capacity value
+	Value *float64 `json:"value,omitempty"`
+	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
 }
 
 // Name ARM Usage Name
@@ -14037,6 +14149,16 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// ReadScaleCapability the read scale capability.
+type ReadScaleCapability struct {
+	// MaxNumberOfReplicas - READ-ONLY; The maximum number of read scale replicas.
+	MaxNumberOfReplicas *int32 `json:"maxNumberOfReplicas,omitempty"`
+	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
 }
 
 // RecommendedElasticPool represents a recommended elastic pool.
@@ -17798,6 +17920,14 @@ type ServiceObjectiveCapability struct {
 	SupportedLicenseTypes *[]LicenseTypeCapability `json:"supportedLicenseTypes,omitempty"`
 	// IncludedMaxSize - READ-ONLY; The included (free) max size.
 	IncludedMaxSize *MaxSizeCapability `json:"includedMaxSize,omitempty"`
+	// ZoneRedundant - READ-ONLY; Whether or not zone redundancy is supported for the service objective.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+	// SupportedAutoPauseDelay - READ-ONLY; Supported time range for auto pause delay
+	SupportedAutoPauseDelay *AutoPauseDelayTimeRange `json:"supportedAutoPauseDelay,omitempty"`
+	// SupportedMinCapacities - READ-ONLY; List of supported min capacities
+	SupportedMinCapacities *[]MinCapacityCapability `json:"supportedMinCapacities,omitempty"`
+	// ComputeModel - READ-ONLY; The compute model
+	ComputeModel *string `json:"computeModel,omitempty"`
 	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
 	// Reason - The reason for the capability not being available.
@@ -17966,6 +18096,16 @@ type SloUsageMetric struct {
 	ServiceLevelObjectiveID *uuid.UUID `json:"serviceLevelObjectiveId,omitempty"`
 	// InRangeTimeRatio - READ-ONLY; Gets or sets inRangeTimeRatio for SLO usage metric.
 	InRangeTimeRatio *float64 `json:"inRangeTimeRatio,omitempty"`
+}
+
+// StorageCapability the storage account type capability.
+type StorageCapability struct {
+	// StorageAccountType - READ-ONLY; The storage account type for the database's backups. Possible values include: 'GRS', 'LRS', 'ZRS'
+	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
+	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
 }
 
 // SubscriptionUsage usage Metric of a Subscription in a Location.

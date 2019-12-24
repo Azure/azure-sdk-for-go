@@ -1,9 +1,16 @@
 // Package anomalydetector implements the Azure ARM Anomalydetector service API version 1.0.
 //
-// The Anomaly Detector API detects anomalies automatically in time series data. It supports two functionalities, one
-// is for detecting the whole series with model trained by the timeseries, another is detecting last point with model
-// trained by points before. By using this service, business customers can discover incidents and establish a logic
-// flow for root cause analysis.
+// The Anomaly Detector API detects anomalies automatically in time series data. It supports two kinds of mode, one is
+// for stateless using, another is for stateful using. In stateless mode, there are three functionalities. Entire
+// Detect is for detecting the whole series with model trained by the time series, Last Detect is detecting last point
+// with model trained by points before. ChangePoint Detect is for detecting trend changes in time series. In stateful
+// mode, user can store time series, the stored time series will be used for detection anomalies. Under this mode, user
+// can still use the above three functionalities by only giving a time range without preparing time series in client
+// side. Besides the above three functionalities, stateful model also provide group based detection and labeling
+// service. By leveraging labeling service user can provide labels for each detection result, these labels will be used
+// for retuning or regenerating detection models. Inconsistency detection is a kind of group based detection, this
+// detection will find inconsistency ones in a set of time series. By using anomaly detector service, business
+// customers can discover incidents and establish a logic flow for root cause analysis.
 package anomalydetector
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -50,6 +57,83 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 		Client:   autorest.NewClientWithOptions(autorest.ClientOptions{UserAgent: UserAgent(), Renegotiation: tls.RenegotiateFreelyAsClient}),
 		Endpoint: endpoint,
 	}
+}
+
+// ChangePointDetect evaluate change point score of every series point
+// Parameters:
+// body - time series points and granularity is needed. Advanced model parameters can also be set in the
+// request if needed.
+func (client BaseClient) ChangePointDetect(ctx context.Context, body ChangePointDetectRequest) (result ChangePointDetectResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ChangePointDetect")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: body,
+			Constraints: []validation.Constraint{{Target: "body.Series", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("anomalydetector.BaseClient", "ChangePointDetect", err.Error())
+	}
+
+	req, err := client.ChangePointDetectPreparer(ctx, body)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "ChangePointDetect", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ChangePointDetectSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "ChangePointDetect", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ChangePointDetectResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "ChangePointDetect", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ChangePointDetectPreparer prepares the ChangePointDetect request.
+func (client BaseClient) ChangePointDetectPreparer(ctx context.Context, body ChangePointDetectRequest) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/anomalydetector/v1.0", urlParameters),
+		autorest.WithPath("/timeseries/changePoint/detect"),
+		autorest.WithJSON(body))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ChangePointDetectSender sends the ChangePointDetect request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) ChangePointDetectSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ChangePointDetectResponder handles the response to the ChangePointDetect request. The method always
+// closes the http.Response Body.
+func (client BaseClient) ChangePointDetectResponder(resp *http.Response) (result ChangePointDetectResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // EntireDetect this operation generates a model using an entire series, each point is detected with the same model.

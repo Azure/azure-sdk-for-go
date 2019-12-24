@@ -32,13 +32,13 @@ type RemediationsClient struct {
 }
 
 // NewRemediationsClient creates an instance of the RemediationsClient client.
-func NewRemediationsClient(subscriptionID string) RemediationsClient {
-	return NewRemediationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewRemediationsClient() RemediationsClient {
+	return NewRemediationsClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewRemediationsClientWithBaseURI creates an instance of the RemediationsClient client.
-func NewRemediationsClientWithBaseURI(baseURI string, subscriptionID string) RemediationsClient {
-	return RemediationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewRemediationsClientWithBaseURI(baseURI string) RemediationsClient {
+	return RemediationsClient{NewWithBaseURI(baseURI)}
 }
 
 // CancelAtManagementGroup cancels a remediation at management group scope.
@@ -196,9 +196,10 @@ func (client RemediationsClient) CancelAtResourceResponder(resp *http.Response) 
 
 // CancelAtResourceGroup cancels a remediation at resource group scope.
 // Parameters:
+// subscriptionID - microsoft Azure subscription ID.
 // resourceGroupName - resource group name.
 // remediationName - the name of the remediation.
-func (client RemediationsClient) CancelAtResourceGroup(ctx context.Context, resourceGroupName string, remediationName string) (result Remediation, err error) {
+func (client RemediationsClient) CancelAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string) (result Remediation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.CancelAtResourceGroup")
 		defer func() {
@@ -209,7 +210,7 @@ func (client RemediationsClient) CancelAtResourceGroup(ctx context.Context, reso
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CancelAtResourceGroupPreparer(ctx, resourceGroupName, remediationName)
+	req, err := client.CancelAtResourceGroupPreparer(ctx, subscriptionID, resourceGroupName, remediationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.RemediationsClient", "CancelAtResourceGroup", nil, "Failure preparing request")
 		return
@@ -231,11 +232,11 @@ func (client RemediationsClient) CancelAtResourceGroup(ctx context.Context, reso
 }
 
 // CancelAtResourceGroupPreparer prepares the CancelAtResourceGroup request.
-func (client RemediationsClient) CancelAtResourceGroupPreparer(ctx context.Context, resourceGroupName string, remediationName string) (*http.Request, error) {
+func (client RemediationsClient) CancelAtResourceGroupPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"remediationName":   autorest.Encode("path", remediationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2019-07-01"
@@ -273,8 +274,9 @@ func (client RemediationsClient) CancelAtResourceGroupResponder(resp *http.Respo
 
 // CancelAtSubscription cancels a remediation at subscription scope.
 // Parameters:
+// subscriptionID - microsoft Azure subscription ID.
 // remediationName - the name of the remediation.
-func (client RemediationsClient) CancelAtSubscription(ctx context.Context, remediationName string) (result Remediation, err error) {
+func (client RemediationsClient) CancelAtSubscription(ctx context.Context, subscriptionID string, remediationName string) (result Remediation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.CancelAtSubscription")
 		defer func() {
@@ -285,7 +287,7 @@ func (client RemediationsClient) CancelAtSubscription(ctx context.Context, remed
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CancelAtSubscriptionPreparer(ctx, remediationName)
+	req, err := client.CancelAtSubscriptionPreparer(ctx, subscriptionID, remediationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.RemediationsClient", "CancelAtSubscription", nil, "Failure preparing request")
 		return
@@ -307,10 +309,10 @@ func (client RemediationsClient) CancelAtSubscription(ctx context.Context, remed
 }
 
 // CancelAtSubscriptionPreparer prepares the CancelAtSubscription request.
-func (client RemediationsClient) CancelAtSubscriptionPreparer(ctx context.Context, remediationName string) (*http.Request, error) {
+func (client RemediationsClient) CancelAtSubscriptionPreparer(ctx context.Context, subscriptionID string, remediationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"remediationName": autorest.Encode("path", remediationName),
-		"subscriptionId":  autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":  autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2019-07-01"
@@ -513,10 +515,11 @@ func (client RemediationsClient) CreateOrUpdateAtResourceResponder(resp *http.Re
 
 // CreateOrUpdateAtResourceGroup creates or updates a remediation at resource group scope.
 // Parameters:
+// subscriptionID - microsoft Azure subscription ID.
 // resourceGroupName - resource group name.
 // remediationName - the name of the remediation.
 // parameters - the remediation parameters.
-func (client RemediationsClient) CreateOrUpdateAtResourceGroup(ctx context.Context, resourceGroupName string, remediationName string, parameters Remediation) (result Remediation, err error) {
+func (client RemediationsClient) CreateOrUpdateAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string, parameters Remediation) (result Remediation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.CreateOrUpdateAtResourceGroup")
 		defer func() {
@@ -527,7 +530,7 @@ func (client RemediationsClient) CreateOrUpdateAtResourceGroup(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdateAtResourceGroupPreparer(ctx, resourceGroupName, remediationName, parameters)
+	req, err := client.CreateOrUpdateAtResourceGroupPreparer(ctx, subscriptionID, resourceGroupName, remediationName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.RemediationsClient", "CreateOrUpdateAtResourceGroup", nil, "Failure preparing request")
 		return
@@ -549,11 +552,11 @@ func (client RemediationsClient) CreateOrUpdateAtResourceGroup(ctx context.Conte
 }
 
 // CreateOrUpdateAtResourceGroupPreparer prepares the CreateOrUpdateAtResourceGroup request.
-func (client RemediationsClient) CreateOrUpdateAtResourceGroupPreparer(ctx context.Context, resourceGroupName string, remediationName string, parameters Remediation) (*http.Request, error) {
+func (client RemediationsClient) CreateOrUpdateAtResourceGroupPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string, parameters Remediation) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"remediationName":   autorest.Encode("path", remediationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2019-07-01"
@@ -596,9 +599,10 @@ func (client RemediationsClient) CreateOrUpdateAtResourceGroupResponder(resp *ht
 
 // CreateOrUpdateAtSubscription creates or updates a remediation at subscription scope.
 // Parameters:
+// subscriptionID - microsoft Azure subscription ID.
 // remediationName - the name of the remediation.
 // parameters - the remediation parameters.
-func (client RemediationsClient) CreateOrUpdateAtSubscription(ctx context.Context, remediationName string, parameters Remediation) (result Remediation, err error) {
+func (client RemediationsClient) CreateOrUpdateAtSubscription(ctx context.Context, subscriptionID string, remediationName string, parameters Remediation) (result Remediation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.CreateOrUpdateAtSubscription")
 		defer func() {
@@ -609,7 +613,7 @@ func (client RemediationsClient) CreateOrUpdateAtSubscription(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdateAtSubscriptionPreparer(ctx, remediationName, parameters)
+	req, err := client.CreateOrUpdateAtSubscriptionPreparer(ctx, subscriptionID, remediationName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.RemediationsClient", "CreateOrUpdateAtSubscription", nil, "Failure preparing request")
 		return
@@ -631,10 +635,10 @@ func (client RemediationsClient) CreateOrUpdateAtSubscription(ctx context.Contex
 }
 
 // CreateOrUpdateAtSubscriptionPreparer prepares the CreateOrUpdateAtSubscription request.
-func (client RemediationsClient) CreateOrUpdateAtSubscriptionPreparer(ctx context.Context, remediationName string, parameters Remediation) (*http.Request, error) {
+func (client RemediationsClient) CreateOrUpdateAtSubscriptionPreparer(ctx context.Context, subscriptionID string, remediationName string, parameters Remediation) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"remediationName": autorest.Encode("path", remediationName),
-		"subscriptionId":  autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":  autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2019-07-01"
@@ -830,9 +834,10 @@ func (client RemediationsClient) DeleteAtResourceResponder(resp *http.Response) 
 
 // DeleteAtResourceGroup deletes an existing remediation at resource group scope.
 // Parameters:
+// subscriptionID - microsoft Azure subscription ID.
 // resourceGroupName - resource group name.
 // remediationName - the name of the remediation.
-func (client RemediationsClient) DeleteAtResourceGroup(ctx context.Context, resourceGroupName string, remediationName string) (result Remediation, err error) {
+func (client RemediationsClient) DeleteAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string) (result Remediation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.DeleteAtResourceGroup")
 		defer func() {
@@ -843,7 +848,7 @@ func (client RemediationsClient) DeleteAtResourceGroup(ctx context.Context, reso
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteAtResourceGroupPreparer(ctx, resourceGroupName, remediationName)
+	req, err := client.DeleteAtResourceGroupPreparer(ctx, subscriptionID, resourceGroupName, remediationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.RemediationsClient", "DeleteAtResourceGroup", nil, "Failure preparing request")
 		return
@@ -865,11 +870,11 @@ func (client RemediationsClient) DeleteAtResourceGroup(ctx context.Context, reso
 }
 
 // DeleteAtResourceGroupPreparer prepares the DeleteAtResourceGroup request.
-func (client RemediationsClient) DeleteAtResourceGroupPreparer(ctx context.Context, resourceGroupName string, remediationName string) (*http.Request, error) {
+func (client RemediationsClient) DeleteAtResourceGroupPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"remediationName":   autorest.Encode("path", remediationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2019-07-01"
@@ -907,8 +912,9 @@ func (client RemediationsClient) DeleteAtResourceGroupResponder(resp *http.Respo
 
 // DeleteAtSubscription deletes an existing remediation at subscription scope.
 // Parameters:
+// subscriptionID - microsoft Azure subscription ID.
 // remediationName - the name of the remediation.
-func (client RemediationsClient) DeleteAtSubscription(ctx context.Context, remediationName string) (result Remediation, err error) {
+func (client RemediationsClient) DeleteAtSubscription(ctx context.Context, subscriptionID string, remediationName string) (result Remediation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.DeleteAtSubscription")
 		defer func() {
@@ -919,7 +925,7 @@ func (client RemediationsClient) DeleteAtSubscription(ctx context.Context, remed
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteAtSubscriptionPreparer(ctx, remediationName)
+	req, err := client.DeleteAtSubscriptionPreparer(ctx, subscriptionID, remediationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.RemediationsClient", "DeleteAtSubscription", nil, "Failure preparing request")
 		return
@@ -941,10 +947,10 @@ func (client RemediationsClient) DeleteAtSubscription(ctx context.Context, remed
 }
 
 // DeleteAtSubscriptionPreparer prepares the DeleteAtSubscription request.
-func (client RemediationsClient) DeleteAtSubscriptionPreparer(ctx context.Context, remediationName string) (*http.Request, error) {
+func (client RemediationsClient) DeleteAtSubscriptionPreparer(ctx context.Context, subscriptionID string, remediationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"remediationName": autorest.Encode("path", remediationName),
-		"subscriptionId":  autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":  autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2019-07-01"
@@ -1135,9 +1141,10 @@ func (client RemediationsClient) GetAtResourceResponder(resp *http.Response) (re
 
 // GetAtResourceGroup gets an existing remediation at resource group scope.
 // Parameters:
+// subscriptionID - microsoft Azure subscription ID.
 // resourceGroupName - resource group name.
 // remediationName - the name of the remediation.
-func (client RemediationsClient) GetAtResourceGroup(ctx context.Context, resourceGroupName string, remediationName string) (result Remediation, err error) {
+func (client RemediationsClient) GetAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string) (result Remediation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.GetAtResourceGroup")
 		defer func() {
@@ -1148,7 +1155,7 @@ func (client RemediationsClient) GetAtResourceGroup(ctx context.Context, resourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetAtResourceGroupPreparer(ctx, resourceGroupName, remediationName)
+	req, err := client.GetAtResourceGroupPreparer(ctx, subscriptionID, resourceGroupName, remediationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.RemediationsClient", "GetAtResourceGroup", nil, "Failure preparing request")
 		return
@@ -1170,11 +1177,11 @@ func (client RemediationsClient) GetAtResourceGroup(ctx context.Context, resourc
 }
 
 // GetAtResourceGroupPreparer prepares the GetAtResourceGroup request.
-func (client RemediationsClient) GetAtResourceGroupPreparer(ctx context.Context, resourceGroupName string, remediationName string) (*http.Request, error) {
+func (client RemediationsClient) GetAtResourceGroupPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"remediationName":   autorest.Encode("path", remediationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2019-07-01"
@@ -1212,8 +1219,9 @@ func (client RemediationsClient) GetAtResourceGroupResponder(resp *http.Response
 
 // GetAtSubscription gets an existing remediation at subscription scope.
 // Parameters:
+// subscriptionID - microsoft Azure subscription ID.
 // remediationName - the name of the remediation.
-func (client RemediationsClient) GetAtSubscription(ctx context.Context, remediationName string) (result Remediation, err error) {
+func (client RemediationsClient) GetAtSubscription(ctx context.Context, subscriptionID string, remediationName string) (result Remediation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.GetAtSubscription")
 		defer func() {
@@ -1224,7 +1232,7 @@ func (client RemediationsClient) GetAtSubscription(ctx context.Context, remediat
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetAtSubscriptionPreparer(ctx, remediationName)
+	req, err := client.GetAtSubscriptionPreparer(ctx, subscriptionID, remediationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.RemediationsClient", "GetAtSubscription", nil, "Failure preparing request")
 		return
@@ -1246,10 +1254,10 @@ func (client RemediationsClient) GetAtSubscription(ctx context.Context, remediat
 }
 
 // GetAtSubscriptionPreparer prepares the GetAtSubscription request.
-func (client RemediationsClient) GetAtSubscriptionPreparer(ctx context.Context, remediationName string) (*http.Request, error) {
+func (client RemediationsClient) GetAtSubscriptionPreparer(ctx context.Context, subscriptionID string, remediationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"remediationName": autorest.Encode("path", remediationName),
-		"subscriptionId":  autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":  autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2019-07-01"
@@ -1538,10 +1546,11 @@ func (client RemediationsClient) ListDeploymentsAtResourceComplete(ctx context.C
 
 // ListDeploymentsAtResourceGroup gets all deployments for a remediation at resource group scope.
 // Parameters:
+// subscriptionID - microsoft Azure subscription ID.
 // resourceGroupName - resource group name.
 // remediationName - the name of the remediation.
 // top - maximum number of records to return.
-func (client RemediationsClient) ListDeploymentsAtResourceGroup(ctx context.Context, resourceGroupName string, remediationName string, top *int32) (result RemediationDeploymentsListResultPage, err error) {
+func (client RemediationsClient) ListDeploymentsAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string, top *int32) (result RemediationDeploymentsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.ListDeploymentsAtResourceGroup")
 		defer func() {
@@ -1560,7 +1569,7 @@ func (client RemediationsClient) ListDeploymentsAtResourceGroup(ctx context.Cont
 	}
 
 	result.fn = client.listDeploymentsAtResourceGroupNextResults
-	req, err := client.ListDeploymentsAtResourceGroupPreparer(ctx, resourceGroupName, remediationName, top)
+	req, err := client.ListDeploymentsAtResourceGroupPreparer(ctx, subscriptionID, resourceGroupName, remediationName, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.RemediationsClient", "ListDeploymentsAtResourceGroup", nil, "Failure preparing request")
 		return
@@ -1582,11 +1591,11 @@ func (client RemediationsClient) ListDeploymentsAtResourceGroup(ctx context.Cont
 }
 
 // ListDeploymentsAtResourceGroupPreparer prepares the ListDeploymentsAtResourceGroup request.
-func (client RemediationsClient) ListDeploymentsAtResourceGroupPreparer(ctx context.Context, resourceGroupName string, remediationName string, top *int32) (*http.Request, error) {
+func (client RemediationsClient) ListDeploymentsAtResourceGroupPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"remediationName":   autorest.Encode("path", remediationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2019-07-01"
@@ -1647,7 +1656,7 @@ func (client RemediationsClient) listDeploymentsAtResourceGroupNextResults(ctx c
 }
 
 // ListDeploymentsAtResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client RemediationsClient) ListDeploymentsAtResourceGroupComplete(ctx context.Context, resourceGroupName string, remediationName string, top *int32) (result RemediationDeploymentsListResultIterator, err error) {
+func (client RemediationsClient) ListDeploymentsAtResourceGroupComplete(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string, top *int32) (result RemediationDeploymentsListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.ListDeploymentsAtResourceGroup")
 		defer func() {
@@ -1658,15 +1667,16 @@ func (client RemediationsClient) ListDeploymentsAtResourceGroupComplete(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListDeploymentsAtResourceGroup(ctx, resourceGroupName, remediationName, top)
+	result.page, err = client.ListDeploymentsAtResourceGroup(ctx, subscriptionID, resourceGroupName, remediationName, top)
 	return
 }
 
 // ListDeploymentsAtSubscription gets all deployments for a remediation at subscription scope.
 // Parameters:
+// subscriptionID - microsoft Azure subscription ID.
 // remediationName - the name of the remediation.
 // top - maximum number of records to return.
-func (client RemediationsClient) ListDeploymentsAtSubscription(ctx context.Context, remediationName string, top *int32) (result RemediationDeploymentsListResultPage, err error) {
+func (client RemediationsClient) ListDeploymentsAtSubscription(ctx context.Context, subscriptionID string, remediationName string, top *int32) (result RemediationDeploymentsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.ListDeploymentsAtSubscription")
 		defer func() {
@@ -1685,7 +1695,7 @@ func (client RemediationsClient) ListDeploymentsAtSubscription(ctx context.Conte
 	}
 
 	result.fn = client.listDeploymentsAtSubscriptionNextResults
-	req, err := client.ListDeploymentsAtSubscriptionPreparer(ctx, remediationName, top)
+	req, err := client.ListDeploymentsAtSubscriptionPreparer(ctx, subscriptionID, remediationName, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.RemediationsClient", "ListDeploymentsAtSubscription", nil, "Failure preparing request")
 		return
@@ -1707,10 +1717,10 @@ func (client RemediationsClient) ListDeploymentsAtSubscription(ctx context.Conte
 }
 
 // ListDeploymentsAtSubscriptionPreparer prepares the ListDeploymentsAtSubscription request.
-func (client RemediationsClient) ListDeploymentsAtSubscriptionPreparer(ctx context.Context, remediationName string, top *int32) (*http.Request, error) {
+func (client RemediationsClient) ListDeploymentsAtSubscriptionPreparer(ctx context.Context, subscriptionID string, remediationName string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"remediationName": autorest.Encode("path", remediationName),
-		"subscriptionId":  autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":  autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2019-07-01"
@@ -1771,7 +1781,7 @@ func (client RemediationsClient) listDeploymentsAtSubscriptionNextResults(ctx co
 }
 
 // ListDeploymentsAtSubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
-func (client RemediationsClient) ListDeploymentsAtSubscriptionComplete(ctx context.Context, remediationName string, top *int32) (result RemediationDeploymentsListResultIterator, err error) {
+func (client RemediationsClient) ListDeploymentsAtSubscriptionComplete(ctx context.Context, subscriptionID string, remediationName string, top *int32) (result RemediationDeploymentsListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.ListDeploymentsAtSubscription")
 		defer func() {
@@ -1782,7 +1792,7 @@ func (client RemediationsClient) ListDeploymentsAtSubscriptionComplete(ctx conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListDeploymentsAtSubscription(ctx, remediationName, top)
+	result.page, err = client.ListDeploymentsAtSubscription(ctx, subscriptionID, remediationName, top)
 	return
 }
 
@@ -2043,10 +2053,11 @@ func (client RemediationsClient) ListForResourceComplete(ctx context.Context, re
 
 // ListForResourceGroup gets all remediations for the subscription.
 // Parameters:
+// subscriptionID - microsoft Azure subscription ID.
 // resourceGroupName - resource group name.
 // top - maximum number of records to return.
 // filter - oData filter expression.
-func (client RemediationsClient) ListForResourceGroup(ctx context.Context, resourceGroupName string, top *int32, filter string) (result RemediationListResultPage, err error) {
+func (client RemediationsClient) ListForResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, top *int32, filter string) (result RemediationListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.ListForResourceGroup")
 		defer func() {
@@ -2065,7 +2076,7 @@ func (client RemediationsClient) ListForResourceGroup(ctx context.Context, resou
 	}
 
 	result.fn = client.listForResourceGroupNextResults
-	req, err := client.ListForResourceGroupPreparer(ctx, resourceGroupName, top, filter)
+	req, err := client.ListForResourceGroupPreparer(ctx, subscriptionID, resourceGroupName, top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.RemediationsClient", "ListForResourceGroup", nil, "Failure preparing request")
 		return
@@ -2087,10 +2098,10 @@ func (client RemediationsClient) ListForResourceGroup(ctx context.Context, resou
 }
 
 // ListForResourceGroupPreparer prepares the ListForResourceGroup request.
-func (client RemediationsClient) ListForResourceGroupPreparer(ctx context.Context, resourceGroupName string, top *int32, filter string) (*http.Request, error) {
+func (client RemediationsClient) ListForResourceGroupPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, top *int32, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2019-07-01"
@@ -2154,7 +2165,7 @@ func (client RemediationsClient) listForResourceGroupNextResults(ctx context.Con
 }
 
 // ListForResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client RemediationsClient) ListForResourceGroupComplete(ctx context.Context, resourceGroupName string, top *int32, filter string) (result RemediationListResultIterator, err error) {
+func (client RemediationsClient) ListForResourceGroupComplete(ctx context.Context, subscriptionID string, resourceGroupName string, top *int32, filter string) (result RemediationListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.ListForResourceGroup")
 		defer func() {
@@ -2165,15 +2176,16 @@ func (client RemediationsClient) ListForResourceGroupComplete(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListForResourceGroup(ctx, resourceGroupName, top, filter)
+	result.page, err = client.ListForResourceGroup(ctx, subscriptionID, resourceGroupName, top, filter)
 	return
 }
 
 // ListForSubscription gets all remediations for the subscription.
 // Parameters:
+// subscriptionID - microsoft Azure subscription ID.
 // top - maximum number of records to return.
 // filter - oData filter expression.
-func (client RemediationsClient) ListForSubscription(ctx context.Context, top *int32, filter string) (result RemediationListResultPage, err error) {
+func (client RemediationsClient) ListForSubscription(ctx context.Context, subscriptionID string, top *int32, filter string) (result RemediationListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.ListForSubscription")
 		defer func() {
@@ -2192,7 +2204,7 @@ func (client RemediationsClient) ListForSubscription(ctx context.Context, top *i
 	}
 
 	result.fn = client.listForSubscriptionNextResults
-	req, err := client.ListForSubscriptionPreparer(ctx, top, filter)
+	req, err := client.ListForSubscriptionPreparer(ctx, subscriptionID, top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.RemediationsClient", "ListForSubscription", nil, "Failure preparing request")
 		return
@@ -2214,9 +2226,9 @@ func (client RemediationsClient) ListForSubscription(ctx context.Context, top *i
 }
 
 // ListForSubscriptionPreparer prepares the ListForSubscription request.
-func (client RemediationsClient) ListForSubscriptionPreparer(ctx context.Context, top *int32, filter string) (*http.Request, error) {
+func (client RemediationsClient) ListForSubscriptionPreparer(ctx context.Context, subscriptionID string, top *int32, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2019-07-01"
@@ -2280,7 +2292,7 @@ func (client RemediationsClient) listForSubscriptionNextResults(ctx context.Cont
 }
 
 // ListForSubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
-func (client RemediationsClient) ListForSubscriptionComplete(ctx context.Context, top *int32, filter string) (result RemediationListResultIterator, err error) {
+func (client RemediationsClient) ListForSubscriptionComplete(ctx context.Context, subscriptionID string, top *int32, filter string) (result RemediationListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationsClient.ListForSubscription")
 		defer func() {
@@ -2291,6 +2303,6 @@ func (client RemediationsClient) ListForSubscriptionComplete(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListForSubscription(ctx, top, filter)
+	result.page, err = client.ListForSubscription(ctx, subscriptionID, top, filter)
 	return
 }

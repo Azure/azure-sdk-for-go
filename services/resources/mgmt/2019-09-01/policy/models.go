@@ -73,9 +73,10 @@ func PossibleParameterTypeValues() []ParameterType {
 type ResourceIdentityType string
 
 const (
-	// None ...
+	// None Indicates that no identity is associated with the resource or that the existing identity should be
+	// removed.
 	None ResourceIdentityType = "None"
-	// SystemAssigned ...
+	// SystemAssigned Indicates that a system assigned identity is associated with the resource.
 	SystemAssigned ResourceIdentityType = "SystemAssigned"
 )
 
@@ -755,11 +756,11 @@ type Identity struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - READ-ONLY; The tenant ID of the resource identity.
 	TenantID *string `json:"tenantId,omitempty"`
-	// Type - The identity type. Possible values include: 'SystemAssigned', 'None'
+	// Type - The identity type. This is the only required field when adding a system assigned identity to a resource. Possible values include: 'SystemAssigned', 'None'
 	Type ResourceIdentityType `json:"type,omitempty"`
 }
 
-// ParameterDefinitionsValue ...
+// ParameterDefinitionsValue the definition of a parameter that can be provided to the policy.
 type ParameterDefinitionsValue struct {
 	// Type - The data type of the parameter. Possible values include: 'String', 'Array', 'Object', 'Boolean', 'Integer', 'Float', 'DateTime'
 	Type ParameterType `json:"type,omitempty"`
@@ -841,7 +842,7 @@ func (pdv *ParameterDefinitionsValueMetadata) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ParameterValuesValue ...
+// ParameterValuesValue the value of a parameter.
 type ParameterValuesValue struct {
 	// Value - The value of the parameter.
 	Value interface{} `json:"value,omitempty"`

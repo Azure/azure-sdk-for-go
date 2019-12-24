@@ -45,6 +45,15 @@ const (
 	Remove      Action = original.Remove
 )
 
+type ActionType = original.ActionType
+
+const (
+	ActionTypeAutomationAction ActionType = original.ActionTypeAutomationAction
+	ActionTypeEventHub         ActionType = original.ActionTypeEventHub
+	ActionTypeLogicApp         ActionType = original.ActionTypeLogicApp
+	ActionTypeWorkspace        ActionType = original.ActionTypeWorkspace
+)
+
 type AlertNotifications = original.AlertNotifications
 
 const (
@@ -68,11 +77,29 @@ const (
 	AssessedResourceTypeSQLServerVulnerability         AssessedResourceType = original.AssessedResourceTypeSQLServerVulnerability
 )
 
+type AssessmentType = original.AssessmentType
+
+const (
+	BuiltIn         AssessmentType = original.BuiltIn
+	CustomerManaged AssessmentType = original.CustomerManaged
+	CustomPolicy    AssessmentType = original.CustomPolicy
+)
+
 type AutoProvision = original.AutoProvision
 
 const (
 	AutoProvisionOff AutoProvision = original.AutoProvisionOff
 	AutoProvisionOn  AutoProvision = original.AutoProvisionOn
+)
+
+type Category = original.Category
+
+const (
+	Compute           Category = original.Compute
+	Data              Category = original.Data
+	IdentityAndAccess Category = original.IdentityAndAccess
+	IoT               Category = original.IoT
+	Networking        Category = original.Networking
 )
 
 type ConfigurationStatus = original.ConfigurationStatus
@@ -134,6 +161,13 @@ const (
 	EnforcementMode1None    EnforcementMode1 = original.EnforcementMode1None
 )
 
+type EventSource = original.EventSource
+
+const (
+	Alerts      EventSource = original.Alerts
+	Assessments EventSource = original.Assessments
+)
+
 type Exe = original.Exe
 
 const (
@@ -184,6 +218,14 @@ const (
 	FileTypeUnknown    FileType = original.FileTypeUnknown
 )
 
+type ImplementationEffort = original.ImplementationEffort
+
+const (
+	High     ImplementationEffort = original.High
+	Low      ImplementationEffort = original.Low
+	Moderate ImplementationEffort = original.Moderate
+)
+
 type Issue = original.Issue
 
 const (
@@ -212,11 +254,34 @@ const (
 	MsiNone    Msi = original.MsiNone
 )
 
+type Operator = original.Operator
+
+const (
+	Contains             Operator = original.Contains
+	EndsWith             Operator = original.EndsWith
+	Equals               Operator = original.Equals
+	GreaterThan          Operator = original.GreaterThan
+	GreaterThanOrEqualTo Operator = original.GreaterThanOrEqualTo
+	LesserThan           Operator = original.LesserThan
+	LesserThanOrEqualTo  Operator = original.LesserThanOrEqualTo
+	NotEquals            Operator = original.NotEquals
+	StartsWith           Operator = original.StartsWith
+)
+
 type PricingTier = original.PricingTier
 
 const (
 	Free     PricingTier = original.Free
 	Standard PricingTier = original.Standard
+)
+
+type PropertyType = original.PropertyType
+
+const (
+	Boolean PropertyType = original.Boolean
+	Integer PropertyType = original.Integer
+	Number  PropertyType = original.Number
+	String  PropertyType = original.String
 )
 
 type Protocol = original.Protocol
@@ -293,10 +358,10 @@ const (
 type ReportedSeverity = original.ReportedSeverity
 
 const (
-	High          ReportedSeverity = original.High
-	Informational ReportedSeverity = original.Informational
-	Low           ReportedSeverity = original.Low
-	Medium        ReportedSeverity = original.Medium
+	ReportedSeverityHigh          ReportedSeverity = original.ReportedSeverityHigh
+	ReportedSeverityInformational ReportedSeverity = original.ReportedSeverityInformational
+	ReportedSeverityLow           ReportedSeverity = original.ReportedSeverityLow
+	ReportedSeverityMedium        ReportedSeverity = original.ReportedSeverityMedium
 )
 
 type ResourceStatus = original.ResourceStatus
@@ -388,6 +453,19 @@ const (
 	SubAssessmentStatusCodeUnhealthy     SubAssessmentStatusCode = original.SubAssessmentStatusCodeUnhealthy
 )
 
+type Threats = original.Threats
+
+const (
+	AccountBreach        Threats = original.AccountBreach
+	DataExfiltration     Threats = original.DataExfiltration
+	DataSpillage         Threats = original.DataSpillage
+	DenialOfService      Threats = original.DenialOfService
+	ElevationOfPrivilege Threats = original.ElevationOfPrivilege
+	MaliciousInsider     Threats = original.MaliciousInsider
+	MissingCoverage      Threats = original.MissingCoverage
+	ThreatResistance     Threats = original.ThreatResistance
+)
+
 type Type = original.Type
 
 const (
@@ -406,11 +484,19 @@ const (
 	UnmaskedIPLoggingStatusEnabled  UnmaskedIPLoggingStatus = original.UnmaskedIPLoggingStatusEnabled
 )
 
+type UserImpact = original.UserImpact
+
+const (
+	UserImpactHigh     UserImpact = original.UserImpactHigh
+	UserImpactLow      UserImpact = original.UserImpactLow
+	UserImpactModerate UserImpact = original.UserImpactModerate
+)
+
 type ValueType = original.ValueType
 
 const (
-	IPCidr ValueType = original.IPCidr
-	String ValueType = original.String
+	ValueTypeIPCidr ValueType = original.ValueTypeIPCidr
+	ValueTypeString ValueType = original.ValueTypeString
 )
 
 type AadConnectivityState1 = original.AadConnectivityState1
@@ -445,6 +531,13 @@ type AscLocation = original.AscLocation
 type AscLocationList = original.AscLocationList
 type AscLocationListIterator = original.AscLocationListIterator
 type AscLocationListPage = original.AscLocationListPage
+type AssessmentMetadata = original.AssessmentMetadata
+type AssessmentMetadataList = original.AssessmentMetadataList
+type AssessmentMetadataListIterator = original.AssessmentMetadataListIterator
+type AssessmentMetadataListPage = original.AssessmentMetadataListPage
+type AssessmentMetadataProperties = original.AssessmentMetadataProperties
+type AssessmentsMetadataClient = original.AssessmentsMetadataClient
+type AssessmentsMetadataSubscriptionClient = original.AssessmentsMetadataSubscriptionClient
 type AtaExternalSecuritySolution = original.AtaExternalSecuritySolution
 type AtaSolutionProperties = original.AtaSolutionProperties
 type AutoProvisioningSetting = original.AutoProvisioningSetting
@@ -453,10 +546,26 @@ type AutoProvisioningSettingListIterator = original.AutoProvisioningSettingListI
 type AutoProvisioningSettingListPage = original.AutoProvisioningSettingListPage
 type AutoProvisioningSettingProperties = original.AutoProvisioningSettingProperties
 type AutoProvisioningSettingsClient = original.AutoProvisioningSettingsClient
+type Automation = original.Automation
+type AutomationAction = original.AutomationAction
+type AutomationActionEventHub = original.AutomationActionEventHub
+type AutomationActionLogicApp = original.AutomationActionLogicApp
+type AutomationActionWorkspace = original.AutomationActionWorkspace
+type AutomationList = original.AutomationList
+type AutomationListIterator = original.AutomationListIterator
+type AutomationListPage = original.AutomationListPage
+type AutomationProperties = original.AutomationProperties
+type AutomationRuleSet = original.AutomationRuleSet
+type AutomationScope = original.AutomationScope
+type AutomationSource = original.AutomationSource
+type AutomationTriggeringRule = original.AutomationTriggeringRule
+type AutomationValidationStatus = original.AutomationValidationStatus
+type AutomationsClient = original.AutomationsClient
 type AwsResourceDetails = original.AwsResourceDetails
 type AzureResourceDetails = original.AzureResourceDetails
 type BaseClient = original.BaseClient
 type BasicAdditionalData = original.BasicAdditionalData
+type BasicAutomationAction = original.BasicAutomationAction
 type BasicExternalSecuritySolution = original.BasicExternalSecuritySolution
 type BasicResourceDetails = original.BasicResourceDetails
 type CVE = original.CVE
@@ -700,6 +809,24 @@ func NewAscLocationListIterator(page AscLocationListPage) AscLocationListIterato
 func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
 	return original.NewAscLocationListPage(getNextPage)
 }
+func NewAssessmentMetadataListIterator(page AssessmentMetadataListPage) AssessmentMetadataListIterator {
+	return original.NewAssessmentMetadataListIterator(page)
+}
+func NewAssessmentMetadataListPage(getNextPage func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)) AssessmentMetadataListPage {
+	return original.NewAssessmentMetadataListPage(getNextPage)
+}
+func NewAssessmentsMetadataClient(subscriptionID string, ascLocation string) AssessmentsMetadataClient {
+	return original.NewAssessmentsMetadataClient(subscriptionID, ascLocation)
+}
+func NewAssessmentsMetadataClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsMetadataClient {
+	return original.NewAssessmentsMetadataClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAssessmentsMetadataSubscriptionClient(subscriptionID string, ascLocation string) AssessmentsMetadataSubscriptionClient {
+	return original.NewAssessmentsMetadataSubscriptionClient(subscriptionID, ascLocation)
+}
+func NewAssessmentsMetadataSubscriptionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsMetadataSubscriptionClient {
+	return original.NewAssessmentsMetadataSubscriptionClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewAutoProvisioningSettingListIterator(page AutoProvisioningSettingListPage) AutoProvisioningSettingListIterator {
 	return original.NewAutoProvisioningSettingListIterator(page)
 }
@@ -711,6 +838,18 @@ func NewAutoProvisioningSettingsClient(subscriptionID string, ascLocation string
 }
 func NewAutoProvisioningSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AutoProvisioningSettingsClient {
 	return original.NewAutoProvisioningSettingsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAutomationListIterator(page AutomationListPage) AutomationListIterator {
+	return original.NewAutomationListIterator(page)
+}
+func NewAutomationListPage(getNextPage func(context.Context, AutomationList) (AutomationList, error)) AutomationListPage {
+	return original.NewAutomationListPage(getNextPage)
+}
+func NewAutomationsClient(subscriptionID string, ascLocation string) AutomationsClient {
+	return original.NewAutomationsClient(subscriptionID, ascLocation)
+}
+func NewAutomationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AutomationsClient {
+	return original.NewAutomationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewComplianceListIterator(page ComplianceListPage) ComplianceListIterator {
 	return original.NewComplianceListIterator(page)
@@ -982,6 +1121,9 @@ func NewWorkspaceSettingsClientWithBaseURI(baseURI string, subscriptionID string
 func PossibleAadConnectivityStateValues() []AadConnectivityState {
 	return original.PossibleAadConnectivityStateValues()
 }
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
+}
 func PossibleActionValues() []Action {
 	return original.PossibleActionValues()
 }
@@ -994,8 +1136,14 @@ func PossibleAlertsToAdminsValues() []AlertsToAdmins {
 func PossibleAssessedResourceTypeValues() []AssessedResourceType {
 	return original.PossibleAssessedResourceTypeValues()
 }
+func PossibleAssessmentTypeValues() []AssessmentType {
+	return original.PossibleAssessmentTypeValues()
+}
 func PossibleAutoProvisionValues() []AutoProvision {
 	return original.PossibleAutoProvisionValues()
+}
+func PossibleCategoryValues() []Category {
+	return original.PossibleCategoryValues()
 }
 func PossibleConfigurationStatus1Values() []ConfigurationStatus1 {
 	return original.PossibleConfigurationStatus1Values()
@@ -1018,6 +1166,9 @@ func PossibleEnforcementMode1Values() []EnforcementMode1 {
 func PossibleEnforcementModeValues() []EnforcementMode {
 	return original.PossibleEnforcementModeValues()
 }
+func PossibleEventSourceValues() []EventSource {
+	return original.PossibleEventSourceValues()
+}
 func PossibleExeValues() []Exe {
 	return original.PossibleExeValues()
 }
@@ -1036,6 +1187,9 @@ func PossibleFamilyValues() []Family {
 func PossibleFileTypeValues() []FileType {
 	return original.PossibleFileTypeValues()
 }
+func PossibleImplementationEffortValues() []ImplementationEffort {
+	return original.PossibleImplementationEffortValues()
+}
 func PossibleIssueValues() []Issue {
 	return original.PossibleIssueValues()
 }
@@ -1045,8 +1199,14 @@ func PossibleKindEnumValues() []KindEnum {
 func PossibleMsiValues() []Msi {
 	return original.PossibleMsiValues()
 }
+func PossibleOperatorValues() []Operator {
+	return original.PossibleOperatorValues()
+}
 func PossiblePricingTierValues() []PricingTier {
 	return original.PossiblePricingTierValues()
+}
+func PossiblePropertyTypeValues() []PropertyType {
+	return original.PossiblePropertyTypeValues()
 }
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
@@ -1105,11 +1265,17 @@ func PossibleStatusValues() []Status {
 func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 	return original.PossibleSubAssessmentStatusCodeValues()
 }
+func PossibleThreatsValues() []Threats {
+	return original.PossibleThreatsValues()
+}
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
 func PossibleUnmaskedIPLoggingStatusValues() []UnmaskedIPLoggingStatus {
 	return original.PossibleUnmaskedIPLoggingStatusValues()
+}
+func PossibleUserImpactValues() []UserImpact {
+	return original.PossibleUserImpactValues()
 }
 func PossibleValueTypeValues() []ValueType {
 	return original.PossibleValueTypeValues()

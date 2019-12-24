@@ -648,17 +648,17 @@ func PossibleSeverityValues() []Severity {
 type Source string
 
 const (
-	// SourceAws ...
-	SourceAws Source = "Aws"
 	// SourceAzure ...
 	SourceAzure Source = "Azure"
+	// SourceOnPremise ...
+	SourceOnPremise Source = "OnPremise"
 	// SourceResourceDetails ...
 	SourceResourceDetails Source = "ResourceDetails"
 )
 
 // PossibleSourceValues returns an array of possible values for the Source const type.
 func PossibleSourceValues() []Source {
-	return []Source{SourceAws, SourceAzure, SourceResourceDetails}
+	return []Source{SourceAzure, SourceOnPremise, SourceResourceDetails}
 }
 
 // SourceSystem enumerates the values for source system.
@@ -3201,51 +3201,11 @@ type AutoProvisioningSettingProperties struct {
 	AutoProvision AutoProvision `json:"autoProvision,omitempty"`
 }
 
-// AwsResourceDetails details of the resource that was assessed
-type AwsResourceDetails struct {
-	// AccountID - READ-ONLY; AWS account ID
-	AccountID *string `json:"accountId,omitempty"`
-	// AwsResourceID - READ-ONLY; AWS resource ID. can be ARN or other
-	AwsResourceID *string `json:"awsResourceId,omitempty"`
-	// Source - Possible values include: 'SourceResourceDetails', 'SourceAzure', 'SourceAws'
-	Source Source `json:"source,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AwsResourceDetails.
-func (ard AwsResourceDetails) MarshalJSON() ([]byte, error) {
-	ard.Source = SourceAws
-	objectMap := make(map[string]interface{})
-	if ard.Source != "" {
-		objectMap["source"] = ard.Source
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureResourceDetails is the BasicResourceDetails implementation for AwsResourceDetails.
-func (ard AwsResourceDetails) AsAzureResourceDetails() (*AzureResourceDetails, bool) {
-	return nil, false
-}
-
-// AsAwsResourceDetails is the BasicResourceDetails implementation for AwsResourceDetails.
-func (ard AwsResourceDetails) AsAwsResourceDetails() (*AwsResourceDetails, bool) {
-	return &ard, true
-}
-
-// AsResourceDetails is the BasicResourceDetails implementation for AwsResourceDetails.
-func (ard AwsResourceDetails) AsResourceDetails() (*ResourceDetails, bool) {
-	return nil, false
-}
-
-// AsBasicResourceDetails is the BasicResourceDetails implementation for AwsResourceDetails.
-func (ard AwsResourceDetails) AsBasicResourceDetails() (BasicResourceDetails, bool) {
-	return &ard, true
-}
-
-// AzureResourceDetails details of the resource that was assessed
+// AzureResourceDetails details of the Azure resource that was assessed
 type AzureResourceDetails struct {
-	// ID - READ-ONLY; Azure resource ID of the assessed resource
+	// ID - READ-ONLY; Azure resource Id of the assessed resource
 	ID *string `json:"id,omitempty"`
-	// Source - Possible values include: 'SourceResourceDetails', 'SourceAzure', 'SourceAws'
+	// Source - Possible values include: 'SourceResourceDetails', 'SourceOnPremise', 'SourceAzure'
 	Source Source `json:"source,omitempty"`
 }
 
@@ -3259,14 +3219,14 @@ func (ard AzureResourceDetails) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsOnPremiseResourceDetails is the BasicResourceDetails implementation for AzureResourceDetails.
+func (ard AzureResourceDetails) AsOnPremiseResourceDetails() (*OnPremiseResourceDetails, bool) {
+	return nil, false
+}
+
 // AsAzureResourceDetails is the BasicResourceDetails implementation for AzureResourceDetails.
 func (ard AzureResourceDetails) AsAzureResourceDetails() (*AzureResourceDetails, bool) {
 	return &ard, true
-}
-
-// AsAwsResourceDetails is the BasicResourceDetails implementation for AzureResourceDetails.
-func (ard AzureResourceDetails) AsAwsResourceDetails() (*AwsResourceDetails, bool) {
-	return nil, false
 }
 
 // AsResourceDetails is the BasicResourceDetails implementation for AzureResourceDetails.
@@ -5694,6 +5654,62 @@ type Location struct {
 	Location *string `json:"location,omitempty"`
 }
 
+// OnPremiseResourceDetails details of the On Premise resource that was assessed
+type OnPremiseResourceDetails struct {
+	// WorkspaceID - Azure resource Id of the workspace the machine is attached to
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+	// Vmuuid - The unique Id of the machine
+	Vmuuid *string `json:"vmuuid,omitempty"`
+	// SourceComputerID - The oms agent Id installed on the machine
+	SourceComputerID *string `json:"sourceComputerId,omitempty"`
+	// MachineName - The name of the machine
+	MachineName *string `json:"machineName,omitempty"`
+	// Source - Possible values include: 'SourceResourceDetails', 'SourceOnPremise', 'SourceAzure'
+	Source Source `json:"source,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OnPremiseResourceDetails.
+func (oprd OnPremiseResourceDetails) MarshalJSON() ([]byte, error) {
+	oprd.Source = SourceOnPremise
+	objectMap := make(map[string]interface{})
+	if oprd.WorkspaceID != nil {
+		objectMap["workspaceId"] = oprd.WorkspaceID
+	}
+	if oprd.Vmuuid != nil {
+		objectMap["vmuuid"] = oprd.Vmuuid
+	}
+	if oprd.SourceComputerID != nil {
+		objectMap["sourceComputerId"] = oprd.SourceComputerID
+	}
+	if oprd.MachineName != nil {
+		objectMap["machineName"] = oprd.MachineName
+	}
+	if oprd.Source != "" {
+		objectMap["source"] = oprd.Source
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsOnPremiseResourceDetails is the BasicResourceDetails implementation for OnPremiseResourceDetails.
+func (oprd OnPremiseResourceDetails) AsOnPremiseResourceDetails() (*OnPremiseResourceDetails, bool) {
+	return &oprd, true
+}
+
+// AsAzureResourceDetails is the BasicResourceDetails implementation for OnPremiseResourceDetails.
+func (oprd OnPremiseResourceDetails) AsAzureResourceDetails() (*AzureResourceDetails, bool) {
+	return nil, false
+}
+
+// AsResourceDetails is the BasicResourceDetails implementation for OnPremiseResourceDetails.
+func (oprd OnPremiseResourceDetails) AsResourceDetails() (*ResourceDetails, bool) {
+	return nil, false
+}
+
+// AsBasicResourceDetails is the BasicResourceDetails implementation for OnPremiseResourceDetails.
+func (oprd OnPremiseResourceDetails) AsBasicResourceDetails() (BasicResourceDetails, bool) {
+	return &oprd, true
+}
+
 // Operation possible operation in the REST API of Microsoft.Security
 type Operation struct {
 	// Name - READ-ONLY; Name of the operation
@@ -6848,14 +6864,14 @@ type Resource struct {
 
 // BasicResourceDetails details of the resource that was assessed
 type BasicResourceDetails interface {
+	AsOnPremiseResourceDetails() (*OnPremiseResourceDetails, bool)
 	AsAzureResourceDetails() (*AzureResourceDetails, bool)
-	AsAwsResourceDetails() (*AwsResourceDetails, bool)
 	AsResourceDetails() (*ResourceDetails, bool)
 }
 
 // ResourceDetails details of the resource that was assessed
 type ResourceDetails struct {
-	// Source - Possible values include: 'SourceResourceDetails', 'SourceAzure', 'SourceAws'
+	// Source - Possible values include: 'SourceResourceDetails', 'SourceOnPremise', 'SourceAzure'
 	Source Source `json:"source,omitempty"`
 }
 
@@ -6867,12 +6883,12 @@ func unmarshalBasicResourceDetails(body []byte) (BasicResourceDetails, error) {
 	}
 
 	switch m["source"] {
+	case string(SourceOnPremise):
+		var oprd OnPremiseResourceDetails
+		err := json.Unmarshal(body, &oprd)
+		return oprd, err
 	case string(SourceAzure):
 		var ard AzureResourceDetails
-		err := json.Unmarshal(body, &ard)
-		return ard, err
-	case string(SourceAws):
-		var ard AwsResourceDetails
 		err := json.Unmarshal(body, &ard)
 		return ard, err
 	default:
@@ -6910,13 +6926,13 @@ func (rd ResourceDetails) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAzureResourceDetails is the BasicResourceDetails implementation for ResourceDetails.
-func (rd ResourceDetails) AsAzureResourceDetails() (*AzureResourceDetails, bool) {
+// AsOnPremiseResourceDetails is the BasicResourceDetails implementation for ResourceDetails.
+func (rd ResourceDetails) AsOnPremiseResourceDetails() (*OnPremiseResourceDetails, bool) {
 	return nil, false
 }
 
-// AsAwsResourceDetails is the BasicResourceDetails implementation for ResourceDetails.
-func (rd ResourceDetails) AsAwsResourceDetails() (*AwsResourceDetails, bool) {
+// AsAzureResourceDetails is the BasicResourceDetails implementation for ResourceDetails.
+func (rd ResourceDetails) AsAzureResourceDetails() (*AzureResourceDetails, bool) {
 	return nil, false
 }
 

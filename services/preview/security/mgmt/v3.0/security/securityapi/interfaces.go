@@ -327,3 +327,13 @@ type AssessmentsMetadataSubscriptionClientAPI interface {
 }
 
 var _ AssessmentsMetadataSubscriptionClientAPI = (*security.AssessmentsMetadataSubscriptionClient)(nil)
+
+// AssessmentsClientAPI contains the set of methods on the AssessmentsClient type.
+type AssessmentsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceID string, assessmentName string, assessment security.Assessment) (result security.Assessment, err error)
+	Delete(ctx context.Context, resourceID string, assessmentName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceID string, assessmentName string, expand security.ExpandEnum) (result security.Assessment, err error)
+	List(ctx context.Context, scope string) (result security.AssessmentListPage, err error)
+}
+
+var _ AssessmentsClientAPI = (*security.AssessmentsClient)(nil)

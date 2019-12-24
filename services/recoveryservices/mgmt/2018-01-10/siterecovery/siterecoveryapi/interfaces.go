@@ -111,6 +111,7 @@ type ReplicationMigrationItemsClientAPI interface {
 	List(ctx context.Context, skipToken string, filter string) (result siterecovery.MigrationItemCollectionPage, err error)
 	ListByReplicationProtectionContainers(ctx context.Context, fabricName string, protectionContainerName string) (result siterecovery.MigrationItemCollectionPage, err error)
 	Migrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrateInput siterecovery.MigrateInput) (result siterecovery.ReplicationMigrationItemsMigrateFuture, err error)
+	Resync(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input siterecovery.ResyncInput) (result siterecovery.ReplicationMigrationItemsResyncFuture, err error)
 	TestMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateInput siterecovery.TestMigrateInput) (result siterecovery.ReplicationMigrationItemsTestMigrateFuture, err error)
 	TestMigrateCleanup(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateCleanupInput siterecovery.TestMigrateCleanupInput) (result siterecovery.ReplicationMigrationItemsTestMigrateCleanupFuture, err error)
 	Update(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input siterecovery.UpdateMigrationItemInput) (result siterecovery.ReplicationMigrationItemsUpdateFuture, err error)

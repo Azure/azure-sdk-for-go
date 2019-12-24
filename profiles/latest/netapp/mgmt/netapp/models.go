@@ -19,7 +19,7 @@
 
 package netapp
 
-import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2019-08-01/netapp"
+import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2019-10-01/netapp"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -34,11 +34,43 @@ const (
 	MicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots
 )
 
+type EndpointType = original.EndpointType
+
+const (
+	Dst EndpointType = original.Dst
+	Src EndpointType = original.Src
+)
+
 type InAvailabilityReasonType = original.InAvailabilityReasonType
 
 const (
 	AlreadyExists InAvailabilityReasonType = original.AlreadyExists
 	Invalid       InAvailabilityReasonType = original.Invalid
+)
+
+type MirrorState = original.MirrorState
+
+const (
+	Broken        MirrorState = original.Broken
+	Mirrored      MirrorState = original.Mirrored
+	Uninitialized MirrorState = original.Uninitialized
+)
+
+type RelationshipStatus = original.RelationshipStatus
+
+const (
+	Idle         RelationshipStatus = original.Idle
+	Transferring RelationshipStatus = original.Transferring
+)
+
+type ReplicationSchedule = original.ReplicationSchedule
+
+const (
+	OneZerominutely ReplicationSchedule = original.OneZerominutely
+	Daily           ReplicationSchedule = original.Daily
+	Hourly          ReplicationSchedule = original.Hourly
+	Monthly         ReplicationSchedule = original.Monthly
+	Weekly          ReplicationSchedule = original.Weekly
 )
 
 type ServiceLevel = original.ServiceLevel
@@ -57,6 +89,7 @@ type AccountsClient = original.AccountsClient
 type AccountsCreateOrUpdateFuture = original.AccountsCreateOrUpdateFuture
 type AccountsDeleteFuture = original.AccountsDeleteFuture
 type ActiveDirectory = original.ActiveDirectory
+type AuthorizeRequest = original.AuthorizeRequest
 type BaseClient = original.BaseClient
 type CapacityPool = original.CapacityPool
 type CapacityPoolList = original.CapacityPoolList
@@ -79,6 +112,7 @@ type PoolsClient = original.PoolsClient
 type PoolsCreateOrUpdateFuture = original.PoolsCreateOrUpdateFuture
 type PoolsDeleteFuture = original.PoolsDeleteFuture
 type ReplicationObject = original.ReplicationObject
+type ReplicationStatus = original.ReplicationStatus
 type ResourceClient = original.ResourceClient
 type ResourceNameAvailability = original.ResourceNameAvailability
 type ResourceNameAvailabilityRequest = original.ResourceNameAvailabilityRequest
@@ -153,8 +187,20 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 	return original.PossibleCheckNameResourceTypesValues()
 }
+func PossibleEndpointTypeValues() []EndpointType {
+	return original.PossibleEndpointTypeValues()
+}
 func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 	return original.PossibleInAvailabilityReasonTypeValues()
+}
+func PossibleMirrorStateValues() []MirrorState {
+	return original.PossibleMirrorStateValues()
+}
+func PossibleRelationshipStatusValues() []RelationshipStatus {
+	return original.PossibleRelationshipStatusValues()
+}
+func PossibleReplicationScheduleValues() []ReplicationSchedule {
+	return original.PossibleReplicationScheduleValues()
 }
 func PossibleServiceLevelValues() []ServiceLevel {
 	return original.PossibleServiceLevelValues()

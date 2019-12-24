@@ -65,6 +65,25 @@ func PossibleActionValues() []Action {
 	return []Action{Add, Recommended, Remove}
 }
 
+// ActionType enumerates the values for action type.
+type ActionType string
+
+const (
+	// ActionTypeAutomationAction ...
+	ActionTypeAutomationAction ActionType = "AutomationAction"
+	// ActionTypeEventHub ...
+	ActionTypeEventHub ActionType = "EventHub"
+	// ActionTypeLogicApp ...
+	ActionTypeLogicApp ActionType = "LogicApp"
+	// ActionTypeWorkspace ...
+	ActionTypeWorkspace ActionType = "Workspace"
+)
+
+// PossibleActionTypeValues returns an array of possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{ActionTypeAutomationAction, ActionTypeEventHub, ActionTypeLogicApp, ActionTypeWorkspace}
+}
+
 // AlertNotifications enumerates the values for alert notifications.
 type AlertNotifications string
 
@@ -114,6 +133,25 @@ func PossibleAssessedResourceTypeValues() []AssessedResourceType {
 	return []AssessedResourceType{AssessedResourceTypeAdditionalData, AssessedResourceTypeContainerRegistryVulnerability, AssessedResourceTypeServerVulnerabilityAssessment, AssessedResourceTypeSQLServerVulnerability}
 }
 
+// AssessmentType enumerates the values for assessment type.
+type AssessmentType string
+
+const (
+	// BuiltIn Azure Security Center managed assessments
+	BuiltIn AssessmentType = "BuiltIn"
+	// CustomerManaged User assessments pushed directly by the user or other third party to Azure Security
+	// Center
+	CustomerManaged AssessmentType = "CustomerManaged"
+	// CustomPolicy User defined policies that are automatically ingested from Azure Policy to Azure Security
+	// Center
+	CustomPolicy AssessmentType = "CustomPolicy"
+)
+
+// PossibleAssessmentTypeValues returns an array of possible values for the AssessmentType const type.
+func PossibleAssessmentTypeValues() []AssessmentType {
+	return []AssessmentType{BuiltIn, CustomerManaged, CustomPolicy}
+}
+
 // AutoProvision enumerates the values for auto provision.
 type AutoProvision string
 
@@ -127,6 +165,27 @@ const (
 // PossibleAutoProvisionValues returns an array of possible values for the AutoProvision const type.
 func PossibleAutoProvisionValues() []AutoProvision {
 	return []AutoProvision{AutoProvisionOff, AutoProvisionOn}
+}
+
+// Category enumerates the values for category.
+type Category string
+
+const (
+	// Compute ...
+	Compute Category = "Compute"
+	// Data ...
+	Data Category = "Data"
+	// IdentityAndAccess ...
+	IdentityAndAccess Category = "IdentityAndAccess"
+	// IoT ...
+	IoT Category = "IoT"
+	// Networking ...
+	Networking Category = "Networking"
+)
+
+// PossibleCategoryValues returns an array of possible values for the Category const type.
+func PossibleCategoryValues() []Category {
+	return []Category{Compute, Data, IdentityAndAccess, IoT, Networking}
 }
 
 // ConfigurationStatus enumerates the values for configuration status.
@@ -254,6 +313,21 @@ func PossibleEnforcementMode1Values() []EnforcementMode1 {
 	return []EnforcementMode1{EnforcementMode1Audit, EnforcementMode1Enforce, EnforcementMode1None}
 }
 
+// EventSource enumerates the values for event source.
+type EventSource string
+
+const (
+	// Alerts ...
+	Alerts EventSource = "Alerts"
+	// Assessments ...
+	Assessments EventSource = "Assessments"
+)
+
+// PossibleEventSourceValues returns an array of possible values for the EventSource const type.
+func PossibleEventSourceValues() []EventSource {
+	return []EventSource{Alerts, Assessments}
+}
+
 // Exe enumerates the values for exe.
 type Exe string
 
@@ -360,6 +434,23 @@ func PossibleFileTypeValues() []FileType {
 	return []FileType{FileTypeDll, FileTypeExe, FileTypeExecutable, FileTypeMsi, FileTypeScript, FileTypeUnknown}
 }
 
+// ImplementationEffort enumerates the values for implementation effort.
+type ImplementationEffort string
+
+const (
+	// High ...
+	High ImplementationEffort = "High"
+	// Low ...
+	Low ImplementationEffort = "Low"
+	// Moderate ...
+	Moderate ImplementationEffort = "Moderate"
+)
+
+// PossibleImplementationEffortValues returns an array of possible values for the ImplementationEffort const type.
+func PossibleImplementationEffortValues() []ImplementationEffort {
+	return []ImplementationEffort{High, Low, Moderate}
+}
+
 // Issue enumerates the values for issue.
 type Issue string
 
@@ -419,6 +510,35 @@ func PossibleMsiValues() []Msi {
 	return []Msi{MsiAudit, MsiEnforce, MsiNone}
 }
 
+// Operator enumerates the values for operator.
+type Operator string
+
+const (
+	// Contains ...
+	Contains Operator = "Contains"
+	// EndsWith ...
+	EndsWith Operator = "EndsWith"
+	// Equals ...
+	Equals Operator = "Equals"
+	// GreaterThan ...
+	GreaterThan Operator = "GreaterThan"
+	// GreaterThanOrEqualTo ...
+	GreaterThanOrEqualTo Operator = "GreaterThanOrEqualTo"
+	// LesserThan ...
+	LesserThan Operator = "LesserThan"
+	// LesserThanOrEqualTo ...
+	LesserThanOrEqualTo Operator = "LesserThanOrEqualTo"
+	// NotEquals ...
+	NotEquals Operator = "NotEquals"
+	// StartsWith ...
+	StartsWith Operator = "StartsWith"
+)
+
+// PossibleOperatorValues returns an array of possible values for the Operator const type.
+func PossibleOperatorValues() []Operator {
+	return []Operator{Contains, EndsWith, Equals, GreaterThan, GreaterThanOrEqualTo, LesserThan, LesserThanOrEqualTo, NotEquals, StartsWith}
+}
+
 // PricingTier enumerates the values for pricing tier.
 type PricingTier string
 
@@ -432,6 +552,25 @@ const (
 // PossiblePricingTierValues returns an array of possible values for the PricingTier const type.
 func PossiblePricingTierValues() []PricingTier {
 	return []PricingTier{Free, Standard}
+}
+
+// PropertyType enumerates the values for property type.
+type PropertyType string
+
+const (
+	// Boolean ...
+	Boolean PropertyType = "Boolean"
+	// Integer ...
+	Integer PropertyType = "Integer"
+	// Number ...
+	Number PropertyType = "Number"
+	// String ...
+	String PropertyType = "String"
+)
+
+// PossiblePropertyTypeValues returns an array of possible values for the PropertyType const type.
+func PossiblePropertyTypeValues() []PropertyType {
+	return []PropertyType{Boolean, Integer, Number, String}
 }
 
 // Protocol enumerates the values for protocol.
@@ -599,19 +738,19 @@ func PossibleRecommendationTypeValues() []RecommendationType {
 type ReportedSeverity string
 
 const (
-	// High ...
-	High ReportedSeverity = "High"
-	// Informational ...
-	Informational ReportedSeverity = "Informational"
-	// Low ...
-	Low ReportedSeverity = "Low"
-	// Medium ...
-	Medium ReportedSeverity = "Medium"
+	// ReportedSeverityHigh ...
+	ReportedSeverityHigh ReportedSeverity = "High"
+	// ReportedSeverityInformational ...
+	ReportedSeverityInformational ReportedSeverity = "Informational"
+	// ReportedSeverityLow ...
+	ReportedSeverityLow ReportedSeverity = "Low"
+	// ReportedSeverityMedium ...
+	ReportedSeverityMedium ReportedSeverity = "Medium"
 )
 
 // PossibleReportedSeverityValues returns an array of possible values for the ReportedSeverity const type.
 func PossibleReportedSeverityValues() []ReportedSeverity {
-	return []ReportedSeverity{High, Informational, Low, Medium}
+	return []ReportedSeverity{ReportedSeverityHigh, ReportedSeverityInformational, ReportedSeverityLow, ReportedSeverityMedium}
 }
 
 // ResourceStatus enumerates the values for resource status.
@@ -804,6 +943,33 @@ func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 	return []SubAssessmentStatusCode{SubAssessmentStatusCodeHealthy, SubAssessmentStatusCodeNotApplicable, SubAssessmentStatusCodeUnhealthy}
 }
 
+// Threats enumerates the values for threats.
+type Threats string
+
+const (
+	// AccountBreach ...
+	AccountBreach Threats = "accountBreach"
+	// DataExfiltration ...
+	DataExfiltration Threats = "dataExfiltration"
+	// DataSpillage ...
+	DataSpillage Threats = "dataSpillage"
+	// DenialOfService ...
+	DenialOfService Threats = "denialOfService"
+	// ElevationOfPrivilege ...
+	ElevationOfPrivilege Threats = "elevationOfPrivilege"
+	// MaliciousInsider ...
+	MaliciousInsider Threats = "maliciousInsider"
+	// MissingCoverage ...
+	MissingCoverage Threats = "missingCoverage"
+	// ThreatResistance ...
+	ThreatResistance Threats = "threatResistance"
+)
+
+// PossibleThreatsValues returns an array of possible values for the Threats const type.
+func PossibleThreatsValues() []Threats {
+	return []Threats{AccountBreach, DataExfiltration, DataSpillage, DenialOfService, ElevationOfPrivilege, MaliciousInsider, MissingCoverage, ThreatResistance}
+}
+
 // Type enumerates the values for type.
 type Type string
 
@@ -842,19 +1008,36 @@ func PossibleUnmaskedIPLoggingStatusValues() []UnmaskedIPLoggingStatus {
 	return []UnmaskedIPLoggingStatus{UnmaskedIPLoggingStatusDisabled, UnmaskedIPLoggingStatusEnabled}
 }
 
+// UserImpact enumerates the values for user impact.
+type UserImpact string
+
+const (
+	// UserImpactHigh ...
+	UserImpactHigh UserImpact = "High"
+	// UserImpactLow ...
+	UserImpactLow UserImpact = "Low"
+	// UserImpactModerate ...
+	UserImpactModerate UserImpact = "Moderate"
+)
+
+// PossibleUserImpactValues returns an array of possible values for the UserImpact const type.
+func PossibleUserImpactValues() []UserImpact {
+	return []UserImpact{UserImpactHigh, UserImpactLow, UserImpactModerate}
+}
+
 // ValueType enumerates the values for value type.
 type ValueType string
 
 const (
-	// IPCidr An IP range in CIDR format (e.g. '192.168.0.1/8').
-	IPCidr ValueType = "IpCidr"
-	// String Any string value.
-	String ValueType = "String"
+	// ValueTypeIPCidr An IP range in CIDR format (e.g. '192.168.0.1/8').
+	ValueTypeIPCidr ValueType = "IpCidr"
+	// ValueTypeString Any string value.
+	ValueTypeString ValueType = "String"
 )
 
 // PossibleValueTypeValues returns an array of possible values for the ValueType const type.
 func PossibleValueTypeValues() []ValueType {
-	return []ValueType{IPCidr, String}
+	return []ValueType{ValueTypeIPCidr, ValueTypeString}
 }
 
 // AadConnectivityState1 describes an Azure resource with kind
@@ -1396,7 +1579,7 @@ type AlertProperties struct {
 	RemediationSteps *string `json:"remediationSteps,omitempty"`
 	// ActionTaken - READ-ONLY; The action that was taken as a response to the alert (Active, Blocked etc.)
 	ActionTaken *string `json:"actionTaken,omitempty"`
-	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'ReportedSeverityInformational', 'ReportedSeverityLow', 'ReportedSeverityMedium', 'ReportedSeverityHigh'
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
 	// CompromisedEntity - READ-ONLY; The entity that the incident happened on
 	CompromisedEntity *string `json:"compromisedEntity,omitempty"`
@@ -1682,7 +1865,7 @@ type AllowedConnectionsResourceProperties struct {
 type AllowlistCustomAlertRule struct {
 	// AllowlistValues - The values to allow. The format of the values depends on the rule type.
 	AllowlistValues *[]string `json:"allowlistValues,omitempty"`
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -1977,6 +2160,248 @@ func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (
 	return AscLocationListPage{fn: getNextPage}
 }
 
+// AssessmentMetadata security assessment metadata
+type AssessmentMetadata struct {
+	autorest.Response             `json:"-"`
+	*AssessmentMetadataProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssessmentMetadata.
+func (am AssessmentMetadata) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if am.AssessmentMetadataProperties != nil {
+		objectMap["properties"] = am.AssessmentMetadataProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AssessmentMetadata struct.
+func (am *AssessmentMetadata) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var assessmentMetadataProperties AssessmentMetadataProperties
+				err = json.Unmarshal(*v, &assessmentMetadataProperties)
+				if err != nil {
+					return err
+				}
+				am.AssessmentMetadataProperties = &assessmentMetadataProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				am.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				am.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				am.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AssessmentMetadataList list of security assessment metadata
+type AssessmentMetadataList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY
+	Value *[]AssessmentMetadata `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AssessmentMetadataListIterator provides access to a complete listing of AssessmentMetadata values.
+type AssessmentMetadataListIterator struct {
+	i    int
+	page AssessmentMetadataListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AssessmentMetadataListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentMetadataListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AssessmentMetadataListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AssessmentMetadataListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AssessmentMetadataListIterator) Response() AssessmentMetadataList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AssessmentMetadataListIterator) Value() AssessmentMetadata {
+	if !iter.page.NotDone() {
+		return AssessmentMetadata{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AssessmentMetadataListIterator type.
+func NewAssessmentMetadataListIterator(page AssessmentMetadataListPage) AssessmentMetadataListIterator {
+	return AssessmentMetadataListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (aml AssessmentMetadataList) IsEmpty() bool {
+	return aml.Value == nil || len(*aml.Value) == 0
+}
+
+// assessmentMetadataListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (aml AssessmentMetadataList) assessmentMetadataListPreparer(ctx context.Context) (*http.Request, error) {
+	if aml.NextLink == nil || len(to.String(aml.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(aml.NextLink)))
+}
+
+// AssessmentMetadataListPage contains a page of AssessmentMetadata values.
+type AssessmentMetadataListPage struct {
+	fn  func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)
+	aml AssessmentMetadataList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AssessmentMetadataListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentMetadataListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.aml)
+	if err != nil {
+		return err
+	}
+	page.aml = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AssessmentMetadataListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AssessmentMetadataListPage) NotDone() bool {
+	return !page.aml.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AssessmentMetadataListPage) Response() AssessmentMetadataList {
+	return page.aml
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AssessmentMetadataListPage) Values() []AssessmentMetadata {
+	if page.aml.IsEmpty() {
+		return nil
+	}
+	return *page.aml.Value
+}
+
+// Creates a new instance of the AssessmentMetadataListPage type.
+func NewAssessmentMetadataListPage(getNextPage func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)) AssessmentMetadataListPage {
+	return AssessmentMetadataListPage{fn: getNextPage}
+}
+
+// AssessmentMetadataProperties describes properties of an assessment metadata.
+type AssessmentMetadataProperties struct {
+	// DisplayName - User friendly display name of the assessment
+	DisplayName *string `json:"displayName,omitempty"`
+	// PolicyDefinitionID - READ-ONLY; Azure resource ID of the policy definition that turns this assessment calculation on
+	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+	// Description - Human readable description of the assessment
+	Description *string `json:"description,omitempty"`
+	// RemediationDescription - Human readable description of what you should do to mitigate this security issue
+	RemediationDescription *string     `json:"remediationDescription,omitempty"`
+	Category               *[]Category `json:"category,omitempty"`
+	// Severity - The severity level of the assessment. Possible values include: 'SeverityLow', 'SeverityMedium', 'SeverityHigh'
+	Severity Severity `json:"severity,omitempty"`
+	// UserImpact - The user impact of the assessment. Possible values include: 'UserImpactLow', 'UserImpactModerate', 'UserImpactHigh'
+	UserImpact UserImpact `json:"userImpact,omitempty"`
+	// ImplementationEffort - The implementation effort required to remediate this assessment. Possible values include: 'Low', 'Moderate', 'High'
+	ImplementationEffort ImplementationEffort `json:"implementationEffort,omitempty"`
+	Threats              *[]Threats           `json:"threats,omitempty"`
+	// Preview - True if this assessment is in preview release status
+	Preview *bool `json:"preview,omitempty"`
+	// AssessmentType - BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition. Possible values include: 'BuiltIn', 'CustomPolicy', 'CustomerManaged'
+	AssessmentType AssessmentType `json:"assessmentType,omitempty"`
+}
+
 // AtaExternalSecuritySolution represents an ATA security solution which sends logs to an OMS workspace
 type AtaExternalSecuritySolution struct {
 	Properties *AtaSolutionProperties `json:"properties,omitempty"`
@@ -2122,6 +2547,648 @@ func (asp *AtaSolutionProperties) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// Automation the security automation resource.
+type Automation struct {
+	autorest.Response `json:"-"`
+	// AutomationProperties - Security automation data
+	*AutomationProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - READ-ONLY; Location where the resource is stored
+	Location *string `json:"location,omitempty"`
+	// Kind - Kind of the resource
+	Kind *string `json:"kind,omitempty"`
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource.
+	Etag *string `json:"etag,omitempty"`
+	// Tags - A list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Automation.
+func (a Automation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if a.AutomationProperties != nil {
+		objectMap["properties"] = a.AutomationProperties
+	}
+	if a.Kind != nil {
+		objectMap["kind"] = a.Kind
+	}
+	if a.Etag != nil {
+		objectMap["etag"] = a.Etag
+	}
+	if a.Tags != nil {
+		objectMap["tags"] = a.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Automation struct.
+func (a *Automation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var automationProperties AutomationProperties
+				err = json.Unmarshal(*v, &automationProperties)
+				if err != nil {
+					return err
+				}
+				a.AutomationProperties = &automationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				a.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				a.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				a.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				a.Location = &location
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				a.Kind = &kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				a.Etag = &etag
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				a.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicAutomationAction the action that should be triggered.
+type BasicAutomationAction interface {
+	AsAutomationActionLogicApp() (*AutomationActionLogicApp, bool)
+	AsAutomationActionEventHub() (*AutomationActionEventHub, bool)
+	AsAutomationActionWorkspace() (*AutomationActionWorkspace, bool)
+	AsAutomationAction() (*AutomationAction, bool)
+}
+
+// AutomationAction the action that should be triggered.
+type AutomationAction struct {
+	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeWorkspace'
+	ActionType ActionType `json:"actionType,omitempty"`
+}
+
+func unmarshalBasicAutomationAction(body []byte) (BasicAutomationAction, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["actionType"] {
+	case string(ActionTypeLogicApp):
+		var aala AutomationActionLogicApp
+		err := json.Unmarshal(body, &aala)
+		return aala, err
+	case string(ActionTypeEventHub):
+		var aaeh AutomationActionEventHub
+		err := json.Unmarshal(body, &aaeh)
+		return aaeh, err
+	case string(ActionTypeWorkspace):
+		var aaw AutomationActionWorkspace
+		err := json.Unmarshal(body, &aaw)
+		return aaw, err
+	default:
+		var aa AutomationAction
+		err := json.Unmarshal(body, &aa)
+		return aa, err
+	}
+}
+func unmarshalBasicAutomationActionArray(body []byte) ([]BasicAutomationAction, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	aaArray := make([]BasicAutomationAction, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		aa, err := unmarshalBasicAutomationAction(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		aaArray[index] = aa
+	}
+	return aaArray, nil
+}
+
+// MarshalJSON is the custom marshaler for AutomationAction.
+func (aa AutomationAction) MarshalJSON() ([]byte, error) {
+	aa.ActionType = ActionTypeAutomationAction
+	objectMap := make(map[string]interface{})
+	if aa.ActionType != "" {
+		objectMap["actionType"] = aa.ActionType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAutomationActionLogicApp is the BasicAutomationAction implementation for AutomationAction.
+func (aa AutomationAction) AsAutomationActionLogicApp() (*AutomationActionLogicApp, bool) {
+	return nil, false
+}
+
+// AsAutomationActionEventHub is the BasicAutomationAction implementation for AutomationAction.
+func (aa AutomationAction) AsAutomationActionEventHub() (*AutomationActionEventHub, bool) {
+	return nil, false
+}
+
+// AsAutomationActionWorkspace is the BasicAutomationAction implementation for AutomationAction.
+func (aa AutomationAction) AsAutomationActionWorkspace() (*AutomationActionWorkspace, bool) {
+	return nil, false
+}
+
+// AsAutomationAction is the BasicAutomationAction implementation for AutomationAction.
+func (aa AutomationAction) AsAutomationAction() (*AutomationAction, bool) {
+	return &aa, true
+}
+
+// AsBasicAutomationAction is the BasicAutomationAction implementation for AutomationAction.
+func (aa AutomationAction) AsBasicAutomationAction() (BasicAutomationAction, bool) {
+	return &aa, true
+}
+
+// AutomationActionEventHub the target Event Hub to which event data will be exported.
+type AutomationActionEventHub struct {
+	// EventHubResourceID - The target Event Hub Azure Resource ID.
+	EventHubResourceID *string `json:"eventHubResourceId,omitempty"`
+	// SasPolicyName - READ-ONLY; The target Event Hub SAS policy name.
+	SasPolicyName *string `json:"sasPolicyName,omitempty"`
+	// ConnectionString - The target Event Hub connection string (it will not be included in any response).
+	ConnectionString *string `json:"connectionString,omitempty"`
+	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeWorkspace'
+	ActionType ActionType `json:"actionType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AutomationActionEventHub.
+func (aaeh AutomationActionEventHub) MarshalJSON() ([]byte, error) {
+	aaeh.ActionType = ActionTypeEventHub
+	objectMap := make(map[string]interface{})
+	if aaeh.EventHubResourceID != nil {
+		objectMap["eventHubResourceId"] = aaeh.EventHubResourceID
+	}
+	if aaeh.ConnectionString != nil {
+		objectMap["connectionString"] = aaeh.ConnectionString
+	}
+	if aaeh.ActionType != "" {
+		objectMap["actionType"] = aaeh.ActionType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAutomationActionLogicApp is the BasicAutomationAction implementation for AutomationActionEventHub.
+func (aaeh AutomationActionEventHub) AsAutomationActionLogicApp() (*AutomationActionLogicApp, bool) {
+	return nil, false
+}
+
+// AsAutomationActionEventHub is the BasicAutomationAction implementation for AutomationActionEventHub.
+func (aaeh AutomationActionEventHub) AsAutomationActionEventHub() (*AutomationActionEventHub, bool) {
+	return &aaeh, true
+}
+
+// AsAutomationActionWorkspace is the BasicAutomationAction implementation for AutomationActionEventHub.
+func (aaeh AutomationActionEventHub) AsAutomationActionWorkspace() (*AutomationActionWorkspace, bool) {
+	return nil, false
+}
+
+// AsAutomationAction is the BasicAutomationAction implementation for AutomationActionEventHub.
+func (aaeh AutomationActionEventHub) AsAutomationAction() (*AutomationAction, bool) {
+	return nil, false
+}
+
+// AsBasicAutomationAction is the BasicAutomationAction implementation for AutomationActionEventHub.
+func (aaeh AutomationActionEventHub) AsBasicAutomationAction() (BasicAutomationAction, bool) {
+	return &aaeh, true
+}
+
+// AutomationActionLogicApp the logic app action that should be triggered.
+type AutomationActionLogicApp struct {
+	// LogicAppResourceID - The triggered Logic App Azure Resource ID. This can also reside on other subscriptions, given that you have permissions to trigger the Logic App
+	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
+	// URI - The Logic App trigger URI endpoint (it will not be included in any response).
+	URI *string `json:"uri,omitempty"`
+	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeWorkspace'
+	ActionType ActionType `json:"actionType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AutomationActionLogicApp.
+func (aala AutomationActionLogicApp) MarshalJSON() ([]byte, error) {
+	aala.ActionType = ActionTypeLogicApp
+	objectMap := make(map[string]interface{})
+	if aala.LogicAppResourceID != nil {
+		objectMap["logicAppResourceId"] = aala.LogicAppResourceID
+	}
+	if aala.URI != nil {
+		objectMap["uri"] = aala.URI
+	}
+	if aala.ActionType != "" {
+		objectMap["actionType"] = aala.ActionType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAutomationActionLogicApp is the BasicAutomationAction implementation for AutomationActionLogicApp.
+func (aala AutomationActionLogicApp) AsAutomationActionLogicApp() (*AutomationActionLogicApp, bool) {
+	return &aala, true
+}
+
+// AsAutomationActionEventHub is the BasicAutomationAction implementation for AutomationActionLogicApp.
+func (aala AutomationActionLogicApp) AsAutomationActionEventHub() (*AutomationActionEventHub, bool) {
+	return nil, false
+}
+
+// AsAutomationActionWorkspace is the BasicAutomationAction implementation for AutomationActionLogicApp.
+func (aala AutomationActionLogicApp) AsAutomationActionWorkspace() (*AutomationActionWorkspace, bool) {
+	return nil, false
+}
+
+// AsAutomationAction is the BasicAutomationAction implementation for AutomationActionLogicApp.
+func (aala AutomationActionLogicApp) AsAutomationAction() (*AutomationAction, bool) {
+	return nil, false
+}
+
+// AsBasicAutomationAction is the BasicAutomationAction implementation for AutomationActionLogicApp.
+func (aala AutomationActionLogicApp) AsBasicAutomationAction() (BasicAutomationAction, bool) {
+	return &aala, true
+}
+
+// AutomationActionWorkspace the Log Analytics Workspace to which event data will be exported. Security
+// alerts data will reside in the 'SecurityAlert' table and the assessments data will reside in the
+// 'SecurityRecommendation' table (under the 'Security'/'SecurityCenterFree' solutions). Note that in order
+// to view the data in the workspace, the Security Center Log Analytics free/standard solution needs to be
+// enabled on that workspace.
+type AutomationActionWorkspace struct {
+	// WorkspaceResourceID - The fully qualified Log Analytics Workspace Azure Resource ID.
+	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
+	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeWorkspace'
+	ActionType ActionType `json:"actionType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AutomationActionWorkspace.
+func (aaw AutomationActionWorkspace) MarshalJSON() ([]byte, error) {
+	aaw.ActionType = ActionTypeWorkspace
+	objectMap := make(map[string]interface{})
+	if aaw.WorkspaceResourceID != nil {
+		objectMap["workspaceResourceId"] = aaw.WorkspaceResourceID
+	}
+	if aaw.ActionType != "" {
+		objectMap["actionType"] = aaw.ActionType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAutomationActionLogicApp is the BasicAutomationAction implementation for AutomationActionWorkspace.
+func (aaw AutomationActionWorkspace) AsAutomationActionLogicApp() (*AutomationActionLogicApp, bool) {
+	return nil, false
+}
+
+// AsAutomationActionEventHub is the BasicAutomationAction implementation for AutomationActionWorkspace.
+func (aaw AutomationActionWorkspace) AsAutomationActionEventHub() (*AutomationActionEventHub, bool) {
+	return nil, false
+}
+
+// AsAutomationActionWorkspace is the BasicAutomationAction implementation for AutomationActionWorkspace.
+func (aaw AutomationActionWorkspace) AsAutomationActionWorkspace() (*AutomationActionWorkspace, bool) {
+	return &aaw, true
+}
+
+// AsAutomationAction is the BasicAutomationAction implementation for AutomationActionWorkspace.
+func (aaw AutomationActionWorkspace) AsAutomationAction() (*AutomationAction, bool) {
+	return nil, false
+}
+
+// AsBasicAutomationAction is the BasicAutomationAction implementation for AutomationActionWorkspace.
+func (aaw AutomationActionWorkspace) AsBasicAutomationAction() (BasicAutomationAction, bool) {
+	return &aaw, true
+}
+
+// AutomationList list of security automations response.
+type AutomationList struct {
+	autorest.Response `json:"-"`
+	// Value - The list of security automations under the given scope.
+	Value *[]Automation `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AutomationListIterator provides access to a complete listing of Automation values.
+type AutomationListIterator struct {
+	i    int
+	page AutomationListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AutomationListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AutomationListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AutomationListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AutomationListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AutomationListIterator) Response() AutomationList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AutomationListIterator) Value() Automation {
+	if !iter.page.NotDone() {
+		return Automation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AutomationListIterator type.
+func NewAutomationListIterator(page AutomationListPage) AutomationListIterator {
+	return AutomationListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (al AutomationList) IsEmpty() bool {
+	return al.Value == nil || len(*al.Value) == 0
+}
+
+// automationListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (al AutomationList) automationListPreparer(ctx context.Context) (*http.Request, error) {
+	if al.NextLink == nil || len(to.String(al.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(al.NextLink)))
+}
+
+// AutomationListPage contains a page of Automation values.
+type AutomationListPage struct {
+	fn func(context.Context, AutomationList) (AutomationList, error)
+	al AutomationList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AutomationListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AutomationListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.al)
+	if err != nil {
+		return err
+	}
+	page.al = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AutomationListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AutomationListPage) NotDone() bool {
+	return !page.al.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AutomationListPage) Response() AutomationList {
+	return page.al
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AutomationListPage) Values() []Automation {
+	if page.al.IsEmpty() {
+		return nil
+	}
+	return *page.al.Value
+}
+
+// Creates a new instance of the AutomationListPage type.
+func NewAutomationListPage(getNextPage func(context.Context, AutomationList) (AutomationList, error)) AutomationListPage {
+	return AutomationListPage{fn: getNextPage}
+}
+
+// AutomationProperties a set of properties that defines the behavior of the automation configuration. To
+// learn more about the supported security events data models schemas - please visit
+// https://aka.ms/ASCAutomationSchemas.
+type AutomationProperties struct {
+	// Description - The security automation description.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Indicates whether the security automation is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// Scopes - A collection of scopes on which the security automations logic is applied. Supported scopes are the subscription itself or a resource group under that subscription. The automation will only apply on defined scopes.
+	Scopes *[]AutomationScope `json:"scopes,omitempty"`
+	// Sources - A collection of the source event types which evaluate the security automation set of rules.
+	Sources *[]AutomationSource `json:"sources,omitempty"`
+	// Actions - A collection of the actions which are triggered if all the configured rules evaluations, within at least one rule set, are true.
+	Actions *[]BasicAutomationAction `json:"actions,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AutomationProperties struct.
+func (ap *AutomationProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				ap.Description = &description
+			}
+		case "isEnabled":
+			if v != nil {
+				var isEnabled bool
+				err = json.Unmarshal(*v, &isEnabled)
+				if err != nil {
+					return err
+				}
+				ap.IsEnabled = &isEnabled
+			}
+		case "scopes":
+			if v != nil {
+				var scopes []AutomationScope
+				err = json.Unmarshal(*v, &scopes)
+				if err != nil {
+					return err
+				}
+				ap.Scopes = &scopes
+			}
+		case "sources":
+			if v != nil {
+				var sources []AutomationSource
+				err = json.Unmarshal(*v, &sources)
+				if err != nil {
+					return err
+				}
+				ap.Sources = &sources
+			}
+		case "actions":
+			if v != nil {
+				actions, err := unmarshalBasicAutomationActionArray(*v)
+				if err != nil {
+					return err
+				}
+				ap.Actions = &actions
+			}
+		}
+	}
+
+	return nil
+}
+
+// AutomationRuleSet a rule set which evaluates all its rules upon an event interception. Only when all the
+// included rules in the rule set will be evaluated as 'true', will the event trigger the defined actions.
+type AutomationRuleSet struct {
+	Rules *[]AutomationTriggeringRule `json:"rules,omitempty"`
+}
+
+// AutomationScope a single automation scope.
+type AutomationScope struct {
+	// Description - The resources scope description.
+	Description *string `json:"description,omitempty"`
+	// ScopePath - The resources scope path. Can be the subscription on which the automation is defined on or a resource group under that subscription (fully qualified Azure resource IDs).
+	ScopePath *string `json:"scopePath,omitempty"`
+}
+
+// AutomationSource the source event types which evaluate the security automation set of rules. For example
+// - security alerts and security assessments. To learn more about the supported security events data
+// models schemas - please visit https://aka.ms/ASCAutomationSchemas.
+type AutomationSource struct {
+	// EventSource - A valid event source type. Possible values include: 'Assessments', 'Alerts'
+	EventSource EventSource `json:"eventSource,omitempty"`
+	// RuleSets - A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical 'or').
+	RuleSets *[]AutomationRuleSet `json:"ruleSets,omitempty"`
+}
+
+// AutomationTriggeringRule a rule which is evaluated upon event interception. The rule is configured by
+// comparing a specific value from the event model to an expected value. This comparison is done by using
+// one of the supported operators set.
+type AutomationTriggeringRule struct {
+	// PropertyJPath - The JPath of the entity model property that should be checked.
+	PropertyJPath *string `json:"propertyJPath,omitempty"`
+	// PropertyType - The data type of the compared operands (string, integer, floating point number or a boolean [true/false]]. Possible values include: 'String', 'Integer', 'Number', 'Boolean'
+	PropertyType PropertyType `json:"propertyType,omitempty"`
+	// ExpectedValue - The expected value.
+	ExpectedValue *string `json:"expectedValue,omitempty"`
+	// Operator - A valid comparer operator to use. Possible values include: 'Equals', 'GreaterThan', 'GreaterThanOrEqualTo', 'LesserThan', 'LesserThanOrEqualTo', 'NotEquals', 'Contains', 'StartsWith', 'EndsWith'
+	Operator Operator `json:"operator,omitempty"`
+}
+
+// AutomationValidationStatus the security automation model state property bag.
+type AutomationValidationStatus struct {
+	autorest.Response `json:"-"`
+	// IsValid - Indicates whether the model is valid or not.
+	IsValid *bool `json:"isValid,omitempty"`
+	// Message - The validation message.
+	Message *string `json:"message,omitempty"`
 }
 
 // AutoProvisioningSetting auto provisioning setting
@@ -3550,7 +4617,7 @@ type DataExportSettingProperties struct {
 type DenylistCustomAlertRule struct {
 	// DenylistValues - The values to deny. The format of the values depends on the rule type.
 	DenylistValues *[]string `json:"denylistValues,omitempty"`
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -4941,7 +6008,7 @@ type IoTSecurityAggregatedAlertProperties struct {
 	AggregatedDateUtc *date.Date `json:"aggregatedDateUtc,omitempty"`
 	// VendorName - READ-ONLY; Name of the organization that raised the alert.
 	VendorName *string `json:"vendorName,omitempty"`
-	// ReportedSeverity - READ-ONLY; Assessed alert severity. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	// ReportedSeverity - READ-ONLY; Assessed alert severity. Possible values include: 'ReportedSeverityInformational', 'ReportedSeverityLow', 'ReportedSeverityMedium', 'ReportedSeverityHigh'
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
 	// RemediationSteps - READ-ONLY; Recommended steps for remediation.
 	RemediationSteps *string `json:"remediationSteps,omitempty"`
@@ -5221,7 +6288,7 @@ type IoTSecurityAggregatedRecommendationProperties struct {
 	DetectedBy *string `json:"detectedBy,omitempty"`
 	// RemediationSteps - READ-ONLY; Recommended steps for remediation
 	RemediationSteps *string `json:"remediationSteps,omitempty"`
-	// ReportedSeverity - READ-ONLY; Assessed recommendation severity. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	// ReportedSeverity - READ-ONLY; Assessed recommendation severity. Possible values include: 'ReportedSeverityInformational', 'ReportedSeverityLow', 'ReportedSeverityMedium', 'ReportedSeverityHigh'
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
 	// HealthyDevices - READ-ONLY; Number of healthy devices within the IoT Security solution.
 	HealthyDevices *int32 `json:"healthyDevices,omitempty"`
@@ -5245,7 +6312,7 @@ type IoTSecurityAlertedDevice struct {
 type IoTSecurityDeviceAlert struct {
 	// AlertDisplayName - READ-ONLY; Display name of the alert
 	AlertDisplayName *string `json:"alertDisplayName,omitempty"`
-	// ReportedSeverity - READ-ONLY; Assessed Alert severity. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	// ReportedSeverity - READ-ONLY; Assessed Alert severity. Possible values include: 'ReportedSeverityInformational', 'ReportedSeverityLow', 'ReportedSeverityMedium', 'ReportedSeverityHigh'
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
 	// AlertsCount - READ-ONLY; Number of alerts raised for this alert type.
 	AlertsCount *int32 `json:"alertsCount,omitempty"`
@@ -5256,7 +6323,7 @@ type IoTSecurityDeviceAlert struct {
 type IoTSecurityDeviceRecommendation struct {
 	// RecommendationDisplayName - READ-ONLY; Display name of the recommendation.
 	RecommendationDisplayName *string `json:"recommendationDisplayName,omitempty"`
-	// ReportedSeverity - READ-ONLY; Assessed recommendation severity. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	// ReportedSeverity - READ-ONLY; Assessed recommendation severity. Possible values include: 'ReportedSeverityInformational', 'ReportedSeverityLow', 'ReportedSeverityMedium', 'ReportedSeverityHigh'
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
 	// DevicesCount - READ-ONLY; Number of devices with this recommendation.
 	DevicesCount *int32 `json:"devicesCount,omitempty"`
@@ -5993,7 +7060,7 @@ type Kind struct {
 
 // ListCustomAlertRule a List custom alert rule.
 type ListCustomAlertRule struct {
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`

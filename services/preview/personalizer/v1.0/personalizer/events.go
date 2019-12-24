@@ -28,8 +28,9 @@ import (
 
 // EventsClient is the personalizer Service is an Azure Cognitive Service that makes it easy to target content and
 // experiences without complex pre-analysis or cleanup of past data. Given a context and featurized content, the
-// Personalizer Service returns your content in a ranked list. As rewards are sent in response to the ranked list, the
-// reinforcement learning algorithm will improve the model and improve performance of future rank calls.
+// Personalizer Service returns which content item to show to users in rewardActionId. As rewards are sent in response
+// to the use of rewardActionId, the reinforcement learning algorithm will improve the model and improve performance of
+// future rank calls.
 type EventsClient struct {
 	BaseClient
 }
@@ -39,7 +40,7 @@ func NewEventsClient(endpoint string) EventsClient {
 	return EventsClient{New(endpoint)}
 }
 
-// Activate sends the activate request.
+// Activate report that the specified event was actually displayed to the user and a reward should be expected for it
 // Parameters:
 // eventID - the event ID this activation applies to.
 func (client EventsClient) Activate(ctx context.Context, eventID string) (result autorest.Response, err error) {
@@ -116,10 +117,10 @@ func (client EventsClient) ActivateResponder(resp *http.Response) (result autore
 	return
 }
 
-// Reward sends the reward request.
+// Reward report reward that resulted from using the action specified in rewardActionId for the specified event.
 // Parameters:
 // eventID - the event id this reward applies to.
-// reward - the reward should be a floating point number.
+// reward - the reward should be a floating point number, typically between 0 and 1.
 func (client EventsClient) Reward(ctx context.Context, eventID string, reward RewardRequest) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EventsClient.Reward")

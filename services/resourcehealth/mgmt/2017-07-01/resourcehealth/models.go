@@ -19,6 +19,7 @@ package resourcehealth
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
@@ -59,6 +60,40 @@ const (
 // PossibleReasonChronicityTypesValues returns an array of possible values for the ReasonChronicityTypes const type.
 func PossibleReasonChronicityTypesValues() []ReasonChronicityTypes {
 	return []ReasonChronicityTypes{Persistent, Transient}
+}
+
+// SeverityValues enumerates the values for severity values.
+type SeverityValues string
+
+const (
+	// Error ...
+	Error SeverityValues = "Error"
+	// Information ...
+	Information SeverityValues = "Information"
+	// Warning ...
+	Warning SeverityValues = "Warning"
+)
+
+// PossibleSeverityValuesValues returns an array of possible values for the SeverityValues const type.
+func PossibleSeverityValuesValues() []SeverityValues {
+	return []SeverityValues{Error, Information, Warning}
+}
+
+// StageValues enumerates the values for stage values.
+type StageValues string
+
+const (
+	// Active ...
+	Active StageValues = "Active"
+	// Archived ...
+	Archived StageValues = "Archived"
+	// Resolve ...
+	Resolve StageValues = "Resolve"
+)
+
+// PossibleStageValuesValues returns an array of possible values for the StageValues const type.
+func PossibleStageValuesValues() []StageValues {
+	return []StageValues{Active, Archived, Resolve}
 }
 
 // AvailabilityStatus availabilityStatus of a resource.
@@ -269,6 +304,257 @@ type AvailabilityStatusPropertiesRecentlyResolvedState struct {
 	UnavailabilitySummary *string `json:"unavailabilitySummary,omitempty"`
 }
 
+// AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
+type AzureEntityResource struct {
+	// Etag - READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// EmergingIssue on-going emerging issue from azure status.
+type EmergingIssue struct {
+	// RefreshTimestamp - Timestamp for when last time refreshed for ongoing emerging issue.
+	RefreshTimestamp *date.Time `json:"refreshTimestamp,omitempty"`
+	// StatusBanners - The list of emerging issues of banner type.
+	StatusBanners *[]StatusBanner `json:"statusBanners,omitempty"`
+	// StatusActiveEvents - The list of emerging issues of active event type.
+	StatusActiveEvents *[]StatusActiveEvent `json:"statusActiveEvents,omitempty"`
+}
+
+// EmergingIssueImpact object of the emerging issue impact on services and regions.
+type EmergingIssueImpact struct {
+	// ID - The impacted service id.
+	ID *string `json:"id,omitempty"`
+	// Name - The impacted service name.
+	Name *string `json:"name,omitempty"`
+	// Regions - The list of impacted regions for corresponding emerging issues.
+	Regions *[]ImpactedRegion `json:"regions,omitempty"`
+}
+
+// EmergingIssueListResult the list of emerging issues.
+type EmergingIssueListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of emerging issues.
+	Value *[]EmergingIssuesGetResult `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of emerging issues.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// EmergingIssueListResultIterator provides access to a complete listing of EmergingIssuesGetResult values.
+type EmergingIssueListResultIterator struct {
+	i    int
+	page EmergingIssueListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *EmergingIssueListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EmergingIssueListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *EmergingIssueListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter EmergingIssueListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter EmergingIssueListResultIterator) Response() EmergingIssueListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter EmergingIssueListResultIterator) Value() EmergingIssuesGetResult {
+	if !iter.page.NotDone() {
+		return EmergingIssuesGetResult{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the EmergingIssueListResultIterator type.
+func NewEmergingIssueListResultIterator(page EmergingIssueListResultPage) EmergingIssueListResultIterator {
+	return EmergingIssueListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (eilr EmergingIssueListResult) IsEmpty() bool {
+	return eilr.Value == nil || len(*eilr.Value) == 0
+}
+
+// emergingIssueListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (eilr EmergingIssueListResult) emergingIssueListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if eilr.NextLink == nil || len(to.String(eilr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(eilr.NextLink)))
+}
+
+// EmergingIssueListResultPage contains a page of EmergingIssuesGetResult values.
+type EmergingIssueListResultPage struct {
+	fn   func(context.Context, EmergingIssueListResult) (EmergingIssueListResult, error)
+	eilr EmergingIssueListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *EmergingIssueListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EmergingIssueListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.eilr)
+	if err != nil {
+		return err
+	}
+	page.eilr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *EmergingIssueListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page EmergingIssueListResultPage) NotDone() bool {
+	return !page.eilr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page EmergingIssueListResultPage) Response() EmergingIssueListResult {
+	return page.eilr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page EmergingIssueListResultPage) Values() []EmergingIssuesGetResult {
+	if page.eilr.IsEmpty() {
+		return nil
+	}
+	return *page.eilr.Value
+}
+
+// Creates a new instance of the EmergingIssueListResultPage type.
+func NewEmergingIssueListResultPage(getNextPage func(context.Context, EmergingIssueListResult) (EmergingIssueListResult, error)) EmergingIssueListResultPage {
+	return EmergingIssueListResultPage{fn: getNextPage}
+}
+
+// EmergingIssuesGetResult the Get EmergingIssues operation response.
+type EmergingIssuesGetResult struct {
+	autorest.Response `json:"-"`
+	// EmergingIssue - The emerging issue entity properties.
+	*EmergingIssue `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EmergingIssuesGetResult.
+func (eigr EmergingIssuesGetResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if eigr.EmergingIssue != nil {
+		objectMap["properties"] = eigr.EmergingIssue
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for EmergingIssuesGetResult struct.
+func (eigr *EmergingIssuesGetResult) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var emergingIssue EmergingIssue
+				err = json.Unmarshal(*v, &emergingIssue)
+				if err != nil {
+					return err
+				}
+				eigr.EmergingIssue = &emergingIssue
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				eigr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				eigr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				eigr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // ErrorResponse error details.
 type ErrorResponse struct {
 	// Code - READ-ONLY; The error code.
@@ -277,6 +563,14 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 	// Details - READ-ONLY; The error details.
 	Details *string `json:"details,omitempty"`
+}
+
+// ImpactedRegion object of impacted region.
+type ImpactedRegion struct {
+	// ID - The impacted region id.
+	ID *string `json:"id,omitempty"`
+	// Name - The impacted region name.
+	Name *string `json:"name,omitempty"`
 }
 
 // Operation operation available in the resourcehealth resource provider.
@@ -306,6 +600,17 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 }
 
+// ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
+// required location and tags
+type ProxyResource struct {
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
 // RecommendedAction lists actions the user can take based on the current availabilityState of the
 // resource.
 type RecommendedAction struct {
@@ -315,6 +620,16 @@ type RecommendedAction struct {
 	ActionURL *string `json:"actionUrl,omitempty"`
 	// ActionURLText - Substring of action, it describes which text should host the action url.
 	ActionURLText *string `json:"actionUrlText,omitempty"`
+}
+
+// Resource ...
+type Resource struct {
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
 }
 
 // ServiceImpactingEvent lists the service impacting events that may be affecting the health of the
@@ -348,4 +663,66 @@ type ServiceImpactingEventIncidentProperties struct {
 type ServiceImpactingEventStatus struct {
 	// Value - Current status of the event
 	Value *string `json:"value,omitempty"`
+}
+
+// StatusActiveEvent active event type of emerging issue.
+type StatusActiveEvent struct {
+	// Title - The active event title.
+	Title *string `json:"title,omitempty"`
+	// Description - The details of active event.
+	Description *string `json:"description,omitempty"`
+	// TrackingID - The tracking id of this active event.
+	TrackingID *string `json:"trackingId,omitempty"`
+	// StartTime - The impact start time on this active event.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// Cloud - The cloud type of this active event.
+	Cloud *string `json:"cloud,omitempty"`
+	// Severity - The severity level of this active event. Possible values include: 'Information', 'Warning', 'Error'
+	Severity SeverityValues `json:"severity,omitempty"`
+	// Stage - The stage of this active event. Possible values include: 'Active', 'Resolve', 'Archived'
+	Stage StageValues `json:"stage,omitempty"`
+	// Published - The boolean value of this active event if published or not.
+	Published *bool `json:"published,omitempty"`
+	// LastModifiedTime - The last time modified on this banner.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// Impacts - The list of emerging issues impacts.
+	Impacts *[]EmergingIssueImpact `json:"impacts,omitempty"`
+}
+
+// StatusBanner banner type of emerging issue.
+type StatusBanner struct {
+	// Title - The banner title.
+	Title *string `json:"title,omitempty"`
+	// Message - The details of banner.
+	Message *string `json:"message,omitempty"`
+	// Cloud - The cloud type of this banner.
+	Cloud *string `json:"cloud,omitempty"`
+	// LastModifiedTime - The last time modified on this banner.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+}
+
+// TrackedResource the resource model definition for a ARM tracked top level resource
+type TrackedResource struct {
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TrackedResource.
+func (tr TrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
+	}
+	return json.Marshal(objectMap)
 }

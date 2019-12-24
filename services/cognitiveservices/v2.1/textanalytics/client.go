@@ -305,7 +305,7 @@ func (client BaseClient) KeyPhrasesResponder(resp *http.Response) (result KeyPhr
 // Parameters:
 // showStats - (optional) if set to true, response will contain input and document level statistics.
 // multiLanguageBatchInput - collection of documents to analyze.
-func (client BaseClient) Sentiment(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (result SetObject, err error) {
+func (client BaseClient) Sentiment(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (result SentimentBatchResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.Sentiment")
 		defer func() {
@@ -370,12 +370,12 @@ func (client BaseClient) SentimentSender(req *http.Request) (*http.Response, err
 
 // SentimentResponder handles the response to the Sentiment request. The method always
 // closes the http.Response Body.
-func (client BaseClient) SentimentResponder(resp *http.Response) (result SetObject, err error) {
+func (client BaseClient) SentimentResponder(resp *http.Response) (result SentimentBatchResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusInternalServerError),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

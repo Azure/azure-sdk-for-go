@@ -1,5 +1,49 @@
 # CHANGELOG
 
+## `v38.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| containerregistry | 2019-12-01-preview |
+| databoxedge | 2019-08-01 |
+| machinelearningservices | 2020-01-01 |
+| netapp | 2019-10-01 |
+| windowsesu | 2019-09-16-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| anomalydetector | v1.0 |
+| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+| insights | 2015-05-01 |
+| media | 2018-07-01 |
+| personalizer | v1.0 |
+| resourcehealth | 2017-07-01 |
+| servicebus | 2018-01-01-preview |
+| siterecovery | 2018-07-10 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| authorization | 2015-07-01<br/>2017-10-01-preview |
+| blueprint | 2018-11-01-preview |
+| compute | 2018-10-01<br/>2019-03-01<br/>2019-07-01 |
+| containerservice | 2019-11-01 |
+| customerlockbox | 2018-02-28-preview |
+| databricks | 2018-04-01 |
+| datafactory | 2018-06-01 |
+| features | 2019-07-01 |
+| managedservices | 2018-06-01<br/>2019-04-01 |
+| resources | 2015-11-01<br/>2016-02-01<br/>2016-07-01<br/>2016-09-01<br/>2017-05-10<br/>2018-02-01<br/>2018-05-01<br/>2019-03-01<br/>2019-05-01 |
+| security | v1.0<br/>v2.0<br/>v3.0 |
+| servicefabric | 2017-07-01-preview<br/>2018-02-01<br/>2019-03-01<br/>2019-03-01-preview |
+| sql | v3.0 |
+| textanalytics | v2.1 |
+
 ## `v37.2.0`
 
 ### New Packages

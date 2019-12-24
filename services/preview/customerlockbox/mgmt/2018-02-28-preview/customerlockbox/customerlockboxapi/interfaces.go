@@ -24,16 +24,16 @@ import (
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
-	List(ctx context.Context) (result customerlockbox.OperationListResultPage, err error)
+	List(ctx context.Context, APIVersion string) (result customerlockbox.OperationListResultPage, err error)
 }
 
 var _ OperationsClientAPI = (*customerlockbox.OperationsClient)(nil)
 
 // RequestsClientAPI contains the set of methods on the RequestsClient type.
 type RequestsClientAPI interface {
-	Get(ctx context.Context, requestID string, subscriptionID string) (result customerlockbox.LockboxRequestResponse, err error)
+	Get(ctx context.Context, requestID string, subscriptionID string, APIVersion string) (result customerlockbox.LockboxRequestResponse, err error)
 	List(ctx context.Context, subscriptionID string, filter string) (result customerlockbox.RequestListResultPage, err error)
-	UpdateStatus(ctx context.Context, approval customerlockbox.Approval, subscriptionID string, requestID string) (result customerlockbox.Approval, err error)
+	UpdateStatus(ctx context.Context, approval customerlockbox.Approval, subscriptionID string, requestID string, APIVersion string) (result customerlockbox.Approval, err error)
 }
 
 var _ RequestsClientAPI = (*customerlockbox.RequestsClient)(nil)

@@ -125,18 +125,18 @@ func (client ServiceConfigurationClient) Update(ctx context.Context, config Serv
 			Constraints: []validation.Constraint{{Target: "config.RewardWaitTime", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "config.DefaultReward", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "config.DefaultReward", Name: validation.InclusiveMaximum, Rule: int64(1), Chain: nil},
-						{Target: "config.DefaultReward", Name: validation.InclusiveMinimum, Rule: -1, Chain: nil},
+						{Target: "config.DefaultReward", Name: validation.InclusiveMinimum, Rule: int64(-1), Chain: nil},
 					}},
 				{Target: "config.RewardAggregation", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "config.RewardAggregation", Name: validation.MaxLength, Rule: 256, Chain: nil}}},
 				{Target: "config.ExplorationPercentage", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "config.ExplorationPercentage", Name: validation.InclusiveMaximum, Rule: int64(1), Chain: nil},
-						{Target: "config.ExplorationPercentage", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+						{Target: "config.ExplorationPercentage", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 					}},
 				{Target: "config.ModelExportFrequency", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "config.LogRetentionDays", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "config.LogRetentionDays", Name: validation.InclusiveMaximum, Rule: int64(2147483647), Chain: nil},
-						{Target: "config.LogRetentionDays", Name: validation.InclusiveMinimum, Rule: -1, Chain: nil},
+						{Target: "config.LogRetentionDays", Name: validation.InclusiveMinimum, Rule: int64(-1), Chain: nil},
 					}}}}}); err != nil {
 		return result, validation.NewError("personalizer.ServiceConfigurationClient", "Update", err.Error())
 	}

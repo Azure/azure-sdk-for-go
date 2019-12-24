@@ -464,23 +464,40 @@ type AgentPoolProfile struct {
 	OsType OSType `json:"osType,omitempty"`
 }
 
-// Componentsschemascontainerserviceallof1 ...
-type Componentsschemascontainerserviceallof1 struct {
+// ContainerService container service.
+type ContainerService struct {
+	autorest.Response `json:"-"`
 	// Properties - Properties of the container service.
 	*Properties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
 }
 
-// MarshalJSON is the custom marshaler for Componentsschemascontainerserviceallof1.
-func (c Componentsschemascontainerserviceallof1) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for ContainerService.
+func (cs ContainerService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if c.Properties != nil {
-		objectMap["properties"] = c.Properties
+	if cs.Properties != nil {
+		objectMap["properties"] = cs.Properties
+	}
+	if cs.Location != nil {
+		objectMap["location"] = cs.Location
+	}
+	if cs.Tags != nil {
+		objectMap["tags"] = cs.Tags
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for Componentsschemascontainerserviceallof1 struct.
-func (c *Componentsschemascontainerserviceallof1) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for ContainerService struct.
+func (cs *ContainerService) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -495,55 +512,8 @@ func (c *Componentsschemascontainerserviceallof1) UnmarshalJSON(body []byte) err
 				if err != nil {
 					return err
 				}
-				c.Properties = &properties
+				cs.Properties = &properties
 			}
-		}
-	}
-
-	return nil
-}
-
-// ContainerService container service.
-type ContainerService struct {
-	autorest.Response `json:"-"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
-	// Properties - Properties of the container service.
-	*Properties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ContainerService.
-func (cs ContainerService) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if cs.Location != nil {
-		objectMap["location"] = cs.Location
-	}
-	if cs.Tags != nil {
-		objectMap["tags"] = cs.Tags
-	}
-	if cs.Properties != nil {
-		objectMap["properties"] = cs.Properties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ContainerService struct.
-func (cs *ContainerService) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
 		case "id":
 			if v != nil {
 				var ID string
@@ -588,15 +558,6 @@ func (cs *ContainerService) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				cs.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var properties Properties
-				err = json.Unmarshal(*v, &properties)
-				if err != nil {
-					return err
-				}
-				cs.Properties = &properties
 			}
 		}
 	}

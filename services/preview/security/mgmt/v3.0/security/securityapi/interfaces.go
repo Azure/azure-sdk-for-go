@@ -297,3 +297,33 @@ type SubAssessmentsClientAPI interface {
 }
 
 var _ SubAssessmentsClientAPI = (*security.SubAssessmentsClient)(nil)
+
+// AutomationsClientAPI contains the set of methods on the AutomationsClient type.
+type AutomationsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, automationName string, automation security.Automation) (result security.Automation, err error)
+	Delete(ctx context.Context, resourceGroupName string, automationName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, automationName string) (result security.Automation, err error)
+	List(ctx context.Context) (result security.AutomationListPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.AutomationListPage, err error)
+	Validate(ctx context.Context, resourceGroupName string, automationName string, automation security.Automation) (result security.AutomationValidationStatus, err error)
+}
+
+var _ AutomationsClientAPI = (*security.AutomationsClient)(nil)
+
+// AssessmentsMetadataClientAPI contains the set of methods on the AssessmentsMetadataClient type.
+type AssessmentsMetadataClientAPI interface {
+	Get(ctx context.Context, assessmentMetadataName string) (result security.AssessmentMetadata, err error)
+	List(ctx context.Context) (result security.AssessmentMetadataListPage, err error)
+}
+
+var _ AssessmentsMetadataClientAPI = (*security.AssessmentsMetadataClient)(nil)
+
+// AssessmentsMetadataSubscriptionClientAPI contains the set of methods on the AssessmentsMetadataSubscriptionClient type.
+type AssessmentsMetadataSubscriptionClientAPI interface {
+	Create(ctx context.Context, assessmentMetadataName string, assessmentMetadata security.AssessmentMetadata) (result security.AssessmentMetadata, err error)
+	Delete(ctx context.Context, assessmentMetadataName string) (result autorest.Response, err error)
+	Get(ctx context.Context, assessmentMetadataName string) (result security.AssessmentMetadata, err error)
+	List(ctx context.Context) (result security.AssessmentMetadataListPage, err error)
+}
+
+var _ AssessmentsMetadataSubscriptionClientAPI = (*security.AssessmentsMetadataSubscriptionClient)(nil)

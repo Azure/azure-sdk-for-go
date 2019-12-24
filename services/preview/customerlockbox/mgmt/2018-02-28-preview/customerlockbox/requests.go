@@ -45,7 +45,8 @@ func NewRequestsClientWithBaseURI(baseURI string) RequestsClient {
 // requestID - the Lockbox request ID.
 // subscriptionID - the Azure subscription ID. This is a GUID-formatted string (e.g.
 // 00000000-0000-0000-0000-000000000000)
-func (client RequestsClient) Get(ctx context.Context, requestID string, subscriptionID string) (result LockboxRequestResponse, err error) {
+// APIVersion - the API version to be used with the HTTP request.
+func (client RequestsClient) Get(ctx context.Context, requestID string, subscriptionID string, APIVersion string) (result LockboxRequestResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RequestsClient.Get")
 		defer func() {
@@ -56,7 +57,7 @@ func (client RequestsClient) Get(ctx context.Context, requestID string, subscrip
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, requestID, subscriptionID)
+	req, err := client.GetPreparer(ctx, requestID, subscriptionID, APIVersion)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerlockbox.RequestsClient", "Get", nil, "Failure preparing request")
 		return
@@ -78,13 +79,12 @@ func (client RequestsClient) Get(ctx context.Context, requestID string, subscrip
 }
 
 // GetPreparer prepares the Get request.
-func (client RequestsClient) GetPreparer(ctx context.Context, requestID string, subscriptionID string) (*http.Request, error) {
+func (client RequestsClient) GetPreparer(ctx context.Context, requestID string, subscriptionID string, APIVersion string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"requestId":      autorest.Encode("path", requestID),
 		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2018-02-28-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -238,7 +238,8 @@ func (client RequestsClient) ListComplete(ctx context.Context, subscriptionID st
 // subscriptionID - the Azure subscription ID. This is a GUID-formatted string (e.g.
 // 00000000-0000-0000-0000-000000000000)
 // requestID - the Lockbox request ID.
-func (client RequestsClient) UpdateStatus(ctx context.Context, approval Approval, subscriptionID string, requestID string) (result Approval, err error) {
+// APIVersion - the API version to be used with the HTTP request.
+func (client RequestsClient) UpdateStatus(ctx context.Context, approval Approval, subscriptionID string, requestID string, APIVersion string) (result Approval, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RequestsClient.UpdateStatus")
 		defer func() {
@@ -249,7 +250,7 @@ func (client RequestsClient) UpdateStatus(ctx context.Context, approval Approval
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateStatusPreparer(ctx, approval, subscriptionID, requestID)
+	req, err := client.UpdateStatusPreparer(ctx, approval, subscriptionID, requestID, APIVersion)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerlockbox.RequestsClient", "UpdateStatus", nil, "Failure preparing request")
 		return
@@ -271,13 +272,12 @@ func (client RequestsClient) UpdateStatus(ctx context.Context, approval Approval
 }
 
 // UpdateStatusPreparer prepares the UpdateStatus request.
-func (client RequestsClient) UpdateStatusPreparer(ctx context.Context, approval Approval, subscriptionID string, requestID string) (*http.Request, error) {
+func (client RequestsClient) UpdateStatusPreparer(ctx context.Context, approval Approval, subscriptionID string, requestID string, APIVersion string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"requestId":      autorest.Encode("path", requestID),
 		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2018-02-28-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

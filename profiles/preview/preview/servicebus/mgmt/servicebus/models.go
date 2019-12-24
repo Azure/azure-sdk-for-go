@@ -43,6 +43,18 @@ const (
 	Reject IPAction = original.Reject
 )
 
+type IdentityType = original.IdentityType
+
+const (
+	SystemAssigned IdentityType = original.SystemAssigned
+)
+
+type KeySource = original.KeySource
+
+const (
+	MicrosoftKeyVault KeySource = original.MicrosoftKeyVault
+)
+
 type NetworkRuleIPAction = original.NetworkRuleIPAction
 
 const (
@@ -66,12 +78,15 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type Encryption = original.Encryption
 type ErrorResponse = original.ErrorResponse
 type IPFilterRule = original.IPFilterRule
 type IPFilterRuleListResult = original.IPFilterRuleListResult
 type IPFilterRuleListResultIterator = original.IPFilterRuleListResultIterator
 type IPFilterRuleListResultPage = original.IPFilterRuleListResultPage
 type IPFilterRuleProperties = original.IPFilterRuleProperties
+type Identity = original.Identity
+type KeyVaultProperties = original.KeyVaultProperties
 type NWRuleSetIPRules = original.NWRuleSetIPRules
 type NWRuleSetVirtualNetworkRules = original.NWRuleSetVirtualNetworkRules
 type NamespacesClient = original.NamespacesClient
@@ -149,6 +164,12 @@ func PossibleDefaultActionValues() []DefaultAction {
 }
 func PossibleIPActionValues() []IPAction {
 	return original.PossibleIPActionValues()
+}
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
+}
+func PossibleKeySourceValues() []KeySource {
+	return original.PossibleKeySourceValues()
 }
 func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
 	return original.PossibleNetworkRuleIPActionValues()

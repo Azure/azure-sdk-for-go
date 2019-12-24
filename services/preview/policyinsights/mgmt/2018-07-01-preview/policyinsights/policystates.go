@@ -33,13 +33,13 @@ type PolicyStatesClient struct {
 }
 
 // NewPolicyStatesClient creates an instance of the PolicyStatesClient client.
-func NewPolicyStatesClient(subscriptionID string) PolicyStatesClient {
-	return NewPolicyStatesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewPolicyStatesClient() PolicyStatesClient {
+	return NewPolicyStatesClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewPolicyStatesClientWithBaseURI creates an instance of the PolicyStatesClient client.
-func NewPolicyStatesClientWithBaseURI(baseURI string, subscriptionID string) PolicyStatesClient {
-	return PolicyStatesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewPolicyStatesClientWithBaseURI(baseURI string) PolicyStatesClient {
+	return PolicyStatesClient{NewWithBaseURI(baseURI)}
 }
 
 // GetMetadata gets OData metadata XML document.

@@ -34,6 +34,8 @@ const (
 
 type APIError = original.APIError
 type BaseClient = original.BaseClient
+type ChangePointDetectRequest = original.ChangePointDetectRequest
+type ChangePointDetectResponse = original.ChangePointDetectResponse
 type EntireDetectResponse = original.EntireDetectResponse
 type LastDetectResponse = original.LastDetectResponse
 type Point = original.Point

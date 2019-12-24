@@ -32,13 +32,13 @@ type PolicyTrackedResourcesClient struct {
 }
 
 // NewPolicyTrackedResourcesClient creates an instance of the PolicyTrackedResourcesClient client.
-func NewPolicyTrackedResourcesClient(subscriptionID string) PolicyTrackedResourcesClient {
-	return NewPolicyTrackedResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewPolicyTrackedResourcesClient() PolicyTrackedResourcesClient {
+	return NewPolicyTrackedResourcesClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewPolicyTrackedResourcesClientWithBaseURI creates an instance of the PolicyTrackedResourcesClient client.
-func NewPolicyTrackedResourcesClientWithBaseURI(baseURI string, subscriptionID string) PolicyTrackedResourcesClient {
-	return PolicyTrackedResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewPolicyTrackedResourcesClientWithBaseURI(baseURI string) PolicyTrackedResourcesClient {
+	return PolicyTrackedResourcesClient{NewWithBaseURI(baseURI)}
 }
 
 // ListQueryResultsForManagementGroup queries policy tracked resources under the management group.
@@ -301,9 +301,10 @@ func (client PolicyTrackedResourcesClient) ListQueryResultsForResourceComplete(c
 // ListQueryResultsForResourceGroup queries policy tracked resources under the resource group.
 // Parameters:
 // resourceGroupName - resource group name.
+// subscriptionID - microsoft Azure subscription ID.
 // top - maximum number of records to return.
 // filter - oData filter expression.
-func (client PolicyTrackedResourcesClient) ListQueryResultsForResourceGroup(ctx context.Context, resourceGroupName string, top *int32, filter string) (result PolicyTrackedResourcesQueryResultsPage, err error) {
+func (client PolicyTrackedResourcesClient) ListQueryResultsForResourceGroup(ctx context.Context, resourceGroupName string, subscriptionID string, top *int32, filter string) (result PolicyTrackedResourcesQueryResultsPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyTrackedResourcesClient.ListQueryResultsForResourceGroup")
 		defer func() {
@@ -322,7 +323,7 @@ func (client PolicyTrackedResourcesClient) ListQueryResultsForResourceGroup(ctx 
 	}
 
 	result.fn = client.listQueryResultsForResourceGroupNextResults
-	req, err := client.ListQueryResultsForResourceGroupPreparer(ctx, resourceGroupName, top, filter)
+	req, err := client.ListQueryResultsForResourceGroupPreparer(ctx, resourceGroupName, subscriptionID, top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyTrackedResourcesClient", "ListQueryResultsForResourceGroup", nil, "Failure preparing request")
 		return
@@ -344,11 +345,11 @@ func (client PolicyTrackedResourcesClient) ListQueryResultsForResourceGroup(ctx 
 }
 
 // ListQueryResultsForResourceGroupPreparer prepares the ListQueryResultsForResourceGroup request.
-func (client PolicyTrackedResourcesClient) ListQueryResultsForResourceGroupPreparer(ctx context.Context, resourceGroupName string, top *int32, filter string) (*http.Request, error) {
+func (client PolicyTrackedResourcesClient) ListQueryResultsForResourceGroupPreparer(ctx context.Context, resourceGroupName string, subscriptionID string, top *int32, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policyTrackedResourcesResource": autorest.Encode("path", "default"),
 		"resourceGroupName":              autorest.Encode("path", resourceGroupName),
-		"subscriptionId":                 autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":                 autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2018-07-01-preview"
@@ -412,7 +413,7 @@ func (client PolicyTrackedResourcesClient) listQueryResultsForResourceGroupNextR
 }
 
 // ListQueryResultsForResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client PolicyTrackedResourcesClient) ListQueryResultsForResourceGroupComplete(ctx context.Context, resourceGroupName string, top *int32, filter string) (result PolicyTrackedResourcesQueryResultsIterator, err error) {
+func (client PolicyTrackedResourcesClient) ListQueryResultsForResourceGroupComplete(ctx context.Context, resourceGroupName string, subscriptionID string, top *int32, filter string) (result PolicyTrackedResourcesQueryResultsIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyTrackedResourcesClient.ListQueryResultsForResourceGroup")
 		defer func() {
@@ -423,15 +424,16 @@ func (client PolicyTrackedResourcesClient) ListQueryResultsForResourceGroupCompl
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListQueryResultsForResourceGroup(ctx, resourceGroupName, top, filter)
+	result.page, err = client.ListQueryResultsForResourceGroup(ctx, resourceGroupName, subscriptionID, top, filter)
 	return
 }
 
 // ListQueryResultsForSubscription queries policy tracked resources under the subscription.
 // Parameters:
+// subscriptionID - microsoft Azure subscription ID.
 // top - maximum number of records to return.
 // filter - oData filter expression.
-func (client PolicyTrackedResourcesClient) ListQueryResultsForSubscription(ctx context.Context, top *int32, filter string) (result PolicyTrackedResourcesQueryResultsPage, err error) {
+func (client PolicyTrackedResourcesClient) ListQueryResultsForSubscription(ctx context.Context, subscriptionID string, top *int32, filter string) (result PolicyTrackedResourcesQueryResultsPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyTrackedResourcesClient.ListQueryResultsForSubscription")
 		defer func() {
@@ -450,7 +452,7 @@ func (client PolicyTrackedResourcesClient) ListQueryResultsForSubscription(ctx c
 	}
 
 	result.fn = client.listQueryResultsForSubscriptionNextResults
-	req, err := client.ListQueryResultsForSubscriptionPreparer(ctx, top, filter)
+	req, err := client.ListQueryResultsForSubscriptionPreparer(ctx, subscriptionID, top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyTrackedResourcesClient", "ListQueryResultsForSubscription", nil, "Failure preparing request")
 		return
@@ -472,10 +474,10 @@ func (client PolicyTrackedResourcesClient) ListQueryResultsForSubscription(ctx c
 }
 
 // ListQueryResultsForSubscriptionPreparer prepares the ListQueryResultsForSubscription request.
-func (client PolicyTrackedResourcesClient) ListQueryResultsForSubscriptionPreparer(ctx context.Context, top *int32, filter string) (*http.Request, error) {
+func (client PolicyTrackedResourcesClient) ListQueryResultsForSubscriptionPreparer(ctx context.Context, subscriptionID string, top *int32, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policyTrackedResourcesResource": autorest.Encode("path", "default"),
-		"subscriptionId":                 autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":                 autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2018-07-01-preview"
@@ -539,7 +541,7 @@ func (client PolicyTrackedResourcesClient) listQueryResultsForSubscriptionNextRe
 }
 
 // ListQueryResultsForSubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
-func (client PolicyTrackedResourcesClient) ListQueryResultsForSubscriptionComplete(ctx context.Context, top *int32, filter string) (result PolicyTrackedResourcesQueryResultsIterator, err error) {
+func (client PolicyTrackedResourcesClient) ListQueryResultsForSubscriptionComplete(ctx context.Context, subscriptionID string, top *int32, filter string) (result PolicyTrackedResourcesQueryResultsIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyTrackedResourcesClient.ListQueryResultsForSubscription")
 		defer func() {
@@ -550,6 +552,6 @@ func (client PolicyTrackedResourcesClient) ListQueryResultsForSubscriptionComple
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListQueryResultsForSubscription(ctx, top, filter)
+	result.page, err = client.ListQueryResultsForSubscription(ctx, subscriptionID, top, filter)
 	return
 }

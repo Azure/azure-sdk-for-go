@@ -49,13 +49,15 @@ func PossibleAgentPoolTypeValues() []AgentPoolType {
 type Kind string
 
 const (
+	// KindAADIdentityProvider ...
+	KindAADIdentityProvider Kind = "AADIdentityProvider"
 	// KindOpenShiftManagedClusterBaseIdentityProvider ...
 	KindOpenShiftManagedClusterBaseIdentityProvider Kind = "OpenShiftManagedClusterBaseIdentityProvider"
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
 func PossibleKindValues() []Kind {
-	return []Kind{KindOpenShiftManagedClusterBaseIdentityProvider}
+	return []Kind{KindAADIdentityProvider, KindOpenShiftManagedClusterBaseIdentityProvider}
 }
 
 // NetworkPlugin enumerates the values for network plugin.
@@ -599,14 +601,14 @@ type AccessProfile struct {
 // AgentPool agent Pool.
 type AgentPool struct {
 	autorest.Response `json:"-"`
+	// ManagedClusterAgentPoolProfileProperties - Properties of an agent pool.
+	*ManagedClusterAgentPoolProfileProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// ManagedClusterAgentPoolProfileProperties - Properties of an agent pool.
-	*ManagedClusterAgentPoolProfileProperties `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AgentPool.
@@ -627,6 +629,15 @@ func (ap *AgentPool) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "properties":
+			if v != nil {
+				var managedClusterAgentPoolProfileProperties ManagedClusterAgentPoolProfileProperties
+				err = json.Unmarshal(*v, &managedClusterAgentPoolProfileProperties)
+				if err != nil {
+					return err
+				}
+				ap.ManagedClusterAgentPoolProfileProperties = &managedClusterAgentPoolProfileProperties
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -653,15 +664,6 @@ func (ap *AgentPool) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ap.Type = &typeVar
-			}
-		case "properties":
-			if v != nil {
-				var managedClusterAgentPoolProfileProperties ManagedClusterAgentPoolProfileProperties
-				err = json.Unmarshal(*v, &managedClusterAgentPoolProfileProperties)
-				if err != nil {
-					return err
-				}
-				ap.ManagedClusterAgentPoolProfileProperties = &managedClusterAgentPoolProfileProperties
 			}
 		}
 	}
@@ -909,62 +911,40 @@ type CloudErrorBody struct {
 	Details *[]CloudErrorBody `json:"details,omitempty"`
 }
 
-// Componentsschemasagentpoolallof1 ...
-type Componentsschemasagentpoolallof1 struct {
-	// ManagedClusterAgentPoolProfileProperties - Properties of an agent pool.
-	*ManagedClusterAgentPoolProfileProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Componentsschemasagentpoolallof1.
-func (c Componentsschemasagentpoolallof1) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if c.ManagedClusterAgentPoolProfileProperties != nil {
-		objectMap["properties"] = c.ManagedClusterAgentPoolProfileProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for Componentsschemasagentpoolallof1 struct.
-func (c *Componentsschemasagentpoolallof1) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var managedClusterAgentPoolProfileProperties ManagedClusterAgentPoolProfileProperties
-				err = json.Unmarshal(*v, &managedClusterAgentPoolProfileProperties)
-				if err != nil {
-					return err
-				}
-				c.ManagedClusterAgentPoolProfileProperties = &managedClusterAgentPoolProfileProperties
-			}
-		}
-	}
-
-	return nil
-}
-
-// Componentsschemascontainerserviceallof1 ...
-type Componentsschemascontainerserviceallof1 struct {
+// ContainerService container service.
+type ContainerService struct {
+	autorest.Response `json:"-"`
 	// Properties - Properties of the container service.
 	*Properties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
 }
 
-// MarshalJSON is the custom marshaler for Componentsschemascontainerserviceallof1.
-func (c Componentsschemascontainerserviceallof1) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for ContainerService.
+func (cs ContainerService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if c.Properties != nil {
-		objectMap["properties"] = c.Properties
+	if cs.Properties != nil {
+		objectMap["properties"] = cs.Properties
+	}
+	if cs.Location != nil {
+		objectMap["location"] = cs.Location
+	}
+	if cs.Tags != nil {
+		objectMap["tags"] = cs.Tags
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for Componentsschemascontainerserviceallof1 struct.
-func (c *Componentsschemascontainerserviceallof1) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for ContainerService struct.
+func (cs *ContainerService) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -979,204 +959,8 @@ func (c *Componentsschemascontainerserviceallof1) UnmarshalJSON(body []byte) err
 				if err != nil {
 					return err
 				}
-				c.Properties = &properties
+				cs.Properties = &properties
 			}
-		}
-	}
-
-	return nil
-}
-
-// Componentsschemasmanagedclusteraccessprofileallof1 ...
-type Componentsschemasmanagedclusteraccessprofileallof1 struct {
-	// AccessProfile - AccessProfile of a managed cluster.
-	*AccessProfile `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Componentsschemasmanagedclusteraccessprofileallof1.
-func (c Componentsschemasmanagedclusteraccessprofileallof1) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if c.AccessProfile != nil {
-		objectMap["properties"] = c.AccessProfile
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for Componentsschemasmanagedclusteraccessprofileallof1 struct.
-func (c *Componentsschemasmanagedclusteraccessprofileallof1) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var accessProfile AccessProfile
-				err = json.Unmarshal(*v, &accessProfile)
-				if err != nil {
-					return err
-				}
-				c.AccessProfile = &accessProfile
-			}
-		}
-	}
-
-	return nil
-}
-
-// Componentsschemasmanagedclusteragentpoolprofileallof1 ...
-type Componentsschemasmanagedclusteragentpoolprofileallof1 struct {
-	// Name - Unique name of the agent pool profile in the context of the subscription and resource group.
-	Name *string `json:"name,omitempty"`
-}
-
-// Componentsschemasmanagedclusterallof1 ...
-type Componentsschemasmanagedclusterallof1 struct {
-	// ManagedClusterProperties - Properties of a managed cluster.
-	*ManagedClusterProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Componentsschemasmanagedclusterallof1.
-func (c Componentsschemasmanagedclusterallof1) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if c.ManagedClusterProperties != nil {
-		objectMap["properties"] = c.ManagedClusterProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for Componentsschemasmanagedclusterallof1 struct.
-func (c *Componentsschemasmanagedclusterallof1) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var managedClusterProperties ManagedClusterProperties
-				err = json.Unmarshal(*v, &managedClusterProperties)
-				if err != nil {
-					return err
-				}
-				c.ManagedClusterProperties = &managedClusterProperties
-			}
-		}
-	}
-
-	return nil
-}
-
-// Componentsschemasopenshiftmanagedclusteraadidentityproviderallof1 ...
-type Componentsschemasopenshiftmanagedclusteraadidentityproviderallof1 struct {
-	// ClientID - The clientId password associated with the provider.
-	ClientID *string `json:"clientId,omitempty"`
-	// Secret - The secret password associated with the provider.
-	Secret *string `json:"secret,omitempty"`
-	// TenantID - The tenantId associated with the provider.
-	TenantID *string `json:"tenantId,omitempty"`
-	// CustomerAdminGroupID - The groupId to be granted cluster admin role.
-	CustomerAdminGroupID *string `json:"customerAdminGroupId,omitempty"`
-}
-
-// Componentsschemasopenshiftmanagedclusterallof1 ...
-type Componentsschemasopenshiftmanagedclusterallof1 struct {
-	// Plan - Define the resource plan as required by ARM for billing purposes
-	Plan *PurchasePlan `json:"plan,omitempty"`
-	// OpenShiftManagedClusterProperties - Properties of a OpenShift managed cluster.
-	*OpenShiftManagedClusterProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Componentsschemasopenshiftmanagedclusterallof1.
-func (c Componentsschemasopenshiftmanagedclusterallof1) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if c.Plan != nil {
-		objectMap["plan"] = c.Plan
-	}
-	if c.OpenShiftManagedClusterProperties != nil {
-		objectMap["properties"] = c.OpenShiftManagedClusterProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for Componentsschemasopenshiftmanagedclusterallof1 struct.
-func (c *Componentsschemasopenshiftmanagedclusterallof1) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "plan":
-			if v != nil {
-				var plan PurchasePlan
-				err = json.Unmarshal(*v, &plan)
-				if err != nil {
-					return err
-				}
-				c.Plan = &plan
-			}
-		case "properties":
-			if v != nil {
-				var openShiftManagedClusterProperties OpenShiftManagedClusterProperties
-				err = json.Unmarshal(*v, &openShiftManagedClusterProperties)
-				if err != nil {
-					return err
-				}
-				c.OpenShiftManagedClusterProperties = &openShiftManagedClusterProperties
-			}
-		}
-	}
-
-	return nil
-}
-
-// ContainerService container service.
-type ContainerService struct {
-	autorest.Response `json:"-"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
-	// Properties - Properties of the container service.
-	*Properties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ContainerService.
-func (cs ContainerService) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if cs.Location != nil {
-		objectMap["location"] = cs.Location
-	}
-	if cs.Tags != nil {
-		objectMap["tags"] = cs.Tags
-	}
-	if cs.Properties != nil {
-		objectMap["properties"] = cs.Properties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ContainerService struct.
-func (cs *ContainerService) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
 		case "id":
 			if v != nil {
 				var ID string
@@ -1221,15 +1005,6 @@ func (cs *ContainerService) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				cs.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var properties Properties
-				err = json.Unmarshal(*v, &properties)
-				if err != nil {
-					return err
-				}
-				cs.Properties = &properties
 			}
 		}
 	}
@@ -1483,6 +1258,8 @@ func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult
 // ManagedCluster managed cluster.
 type ManagedCluster struct {
 	autorest.Response `json:"-"`
+	// ManagedClusterProperties - Properties of a managed cluster.
+	*ManagedClusterProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
@@ -1493,21 +1270,19 @@ type ManagedCluster struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ManagedClusterProperties - Properties of a managed cluster.
-	*ManagedClusterProperties `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ManagedCluster.
 func (mc ManagedCluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if mc.ManagedClusterProperties != nil {
+		objectMap["properties"] = mc.ManagedClusterProperties
+	}
 	if mc.Location != nil {
 		objectMap["location"] = mc.Location
 	}
 	if mc.Tags != nil {
 		objectMap["tags"] = mc.Tags
-	}
-	if mc.ManagedClusterProperties != nil {
-		objectMap["properties"] = mc.ManagedClusterProperties
 	}
 	return json.Marshal(objectMap)
 }
@@ -1521,6 +1296,15 @@ func (mc *ManagedCluster) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "properties":
+			if v != nil {
+				var managedClusterProperties ManagedClusterProperties
+				err = json.Unmarshal(*v, &managedClusterProperties)
+				if err != nil {
+					return err
+				}
+				mc.ManagedClusterProperties = &managedClusterProperties
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -1566,15 +1350,6 @@ func (mc *ManagedCluster) UnmarshalJSON(body []byte) error {
 				}
 				mc.Tags = tags
 			}
-		case "properties":
-			if v != nil {
-				var managedClusterProperties ManagedClusterProperties
-				err = json.Unmarshal(*v, &managedClusterProperties)
-				if err != nil {
-					return err
-				}
-				mc.ManagedClusterProperties = &managedClusterProperties
-			}
 		}
 	}
 
@@ -1596,6 +1371,8 @@ type ManagedClusterAADProfile struct {
 // ManagedClusterAccessProfile managed cluster Access Profile.
 type ManagedClusterAccessProfile struct {
 	autorest.Response `json:"-"`
+	// AccessProfile - AccessProfile of a managed cluster.
+	*AccessProfile `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
@@ -1606,21 +1383,19 @@ type ManagedClusterAccessProfile struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// AccessProfile - AccessProfile of a managed cluster.
-	*AccessProfile `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ManagedClusterAccessProfile.
 func (mcap ManagedClusterAccessProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if mcap.AccessProfile != nil {
+		objectMap["properties"] = mcap.AccessProfile
+	}
 	if mcap.Location != nil {
 		objectMap["location"] = mcap.Location
 	}
 	if mcap.Tags != nil {
 		objectMap["tags"] = mcap.Tags
-	}
-	if mcap.AccessProfile != nil {
-		objectMap["properties"] = mcap.AccessProfile
 	}
 	return json.Marshal(objectMap)
 }
@@ -1634,6 +1409,15 @@ func (mcap *ManagedClusterAccessProfile) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "properties":
+			if v != nil {
+				var accessProfile AccessProfile
+				err = json.Unmarshal(*v, &accessProfile)
+				if err != nil {
+					return err
+				}
+				mcap.AccessProfile = &accessProfile
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -1679,15 +1463,6 @@ func (mcap *ManagedClusterAccessProfile) UnmarshalJSON(body []byte) error {
 				}
 				mcap.Tags = tags
 			}
-		case "properties":
-			if v != nil {
-				var accessProfile AccessProfile
-				err = json.Unmarshal(*v, &accessProfile)
-				if err != nil {
-					return err
-				}
-				mcap.AccessProfile = &accessProfile
-			}
 		}
 	}
 
@@ -1716,6 +1491,8 @@ func (mcap ManagedClusterAddonProfile) MarshalJSON() ([]byte, error) {
 
 // ManagedClusterAgentPoolProfile profile for the container service agent pool.
 type ManagedClusterAgentPoolProfile struct {
+	// Name - Unique name of the agent pool profile in the context of the subscription and resource group.
+	Name *string `json:"name,omitempty"`
 	// Count - Number of agents (VMs) to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
 	Count *int32 `json:"count,omitempty"`
 	// VMSize - Size of agent VMs. Possible values include: 'VMSizeTypesStandardA1', 'VMSizeTypesStandardA10', 'VMSizeTypesStandardA11', 'VMSizeTypesStandardA1V2', 'VMSizeTypesStandardA2', 'VMSizeTypesStandardA2V2', 'VMSizeTypesStandardA2mV2', 'VMSizeTypesStandardA3', 'VMSizeTypesStandardA4', 'VMSizeTypesStandardA4V2', 'VMSizeTypesStandardA4mV2', 'VMSizeTypesStandardA5', 'VMSizeTypesStandardA6', 'VMSizeTypesStandardA7', 'VMSizeTypesStandardA8', 'VMSizeTypesStandardA8V2', 'VMSizeTypesStandardA8mV2', 'VMSizeTypesStandardA9', 'VMSizeTypesStandardB2ms', 'VMSizeTypesStandardB2s', 'VMSizeTypesStandardB4ms', 'VMSizeTypesStandardB8ms', 'VMSizeTypesStandardD1', 'VMSizeTypesStandardD11', 'VMSizeTypesStandardD11V2', 'VMSizeTypesStandardD11V2Promo', 'VMSizeTypesStandardD12', 'VMSizeTypesStandardD12V2', 'VMSizeTypesStandardD12V2Promo', 'VMSizeTypesStandardD13', 'VMSizeTypesStandardD13V2', 'VMSizeTypesStandardD13V2Promo', 'VMSizeTypesStandardD14', 'VMSizeTypesStandardD14V2', 'VMSizeTypesStandardD14V2Promo', 'VMSizeTypesStandardD15V2', 'VMSizeTypesStandardD16V3', 'VMSizeTypesStandardD16sV3', 'VMSizeTypesStandardD1V2', 'VMSizeTypesStandardD2', 'VMSizeTypesStandardD2V2', 'VMSizeTypesStandardD2V2Promo', 'VMSizeTypesStandardD2V3', 'VMSizeTypesStandardD2sV3', 'VMSizeTypesStandardD3', 'VMSizeTypesStandardD32V3', 'VMSizeTypesStandardD32sV3', 'VMSizeTypesStandardD3V2', 'VMSizeTypesStandardD3V2Promo', 'VMSizeTypesStandardD4', 'VMSizeTypesStandardD4V2', 'VMSizeTypesStandardD4V2Promo', 'VMSizeTypesStandardD4V3', 'VMSizeTypesStandardD4sV3', 'VMSizeTypesStandardD5V2', 'VMSizeTypesStandardD5V2Promo', 'VMSizeTypesStandardD64V3', 'VMSizeTypesStandardD64sV3', 'VMSizeTypesStandardD8V3', 'VMSizeTypesStandardD8sV3', 'VMSizeTypesStandardDS1', 'VMSizeTypesStandardDS11', 'VMSizeTypesStandardDS11V2', 'VMSizeTypesStandardDS11V2Promo', 'VMSizeTypesStandardDS12', 'VMSizeTypesStandardDS12V2', 'VMSizeTypesStandardDS12V2Promo', 'VMSizeTypesStandardDS13', 'VMSizeTypesStandardDS132V2', 'VMSizeTypesStandardDS134V2', 'VMSizeTypesStandardDS13V2', 'VMSizeTypesStandardDS13V2Promo', 'VMSizeTypesStandardDS14', 'VMSizeTypesStandardDS144V2', 'VMSizeTypesStandardDS148V2', 'VMSizeTypesStandardDS14V2', 'VMSizeTypesStandardDS14V2Promo', 'VMSizeTypesStandardDS15V2', 'VMSizeTypesStandardDS1V2', 'VMSizeTypesStandardDS2', 'VMSizeTypesStandardDS2V2', 'VMSizeTypesStandardDS2V2Promo', 'VMSizeTypesStandardDS3', 'VMSizeTypesStandardDS3V2', 'VMSizeTypesStandardDS3V2Promo', 'VMSizeTypesStandardDS4', 'VMSizeTypesStandardDS4V2', 'VMSizeTypesStandardDS4V2Promo', 'VMSizeTypesStandardDS5V2', 'VMSizeTypesStandardDS5V2Promo', 'VMSizeTypesStandardE16V3', 'VMSizeTypesStandardE16sV3', 'VMSizeTypesStandardE2V3', 'VMSizeTypesStandardE2sV3', 'VMSizeTypesStandardE3216sV3', 'VMSizeTypesStandardE328sV3', 'VMSizeTypesStandardE32V3', 'VMSizeTypesStandardE32sV3', 'VMSizeTypesStandardE4V3', 'VMSizeTypesStandardE4sV3', 'VMSizeTypesStandardE6416sV3', 'VMSizeTypesStandardE6432sV3', 'VMSizeTypesStandardE64V3', 'VMSizeTypesStandardE64sV3', 'VMSizeTypesStandardE8V3', 'VMSizeTypesStandardE8sV3', 'VMSizeTypesStandardF1', 'VMSizeTypesStandardF16', 'VMSizeTypesStandardF16s', 'VMSizeTypesStandardF16sV2', 'VMSizeTypesStandardF1s', 'VMSizeTypesStandardF2', 'VMSizeTypesStandardF2s', 'VMSizeTypesStandardF2sV2', 'VMSizeTypesStandardF32sV2', 'VMSizeTypesStandardF4', 'VMSizeTypesStandardF4s', 'VMSizeTypesStandardF4sV2', 'VMSizeTypesStandardF64sV2', 'VMSizeTypesStandardF72sV2', 'VMSizeTypesStandardF8', 'VMSizeTypesStandardF8s', 'VMSizeTypesStandardF8sV2', 'VMSizeTypesStandardG1', 'VMSizeTypesStandardG2', 'VMSizeTypesStandardG3', 'VMSizeTypesStandardG4', 'VMSizeTypesStandardG5', 'VMSizeTypesStandardGS1', 'VMSizeTypesStandardGS2', 'VMSizeTypesStandardGS3', 'VMSizeTypesStandardGS4', 'VMSizeTypesStandardGS44', 'VMSizeTypesStandardGS48', 'VMSizeTypesStandardGS5', 'VMSizeTypesStandardGS516', 'VMSizeTypesStandardGS58', 'VMSizeTypesStandardH16', 'VMSizeTypesStandardH16m', 'VMSizeTypesStandardH16mr', 'VMSizeTypesStandardH16r', 'VMSizeTypesStandardH8', 'VMSizeTypesStandardH8m', 'VMSizeTypesStandardL16s', 'VMSizeTypesStandardL32s', 'VMSizeTypesStandardL4s', 'VMSizeTypesStandardL8s', 'VMSizeTypesStandardM12832ms', 'VMSizeTypesStandardM12864ms', 'VMSizeTypesStandardM128ms', 'VMSizeTypesStandardM128s', 'VMSizeTypesStandardM6416ms', 'VMSizeTypesStandardM6432ms', 'VMSizeTypesStandardM64ms', 'VMSizeTypesStandardM64s', 'VMSizeTypesStandardNC12', 'VMSizeTypesStandardNC12sV2', 'VMSizeTypesStandardNC12sV3', 'VMSizeTypesStandardNC24', 'VMSizeTypesStandardNC24r', 'VMSizeTypesStandardNC24rsV2', 'VMSizeTypesStandardNC24rsV3', 'VMSizeTypesStandardNC24sV2', 'VMSizeTypesStandardNC24sV3', 'VMSizeTypesStandardNC6', 'VMSizeTypesStandardNC6sV2', 'VMSizeTypesStandardNC6sV3', 'VMSizeTypesStandardND12s', 'VMSizeTypesStandardND24rs', 'VMSizeTypesStandardND24s', 'VMSizeTypesStandardND6s', 'VMSizeTypesStandardNV12', 'VMSizeTypesStandardNV24', 'VMSizeTypesStandardNV6'
@@ -1742,8 +1519,6 @@ type ManagedClusterAgentPoolProfile struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// AvailabilityZones - (PREVIEW) Availability zones for nodes. Must use VirtualMachineScaleSets AgentPoolType.
 	AvailabilityZones *[]string `json:"availabilityZones,omitempty"`
-	// Name - Unique name of the agent pool profile in the context of the subscription and resource group.
-	Name *string `json:"name,omitempty"`
 }
 
 // ManagedClusterAgentPoolProfileProperties properties for the container service agent pool profile.
@@ -2269,6 +2044,10 @@ type NetworkProfileType struct {
 // OpenShiftManagedCluster openShift Managed cluster.
 type OpenShiftManagedCluster struct {
 	autorest.Response `json:"-"`
+	// Plan - Define the resource plan as required by ARM for billing purposes
+	Plan *PurchasePlan `json:"plan,omitempty"`
+	// OpenShiftManagedClusterProperties - Properties of a OpenShift managed cluster.
+	*OpenShiftManagedClusterProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
@@ -2279,26 +2058,22 @@ type OpenShiftManagedCluster struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// Plan - Define the resource plan as required by ARM for billing purposes
-	Plan *PurchasePlan `json:"plan,omitempty"`
-	// OpenShiftManagedClusterProperties - Properties of a OpenShift managed cluster.
-	*OpenShiftManagedClusterProperties `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for OpenShiftManagedCluster.
 func (osmc OpenShiftManagedCluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if osmc.Location != nil {
-		objectMap["location"] = osmc.Location
-	}
-	if osmc.Tags != nil {
-		objectMap["tags"] = osmc.Tags
-	}
 	if osmc.Plan != nil {
 		objectMap["plan"] = osmc.Plan
 	}
 	if osmc.OpenShiftManagedClusterProperties != nil {
 		objectMap["properties"] = osmc.OpenShiftManagedClusterProperties
+	}
+	if osmc.Location != nil {
+		objectMap["location"] = osmc.Location
+	}
+	if osmc.Tags != nil {
+		objectMap["tags"] = osmc.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -2312,6 +2087,24 @@ func (osmc *OpenShiftManagedCluster) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "plan":
+			if v != nil {
+				var plan PurchasePlan
+				err = json.Unmarshal(*v, &plan)
+				if err != nil {
+					return err
+				}
+				osmc.Plan = &plan
+			}
+		case "properties":
+			if v != nil {
+				var openShiftManagedClusterProperties OpenShiftManagedClusterProperties
+				err = json.Unmarshal(*v, &openShiftManagedClusterProperties)
+				if err != nil {
+					return err
+				}
+				osmc.OpenShiftManagedClusterProperties = &openShiftManagedClusterProperties
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -2357,24 +2150,6 @@ func (osmc *OpenShiftManagedCluster) UnmarshalJSON(body []byte) error {
 				}
 				osmc.Tags = tags
 			}
-		case "plan":
-			if v != nil {
-				var plan PurchasePlan
-				err = json.Unmarshal(*v, &plan)
-				if err != nil {
-					return err
-				}
-				osmc.Plan = &plan
-			}
-		case "properties":
-			if v != nil {
-				var openShiftManagedClusterProperties OpenShiftManagedClusterProperties
-				err = json.Unmarshal(*v, &openShiftManagedClusterProperties)
-				if err != nil {
-					return err
-				}
-				osmc.OpenShiftManagedClusterProperties = &openShiftManagedClusterProperties
-			}
 		}
 	}
 
@@ -2383,8 +2158,6 @@ func (osmc *OpenShiftManagedCluster) UnmarshalJSON(body []byte) error {
 
 // OpenShiftManagedClusterAADIdentityProvider defines the Identity provider for MS AAD.
 type OpenShiftManagedClusterAADIdentityProvider struct {
-	// Kind - The kind of the provider.
-	Kind *string `json:"kind,omitempty"`
 	// ClientID - The clientId password associated with the provider.
 	ClientID *string `json:"clientId,omitempty"`
 	// Secret - The secret password associated with the provider.
@@ -2393,6 +2166,45 @@ type OpenShiftManagedClusterAADIdentityProvider struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// CustomerAdminGroupID - The groupId to be granted cluster admin role.
 	CustomerAdminGroupID *string `json:"customerAdminGroupId,omitempty"`
+	// Kind - Possible values include: 'KindOpenShiftManagedClusterBaseIdentityProvider', 'KindAADIdentityProvider'
+	Kind Kind `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OpenShiftManagedClusterAADIdentityProvider.
+func (osmcaip OpenShiftManagedClusterAADIdentityProvider) MarshalJSON() ([]byte, error) {
+	osmcaip.Kind = KindAADIdentityProvider
+	objectMap := make(map[string]interface{})
+	if osmcaip.ClientID != nil {
+		objectMap["clientId"] = osmcaip.ClientID
+	}
+	if osmcaip.Secret != nil {
+		objectMap["secret"] = osmcaip.Secret
+	}
+	if osmcaip.TenantID != nil {
+		objectMap["tenantId"] = osmcaip.TenantID
+	}
+	if osmcaip.CustomerAdminGroupID != nil {
+		objectMap["customerAdminGroupId"] = osmcaip.CustomerAdminGroupID
+	}
+	if osmcaip.Kind != "" {
+		objectMap["kind"] = osmcaip.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsOpenShiftManagedClusterAADIdentityProvider is the BasicOpenShiftManagedClusterBaseIdentityProvider implementation for OpenShiftManagedClusterAADIdentityProvider.
+func (osmcaip OpenShiftManagedClusterAADIdentityProvider) AsOpenShiftManagedClusterAADIdentityProvider() (*OpenShiftManagedClusterAADIdentityProvider, bool) {
+	return &osmcaip, true
+}
+
+// AsOpenShiftManagedClusterBaseIdentityProvider is the BasicOpenShiftManagedClusterBaseIdentityProvider implementation for OpenShiftManagedClusterAADIdentityProvider.
+func (osmcaip OpenShiftManagedClusterAADIdentityProvider) AsOpenShiftManagedClusterBaseIdentityProvider() (*OpenShiftManagedClusterBaseIdentityProvider, bool) {
+	return nil, false
+}
+
+// AsBasicOpenShiftManagedClusterBaseIdentityProvider is the BasicOpenShiftManagedClusterBaseIdentityProvider implementation for OpenShiftManagedClusterAADIdentityProvider.
+func (osmcaip OpenShiftManagedClusterAADIdentityProvider) AsBasicOpenShiftManagedClusterBaseIdentityProvider() (BasicOpenShiftManagedClusterBaseIdentityProvider, bool) {
+	return &osmcaip, true
 }
 
 // OpenShiftManagedClusterAgentPoolProfile defines the configuration of the OpenShift cluster VMs.
@@ -2420,12 +2232,13 @@ type OpenShiftManagedClusterAuthProfile struct {
 
 // BasicOpenShiftManagedClusterBaseIdentityProvider structure for any Identity provider.
 type BasicOpenShiftManagedClusterBaseIdentityProvider interface {
+	AsOpenShiftManagedClusterAADIdentityProvider() (*OpenShiftManagedClusterAADIdentityProvider, bool)
 	AsOpenShiftManagedClusterBaseIdentityProvider() (*OpenShiftManagedClusterBaseIdentityProvider, bool)
 }
 
 // OpenShiftManagedClusterBaseIdentityProvider structure for any Identity provider.
 type OpenShiftManagedClusterBaseIdentityProvider struct {
-	// Kind - Possible values include: 'KindOpenShiftManagedClusterBaseIdentityProvider'
+	// Kind - Possible values include: 'KindOpenShiftManagedClusterBaseIdentityProvider', 'KindAADIdentityProvider'
 	Kind Kind `json:"kind,omitempty"`
 }
 
@@ -2437,6 +2250,10 @@ func unmarshalBasicOpenShiftManagedClusterBaseIdentityProvider(body []byte) (Bas
 	}
 
 	switch m["kind"] {
+	case string(KindAADIdentityProvider):
+		var osmcaip OpenShiftManagedClusterAADIdentityProvider
+		err := json.Unmarshal(body, &osmcaip)
+		return osmcaip, err
 	default:
 		var osmcbip OpenShiftManagedClusterBaseIdentityProvider
 		err := json.Unmarshal(body, &osmcbip)
@@ -2470,6 +2287,11 @@ func (osmcbip OpenShiftManagedClusterBaseIdentityProvider) MarshalJSON() ([]byte
 		objectMap["kind"] = osmcbip.Kind
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsOpenShiftManagedClusterAADIdentityProvider is the BasicOpenShiftManagedClusterBaseIdentityProvider implementation for OpenShiftManagedClusterBaseIdentityProvider.
+func (osmcbip OpenShiftManagedClusterBaseIdentityProvider) AsOpenShiftManagedClusterAADIdentityProvider() (*OpenShiftManagedClusterAADIdentityProvider, bool) {
+	return nil, false
 }
 
 // AsOpenShiftManagedClusterBaseIdentityProvider is the BasicOpenShiftManagedClusterBaseIdentityProvider implementation for OpenShiftManagedClusterBaseIdentityProvider.

@@ -56,9 +56,11 @@ func NewExportsClientWithBaseURI(baseURI string, subscriptionID string) ExportsC
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-// for invoiceSection scope, and
+// for invoiceSection scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-// partners.
+// partners, 'providers/Microsoft.CostManagement/ExternalSubscriptions/{externalSubscriptionId}' for linked
+// account and 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountId}' for
+// consolidated account
 // exportName - export Name.
 // parameters - parameters supplied to the CreateOrUpdate Export operation.
 func (client ExportsClient) CreateOrUpdate(ctx context.Context, scope string, exportName string, parameters Export) (result Export, err error) {
@@ -160,9 +162,11 @@ func (client ExportsClient) CreateOrUpdateResponder(resp *http.Response) (result
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-// for invoiceSection scope, and
+// for invoiceSection scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-// partners.
+// partners, 'providers/Microsoft.CostManagement/ExternalSubscriptions/{externalSubscriptionId}' for linked
+// account and 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountId}' for
+// consolidated account
 // exportName - export Name.
 func (client ExportsClient) Delete(ctx context.Context, scope string, exportName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -249,9 +253,11 @@ func (client ExportsClient) DeleteResponder(resp *http.Response) (result autores
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-// for invoiceSection scope, and
+// for invoiceSection scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-// partners.
+// partners, 'providers/Microsoft.CostManagement/ExternalSubscriptions/{externalSubscriptionId}' for linked
+// account and 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountId}' for
+// consolidated account
 // exportName - export Name.
 func (client ExportsClient) Execute(ctx context.Context, scope string, exportName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -338,9 +344,11 @@ func (client ExportsClient) ExecuteResponder(resp *http.Response) (result autore
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-// for invoiceSection scope, and
+// for invoiceSection scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-// partners.
+// partners, 'providers/Microsoft.CostManagement/ExternalSubscriptions/{externalSubscriptionId}' for linked
+// account and 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountId}' for
+// consolidated account
 // exportName - export Name.
 func (client ExportsClient) Get(ctx context.Context, scope string, exportName string) (result Export, err error) {
 	if tracing.IsEnabled() {
@@ -428,9 +436,11 @@ func (client ExportsClient) GetResponder(resp *http.Response) (result Export, er
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-// for invoiceSection scope, and
+// for invoiceSection scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-// partners.
+// partners, 'providers/Microsoft.CostManagement/ExternalSubscriptions/{externalSubscriptionId}' for linked
+// account and 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountId}' for
+// consolidated account
 // exportName - export Name.
 func (client ExportsClient) GetExecutionHistory(ctx context.Context, scope string, exportName string) (result ExportExecutionListResult, err error) {
 	if tracing.IsEnabled() {
@@ -518,9 +528,11 @@ func (client ExportsClient) GetExecutionHistoryResponder(resp *http.Response) (r
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-// for invoiceSection scope, and
+// for invoiceSection scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-// partners.
+// partners, 'providers/Microsoft.CostManagement/ExternalSubscriptions/{externalSubscriptionId}' for linked
+// account and 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountId}' for
+// consolidated account
 func (client ExportsClient) List(ctx context.Context, scope string) (result ExportListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExportsClient.List")

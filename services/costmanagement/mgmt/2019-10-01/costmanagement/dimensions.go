@@ -54,9 +54,11 @@ func NewDimensionsClientWithBaseURI(baseURI string, subscriptionID string) Dimen
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-// for invoiceSection scope, and
+// for invoiceSection scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-// partners.
+// partners, 'providers/Microsoft.CostManagement/ExternalSubscriptions/{externalSubscriptionId}' for linked
+// account and 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountId}' for
+// consolidated account
 // filter - may be used to filter dimensions by properties/category, properties/usageStart,
 // properties/usageEnd. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
 // expand - may be used to expand the properties/data within a dimension category. By default, data is not

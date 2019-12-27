@@ -55,9 +55,11 @@ func NewQueryClientWithBaseURI(baseURI string, subscriptionID string) QueryClien
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-// for invoiceSection scope, and
+// for invoiceSection scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-// partners.
+// partners, 'providers/Microsoft.CostManagement/ExternalSubscriptions/{externalSubscriptionId}' for linked
+// account and 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountId}' for
+// consolidated account
 // parameters - parameters supplied to the CreateOrUpdate Query Config operation.
 func (client QueryClient) Usage(ctx context.Context, scope string, parameters QueryDefinition) (result QueryResult, err error) {
 	if tracing.IsEnabled() {

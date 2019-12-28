@@ -19,6 +19,7 @@ package face
 
 import (
 	"context"
+	"fmt"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
@@ -286,7 +287,11 @@ func (client LargeFaceListClient) AddFaceFromURLPreparer(ctx context.Context, la
 		queryParameters["userData"] = autorest.Encode("query", userData)
 	}
 	if targetFace != nil && len(targetFace) > 0 {
-		queryParameters["targetFace"] = autorest.Encode("query", targetFace, ",")
+		stringValues := make([]string, 0, len(targetFace))
+		for _, v := range targetFace {
+			stringValues = append(stringValues, fmt.Sprintf("%v", v))
+		}
+		queryParameters["targetFace"] = autorest.Encode("query", stringValues, ",")
 	}
 	if len(string(detectionModel)) > 0 {
 		queryParameters["detectionModel"] = autorest.Encode("query", detectionModel)

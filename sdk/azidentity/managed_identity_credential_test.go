@@ -32,6 +32,20 @@ func TestManagedIdentityCredential_GetTokenInCloudShellLive(t *testing.T) {
 	}
 }
 
+func TestManagedIdentityCredential_GetTokenInAppServiceLive(t *testing.T) {
+	if msiEndpointEnv := os.Getenv("MSI_ENDPOINT"); len(msiEndpointEnv) == 0 {
+		t.Skip()
+	}
+	if msiSecretEnv := os.Getenv(msiSecretEnvironemntVariable); len(msiSecretEnv) == 0 {
+		t.Skip()
+	}
+	msiCred := NewManagedIdentityCredential(clientID, nil)
+	_, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	if err != nil {
+		t.Fatalf("Received an error when attempting to retrieve a token. Error: %s", err.Error())
+	}
+}
+
 func TestManagedIdentityCredential_GetTokenInVMLive(t *testing.T) {
 	if msiEndpointEnv := os.Getenv("MSI_ENDPOINT"); len(msiEndpointEnv) != 0 {
 		t.Skip()

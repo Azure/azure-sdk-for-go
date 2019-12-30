@@ -33,6 +33,12 @@ func TestManagedIdentityCredential_GetTokenInCloudShellLive(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_GetTokenInVMLive(t *testing.T) {
+	if msiEndpointEnv := os.Getenv("MSI_ENDPOINT"); len(msiEndpointEnv) != 0 {
+		t.Skip()
+	}
+	if msiSecretEnv := os.Getenv(msiSecretEnvironemntVariable); len(msiSecretEnv) != 0 {
+		t.Skip()
+	}
 	msiCred := NewManagedIdentityCredential(clientID, nil)
 	msiEndpoint, err := msiCred.client.getMSIType(context.Background())
 	if err != nil {

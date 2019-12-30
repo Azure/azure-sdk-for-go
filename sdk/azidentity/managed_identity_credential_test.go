@@ -34,10 +34,10 @@ func TestManagedIdentityCredential_GetTokenInCloudShellLive(t *testing.T) {
 
 func TestManagedIdentityCredential_GetTokenInAppServiceLive(t *testing.T) {
 	if msiEndpointEnv := os.Getenv("MSI_ENDPOINT"); len(msiEndpointEnv) == 0 {
-		t.Skip()
+		t.Fatalf("Not running in an environment where MSI_ENDPOINT is available")
 	}
 	if msiSecretEnv := os.Getenv(msiSecretEnvironemntVariable); len(msiSecretEnv) == 0 {
-		t.Skip()
+		t.Fatalf("Not running in an environment where MSI_SECRET is available")
 	}
 	msiCred := NewManagedIdentityCredential(clientID, nil)
 	_, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})

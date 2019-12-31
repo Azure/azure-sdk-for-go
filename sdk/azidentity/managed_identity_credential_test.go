@@ -62,7 +62,7 @@ func TestManagedIdentityCredential_GetTokenInVMLive(t *testing.T) {
 	if msiEndpoint != msiType(1) {
 		t.Skip()
 	}
-	at, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
 		fmt.Println("error")
 		fmt.Println(err)

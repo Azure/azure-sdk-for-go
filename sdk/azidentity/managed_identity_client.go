@@ -115,6 +115,9 @@ func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, msiType msi
 
 	resp, err := c.pipeline.Do(ctx, msg)
 	if err != nil {
+		fmt.Println("Err")
+		fmt.Println(err)
+		fmt.Println("Err")
 		return nil, err
 	}
 
@@ -126,7 +129,7 @@ func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, msiType msi
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
-
+	fmt.Println(resp)
 	return nil, &AuthenticationFailedError{inner: newAuthenticationResponseError(resp)}
 }
 

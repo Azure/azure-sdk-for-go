@@ -63,9 +63,10 @@ func TestManagedIdentityCredential_GetTokenInVMLive(t *testing.T) {
 		t.Skip()
 	}
 	at, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
-	fmt.Println(at)
 	if err != nil {
-		fmt.Println("error" + err.Error())
+		fmt.Println("error")
+		fmt.Println(err)
+		fmt.Println("error")
 		t.Fatalf("Received an error when attempting to retrieve a token. Error: %s", err.Error())
 	}
 }

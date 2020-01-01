@@ -133,6 +133,8 @@ type CreateKbDTO struct {
 	EnableHierarchicalExtraction *bool `json:"enableHierarchicalExtraction,omitempty"`
 	// DefaultAnswerUsedForExtraction - Text string to be used as the answer in any Q-A which has no extracted answer from the document but has a hierarchy. Required when EnableHierarchicalExtraction field is set to True.
 	DefaultAnswerUsedForExtraction *string `json:"defaultAnswerUsedForExtraction,omitempty"`
+	// Language - Language of the knowledgebase.
+	Language *string `json:"language,omitempty"`
 }
 
 // CreateKbInputDTO input to create KB.
@@ -164,6 +166,8 @@ type EndpointKeysDTO struct {
 	InstalledVersion *string `json:"installedVersion,omitempty"`
 	// LastStableVersion - Latest version of runtime.
 	LastStableVersion *string `json:"lastStableVersion,omitempty"`
+	// Language - Language setting of runtime.
+	Language *string `json:"language,omitempty"`
 }
 
 // EndpointSettingsDTO endpoint settings.

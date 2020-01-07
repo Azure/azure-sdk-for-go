@@ -25,6 +25,7 @@ import (
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
 	ListOperations(ctx context.Context) (result managedapplications.OperationListResultPage, err error)
+	ListOperationsComplete(ctx context.Context) (result managedapplications.OperationListResultIterator, err error)
 }
 
 var _ BaseClientAPI = (*managedapplications.BaseClient)(nil)
@@ -38,7 +39,9 @@ type AppliancesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, applianceName string) (result managedapplications.Appliance, err error)
 	GetByID(ctx context.Context, applianceID string) (result managedapplications.Appliance, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result managedapplications.ApplianceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result managedapplications.ApplianceListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result managedapplications.ApplianceListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result managedapplications.ApplianceListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, applianceName string, parameters *managedapplications.Appliance) (result managedapplications.Appliance, err error)
 	UpdateByID(ctx context.Context, applianceID string, parameters *managedapplications.Appliance) (result managedapplications.Appliance, err error)
 }
@@ -54,6 +57,7 @@ type ApplianceDefinitionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, applianceDefinitionName string) (result managedapplications.ApplianceDefinition, err error)
 	GetByID(ctx context.Context, applianceDefinitionID string) (result managedapplications.ApplianceDefinition, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result managedapplications.ApplianceDefinitionListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result managedapplications.ApplianceDefinitionListResultIterator, err error)
 }
 
 var _ ApplianceDefinitionsClientAPI = (*managedapplications.ApplianceDefinitionsClient)(nil)

@@ -35,7 +35,9 @@ func NewManagedHostingEnvironmentsClient(subscriptionID string) ManagedHostingEn
 	return NewManagedHostingEnvironmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewManagedHostingEnvironmentsClientWithBaseURI creates an instance of the ManagedHostingEnvironmentsClient client.
+// NewManagedHostingEnvironmentsClientWithBaseURI creates an instance of the ManagedHostingEnvironmentsClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewManagedHostingEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) ManagedHostingEnvironmentsClient {
 	return ManagedHostingEnvironmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

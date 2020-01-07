@@ -35,7 +35,8 @@ func NewManagedApisClient(subscriptionID string) ManagedApisClient {
 	return NewManagedApisClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewManagedApisClientWithBaseURI creates an instance of the ManagedApisClient client.
+// NewManagedApisClientWithBaseURI creates an instance of the ManagedApisClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewManagedApisClientWithBaseURI(baseURI string, subscriptionID string) ManagedApisClient {
 	return ManagedApisClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

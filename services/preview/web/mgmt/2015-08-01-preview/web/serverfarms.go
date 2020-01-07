@@ -35,7 +35,8 @@ func NewServerFarmsClient(subscriptionID string) ServerFarmsClient {
 	return NewServerFarmsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewServerFarmsClientWithBaseURI creates an instance of the ServerFarmsClient client.
+// NewServerFarmsClientWithBaseURI creates an instance of the ServerFarmsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewServerFarmsClientWithBaseURI(baseURI string, subscriptionID string) ServerFarmsClient {
 	return ServerFarmsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

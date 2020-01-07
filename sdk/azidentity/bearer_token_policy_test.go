@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"testing"
 
@@ -14,10 +15,10 @@ import (
 
 const (
 	accessTokenRespError      = `{"error": "invalid_client","error_description": "Invalid client secret is provided.","error_codes": [7000215],"timestamp": "2019-12-01 19:00:00Z","trace_id": "2d091b0","correlation_id": "a999","error_uri": "https://login.contoso.com/error?code=7000215"}`
-	accessTokenRespSuccess    = `{"access_token": "new_token", "expires_in": 3600}`
-	accessTokenAppServSuccess = `{"access_token": "new_token","expires_on": "06/20/2019 02:57:58 +00:00","resource": "https://vault.azure.net","token_type": "Bearer"}`
+	accessTokenRespSuccess    = `{"access_token": "` + tokenValue + `", "expires_in": 3600}`
+	accessTokenAppServSuccess = `{"access_token": "` + tokenValue + `","expires_on": "06/20/2019 02:57:58 +00:00","resource": "https://vault.azure.net","token_type": "Bearer"}`
 	accessTokenRespMalformed  = `{"access_token": 0, "expires_in": 3600}`
-	accessTokenRespShortLived = `{"access_token": "new_token", "expires_in": 0}`
+	accessTokenRespShortLived = `{"access_token": "` + tokenValue + `", "expires_in": 0}`
 )
 
 func TestBearerPolicy_SuccessGetToken(t *testing.T) {
@@ -34,9 +35,13 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 		azcore.NewRetryPolicy(azcore.RetryOptions{}),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	_, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
+	resp, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
 	if err != nil {
 		t.Fatalf("Expected nil error but received one")
+	}
+	const expectedToken = bearerTokenPrefix + tokenValue
+	if token := resp.Request.Header.Get(azcore.HeaderAuthorization); token != expectedToken {
+		t.Fatalf("expected token '%s', got '%s'", expectedToken, token)
 	}
 }
 
@@ -54,9 +59,13 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 		azcore.NewRetryPolicy(azcore.RetryOptions{}),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	_, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one")
+	resp, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
+	var afe *AuthenticationFailedError
+	if !errors.As(err, &afe) {
+		t.Fatalf("unexpected error type %v", err)
+	}
+	if resp != nil {
+		t.Fatal("expected nil response")
 	}
 }
 
@@ -82,11 +91,11 @@ func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 	req := azcore.NewRequest(http.MethodGet, srv.URL())
 	_, err := pipeline.Do(context.Background(), req)
 	if err != nil {
-		t.Fatalf("Expected nil error but received one")
+		t.Fatalf("unexpected error %v", err)
 	}
 	_, err = pipeline.Do(context.Background(), req)
 	if err != nil {
-		t.Fatalf("Expected nil error but received one")
+		t.Fatalf("unexpected error %v", err)
 	}
 }
 
@@ -106,8 +115,9 @@ func TestRetryPolicy_IsNotRetriable(t *testing.T) {
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
 	_, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one")
+	var afe *AuthenticationFailedError
+	if !errors.As(err, &afe) {
+		t.Fatalf("unexpected error type %v", err)
 	}
 }
 
@@ -125,7 +135,8 @@ func TestRetryPolicy_HTTPRequest(t *testing.T) {
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
 	_, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one")
+	var afe *AuthenticationFailedError
+	if !errors.As(err, &afe) {
+		t.Fatalf("unexpected error type %v", err)
 	}
 }

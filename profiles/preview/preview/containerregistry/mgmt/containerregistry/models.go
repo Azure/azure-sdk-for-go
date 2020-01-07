@@ -22,7 +22,7 @@ package containerregistry
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2018-02-01/containerregistry"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2019-12-01-preview/containerregistry"
 )
 
 const (
@@ -35,48 +35,6 @@ const (
 	Allow Action = original.Allow
 )
 
-type BaseImageDependencyType = original.BaseImageDependencyType
-
-const (
-	BuildTime BaseImageDependencyType = original.BuildTime
-	RunTime   BaseImageDependencyType = original.RunTime
-)
-
-type BaseImageTriggerType = original.BaseImageTriggerType
-
-const (
-	All     BaseImageTriggerType = original.All
-	None    BaseImageTriggerType = original.None
-	Runtime BaseImageTriggerType = original.Runtime
-)
-
-type BuildStatus = original.BuildStatus
-
-const (
-	Canceled  BuildStatus = original.Canceled
-	Error     BuildStatus = original.Error
-	Failed    BuildStatus = original.Failed
-	Queued    BuildStatus = original.Queued
-	Running   BuildStatus = original.Running
-	Started   BuildStatus = original.Started
-	Succeeded BuildStatus = original.Succeeded
-	Timeout   BuildStatus = original.Timeout
-)
-
-type BuildTaskStatus = original.BuildTaskStatus
-
-const (
-	Disabled BuildTaskStatus = original.Disabled
-	Enabled  BuildTaskStatus = original.Enabled
-)
-
-type BuildType = original.BuildType
-
-const (
-	AutoBuild  BuildType = original.AutoBuild
-	QuickBuild BuildType = original.QuickBuild
-)
-
 type DefaultAction = original.DefaultAction
 
 const (
@@ -84,18 +42,18 @@ const (
 	DefaultActionDeny  DefaultAction = original.DefaultActionDeny
 )
 
+type EncryptionStatus = original.EncryptionStatus
+
+const (
+	Disabled EncryptionStatus = original.Disabled
+	Enabled  EncryptionStatus = original.Enabled
+)
+
 type ImportMode = original.ImportMode
 
 const (
 	Force   ImportMode = original.Force
 	NoForce ImportMode = original.NoForce
-)
-
-type OsType = original.OsType
-
-const (
-	Linux   OsType = original.Linux
-	Windows OsType = original.Windows
 )
 
 type PasswordName = original.PasswordName
@@ -115,12 +73,12 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	ProvisioningStateCanceled  ProvisioningState = original.ProvisioningStateCanceled
-	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
-	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
-	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
-	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
-	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
+	Canceled  ProvisioningState = original.Canceled
+	Creating  ProvisioningState = original.Creating
+	Deleting  ProvisioningState = original.Deleting
+	Failed    ProvisioningState = original.Failed
+	Succeeded ProvisioningState = original.Succeeded
+	Updating  ProvisioningState = original.Updating
 )
 
 type RegistryUsageUnit = original.RegistryUsageUnit
@@ -128,6 +86,15 @@ type RegistryUsageUnit = original.RegistryUsageUnit
 const (
 	Bytes RegistryUsageUnit = original.Bytes
 	Count RegistryUsageUnit = original.Count
+)
+
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	None                       ResourceIdentityType = original.None
+	SystemAssigned             ResourceIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               ResourceIdentityType = original.UserAssigned
 )
 
 type SkuName = original.SkuName
@@ -148,46 +115,10 @@ const (
 	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
-type SourceControlType = original.SourceControlType
-
-const (
-	Github                  SourceControlType = original.Github
-	VisualStudioTeamService SourceControlType = original.VisualStudioTeamService
-)
-
-type TokenType = original.TokenType
-
-const (
-	OAuth TokenType = original.OAuth
-	PAT   TokenType = original.PAT
-)
-
 type TrustPolicyType = original.TrustPolicyType
 
 const (
 	Notary TrustPolicyType = original.Notary
-)
-
-type Type = original.Type
-
-const (
-	TypeBuildStepProperties Type = original.TypeBuildStepProperties
-	TypeDocker              Type = original.TypeDocker
-)
-
-type TypeBasicBuildStepPropertiesUpdateParameters = original.TypeBasicBuildStepPropertiesUpdateParameters
-
-const (
-	TypeBasicBuildStepPropertiesUpdateParametersTypeBuildStepPropertiesUpdateParameters TypeBasicBuildStepPropertiesUpdateParameters = original.TypeBasicBuildStepPropertiesUpdateParametersTypeBuildStepPropertiesUpdateParameters
-	TypeBasicBuildStepPropertiesUpdateParametersTypeDocker                              TypeBasicBuildStepPropertiesUpdateParameters = original.TypeBasicBuildStepPropertiesUpdateParametersTypeDocker
-)
-
-type TypeBasicQueueBuildRequest = original.TypeBasicQueueBuildRequest
-
-const (
-	TypeBuildTask         TypeBasicQueueBuildRequest = original.TypeBuildTask
-	TypeQueueBuildRequest TypeBasicQueueBuildRequest = original.TypeQueueBuildRequest
-	TypeQuickBuild        TypeBasicQueueBuildRequest = original.TypeQuickBuild
 )
 
 type WebhookAction = original.WebhookAction
@@ -209,52 +140,8 @@ const (
 
 type Actor = original.Actor
 type BaseClient = original.BaseClient
-type BaseImageDependency = original.BaseImageDependency
-type BasicBuildStepProperties = original.BasicBuildStepProperties
-type BasicBuildStepPropertiesUpdateParameters = original.BasicBuildStepPropertiesUpdateParameters
-type BasicQueueBuildRequest = original.BasicQueueBuildRequest
-type Build = original.Build
-type BuildArgument = original.BuildArgument
-type BuildArgumentList = original.BuildArgumentList
-type BuildArgumentListIterator = original.BuildArgumentListIterator
-type BuildArgumentListPage = original.BuildArgumentListPage
-type BuildFilter = original.BuildFilter
-type BuildGetLogResult = original.BuildGetLogResult
-type BuildListResult = original.BuildListResult
-type BuildListResultIterator = original.BuildListResultIterator
-type BuildListResultPage = original.BuildListResultPage
-type BuildProperties = original.BuildProperties
-type BuildStep = original.BuildStep
-type BuildStepList = original.BuildStepList
-type BuildStepListIterator = original.BuildStepListIterator
-type BuildStepListPage = original.BuildStepListPage
-type BuildStepProperties = original.BuildStepProperties
-type BuildStepPropertiesUpdateParameters = original.BuildStepPropertiesUpdateParameters
-type BuildStepUpdateParameters = original.BuildStepUpdateParameters
-type BuildStepsClient = original.BuildStepsClient
-type BuildStepsCreateFuture = original.BuildStepsCreateFuture
-type BuildStepsDeleteFuture = original.BuildStepsDeleteFuture
-type BuildStepsUpdateFuture = original.BuildStepsUpdateFuture
-type BuildTask = original.BuildTask
-type BuildTaskBuildRequest = original.BuildTaskBuildRequest
-type BuildTaskFilter = original.BuildTaskFilter
-type BuildTaskListResult = original.BuildTaskListResult
-type BuildTaskListResultIterator = original.BuildTaskListResultIterator
-type BuildTaskListResultPage = original.BuildTaskListResultPage
-type BuildTaskProperties = original.BuildTaskProperties
-type BuildTaskPropertiesUpdateParameters = original.BuildTaskPropertiesUpdateParameters
-type BuildTaskUpdateParameters = original.BuildTaskUpdateParameters
-type BuildTasksClient = original.BuildTasksClient
-type BuildTasksCreateFuture = original.BuildTasksCreateFuture
-type BuildTasksDeleteFuture = original.BuildTasksDeleteFuture
-type BuildTasksUpdateFuture = original.BuildTasksUpdateFuture
-type BuildUpdateParameters = original.BuildUpdateParameters
-type BuildsCancelFuture = original.BuildsCancelFuture
-type BuildsClient = original.BuildsClient
-type BuildsUpdateFuture = original.BuildsUpdateFuture
 type CallbackConfig = original.CallbackConfig
-type DockerBuildStep = original.DockerBuildStep
-type DockerBuildStepUpdateParameters = original.DockerBuildStepUpdateParameters
+type EncryptionProperty = original.EncryptionProperty
 type Event = original.Event
 type EventContent = original.EventContent
 type EventInfo = original.EventInfo
@@ -263,13 +150,12 @@ type EventListResultIterator = original.EventListResultIterator
 type EventListResultPage = original.EventListResultPage
 type EventRequestMessage = original.EventRequestMessage
 type EventResponseMessage = original.EventResponseMessage
-type GitCommitTrigger = original.GitCommitTrigger
 type IPRule = original.IPRule
-type ImageDescriptor = original.ImageDescriptor
-type ImageUpdateTrigger = original.ImageUpdateTrigger
+type IdentityProperties = original.IdentityProperties
 type ImportImageParameters = original.ImportImageParameters
 type ImportSource = original.ImportSource
 type ImportSourceCredentials = original.ImportSourceCredentials
+type KeyVaultProperties = original.KeyVaultProperties
 type NetworkRuleSet = original.NetworkRuleSet
 type OperationDefinition = original.OperationDefinition
 type OperationDisplayDefinition = original.OperationDisplayDefinition
@@ -280,19 +166,14 @@ type OperationMetricSpecificationDefinition = original.OperationMetricSpecificat
 type OperationPropertiesDefinition = original.OperationPropertiesDefinition
 type OperationServiceSpecificationDefinition = original.OperationServiceSpecificationDefinition
 type OperationsClient = original.OperationsClient
-type PlatformProperties = original.PlatformProperties
-type ProxyResource = original.ProxyResource
+type Policies = original.Policies
 type QuarantinePolicy = original.QuarantinePolicy
-type QueueBuildRequest = original.QueueBuildRequest
-type QuickBuildRequest = original.QuickBuildRequest
 type RegenerateCredentialParameters = original.RegenerateCredentialParameters
 type RegistriesClient = original.RegistriesClient
 type RegistriesCreateFuture = original.RegistriesCreateFuture
 type RegistriesDeleteFuture = original.RegistriesDeleteFuture
 type RegistriesImportImageFuture = original.RegistriesImportImageFuture
-type RegistriesQueueBuildFuture = original.RegistriesQueueBuildFuture
 type RegistriesUpdateFuture = original.RegistriesUpdateFuture
-type RegistriesUpdatePoliciesFuture = original.RegistriesUpdatePoliciesFuture
 type Registry = original.Registry
 type RegistryListCredentialsResult = original.RegistryListCredentialsResult
 type RegistryListResult = original.RegistryListResult
@@ -301,7 +182,6 @@ type RegistryListResultPage = original.RegistryListResultPage
 type RegistryNameCheckRequest = original.RegistryNameCheckRequest
 type RegistryNameStatus = original.RegistryNameStatus
 type RegistryPassword = original.RegistryPassword
-type RegistryPolicies = original.RegistryPolicies
 type RegistryProperties = original.RegistryProperties
 type RegistryPropertiesUpdateParameters = original.RegistryPropertiesUpdateParameters
 type RegistryUpdateParameters = original.RegistryUpdateParameters
@@ -319,16 +199,14 @@ type ReplicationsDeleteFuture = original.ReplicationsDeleteFuture
 type ReplicationsUpdateFuture = original.ReplicationsUpdateFuture
 type Request = original.Request
 type Resource = original.Resource
+type RetentionPolicy = original.RetentionPolicy
 type Sku = original.Sku
 type Source = original.Source
-type SourceControlAuthInfo = original.SourceControlAuthInfo
-type SourceRepositoryProperties = original.SourceRepositoryProperties
-type SourceRepositoryUpdateParameters = original.SourceRepositoryUpdateParameters
-type SourceUploadDefinition = original.SourceUploadDefinition
 type Status = original.Status
 type StorageAccountProperties = original.StorageAccountProperties
 type Target = original.Target
 type TrustPolicy = original.TrustPolicy
+type UserIdentityProperties = original.UserIdentityProperties
 type VirtualNetworkRule = original.VirtualNetworkRule
 type Webhook = original.Webhook
 type WebhookCreateParameters = original.WebhookCreateParameters
@@ -346,48 +224,6 @@ type WebhooksUpdateFuture = original.WebhooksUpdateFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewBuildArgumentListIterator(page BuildArgumentListPage) BuildArgumentListIterator {
-	return original.NewBuildArgumentListIterator(page)
-}
-func NewBuildArgumentListPage(getNextPage func(context.Context, BuildArgumentList) (BuildArgumentList, error)) BuildArgumentListPage {
-	return original.NewBuildArgumentListPage(getNextPage)
-}
-func NewBuildListResultIterator(page BuildListResultPage) BuildListResultIterator {
-	return original.NewBuildListResultIterator(page)
-}
-func NewBuildListResultPage(getNextPage func(context.Context, BuildListResult) (BuildListResult, error)) BuildListResultPage {
-	return original.NewBuildListResultPage(getNextPage)
-}
-func NewBuildStepListIterator(page BuildStepListPage) BuildStepListIterator {
-	return original.NewBuildStepListIterator(page)
-}
-func NewBuildStepListPage(getNextPage func(context.Context, BuildStepList) (BuildStepList, error)) BuildStepListPage {
-	return original.NewBuildStepListPage(getNextPage)
-}
-func NewBuildStepsClient(subscriptionID string) BuildStepsClient {
-	return original.NewBuildStepsClient(subscriptionID)
-}
-func NewBuildStepsClientWithBaseURI(baseURI string, subscriptionID string) BuildStepsClient {
-	return original.NewBuildStepsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewBuildTaskListResultIterator(page BuildTaskListResultPage) BuildTaskListResultIterator {
-	return original.NewBuildTaskListResultIterator(page)
-}
-func NewBuildTaskListResultPage(getNextPage func(context.Context, BuildTaskListResult) (BuildTaskListResult, error)) BuildTaskListResultPage {
-	return original.NewBuildTaskListResultPage(getNextPage)
-}
-func NewBuildTasksClient(subscriptionID string) BuildTasksClient {
-	return original.NewBuildTasksClient(subscriptionID)
-}
-func NewBuildTasksClientWithBaseURI(baseURI string, subscriptionID string) BuildTasksClient {
-	return original.NewBuildTasksClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewBuildsClient(subscriptionID string) BuildsClient {
-	return original.NewBuildsClient(subscriptionID)
-}
-func NewBuildsClientWithBaseURI(baseURI string, subscriptionID string) BuildsClient {
-	return original.NewBuildsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewEventListResultIterator(page EventListResultPage) EventListResultIterator {
 	return original.NewEventListResultIterator(page)
@@ -449,29 +285,14 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleActionValues() []Action {
 	return original.PossibleActionValues()
 }
-func PossibleBaseImageDependencyTypeValues() []BaseImageDependencyType {
-	return original.PossibleBaseImageDependencyTypeValues()
-}
-func PossibleBaseImageTriggerTypeValues() []BaseImageTriggerType {
-	return original.PossibleBaseImageTriggerTypeValues()
-}
-func PossibleBuildStatusValues() []BuildStatus {
-	return original.PossibleBuildStatusValues()
-}
-func PossibleBuildTaskStatusValues() []BuildTaskStatus {
-	return original.PossibleBuildTaskStatusValues()
-}
-func PossibleBuildTypeValues() []BuildType {
-	return original.PossibleBuildTypeValues()
-}
 func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()
 }
+func PossibleEncryptionStatusValues() []EncryptionStatus {
+	return original.PossibleEncryptionStatusValues()
+}
 func PossibleImportModeValues() []ImportMode {
 	return original.PossibleImportModeValues()
-}
-func PossibleOsTypeValues() []OsType {
-	return original.PossibleOsTypeValues()
 }
 func PossiblePasswordNameValues() []PasswordName {
 	return original.PossiblePasswordNameValues()
@@ -485,29 +306,17 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 func PossibleRegistryUsageUnitValues() []RegistryUsageUnit {
 	return original.PossibleRegistryUsageUnitValues()
 }
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
+}
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
-func PossibleSourceControlTypeValues() []SourceControlType {
-	return original.PossibleSourceControlTypeValues()
-}
-func PossibleTokenTypeValues() []TokenType {
-	return original.PossibleTokenTypeValues()
-}
 func PossibleTrustPolicyTypeValues() []TrustPolicyType {
 	return original.PossibleTrustPolicyTypeValues()
-}
-func PossibleTypeBasicBuildStepPropertiesUpdateParametersValues() []TypeBasicBuildStepPropertiesUpdateParameters {
-	return original.PossibleTypeBasicBuildStepPropertiesUpdateParametersValues()
-}
-func PossibleTypeBasicQueueBuildRequestValues() []TypeBasicQueueBuildRequest {
-	return original.PossibleTypeBasicQueueBuildRequestValues()
-}
-func PossibleTypeValues() []Type {
-	return original.PossibleTypeValues()
 }
 func PossibleWebhookActionValues() []WebhookAction {
 	return original.PossibleWebhookActionValues()

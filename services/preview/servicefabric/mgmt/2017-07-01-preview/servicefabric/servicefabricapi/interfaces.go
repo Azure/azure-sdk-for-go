@@ -25,29 +25,29 @@ import (
 
 // ClustersClientAPI contains the set of methods on the ClustersClient type.
 type ClustersClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, clusterName string, subscriptionID string, parameters servicefabric.Cluster) (result servicefabric.ClustersCreateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, clusterName string, subscriptionID string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, clusterName string, subscriptionID string) (result servicefabric.Cluster, err error)
-	List(ctx context.Context, subscriptionID string) (result servicefabric.ClusterListResult, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string, subscriptionID string) (result servicefabric.ClusterListResult, err error)
-	Update(ctx context.Context, resourceGroupName string, clusterName string, subscriptionID string, parameters servicefabric.ClusterUpdateParameters) (result servicefabric.ClustersUpdateFuture, err error)
+	Create(ctx context.Context, resourceGroupName string, clusterName string, APIVersion string, subscriptionID string, parameters servicefabric.Cluster) (result servicefabric.ClustersCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, clusterName string, APIVersion string, subscriptionID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, clusterName string, APIVersion string, subscriptionID string) (result servicefabric.Cluster, err error)
+	List(ctx context.Context, APIVersion string, subscriptionID string) (result servicefabric.ClusterListResult, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, APIVersion string, subscriptionID string) (result servicefabric.ClusterListResult, err error)
+	Update(ctx context.Context, resourceGroupName string, clusterName string, APIVersion string, subscriptionID string, parameters servicefabric.ClusterUpdateParameters) (result servicefabric.ClustersUpdateFuture, err error)
 }
 
 var _ ClustersClientAPI = (*servicefabric.ClustersClient)(nil)
 
 // ClusterVersionsClientAPI contains the set of methods on the ClusterVersionsClient type.
 type ClusterVersionsClientAPI interface {
-	Get(ctx context.Context, location string, subscriptionID string, clusterVersion string) (result servicefabric.ClusterCodeVersionsListResult, err error)
-	GetByEnvironment(ctx context.Context, location string, environment string, subscriptionID string, clusterVersion string) (result servicefabric.ClusterCodeVersionsListResult, err error)
-	List(ctx context.Context, location string, subscriptionID string) (result servicefabric.ClusterCodeVersionsListResult, err error)
-	ListByEnvironment(ctx context.Context, location string, environment string, subscriptionID string) (result servicefabric.ClusterCodeVersionsListResult, err error)
+	Get(ctx context.Context, location string, APIVersion string, subscriptionID string, clusterVersion string) (result servicefabric.ClusterCodeVersionsListResult, err error)
+	GetByEnvironment(ctx context.Context, location string, environment string, APIVersion string, subscriptionID string, clusterVersion string) (result servicefabric.ClusterCodeVersionsListResult, err error)
+	List(ctx context.Context, location string, APIVersion string, subscriptionID string) (result servicefabric.ClusterCodeVersionsListResult, err error)
+	ListByEnvironment(ctx context.Context, location string, environment string, APIVersion string, subscriptionID string) (result servicefabric.ClusterCodeVersionsListResult, err error)
 }
 
 var _ ClusterVersionsClientAPI = (*servicefabric.ClusterVersionsClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
-	List(ctx context.Context) (result servicefabric.OperationListResultPage, err error)
+	List(ctx context.Context, APIVersion string) (result servicefabric.OperationListResultPage, err error)
 }
 
 var _ OperationsClientAPI = (*servicefabric.OperationsClient)(nil)

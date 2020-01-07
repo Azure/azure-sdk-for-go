@@ -56,6 +56,33 @@ type APIError struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// ChangePointDetectRequest ...
+type ChangePointDetectRequest struct {
+	// Series - Time series data points. Points should be sorted by timestamp in ascending order to match the change point detection result.
+	Series *[]Point `json:"series,omitempty"`
+	// Granularity - Can only be one of yearly, monthly, weekly, daily, hourly or minutely. Granularity is used for verify whether input series is valid. Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'Minutely'
+	Granularity Granularity `json:"granularity,omitempty"`
+	// CustomInterval - Custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
+	CustomInterval *int32 `json:"customInterval,omitempty"`
+	// Period - Optional argument, periodic value of a time series. If the value is null or does not present, the API will determine the period automatically.
+	Period *int32 `json:"period,omitempty"`
+	// StableTrendWindow - Optional argument, advanced model parameter, a default stableTrendWindow will be used in detection.
+	StableTrendWindow *int32 `json:"stableTrendWindow,omitempty"`
+	// Threshold - Optional argument, advanced model parameter, between 0.0-1.0, the lower the value is, the larger the trend error will be which means less change point will be accepted.
+	Threshold *float64 `json:"threshold,omitempty"`
+}
+
+// ChangePointDetectResponse ...
+type ChangePointDetectResponse struct {
+	autorest.Response `json:"-"`
+	// Period - Frequency extracted from the series, zero means no recurrent pattern has been found.
+	Period *int32 `json:"period,omitempty"`
+	// IsChangePoint - isChangePoint contains change point properties for each input point. True means an anomaly either negative or positive has been detected. The index of the array is consistent with the input series.
+	IsChangePoint *[]bool `json:"isChangePoint,omitempty"`
+	// ConfidenceScores - the change point confidence of each point
+	ConfidenceScores *[]float64 `json:"confidenceScores,omitempty"`
+}
+
 // EntireDetectResponse ...
 type EntireDetectResponse struct {
 	autorest.Response `json:"-"`
@@ -108,7 +135,7 @@ type Point struct {
 type Request struct {
 	// Series - Time series data points. Points should be sorted by timestamp in ascending order to match the anomaly detection result. If the data is not sorted correctly or there is duplicated timestamp, the API will not work. In such case, an error message will be returned.
 	Series *[]Point `json:"series,omitempty"`
-	// Granularity - Can only be one of yearly, monthly, weekly, daily, hourly or minutely. Granularity is used for verify whether input series is valid. Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'Minutely'
+	// Granularity - Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'Minutely'
 	Granularity Granularity `json:"granularity,omitempty"`
 	// CustomInterval - Custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
 	CustomInterval *int32 `json:"customInterval,omitempty"`

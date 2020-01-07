@@ -44,9 +44,10 @@ func NewRegistrationDefinitionsClientWithBaseURI(baseURI string) RegistrationDef
 // CreateOrUpdate creates or updates a registration definition.
 // Parameters:
 // registrationDefinitionID - guid of the registration definition.
+// APIVersion - the API version to use for this operation.
 // scope - scope of the resource.
 // requestBody - the parameters required to create new registration definition.
-func (client RegistrationDefinitionsClient) CreateOrUpdate(ctx context.Context, registrationDefinitionID string, scope string, requestBody RegistrationDefinition) (result RegistrationDefinition, err error) {
+func (client RegistrationDefinitionsClient) CreateOrUpdate(ctx context.Context, registrationDefinitionID string, APIVersion string, scope string, requestBody RegistrationDefinition) (result RegistrationDefinition, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationDefinitionsClient.CreateOrUpdate")
 		defer func() {
@@ -72,7 +73,7 @@ func (client RegistrationDefinitionsClient) CreateOrUpdate(ctx context.Context, 
 		return result, validation.NewError("managedservices.RegistrationDefinitionsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, registrationDefinitionID, scope, requestBody)
+	req, err := client.CreateOrUpdatePreparer(ctx, registrationDefinitionID, APIVersion, scope, requestBody)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationDefinitionsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -94,13 +95,12 @@ func (client RegistrationDefinitionsClient) CreateOrUpdate(ctx context.Context, 
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client RegistrationDefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, registrationDefinitionID string, scope string, requestBody RegistrationDefinition) (*http.Request, error) {
+func (client RegistrationDefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, registrationDefinitionID string, APIVersion string, scope string, requestBody RegistrationDefinition) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"registrationDefinitionId": autorest.Encode("path", registrationDefinitionID),
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -141,8 +141,9 @@ func (client RegistrationDefinitionsClient) CreateOrUpdateResponder(resp *http.R
 // Delete deletes the registration definition.
 // Parameters:
 // registrationDefinitionID - guid of the registration definition.
+// APIVersion - the API version to use for this operation.
 // scope - scope of the resource.
-func (client RegistrationDefinitionsClient) Delete(ctx context.Context, registrationDefinitionID string, scope string) (result autorest.Response, err error) {
+func (client RegistrationDefinitionsClient) Delete(ctx context.Context, registrationDefinitionID string, APIVersion string, scope string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationDefinitionsClient.Delete")
 		defer func() {
@@ -153,7 +154,7 @@ func (client RegistrationDefinitionsClient) Delete(ctx context.Context, registra
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, registrationDefinitionID, scope)
+	req, err := client.DeletePreparer(ctx, registrationDefinitionID, APIVersion, scope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationDefinitionsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -175,13 +176,12 @@ func (client RegistrationDefinitionsClient) Delete(ctx context.Context, registra
 }
 
 // DeletePreparer prepares the Delete request.
-func (client RegistrationDefinitionsClient) DeletePreparer(ctx context.Context, registrationDefinitionID string, scope string) (*http.Request, error) {
+func (client RegistrationDefinitionsClient) DeletePreparer(ctx context.Context, registrationDefinitionID string, APIVersion string, scope string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"registrationDefinitionId": autorest.Encode("path", registrationDefinitionID),
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -217,7 +217,8 @@ func (client RegistrationDefinitionsClient) DeleteResponder(resp *http.Response)
 // Parameters:
 // scope - scope of the resource.
 // registrationDefinitionID - guid of the registration definition.
-func (client RegistrationDefinitionsClient) Get(ctx context.Context, scope string, registrationDefinitionID string) (result RegistrationDefinition, err error) {
+// APIVersion - the API version to use for this operation.
+func (client RegistrationDefinitionsClient) Get(ctx context.Context, scope string, registrationDefinitionID string, APIVersion string) (result RegistrationDefinition, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationDefinitionsClient.Get")
 		defer func() {
@@ -228,7 +229,7 @@ func (client RegistrationDefinitionsClient) Get(ctx context.Context, scope strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, scope, registrationDefinitionID)
+	req, err := client.GetPreparer(ctx, scope, registrationDefinitionID, APIVersion)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationDefinitionsClient", "Get", nil, "Failure preparing request")
 		return
@@ -250,13 +251,12 @@ func (client RegistrationDefinitionsClient) Get(ctx context.Context, scope strin
 }
 
 // GetPreparer prepares the Get request.
-func (client RegistrationDefinitionsClient) GetPreparer(ctx context.Context, scope string, registrationDefinitionID string) (*http.Request, error) {
+func (client RegistrationDefinitionsClient) GetPreparer(ctx context.Context, scope string, registrationDefinitionID string, APIVersion string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"registrationDefinitionId": autorest.Encode("path", registrationDefinitionID),
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -292,7 +292,8 @@ func (client RegistrationDefinitionsClient) GetResponder(resp *http.Response) (r
 // List gets a list of the registration definitions.
 // Parameters:
 // scope - scope of the resource.
-func (client RegistrationDefinitionsClient) List(ctx context.Context, scope string) (result RegistrationDefinitionListPage, err error) {
+// APIVersion - the API version to use for this operation.
+func (client RegistrationDefinitionsClient) List(ctx context.Context, scope string, APIVersion string) (result RegistrationDefinitionListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationDefinitionsClient.List")
 		defer func() {
@@ -304,7 +305,7 @@ func (client RegistrationDefinitionsClient) List(ctx context.Context, scope stri
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, scope)
+	req, err := client.ListPreparer(ctx, scope, APIVersion)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationDefinitionsClient", "List", nil, "Failure preparing request")
 		return
@@ -326,12 +327,11 @@ func (client RegistrationDefinitionsClient) List(ctx context.Context, scope stri
 }
 
 // ListPreparer prepares the List request.
-func (client RegistrationDefinitionsClient) ListPreparer(ctx context.Context, scope string) (*http.Request, error) {
+func (client RegistrationDefinitionsClient) ListPreparer(ctx context.Context, scope string, APIVersion string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"scope": scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -386,7 +386,7 @@ func (client RegistrationDefinitionsClient) listNextResults(ctx context.Context,
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client RegistrationDefinitionsClient) ListComplete(ctx context.Context, scope string) (result RegistrationDefinitionListIterator, err error) {
+func (client RegistrationDefinitionsClient) ListComplete(ctx context.Context, scope string, APIVersion string) (result RegistrationDefinitionListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationDefinitionsClient.List")
 		defer func() {
@@ -397,6 +397,6 @@ func (client RegistrationDefinitionsClient) ListComplete(ctx context.Context, sc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, scope)
+	result.page, err = client.List(ctx, scope, APIVersion)
 	return
 }

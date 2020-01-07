@@ -53,3 +53,11 @@ type OperationsClientAPI interface {
 }
 
 var _ OperationsClientAPI = (*resourcehealth.OperationsClient)(nil)
+
+// EmergingIssuesClientAPI contains the set of methods on the EmergingIssuesClient type.
+type EmergingIssuesClientAPI interface {
+	Get(ctx context.Context) (result resourcehealth.EmergingIssuesGetResult, err error)
+	List(ctx context.Context) (result resourcehealth.EmergingIssueListResultPage, err error)
+}
+
+var _ EmergingIssuesClientAPI = (*resourcehealth.EmergingIssuesClient)(nil)

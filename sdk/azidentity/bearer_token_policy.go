@@ -5,27 +5,41 @@ package azidentity
 
 import (
 	"context"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/atomic"
+)
+
+const (
+	bearerTokenPrefix = "Bearer "
 )
 
 type bearerTokenPolicy struct {
-	empty     chan bool    // indicates we don't have a token yet
-	updating  atomic.Int64 // atomically set to 1 to indicate a refresh is in progress
-	header    atomic.String
-	expiresOn atomic.Time
-	creds     azcore.TokenCredential     // R/O
-	options   azcore.TokenRequestOptions // R/O
+	// cond is used to synchronize token refresh.  the locker
+	// must be locked when updating the following shared state.
+	cond *sync.Cond
+
+	// renewing indicates that the token is in the process of being refreshed
+	renewing bool
+
+	// header contains the authorization header value
+	header string
+
+	// expiresOn is when the token will expire
+	expiresOn time.Time
+
+	// the following fields are read-only
+	creds   azcore.TokenCredential
+	options azcore.TokenRequestOptions
 }
 
 func newBearerTokenPolicy(creds azcore.TokenCredential, opts azcore.AuthenticationPolicyOptions) *bearerTokenPolicy {
-	bt := bearerTokenPolicy{creds: creds, options: opts.Options}
-	// prime channel indicating there is no token
-	bt.empty = make(chan bool, 1)
-	bt.empty <- true
-	return &bt
+	return &bearerTokenPolicy{
+		cond:    sync.NewCond(&sync.Mutex{}),
+		creds:   creds,
+		options: opts.Options,
+	}
 }
 
 func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
@@ -33,49 +47,59 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 		// HTTPS must be used, otherwise the tokens are at the risk of being exposed
 		return nil, &AuthenticationFailedError{msg: "token credentials require a URL using the HTTPS protocol scheme"}
 	}
-	// check if the token is empty.  this will return true for
-	// the first read.  all other reads will block until the
-	// token has been obtained at which point it returns false
-	if <-b.empty {
-		tk, err := b.creds.GetToken(ctx, azcore.TokenRequestOptions{Scopes: b.options.Scopes})
-		if err != nil {
-			// failed to get a token, let another go routine try
-			b.empty <- true
-			return nil, err
-		}
-		b.header.Store("Bearer " + tk.Token)
-		b.expiresOn.Store(tk.ExpiresOn)
-		// signal token has been initialized.  go routines
-		// that read from b.empty will always get false.
-		close(b.empty)
-	}
 	// create a "refresh window" before the token's real expiration date.
 	// this allows callers to continue to use the old token while the
 	// refresh is in progress.
 	const window = 2 * time.Minute
-	// check if the token has expired
-	now := time.Now().UTC()
-	exp := b.expiresOn.Load()
-	if now.After(exp.Add(-window)) {
-		// token has expired, set update flag and begin the refresh.
-		// if no other go routine has initiated a refresh the calling
-		// go routine will do it.
-		if b.updating.CAS(0, 1) {
-			tk, err := b.creds.GetToken(ctx, azcore.TokenRequestOptions{Scopes: b.options.Scopes})
-			if err != nil {
-				// clear updating flag before returning so other
-				// go routines can attempt to refresh
-				b.updating.Store(0)
-				return nil, err
+	now, getToken, header := time.Now(), false, ""
+	// acquire exclusive lock
+	b.cond.L.Lock()
+	for {
+		if b.expiresOn.IsZero() || b.expiresOn.Before(now) {
+			// token was never obtained or has expired
+			if !b.renewing {
+				// another go routine isn't refreshing the token so this one will
+				b.renewing = true
+				getToken = true
+				break
 			}
-			b.header.Store("Bearer " + tk.Token)
-			// set expiresOn last since refresh is predicated on it
-			b.expiresOn.Store(tk.ExpiresOn)
-			// signal the refresh is complete. this must happen after all shared
-			// state has been updated.
-			b.updating.Store(0)
-		} // else { another go routine is refreshing the token, use previous token }
+			// getting here means this go routine will wait for the token to refresh
+		} else if b.expiresOn.Add(-window).Before(now) {
+			// token is within the expiration window
+			if !b.renewing {
+				// another go routine isn't refreshing the token so this one will
+				b.renewing = true
+				getToken = true
+				break
+			}
+			// this go routine will use the existing token while another refreshes it
+			header = b.header
+			break
+		} else {
+			// token is not expiring yet so use it as-is
+			header = b.header
+			break
+		}
+		// wait for the token to refresh
+		b.cond.Wait()
 	}
-	req.Request.Header.Set(azcore.HeaderAuthorization, b.header.Load())
+	b.cond.L.Unlock()
+	if getToken {
+		// this go routine has been elected to refresh the token
+		tk, err := b.creds.GetToken(ctx, b.options)
+		if err != nil {
+			return nil, err
+		}
+		header = bearerTokenPrefix + tk.Token
+		// update shared state
+		b.cond.L.Lock()
+		b.renewing = false
+		b.header = header
+		b.expiresOn = tk.ExpiresOn
+		// signal any waiters that the token has been refreshed
+		b.cond.Broadcast()
+		b.cond.L.Unlock()
+	}
+	req.Request.Header.Set(azcore.HeaderAuthorization, header)
 	return req.Next(ctx)
 }

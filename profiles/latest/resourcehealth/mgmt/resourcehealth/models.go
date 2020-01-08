@@ -44,6 +44,22 @@ const (
 	Transient  ReasonChronicityTypes = original.Transient
 )
 
+type SeverityValues = original.SeverityValues
+
+const (
+	Error       SeverityValues = original.Error
+	Information SeverityValues = original.Information
+	Warning     SeverityValues = original.Warning
+)
+
+type StageValues = original.StageValues
+
+const (
+	Active   StageValues = original.Active
+	Archived StageValues = original.Archived
+	Resolve  StageValues = original.Resolve
+)
+
 type AvailabilityStatus = original.AvailabilityStatus
 type AvailabilityStatusListResult = original.AvailabilityStatusListResult
 type AvailabilityStatusListResultIterator = original.AvailabilityStatusListResultIterator
@@ -51,18 +67,32 @@ type AvailabilityStatusListResultPage = original.AvailabilityStatusListResultPag
 type AvailabilityStatusProperties = original.AvailabilityStatusProperties
 type AvailabilityStatusPropertiesRecentlyResolvedState = original.AvailabilityStatusPropertiesRecentlyResolvedState
 type AvailabilityStatusesClient = original.AvailabilityStatusesClient
+type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type ChildAvailabilityStatusesClient = original.ChildAvailabilityStatusesClient
 type ChildResourcesClient = original.ChildResourcesClient
+type EmergingIssue = original.EmergingIssue
+type EmergingIssueImpact = original.EmergingIssueImpact
+type EmergingIssueListResult = original.EmergingIssueListResult
+type EmergingIssueListResultIterator = original.EmergingIssueListResultIterator
+type EmergingIssueListResultPage = original.EmergingIssueListResultPage
+type EmergingIssuesClient = original.EmergingIssuesClient
+type EmergingIssuesGetResult = original.EmergingIssuesGetResult
 type ErrorResponse = original.ErrorResponse
+type ImpactedRegion = original.ImpactedRegion
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationsClient = original.OperationsClient
+type ProxyResource = original.ProxyResource
 type RecommendedAction = original.RecommendedAction
+type Resource = original.Resource
 type ServiceImpactingEvent = original.ServiceImpactingEvent
 type ServiceImpactingEventIncidentProperties = original.ServiceImpactingEventIncidentProperties
 type ServiceImpactingEventStatus = original.ServiceImpactingEventStatus
+type StatusActiveEvent = original.StatusActiveEvent
+type StatusBanner = original.StatusBanner
+type TrackedResource = original.TrackedResource
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -91,6 +121,18 @@ func NewChildResourcesClient(subscriptionID string) ChildResourcesClient {
 func NewChildResourcesClientWithBaseURI(baseURI string, subscriptionID string) ChildResourcesClient {
 	return original.NewChildResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewEmergingIssueListResultIterator(page EmergingIssueListResultPage) EmergingIssueListResultIterator {
+	return original.NewEmergingIssueListResultIterator(page)
+}
+func NewEmergingIssueListResultPage(getNextPage func(context.Context, EmergingIssueListResult) (EmergingIssueListResult, error)) EmergingIssueListResultPage {
+	return original.NewEmergingIssueListResultPage(getNextPage)
+}
+func NewEmergingIssuesClient(subscriptionID string) EmergingIssuesClient {
+	return original.NewEmergingIssuesClient(subscriptionID)
+}
+func NewEmergingIssuesClientWithBaseURI(baseURI string, subscriptionID string) EmergingIssuesClient {
+	return original.NewEmergingIssuesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -105,6 +147,12 @@ func PossibleAvailabilityStateValuesValues() []AvailabilityStateValues {
 }
 func PossibleReasonChronicityTypesValues() []ReasonChronicityTypes {
 	return original.PossibleReasonChronicityTypesValues()
+}
+func PossibleSeverityValuesValues() []SeverityValues {
+	return original.PossibleSeverityValuesValues()
+}
+func PossibleStageValuesValues() []StageValues {
+	return original.PossibleStageValuesValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

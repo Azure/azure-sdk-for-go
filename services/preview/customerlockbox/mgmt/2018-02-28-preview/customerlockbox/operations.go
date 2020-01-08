@@ -41,7 +41,9 @@ func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 }
 
 // List lists all the available REST API operations.
-func (client OperationsClient) List(ctx context.Context) (result OperationListResultPage, err error) {
+// Parameters:
+// APIVersion - the API version to be used with the HTTP request.
+func (client OperationsClient) List(ctx context.Context, APIVersion string) (result OperationListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsClient.List")
 		defer func() {
@@ -53,7 +55,7 @@ func (client OperationsClient) List(ctx context.Context) (result OperationListRe
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx)
+	req, err := client.ListPreparer(ctx, APIVersion)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerlockbox.OperationsClient", "List", nil, "Failure preparing request")
 		return
@@ -75,8 +77,7 @@ func (client OperationsClient) List(ctx context.Context) (result OperationListRe
 }
 
 // ListPreparer prepares the List request.
-func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2018-02-28-preview"
+func (client OperationsClient) ListPreparer(ctx context.Context, APIVersion string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -131,7 +132,7 @@ func (client OperationsClient) listNextResults(ctx context.Context, lastResults 
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client OperationsClient) ListComplete(ctx context.Context) (result OperationListResultIterator, err error) {
+func (client OperationsClient) ListComplete(ctx context.Context, APIVersion string) (result OperationListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsClient.List")
 		defer func() {
@@ -142,6 +143,6 @@ func (client OperationsClient) ListComplete(ctx context.Context) (result Operati
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx)
+	result.page, err = client.List(ctx, APIVersion)
 	return
 }

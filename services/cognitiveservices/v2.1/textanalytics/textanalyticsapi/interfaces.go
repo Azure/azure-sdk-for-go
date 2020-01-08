@@ -27,7 +27,7 @@ type BaseClientAPI interface {
 	DetectLanguage(ctx context.Context, showStats *bool, languageBatchInput *textanalytics.LanguageBatchInput) (result textanalytics.LanguageBatchResult, err error)
 	Entities(ctx context.Context, showStats *bool, multiLanguageBatchInput *textanalytics.MultiLanguageBatchInput) (result textanalytics.EntitiesBatchResult, err error)
 	KeyPhrases(ctx context.Context, showStats *bool, multiLanguageBatchInput *textanalytics.MultiLanguageBatchInput) (result textanalytics.KeyPhraseBatchResult, err error)
-	Sentiment(ctx context.Context, showStats *bool, multiLanguageBatchInput *textanalytics.MultiLanguageBatchInput) (result textanalytics.SetObject, err error)
+	Sentiment(ctx context.Context, showStats *bool, multiLanguageBatchInput *textanalytics.MultiLanguageBatchInput) (result textanalytics.SentimentBatchResult, err error)
 }
 
 var _ BaseClientAPI = (*textanalytics.BaseClient)(nil)

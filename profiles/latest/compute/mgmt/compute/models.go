@@ -935,6 +935,7 @@ type SourceVault = original.SourceVault
 type StorageProfile = original.StorageProfile
 type SubResource = original.SubResource
 type SubResourceReadOnly = original.SubResourceReadOnly
+type SubResourceWithColocationStatus = original.SubResourceWithColocationStatus
 type TargetRegion = original.TargetRegion
 type TerminateNotificationProfile = original.TerminateNotificationProfile
 type ThrottledRequestsInput = original.ThrottledRequestsInput

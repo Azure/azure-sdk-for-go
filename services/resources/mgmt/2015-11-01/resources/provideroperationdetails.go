@@ -43,7 +43,7 @@ func NewProviderOperationDetailsClientWithBaseURI(baseURI string, subscriptionID
 // List gets a list of resource providers.
 // Parameters:
 // resourceProviderNamespace - resource identity.
-func (client ProviderOperationDetailsClient) List(ctx context.Context, resourceProviderNamespace string) (result ProviderOperationDetailListResultPage, err error) {
+func (client ProviderOperationDetailsClient) List(ctx context.Context, resourceProviderNamespace string, APIVersion string) (result ProviderOperationDetailListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderOperationDetailsClient.List")
 		defer func() {
@@ -55,7 +55,7 @@ func (client ProviderOperationDetailsClient) List(ctx context.Context, resourceP
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceProviderNamespace)
+	req, err := client.ListPreparer(ctx, resourceProviderNamespace, APIVersion)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.ProviderOperationDetailsClient", "List", nil, "Failure preparing request")
 		return
@@ -77,12 +77,11 @@ func (client ProviderOperationDetailsClient) List(ctx context.Context, resourceP
 }
 
 // ListPreparer prepares the List request.
-func (client ProviderOperationDetailsClient) ListPreparer(ctx context.Context, resourceProviderNamespace string) (*http.Request, error) {
+func (client ProviderOperationDetailsClient) ListPreparer(ctx context.Context, resourceProviderNamespace string, APIVersion string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceProviderNamespace": autorest.Encode("path", resourceProviderNamespace),
 	}
 
-	const APIVersion = "2015-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -137,7 +136,7 @@ func (client ProviderOperationDetailsClient) listNextResults(ctx context.Context
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProviderOperationDetailsClient) ListComplete(ctx context.Context, resourceProviderNamespace string) (result ProviderOperationDetailListResultIterator, err error) {
+func (client ProviderOperationDetailsClient) ListComplete(ctx context.Context, resourceProviderNamespace string, APIVersion string) (result ProviderOperationDetailListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderOperationDetailsClient.List")
 		defer func() {
@@ -148,6 +147,6 @@ func (client ProviderOperationDetailsClient) ListComplete(ctx context.Context, r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, resourceProviderNamespace)
+	result.page, err = client.List(ctx, resourceProviderNamespace, APIVersion)
 	return
 }

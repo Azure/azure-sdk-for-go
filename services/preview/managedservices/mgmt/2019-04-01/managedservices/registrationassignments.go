@@ -45,8 +45,9 @@ func NewRegistrationAssignmentsClientWithBaseURI(baseURI string) RegistrationAss
 // Parameters:
 // scope - scope of the resource.
 // registrationAssignmentID - guid of the registration assignment.
+// APIVersion - the API version to use for this operation.
 // requestBody - the parameters required to create new registration assignment.
-func (client RegistrationAssignmentsClient) CreateOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment) (result RegistrationAssignmentsCreateOrUpdateFuture, err error) {
+func (client RegistrationAssignmentsClient) CreateOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, APIVersion string, requestBody RegistrationAssignment) (result RegistrationAssignmentsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationAssignmentsClient.CreateOrUpdate")
 		defer func() {
@@ -73,7 +74,7 @@ func (client RegistrationAssignmentsClient) CreateOrUpdate(ctx context.Context, 
 		return result, validation.NewError("managedservices.RegistrationAssignmentsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, scope, registrationAssignmentID, requestBody)
+	req, err := client.CreateOrUpdatePreparer(ctx, scope, registrationAssignmentID, APIVersion, requestBody)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -89,13 +90,12 @@ func (client RegistrationAssignmentsClient) CreateOrUpdate(ctx context.Context, 
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client RegistrationAssignmentsClient) CreateOrUpdatePreparer(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment) (*http.Request, error) {
+func (client RegistrationAssignmentsClient) CreateOrUpdatePreparer(ctx context.Context, scope string, registrationAssignmentID string, APIVersion string, requestBody RegistrationAssignment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"registrationAssignmentId": autorest.Encode("path", registrationAssignmentID),
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2019-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -143,7 +143,8 @@ func (client RegistrationAssignmentsClient) CreateOrUpdateResponder(resp *http.R
 // Parameters:
 // scope - scope of the resource.
 // registrationAssignmentID - guid of the registration assignment.
-func (client RegistrationAssignmentsClient) Delete(ctx context.Context, scope string, registrationAssignmentID string) (result RegistrationAssignmentsDeleteFuture, err error) {
+// APIVersion - the API version to use for this operation.
+func (client RegistrationAssignmentsClient) Delete(ctx context.Context, scope string, registrationAssignmentID string, APIVersion string) (result RegistrationAssignmentsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationAssignmentsClient.Delete")
 		defer func() {
@@ -154,7 +155,7 @@ func (client RegistrationAssignmentsClient) Delete(ctx context.Context, scope st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, scope, registrationAssignmentID)
+	req, err := client.DeletePreparer(ctx, scope, registrationAssignmentID, APIVersion)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -170,13 +171,12 @@ func (client RegistrationAssignmentsClient) Delete(ctx context.Context, scope st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client RegistrationAssignmentsClient) DeletePreparer(ctx context.Context, scope string, registrationAssignmentID string) (*http.Request, error) {
+func (client RegistrationAssignmentsClient) DeletePreparer(ctx context.Context, scope string, registrationAssignmentID string, APIVersion string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"registrationAssignmentId": autorest.Encode("path", registrationAssignmentID),
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2019-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -218,9 +218,10 @@ func (client RegistrationAssignmentsClient) DeleteResponder(resp *http.Response)
 // Parameters:
 // scope - scope of the resource.
 // registrationAssignmentID - guid of the registration assignment.
+// APIVersion - the API version to use for this operation.
 // expandRegistrationDefinition - tells whether to return registration definition details also along with
 // registration assignment details.
-func (client RegistrationAssignmentsClient) Get(ctx context.Context, scope string, registrationAssignmentID string, expandRegistrationDefinition *bool) (result RegistrationAssignment, err error) {
+func (client RegistrationAssignmentsClient) Get(ctx context.Context, scope string, registrationAssignmentID string, APIVersion string, expandRegistrationDefinition *bool) (result RegistrationAssignment, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationAssignmentsClient.Get")
 		defer func() {
@@ -231,7 +232,7 @@ func (client RegistrationAssignmentsClient) Get(ctx context.Context, scope strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, scope, registrationAssignmentID, expandRegistrationDefinition)
+	req, err := client.GetPreparer(ctx, scope, registrationAssignmentID, APIVersion, expandRegistrationDefinition)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "Get", nil, "Failure preparing request")
 		return
@@ -253,13 +254,12 @@ func (client RegistrationAssignmentsClient) Get(ctx context.Context, scope strin
 }
 
 // GetPreparer prepares the Get request.
-func (client RegistrationAssignmentsClient) GetPreparer(ctx context.Context, scope string, registrationAssignmentID string, expandRegistrationDefinition *bool) (*http.Request, error) {
+func (client RegistrationAssignmentsClient) GetPreparer(ctx context.Context, scope string, registrationAssignmentID string, APIVersion string, expandRegistrationDefinition *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"registrationAssignmentId": autorest.Encode("path", registrationAssignmentID),
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2019-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -298,9 +298,10 @@ func (client RegistrationAssignmentsClient) GetResponder(resp *http.Response) (r
 // List gets a list of the registration assignments.
 // Parameters:
 // scope - scope of the resource.
+// APIVersion - the API version to use for this operation.
 // expandRegistrationDefinition - tells whether to return registration definition details also along with
 // registration assignment details.
-func (client RegistrationAssignmentsClient) List(ctx context.Context, scope string, expandRegistrationDefinition *bool) (result RegistrationAssignmentListPage, err error) {
+func (client RegistrationAssignmentsClient) List(ctx context.Context, scope string, APIVersion string, expandRegistrationDefinition *bool) (result RegistrationAssignmentListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationAssignmentsClient.List")
 		defer func() {
@@ -312,7 +313,7 @@ func (client RegistrationAssignmentsClient) List(ctx context.Context, scope stri
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, scope, expandRegistrationDefinition)
+	req, err := client.ListPreparer(ctx, scope, APIVersion, expandRegistrationDefinition)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "List", nil, "Failure preparing request")
 		return
@@ -334,12 +335,11 @@ func (client RegistrationAssignmentsClient) List(ctx context.Context, scope stri
 }
 
 // ListPreparer prepares the List request.
-func (client RegistrationAssignmentsClient) ListPreparer(ctx context.Context, scope string, expandRegistrationDefinition *bool) (*http.Request, error) {
+func (client RegistrationAssignmentsClient) ListPreparer(ctx context.Context, scope string, APIVersion string, expandRegistrationDefinition *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"scope": scope,
 	}
 
-	const APIVersion = "2019-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -397,7 +397,7 @@ func (client RegistrationAssignmentsClient) listNextResults(ctx context.Context,
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client RegistrationAssignmentsClient) ListComplete(ctx context.Context, scope string, expandRegistrationDefinition *bool) (result RegistrationAssignmentListIterator, err error) {
+func (client RegistrationAssignmentsClient) ListComplete(ctx context.Context, scope string, APIVersion string, expandRegistrationDefinition *bool) (result RegistrationAssignmentListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationAssignmentsClient.List")
 		defer func() {
@@ -408,6 +408,6 @@ func (client RegistrationAssignmentsClient) ListComplete(ctx context.Context, sc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, scope, expandRegistrationDefinition)
+	result.page, err = client.List(ctx, scope, APIVersion, expandRegistrationDefinition)
 	return
 }

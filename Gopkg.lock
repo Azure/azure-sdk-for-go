@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:6a638b1a468a4a8b67fc80ae6a075811a932c6aea327cc28b3ef3a29fba31f4a"
+  digest = "1:2e9f9f3381b65a6f99438e30ce398cbc13eb224187950158321ad9e560261f40"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -17,16 +17,16 @@
     "tracing",
   ]
   pruneopts = "UT"
-  revision = "3492b2aff5036c67228ab3c7dba3577c871db200"
-  version = "v13.3.0"
+  revision = "21d4b01533b1005be0d020da67a6d3f8ebdf0141"
+  version = "v13.3.1"
 
 [[projects]]
-  digest = "1:a5f0485ed2aad9b9c6a730815d1f2bc92b0acc126d7ee8e36c1a51882fc284f5"
+  digest = "1:f313598719f69ec4edbcd75b0f2ef1c8ed9e00f6ff3d7583ac3966db2d70d326"
   name = "github.com/Masterminds/semver"
   packages = ["."]
   pruneopts = "UT"
-  revision = "25911d36c978be5eb3e81847734874fd4e1dc6c7"
-  version = "v3.0.2"
+  revision = "910aa146bd66780c2815d652b92a7fc5331e533c"
+  version = "v3.0.3"
 
 [[projects]]
   digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
@@ -150,11 +150,11 @@
     "pkcs12/internal/rc2",
   ]
   pruneopts = "UT"
-  revision = "ac88ee75c92c889b97e05591e9a39b6480c538b3"
+  revision = "becbf705a91575484002d598f87d74f0002801e7"
 
 [[projects]]
   branch = "master"
-  digest = "1:10c612b4f89a6d75ac2a0e7cd33cb9474034e8914844231d76a40fe7cd799945"
+  digest = "1:81034a933b8e243f6c700951903f436029c1c1b53b0d694a9e8626cdeb835b00"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -169,10 +169,9 @@
     "internal/imports",
     "internal/module",
     "internal/semver",
-    "internal/span",
   ]
   pruneopts = "UT"
-  revision = "ecd32218bd7f33fd31c1abbfb74283690bedd093"
+  revision = "3721262b3e7c542ed1607f063180bccdb22c2d02"
 
 [[projects]]
   branch = "v1"

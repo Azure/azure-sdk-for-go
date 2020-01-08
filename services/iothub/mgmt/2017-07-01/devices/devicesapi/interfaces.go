@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result devices.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result devices.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*devices.OperationsClient)(nil)
@@ -43,14 +44,21 @@ type IotHubResourceClientAPI interface {
 	GetJob(ctx context.Context, resourceGroupName string, resourceName string, jobID string) (result devices.JobResponse, err error)
 	GetKeysForKeyName(ctx context.Context, resourceGroupName string, resourceName string, keyName string) (result devices.SharedAccessSignatureAuthorizationRule, err error)
 	GetQuotaMetrics(ctx context.Context, resourceGroupName string, resourceName string) (result devices.IotHubQuotaMetricInfoListResultPage, err error)
+	GetQuotaMetricsComplete(ctx context.Context, resourceGroupName string, resourceName string) (result devices.IotHubQuotaMetricInfoListResultIterator, err error)
 	GetStats(ctx context.Context, resourceGroupName string, resourceName string) (result devices.RegistryStatistics, err error)
 	GetValidSkus(ctx context.Context, resourceGroupName string, resourceName string) (result devices.IotHubSkuDescriptionListResultPage, err error)
+	GetValidSkusComplete(ctx context.Context, resourceGroupName string, resourceName string) (result devices.IotHubSkuDescriptionListResultIterator, err error)
 	ImportDevices(ctx context.Context, resourceGroupName string, resourceName string, importDevicesParameters devices.ImportDevicesRequest) (result devices.JobResponse, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result devices.IotHubDescriptionListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result devices.IotHubDescriptionListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result devices.IotHubDescriptionListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result devices.IotHubDescriptionListResultIterator, err error)
 	ListEventHubConsumerGroups(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string) (result devices.EventHubConsumerGroupsListResultPage, err error)
+	ListEventHubConsumerGroupsComplete(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string) (result devices.EventHubConsumerGroupsListResultIterator, err error)
 	ListJobs(ctx context.Context, resourceGroupName string, resourceName string) (result devices.JobResponseListResultPage, err error)
+	ListJobsComplete(ctx context.Context, resourceGroupName string, resourceName string) (result devices.JobResponseListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, resourceName string) (result devices.SharedAccessSignatureAuthorizationRuleListResultPage, err error)
+	ListKeysComplete(ctx context.Context, resourceGroupName string, resourceName string) (result devices.SharedAccessSignatureAuthorizationRuleListResultIterator, err error)
 }
 
 var _ IotHubResourceClientAPI = (*devices.IotHubResourceClient)(nil)

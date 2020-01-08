@@ -50,6 +50,7 @@ var _ DatabaseAccountsClientAPI = (*documentdb.DatabaseAccountsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result documentdb.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result documentdb.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*documentdb.OperationsClient)(nil)

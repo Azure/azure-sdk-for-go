@@ -7404,6 +7404,35 @@ type AzureFirewallSku struct {
 	Tier AzureFirewallSkuTier `json:"tier,omitempty"`
 }
 
+// AzureFirewallsUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AzureFirewallsUpdateTagsFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AzureFirewallsUpdateTagsFuture) Result(client AzureFirewallsClient) (af AzureFirewall, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.AzureFirewallsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.AzureFirewallsUpdateTagsFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if af.Response.Response, err = future.GetResult(sender); err == nil && af.Response.Response.StatusCode != http.StatusNoContent {
+		af, err = client.UpdateTagsResponder(af.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.AzureFirewallsUpdateTagsFuture", "Result", af.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // AzureReachabilityReport azure reachability report details.
 type AzureReachabilityReport struct {
 	autorest.Response `json:"-"`

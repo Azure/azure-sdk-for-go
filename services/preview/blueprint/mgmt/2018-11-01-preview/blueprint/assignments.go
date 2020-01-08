@@ -36,7 +36,8 @@ func NewAssignmentsClient() AssignmentsClient {
 	return NewAssignmentsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewAssignmentsClientWithBaseURI creates an instance of the AssignmentsClient client.
+// NewAssignmentsClientWithBaseURI creates an instance of the AssignmentsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAssignmentsClientWithBaseURI(baseURI string) AssignmentsClient {
 	return AssignmentsClient{NewWithBaseURI(baseURI)}
 }

@@ -35,7 +35,9 @@ func NewPublishedArtifactsClient() PublishedArtifactsClient {
 	return NewPublishedArtifactsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewPublishedArtifactsClientWithBaseURI creates an instance of the PublishedArtifactsClient client.
+// NewPublishedArtifactsClientWithBaseURI creates an instance of the PublishedArtifactsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewPublishedArtifactsClientWithBaseURI(baseURI string) PublishedArtifactsClient {
 	return PublishedArtifactsClient{NewWithBaseURI(baseURI)}
 }

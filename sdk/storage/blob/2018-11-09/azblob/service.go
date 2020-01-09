@@ -14,6 +14,7 @@ const (
 	scope = "https://storage.azure.com/.default"
 )
 
+// ServiceClient provides access to Azure Storage service resources and blob containers.
 type ServiceClient struct {
 	s azinternal.Service
 	u *url.URL
@@ -37,6 +38,10 @@ type ServiceClientOptions struct {
 	Telemetry azcore.TelemetryOptions
 }
 
+// NewServiceClient creates a new instance of the ServiceClient type.
+// endpoint - a URI referencing the blob service.
+// cred - the credential used to authenticate with the specified blob service.
+// options - optional client configuration options.  Pass nil to use the default values.
 func NewServiceClient(endpoint string, cred azcore.Credential, options *ServiceClientOptions) (*ServiceClient, error) {
 	if options == nil {
 		options = &ServiceClientOptions{}
@@ -50,6 +55,9 @@ func NewServiceClient(endpoint string, cred azcore.Credential, options *ServiceC
 	return NewServiceClientWithPipeline(endpoint, p)
 }
 
+// NewServiceClientWithPipeline creates a new instance of the ServiceClient type.
+// endpoint - a URI referencing the blob service.
+// p - the pipeline used to process HTTP requests and responses.
 func NewServiceClientWithPipeline(endpoint string, p azcore.Pipeline) (*ServiceClient, error) {
 	u, err := url.Parse(endpoint)
 	if err != nil {

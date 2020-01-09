@@ -34,7 +34,7 @@ func (cf credentialFunc) AuthenticationPolicy(options AuthenticationPolicyOption
 // TokenCredential represents a credential capable of providing an OAuth token.
 type TokenCredential interface {
 	Credential
-	// GetToken requests an access token for the specified set of scopes.
+	// GetToken requests an access token for the specified set of scopes from the identity service.
 	GetToken(ctx context.Context, options TokenRequestOptions) (*AccessToken, error)
 }
 

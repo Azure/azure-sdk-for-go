@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -34,18 +35,13 @@ func init() {
 	defaultTokenCredentialOpts = &TokenCredentialOptions{AuthorityHost: defaultAuthorityHostURL}
 }
 
-type internalAccessToken struct {
-	Token        string      `json:"access_token"`
-	RefreshToken string      `json:"refresh_token"`
-	ExpiresIn    json.Number `json:"expires_in"`
-	ExpiresOn    string      `json:"expires_on"`
-	NotBefore    string      `json:"not_before"`
-	Resource     string      `json:"resource"`
-	TokenType    string      `json:"token_type"`
+type tokenResponse struct {
+	token        *azcore.AccessToken
+	refreshToken string
 }
 
-// AuthenticationResponseError is a struct used to marshal responses when authentication has failed
-type AuthenticationResponseError struct {
+// AADAuthenticationFailedError is a struct used to marshal responses when authentication has failed
+type AADAuthenticationFailedError struct { // TODO rename
 	Message       string `json:"error"`
 	Description   string `json:"error_description"`
 	Timestamp     string `json:"timestamp"`
@@ -55,7 +51,7 @@ type AuthenticationResponseError struct {
 	Response      *azcore.Response
 }
 
-func (e *AuthenticationResponseError) Error() string {
+func (e *AADAuthenticationFailedError) Error() string {
 	msg := e.Message
 	if len(e.Description) > 0 {
 		msg += " " + e.Description
@@ -66,7 +62,7 @@ func (e *AuthenticationResponseError) Error() string {
 // AuthenticationFailedError is a struct used to marshal responses when authentication has failed
 type AuthenticationFailedError struct {
 	inner error
-	msg   string
+	msg   string // TODO check if this is necessary
 }
 
 // Unwrap method on AuthenticationFailedError provides access to the inner error
@@ -83,8 +79,8 @@ func (e *AuthenticationFailedError) Error() string {
 	return e.msg
 }
 
-func newAuthenticationResponseError(resp *azcore.Response) error {
-	authFailed := &AuthenticationResponseError{}
+func newAADAuthenticationFailedError(resp *azcore.Response) error {
+	authFailed := &AADAuthenticationFailedError{}
 	err := json.Unmarshal(resp.Payload, authFailed)
 	if err != nil {
 		authFailed.Message = resp.Status
@@ -104,26 +100,9 @@ func (e *CredentialUnavailableError) Error() string {
 	return e.CredentialType + ": " + e.Message
 }
 
-// ChainedCredentialError an error specific to ChainedTokenCredential and DefaultTokenCredential
-// this error type will return a list of Credential Unavailable errors
-type ChainedCredentialError struct {
-	ErrorList []*CredentialUnavailableError
-}
-
 // IsNotRetriable allows retry policy to stop execution in case it receives a CredentialUnavailableError
 func (e *CredentialUnavailableError) IsNotRetriable() bool {
 	return true
-}
-
-func (e *ChainedCredentialError) Error() string {
-	if len(e.ErrorList) > 0 {
-		msg := ""
-		for _, err := range e.ErrorList {
-			msg += err.Error() + "\n"
-		}
-		return msg
-	}
-	return "Chained Token Credential: An unexpected error has occurred"
 }
 
 // TokenCredentialOptions to configure requests made to Azure Identity Services
@@ -213,31 +192,10 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 		azcore.NewRequestLogPolicy(o.LogOptions))
 }
 
-/*********************************************************************
-func newDeviceCodeInfo(dc DeviceCodeResult) DeviceCodeInfo {
-	return DeviceCodeInfo{UserCode: dc.UserCode, DeviceCode: dc.DeviceCode, VerificationUrl: dc.VerificationUri,
-		ExpiresOn: dc.ExpiresOn, Internal: dc.Interval, Message: dc.Message, ClientId: dc.ClientId, Scopes: dc.Scopes}
-}
-
-// Details of the device code to present to a user to allow them to authenticate through the device code authentication flow.
-type DeviceCodeInfo struct {
-	// JMR: Make all these private and add public getter methods?
-	UserCode        string        // User code returned by the service
-	DeviceCode      string        // Device code returned by the service
-	VerificationUrl string        // Verification URL where the user must navigate to authenticate using the device code and credentials. JMR: URL?
-	ExpiresOn       time.Duration // Time when the device code will expire.
-	Interval        int64         // Polling interval time to check for completion of authentication flow.
-	Message         string        // User friendly text response that can be used for display purpose.
-	ClientId        string        // Identifier of the client requesting device code.
-	Scopes          []string      // List of the scopes that would be held by token. JMR: Should be readonly
-}
-**************************************************************/
-
-/*******************************************************
 const defaultSuffix = "/.default"
 
 func scopesToResource(scope string) string {
-	if strings.EndsWith(scope, defaultSuffix) {
+	if strings.HasSuffix(scope, defaultSuffix) {
 		return scope[:len(scope)-len(defaultSuffix)]
 	}
 	return scope
@@ -247,4 +205,3 @@ func resourceToScope(resource string) string {
 	resource += defaultSuffix
 	return resource
 }
-**********************************************************/

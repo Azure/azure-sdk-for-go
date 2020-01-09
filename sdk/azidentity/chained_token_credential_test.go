@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -25,7 +26,7 @@ func TestChainedTokenCredential_InstantiateSuccess(t *testing.T) {
 	}
 	cred, err := NewChainedTokenCredential(secCred, envCred)
 	if err != nil {
-		t.Fatalf("Unable to instantiate ChainedTokenCredential")
+		t.Fatalf("unexpected error: %v", err)
 	}
 	if cred != nil {
 		if len(cred.sources) != 2 {
@@ -33,30 +34,6 @@ func TestChainedTokenCredential_InstantiateSuccess(t *testing.T) {
 		}
 	}
 
-}
-func TestChainedTokenCredential_NilCredentialInChain(t *testing.T) {
-	var unavailableError *CredentialUnavailableError
-	cred := NewClientSecretCredential(tenantID, clientID, secret, nil)
-
-	_, err := NewChainedTokenCredential(cred, nil)
-	if err != nil {
-		if !errors.As(err, &unavailableError) {
-			t.Fatalf("Actual error: %v, Expected error: %v, wrong type %T", err, unavailableError, err)
-		}
-		if len(err.Error()) == 0 {
-			t.Fatalf("Did not create an appropriate error message")
-		}
-	}
-}
-
-func TestChainedTokenCredential_NilChain(t *testing.T) {
-	var unavailableError *CredentialUnavailableError
-	_, err := NewChainedTokenCredential()
-	if err != nil {
-		if !errors.As(err, &unavailableError) {
-			t.Fatalf("Actual error: %v, Expected error: %v, wrong type %T", err, unavailableError, err)
-		}
-	}
 }
 
 func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
@@ -75,7 +52,7 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	}
 	cred, err := NewChainedTokenCredential(secCred, envCred)
 	if err != nil {
-		t.Fatalf("Failed to create ChainedTokenCredential: %v", err)
+		t.Fatalf("unexpected error: %v", err)
 	}
 	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
@@ -98,18 +75,48 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	msiCred := NewManagedIdentityCredential("", nil)
 	cred, err := NewChainedTokenCredential(msiCred, secCred)
 	if err != nil {
-		t.Fatalf("Failed to create ChainedTokenCredential: %v", err)
+		t.Fatalf("unexpected error: %v", err)
 	}
 	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-	var chainedError *AuthenticationFailedError
-	if !errors.As(err, &chainedError) {
+	var authErr *AuthenticationFailedError
+	if !errors.As(err, &authErr) {
 		t.Fatalf("Expected Error Type: AuthenticationFailedError, ReceivedErrorType: %T", err)
 	}
 	if len(err.Error()) == 0 {
 		t.Fatalf("Did not create an appropriate error message")
+	}
+}
+
+func TestChainedTokenCredential_GetTokenFailCredentialUnavailable(t *testing.T) {
+	err := os.Setenv("MSI_ENDPOINT", "")
+	if err != nil {
+		t.Fatalf("Failed to reset environment variable MSI_ENDPOINT")
+	}
+	msiCred := NewManagedIdentityCredential("", nil)
+	cred, err := NewChainedTokenCredential(msiCred)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
+	}
+	if msiCred.client.imdsAvailable(context.Background()) { // Adding a check for IMDS available to avoid errors if running in a managed identity environment
+		var authErr *AuthenticationFailedError
+		if !errors.As(err, &authErr) { // if running in a managed identity environment then the error will be an authentication failed error unless running in a managed identity environment that is allowed to query instance metadata
+			t.Fatalf("Expected Error Type: AuthenticationFailedError, ReceivedErrorType: %T", err)
+		}
+	} else {
+		var unavailableErr *CredentialUnavailableError
+		if !errors.As(err, &unavailableErr) { // if running outside of a managed identity environment then the ChainedTokenCredential should return a CredentialUnavailableError since the only credential provided is unavailable for authentication
+			t.Fatalf("Expected Error Type: CredentialUnavailableError, ReceivedErrorType: %T", err)
+		}
+	}
+	if len(err.Error()) == 0 {
+		t.Fatalf("Failed to form a message for the error")
 	}
 }
 
@@ -126,7 +133,7 @@ func TestBearerPolicy_ChainedTokenCredential(t *testing.T) {
 	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	chainedCred, err := NewChainedTokenCredential(cred)
 	if err != nil {
-		t.Fatalf("Received an error when attempting to instantiate ChainedTokenCredential: %v", err)
+		t.Fatalf("unexpected error: %v", err)
 	}
 	pipeline := azcore.NewPipeline(
 		srv,

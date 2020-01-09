@@ -25,3 +25,10 @@ func Test_NonNilTokenCredentialOptsNilAuthorityHost(t *testing.T) {
 		t.Fatalf("Did not set default authority host")
 	}
 }
+
+func TestSuffix(t *testing.T) {
+	str := scopesToResource("https://storage.azure.com/.default")
+	if str != "https://storage.azure.com" {
+		t.Fatalf("Could not convert scope string to a proper resource string")
+	}
+}

@@ -151,6 +151,7 @@ type ContainerProperties struct {
 	HasLegalHold          *bool            `xml:"HasLegalHold"`
 }
 
+// ListContainersOptions - Options when listing containers.
 type ListContainersOptions struct {
 	Prefix     *string
 	Marker     *string

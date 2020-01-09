@@ -37,7 +37,6 @@ jobs:
     - script: |
         set -e
         go version
-        go get -u golang.org/x/lint/golint
       workingDirectory: '$(sdkPath)'
       displayName: 'Install Dependencies'
     - script: go vet $(go list ./sdk/...)
@@ -57,11 +56,5 @@ jobs:
     - script: gofmt -s -l -w $(find ./sdk -name '*.go' -print) >&2
       workingDirectory: '$(sdkPath)'
       displayName: 'Format Check'
-      failOnStderr: true
-      condition: succeededOrFailed()
-    - script: |
-        golint ./sdk/... >&2
-      workingDirectory: '$(sdkPath)'
-      displayName: 'Linter Check'
       failOnStderr: true
       condition: succeededOrFailed()

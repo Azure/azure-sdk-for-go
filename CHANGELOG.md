@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## `v38.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| frontdoor | 2019-10-01<br/>2019-11-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| storage | 2019-06-01 |
+
 ## `v38.0.0`
 
 ### New Packages

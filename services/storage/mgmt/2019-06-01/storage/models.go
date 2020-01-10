@@ -253,6 +253,21 @@ func PossibleKeySourceValues() []KeySource {
 	return []KeySource{MicrosoftKeyvault, MicrosoftStorage}
 }
 
+// KeyType enumerates the values for key type.
+type KeyType string
+
+const (
+	// KeyTypeAccount ...
+	KeyTypeAccount KeyType = "Account"
+	// KeyTypeService ...
+	KeyTypeService KeyType = "Service"
+)
+
+// PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{KeyTypeAccount, KeyTypeService}
+}
+
 // Kind enumerates the values for kind.
 type Kind string
 
@@ -1714,6 +1729,8 @@ type EncryptionService struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// LastEnabledTime - READ-ONLY; Gets a rough estimate of the date/time when the encryption was last enabled by the user. Only returned when encryption is enabled. There might be some unencrypted blobs which were written after this time, as it is just a rough estimate.
 	LastEnabledTime *date.Time `json:"lastEnabledTime,omitempty"`
+	// KeyType - Encryption key type to be used for the encryption service. 'Account' key type implies that an account-scoped encryption key will be used. 'Service' key type implies that a default service key is used. Possible values include: 'KeyTypeService', 'KeyTypeAccount'
+	KeyType KeyType `json:"keyType,omitempty"`
 }
 
 // EncryptionServices a list of services that support encryption.
@@ -1722,9 +1739,9 @@ type EncryptionServices struct {
 	Blob *EncryptionService `json:"blob,omitempty"`
 	// File - The encryption function of the file storage service.
 	File *EncryptionService `json:"file,omitempty"`
-	// Table - READ-ONLY; The encryption function of the table storage service.
+	// Table - The encryption function of the table storage service.
 	Table *EncryptionService `json:"table,omitempty"`
-	// Queue - READ-ONLY; The encryption function of the queue storage service.
+	// Queue - The encryption function of the queue storage service.
 	Queue *EncryptionService `json:"queue,omitempty"`
 }
 

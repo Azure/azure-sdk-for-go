@@ -152,7 +152,9 @@ func (c *aadIdentityClient) createAccessToken(res *azcore.Response) (*azcore.Acc
 }
 
 func (c *aadIdentityClient) createRefreshAccessToken(res *azcore.Response) (*tokenResponse, error) {
-	value := struct { // TODO add link to device code page
+	// To know more about refreshing access tokens please see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v1-protocols-oauth-code#refreshing-the-access-tokens
+	// DeviceCodeCredential uses refresh token, please see the authentication flow here: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code
+	value := struct {
 		Token        string      `json:"access_token"`
 		RefreshToken string      `json:"refresh_token"`
 		ExpiresIn    json.Number `json:"expires_in"`
@@ -169,7 +171,6 @@ func (c *aadIdentityClient) createRefreshAccessToken(res *azcore.Response) (*tok
 		Token:     value.Token,
 		ExpiresOn: time.Now().Add(time.Second * time.Duration(t)).UTC(),
 	}
-	// NOTE: look at go-autorest
 	return &tokenResponse{token: accessToken, refreshToken: value.RefreshToken}, nil
 }
 
@@ -183,7 +184,10 @@ func (c *aadIdentityClient) createRefreshTokenRequest(tenantID, clientID, client
 	data := url.Values{}
 	data.Set(qpGrantType, "refresh_token")
 	data.Set(qpClientID, clientID)
-	data.Set(qpClientSecret, clientSecret)
+	// clientSecret is only required for web apps. To know more about refreshing access tokens please see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v1-protocols-oauth-code#refreshing-the-access-tokens
+	if len(clientSecret) != 0 {
+		data.Set(qpClientSecret, clientSecret)
+	}
 	data.Set(qpRefreshToken, refreshToken)
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()

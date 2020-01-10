@@ -23,7 +23,7 @@ type DeviceCodeCredential struct {
 	tenantID     string       // Gets the Azure Active Directory tenant (directory) Id of the service principal
 	clientID     string       // Gets the client (application) ID of the service principal
 	callback     func(string) // Sends the user a message with a verification URL and device code to sign in to the login server
-	refreshToken string       // Gets the refresh token sent from the service and will be used to retreive new access tokens after the initial request for a token
+	refreshToken string       // Gets the refresh token sent from the service and will be used to retreive new access tokens after the initial request for a token. Thread safety for updates is handled in the AuthenticationPolicy since only one goroutine will be updating at a time
 }
 
 // NewDeviceCodeCredential constructs a new DeviceCodeCredential with the details needed to authenticate against Azure Active Directory with a device code.

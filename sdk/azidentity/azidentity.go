@@ -41,7 +41,7 @@ type tokenResponse struct {
 }
 
 // AADAuthenticationFailedError is a struct used to marshal responses when authentication has failed
-type AADAuthenticationFailedError struct { // TODO rename
+type AADAuthenticationFailedError struct {
 	Message       string `json:"error"`
 	Description   string `json:"error_description"`
 	Timestamp     string `json:"timestamp"`
@@ -62,7 +62,7 @@ func (e *AADAuthenticationFailedError) Error() string {
 // AuthenticationFailedError is a struct used to marshal responses when authentication has failed
 type AuthenticationFailedError struct {
 	inner error
-	msg   string // TODO check if this is necessary
+	msg   string
 }
 
 // Unwrap method on AuthenticationFailedError provides access to the inner error

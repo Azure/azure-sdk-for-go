@@ -48,10 +48,6 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 			return token, nil // if we did not receive an error then we return the token
 		}
 	}
-	// this condition should never be true
-	if token == nil && len(errList) == 0 {
-		return nil, &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: "Did not receive a token, make sure the credential is correctly configured and the length of sources is greater than 0"}
-	}
 	return nil, &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: createChainedErrorMessage(errList)} // if we reach this point it means that all of the credentials in the chain returned CredentialUnavailableErrors
 }
 

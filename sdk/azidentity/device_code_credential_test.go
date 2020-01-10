@@ -98,7 +98,7 @@ func TestDeviceCodeCredential_CreateAuthRequestEmptyTenant(t *testing.T) {
 	if req.Request.URL.Scheme != "https" {
 		t.Fatalf("Wrong request scheme")
 	}
-	if req.Request.URL.Path != "/organizations/oauth2/v2.0/token/" {
+	if req.Request.URL.Path != "/organizations/oauth2/v2.0/token" {
 		t.Fatalf("Did not set the right path when passing in an empty tenant ID")
 	}
 }

@@ -16,16 +16,6 @@ const (
 	deviceCodeGrantType = "urn:ietf:params:oauth:grant-type:device_code"
 )
 
-// DeviceCodeResult is used to store device code related information to help the user login and allow the device code flow to continue
-// to request a token to authenticate a user
-type DeviceCodeResult struct {
-	UserCode        string `json:"user_code"`        // User code returned by the service
-	DeviceCode      string `json:"device_code"`      // Device code returned by the service
-	VerificationURL string `json:"verification_uri"` // Verification URL where the user must navigate to authenticate using the device code and credentials.
-	Interval        int64  `json:"interval"`         // Polling interval time to check for completion of authentication flow.
-	Message         string `json:"message"`          // User friendly text response that can be used for display purpose.
-}
-
 // DeviceCodeCredential authenticates a user using the device code flow, and provides access tokens for that user account.
 // For more information on the device code authentication flow see https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code
 type DeviceCodeCredential struct {
@@ -48,7 +38,7 @@ func NewDeviceCodeCredential(tenantID string, clientID string, callback func(str
 // GetToken obtains a token from the Azure Active Directory service, following the device code authentication
 // flow. This function first requests a device code and requests that the user login to continue authenticating.
 // This function will keep polling the service for a token meanwhile the user logs.
-// scopes: The list of scopes for which the token will have access.
+// scopes: The list of scopes for which the token will have access. The "offline_access" scope is checked for and automatically added in case it isn't present to allow for silent token refresh.
 // ctx: controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
@@ -101,4 +91,14 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 // AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.
 func (c *DeviceCodeCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
+}
+
+// deviceCodeResult is used to store device code related information to help the user login and allow the device code flow to continue
+// to request a token to authenticate a user
+type deviceCodeResult struct {
+	UserCode        string `json:"user_code"`        // User code returned by the service
+	DeviceCode      string `json:"device_code"`      // Device code returned by the service
+	VerificationURL string `json:"verification_uri"` // Verification URL where the user must navigate to authenticate using the device code and credentials.
+	Interval        int64  `json:"interval"`         // Polling interval time to check for completion of authentication flow.
+	Message         string `json:"message"`          // User friendly text response that can be used for display purpose.
 }

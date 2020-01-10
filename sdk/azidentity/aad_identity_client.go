@@ -283,8 +283,8 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, c
 	return msg, nil
 }
 
-func createDeviceCodeResult(res *azcore.Response) (*DeviceCodeResult, error) {
-	value := &DeviceCodeResult{}
+func createDeviceCodeResult(res *azcore.Response) (*deviceCodeResult, error) {
+	value := &deviceCodeResult{}
 	if err := json.Unmarshal(res.Payload, &value); err != nil {
 		return nil, fmt.Errorf("DeviceCodeResult: %w", err)
 	}
@@ -342,7 +342,7 @@ func (c *aadIdentityClient) createDeviceCodeAuthRequest(tenantID string, clientI
 	return msg, nil
 }
 
-func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, clientID string, scopes []string) (*DeviceCodeResult, error) {
+func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, clientID string, scopes []string) (*deviceCodeResult, error) {
 	msg, err := c.createDeviceCodeNumberRequest(tenantID, clientID, scopes)
 	if err != nil {
 		return nil, err

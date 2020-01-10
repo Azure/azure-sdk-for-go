@@ -21,21 +21,13 @@ jobs:
       vmImage: $(vm.image)
 
     variables:
-      GOPATH: '$(system.defaultWorkingDirectory)/work'
-      sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
+      sdkPath: '$(system.defaultWorkingDirectory)'
 
     steps:
     - script: |
-        set -e
-        mkdir -p '$(GOPATH)/bin'
-        mkdir -p '$(sdkPath)'
-        shopt -s dotglob extglob
-        mv !(work) '$(sdkPath)'
         echo '##vso[task.prependpath]$(GOROOT)/bin'
-        echo '##vso[task.prependpath]$(GOPATH)/bin'
       displayName: 'Create Go Workspace'
     - script: |
-        set -e
         go version
       workingDirectory: '$(sdkPath)'
       displayName: 'Install Dependencies'

@@ -38,11 +38,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, clientCert
 // ctx: controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	tr, err := c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.clientCertificate, opts.Scopes)
-	if err != nil {
-		return nil, err
-	}
-	return tr.token, err
+	return c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.clientCertificate, opts.Scopes)
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.

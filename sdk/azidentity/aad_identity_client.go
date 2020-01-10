@@ -76,7 +76,7 @@ func (c *aadIdentityClient) refreshAccessToken(ctx context.Context, tenantID str
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
-		return c.createAccessToken(resp)
+		return c.createRefreshAccessToken(resp)
 	}
 
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
@@ -89,7 +89,7 @@ func (c *aadIdentityClient) refreshAccessToken(ctx context.Context, tenantID str
 // clientID: The client (application) ID of the service principal
 // clientSecret: A client secret that was generated for the App Registration used to authenticate the client
 // scopes: The scopes required for the token
-func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, clientID string, clientSecret string, scopes []string) (*tokenResponse, error) {
+func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.AccessToken, error) {
 	msg, err := c.createClientSecretAuthRequest(tenantID, clientID, clientSecret, scopes)
 	if err != nil {
 		return nil, err
@@ -114,7 +114,7 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 // clientID: The client (application) ID of the service principal
 // clientCertificatePath: The path to the client certificate PEM file
 // scopes: The scopes required for the token
-func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantID string, clientID string, clientCertificatePath string, scopes []string) (*tokenResponse, error) {
+func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantID string, clientID string, clientCertificatePath string, scopes []string) (*azcore.AccessToken, error) {
 	msg, err := c.createClientCertificateAuthRequest(tenantID, clientID, clientCertificatePath, scopes)
 	if err != nil {
 		return nil, err
@@ -132,14 +132,12 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
 }
 
-func (c *aadIdentityClient) createAccessToken(res *azcore.Response) (*tokenResponse, error) {
-	value := struct {
-		Token        string      `json:"access_token"`
-		RefreshToken string      `json:"refresh_token"`
-		ExpiresIn    json.Number `json:"expires_in"`
-		ExpiresOn    string      `json:"expires_on"`
+func (c *aadIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
+	value := struct { // TODO comment
+		Token     string      `json:"access_token"`
+		ExpiresIn json.Number `json:"expires_in"`
+		ExpiresOn string      `json:"expires_on"`
 	}{}
-	accessToken := &azcore.AccessToken{}
 	if err := json.Unmarshal(res.Payload, &value); err != nil {
 		return nil, fmt.Errorf("internal AccessToken: %w", err)
 	}
@@ -147,9 +145,31 @@ func (c *aadIdentityClient) createAccessToken(res *azcore.Response) (*tokenRespo
 	if err != nil {
 		return nil, err
 	}
+	return &azcore.AccessToken{
+		Token:     value.Token,
+		ExpiresOn: time.Now().Add(time.Second * time.Duration(t)).UTC(),
+	}, nil
+}
+
+func (c *aadIdentityClient) createRefreshAccessToken(res *azcore.Response) (*tokenResponse, error) {
+	value := struct { // TODO add link to device code page
+		Token        string      `json:"access_token"`
+		RefreshToken string      `json:"refresh_token"`
+		ExpiresIn    json.Number `json:"expires_in"`
+		ExpiresOn    string      `json:"expires_on"`
+	}{}
+	if err := json.Unmarshal(res.Payload, &value); err != nil {
+		return nil, fmt.Errorf("internal AccessToken: %w", err)
+	}
+	t, err := value.ExpiresIn.Int64()
+	if err != nil {
+		return nil, err
+	}
+	accessToken := &azcore.AccessToken{
+		Token:     value.Token,
+		ExpiresOn: time.Now().Add(time.Second * time.Duration(t)).UTC(),
+	}
 	// NOTE: look at go-autorest
-	accessToken.Token = value.Token
-	accessToken.ExpiresOn = time.Now().Add(time.Second * time.Duration(t)).UTC()
 	return &tokenResponse{token: accessToken, refreshToken: value.RefreshToken}, nil
 }
 
@@ -240,7 +260,7 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, 
 // username: User's account username
 // password: User's account password
 // scopes: The scopes required for the token
-func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, tenantID string, clientID string, username string, password string, scopes []string) (*tokenResponse, error) {
+func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, tenantID string, clientID string, username string, password string, scopes []string) (*azcore.AccessToken, error) {
 	msg, err := c.createUsernamePasswordAuthRequest(tenantID, clientID, username, password, scopes)
 	if err != nil {
 		return nil, err
@@ -310,7 +330,7 @@ func (c *aadIdentityClient) authenticateDeviceCode(ctx context.Context, tenantID
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
-		return c.createAccessToken(resp)
+		return c.createRefreshAccessToken(resp)
 	}
 
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}

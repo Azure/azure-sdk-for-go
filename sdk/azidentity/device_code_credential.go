@@ -44,22 +44,22 @@ func NewDeviceCodeCredential(tenantID string, clientID string, callback func(str
 func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if scopes := strings.Join(opts.Scopes, " "); !strings.Contains(scopes, "offline_access") { // offline_access scope is set for device code credential so that a refresh token will be returned so that future token requests can be carried out sliently
 		opts.Scopes = append(opts.Scopes, "offline_access")
-	}
+	} // TODO look up string method? or add a helper to loop through slice
 	if len(c.refreshToken) != 0 {
 		tk, err := c.client.refreshAccessToken(ctx, c.tenantID, c.clientID, "", c.refreshToken, opts.Scopes)
-		if tk == nil { // this would only happen if there was an unmarshal error or a failure to parse ExpiresOn
+		if err != nil {
 			return nil, err
 		}
 		// assign new refresh token to the credential for future use
 		c.refreshToken = tk.refreshToken
 		// passing the access token and/or error back up
-		return tk.token, err
+		return tk.token, nil
 	}
 	// if there is no refreshToken, then begin the Device Code flow from the beginning
 	// make initial request to the device code endpoint for a device code and instructions for authentication
 	dc, err := c.client.requestNewDeviceCode(ctx, c.tenantID, c.clientID, opts.Scopes)
 	if err != nil {
-		return nil, err
+		return nil, err // TODO check what error type to return here
 	}
 	// send authentication flow instructions back to the user to log in and authorize the device
 	c.callback(dc.Message)
@@ -72,16 +72,11 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 			return tk.token, err
 		}
 		// if there is an error, check for an AADAuthenticationFailedError in order to check the status for token retrieval
-		var authRespErr *AADAuthenticationFailedError
 		// if the error is not an AADAuthenticationFailedError, then fail here since something unexpected occurred
-		if !errors.As(err, &authRespErr) {
-			return nil, err
-		}
-		switch authRespErr.Message {
-		// wait for the interval specified from the initial device code endpoint and then poll for the token again
-		case "authorization_pending":
+		if authRespErr := (*AADAuthenticationFailedError)(nil); errors.As(err, &authRespErr) && authRespErr.Message == "authorization_pending" {
+			// wait for the interval specified from the initial device code endpoint and then poll for the token again
 			time.Sleep(time.Duration(dc.Interval) * time.Second)
-		default:
+		} else {
 			// any other error should be returned
 			return nil, err
 		}

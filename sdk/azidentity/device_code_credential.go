@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -36,7 +37,7 @@ type DeviceCodeCredential struct {
 }
 
 // NewDeviceCodeCredential constructs a new DeviceCodeCredential with the details needed to authenticate against Azure Active Directory with a device code.
-// tenantID: The Azure Active Directory tenant (directory) Id of the service principal.
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal. If none is set then the default value ("organizations") will be used in place of the tenantID.
 // clientID: The client (application) ID of the service principal.
 // callback: The callback function used to send the login message back to the user
 // options: allow to configure the management of the requests sent to the Azure Active Directory service.
@@ -47,10 +48,13 @@ func NewDeviceCodeCredential(tenantID string, clientID string, callback func(str
 // GetToken obtains a token from the Azure Active Directory service, following the device code authentication
 // flow. This function first requests a device code and requests that the user login to continue authenticating.
 // This function will keep polling the service for a token meanwhile the user logs.
-// - scopes: The list of scopes for which the token will have access.
-// - ctx: controlling the request lifetime.
+// scopes: The list of scopes for which the token will have access.
+// ctx: controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+	if scopes := strings.Join(opts.Scopes, " "); !strings.Contains(scopes, "offline_access") { // offline_access scope is set for device code credential so that a refresh token will be returned so that future token requests can be carried out sliently
+		opts.Scopes = append(opts.Scopes, "offline_access")
+	}
 	if len(c.refreshToken) != 0 {
 		tk, err := c.client.refreshAccessToken(ctx, c.tenantID, c.clientID, "", c.refreshToken, opts.Scopes)
 		if tk == nil { // this would only happen if there was an unmarshal error or a failure to parse ExpiresOn

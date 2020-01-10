@@ -6,7 +6,6 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -42,9 +41,14 @@ func NewDeviceCodeCredential(tenantID string, clientID string, callback func(str
 // ctx: controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	if scopes := strings.Join(opts.Scopes, " "); !strings.Contains(scopes, "offline_access") { // offline_access scope is set for device code credential so that a refresh token will be returned so that future token requests can be carried out sliently
-		opts.Scopes = append(opts.Scopes, "offline_access")
-	} // TODO look up string method? or add a helper to loop through slice
+	for i, scope := range opts.Scopes {
+		if scope == "offline_access" { // if we find that the opts.Scopes slice contains "offline_access" then we don't need to do anything and exit
+			break
+		}
+		if i == len(opts.Scopes)-1 && scope != "offline_access" { // if we haven't found "offline_access" when reaching the last element in the slice then we append it
+			opts.Scopes = append(opts.Scopes, "offline_access")
+		}
+	}
 	if len(c.refreshToken) != 0 {
 		tk, err := c.client.refreshAccessToken(ctx, c.tenantID, c.clientID, "", c.refreshToken, opts.Scopes)
 		if err != nil {

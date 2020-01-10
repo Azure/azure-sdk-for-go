@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -131,6 +131,13 @@ type KeySource = original.KeySource
 const (
 	MicrosoftKeyvault KeySource = original.MicrosoftKeyvault
 	MicrosoftStorage  KeySource = original.MicrosoftStorage
+)
+
+type KeyType = original.KeyType
+
+const (
+	KeyTypeAccount KeyType = original.KeyTypeAccount
+	KeyTypeService KeyType = original.KeyTypeService
 )
 
 type Kind = original.Kind
@@ -565,6 +572,9 @@ func PossibleKeyPermissionValues() []KeyPermission {
 }
 func PossibleKeySourceValues() []KeySource {
 	return original.PossibleKeySourceValues()
+}
+func PossibleKeyTypeValues() []KeyType {
+	return original.PossibleKeyTypeValues()
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()

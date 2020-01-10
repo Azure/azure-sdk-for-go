@@ -76,6 +76,9 @@ func (e *AuthenticationFailedError) IsNotRetriable() bool {
 }
 
 func (e *AuthenticationFailedError) Error() string {
+	if len(e.msg) == 0 {
+		e.msg = e.inner.Error()
+	}
 	return e.msg
 }
 

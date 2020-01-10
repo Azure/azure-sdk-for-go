@@ -36,7 +36,8 @@ func NewStorageInsightsClient(subscriptionID string, purgeID string) StorageInsi
 	return NewStorageInsightsClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
 }
 
-// NewStorageInsightsClientWithBaseURI creates an instance of the StorageInsightsClient client.
+// NewStorageInsightsClientWithBaseURI creates an instance of the StorageInsightsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewStorageInsightsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) StorageInsightsClient {
 	return StorageInsightsClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
 }

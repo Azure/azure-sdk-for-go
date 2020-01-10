@@ -74,11 +74,6 @@ func (c *aadIdentityClient) refreshAccessToken(ctx context.Context, tenantID str
 		return nil, err
 	}
 
-	// This should never happen under normal conditions
-	if resp == nil {
-		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
-	}
-
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
@@ -104,11 +99,6 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 		return nil, err
 	}
 
-	// This should never happen under normal conditions
-	if resp == nil {
-		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
-	}
-
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
@@ -132,11 +122,6 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 	resp, err := c.pipeline.Do(ctx, msg)
 	if err != nil {
 		return nil, err
-	}
-
-	// This should never happen under normal conditions
-	if resp == nil {
-		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
@@ -264,11 +249,6 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 		return nil, err
 	}
 
-	// This should never happen under normal conditions
-	if resp == nil {
-		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
-	}
-
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
@@ -326,11 +306,6 @@ func (c *aadIdentityClient) authenticateDeviceCode(ctx context.Context, tenantID
 		return nil, err
 	}
 
-	// This should never happen under normal conditions
-	if resp == nil {
-		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
-	}
-
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
@@ -377,10 +352,7 @@ func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, 
 	if err != nil {
 		return nil, err
 	}
-	// This should never happen under normal conditions
-	if resp == nil {
-		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
-	}
+
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return createDeviceCodeResult(resp)
 	}

@@ -128,19 +128,29 @@ type TokenCredentialOptions struct {
 }
 
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
-func (c *TokenCredentialOptions) setDefaultValues() *TokenCredentialOptions {
+// NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
+func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, error) {
 	if c == nil {
-		c = defaultTokenCredentialOpts
+		defaultAuthorityHostURL, err := url.Parse(defaultAuthorityHost)
+		if err != nil {
+			return nil, err
+		}
+		c = &TokenCredentialOptions{AuthorityHost: defaultAuthorityHostURL}
 	}
 
 	if c.AuthorityHost == nil {
-		c.AuthorityHost = defaultTokenCredentialOpts.AuthorityHost
+		defaultAuthorityHostURL, err := url.Parse(defaultAuthorityHost)
+		if err != nil {
+			return nil, err
+		}
+		c.AuthorityHost = defaultAuthorityHostURL
 	}
+
 	if len(c.AuthorityHost.Path) == 0 || c.AuthorityHost.Path[len(c.AuthorityHost.Path)-1:] != "/" {
 		c.AuthorityHost.Path = c.AuthorityHost.Path + "/"
 	}
 
-	return c
+	return c, nil
 }
 
 // NewDefaultPipeline creates a Pipeline using the specified pipeline options

@@ -201,7 +201,6 @@ func (c *aadIdentityClient) createRefreshTokenRequest(tenantID, clientID, client
 }
 
 func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.Request, error) {
-	c.options.AuthorityHost.Path = path.Join(c.options.AuthorityHost.Path, tenantID+tokenEndpoint)
 	data := url.Values{}
 	data.Set(qpGrantType, "client_credentials")
 	data.Set(qpClientID, clientID)
@@ -220,7 +219,6 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clien
 }
 
 func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, clientID string, clientCertificate string, scopes []string) (*azcore.Request, error) {
-	c.options.AuthorityHost.Path = path.Join(c.options.AuthorityHost.Path, tenantID+tokenEndpoint)
 	clientAssertion, err := createClientAssertionJWT(clientID, c.options.AuthorityHost.String(), clientCertificate)
 	if err != nil {
 		return nil, err
@@ -271,7 +269,6 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 }
 
 func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, clientID string, username string, password string, scopes []string) (*azcore.Request, error) {
-	c.options.AuthorityHost.Path = path.Join(c.options.AuthorityHost.Path, tenantID+tokenEndpoint)
 	data := url.Values{}
 	data.Set(qpResponseType, "token")
 	data.Set(qpGrantType, "password")

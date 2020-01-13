@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"path"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -29,6 +30,7 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 	if err != nil {
 		return nil, err
 	}
+	c.options.AuthorityHost.Path = path.Join(c.options.AuthorityHost.Path, tenantID+tokenEndpoint)
 	return &ClientSecretCredential{tenantID: tenantID, clientID: clientID, clientSecret: clientSecret, client: c}, nil
 }
 

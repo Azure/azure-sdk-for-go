@@ -36,7 +36,8 @@ func NewAdminKeysClient(subscriptionID string) AdminKeysClient {
 	return NewAdminKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAdminKeysClientWithBaseURI creates an instance of the AdminKeysClient client.
+// NewAdminKeysClientWithBaseURI creates an instance of the AdminKeysClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAdminKeysClientWithBaseURI(baseURI string, subscriptionID string) AdminKeysClient {
 	return AdminKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -19,7 +19,10 @@ func TestChainedTokenCredential_InstantiateSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not set environment variables for testing: %v", err)
 	}
-	secCred := NewClientSecretCredential(tenantID, clientID, secret, nil)
+	secCred, err := NewClientSecretCredential(tenantID, clientID, secret, nil)
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
 	envCred, err := NewEnvironmentCredential(nil)
 	if err != nil {
 		t.Fatalf("Could not find appropriate environment credentials")
@@ -45,7 +48,10 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srvURL := srv.URL()
-	secCred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	secCred, err := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
 	envCred, err := NewEnvironmentCredential(&TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	if err != nil {
 		t.Fatalf("Failed to create environment credential: %v", err)
@@ -71,7 +77,10 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	testURL := srv.URL()
-	secCred := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &testURL})
+	secCred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &testURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
 	msiCred := NewManagedIdentityCredential("", nil)
 	cred, err := NewChainedTokenCredential(msiCred, secCred)
 	if err != nil {
@@ -130,7 +139,10 @@ func TestBearerPolicy_ChainedTokenCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srvURL := srv.URL()
-	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
 	chainedCred, err := NewChainedTokenCredential(cred)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

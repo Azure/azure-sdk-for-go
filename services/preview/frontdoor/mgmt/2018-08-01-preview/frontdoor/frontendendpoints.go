@@ -36,7 +36,9 @@ func NewFrontendEndpointsClient(subscriptionID string) FrontendEndpointsClient {
 	return NewFrontendEndpointsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewFrontendEndpointsClientWithBaseURI creates an instance of the FrontendEndpointsClient client.
+// NewFrontendEndpointsClientWithBaseURI creates an instance of the FrontendEndpointsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewFrontendEndpointsClientWithBaseURI(baseURI string, subscriptionID string) FrontendEndpointsClient {
 	return FrontendEndpointsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

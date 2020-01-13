@@ -36,7 +36,9 @@ func NewApplicationDefinitionsClient(subscriptionID string) ApplicationDefinitio
 	return NewApplicationDefinitionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewApplicationDefinitionsClientWithBaseURI creates an instance of the ApplicationDefinitionsClient client.
+// NewApplicationDefinitionsClientWithBaseURI creates an instance of the ApplicationDefinitionsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewApplicationDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationDefinitionsClient {
 	return ApplicationDefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

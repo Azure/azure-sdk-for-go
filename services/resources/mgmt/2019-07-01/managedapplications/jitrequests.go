@@ -36,7 +36,8 @@ func NewJitRequestsClient(subscriptionID string) JitRequestsClient {
 	return NewJitRequestsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewJitRequestsClientWithBaseURI creates an instance of the JitRequestsClient client.
+// NewJitRequestsClientWithBaseURI creates an instance of the JitRequestsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewJitRequestsClientWithBaseURI(baseURI string, subscriptionID string) JitRequestsClient {
 	return JitRequestsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

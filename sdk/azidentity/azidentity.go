@@ -24,17 +24,6 @@ var (
 	}
 )
 
-var (
-	defaultAuthorityHostURL    *url.URL
-	defaultTokenCredentialOpts *TokenCredentialOptions
-)
-
-func init() {
-	// The error check is handled in azidentity_test.go
-	defaultAuthorityHostURL, _ = url.Parse(defaultAuthorityHost)
-	defaultTokenCredentialOpts = &TokenCredentialOptions{AuthorityHost: defaultAuthorityHostURL}
-}
-
 type tokenResponse struct {
 	token        *azcore.AccessToken
 	refreshToken string

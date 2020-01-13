@@ -34,8 +34,11 @@ type ManagementLocksClientAPI interface {
 	Get(ctx context.Context, lockName string) (result locks.ManagementLockObject, err error)
 	GetAtResourceGroupLevel(ctx context.Context, resourceGroupName string, lockName string) (result locks.ManagementLockObject, err error)
 	ListAtResourceGroupLevel(ctx context.Context, resourceGroupName string, filter string) (result locks.ManagementLockListResultPage, err error)
+	ListAtResourceGroupLevelComplete(ctx context.Context, resourceGroupName string, filter string) (result locks.ManagementLockListResultIterator, err error)
 	ListAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result locks.ManagementLockListResultPage, err error)
+	ListAtResourceLevelComplete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result locks.ManagementLockListResultIterator, err error)
 	ListAtSubscriptionLevel(ctx context.Context, filter string) (result locks.ManagementLockListResultPage, err error)
+	ListAtSubscriptionLevelComplete(ctx context.Context, filter string) (result locks.ManagementLockListResultIterator, err error)
 }
 
 var _ ManagementLocksClientAPI = (*locks.ManagementLocksClient)(nil)

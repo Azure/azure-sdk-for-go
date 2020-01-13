@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -192,18 +191,4 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(retryOpts),
 		azcore.NewRequestLogPolicy(o.LogOptions))
-}
-
-const defaultSuffix = "/.default"
-
-func scopesToResource(scope string) string {
-	if strings.HasSuffix(scope, defaultSuffix) {
-		return scope[:len(scope)-len(defaultSuffix)]
-	}
-	return scope
-}
-
-func resourceToScope(resource string) string {
-	resource += defaultSuffix
-	return resource
 }

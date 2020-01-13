@@ -5,9 +5,12 @@ package azidentity
 
 import (
 	"context"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
+
+const defaultSuffix = "/.default"
 
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure a Managed Identity Credential
 type ManagedIdentityCredentialOptions struct {
@@ -54,6 +57,11 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.To
 
 // AuthenticationPolicy implements the azcore.Credential interface on ManagedIdentityCredential.
 func (c *ManagedIdentityCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
-	options.Options.Scopes = []string{scopesToResource(options.Options.Scopes[0])}
+	// The following code will remove the /.default suffix from any scopes passed into the method since ManagedIdentityCredentials expect a resource string instead of a scope string
+	for i, s := range options.Options.Scopes {
+		if strings.HasSuffix(s, defaultSuffix) {
+			options.Options.Scopes[i] = s[:len(s)-len(defaultSuffix)]
+		}
+	}
 	return newBearerTokenPolicy(c, options)
 }

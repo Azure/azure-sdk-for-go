@@ -52,9 +52,12 @@ type aadIdentityClient struct {
 // that are passed into it along with a default pipeline.
 // options: IdentityClientOptions that adds policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
-func newAADIdentityClient(options *TokenCredentialOptions) *aadIdentityClient {
-	options = options.setDefaultValues()
-	return &aadIdentityClient{options: *options, pipeline: newDefaultPipeline(*options)}
+func newAADIdentityClient(options *TokenCredentialOptions) (*aadIdentityClient, error) {
+	options, err := options.setDefaultValues()
+	if err != nil {
+		return nil, err
+	}
+	return &aadIdentityClient{options: *options, pipeline: newDefaultPipeline(*options)}, nil
 }
 
 // Authenticate creates a client secret authentication request and returns the resulting Access Token or

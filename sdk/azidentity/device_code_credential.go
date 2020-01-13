@@ -30,8 +30,12 @@ type DeviceCodeCredential struct {
 // clientID: The client (application) ID of the service principal.
 // callback: The callback function used to send the login message back to the user
 // options: allow to configure the management of the requests sent to the Azure Active Directory service.
-func NewDeviceCodeCredential(tenantID string, clientID string, callback func(string), options *TokenCredentialOptions) *DeviceCodeCredential {
-	return &DeviceCodeCredential{tenantID: tenantID, clientID: clientID, callback: callback, client: newAADIdentityClient(options)}
+func NewDeviceCodeCredential(tenantID string, clientID string, callback func(string), options *TokenCredentialOptions) (*DeviceCodeCredential, error) {
+	c, err := newAADIdentityClient(options)
+	if err != nil {
+		return nil, err
+	}
+	return &DeviceCodeCredential{tenantID: tenantID, clientID: clientID, callback: callback, client: c}, nil
 }
 
 // GetToken obtains a token from the Azure Active Directory service, following the device code authentication

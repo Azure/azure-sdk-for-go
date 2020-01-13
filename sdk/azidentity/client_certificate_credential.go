@@ -30,7 +30,11 @@ func NewClientCertificateCredential(tenantID string, clientID string, clientCert
 	if err != nil {
 		return nil, &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: "Certificate file not found in path: " + clientCertificate}
 	}
-	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, clientCertificate: clientCertificate, client: newAADIdentityClient(options)}, nil
+	c, err := newAADIdentityClient(options)
+	if err != nil {
+		return nil, err
+	}
+	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, clientCertificate: clientCertificate, client: c}, nil
 }
 
 // GetToken obtains a token from the Azure Active Directory service, using the certificate in the file path to authenticate.

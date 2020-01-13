@@ -26,5 +26,5 @@ func NewEnvironmentCredential(options *TokenCredentialOptions) (*ClientSecretCre
 		return nil, &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_CLIENT_SECRET"}
 	}
 
-	return NewClientSecretCredential(tenantID, clientID, clientSecret, options), nil
+	return NewClientSecretCredential(tenantID, clientID, clientSecret, options)
 }

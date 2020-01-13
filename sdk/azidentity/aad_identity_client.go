@@ -175,12 +175,7 @@ func (c *aadIdentityClient) createRefreshAccessToken(res *azcore.Response) (*tok
 }
 
 func (c *aadIdentityClient) createRefreshTokenRequest(tenantID, clientID, clientSecret, refreshToken string, scopes []string) (*azcore.Request, error) {
-	urlStr := c.options.AuthorityHost.String()
-	urlFormat, err := url.Parse(urlStr)
-	if err != nil {
-		return nil, err
-	}
-	urlFormat.Path = path.Join(urlFormat.Path, tenantID+tokenEndpoint)
+	c.options.AuthorityHost.Path = path.Join(c.options.AuthorityHost.Path, tenantID+tokenEndpoint)
 	data := url.Values{}
 	data.Set(qpGrantType, "refresh_token")
 	data.Set(qpClientID, clientID)
@@ -192,9 +187,9 @@ func (c *aadIdentityClient) createRefreshTokenRequest(tenantID, clientID, client
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := azcore.NewRequest(http.MethodPost, *urlFormat)
+	msg := azcore.NewRequest(http.MethodPost, *c.options.AuthorityHost)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-	err = msg.SetBody(body)
+	err := msg.SetBody(body)
 	if err != nil {
 		return nil, err
 	}
@@ -203,12 +198,7 @@ func (c *aadIdentityClient) createRefreshTokenRequest(tenantID, clientID, client
 }
 
 func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.Request, error) {
-	urlStr := c.options.AuthorityHost.String()
-	urlFormat, err := url.Parse(urlStr)
-	if err != nil {
-		return nil, err
-	}
-	urlFormat.Path = path.Join(urlFormat.Path, tenantID+tokenEndpoint)
+	c.options.AuthorityHost.Path = path.Join(c.options.AuthorityHost.Path, tenantID+tokenEndpoint)
 	data := url.Values{}
 	data.Set(qpGrantType, "client_credentials")
 	data.Set(qpClientID, clientID)
@@ -216,9 +206,9 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clien
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := azcore.NewRequest(http.MethodPost, *urlFormat)
+	msg := azcore.NewRequest(http.MethodPost, *c.options.AuthorityHost)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-	err = msg.SetBody(body)
+	err := msg.SetBody(body)
 	if err != nil {
 		return nil, err
 	}
@@ -227,13 +217,8 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clien
 }
 
 func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, clientID string, clientCertificate string, scopes []string) (*azcore.Request, error) {
-	urlStr := c.options.AuthorityHost.String()
-	urlFormat, err := url.Parse(urlStr)
-	if err != nil {
-		return nil, err
-	}
-	urlFormat.Path = path.Join(urlFormat.Path, tenantID+tokenEndpoint)
-	clientAssertion, err := createClientAssertionJWT(clientID, urlStr, clientCertificate)
+	c.options.AuthorityHost.Path = path.Join(c.options.AuthorityHost.Path, tenantID+tokenEndpoint)
+	clientAssertion, err := createClientAssertionJWT(clientID, c.options.AuthorityHost.String(), clientCertificate)
 	if err != nil {
 		return nil, err
 	}
@@ -246,7 +231,7 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, 
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := azcore.NewRequest(http.MethodPost, *urlFormat)
+	msg := azcore.NewRequest(http.MethodPost, *c.options.AuthorityHost)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 
 	err = msg.SetBody(body)
@@ -283,12 +268,7 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 }
 
 func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, clientID string, username string, password string, scopes []string) (*azcore.Request, error) {
-	urlStr := c.options.AuthorityHost.String()
-	urlFormat, err := url.Parse(urlStr)
-	if err != nil {
-		return nil, err
-	}
-	urlFormat.Path = path.Join(urlFormat.Path, tenantID+tokenEndpoint)
+	c.options.AuthorityHost.Path = path.Join(c.options.AuthorityHost.Path, tenantID+tokenEndpoint)
 	data := url.Values{}
 	data.Set(qpResponseType, "token")
 	data.Set(qpGrantType, "password")
@@ -298,9 +278,9 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, c
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := azcore.NewRequest(http.MethodPost, *urlFormat)
+	msg := azcore.NewRequest(http.MethodPost, *c.options.AuthorityHost)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-	err = msg.SetBody(body)
+	err := msg.SetBody(body)
 	if err != nil {
 		return nil, err
 	}
@@ -344,12 +324,7 @@ func (c *aadIdentityClient) createDeviceCodeAuthRequest(tenantID string, clientI
 	if len(tenantID) == 0 { // if the user did not pass in a tenantID then the default value is set
 		tenantID = "organizations"
 	}
-	urlStr := c.options.AuthorityHost.String()
-	urlFormat, err := url.Parse(urlStr)
-	if err != nil {
-		return nil, err
-	}
-	urlFormat.Path = path.Join(urlFormat.Path, tenantID+tokenEndpoint)
+	c.options.AuthorityHost.Path = path.Join(c.options.AuthorityHost.Path, tenantID+tokenEndpoint)
 	data := url.Values{}
 	data.Set(qpGrantType, deviceCodeGrantType)
 	data.Set(qpClientID, clientID)
@@ -357,9 +332,9 @@ func (c *aadIdentityClient) createDeviceCodeAuthRequest(tenantID string, clientI
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := azcore.NewRequest(http.MethodPost, *urlFormat)
+	msg := azcore.NewRequest(http.MethodPost, *c.options.AuthorityHost)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-	err = msg.SetBody(body)
+	err := msg.SetBody(body)
 	if err != nil {
 		return nil, err
 	}
@@ -387,20 +362,15 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(tenantID string, clien
 	if len(tenantID) == 0 { // if the user did not pass in a tenantID then the default value is set
 		tenantID = "organizations"
 	}
-	urlStr := c.options.AuthorityHost.String()
-	urlFormat, err := url.Parse(urlStr)
-	if err != nil {
-		return nil, err
-	}
-	urlFormat.Path = path.Join(urlFormat.Path, tenantID+"/oauth2/v2.0/devicecode") // endpoint that will return a device code along with the other necessary authentication flow parameters in the DeviceCodeResult struct
+	c.options.AuthorityHost.Path = path.Join(c.options.AuthorityHost.Path, tenantID+"/oauth2/v2.0/devicecode") // endpoint that will return a device code along with the other necessary authentication flow parameters in the DeviceCodeResult struct
 	data := url.Values{}
 	data.Set(qpClientID, clientID)
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := azcore.NewRequest(http.MethodPost, *urlFormat)
+	msg := azcore.NewRequest(http.MethodPost, *c.options.AuthorityHost)
 	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-	err = msg.SetBody(body)
+	err := msg.SetBody(body)
 	if err != nil {
 		return nil, err
 	}

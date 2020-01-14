@@ -133,6 +133,21 @@ func PossibleComputeTypeBasicComputeSecretsValues() []ComputeTypeBasicComputeSec
 	return []ComputeTypeBasicComputeSecrets{ComputeTypeBasicComputeSecretsComputeTypeAKS, ComputeTypeBasicComputeSecretsComputeTypeComputeSecrets, ComputeTypeBasicComputeSecretsComputeTypeDatabricks, ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine}
 }
 
+// EncryptionStatus enumerates the values for encryption status.
+type EncryptionStatus string
+
+const (
+	// Disabled ...
+	Disabled EncryptionStatus = "Disabled"
+	// Enabled ...
+	Enabled EncryptionStatus = "Enabled"
+)
+
+// PossibleEncryptionStatusValues returns an array of possible values for the EncryptionStatus const type.
+func PossibleEncryptionStatusValues() []EncryptionStatus {
+	return []EncryptionStatus{Disabled, Enabled}
+}
+
 // NodeState enumerates the values for node state.
 type NodeState string
 
@@ -309,15 +324,15 @@ func PossibleStatusValues() []Status {
 type Status1 string
 
 const (
-	// Disabled ...
-	Disabled Status1 = "Disabled"
-	// Enabled ...
-	Enabled Status1 = "Enabled"
+	// Status1Disabled ...
+	Status1Disabled Status1 = "Disabled"
+	// Status1Enabled ...
+	Status1Enabled Status1 = "Enabled"
 )
 
 // PossibleStatus1Values returns an array of possible values for the Status1 const type.
 func PossibleStatus1Values() []Status1 {
-	return []Status1{Disabled, Enabled}
+	return []Status1{Status1Disabled, Status1Enabled}
 }
 
 // UnderlyingResourceAction enumerates the values for underlying resource action.
@@ -1560,6 +1575,14 @@ type DataLakeAnalyticsProperties struct {
 	DataLakeStoreAccountName *string `json:"dataLakeStoreAccountName,omitempty"`
 }
 
+// EncryptionProperty ...
+type EncryptionProperty struct {
+	// Status - Indicates whether or not the encryption is enabled for the workspace. Possible values include: 'Enabled', 'Disabled'
+	Status EncryptionStatus `json:"status,omitempty"`
+	// KeyVaultProperties - Customer Key vault properties.
+	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+}
+
 // Error wrapper for error response to follow ARM guidelines.
 type Error struct {
 	// Error - READ-ONLY; The error response.
@@ -1692,6 +1715,16 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The identity type. Possible values include: 'SystemAssigned'
 	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// KeyVaultProperties ...
+type KeyVaultProperties struct {
+	// KeyVaultArmID - The ArmId of the keyVault where the customer owned encryption key is present.
+	KeyVaultArmID *string `json:"keyVaultArmId,omitempty"`
+	// KeyIdentifier - Key vault uri to access the encryption key.
+	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
+	// IdentityClientID - For future use - The client id of the identity which will be used to access key vault.
+	IdentityClientID *string `json:"identityClientId,omitempty"`
 }
 
 // ListAmlUserFeatureResult the List Aml user feature operation response.
@@ -3016,7 +3049,7 @@ func NewSkuListResultPage(getNextPage func(context.Context, SkuListResult) (SkuL
 
 // SslConfiguration the ssl configuration for scoring
 type SslConfiguration struct {
-	// Status - Enable or disable ssl for scoring. Possible values include: 'Disabled', 'Enabled'
+	// Status - Enable or disable ssl for scoring. Possible values include: 'Status1Disabled', 'Status1Enabled'
 	Status Status1 `json:"status,omitempty"`
 	// Cert - Cert data
 	Cert *string `json:"cert,omitempty"`
@@ -3576,6 +3609,10 @@ type WorkspaceProperties struct {
 	DiscoveryURL *string `json:"discoveryUrl,omitempty"`
 	// ProvisioningState - READ-ONLY; The current deployment state of workspace resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateUpdating', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// Encryption - The encryption settings of Azure ML workspace.
+	Encryption *EncryptionProperty `json:"encryption,omitempty"`
+	// HbiWorkspace - The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service
+	HbiWorkspace *bool `json:"hbiWorkspace,omitempty"`
 }
 
 // WorkspacePropertiesUpdateParameters the parameters for updating the properties of a machine learning

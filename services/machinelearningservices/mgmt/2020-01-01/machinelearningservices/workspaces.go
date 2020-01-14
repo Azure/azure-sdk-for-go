@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -35,7 +36,8 @@ func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 	return NewWorkspacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWorkspacesClientWithBaseURI creates an instance of the WorkspacesClient client.
+// NewWorkspacesClientWithBaseURI creates an instance of the WorkspacesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
 	return WorkspacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -56,6 +58,19 @@ func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.WorkspaceProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.WorkspaceProperties.Encryption", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.WorkspaceProperties.Encryption.KeyVaultProperties", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "parameters.WorkspaceProperties.Encryption.KeyVaultProperties.KeyVaultArmID", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "parameters.WorkspaceProperties.Encryption.KeyVaultProperties.KeyIdentifier", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+					}},
+				}}}}}); err != nil {
+		return result, validation.NewError("machinelearningservices.WorkspacesClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesClient", "CreateOrUpdate", nil, "Failure preparing request")

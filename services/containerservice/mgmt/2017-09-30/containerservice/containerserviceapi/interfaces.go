@@ -28,7 +28,9 @@ type ContainerServicesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, containerServiceName string) (result containerservice.ContainerServicesDeleteFutureType, err error)
 	Get(ctx context.Context, resourceGroupName string, containerServiceName string) (result containerservice.ContainerService, err error)
 	List(ctx context.Context) (result containerservice.ListResultPage, err error)
+	ListComplete(ctx context.Context) (result containerservice.ListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result containerservice.ListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result containerservice.ListResultIterator, err error)
 	ListOrchestrators(ctx context.Context, location string, resourceType string) (result containerservice.OrchestratorVersionProfileListResult, err error)
 }
 
@@ -43,7 +45,9 @@ type ManagedClustersClientAPI interface {
 	GetAccessProfiles(ctx context.Context, resourceGroupName string, resourceName string, roleName string) (result containerservice.ManagedClusterAccessProfile, err error)
 	GetUpgradeProfile(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.ManagedClusterUpgradeProfile, err error)
 	List(ctx context.Context) (result containerservice.ManagedClusterListResultPage, err error)
+	ListComplete(ctx context.Context) (result containerservice.ManagedClusterListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result containerservice.ManagedClusterListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result containerservice.ManagedClusterListResultIterator, err error)
 }
 
 var _ ManagedClustersClientAPI = (*containerservice.ManagedClustersClient)(nil)

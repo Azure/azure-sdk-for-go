@@ -19,8 +19,10 @@ func Test_AuthorityHost_Parse(t *testing.T) {
 
 func Test_NonNilTokenCredentialOptsNilAuthorityHost(t *testing.T) {
 	opts := &TokenCredentialOptions{Retry: azcore.RetryOptions{MaxTries: 6}}
-	opts = opts.setDefaultValues()
-
+	opts, err := opts.setDefaultValues()
+	if err != nil {
+		t.Fatalf("Received an error: %v", err)
+	}
 	if opts.AuthorityHost == nil {
 		t.Fatalf("Did not set default authority host")
 	}

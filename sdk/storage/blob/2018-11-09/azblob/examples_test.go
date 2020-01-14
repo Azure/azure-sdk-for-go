@@ -23,7 +23,10 @@ const (
 )
 
 func ExampleServiceClient_ListContainers() {
-	cred := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	if err != nil {
+		panic(err)
+	}
 	client, err := NewServiceClient(endpoint, cred, nil)
 	if err != nil {
 		panic(err)

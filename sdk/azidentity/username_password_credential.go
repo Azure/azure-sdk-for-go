@@ -8,6 +8,7 @@ package azidentity
 
 import (
 	"context"
+	"path"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -31,8 +32,13 @@ type UsernamePasswordCredential struct {
 // - username: A user's account username
 // - password: A user's account password
 // - options: The options configure the management of the requests sent to the Azure Active Directory service.
-func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *TokenCredentialOptions) *UsernamePasswordCredential {
-	return &UsernamePasswordCredential{tenantID: tenantID, clientID: clientID, username: username, password: password, client: newAADIdentityClient(options)}
+func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *TokenCredentialOptions) (*UsernamePasswordCredential, error) {
+	c, err := newAADIdentityClient(options)
+	if err != nil {
+		return nil, err
+	}
+	c.options.AuthorityHost.Path = path.Join(c.options.AuthorityHost.Path, tenantID+tokenEndpoint)
+	return &UsernamePasswordCredential{tenantID: tenantID, clientID: clientID, username: username, password: password, client: c}, nil
 }
 
 // GetToken obtains a token from the Azure Active Directory service, using the specified username and password.

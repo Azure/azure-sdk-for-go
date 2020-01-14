@@ -3,22 +3,11 @@
 
 package azidentity
 
-import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-)
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
 const (
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 )
-
-// DefaultTokenCredential provides a default ChainedTokenCredential configuration for applications that will be deployed to Azure.  The following credential
-// types will be tried, in order:
-// - EnvironmentCredential
-// - ManagedIdentityCredential
-// Consult the documentation of these credential types for more information on how they attempt authentication.
-type DefaultTokenCredential struct {
-	sources []azcore.TokenCredential
-}
 
 // DefaultTokenCredentialOptions contain information that can configure Default Token Credentials
 type DefaultTokenCredentialOptions struct {
@@ -32,7 +21,8 @@ type DefaultTokenCredentialOptions struct {
 // - ManagedIdentityCredential
 // Consult the documentation of these credential types for more information on how they attempt authentication.
 func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*ChainedTokenCredential, error) {
-	cred := &DefaultTokenCredential{}
+	var creds []azcore.TokenCredential
+	errMsg := ""
 
 	if options == nil {
 		options = &DefaultTokenCredentialOptions{}
@@ -41,15 +31,18 @@ func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*Chained
 	if !options.ExcludeEnvironmentCredential {
 		envCred, err := NewEnvironmentCredential(nil)
 		if err == nil {
-			cred.sources = append(cred.sources, envCred)
-			return NewChainedTokenCredential(cred.sources...)
+			creds = append(creds, envCred)
+		} else {
+			errMsg += err.Error()
 		}
 	}
 
 	if !options.ExcludeMSICredential {
-		cred.sources = append(cred.sources, NewManagedIdentityCredential("", nil))
-		return NewChainedTokenCredential(cred.sources...)
+		creds = append(creds, NewManagedIdentityCredential("", nil))
 	}
 
-	return nil, &CredentialUnavailableError{CredentialType: "Default Token Credential", Message: "Failed to find any available credentials. Make sure you are running in a Managed Identity Environment or have set the appropriate environment variables"}
+	if len(creds) == 0 {
+		return nil, &CredentialUnavailableError{CredentialType: "Default Token Credential", Message: errMsg}
+	}
+	return NewChainedTokenCredential(creds...)
 }

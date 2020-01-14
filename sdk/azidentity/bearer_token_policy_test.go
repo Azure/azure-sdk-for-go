@@ -27,7 +27,10 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srvURL := srv.URL()
-	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
 	pipeline := azcore.NewPipeline(
 		srv,
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
@@ -51,7 +54,10 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srvURL := srv.URL()
-	cred := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
 	pipeline := azcore.NewPipeline(
 		srv,
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
@@ -80,7 +86,10 @@ func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 
 	srvURL := srv.URL()
-	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
 	pipeline := azcore.NewPipeline(
 		srv,
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
@@ -89,7 +98,7 @@ func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
 	req := azcore.NewRequest(http.MethodGet, srv.URL())
-	_, err := pipeline.Do(context.Background(), req)
+	_, err = pipeline.Do(context.Background(), req)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
@@ -106,7 +115,10 @@ func TestRetryPolicy_IsNotRetriable(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srvURL := srv.URL()
-	cred := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
 	pipeline := azcore.NewPipeline(
 		srv,
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
@@ -114,7 +126,7 @@ func TestRetryPolicy_IsNotRetriable(t *testing.T) {
 		azcore.NewRetryPolicy(azcore.RetryOptions{}),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	_, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
+	_, err = pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
 	var afe *AuthenticationFailedError
 	if !errors.As(err, &afe) {
 		t.Fatalf("unexpected error type %v", err)
@@ -126,7 +138,10 @@ func TestRetryPolicy_HTTPRequest(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srvURL := srv.URL()
-	cred := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
 	pipeline := azcore.NewPipeline(
 		srv,
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
@@ -134,7 +149,7 @@ func TestRetryPolicy_HTTPRequest(t *testing.T) {
 		azcore.NewRetryPolicy(azcore.RetryOptions{}),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	_, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
+	_, err = pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
 	var afe *AuthenticationFailedError
 	if !errors.As(err, &afe) {
 		t.Fatalf("unexpected error type %v", err)

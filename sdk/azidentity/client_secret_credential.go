@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"path"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -24,8 +25,13 @@ type ClientSecretCredential struct {
 // clientID: The client (application) ID of the service principal.
 // clientSecret: A client secret that was generated for the App Registration used to authenticate the client.
 // options: allow to configure the management of the requests sent to the Azure Active Directory service.
-func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *TokenCredentialOptions) *ClientSecretCredential {
-	return &ClientSecretCredential{tenantID: tenantID, clientID: clientID, clientSecret: clientSecret, client: newAADIdentityClient(options)}
+func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *TokenCredentialOptions) (*ClientSecretCredential, error) {
+	c, err := newAADIdentityClient(options)
+	if err != nil {
+		return nil, err
+	}
+	c.options.AuthorityHost.Path = path.Join(c.options.AuthorityHost.Path, tenantID+tokenEndpoint)
+	return &ClientSecretCredential{tenantID: tenantID, clientID: clientID, clientSecret: clientSecret, client: c}, nil
 }
 
 // GetToken obtains a token from the Azure Active Directory service, using the specified client secret to authenticate.

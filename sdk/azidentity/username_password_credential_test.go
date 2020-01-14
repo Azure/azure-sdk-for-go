@@ -15,7 +15,10 @@ import (
 )
 
 func TestUsernamePasswordCredential_CreateAuthRequestSuccess(t *testing.T) {
-	cred := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", nil)
+	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", nil)
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
 	req, err := cred.client.createUsernamePasswordAuthRequest(cred.tenantID, cred.clientID, cred.username, cred.password, []string{scope})
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
@@ -63,8 +66,11 @@ func TestUsernamePasswordCredential_GetTokenSuccess(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srvURL := srv.URL()
-	cred := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
-	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -75,8 +81,11 @@ func TestUsernamePasswordCredential_GetTokenInvalidCredentials(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srvURL := srv.URL()
-	cred := NewUsernamePasswordCredential(tenantID, clientID, "username", "wrong_password", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
-	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "wrong_password", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
@@ -88,8 +97,11 @@ func TestUsernamePasswordCredential_CreateAuthRequestFail(t *testing.T) {
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srvURL := srv.URL()
 	srvURL.Host = "ht @"
-	cred := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
-	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
@@ -101,7 +113,10 @@ func TestBearerPolicy_UsernamePasswordCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srvURL := srv.URL()
-	cred := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
 	pipeline := azcore.NewPipeline(
 		srv,
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
@@ -109,7 +124,7 @@ func TestBearerPolicy_UsernamePasswordCredential(t *testing.T) {
 		azcore.NewRetryPolicy(azcore.RetryOptions{}),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	_, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
+	_, err = pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
 	if err != nil {
 		t.Fatalf("Expected an empty error but receive: %v", err)
 	}

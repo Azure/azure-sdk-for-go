@@ -76,3 +76,37 @@ func TestResponseUnmarshalJSON(t *testing.T) {
 		t.Fatal("unexpected value")
 	}
 }
+
+func TestResponseUnmarshalJSONNoBody(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithBody([]byte{}))
+	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
+	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if err := resp.CheckStatusCode(http.StatusOK); err != nil {
+		t.Fatalf("unexpected status code error: %v", err)
+	}
+	if err := resp.UnmarshalAsJSON(nil); err != nil {
+		t.Fatalf("unexpected error unmarshalling: %v", err)
+	}
+}
+
+func TestResponseUnmarshalXMLNoBody(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithBody([]byte{}))
+	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
+	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if err := resp.CheckStatusCode(http.StatusOK); err != nil {
+		t.Fatalf("unexpected status code error: %v", err)
+	}
+	if err := resp.UnmarshalAsXML(nil); err != nil {
+		t.Fatalf("unexpected error unmarshalling: %v", err)
+	}
+}

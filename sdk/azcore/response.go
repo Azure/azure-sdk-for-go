@@ -64,8 +64,9 @@ func (r *Response) HasStatusCode(statusCodes ...int) bool {
 // UnmarshalAsJSON calls json.Unmarshal() to unmarshal the received payload into the value pointed to by v.
 // If no payload was received a RequestError is returned.  If json.Unmarshal fails a UnmarshalError is returned.
 func (r *Response) UnmarshalAsJSON(v interface{}) error {
+	// TODO: verify early exit is correct
 	if len(r.payload()) == 0 {
-		return newRequestError("missing payload", r)
+		return nil
 	}
 	r.removeBOM()
 	err := json.Unmarshal(r.payload(), v)
@@ -78,8 +79,9 @@ func (r *Response) UnmarshalAsJSON(v interface{}) error {
 // UnmarshalAsXML calls xml.Unmarshal() to unmarshal the received payload into the value pointed to by v.
 // If no payload was received a RequestError is returned.  If xml.Unmarshal fails a UnmarshalError is returned.
 func (r *Response) UnmarshalAsXML(v interface{}) error {
+	// TODO: verify early exit is correct
 	if len(r.payload()) == 0 {
-		return newRequestError("missing payload", r)
+		return nil
 	}
 	r.removeBOM()
 	err := xml.Unmarshal(r.payload(), v)

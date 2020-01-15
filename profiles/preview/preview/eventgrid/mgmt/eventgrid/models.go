@@ -22,7 +22,7 @@ package eventgrid
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-01-01-preview/eventgrid"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-04-01-preview/eventgrid"
 )
 
 const (
@@ -89,6 +89,12 @@ const (
 	EventSubscriptionProvisioningStateFailed               EventSubscriptionProvisioningState = original.EventSubscriptionProvisioningStateFailed
 	EventSubscriptionProvisioningStateSucceeded            EventSubscriptionProvisioningState = original.EventSubscriptionProvisioningStateSucceeded
 	EventSubscriptionProvisioningStateUpdating             EventSubscriptionProvisioningState = original.EventSubscriptionProvisioningStateUpdating
+)
+
+type IPActionType = original.IPActionType
+
+const (
+	Allow IPActionType = original.Allow
 )
 
 type InputSchema = original.InputSchema
@@ -203,6 +209,7 @@ type EventTypeProperties = original.EventTypeProperties
 type EventTypesListResult = original.EventTypesListResult
 type HybridConnectionEventSubscriptionDestination = original.HybridConnectionEventSubscriptionDestination
 type HybridConnectionEventSubscriptionDestinationProperties = original.HybridConnectionEventSubscriptionDestinationProperties
+type InboundIPRule = original.InboundIPRule
 type InputSchemaMapping = original.InputSchemaMapping
 type JSONField = original.JSONField
 type JSONFieldWithDefault = original.JSONFieldWithDefault
@@ -336,6 +343,9 @@ func PossibleEventDeliverySchemaValues() []EventDeliverySchema {
 }
 func PossibleEventSubscriptionProvisioningStateValues() []EventSubscriptionProvisioningState {
 	return original.PossibleEventSubscriptionProvisioningStateValues()
+}
+func PossibleIPActionTypeValues() []IPActionType {
+	return original.PossibleIPActionTypeValues()
 }
 func PossibleInputSchemaMappingTypeValues() []InputSchemaMappingType {
 	return original.PossibleInputSchemaMappingTypeValues()

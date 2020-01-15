@@ -5579,9 +5579,9 @@ func NewAuthorizationListResultPage(getNextPage func(context.Context, Authorizat
 
 // AuthorizationPropertiesFormat properties of ExpressRouteCircuitAuthorization.
 type AuthorizationPropertiesFormat struct {
-	// AuthorizationKey - READ-ONLY; The authorization key.
+	// AuthorizationKey - The authorization key.
 	AuthorizationKey *string `json:"authorizationKey,omitempty"`
-	// AuthorizationUseStatus - READ-ONLY; The authorization use status. Possible values include: 'Available', 'InUse'
+	// AuthorizationUseStatus - The authorization use status. Possible values include: 'Available', 'InUse'
 	AuthorizationUseStatus AuthorizationUseStatus `json:"authorizationUseStatus,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the authorization resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
@@ -7402,6 +7402,35 @@ type AzureFirewallSku struct {
 	Name AzureFirewallSkuName `json:"name,omitempty"`
 	// Tier - Tier of an Azure Firewall. Possible values include: 'Standard'
 	Tier AzureFirewallSkuTier `json:"tier,omitempty"`
+}
+
+// AzureFirewallsUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AzureFirewallsUpdateTagsFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AzureFirewallsUpdateTagsFuture) Result(client AzureFirewallsClient) (af AzureFirewall, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.AzureFirewallsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.AzureFirewallsUpdateTagsFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if af.Response.Response, err = future.GetResult(sender); err == nil && af.Response.Response.StatusCode != http.StatusNoContent {
+		af, err = client.UpdateTagsResponder(af.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.AzureFirewallsUpdateTagsFuture", "Result", af.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // AzureReachabilityReport azure reachability report details.
@@ -10601,7 +10630,7 @@ type ExpressRouteCircuitConnectionPropertiesFormat struct {
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
 	// AuthorizationKey - The authorization key.
 	AuthorizationKey *string `json:"authorizationKey,omitempty"`
-	// CircuitConnectionStatus - READ-ONLY; Express Route Circuit connection state. Possible values include: 'Connected', 'Connecting', 'Disconnected'
+	// CircuitConnectionStatus - Express Route Circuit connection state. Possible values include: 'Connected', 'Connecting', 'Disconnected'
 	CircuitConnectionStatus CircuitConnectionStatus `json:"circuitConnectionStatus,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the express route circuit connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
@@ -11072,7 +11101,7 @@ type ExpressRouteCircuitPeeringPropertiesFormat struct {
 	PeeringType ExpressRoutePeeringType `json:"peeringType,omitempty"`
 	// State - The peering state. Possible values include: 'ExpressRoutePeeringStateDisabled', 'ExpressRoutePeeringStateEnabled'
 	State ExpressRoutePeeringState `json:"state,omitempty"`
-	// AzureASN - READ-ONLY; The Azure ASN.
+	// AzureASN - The Azure ASN.
 	AzureASN *int32 `json:"azureASN,omitempty"`
 	// PeerASN - The peer ASN.
 	PeerASN *int64 `json:"peerASN,omitempty"`
@@ -11080,9 +11109,9 @@ type ExpressRouteCircuitPeeringPropertiesFormat struct {
 	PrimaryPeerAddressPrefix *string `json:"primaryPeerAddressPrefix,omitempty"`
 	// SecondaryPeerAddressPrefix - The secondary address prefix.
 	SecondaryPeerAddressPrefix *string `json:"secondaryPeerAddressPrefix,omitempty"`
-	// PrimaryAzurePort - READ-ONLY; The primary port.
+	// PrimaryAzurePort - The primary port.
 	PrimaryAzurePort *string `json:"primaryAzurePort,omitempty"`
-	// SecondaryAzurePort - READ-ONLY; The secondary port.
+	// SecondaryAzurePort - The secondary port.
 	SecondaryAzurePort *string `json:"secondaryAzurePort,omitempty"`
 	// SharedKey - The shared key.
 	SharedKey *string `json:"sharedKey,omitempty"`
@@ -11104,7 +11133,7 @@ type ExpressRouteCircuitPeeringPropertiesFormat struct {
 	Ipv6PeeringConfig *Ipv6ExpressRouteCircuitPeeringConfig `json:"ipv6PeeringConfig,omitempty"`
 	// ExpressRouteConnection - The ExpressRoute connection.
 	ExpressRouteConnection *ExpressRouteConnectionID `json:"expressRouteConnection,omitempty"`
-	// Connections - READ-ONLY; The list of circuit connections associated with Azure Private Peering for this circuit.
+	// Connections - The list of circuit connections associated with Azure Private Peering for this circuit.
 	Connections *[]ExpressRouteCircuitConnection `json:"connections,omitempty"`
 	// PeeredConnections - READ-ONLY; The list of peered circuit connections associated with Azure Private Peering for this circuit.
 	PeeredConnections *[]PeerExpressRouteCircuitConnection `json:"peeredConnections,omitempty"`
@@ -11166,15 +11195,15 @@ func (future *ExpressRouteCircuitPeeringsDeleteFuture) Result(client ExpressRout
 type ExpressRouteCircuitPropertiesFormat struct {
 	// AllowClassicOperations - Allow classic operations.
 	AllowClassicOperations *bool `json:"allowClassicOperations,omitempty"`
-	// CircuitProvisioningState - READ-ONLY; The CircuitProvisioningState state of the resource.
+	// CircuitProvisioningState - The CircuitProvisioningState state of the resource.
 	CircuitProvisioningState *string `json:"circuitProvisioningState,omitempty"`
-	// ServiceProviderProvisioningState - READ-ONLY; The ServiceProviderProvisioningState state of the resource. Possible values include: 'NotProvisioned', 'Provisioning', 'Provisioned', 'Deprovisioning'
+	// ServiceProviderProvisioningState - The ServiceProviderProvisioningState state of the resource. Possible values include: 'NotProvisioned', 'Provisioning', 'Provisioned', 'Deprovisioning'
 	ServiceProviderProvisioningState ServiceProviderProvisioningState `json:"serviceProviderProvisioningState,omitempty"`
 	// Authorizations - The list of authorizations.
 	Authorizations *[]ExpressRouteCircuitAuthorization `json:"authorizations,omitempty"`
 	// Peerings - The list of peerings.
 	Peerings *[]ExpressRouteCircuitPeering `json:"peerings,omitempty"`
-	// ServiceKey - READ-ONLY; The ServiceKey.
+	// ServiceKey - The ServiceKey.
 	ServiceKey *string `json:"serviceKey,omitempty"`
 	// ServiceProviderNotes - The ServiceProviderNotes.
 	ServiceProviderNotes *string `json:"serviceProviderNotes,omitempty"`
@@ -11190,7 +11219,7 @@ type ExpressRouteCircuitPropertiesFormat struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// GatewayManagerEtag - The GatewayManager Etag.
 	GatewayManagerEtag *string `json:"gatewayManagerEtag,omitempty"`
-	// GlobalReachEnabled - READ-ONLY; Flag denoting Global reach status.
+	// GlobalReachEnabled - Flag denoting Global reach status.
 	GlobalReachEnabled *bool `json:"globalReachEnabled,omitempty"`
 }
 

@@ -37,7 +37,8 @@ func NewDefinitionsOperationMetadataClient() DefinitionsOperationMetadataClient 
 }
 
 // NewDefinitionsOperationMetadataClientWithBaseURI creates an instance of the DefinitionsOperationMetadataClient
-// client.
+// client using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI
+// (sovereign clouds, Azure stack).
 func NewDefinitionsOperationMetadataClientWithBaseURI(baseURI string) DefinitionsOperationMetadataClient {
 	return DefinitionsOperationMetadataClient{NewWithBaseURI(baseURI)}
 }

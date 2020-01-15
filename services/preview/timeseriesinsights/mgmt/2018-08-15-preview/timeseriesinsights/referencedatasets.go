@@ -36,7 +36,9 @@ func NewReferenceDataSetsClient(subscriptionID string) ReferenceDataSetsClient {
 	return NewReferenceDataSetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewReferenceDataSetsClientWithBaseURI creates an instance of the ReferenceDataSetsClient client.
+// NewReferenceDataSetsClientWithBaseURI creates an instance of the ReferenceDataSetsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewReferenceDataSetsClientWithBaseURI(baseURI string, subscriptionID string) ReferenceDataSetsClient {
 	return ReferenceDataSetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

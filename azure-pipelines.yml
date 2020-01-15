@@ -48,7 +48,7 @@ jobs:
         go get -u golang.org/x/lint/golint
       workingDirectory: '$(sdkPath)'
       displayName: 'Install Dependencies'
-    - script: go vet $(go list ./... $(go.list.filter))
+    - script: go vet -v $(go list ./... $(go.list.filter))
       workingDirectory: '$(sdkPath)'
       displayName: 'Vet'
     - script: go build -v $(go list ./... $(go.list.filter))

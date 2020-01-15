@@ -28,7 +28,7 @@ jobs:
       GOPATH: '$(system.defaultWorkingDirectory)/work'
       sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
       IGNORE_BREAKING_CHANGES: true
-      go.list.filter: 'grep -v vendor | grep -v azure-sdk-for-go/sdk'
+      go.list.filter: '| grep -v vendor'
 
     steps:
     - script: |
@@ -48,7 +48,7 @@ jobs:
         go get -u golang.org/x/lint/golint
       workingDirectory: '$(sdkPath)'
       displayName: 'Install Dependencies'
-    - script: go vet $(go list ./... $(go.list.filter))
+    - script: go vet -v $(go list ./... $(go.list.filter))
       workingDirectory: '$(sdkPath)'
       displayName: 'Vet'
     - script: go build -v $(go list ./... $(go.list.filter))

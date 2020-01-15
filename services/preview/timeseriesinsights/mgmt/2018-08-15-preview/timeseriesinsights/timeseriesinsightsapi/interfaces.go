@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result timeseriesinsights.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result timeseriesinsights.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*timeseriesinsights.OperationsClient)(nil)

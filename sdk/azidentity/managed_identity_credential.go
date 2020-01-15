@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -44,8 +45,20 @@ type ManagedIdentityCredential struct {
 // clientID: The client id to authenticate for a user assigned managed identity.  More information on user assigned managed identities cam be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview#how-a-user-assigned-managed-identity-works-with-an-azure-vm
 // options: Options that allow to configure the management of the requests sent to the Azure Active Directory service.
-func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCredentialOptions) *ManagedIdentityCredential {
-	return &ManagedIdentityCredential{clientID: clientID, client: newManagedIdentityClient(options)}
+func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
+	// Create a new Managed Identity Client with default options
+	client := newManagedIdentityClient(options)
+	// Create a context that will timeout after 500 milliseconds (that is the amount of time designated to find out if the IMDS endpoint is available)
+	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Duration(client.imdsAvailableTimeoutMS)*time.Millisecond)
+	defer cancelFunc()
+	msiType, err := client.getMSIType(ctx)
+	// If there is an error that means that the code is not running in a Managed Identity environment
+	if err != nil {
+		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
+	}
+	// Assign the msiType discovered onto the client
+	client.msiType = msiType
+	return &ManagedIdentityCredential{clientID: clientID, client: client}, nil
 }
 
 // GetToken obtains an AccessToken from the Managed Identity service if available.

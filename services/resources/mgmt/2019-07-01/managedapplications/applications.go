@@ -36,7 +36,8 @@ func NewApplicationsClient(subscriptionID string) ApplicationsClient {
 	return NewApplicationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewApplicationsClientWithBaseURI creates an instance of the ApplicationsClient client.
+// NewApplicationsClientWithBaseURI creates an instance of the ApplicationsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationsClient {
 	return ApplicationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -67,7 +68,13 @@ func (client ApplicationsClient) CreateOrUpdate(ctx context.Context, resourceGro
 				{Target: "applicationName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ApplicationProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.ApplicationProperties.ManagedResourceGroupID", Name: validation.Null, Rule: true, Chain: nil}}},
+				Chain: []validation.Constraint{{Target: "parameters.ApplicationProperties.JitAccessPolicy", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.ApplicationProperties.JitAccessPolicy.JitAccessEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
+					{Target: "parameters.ApplicationProperties.CustomerSupport", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.ApplicationProperties.CustomerSupport.Email", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "parameters.ApplicationProperties.CustomerSupport.Phone", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+				}},
 				{Target: "parameters.Plan", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.Plan.Name", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "parameters.Plan.Publisher", Name: validation.Null, Rule: true, Chain: nil},
@@ -163,7 +170,13 @@ func (client ApplicationsClient) CreateOrUpdateByID(ctx context.Context, applica
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ApplicationProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.ApplicationProperties.ManagedResourceGroupID", Name: validation.Null, Rule: true, Chain: nil}}},
+				Chain: []validation.Constraint{{Target: "parameters.ApplicationProperties.JitAccessPolicy", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.ApplicationProperties.JitAccessPolicy.JitAccessEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
+					{Target: "parameters.ApplicationProperties.CustomerSupport", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.ApplicationProperties.CustomerSupport.Email", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "parameters.ApplicationProperties.CustomerSupport.Phone", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+				}},
 				{Target: "parameters.Plan", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.Plan.Name", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "parameters.Plan.Publisher", Name: validation.Null, Rule: true, Chain: nil},

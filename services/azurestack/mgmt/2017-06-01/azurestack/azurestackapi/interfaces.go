@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result azurestack.OperationListPage, err error)
+	ListComplete(ctx context.Context) (result azurestack.OperationListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*azurestack.OperationsClient)(nil)
@@ -36,6 +37,7 @@ type ProductsClientAPI interface {
 	GetProduct(ctx context.Context, resourceGroup string, registrationName string, productName string, deviceConfiguration *azurestack.DeviceConfiguration) (result azurestack.Product, err error)
 	GetProducts(ctx context.Context, resourceGroup string, registrationName string, deviceConfiguration *azurestack.DeviceConfiguration) (result azurestack.ProductList, err error)
 	List(ctx context.Context, resourceGroup string, registrationName string) (result azurestack.ProductListPage, err error)
+	ListComplete(ctx context.Context, resourceGroup string, registrationName string) (result azurestack.ProductListIterator, err error)
 	ListDetails(ctx context.Context, resourceGroup string, registrationName string, productName string) (result azurestack.ExtendedProduct, err error)
 	UploadLog(ctx context.Context, resourceGroup string, registrationName string, productName string, marketplaceProductLogUpdate *azurestack.MarketplaceProductLogUpdate) (result azurestack.ProductLog, err error)
 }
@@ -49,6 +51,7 @@ type RegistrationsClientAPI interface {
 	Get(ctx context.Context, resourceGroup string, registrationName string) (result azurestack.Registration, err error)
 	GetActivationKey(ctx context.Context, resourceGroup string, registrationName string) (result azurestack.ActivationKeyResult, err error)
 	List(ctx context.Context, resourceGroup string) (result azurestack.RegistrationListPage, err error)
+	ListComplete(ctx context.Context, resourceGroup string) (result azurestack.RegistrationListIterator, err error)
 	Update(ctx context.Context, resourceGroup string, registrationName string, tokenParameter azurestack.RegistrationParameter) (result azurestack.Registration, err error)
 }
 
@@ -60,6 +63,7 @@ type CustomerSubscriptionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroup string, registrationName string, customerSubscriptionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroup string, registrationName string, customerSubscriptionName string) (result azurestack.CustomerSubscription, err error)
 	List(ctx context.Context, resourceGroup string, registrationName string) (result azurestack.CustomerSubscriptionListPage, err error)
+	ListComplete(ctx context.Context, resourceGroup string, registrationName string) (result azurestack.CustomerSubscriptionListIterator, err error)
 }
 
 var _ CustomerSubscriptionsClientAPI = (*azurestack.CustomerSubscriptionsClient)(nil)

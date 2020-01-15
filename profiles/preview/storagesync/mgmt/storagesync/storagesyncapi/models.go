@@ -19,9 +19,10 @@
 
 package storagesyncapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2019-02-01/storagesync/storagesyncapi"
+import original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2019-06-01/storagesync/storagesyncapi"
 
 type CloudEndpointsClientAPI = original.CloudEndpointsClientAPI
+type OperationStatusClientAPI = original.OperationStatusClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type RegisteredServersClientAPI = original.RegisteredServersClientAPI
 type ServerEndpointsClientAPI = original.ServerEndpointsClientAPI

@@ -24,11 +24,11 @@ func TestDownloadBody(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(resp.Payload) == 0 {
+	if len(resp.payload()) == 0 {
 		t.Fatal("missing payload")
 	}
-	if string(resp.Payload) != message {
-		t.Fatalf("unexpected response: %s", string(resp.Payload))
+	if string(resp.payload()) != message {
+		t.Fatalf("unexpected response: %s", string(resp.payload()))
 	}
 }
 
@@ -45,7 +45,7 @@ func TestSkipBodyDownload(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(resp.Payload) > 0 {
-		t.Fatalf("unexpected download: %s", string(resp.Payload))
+	if len(resp.payload()) > 0 {
+		t.Fatalf("unexpected download: %s", string(resp.payload()))
 	}
 }

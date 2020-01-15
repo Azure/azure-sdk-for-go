@@ -7,6 +7,7 @@ package azcore
 
 import (
 	"bytes"
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -22,17 +23,25 @@ import (
 // Response represents the response from an HTTP request.
 type Response struct {
 	*http.Response
+}
 
-	// Payload contains the contents of the HTTP response body if available.
-	Payload []byte
+func (r *Response) payload() []byte {
+	if r.Body == nil {
+		return nil
+	}
+	// r.Body won't be a nopClosingBytesReader if downloading was skipped
+	if buf, ok := r.Body.(*nopClosingBytesReader); ok {
+		return buf.Bytes()
+	}
+	return nil
 }
 
 // CheckStatusCode returns a RequestError if the Response's status code isn't one of the specified values.
 func (r *Response) CheckStatusCode(statusCodes ...int) error {
 	if !r.HasStatusCode(statusCodes...) {
 		msg := r.Status
-		if len(r.Payload) > 0 {
-			msg = string(r.Payload)
+		if len(r.payload()) > 0 {
+			msg = string(r.payload())
 		}
 		return newRequestError(msg, r)
 	}
@@ -52,14 +61,28 @@ func (r *Response) HasStatusCode(statusCodes ...int) bool {
 	return false
 }
 
-// UnmarshalAsXML calls xml.Unmarshal() to unmarshal the received payload into the value pointed to by v.
-// If no payload was received a RequestError is returned.  If xml.Unmarshal fails a UnmarshalError is returned.
-func (r *Response) UnmarshalAsXML(v interface{}) error {
-	if len(r.Payload) == 0 {
+// UnmarshalAsJSON calls json.Unmarshal() to unmarshal the received payload into the value pointed to by v.
+// If no payload was received a RequestError is returned.  If json.Unmarshal fails a UnmarshalError is returned.
+func (r *Response) UnmarshalAsJSON(v interface{}) error {
+	if len(r.payload()) == 0 {
 		return newRequestError("missing payload", r)
 	}
 	r.removeBOM()
-	err := xml.Unmarshal(r.Payload, v)
+	err := json.Unmarshal(r.payload(), v)
+	if err != nil {
+		err = fmt.Errorf("unmarshalling type %s: %w", reflect.TypeOf(v).Elem().Name(), err)
+	}
+	return err
+}
+
+// UnmarshalAsXML calls xml.Unmarshal() to unmarshal the received payload into the value pointed to by v.
+// If no payload was received a RequestError is returned.  If xml.Unmarshal fails a UnmarshalError is returned.
+func (r *Response) UnmarshalAsXML(v interface{}) error {
+	if len(r.payload()) == 0 {
+		return newRequestError("missing payload", r)
+	}
+	r.removeBOM()
+	err := xml.Unmarshal(r.payload(), v)
 	if err != nil {
 		err = fmt.Errorf("unmarshalling type %s: %w", reflect.TypeOf(v).Elem().Name(), err)
 	}
@@ -77,7 +100,10 @@ func (r *Response) Drain() {
 // removeBOM removes any byte-order mark prefix from the payload if present.
 func (r *Response) removeBOM() {
 	// UTF8
-	r.Payload = bytes.TrimPrefix(r.Payload, []byte("\xef\xbb\xbf"))
+	trimmed := bytes.TrimPrefix(r.payload(), []byte("\xef\xbb\xbf"))
+	if len(trimmed) < len(r.payload()) {
+		r.Body.(*nopClosingBytesReader).Set(trimmed)
+	}
 }
 
 // RetryAfter returns (non-zero, true) if the response contains a Retry-After header value

@@ -36,18 +36,6 @@ func (r *Response) payload() []byte {
 	return nil
 }
 
-// CheckStatusCode returns a RequestError if the Response's status code isn't one of the specified values.
-func (r *Response) CheckStatusCode(statusCodes ...int) error {
-	if !r.HasStatusCode(statusCodes...) {
-		msg := r.Status
-		if len(r.payload()) > 0 {
-			msg = string(r.payload())
-		}
-		return newRequestError(msg, r)
-	}
-	return nil
-}
-
 // HasStatusCode returns true if the Response's status code is one of the specified values.
 func (r *Response) HasStatusCode(statusCodes ...int) bool {
 	if r == nil {

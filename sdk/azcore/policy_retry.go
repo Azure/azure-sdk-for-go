@@ -59,33 +59,15 @@ var (
 	}
 )
 
-func (o RetryOptions) defaults() RetryOptions {
-	// We assume the following:
-	// 1. o.MaxTries >= 0
-	// 2. o.TryTimeout, o.RetryDelay, and o.MaxRetryDelay >=0
-	// 3. o.RetryDelay <= o.MaxRetryDelay
-	// 4. Both o.RetryDelay and o.MaxRetryDelay must be 0 or neither can be 0
-
-	if len(o.StatusCodes) == 0 {
-		o.StatusCodes = StatusCodesForRetry[:]
+// DefaultRetryOptions returns an instance of RetryOptions initialized with default values.
+func DefaultRetryOptions() RetryOptions {
+	return RetryOptions{
+		StatusCodes:   StatusCodesForRetry[:],
+		MaxTries:      defaultMaxTries,
+		TryTimeout:    1 * time.Minute,
+		RetryDelay:    4 * time.Second,
+		MaxRetryDelay: 120 * time.Second,
 	}
-
-	IfDefault := func(current *time.Duration, desired time.Duration) {
-		if *current == time.Duration(0) {
-			*current = desired
-		}
-	}
-
-	// Set defaults if unspecified
-	if o.MaxTries == 0 {
-		o.MaxTries = defaultMaxTries
-	}
-
-	IfDefault(&o.TryTimeout, 1*time.Minute)
-	IfDefault(&o.RetryDelay, 4*time.Second)
-	IfDefault(&o.MaxRetryDelay, 120*time.Second)
-
-	return o
 }
 
 func (o RetryOptions) calcDelay(try int32) time.Duration { // try is >=1; never 0
@@ -108,8 +90,14 @@ func (o RetryOptions) calcDelay(try int32) time.Duration { // try is >=1; never 
 }
 
 // NewRetryPolicy creates a policy object configured using the specified options.
-func NewRetryPolicy(o RetryOptions) Policy {
-	return &retryPolicy{options: o.defaults()} // Force defaults to be calculated
+// Pass nil to accept the default values; this is the same as passing the result
+// from a call to DefaultRetryOptions().
+func NewRetryPolicy(o *RetryOptions) Policy {
+	if o == nil {
+		def := DefaultRetryOptions()
+		o = &def
+	}
+	return &retryPolicy{options: *o}
 }
 
 type retryPolicy struct {

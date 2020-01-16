@@ -37,6 +37,10 @@ jobs:
     - script: |
         set -e
         go version
+        go get github.com/jstemmer/go-junit-report
+        go get github.com/axw/gocov/gocov
+        go get github.com/AlekSi/gocov-xml
+        go get -u github.com/matm/gocov-html
       workingDirectory: '$(sdkPath)'
       displayName: 'Install Dependencies'
     - script: go vet $(go list ./sdk/...)
@@ -45,7 +49,11 @@ jobs:
     - script: go build -v $(go list ./sdk/...)
       workingDirectory: '$(sdkPath)'
       displayName: 'Build'
-    - script: go test ./sdk/...
+    - script: |
+        go test -race -v -coverprofile=coverage.txt -covermode atomic ./sdk/... 2>&1 | go-junit-report > report.xml
+        gocov convert coverage.txt > coverage.json
+        gocov-xml < coverage.json > coverage.xml
+        gocov-html < coverage.json > coverage.html
       workingDirectory: '$(sdkPath)'
       displayName: 'Run Tests'
     - script: grep -L -r --include \*.go -P "Copyright (\d{4}|\(c\)) Microsoft" ./sdk | tee >&2
@@ -58,3 +66,15 @@ jobs:
       displayName: 'Format Check'
       failOnStderr: true
       condition: succeededOrFailed()
+
+    - task: PublishTestResults@2
+      inputs:
+        testRunner: JUnit
+        testResultsFiles: $(sdkPath)/report.xml
+        failTaskOnFailedTests: true
+
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: $(sdkPath)/coverage.xml
+        additionalCodeCoverageFiles: $(sdkPath)/coverage.html

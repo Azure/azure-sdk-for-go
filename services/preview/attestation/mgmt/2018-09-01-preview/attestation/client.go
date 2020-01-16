@@ -1,7 +1,8 @@
-// Package timeseriesinsights implements the Azure ARM Timeseriesinsights service API version 2017-11-15.
+// Package attestation implements the Azure ARM Attestation service API version 2018-09-01-preview.
 //
-// Time Series Insights client
-package timeseriesinsights
+// Various APIs for managing resources in attestation service. This primarily encompasses per-tenant instance
+// management.
+package attestation
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,11 +26,11 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Timeseriesinsights
+	// DefaultBaseURI is the default URI used for the service Attestation
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Timeseriesinsights.
+// BaseClient is the base client for Attestation.
 type BaseClient struct {
 	autorest.Client
 	BaseURI        string

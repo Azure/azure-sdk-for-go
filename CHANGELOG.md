@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## `v38.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| attestation | 2018-09-01-preview |
+| eventgrid | 2020-04-01-preview |
+| storagesync | 2019-06-01 |
+
 ## `v38.1.0`
 
 ### New Packages

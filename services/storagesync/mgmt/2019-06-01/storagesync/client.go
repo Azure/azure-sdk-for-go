@@ -1,7 +1,7 @@
-// Package timeseriesinsights implements the Azure ARM Timeseriesinsights service API version 2017-11-15.
+// Package storagesync implements the Azure ARM Storagesync service API version 2019-06-01.
 //
-// Time Series Insights client
-package timeseriesinsights
+// Microsoft Storage Sync Service API
+package storagesync
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,11 +25,11 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Timeseriesinsights
+	// DefaultBaseURI is the default URI used for the service Storagesync
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Timeseriesinsights.
+// BaseClient is the base client for Storagesync.
 type BaseClient struct {
 	autorest.Client
 	BaseURI        string

@@ -22,11 +22,18 @@ package storagesync
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2019-02-01/storagesync"
+	original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2019-06-01/storagesync"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ChangeDetectionMode = original.ChangeDetectionMode
+
+const (
+	Default   ChangeDetectionMode = original.Default
+	Recursive ChangeDetectionMode = original.Recursive
 )
 
 type CloudTiering = original.CloudTiering
@@ -68,6 +75,13 @@ const (
 	DownloadHealthNoActivity                               DownloadHealth = original.DownloadHealthNoActivity
 	DownloadHealthSyncBlockedForChangeDetectionPostRestore DownloadHealth = original.DownloadHealthSyncBlockedForChangeDetectionPostRestore
 	DownloadHealthSyncBlockedForRestore                    DownloadHealth = original.DownloadHealthSyncBlockedForRestore
+)
+
+type Health = original.Health
+
+const (
+	HealthError   Health = original.HealthError
+	HealthHealthy Health = original.HealthHealthy
 )
 
 type NameAvailabilityReason = original.NameAvailabilityReason
@@ -171,15 +185,17 @@ type CloudEndpointsPostBackupFuture = original.CloudEndpointsPostBackupFuture
 type CloudEndpointsPostRestoreFuture = original.CloudEndpointsPostRestoreFuture
 type CloudEndpointsPreBackupFuture = original.CloudEndpointsPreBackupFuture
 type CloudEndpointsPreRestoreFuture = original.CloudEndpointsPreRestoreFuture
+type CloudEndpointsTriggerChangeDetectionFuture = original.CloudEndpointsTriggerChangeDetectionFuture
 type Error = original.Error
 type ErrorDetails = original.ErrorDetails
-type FilesNotSyncingError = original.FilesNotSyncingError
 type OperationDisplayInfo = original.OperationDisplayInfo
 type OperationDisplayResource = original.OperationDisplayResource
 type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type OperationEntityListResultIterator = original.OperationEntityListResultIterator
 type OperationEntityListResultPage = original.OperationEntityListResultPage
+type OperationStatus = original.OperationStatus
+type OperationStatusClient = original.OperationStatusClient
 type OperationsClient = original.OperationsClient
 type PostBackupResponse = original.PostBackupResponse
 type PostBackupResponseProperties = original.PostBackupResponseProperties
@@ -201,9 +217,15 @@ type ResourcesMoveInfo = original.ResourcesMoveInfo
 type RestoreFileSpec = original.RestoreFileSpec
 type ServerEndpoint = original.ServerEndpoint
 type ServerEndpointArray = original.ServerEndpointArray
+type ServerEndpointCloudTieringStatus = original.ServerEndpointCloudTieringStatus
 type ServerEndpointCreateParameters = original.ServerEndpointCreateParameters
 type ServerEndpointCreateParametersProperties = original.ServerEndpointCreateParametersProperties
+type ServerEndpointFilesNotSyncingError = original.ServerEndpointFilesNotSyncingError
 type ServerEndpointProperties = original.ServerEndpointProperties
+type ServerEndpointRecallError = original.ServerEndpointRecallError
+type ServerEndpointRecallStatus = original.ServerEndpointRecallStatus
+type ServerEndpointSyncActivityStatus = original.ServerEndpointSyncActivityStatus
+type ServerEndpointSyncSessionStatus = original.ServerEndpointSyncSessionStatus
 type ServerEndpointSyncStatus = original.ServerEndpointSyncStatus
 type ServerEndpointUpdateParameters = original.ServerEndpointUpdateParameters
 type ServerEndpointUpdateProperties = original.ServerEndpointUpdateProperties
@@ -219,14 +241,13 @@ type ServiceProperties = original.ServiceProperties
 type ServiceUpdateParameters = original.ServiceUpdateParameters
 type ServicesClient = original.ServicesClient
 type SubscriptionState = original.SubscriptionState
-type SyncActivityStatus = original.SyncActivityStatus
 type SyncGroup = original.SyncGroup
 type SyncGroupArray = original.SyncGroupArray
 type SyncGroupCreateParameters = original.SyncGroupCreateParameters
 type SyncGroupProperties = original.SyncGroupProperties
 type SyncGroupsClient = original.SyncGroupsClient
-type SyncSessionStatus = original.SyncSessionStatus
 type TrackedResource = original.TrackedResource
+type TriggerChangeDetectionParameters = original.TriggerChangeDetectionParameters
 type TriggerRolloverRequest = original.TriggerRolloverRequest
 type Workflow = original.Workflow
 type WorkflowArray = original.WorkflowArray
@@ -247,6 +268,12 @@ func NewOperationEntityListResultIterator(page OperationEntityListResultPage) Op
 }
 func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
 	return original.NewOperationEntityListResultPage(getNextPage)
+}
+func NewOperationStatusClient(subscriptionID string) OperationStatusClient {
+	return original.NewOperationStatusClient(subscriptionID)
+}
+func NewOperationStatusClientWithBaseURI(baseURI string, subscriptionID string) OperationStatusClient {
+	return original.NewOperationStatusClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -287,6 +314,9 @@ func NewWorkflowsClient(subscriptionID string) WorkflowsClient {
 func NewWorkflowsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowsClient {
 	return original.NewWorkflowsClientWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleChangeDetectionModeValues() []ChangeDetectionMode {
+	return original.PossibleChangeDetectionModeValues()
+}
 func PossibleCloudTiering1Values() []CloudTiering1 {
 	return original.PossibleCloudTiering1Values()
 }
@@ -301,6 +331,9 @@ func PossibleCombinedHealthValues() []CombinedHealth {
 }
 func PossibleDownloadHealthValues() []DownloadHealth {
 	return original.PossibleDownloadHealthValues()
+}
+func PossibleHealthValues() []Health {
+	return original.PossibleHealthValues()
 }
 func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 	return original.PossibleNameAvailabilityReasonValues()

@@ -23,8 +23,8 @@ func TestResponseUnmarshalXML(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if err := resp.CheckStatusCode(http.StatusOK); err != nil {
-		t.Fatalf("unexpected status code error: %v", err)
+	if !resp.HasStatusCode(http.StatusOK) {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
 	var tx testXML
 	if err := resp.UnmarshalAsXML(&tx); err != nil {
@@ -44,15 +44,8 @@ func TestResponseFailureStatusCode(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if err = resp.CheckStatusCode(http.StatusOK); err == nil {
-		t.Fatal("unexpected nil status code error")
-	}
-	re, ok := err.(RequestError)
-	if !ok {
-		t.Fatal("expected RequestError type")
-	}
-	if re.Response().StatusCode != http.StatusForbidden {
-		t.Fatal("unexpected response")
+	if resp.HasStatusCode(http.StatusOK) {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
 }
 
@@ -65,8 +58,8 @@ func TestResponseUnmarshalJSON(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if err := resp.CheckStatusCode(http.StatusOK); err != nil {
-		t.Fatalf("unexpected status code error: %v", err)
+	if !resp.HasStatusCode(http.StatusOK) {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
 	var tx testJSON
 	if err := resp.UnmarshalAsJSON(&tx); err != nil {
@@ -86,8 +79,8 @@ func TestResponseUnmarshalJSONNoBody(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if err := resp.CheckStatusCode(http.StatusOK); err != nil {
-		t.Fatalf("unexpected status code error: %v", err)
+	if !resp.HasStatusCode(http.StatusOK) {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
 	if err := resp.UnmarshalAsJSON(nil); err != nil {
 		t.Fatalf("unexpected error unmarshalling: %v", err)
@@ -103,8 +96,8 @@ func TestResponseUnmarshalXMLNoBody(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if err := resp.CheckStatusCode(http.StatusOK); err != nil {
-		t.Fatalf("unexpected status code error: %v", err)
+	if !resp.HasStatusCode(http.StatusOK) {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
 	if err := resp.UnmarshalAsXML(nil); err != nil {
 		t.Fatalf("unexpected error unmarshalling: %v", err)

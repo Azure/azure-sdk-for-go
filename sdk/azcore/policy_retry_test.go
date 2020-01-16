@@ -17,13 +17,17 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-const retryDelay = 20 * time.Millisecond
+func testRetryOptions() *RetryOptions {
+	def := DefaultRetryOptions()
+	def.RetryDelay = 20 * time.Millisecond
+	return &def
+}
 
 func TestRetryPolicySuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
-	pl := NewPipeline(srv, NewRetryPolicy(RetryOptions{}))
+	pl := NewPipeline(srv, NewRetryPolicy(nil))
 	req := NewRequest(http.MethodGet, srv.URL())
 	body := newRewindTrackingBody("stuff")
 	req.SetBody(body)
@@ -46,7 +50,7 @@ func TestRetryPolicyFailOnStatusCode(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusInternalServerError))
-	pl := NewPipeline(srv, NewRetryPolicy(RetryOptions{RetryDelay: retryDelay}))
+	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
 	req := NewRequest(http.MethodGet, srv.URL())
 	body := newRewindTrackingBody("stuff")
 	req.SetBody(body)
@@ -74,7 +78,7 @@ func TestRetryPolicySuccessWithRetry(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
 	srv.AppendResponse()
-	pl := NewPipeline(srv, NewRetryPolicy(RetryOptions{RetryDelay: retryDelay}))
+	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
 	req := NewRequest(http.MethodGet, srv.URL())
 	body := newRewindTrackingBody("stuff")
 	req.SetBody(body)
@@ -101,7 +105,7 @@ func TestRetryPolicyFailOnError(t *testing.T) {
 	defer close()
 	fakeErr := errors.New("bogus error")
 	srv.SetError(fakeErr)
-	pl := NewPipeline(srv, NewRetryPolicy(RetryOptions{RetryDelay: retryDelay}))
+	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
 	req := NewRequest(http.MethodPost, srv.URL())
 	body := newRewindTrackingBody("stuff")
 	req.SetBody(body)
@@ -130,7 +134,7 @@ func TestRetryPolicySuccessWithRetryComplex(t *testing.T) {
 	srv.AppendError(errors.New("bogus error"))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
-	pl := NewPipeline(srv, NewRetryPolicy(RetryOptions{RetryDelay: retryDelay}))
+	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
 	req := NewRequest(http.MethodGet, srv.URL())
 	body := newRewindTrackingBody("stuff")
 	req.SetBody(body)
@@ -156,7 +160,7 @@ func TestRetryPolicyRequestTimedOut(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetError(errors.New("bogus error"))
-	pl := NewPipeline(srv, NewRetryPolicy(RetryOptions{}))
+	pl := NewPipeline(srv, NewRetryPolicy(nil))
 	req := NewRequest(http.MethodPost, srv.URL())
 	body := newRewindTrackingBody("stuff")
 	req.SetBody(body)
@@ -195,9 +199,7 @@ func TestRetryPolicyIsNotRetriable(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
 	srv.AppendError(theErr)
-	pl := NewPipeline(srv, NewRetryPolicy(RetryOptions{
-		RetryDelay: retryDelay,
-	}))
+	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
 	_, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
 	if err == nil {
 		t.Fatal("unexpected nil error")

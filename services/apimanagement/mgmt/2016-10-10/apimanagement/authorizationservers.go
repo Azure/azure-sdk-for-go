@@ -36,7 +36,9 @@ func NewAuthorizationServersClient(subscriptionID string) AuthorizationServersCl
 	return NewAuthorizationServersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAuthorizationServersClientWithBaseURI creates an instance of the AuthorizationServersClient client.
+// NewAuthorizationServersClientWithBaseURI creates an instance of the AuthorizationServersClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewAuthorizationServersClientWithBaseURI(baseURI string, subscriptionID string) AuthorizationServersClient {
 	return AuthorizationServersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

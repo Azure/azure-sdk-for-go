@@ -36,7 +36,8 @@ func NewGroupUsersClient(subscriptionID string) GroupUsersClient {
 	return NewGroupUsersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewGroupUsersClientWithBaseURI creates an instance of the GroupUsersClient client.
+// NewGroupUsersClientWithBaseURI creates an instance of the GroupUsersClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewGroupUsersClientWithBaseURI(baseURI string, subscriptionID string) GroupUsersClient {
 	return GroupUsersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

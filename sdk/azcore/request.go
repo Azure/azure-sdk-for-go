@@ -8,6 +8,7 @@ package azcore
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -18,7 +19,8 @@ import (
 )
 
 const (
-	contentTypeAppXML = "application/xml"
+	contentTypeAppJSON = "application/json"
+	contentTypeAppXML  = "application/xml"
 )
 
 // Request is an abstraction over the creation of an HTTP request as it passes through the pipeline.
@@ -83,6 +85,17 @@ func (req *Request) Next(ctx context.Context) (*Response, error) {
 		nextReq.qp = nil
 	}
 	return nextPolicy.Do(ctx, &nextReq)
+}
+
+// MarshalAsJSON calls json.Marshal() to get the JSON encoding of v then calls SetBody.
+// If json.Marshal fails a MarshalError is returned.  Any error from SetBody is returned.
+func (req *Request) MarshalAsJSON(v interface{}) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return fmt.Errorf("error marshalling type %s: %w", reflect.TypeOf(v).Name(), err)
+	}
+	req.Header.Set(HeaderContentType, contentTypeAppJSON)
+	return req.SetBody(NopCloser(bytes.NewReader(b)))
 }
 
 // MarshalAsXML calls xml.Marshal() to get the XML encoding of v then calls SetBody.

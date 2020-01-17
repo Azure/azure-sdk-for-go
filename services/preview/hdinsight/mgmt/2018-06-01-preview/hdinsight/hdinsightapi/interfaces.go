@@ -31,7 +31,9 @@ type ClustersClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.Cluster, err error)
 	GetGatewaySettings(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.GatewaySettings, err error)
 	List(ctx context.Context) (result hdinsight.ClusterListResultPage, err error)
+	ListComplete(ctx context.Context) (result hdinsight.ClusterListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result hdinsight.ClusterListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result hdinsight.ClusterListResultIterator, err error)
 	Resize(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterResizeParameters) (result hdinsight.ClustersResizeFuture, err error)
 	RotateDiskEncryptionKey(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterDiskEncryptionParameters) (result hdinsight.ClustersRotateDiskEncryptionKeyFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterPatchParameters) (result hdinsight.Cluster, err error)
@@ -46,6 +48,7 @@ type ApplicationsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, clusterName string, applicationName string) (result hdinsight.ApplicationsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, clusterName string, applicationName string) (result hdinsight.Application, err error)
 	ListByCluster(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ApplicationListResultPage, err error)
+	ListByClusterComplete(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ApplicationListResultIterator, err error)
 }
 
 var _ ApplicationsClientAPI = (*hdinsight.ApplicationsClient)(nil)
@@ -85,6 +88,7 @@ type ScriptActionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, clusterName string, scriptName string) (result autorest.Response, err error)
 	GetExecutionDetail(ctx context.Context, resourceGroupName string, clusterName string, scriptExecutionID string) (result hdinsight.RuntimeScriptActionDetail, err error)
 	ListByCluster(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ScriptActionsListPage, err error)
+	ListByClusterComplete(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ScriptActionsListIterator, err error)
 }
 
 var _ ScriptActionsClientAPI = (*hdinsight.ScriptActionsClient)(nil)
@@ -92,6 +96,7 @@ var _ ScriptActionsClientAPI = (*hdinsight.ScriptActionsClient)(nil)
 // ScriptExecutionHistoryClientAPI contains the set of methods on the ScriptExecutionHistoryClient type.
 type ScriptExecutionHistoryClientAPI interface {
 	ListByCluster(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ScriptActionExecutionHistoryListPage, err error)
+	ListByClusterComplete(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ScriptActionExecutionHistoryListIterator, err error)
 	Promote(ctx context.Context, resourceGroupName string, clusterName string, scriptExecutionID string) (result autorest.Response, err error)
 }
 
@@ -100,6 +105,7 @@ var _ ScriptExecutionHistoryClientAPI = (*hdinsight.ScriptExecutionHistoryClient
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result hdinsight.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result hdinsight.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*hdinsight.OperationsClient)(nil)

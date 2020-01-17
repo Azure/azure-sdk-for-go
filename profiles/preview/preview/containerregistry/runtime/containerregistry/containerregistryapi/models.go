@@ -19,6 +19,12 @@
 
 package containerregistryapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/runtime/2019-07/containerregistry/containerregistryapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/runtime/2019-08-15-preview/containerregistry/containerregistryapi"
 
-type BaseClientAPI = original.BaseClientAPI
+type AccessTokensClientAPI = original.AccessTokensClientAPI
+type BlobClientAPI = original.BlobClientAPI
+type ManifestsClientAPI = original.ManifestsClientAPI
+type RefreshTokensClientAPI = original.RefreshTokensClientAPI
+type RepositoryClientAPI = original.RepositoryClientAPI
+type TagClientAPI = original.TagClientAPI
+type V2SupportClientAPI = original.V2SupportClientAPI

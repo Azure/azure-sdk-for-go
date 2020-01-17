@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os/exec"
 	"regexp"
@@ -77,15 +78,15 @@ func (c *CliCredentialClient) authenticate(ctx context.Context, scopes []string,
 		if err != nil {
 			return nil, err
 		} else if isWinError || isOtherOsError {
-			return nil, &AuthenticationFailedError{msg: AzureCLINotInstalled}
+			return nil, &AuthenticationFailedError{inner: errors.New(AzureCLINotInstalled)}
 		}
 
 		// Is user log in or not
 		if isLoginError {
-			return nil, &AuthenticationFailedError{msg: AzNotLogIn}
+			return nil, &AuthenticationFailedError{inner: errors.New(AzNotLogIn)}
 		}
 
-		return nil, &AuthenticationFailedError{msg: errout}
+		return nil, &AuthenticationFailedError{inner: errors.New(errout)}
 	}
 
 	return c.createAccessToken(out)

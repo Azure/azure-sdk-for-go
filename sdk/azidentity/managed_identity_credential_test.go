@@ -47,7 +47,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceLive(t *testing.T) {
 	}
 }
 
-func TestManagedIdentityCredential_GetTokenInVMLive(t *testing.T) {
+func TestManagedIdentityCredential_GetTokenInVMLiveStorage(t *testing.T) {
 	if msiEndpointEnv := os.Getenv("MSI_ENDPOINT"); len(msiEndpointEnv) != 0 {
 		t.Skip()
 	}
@@ -67,6 +67,28 @@ func TestManagedIdentityCredential_GetTokenInVMLive(t *testing.T) {
 		fmt.Print("err")
 		fmt.Print(err)
 		fmt.Print("error")
+		t.Fatalf("Received an error when attempting to retrieve a token. Error: %s", err.Error())
+	}
+}
+
+func TestManagedIdentityCredential_GetTokenInVMLive(t *testing.T) {
+	// this test is only meant to for live test automation that tries to authenticate with to keyvault
+	if msiEndpointEnv := os.Getenv("MSI_ENDPOINT"); len(msiEndpointEnv) != 0 {
+		t.Skip()
+	}
+	if msiSecretEnv := os.Getenv(msiSecretEnvironemntVariable); len(msiSecretEnv) != 0 {
+		t.Skip()
+	}
+	msiCred := NewManagedIdentityCredential(clientID, nil)
+	msiEndpoint, err := msiCred.client.getMSIType(context.Background())
+	if err != nil {
+		t.Skip()
+	}
+	if msiEndpoint != msiType(1) {
+		t.Skip()
+	}
+	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{"https://vault.azure.net"}})
+	if err != nil {
 		t.Fatalf("Received an error when attempting to retrieve a token. Error: %s", err.Error())
 	}
 }

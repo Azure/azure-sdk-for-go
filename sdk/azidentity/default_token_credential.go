@@ -13,12 +13,14 @@ const (
 type DefaultTokenCredentialOptions struct {
 	ExcludeEnvironmentCredential bool
 	ExcludeMSICredential         bool
+	ExcludeCliCredential         bool
 }
 
 // NewDefaultTokenCredential provides a default ChainedTokenCredential configuration for applications that will be deployed to Azure.  The following credential
 // types will be tried, in order:
 // - EnvironmentCredential
 // - ManagedIdentityCredential
+// - CliCredential
 // Consult the documentation of these credential types for more information on how they attempt authentication.
 func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*ChainedTokenCredential, error) {
 	var creds []azcore.TokenCredential
@@ -41,6 +43,15 @@ func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*Chained
 		msiCred, err := NewManagedIdentityCredential("", nil)
 		if err == nil {
 			creds = append(creds, msiCred)
+		} else {
+			errMsg += err.Error()
+		}
+	}
+
+	if !options.ExcludeCliCredential {
+		cliCred, err := NewCliCredential(nil)
+		if err == nil {
+			creds = append(creds, cliCred)
 		} else {
 			errMsg += err.Error()
 		}

@@ -35,7 +35,9 @@ func NewCustomerSubscriptionsClient(subscriptionID string) CustomerSubscriptions
 	return NewCustomerSubscriptionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCustomerSubscriptionsClientWithBaseURI creates an instance of the CustomerSubscriptionsClient client.
+// NewCustomerSubscriptionsClientWithBaseURI creates an instance of the CustomerSubscriptionsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewCustomerSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) CustomerSubscriptionsClient {
 	return CustomerSubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

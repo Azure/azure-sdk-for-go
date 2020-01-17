@@ -34,7 +34,7 @@ type cliAccessToken struct {
 }
 
 type ShellClient interface {
-	executeCliCommand(command string) ([]byte, string, error)
+	getCliAccessToken(command string) ([]byte, string, error)
 }
 
 // CliCredentialClient provides the base for authenticating with Cli Credential.
@@ -65,8 +65,7 @@ func (c *CliCredentialClient) authenticate(ctx context.Context, scopes []string,
 	}
 
 	// Execute Azure CLI command(az account get-access-token --output json --resource) to get a token to authenticate
-	command := "az account get-access-token --output json --resource " + resource
-	out, errout, err := credentialClient.executeCliCommand(command)
+	out, errout, err := credentialClient.getCliAccessToken(resource)
 
 	// Determining Azure Cli errors
 	if err != nil {
@@ -92,7 +91,10 @@ func (c *CliCredentialClient) authenticate(ctx context.Context, scopes []string,
 	return c.createAccessToken(out)
 }
 
-func (c *CliCredentialClient) executeCliCommand(command string) ([]byte, string, error) {
+func (c *CliCredentialClient) getCliAccessToken(resource string) ([]byte, string, error) {
+	// The command that Azure Cli would be run
+	command := "az account get-access-token --output json --resource " + resource
+
 	var stderr bytes.Buffer
 	var stdout bytes.Buffer
 	var cmd *exec.Cmd

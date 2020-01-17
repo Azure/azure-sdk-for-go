@@ -16,26 +16,11 @@ const (
 	mockScope     = "https://default.mock.auth.scope/.default"
 )
 
-func TestCliCredential_GetTokenSuccessLive(t *testing.T) {
-	cred, err := NewCliCredential(nil)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
-
-	accessToken, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scopeResource}})
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %v", err)
-	}
-	if accessToken == nil {
-		t.Fatalf("Expected an Access Token but not received")
-	}
-}
-
 type getTokenMock struct {
 }
 
-// Mock func executeCliCommand return resulting
-func (c *getTokenMock) executeCliCommand(command string) ([]byte, string, error) {
+// Mock func getCliAccessToken return resulting
+func (c *getTokenMock) getCliAccessToken(command string) ([]byte, string, error) {
 	return []byte(" {\"accessToken\":\"mocktoken\" , " +
 		"\"expiresOn\": \"2007-01-01 01:01:01.079627\"," +
 		"\"subscription\": \"mocksub\"," +
@@ -46,8 +31,8 @@ func (c *getTokenMock) executeCliCommand(command string) ([]byte, string, error)
 func TestCliCredential_GetTokenSuccessMock(t *testing.T) {
 	var shellClientMock ShellClient
 	shellClientMock = &getTokenMock{}
-	var options *CliCredentialOption
 
+	var options *CliCredentialOption
 	options = &CliCredentialOption{shellClientOption: shellClientMock}
 	cred, err := NewCliCredential(options)
 	if err != nil {
@@ -66,7 +51,7 @@ func TestCliCredential_GetTokenSuccessMock(t *testing.T) {
 type azNotLoginMock struct {
 }
 
-func (c *azNotLoginMock) executeCliCommand(command string) ([]byte, string, error) {
+func (c *azNotLoginMock) getCliAccessToken(command string) ([]byte, string, error) {
 	return nil, "ERROR: Please run 'az login'", errors.New("mockError")
 }
 
@@ -96,7 +81,7 @@ func TestCliCredential_AzNotLogin(t *testing.T) {
 type winAzureCliNotInstalledMock struct {
 }
 
-func (c *winAzureCliNotInstalledMock) executeCliCommand(command string) ([]byte, string, error) {
+func (c *winAzureCliNotInstalledMock) getCliAccessToken(command string) ([]byte, string, error) {
 	return nil, "'az' is not recognized", errors.New("mockError")
 }
 
@@ -126,7 +111,7 @@ func TestCliCredential_WinAzureCLINotInstalled(t *testing.T) {
 type linuxAzureCliNotInstalledMock struct {
 }
 
-func (c *linuxAzureCliNotInstalledMock) executeCliCommand(command string) ([]byte, string, error) {
+func (c *linuxAzureCliNotInstalledMock) getCliAccessToken(command string) ([]byte, string, error) {
 	return nil, "az: command not found", errors.New("mockError")
 }
 
@@ -156,7 +141,7 @@ func TestCliCredential_LinuxAzureCLINotInstalled(t *testing.T) {
 type macAzureCliNotInstalledMock struct {
 }
 
-func (c *macAzureCliNotInstalledMock) executeCliCommand(command string) ([]byte, string, error) {
+func (c *macAzureCliNotInstalledMock) getCliAccessToken(command string) ([]byte, string, error) {
 	return nil, "az: not found", errors.New("mockError")
 }
 

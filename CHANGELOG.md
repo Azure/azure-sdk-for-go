@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## `v38.3.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| containerregistry | 2019-08-15-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| hdinsight | 2018-06-01-preview |
+| policy | 2019-09-01 |
+
 ## `v38.2.0`
 
 ### New Packages

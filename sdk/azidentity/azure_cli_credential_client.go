@@ -19,6 +19,7 @@ import (
 )
 
 const (
+	DefaultSuffix        = "/.default"
 	AzureCLINotInstalled = "Azure CLI not installed"
 	AzNotLogIn           = "ERROR: Please run 'az login'"
 	WinAzureCLIError     = "'az' is not recognized"
@@ -51,12 +52,14 @@ func NewAzureCliCredentialClient() *AzureCliCredentialClient {
 // ctx: The current request context
 // scopes: The scopes required for the token
 func (c *AzureCliCredentialClient) authenticate(ctx context.Context, scopes []string, credentialClient ShellClient) (*azcore.AccessToken, error) {
+	// covert the scopes to a resource string
+	resource, err := c.scopeToResource(scopes)
+	if err != nil {
+		return nil, err
+	}
 
 	// Validate the resource to make sure it doesn't include shell-meta characters since it gets sent as a command line argument to Azure Cli
-	scopeToResource := strings.Join(scopes, " ")
-	resource := scopeToResource[0:strings.Index(scopeToResource, ".default")]
 	isResourceMatch, error := regexp.MatchString("^[0-9a-zA-Z-.:/]+$", resource)
-
 	if error != nil {
 		return nil, error
 	}
@@ -139,4 +142,20 @@ func (c *AzureCliCredentialClient) createAccessToken(output []byte) (*azcore.Acc
 	accessToken.Token = token.Token
 
 	return accessToken, err
+}
+
+func (c *AzureCliCredentialClient) scopeToResource(scopes []string) (string, error) {
+	if scopes == nil {
+		return "", fmt.Errorf("The parameter 'scopes' cannot be nil")
+	}
+	if len(scopes) != 1 {
+		return "", fmt.Errorf("To convert to a resource string the specified array must be exactly length 1: %v", scopes)
+	}
+	if !strings.HasSuffix(scopes[0], DefaultSuffix) {
+		return scopes[0], nil
+	}
+
+	resource := scopes[0][0:strings.Index(scopes[0], ".default")]
+
+	return resource, nil
 }

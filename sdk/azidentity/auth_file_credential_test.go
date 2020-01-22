@@ -16,7 +16,7 @@ const (
 )
 
 func TestAuthFileCredential_BadSdkAuthFilePathThrowsDuringGetToken(t *testing.T) {
-	cred, err := NewAuthFileCredential("Bougs*File*Path")
+	cred, err := NewAuthFileCredential("Bougs*File*Path", nil)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}

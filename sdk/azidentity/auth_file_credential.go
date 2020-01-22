@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/url"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -29,24 +28,25 @@ type authFileAccesstoken struct {
 
 // Enables authentication to Azure Active Directory using configuration information stored Azure SDK Auth File.
 type AuthFileCredential struct {
-	filePath   string
-	credential azcore.TokenCredential
+	filePath        string
+	credential      azcore.TokenCredential
+	authfileoptions *TokenCredentialOptions
 }
 
 // Creates an instance of the SdkAuthFileCredential class based on information in given SDK Auth file.
-func NewAuthFileCredential(filePath string) (*AuthFileCredential, error) {
+func NewAuthFileCredential(filePath string, options *TokenCredentialOptions) (*AuthFileCredential, error) {
 	if filePath == "" {
 		return nil, fmt.Errorf("The parameter 'filePath' must set a value")
 	}
 
-	return &AuthFileCredential{filePath: filePath}, nil
+	return &AuthFileCredential{filePath: filePath, authfileoptions: options}, nil
 }
 
 // Obtains a token from the Azure Active Directory service, using the specified client detailed specified in the SDK Auth file.
 func (c *AuthFileCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	_, err := c.ensureCredential()
 	if err != nil {
-		return nil, &AuthenticationFailedError{msg: "Error parsing SDK Auth File: " + err.Error()}
+		return nil, &AuthenticationFailedError{msg: "Error parsing SDK Auth File", inner: err}
 	}
 
 	return c.credential.GetToken(ctx, opts)
@@ -80,7 +80,7 @@ func (c *AuthFileCredential) ensureCredential() (azcore.TokenCredential, error) 
 func (c *AuthFileCredential) parseCredentialsFile(filePath string) ([]byte, error) {
 	authData, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	return authData, nil
@@ -107,8 +107,9 @@ func (c *AuthFileCredential) buildCredentialForCredentialsFile(authData []byte) 
 	// Parse string activeDirectoryEndpointUrl to a Url.
 	AuthorityHost, err := url.Parse(activeDirectoryEndpointUrl)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse activeDirectoryEndpointUrl in auth file: %w", err)
 	}
+	c.authfileoptions.AuthorityHost = AuthorityHost
 
-	return NewClientSecretCredential(tenantId, clientId, clientSecret, &TokenCredentialOptions{AuthorityHost: AuthorityHost})
+	return NewClientSecretCredential(tenantId, clientId, clientSecret, c.authfileoptions)
 }

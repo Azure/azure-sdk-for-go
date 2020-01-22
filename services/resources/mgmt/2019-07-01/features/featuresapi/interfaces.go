@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result features.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result features.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*features.OperationsClient)(nil)
@@ -64,10 +65,15 @@ type DeploymentsClientAPI interface {
 	GetAtSubscriptionScope(ctx context.Context, deploymentName string) (result features.DeploymentExtended, err error)
 	GetAtTenantScope(ctx context.Context, deploymentName string) (result features.DeploymentExtended, err error)
 	ListAtManagementGroupScope(ctx context.Context, groupID string, filter string, top *int32) (result features.DeploymentListResultPage, err error)
+	ListAtManagementGroupScopeComplete(ctx context.Context, groupID string, filter string, top *int32) (result features.DeploymentListResultIterator, err error)
 	ListAtScope(ctx context.Context, scope string, filter string, top *int32) (result features.DeploymentListResultPage, err error)
+	ListAtScopeComplete(ctx context.Context, scope string, filter string, top *int32) (result features.DeploymentListResultIterator, err error)
 	ListAtSubscriptionScope(ctx context.Context, filter string, top *int32) (result features.DeploymentListResultPage, err error)
+	ListAtSubscriptionScopeComplete(ctx context.Context, filter string, top *int32) (result features.DeploymentListResultIterator, err error)
 	ListAtTenantScope(ctx context.Context, filter string, top *int32) (result features.DeploymentListResultPage, err error)
+	ListAtTenantScopeComplete(ctx context.Context, filter string, top *int32) (result features.DeploymentListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32) (result features.DeploymentListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32) (result features.DeploymentListResultIterator, err error)
 	Validate(ctx context.Context, resourceGroupName string, deploymentName string, parameters features.Deployment) (result features.DeploymentValidateResult, err error)
 	ValidateAtManagementGroupScope(ctx context.Context, groupID string, deploymentName string, parameters features.Deployment) (result features.DeploymentValidateResult, err error)
 	ValidateAtScope(ctx context.Context, scope string, deploymentName string, parameters features.Deployment) (result features.DeploymentValidateResult, err error)
@@ -84,7 +90,9 @@ type ProvidersClientAPI interface {
 	Get(ctx context.Context, resourceProviderNamespace string, expand string) (result features.Provider, err error)
 	GetAtTenantScope(ctx context.Context, resourceProviderNamespace string, expand string) (result features.Provider, err error)
 	List(ctx context.Context, top *int32, expand string) (result features.ProviderListResultPage, err error)
+	ListComplete(ctx context.Context, top *int32, expand string) (result features.ProviderListResultIterator, err error)
 	ListAtTenantScope(ctx context.Context, top *int32, expand string) (result features.ProviderListResultPage, err error)
+	ListAtTenantScopeComplete(ctx context.Context, top *int32, expand string) (result features.ProviderListResultIterator, err error)
 	Register(ctx context.Context, resourceProviderNamespace string) (result features.Provider, err error)
 	Unregister(ctx context.Context, resourceProviderNamespace string) (result features.Provider, err error)
 }
@@ -102,7 +110,9 @@ type ResourcesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, APIVersion string) (result features.GenericResource, err error)
 	GetByID(ctx context.Context, resourceID string, APIVersion string) (result features.GenericResource, err error)
 	List(ctx context.Context, filter string, expand string, top *int32) (result features.ResourceListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, expand string, top *int32) (result features.ResourceListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, expand string, top *int32) (result features.ResourceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, expand string, top *int32) (result features.ResourceListResultIterator, err error)
 	MoveResources(ctx context.Context, sourceResourceGroupName string, parameters features.ResourcesMoveInfo) (result features.ResourcesMoveResourcesFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, APIVersion string, parameters features.GenericResource) (result features.ResourcesUpdateFuture, err error)
 	UpdateByID(ctx context.Context, resourceID string, APIVersion string, parameters features.GenericResource) (result features.ResourcesUpdateByIDFuture, err error)
@@ -119,6 +129,7 @@ type ResourceGroupsClientAPI interface {
 	ExportTemplate(ctx context.Context, resourceGroupName string, parameters features.ExportTemplateRequest) (result features.ResourceGroupExportResult, err error)
 	Get(ctx context.Context, resourceGroupName string) (result features.ResourceGroup, err error)
 	List(ctx context.Context, filter string, top *int32) (result features.ResourceGroupListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, top *int32) (result features.ResourceGroupListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, parameters features.ResourceGroupPatchable) (result features.ResourceGroup, err error)
 }
 
@@ -131,6 +142,7 @@ type TagsClientAPI interface {
 	Delete(ctx context.Context, tagName string) (result autorest.Response, err error)
 	DeleteValue(ctx context.Context, tagName string, tagValue string) (result autorest.Response, err error)
 	List(ctx context.Context) (result features.TagsListResultPage, err error)
+	ListComplete(ctx context.Context) (result features.TagsListResultIterator, err error)
 }
 
 var _ TagsClientAPI = (*features.TagsClient)(nil)
@@ -143,10 +155,15 @@ type DeploymentOperationsClientAPI interface {
 	GetAtSubscriptionScope(ctx context.Context, deploymentName string, operationID string) (result features.DeploymentOperation, err error)
 	GetAtTenantScope(ctx context.Context, deploymentName string, operationID string) (result features.DeploymentOperation, err error)
 	List(ctx context.Context, resourceGroupName string, deploymentName string, top *int32) (result features.DeploymentOperationsListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, deploymentName string, top *int32) (result features.DeploymentOperationsListResultIterator, err error)
 	ListAtManagementGroupScope(ctx context.Context, groupID string, deploymentName string, top *int32) (result features.DeploymentOperationsListResultPage, err error)
+	ListAtManagementGroupScopeComplete(ctx context.Context, groupID string, deploymentName string, top *int32) (result features.DeploymentOperationsListResultIterator, err error)
 	ListAtScope(ctx context.Context, scope string, deploymentName string, top *int32) (result features.DeploymentOperationsListResultPage, err error)
+	ListAtScopeComplete(ctx context.Context, scope string, deploymentName string, top *int32) (result features.DeploymentOperationsListResultIterator, err error)
 	ListAtSubscriptionScope(ctx context.Context, deploymentName string, top *int32) (result features.DeploymentOperationsListResultPage, err error)
+	ListAtSubscriptionScopeComplete(ctx context.Context, deploymentName string, top *int32) (result features.DeploymentOperationsListResultIterator, err error)
 	ListAtTenantScope(ctx context.Context, deploymentName string, top *int32) (result features.DeploymentOperationsListResultPage, err error)
+	ListAtTenantScopeComplete(ctx context.Context, deploymentName string, top *int32) (result features.DeploymentOperationsListResultIterator, err error)
 }
 
 var _ DeploymentOperationsClientAPI = (*features.DeploymentOperationsClient)(nil)

@@ -49,12 +49,9 @@ func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*Chained
 	}
 
 	if !options.ExcludeCliCredential {
-		cliCred, err := NewAzureCliCredential(nil)
-		if err == nil {
-			creds = append(creds, cliCred)
-		} else {
-			errMsg += err.Error()
-		}
+		cliCred := NewAzureCLICredential(nil)
+		creds = append(creds, cliCred)
+
 	}
 
 	if len(creds) == 0 {

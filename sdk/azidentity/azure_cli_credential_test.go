@@ -19,8 +19,8 @@ const (
 type getTokenMock struct {
 }
 
-// Mock func getAzureCliAccessToken return resulting
-func (c *getTokenMock) getAzureCliAccessToken(command string) ([]byte, string, error) {
+// Mock func getAzureCLIAccessToken return resulting
+func (c *getTokenMock) getAzureCLIAccessToken(command string) ([]byte, string, error) {
 	return []byte(" {\"accessToken\":\"mocktoken\" , " +
 		"\"expiresOn\": \"2007-01-01 01:01:01.079627\"," +
 		"\"subscription\": \"mocksub\"," +
@@ -28,16 +28,13 @@ func (c *getTokenMock) getAzureCliAccessToken(command string) ([]byte, string, e
 		"\"tokenType\": \"mocktype\"}"), "", nil
 }
 
-func TestCliCredential_GetTokenSuccessMock(t *testing.T) {
-	var shellClientMock ShellClient
+func TestCLICredential_GetTokenSuccessMock(t *testing.T) {
+	var shellClientMock shellClient
 	shellClientMock = &getTokenMock{}
 
-	var options *AzureCliCredentialOption
-	options = &AzureCliCredentialOption{shellClientOption: shellClientMock}
-	cred, err := NewAzureCliCredential(options)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
+	var options *AzureCLICredentialOption
+	options = &AzureCLICredentialOption{shellClientOption: shellClientMock}
+	cred := NewAzureCLICredential(options)
 
 	accessToken, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{mockScope}})
 	if err != nil {
@@ -51,21 +48,19 @@ func TestCliCredential_GetTokenSuccessMock(t *testing.T) {
 type azNotLoginMock struct {
 }
 
-func (c *azNotLoginMock) getAzureCliAccessToken(command string) ([]byte, string, error) {
+func (c *azNotLoginMock) getAzureCLIAccessToken(command string) ([]byte, string, error) {
 	return nil, "ERROR: Please run 'az login'", errors.New("mockError")
 }
 
-func TestCliCredential_AzNotLogin(t *testing.T) {
-	var shellClientMock ShellClient
+func TestCLICredential_AzNotLogin(t *testing.T) {
+	var err error
+	var shellClientMock shellClient
 	shellClientMock = &azNotLoginMock{}
 
-	var options *AzureCliCredentialOption
-	options = &AzureCliCredentialOption{shellClientOption: shellClientMock}
+	var options *AzureCLICredentialOption
+	options = &AzureCLICredentialOption{shellClientOption: shellClientMock}
 
-	cred, err := NewAzureCliCredential(options)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
+	cred := NewAzureCLICredential(options)
 
 	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{mockScope}})
 	if err == nil {
@@ -78,24 +73,22 @@ func TestCliCredential_AzNotLogin(t *testing.T) {
 	}
 }
 
-type winAzureCliNotInstalledMock struct {
+type winAzureCLINotInstalledMock struct {
 }
 
-func (c *winAzureCliNotInstalledMock) getAzureCliAccessToken(command string) ([]byte, string, error) {
+func (c *winAzureCLINotInstalledMock) getAzureCLIAccessToken(command string) ([]byte, string, error) {
 	return nil, "'az' is not recognized", errors.New("mockError")
 }
 
-func TestCliCredential_WinAzureCliNotInstalled(t *testing.T) {
-	var shellClientMock ShellClient
-	shellClientMock = &winAzureCliNotInstalledMock{}
+func TestCLICredential_WinAzureCLINotInstalled(t *testing.T) {
+	var err error
+	var shellClientMock shellClient
+	shellClientMock = &winAzureCLINotInstalledMock{}
 
-	var options *AzureCliCredentialOption
-	options = &AzureCliCredentialOption{shellClientOption: shellClientMock}
+	var options *AzureCLICredentialOption
+	options = &AzureCLICredentialOption{shellClientOption: shellClientMock}
 
-	cred, err := NewAzureCliCredential(options)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
+	cred := NewAzureCLICredential(options)
 
 	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{mockScope}})
 	if err == nil {
@@ -108,24 +101,22 @@ func TestCliCredential_WinAzureCliNotInstalled(t *testing.T) {
 	}
 }
 
-type linuxAzureCliNotInstalledMock struct {
+type linuxAzureCLINotInstalledMock struct {
 }
 
-func (c *linuxAzureCliNotInstalledMock) getAzureCliAccessToken(command string) ([]byte, string, error) {
+func (c *linuxAzureCLINotInstalledMock) getAzureCLIAccessToken(command string) ([]byte, string, error) {
 	return nil, "az: command not found", errors.New("mockError")
 }
 
-func TestCliCredential_LinuxAzureCliNotInstalled(t *testing.T) {
-	var shellClientMock ShellClient
-	shellClientMock = &linuxAzureCliNotInstalledMock{}
+func TestCLICredential_LinuxAzureCLINotInstalled(t *testing.T) {
+	var err error
+	var shellClientMock shellClient
+	shellClientMock = &linuxAzureCLINotInstalledMock{}
 
-	var options *AzureCliCredentialOption
-	options = &AzureCliCredentialOption{shellClientOption: shellClientMock}
+	var options *AzureCLICredentialOption
+	options = &AzureCLICredentialOption{shellClientOption: shellClientMock}
 
-	cred, err := NewAzureCliCredential(options)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
+	cred := NewAzureCLICredential(options)
 
 	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{mockScope}})
 	if err == nil {
@@ -138,24 +129,22 @@ func TestCliCredential_LinuxAzureCliNotInstalled(t *testing.T) {
 	}
 }
 
-type macAzureCliNotInstalledMock struct {
+type macAzureCLINotInstalledMock struct {
 }
 
-func (c *macAzureCliNotInstalledMock) getAzureCliAccessToken(command string) ([]byte, string, error) {
+func (c *macAzureCLINotInstalledMock) getAzureCLIAccessToken(command string) ([]byte, string, error) {
 	return nil, "az: not found", errors.New("mockError")
 }
 
-func TestCliCredential_MacAzureCliNotInstalled(t *testing.T) {
-	var shellClientMock ShellClient
-	shellClientMock = &macAzureCliNotInstalledMock{}
+func TestCLICredential_MacAzureCLINotInstalled(t *testing.T) {
+	var err error
+	var shellClientMock shellClient
+	shellClientMock = &macAzureCLINotInstalledMock{}
 
-	var options *AzureCliCredentialOption
-	options = &AzureCliCredentialOption{shellClientOption: shellClientMock}
+	var options *AzureCLICredentialOption
+	options = &AzureCLICredentialOption{shellClientOption: shellClientMock}
 
-	cred, err := NewAzureCliCredential(options)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
+	cred := NewAzureCLICredential(options)
 
 	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{mockScope}})
 	if err == nil {

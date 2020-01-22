@@ -84,10 +84,6 @@ func TestDefaultTokenCredential_NilOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}
-	_, err = NewAzureCliCredential(nil)
-	if err != nil {
-		t.Fatalf("Did not expect to receive an error in creating the CliCredential")
-	}
 	cred, err := NewDefaultTokenCredential(nil)
 	if err != nil {
 		t.Fatalf("Did not expect to receive an error in creating the credential")

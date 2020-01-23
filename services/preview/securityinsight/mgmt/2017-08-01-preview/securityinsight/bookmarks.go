@@ -36,7 +36,8 @@ func NewBookmarksClient(subscriptionID string) BookmarksClient {
 	return NewBookmarksClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBookmarksClientWithBaseURI creates an instance of the BookmarksClient client.
+// NewBookmarksClientWithBaseURI creates an instance of the BookmarksClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewBookmarksClientWithBaseURI(baseURI string, subscriptionID string) BookmarksClient {
 	return BookmarksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -73,12 +74,8 @@ func (client BookmarksClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: bookmark,
 			Constraints: []validation.Constraint{{Target: "bookmark.BookmarkProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "bookmark.BookmarkProperties.CreatedBy", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "bookmark.BookmarkProperties.CreatedBy.ObjectID", Name: validation.Null, Rule: true, Chain: nil}}},
-					{Target: "bookmark.BookmarkProperties.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
+				Chain: []validation.Constraint{{Target: "bookmark.BookmarkProperties.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "bookmark.BookmarkProperties.Query", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "bookmark.BookmarkProperties.UpdatedBy", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "bookmark.BookmarkProperties.UpdatedBy.ObjectID", Name: validation.Null, Rule: true, Chain: nil}}},
 					{Target: "bookmark.BookmarkProperties.IncidentInfo", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "bookmark.BookmarkProperties.IncidentInfo.IncidentID", Name: validation.Null, Rule: true, Chain: nil},
 							{Target: "bookmark.BookmarkProperties.IncidentInfo.Title", Name: validation.Null, Rule: true, Chain: nil},

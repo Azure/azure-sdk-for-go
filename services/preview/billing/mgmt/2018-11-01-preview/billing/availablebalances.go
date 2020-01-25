@@ -35,7 +35,9 @@ func NewAvailableBalancesClient(subscriptionID string) AvailableBalancesClient {
 	return NewAvailableBalancesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAvailableBalancesClientWithBaseURI creates an instance of the AvailableBalancesClient client.
+// NewAvailableBalancesClientWithBaseURI creates an instance of the AvailableBalancesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewAvailableBalancesClientWithBaseURI(baseURI string, subscriptionID string) AvailableBalancesClient {
 	return AvailableBalancesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

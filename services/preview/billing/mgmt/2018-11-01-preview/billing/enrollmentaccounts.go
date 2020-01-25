@@ -35,7 +35,9 @@ func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient
 	return NewEnrollmentAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewEnrollmentAccountsClientWithBaseURI creates an instance of the EnrollmentAccountsClient client.
+// NewEnrollmentAccountsClientWithBaseURI creates an instance of the EnrollmentAccountsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsClient {
 	return EnrollmentAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

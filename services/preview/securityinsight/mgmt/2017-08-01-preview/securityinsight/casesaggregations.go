@@ -36,7 +36,9 @@ func NewCasesAggregationsClient(subscriptionID string) CasesAggregationsClient {
 	return NewCasesAggregationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCasesAggregationsClientWithBaseURI creates an instance of the CasesAggregationsClient client.
+// NewCasesAggregationsClientWithBaseURI creates an instance of the CasesAggregationsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewCasesAggregationsClientWithBaseURI(baseURI string, subscriptionID string) CasesAggregationsClient {
 	return CasesAggregationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -29,6 +29,7 @@ type StorageInsightsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string) (result operationalinsights.StorageInsight, err error)
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.StorageInsightListResultPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.StorageInsightListResultIterator, err error)
 }
 
 var _ StorageInsightsClientAPI = (*operationalinsights.StorageInsightsClient)(nil)

@@ -36,7 +36,8 @@ func NewSavedSearchesClient(subscriptionID string, purgeID string) SavedSearches
 	return NewSavedSearchesClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
 }
 
-// NewSavedSearchesClientWithBaseURI creates an instance of the SavedSearchesClient client.
+// NewSavedSearchesClientWithBaseURI creates an instance of the SavedSearchesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSavedSearchesClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) SavedSearchesClient {
 	return SavedSearchesClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
 }

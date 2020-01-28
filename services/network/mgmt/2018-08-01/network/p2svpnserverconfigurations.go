@@ -35,7 +35,9 @@ func NewP2sVpnServerConfigurationsClient(subscriptionID string) P2sVpnServerConf
 	return NewP2sVpnServerConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewP2sVpnServerConfigurationsClientWithBaseURI creates an instance of the P2sVpnServerConfigurationsClient client.
+// NewP2sVpnServerConfigurationsClientWithBaseURI creates an instance of the P2sVpnServerConfigurationsClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewP2sVpnServerConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) P2sVpnServerConfigurationsClient {
 	return P2sVpnServerConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

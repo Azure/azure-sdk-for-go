@@ -25,6 +25,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result alertsmanagement.OperationsListPage, err error)
+	ListComplete(ctx context.Context) (result alertsmanagement.OperationsListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*alertsmanagement.OperationsClient)(nil)
@@ -33,6 +34,7 @@ var _ OperationsClientAPI = (*alertsmanagement.OperationsClient)(nil)
 type AlertsClientAPI interface {
 	ChangeState(ctx context.Context, alertID string, newState alertsmanagement.AlertState) (result alertsmanagement.Alert, err error)
 	GetAll(ctx context.Context, targetResource string, targetResourceGroup string, targetResourceType string, monitorCondition alertsmanagement.MonitorCondition, severity alertsmanagement.Severity, alertState alertsmanagement.AlertState, smartGroupID string, includePayload *bool, pageCount *int32, sortBy alertsmanagement.AlertsSortByFields, sortOrder string, timeRange alertsmanagement.TimeRange) (result alertsmanagement.AlertsListPage, err error)
+	GetAllComplete(ctx context.Context, targetResource string, targetResourceGroup string, targetResourceType string, monitorCondition MonitorCondition, severity Severity, alertState AlertState, smartGroupID string, includePayload *bool, pageCount *int32, sortBy AlertsSortByFields, sortOrder string, timeRange TimeRange) (result alertsmanagement.AlertsListIterator, err error)
 	GetByID(ctx context.Context, alertID string) (result alertsmanagement.Alert, err error)
 	GetHistory(ctx context.Context, alertID string) (result alertsmanagement.AlertModification, err error)
 	GetSummary(ctx context.Context, targetResourceGroup string, timeRange alertsmanagement.TimeRange) (result alertsmanagement.AlertsSummary, err error)

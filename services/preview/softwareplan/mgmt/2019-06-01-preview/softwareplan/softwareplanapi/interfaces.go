@@ -36,6 +36,7 @@ type HybridUseBenefitClientAPI interface {
 	Delete(ctx context.Context, scope string, planID string) (result autorest.Response, err error)
 	Get(ctx context.Context, scope string, planID string) (result softwareplan.HybridUseBenefitModel, err error)
 	List(ctx context.Context, scope string, filter string) (result softwareplan.HybridUseBenefitListResultPage, err error)
+	ListComplete(ctx context.Context, scope string, filter string) (result softwareplan.HybridUseBenefitListResultIterator, err error)
 	Update(ctx context.Context, scope string, planID string, body softwareplan.HybridUseBenefitModel) (result softwareplan.HybridUseBenefitModel, err error)
 }
 
@@ -44,6 +45,7 @@ var _ HybridUseBenefitClientAPI = (*softwareplan.HybridUseBenefitClient)(nil)
 // HybridUseBenefitRevisionClientAPI contains the set of methods on the HybridUseBenefitRevisionClient type.
 type HybridUseBenefitRevisionClientAPI interface {
 	List(ctx context.Context, scope string, planID string) (result softwareplan.HybridUseBenefitListResultPage, err error)
+	ListComplete(ctx context.Context, scope string, planID string) (result softwareplan.HybridUseBenefitListResultIterator, err error)
 }
 
 var _ HybridUseBenefitRevisionClientAPI = (*softwareplan.HybridUseBenefitRevisionClient)(nil)
@@ -51,6 +53,7 @@ var _ HybridUseBenefitRevisionClientAPI = (*softwareplan.HybridUseBenefitRevisio
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context, scope string) (result softwareplan.OperationListPage, err error)
+	ListComplete(ctx context.Context, scope string) (result softwareplan.OperationListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*softwareplan.OperationsClient)(nil)

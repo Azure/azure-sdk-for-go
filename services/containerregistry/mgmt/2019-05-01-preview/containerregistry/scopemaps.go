@@ -36,7 +36,8 @@ func NewScopeMapsClient(subscriptionID string) ScopeMapsClient {
 	return NewScopeMapsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewScopeMapsClientWithBaseURI creates an instance of the ScopeMapsClient client.
+// NewScopeMapsClientWithBaseURI creates an instance of the ScopeMapsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewScopeMapsClientWithBaseURI(baseURI string, subscriptionID string) ScopeMapsClient {
 	return ScopeMapsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

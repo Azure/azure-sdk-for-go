@@ -23,6 +23,13 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
+	GetAsyncOperationsStatus(ctx context.Context, location string, asyncOperationID string) (result operationalinsights.OperationStatus, err error)
+}
+
+var _ BaseClientAPI = (*operationalinsights.BaseClient)(nil)
+
 // LinkedServicesClientAPI contains the set of methods on the LinkedServicesClient type.
 type LinkedServicesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters operationalinsights.LinkedService) (result operationalinsights.LinkedService, err error)
@@ -39,6 +46,7 @@ type DataSourcesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string) (result operationalinsights.DataSource, err error)
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, filter string, skiptoken string) (result operationalinsights.DataSourceListResultPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string, filter string, skiptoken string) (result operationalinsights.DataSourceListResultIterator, err error)
 }
 
 var _ DataSourcesClientAPI = (*operationalinsights.DataSourcesClient)(nil)
@@ -64,6 +72,27 @@ var _ WorkspacesClientAPI = (*operationalinsights.WorkspacesClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result operationalinsights.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result operationalinsights.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*operationalinsights.OperationsClient)(nil)
+
+// PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
+type PrivateLinkResourcesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, groupName string) (result operationalinsights.PrivateLinkResource, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.PrivateLinkResourceListResultPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.PrivateLinkResourceListResultIterator, err error)
+}
+
+var _ PrivateLinkResourcesClientAPI = (*operationalinsights.PrivateLinkResourcesClient)(nil)
+
+// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
+type PrivateEndpointConnectionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, parameters operationalinsights.PrivateEndpointConnection) (result operationalinsights.PrivateEndpointConnectionsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string) (result operationalinsights.PrivateEndpointConnectionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string) (result operationalinsights.PrivateEndpointConnection, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.PrivateEndpointConnectionListResultPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.PrivateEndpointConnectionListResultIterator, err error)
+}
+
+var _ PrivateEndpointConnectionsClientAPI = (*operationalinsights.PrivateEndpointConnectionsClient)(nil)

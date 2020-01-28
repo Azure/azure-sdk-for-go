@@ -37,7 +37,8 @@ func NewProcessesClient(subscriptionID string) ProcessesClient {
 	return NewProcessesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewProcessesClientWithBaseURI creates an instance of the ProcessesClient client.
+// NewProcessesClientWithBaseURI creates an instance of the ProcessesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewProcessesClientWithBaseURI(baseURI string, subscriptionID string) ProcessesClient {
 	return ProcessesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

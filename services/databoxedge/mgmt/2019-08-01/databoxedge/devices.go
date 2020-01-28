@@ -36,7 +36,8 @@ func NewDevicesClient(subscriptionID string) DevicesClient {
 	return NewDevicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDevicesClientWithBaseURI creates an instance of the DevicesClient client.
+// NewDevicesClientWithBaseURI creates an instance of the DevicesClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesClient {
 	return DevicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

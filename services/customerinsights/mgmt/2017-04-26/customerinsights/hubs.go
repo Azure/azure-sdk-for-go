@@ -38,7 +38,8 @@ func NewHubsClient(subscriptionID string) HubsClient {
 	return NewHubsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewHubsClientWithBaseURI creates an instance of the HubsClient client.
+// NewHubsClientWithBaseURI creates an instance of the HubsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewHubsClientWithBaseURI(baseURI string, subscriptionID string) HubsClient {
 	return HubsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

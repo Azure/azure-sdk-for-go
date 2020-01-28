@@ -30,7 +30,9 @@ type BotsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result botservice.Bot, err error)
 	GetCheckNameAvailability(ctx context.Context, parameters botservice.CheckNameAvailabilityRequestBody) (result botservice.CheckNameAvailabilityResponseBody, err error)
 	List(ctx context.Context) (result botservice.BotResponseListPage, err error)
+	ListComplete(ctx context.Context) (result botservice.BotResponseListIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result botservice.BotResponseListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result botservice.BotResponseListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, parameters botservice.Bot) (result botservice.Bot, err error)
 }
 
@@ -42,6 +44,7 @@ type ChannelsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, resourceName string, channelName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, resourceName string, channelName string) (result botservice.BotChannel, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, resourceName string) (result botservice.ChannelResponseListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, resourceName string) (result botservice.ChannelResponseListIterator, err error)
 	ListWithKeys(ctx context.Context, resourceGroupName string, resourceName string, channelName botservice.ChannelName) (result botservice.BotChannel, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, channelName botservice.ChannelName, parameters botservice.BotChannel) (result botservice.BotChannel, err error)
 }
@@ -51,6 +54,7 @@ var _ ChannelsClientAPI = (*botservice.ChannelsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result botservice.OperationEntityListResultPage, err error)
+	ListComplete(ctx context.Context) (result botservice.OperationEntityListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*botservice.OperationsClient)(nil)
@@ -61,6 +65,7 @@ type BotConnectionClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (result botservice.ConnectionSetting, err error)
 	ListByBotService(ctx context.Context, resourceGroupName string, resourceName string) (result botservice.ConnectionSettingResponseListPage, err error)
+	ListByBotServiceComplete(ctx context.Context, resourceGroupName string, resourceName string) (result botservice.ConnectionSettingResponseListIterator, err error)
 	ListServiceProviders(ctx context.Context) (result botservice.ServiceProviderResponseList, err error)
 	ListWithSecrets(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (result botservice.ConnectionSetting, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, connectionName string, parameters botservice.ConnectionSetting) (result botservice.ConnectionSetting, err error)

@@ -36,7 +36,9 @@ func NewPolicyTrackedResourcesClient() PolicyTrackedResourcesClient {
 	return NewPolicyTrackedResourcesClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewPolicyTrackedResourcesClientWithBaseURI creates an instance of the PolicyTrackedResourcesClient client.
+// NewPolicyTrackedResourcesClientWithBaseURI creates an instance of the PolicyTrackedResourcesClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewPolicyTrackedResourcesClientWithBaseURI(baseURI string) PolicyTrackedResourcesClient {
 	return PolicyTrackedResourcesClient{NewWithBaseURI(baseURI)}
 }

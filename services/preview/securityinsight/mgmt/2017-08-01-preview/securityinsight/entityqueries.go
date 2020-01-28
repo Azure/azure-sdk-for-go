@@ -36,7 +36,8 @@ func NewEntityQueriesClient(subscriptionID string) EntityQueriesClient {
 	return NewEntityQueriesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewEntityQueriesClientWithBaseURI creates an instance of the EntityQueriesClient client.
+// NewEntityQueriesClientWithBaseURI creates an instance of the EntityQueriesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewEntityQueriesClientWithBaseURI(baseURI string, subscriptionID string) EntityQueriesClient {
 	return EntityQueriesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

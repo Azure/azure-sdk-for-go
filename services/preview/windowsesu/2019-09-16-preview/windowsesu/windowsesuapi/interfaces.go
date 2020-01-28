@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result windowsesu.OperationListPage, err error)
+	ListComplete(ctx context.Context) (result windowsesu.OperationListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*windowsesu.OperationsClient)(nil)
@@ -36,7 +37,9 @@ type MultipleActivationKeysClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, multipleActivationKeyName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, multipleActivationKeyName string) (result windowsesu.MultipleActivationKey, err error)
 	List(ctx context.Context) (result windowsesu.MultipleActivationKeyListPage, err error)
+	ListComplete(ctx context.Context) (result windowsesu.MultipleActivationKeyListIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result windowsesu.MultipleActivationKeyListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result windowsesu.MultipleActivationKeyListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey windowsesu.MultipleActivationKeyUpdate) (result windowsesu.MultipleActivationKey, err error)
 }
 

@@ -58,6 +58,7 @@ type VirtualNetworkRulesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, virtualNetworkRuleName string) (result mysql.VirtualNetworkRulesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, virtualNetworkRuleName string) (result mysql.VirtualNetworkRule, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mysql.VirtualNetworkRuleListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result mysql.VirtualNetworkRuleListResultIterator, err error)
 }
 
 var _ VirtualNetworkRulesClientAPI = (*mysql.VirtualNetworkRulesClient)(nil)

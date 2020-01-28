@@ -35,7 +35,8 @@ func NewDpsCertificatesClient(subscriptionID string) DpsCertificatesClient {
 	return NewDpsCertificatesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDpsCertificatesClientWithBaseURI creates an instance of the DpsCertificatesClient client.
+// NewDpsCertificatesClientWithBaseURI creates an instance of the DpsCertificatesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDpsCertificatesClientWithBaseURI(baseURI string, subscriptionID string) DpsCertificatesClient {
 	return DpsCertificatesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

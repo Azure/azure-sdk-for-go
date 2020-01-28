@@ -35,7 +35,9 @@ func NewHostingEnvironmentsClient(subscriptionID string) HostingEnvironmentsClie
 	return NewHostingEnvironmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewHostingEnvironmentsClientWithBaseURI creates an instance of the HostingEnvironmentsClient client.
+// NewHostingEnvironmentsClientWithBaseURI creates an instance of the HostingEnvironmentsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewHostingEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) HostingEnvironmentsClient {
 	return HostingEnvironmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

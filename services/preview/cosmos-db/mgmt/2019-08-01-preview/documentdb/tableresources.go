@@ -36,7 +36,8 @@ func NewTableResourcesClient(subscriptionID string, subscriptionID1 string) Tabl
 	return NewTableResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
-// NewTableResourcesClientWithBaseURI creates an instance of the TableResourcesClient client.
+// NewTableResourcesClientWithBaseURI creates an instance of the TableResourcesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) TableResourcesClient {
 	return TableResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }

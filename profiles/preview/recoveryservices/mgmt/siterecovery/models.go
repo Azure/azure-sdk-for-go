@@ -810,6 +810,7 @@ type HyperVReplicaPolicyInput = original.HyperVReplicaPolicyInput
 type HyperVReplicaReplicationDetails = original.HyperVReplicaReplicationDetails
 type HyperVSiteDetails = original.HyperVSiteDetails
 type HyperVVirtualMachineDetails = original.HyperVVirtualMachineDetails
+type IPConfig = original.IPConfig
 type IdentityProviderDetails = original.IdentityProviderDetails
 type IdentityProviderInput = original.IdentityProviderInput
 type InMageAgentDetails = original.InMageAgentDetails

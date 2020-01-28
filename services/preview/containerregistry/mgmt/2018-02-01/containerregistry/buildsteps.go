@@ -36,7 +36,8 @@ func NewBuildStepsClient(subscriptionID string) BuildStepsClient {
 	return NewBuildStepsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBuildStepsClientWithBaseURI creates an instance of the BuildStepsClient client.
+// NewBuildStepsClientWithBaseURI creates an instance of the BuildStepsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewBuildStepsClientWithBaseURI(baseURI string, subscriptionID string) BuildStepsClient {
 	return BuildStepsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

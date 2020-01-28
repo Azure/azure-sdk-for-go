@@ -36,7 +36,8 @@ func NewGraphQueryClient(subscriptionID string) GraphQueryClient {
 	return NewGraphQueryClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewGraphQueryClientWithBaseURI creates an instance of the GraphQueryClient client.
+// NewGraphQueryClientWithBaseURI creates an instance of the GraphQueryClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewGraphQueryClientWithBaseURI(baseURI string, subscriptionID string) GraphQueryClient {
 	return GraphQueryClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -36,7 +36,9 @@ func NewAvailableProviderOperationsClient(subscriptionID string) AvailableProvid
 	return NewAvailableProviderOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAvailableProviderOperationsClientWithBaseURI creates an instance of the AvailableProviderOperationsClient client.
+// NewAvailableProviderOperationsClientWithBaseURI creates an instance of the AvailableProviderOperationsClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewAvailableProviderOperationsClientWithBaseURI(baseURI string, subscriptionID string) AvailableProviderOperationsClient {
 	return AvailableProviderOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

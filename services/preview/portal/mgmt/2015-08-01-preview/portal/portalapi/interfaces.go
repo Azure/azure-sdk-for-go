@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result portal.ResourceProviderOperationListPage, err error)
+	ListComplete(ctx context.Context) (result portal.ResourceProviderOperationListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*portal.OperationsClient)(nil)
@@ -36,7 +37,9 @@ type DashboardsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, dashboardName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, dashboardName string) (result portal.Dashboard, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result portal.DashboardListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result portal.DashboardListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result portal.DashboardListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result portal.DashboardListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, dashboardName string, dashboard portal.PatchableDashboard) (result portal.Dashboard, err error)
 }
 

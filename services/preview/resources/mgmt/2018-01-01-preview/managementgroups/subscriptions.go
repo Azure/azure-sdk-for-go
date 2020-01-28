@@ -37,7 +37,8 @@ func NewSubscriptionsClient(operationResultID string, skiptoken string) Subscrip
 	return NewSubscriptionsClientWithBaseURI(DefaultBaseURI, operationResultID, skiptoken)
 }
 
-// NewSubscriptionsClientWithBaseURI creates an instance of the SubscriptionsClient client.
+// NewSubscriptionsClientWithBaseURI creates an instance of the SubscriptionsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSubscriptionsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) SubscriptionsClient {
 	return SubscriptionsClient{NewWithBaseURI(baseURI, operationResultID, skiptoken)}
 }

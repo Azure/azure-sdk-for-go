@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:2e9f9f3381b65a6f99438e30ce398cbc13eb224187950158321ad9e560261f40"
+  digest = "1:46eaa8d8d35d2004f218ad6c48b6c81e0b1c3457915f55a40831b5af3fb43b76"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -17,8 +17,8 @@
     "tracing",
   ]
   pruneopts = "UT"
-  revision = "21d4b01533b1005be0d020da67a6d3f8ebdf0141"
-  version = "v13.3.1"
+  revision = "20a15b4e99645bc30a1cf8de518a6e8ac331c864"
+  version = "v13.3.2"
 
 [[projects]]
   digest = "1:f313598719f69ec4edbcd75b0f2ef1c8ed9e00f6ff3d7583ac3966db2d70d326"
@@ -78,12 +78,12 @@
   version = "v1.0"
 
 [[projects]]
-  digest = "1:ca955a9cd5b50b0f43d2cc3aeb35c951473eeca41b34eb67507f1dbcc0542394"
+  digest = "1:4cc7748b74453830951f95ddc3fd980387e7c13f77cc33d7cba54cd6b96dad26"
   name = "github.com/kr/pretty"
   packages = ["."]
   pruneopts = "UT"
-  revision = "73f6ac0b30a98e433b289500d779f50c1a6f0712"
-  version = "v0.1.0"
+  revision = "4e0886370c3a67530192c6a238cff68f56c141b0"
+  version = "v0.2.0"
 
 [[projects]]
   digest = "1:15b5cc79aad436d47019f814fde81a10221c740dc8ddf769221a65097fb6c2e9"
@@ -102,12 +102,12 @@
   version = "v1.1.0"
 
 [[projects]]
-  digest = "1:cf31692c14422fa27c83a05292eb5cbe0fb2775972e8f1f8446a71549bd8980b"
+  digest = "1:9e1d37b58d17113ec3cb5608ac0382313c5b59470b94ed97d0976e69c7022314"
   name = "github.com/pkg/errors"
   packages = ["."]
   pruneopts = "UT"
-  revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
-  version = "v0.8.1"
+  revision = "614d223910a179a466c1767a985424175c39b465"
+  version = "v0.9.1"
 
 [[projects]]
   digest = "1:274f67cb6fed9588ea2521ecdac05a6d62a8c51c074c1fccc6a49a40ba80e925"
@@ -150,19 +150,14 @@
     "pkcs12/internal/rc2",
   ]
   pruneopts = "UT"
-  revision = "becbf705a91575484002d598f87d74f0002801e7"
+  revision = "530e935923ad688be97c15eeb8e5ee42ebf2b54a"
 
 [[projects]]
   branch = "master"
-  digest = "1:81034a933b8e243f6c700951903f436029c1c1b53b0d694a9e8626cdeb835b00"
+  digest = "1:614bd6748d48b8f6189a49aecdbf261ffafde77db62c4e599e9e1c95d9f62212"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
-    "go/gcexportdata",
-    "go/internal/gcimporter",
-    "go/internal/packagesdriver",
-    "go/packages",
-    "go/types/typeutil",
     "imports",
     "internal/fastwalk",
     "internal/gopathwalk",
@@ -171,7 +166,7 @@
     "internal/semver",
   ]
   pruneopts = "UT"
-  revision = "3721262b3e7c542ed1607f063180bccdb22c2d02"
+  revision = "345141a368593509252933bd1e146558314b6d0c"
 
 [[projects]]
   branch = "v1"
@@ -182,12 +177,12 @@
   revision = "41f04d3bba152ddec2103e299fed053415705330"
 
 [[projects]]
-  digest = "1:b75b3deb2bce8bc079e16bb2aecfe01eb80098f5650f9e93e5643ca8b7b73737"
+  digest = "1:55b110c99c5fdc4f14930747326acce56b52cfce60b24b1c03ef686ac0e46bb1"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
   pruneopts = "UT"
-  revision = "1f64d6156d11335c3f22d9330b0ad14fc1e789ce"
-  version = "v2.2.7"
+  revision = "53403b58ad1b561927d19068c655246f2db79d48"
+  version = "v2.2.8"
 
 [solve-meta]
   analyzer-name = "dep"

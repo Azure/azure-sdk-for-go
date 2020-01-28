@@ -35,7 +35,8 @@ func NewVirtualMachineClient(subscriptionID string) VirtualMachineClient {
 	return NewVirtualMachineClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewVirtualMachineClientWithBaseURI creates an instance of the VirtualMachineClient client.
+// NewVirtualMachineClientWithBaseURI creates an instance of the VirtualMachineClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewVirtualMachineClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineClient {
 	return VirtualMachineClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

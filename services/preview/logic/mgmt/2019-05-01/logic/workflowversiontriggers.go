@@ -35,7 +35,9 @@ func NewWorkflowVersionTriggersClient(subscriptionID string) WorkflowVersionTrig
 	return NewWorkflowVersionTriggersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWorkflowVersionTriggersClientWithBaseURI creates an instance of the WorkflowVersionTriggersClient client.
+// NewWorkflowVersionTriggersClientWithBaseURI creates an instance of the WorkflowVersionTriggersClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewWorkflowVersionTriggersClientWithBaseURI(baseURI string, subscriptionID string) WorkflowVersionTriggersClient {
 	return WorkflowVersionTriggersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

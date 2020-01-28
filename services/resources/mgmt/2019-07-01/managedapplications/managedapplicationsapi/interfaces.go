@@ -26,6 +26,7 @@ import (
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
 	ListOperations(ctx context.Context) (result managedapplications.OperationListResultPage, err error)
+	ListOperationsComplete(ctx context.Context) (result managedapplications.OperationListResultIterator, err error)
 }
 
 var _ BaseClientAPI = (*managedapplications.BaseClient)(nil)
@@ -39,7 +40,9 @@ type ApplicationsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, applicationName string) (result managedapplications.Application, err error)
 	GetByID(ctx context.Context, applicationID string) (result managedapplications.Application, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result managedapplications.ApplicationListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result managedapplications.ApplicationListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result managedapplications.ApplicationListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result managedapplications.ApplicationListResultIterator, err error)
 	RefreshPermissions(ctx context.Context, resourceGroupName string, applicationName string) (result managedapplications.ApplicationsRefreshPermissionsFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, applicationName string, parameters *managedapplications.Application) (result managedapplications.Application, err error)
 	UpdateByID(ctx context.Context, applicationID string, parameters *managedapplications.Application) (result managedapplications.Application, err error)
@@ -56,6 +59,7 @@ type ApplicationDefinitionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, applicationDefinitionName string) (result managedapplications.ApplicationDefinition, err error)
 	GetByID(ctx context.Context, applicationDefinitionID string) (result managedapplications.ApplicationDefinition, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result managedapplications.ApplicationDefinitionListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result managedapplications.ApplicationDefinitionListResultIterator, err error)
 }
 
 var _ ApplicationDefinitionsClientAPI = (*managedapplications.ApplicationDefinitionsClient)(nil)

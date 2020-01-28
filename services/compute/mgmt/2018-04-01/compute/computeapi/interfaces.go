@@ -36,8 +36,10 @@ type AvailabilitySetsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, availabilitySetName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, availabilitySetName string) (result compute.AvailabilitySet, err error)
 	List(ctx context.Context, resourceGroupName string) (result compute.AvailabilitySetListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result compute.AvailabilitySetListResultIterator, err error)
 	ListAvailableSizes(ctx context.Context, resourceGroupName string, availabilitySetName string) (result compute.VirtualMachineSizeListResult, err error)
 	ListBySubscription(ctx context.Context, expand string) (result compute.AvailabilitySetListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, expand string) (result compute.AvailabilitySetListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters compute.AvailabilitySetUpdate) (result compute.AvailabilitySet, err error)
 }
 
@@ -49,7 +51,9 @@ type ProximityPlacementGroupsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string) (result compute.ProximityPlacementGroup, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.ProximityPlacementGroupListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result compute.ProximityPlacementGroupListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result compute.ProximityPlacementGroupListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result compute.ProximityPlacementGroupListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters compute.ProximityPlacementGroupUpdate) (result compute.ProximityPlacementGroup, err error)
 }
 
@@ -89,6 +93,7 @@ var _ VirtualMachineImagesClientAPI = (*compute.VirtualMachineImagesClient)(nil)
 // UsageClientAPI contains the set of methods on the UsageClient type.
 type UsageClientAPI interface {
 	List(ctx context.Context, location string) (result compute.ListUsagesResultPage, err error)
+	ListComplete(ctx context.Context, location string) (result compute.ListUsagesResultIterator, err error)
 }
 
 var _ UsageClientAPI = (*compute.UsageClient)(nil)
@@ -104,9 +109,12 @@ type VirtualMachinesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, VMName string, expand compute.InstanceViewTypes) (result compute.VirtualMachine, err error)
 	InstanceView(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachineInstanceView, err error)
 	List(ctx context.Context, resourceGroupName string) (result compute.VirtualMachineListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result compute.VirtualMachineListResultIterator, err error)
 	ListAll(ctx context.Context) (result compute.VirtualMachineListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result compute.VirtualMachineListResultIterator, err error)
 	ListAvailableSizes(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachineSizeListResult, err error)
 	ListByLocation(ctx context.Context, location string) (result compute.VirtualMachineListResultPage, err error)
+	ListByLocationComplete(ctx context.Context, location string) (result compute.VirtualMachineListResultIterator, err error)
 	PerformMaintenance(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesPerformMaintenanceFuture, err error)
 	PowerOff(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesPowerOffFuture, err error)
 	Redeploy(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesRedeployFuture, err error)
@@ -131,7 +139,9 @@ type ImagesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, imageName string) (result compute.ImagesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, imageName string, expand string) (result compute.Image, err error)
 	List(ctx context.Context) (result compute.ImageListResultPage, err error)
+	ListComplete(ctx context.Context) (result compute.ImageListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.ImageListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result compute.ImageListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, imageName string, parameters compute.ImageUpdate) (result compute.ImagesUpdateFuture, err error)
 }
 
@@ -147,9 +157,13 @@ type VirtualMachineScaleSetsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSet, err error)
 	GetInstanceView(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSetInstanceView, err error)
 	GetOSUpgradeHistory(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSetListOSUpgradeHistoryPage, err error)
+	GetOSUpgradeHistoryComplete(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSetListOSUpgradeHistoryIterator, err error)
 	List(ctx context.Context, resourceGroupName string) (result compute.VirtualMachineScaleSetListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result compute.VirtualMachineScaleSetListResultIterator, err error)
 	ListAll(ctx context.Context) (result compute.VirtualMachineScaleSetListWithLinkResultPage, err error)
+	ListAllComplete(ctx context.Context) (result compute.VirtualMachineScaleSetListWithLinkResultIterator, err error)
 	ListSkus(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSetListSkusResultPage, err error)
+	ListSkusComplete(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSetListSkusResultIterator, err error)
 	PerformMaintenance(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs *compute.VirtualMachineScaleSetVMInstanceIDs) (result compute.VirtualMachineScaleSetsPerformMaintenanceFuture, err error)
 	PowerOff(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs *compute.VirtualMachineScaleSetVMInstanceIDs) (result compute.VirtualMachineScaleSetsPowerOffFuture, err error)
 	Redeploy(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs *compute.VirtualMachineScaleSetVMInstanceIDs) (result compute.VirtualMachineScaleSetsRedeployFuture, err error)
@@ -169,6 +183,7 @@ type VirtualMachineScaleSetExtensionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, VMScaleSetName string, vmssExtensionName string) (result compute.VirtualMachineScaleSetExtensionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, VMScaleSetName string, vmssExtensionName string, expand string) (result compute.VirtualMachineScaleSetExtension, err error)
 	List(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSetExtensionListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSetExtensionListResultIterator, err error)
 }
 
 var _ VirtualMachineScaleSetExtensionsClientAPI = (*compute.VirtualMachineScaleSetExtensionsClient)(nil)
@@ -189,6 +204,7 @@ type VirtualMachineScaleSetVMsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string) (result compute.VirtualMachineScaleSetVM, err error)
 	GetInstanceView(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string) (result compute.VirtualMachineScaleSetVMInstanceView, err error)
 	List(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, filter string, selectParameter string, expand string) (result compute.VirtualMachineScaleSetVMListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, filter string, selectParameter string, expand string) (result compute.VirtualMachineScaleSetVMListResultIterator, err error)
 	PerformMaintenance(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string) (result compute.VirtualMachineScaleSetVMsPerformMaintenanceFuture, err error)
 	PowerOff(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string) (result compute.VirtualMachineScaleSetVMsPowerOffFuture, err error)
 	Redeploy(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string) (result compute.VirtualMachineScaleSetVMsRedeployFuture, err error)
@@ -214,6 +230,7 @@ var _ LogAnalyticsClientAPI = (*compute.LogAnalyticsClient)(nil)
 type VirtualMachineRunCommandsClientAPI interface {
 	Get(ctx context.Context, location string, commandID string) (result compute.RunCommandDocument, err error)
 	List(ctx context.Context, location string) (result compute.RunCommandListResultPage, err error)
+	ListComplete(ctx context.Context, location string) (result compute.RunCommandListResultIterator, err error)
 }
 
 var _ VirtualMachineRunCommandsClientAPI = (*compute.VirtualMachineRunCommandsClient)(nil)
@@ -225,7 +242,9 @@ type DisksClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, diskName string) (result compute.Disk, err error)
 	GrantAccess(ctx context.Context, resourceGroupName string, diskName string, grantAccessData compute.GrantAccessData) (result compute.DisksGrantAccessFuture, err error)
 	List(ctx context.Context) (result compute.DiskListPage, err error)
+	ListComplete(ctx context.Context) (result compute.DiskListIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.DiskListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result compute.DiskListIterator, err error)
 	RevokeAccess(ctx context.Context, resourceGroupName string, diskName string) (result compute.DisksRevokeAccessFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, diskName string, disk compute.DiskUpdate) (result compute.DisksUpdateFuture, err error)
 }
@@ -239,7 +258,9 @@ type SnapshotsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, snapshotName string) (result compute.Snapshot, err error)
 	GrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData compute.GrantAccessData) (result compute.SnapshotsGrantAccessFuture, err error)
 	List(ctx context.Context) (result compute.SnapshotListPage, err error)
+	ListComplete(ctx context.Context) (result compute.SnapshotListIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.SnapshotListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result compute.SnapshotListIterator, err error)
 	RevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string) (result compute.SnapshotsRevokeAccessFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, snapshotName string, snapshot compute.SnapshotUpdate) (result compute.SnapshotsUpdateFuture, err error)
 }

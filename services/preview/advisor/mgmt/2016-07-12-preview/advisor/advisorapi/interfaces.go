@@ -30,6 +30,7 @@ type RecommendationsClientAPI interface {
 	Get(ctx context.Context, resourceURI string, recommendationID string) (result advisor.ResourceRecommendationBase, err error)
 	GetGenerateRecommendationsStatus(ctx context.Context, operationID uuid.UUID) (result autorest.Response, err error)
 	List(ctx context.Context, filter string, top *int32, skipToken string) (result advisor.ResourceRecommendationBaseListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, top *int32, skipToken string) (result advisor.ResourceRecommendationBaseListResultIterator, err error)
 }
 
 var _ RecommendationsClientAPI = (*advisor.RecommendationsClient)(nil)
@@ -37,6 +38,7 @@ var _ RecommendationsClientAPI = (*advisor.RecommendationsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result advisor.OperationEntityListResultPage, err error)
+	ListComplete(ctx context.Context) (result advisor.OperationEntityListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*advisor.OperationsClient)(nil)

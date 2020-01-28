@@ -32,6 +32,7 @@ var _ ContainerHostMappingsClientAPI = (*devspaces.ContainerHostMappingsClient)(
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result devspaces.ResourceProviderOperationListPage, err error)
+	ListComplete(ctx context.Context) (result devspaces.ResourceProviderOperationListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*devspaces.OperationsClient)(nil)
@@ -42,7 +43,9 @@ type ControllersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, name string) (result devspaces.ControllersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, name string) (result devspaces.Controller, err error)
 	List(ctx context.Context) (result devspaces.ControllerListPage, err error)
+	ListComplete(ctx context.Context) (result devspaces.ControllerListIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result devspaces.ControllerListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result devspaces.ControllerListIterator, err error)
 	ListConnectionDetails(ctx context.Context, resourceGroupName string, name string, listConnectionDetailsParameters devspaces.ListConnectionDetailsParameters) (result devspaces.ControllerConnectionDetailsList, err error)
 	Update(ctx context.Context, resourceGroupName string, name string, controllerUpdateParameters devspaces.ControllerUpdateParameters) (result devspaces.Controller, err error)
 }

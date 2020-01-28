@@ -28,7 +28,9 @@ type OpenShiftManagedClustersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.OpenShiftManagedClustersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.OpenShiftManagedCluster, err error)
 	List(ctx context.Context) (result containerservice.OpenShiftManagedClusterListResultPage, err error)
+	ListComplete(ctx context.Context) (result containerservice.OpenShiftManagedClusterListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result containerservice.OpenShiftManagedClusterListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result containerservice.OpenShiftManagedClusterListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters containerservice.TagsObject) (result containerservice.OpenShiftManagedClustersUpdateTagsFuture, err error)
 }
 
@@ -40,7 +42,9 @@ type ContainerServicesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, containerServiceName string) (result containerservice.ContainerServicesDeleteFutureType, err error)
 	Get(ctx context.Context, resourceGroupName string, containerServiceName string) (result containerservice.ContainerService, err error)
 	List(ctx context.Context) (result containerservice.ListResultPage, err error)
+	ListComplete(ctx context.Context) (result containerservice.ListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result containerservice.ListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result containerservice.ListResultIterator, err error)
 	ListOrchestrators(ctx context.Context, location string, resourceType string) (result containerservice.OrchestratorVersionProfileListResult, err error)
 }
 
@@ -61,7 +65,9 @@ type ManagedClustersClientAPI interface {
 	GetAccessProfile(ctx context.Context, resourceGroupName string, resourceName string, roleName string) (result containerservice.ManagedClusterAccessProfile, err error)
 	GetUpgradeProfile(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.ManagedClusterUpgradeProfile, err error)
 	List(ctx context.Context) (result containerservice.ManagedClusterListResultPage, err error)
+	ListComplete(ctx context.Context) (result containerservice.ManagedClusterListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result containerservice.ManagedClusterListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result containerservice.ManagedClusterListResultIterator, err error)
 	ListClusterAdminCredentials(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.CredentialResults, err error)
 	ListClusterUserCredentials(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.CredentialResults, err error)
 	ResetAADProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters containerservice.ManagedClusterAADProfile) (result containerservice.ManagedClustersResetAADProfileFuture, err error)

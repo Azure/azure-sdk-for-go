@@ -29,7 +29,9 @@ type ClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result iotspaces.DeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result iotspaces.Description, err error)
 	List(ctx context.Context) (result iotspaces.DescriptionListResultPage, err error)
+	ListComplete(ctx context.Context) (result iotspaces.DescriptionListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result iotspaces.DescriptionListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result iotspaces.DescriptionListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, iotSpacePatchDescription iotspaces.PatchDescription) (result iotspaces.UpdateFuture, err error)
 }
 
@@ -38,6 +40,7 @@ var _ ClientAPI = (*iotspaces.Client)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result iotspaces.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result iotspaces.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*iotspaces.OperationsClient)(nil)

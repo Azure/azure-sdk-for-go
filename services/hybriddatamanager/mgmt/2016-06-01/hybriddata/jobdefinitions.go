@@ -36,7 +36,8 @@ func NewJobDefinitionsClient(subscriptionID string) JobDefinitionsClient {
 	return NewJobDefinitionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewJobDefinitionsClientWithBaseURI creates an instance of the JobDefinitionsClient client.
+// NewJobDefinitionsClientWithBaseURI creates an instance of the JobDefinitionsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewJobDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) JobDefinitionsClient {
 	return JobDefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

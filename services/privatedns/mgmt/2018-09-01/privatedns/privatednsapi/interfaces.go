@@ -29,7 +29,9 @@ type PrivateZonesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, privateZoneName string, ifMatch string) (result privatedns.PrivateZonesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, privateZoneName string) (result privatedns.PrivateZone, err error)
 	List(ctx context.Context, top *int32) (result privatedns.PrivateZoneListResultPage, err error)
+	ListComplete(ctx context.Context, top *int32) (result privatedns.PrivateZoneListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, top *int32) (result privatedns.PrivateZoneListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, top *int32) (result privatedns.PrivateZoneListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, privateZoneName string, parameters privatedns.PrivateZone, ifMatch string) (result privatedns.PrivateZonesUpdateFuture, err error)
 }
 
@@ -41,6 +43,7 @@ type VirtualNetworkLinksClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, ifMatch string) (result privatedns.VirtualNetworkLinksDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string) (result privatedns.VirtualNetworkLink, err error)
 	List(ctx context.Context, resourceGroupName string, privateZoneName string, top *int32) (result privatedns.VirtualNetworkLinkListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, privateZoneName string, top *int32) (result privatedns.VirtualNetworkLinkListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters privatedns.VirtualNetworkLink, ifMatch string) (result privatedns.VirtualNetworkLinksUpdateFuture, err error)
 }
 
@@ -52,7 +55,9 @@ type RecordSetsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, privateZoneName string, recordType privatedns.RecordType, relativeRecordSetName string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, privateZoneName string, recordType privatedns.RecordType, relativeRecordSetName string) (result privatedns.RecordSet, err error)
 	List(ctx context.Context, resourceGroupName string, privateZoneName string, top *int32, recordsetnamesuffix string) (result privatedns.RecordSetListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, privateZoneName string, top *int32, recordsetnamesuffix string) (result privatedns.RecordSetListResultIterator, err error)
 	ListByType(ctx context.Context, resourceGroupName string, privateZoneName string, recordType privatedns.RecordType, top *int32, recordsetnamesuffix string) (result privatedns.RecordSetListResultPage, err error)
+	ListByTypeComplete(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, top *int32, recordsetnamesuffix string) (result privatedns.RecordSetListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, privateZoneName string, recordType privatedns.RecordType, relativeRecordSetName string, parameters privatedns.RecordSet, ifMatch string) (result privatedns.RecordSet, err error)
 }
 

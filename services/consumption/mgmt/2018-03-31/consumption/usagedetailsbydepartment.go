@@ -37,7 +37,9 @@ func NewUsageDetailsByDepartmentClient(subscriptionID string) UsageDetailsByDepa
 	return NewUsageDetailsByDepartmentClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewUsageDetailsByDepartmentClientWithBaseURI creates an instance of the UsageDetailsByDepartmentClient client.
+// NewUsageDetailsByDepartmentClientWithBaseURI creates an instance of the UsageDetailsByDepartmentClient client using
+// a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewUsageDetailsByDepartmentClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsByDepartmentClient {
 	return UsageDetailsByDepartmentClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

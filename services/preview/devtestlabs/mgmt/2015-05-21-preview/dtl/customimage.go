@@ -35,7 +35,8 @@ func NewCustomImageClient(subscriptionID string) CustomImageClient {
 	return NewCustomImageClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCustomImageClientWithBaseURI creates an instance of the CustomImageClient client.
+// NewCustomImageClientWithBaseURI creates an instance of the CustomImageClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCustomImageClientWithBaseURI(baseURI string, subscriptionID string) CustomImageClient {
 	return CustomImageClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

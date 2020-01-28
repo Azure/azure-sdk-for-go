@@ -36,7 +36,8 @@ func NewBalancesClient(subscriptionID string) BalancesClient {
 	return NewBalancesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBalancesClientWithBaseURI creates an instance of the BalancesClient client.
+// NewBalancesClientWithBaseURI creates an instance of the BalancesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewBalancesClientWithBaseURI(baseURI string, subscriptionID string) BalancesClient {
 	return BalancesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

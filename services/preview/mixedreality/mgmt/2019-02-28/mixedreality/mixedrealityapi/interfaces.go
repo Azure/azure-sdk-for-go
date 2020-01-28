@@ -33,6 +33,7 @@ var _ BaseClientAPI = (*mixedreality.BaseClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result mixedreality.OperationListPage, err error)
+	ListComplete(ctx context.Context) (result mixedreality.OperationListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*mixedreality.OperationsClient)(nil)
@@ -44,7 +45,9 @@ type SpatialAnchorsAccountsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, spatialAnchorsAccountName string) (result mixedreality.SpatialAnchorsAccount, err error)
 	GetKeys(ctx context.Context, resourceGroupName string, spatialAnchorsAccountName string) (result mixedreality.SpatialAnchorsAccountKeys, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result mixedreality.SpatialAnchorsAccountListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result mixedreality.SpatialAnchorsAccountListIterator, err error)
 	ListBySubscription(ctx context.Context) (result mixedreality.SpatialAnchorsAccountListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result mixedreality.SpatialAnchorsAccountListIterator, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, spatialAnchorsAccountName string, spatialAnchorsAccountKeyRegenerate mixedreality.SpatialAnchorsAccountKeyRegenerateRequest) (result mixedreality.SpatialAnchorsAccountKeys, err error)
 	Update(ctx context.Context, resourceGroupName string, spatialAnchorsAccountName string, spatialAnchorsAccount mixedreality.SpatialAnchorsAccount) (result mixedreality.SpatialAnchorsAccount, err error)
 }

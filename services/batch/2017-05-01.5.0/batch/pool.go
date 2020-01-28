@@ -38,7 +38,8 @@ func NewPoolClient() PoolClient {
 	return NewPoolClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewPoolClientWithBaseURI creates an instance of the PoolClient client.
+// NewPoolClientWithBaseURI creates an instance of the PoolClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPoolClientWithBaseURI(baseURI string) PoolClient {
 	return PoolClient{NewWithBaseURI(baseURI)}
 }

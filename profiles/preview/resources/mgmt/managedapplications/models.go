@@ -29,11 +29,30 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type ApplicationArtifactName = original.ApplicationArtifactName
+
+const (
+	Authorizations       ApplicationArtifactName = original.Authorizations
+	CustomRoleDefinition ApplicationArtifactName = original.CustomRoleDefinition
+	NotSpecified         ApplicationArtifactName = original.NotSpecified
+	ViewDefinition       ApplicationArtifactName = original.ViewDefinition
+)
+
 type ApplicationArtifactType = original.ApplicationArtifactType
 
 const (
-	Custom   ApplicationArtifactType = original.Custom
-	Template ApplicationArtifactType = original.Template
+	ApplicationArtifactTypeCustom       ApplicationArtifactType = original.ApplicationArtifactTypeCustom
+	ApplicationArtifactTypeNotSpecified ApplicationArtifactType = original.ApplicationArtifactTypeNotSpecified
+	ApplicationArtifactTypeTemplate     ApplicationArtifactType = original.ApplicationArtifactTypeTemplate
+)
+
+type ApplicationDefinitionArtifactName = original.ApplicationDefinitionArtifactName
+
+const (
+	ApplicationDefinitionArtifactNameApplicationResourceTemplate ApplicationDefinitionArtifactName = original.ApplicationDefinitionArtifactNameApplicationResourceTemplate
+	ApplicationDefinitionArtifactNameCreateUIDefinition          ApplicationDefinitionArtifactName = original.ApplicationDefinitionArtifactNameCreateUIDefinition
+	ApplicationDefinitionArtifactNameMainTemplateParameters      ApplicationDefinitionArtifactName = original.ApplicationDefinitionArtifactNameMainTemplateParameters
+	ApplicationDefinitionArtifactNameNotSpecified                ApplicationDefinitionArtifactName = original.ApplicationDefinitionArtifactNameNotSpecified
 )
 
 type ApplicationLockLevel = original.ApplicationLockLevel
@@ -44,17 +63,48 @@ const (
 	ReadOnly     ApplicationLockLevel = original.ReadOnly
 )
 
+type ApplicationManagementMode = original.ApplicationManagementMode
+
+const (
+	ApplicationManagementModeManaged      ApplicationManagementMode = original.ApplicationManagementModeManaged
+	ApplicationManagementModeNotSpecified ApplicationManagementMode = original.ApplicationManagementModeNotSpecified
+	ApplicationManagementModeUnmanaged    ApplicationManagementMode = original.ApplicationManagementModeUnmanaged
+)
+
+type DeploymentMode = original.DeploymentMode
+
+const (
+	DeploymentModeComplete     DeploymentMode = original.DeploymentModeComplete
+	DeploymentModeIncremental  DeploymentMode = original.DeploymentModeIncremental
+	DeploymentModeNotSpecified DeploymentMode = original.DeploymentModeNotSpecified
+)
+
+type JitApprovalMode = original.JitApprovalMode
+
+const (
+	JitApprovalModeAutoApprove   JitApprovalMode = original.JitApprovalModeAutoApprove
+	JitApprovalModeManualApprove JitApprovalMode = original.JitApprovalModeManualApprove
+	JitApprovalModeNotSpecified  JitApprovalMode = original.JitApprovalModeNotSpecified
+)
+
+type JitApproverType = original.JitApproverType
+
+const (
+	Group JitApproverType = original.Group
+	User  JitApproverType = original.User
+)
+
 type JitRequestState = original.JitRequestState
 
 const (
-	Approved     JitRequestState = original.Approved
-	Canceled     JitRequestState = original.Canceled
-	Denied       JitRequestState = original.Denied
-	Expired      JitRequestState = original.Expired
-	Failed       JitRequestState = original.Failed
-	NotSpecified JitRequestState = original.NotSpecified
-	Pending      JitRequestState = original.Pending
-	Timeout      JitRequestState = original.Timeout
+	JitRequestStateApproved     JitRequestState = original.JitRequestStateApproved
+	JitRequestStateCanceled     JitRequestState = original.JitRequestStateCanceled
+	JitRequestStateDenied       JitRequestState = original.JitRequestStateDenied
+	JitRequestStateExpired      JitRequestState = original.JitRequestStateExpired
+	JitRequestStateFailed       JitRequestState = original.JitRequestStateFailed
+	JitRequestStateNotSpecified JitRequestState = original.JitRequestStateNotSpecified
+	JitRequestStatePending      JitRequestState = original.JitRequestStatePending
+	JitRequestStateTimeout      JitRequestState = original.JitRequestStateTimeout
 )
 
 type JitSchedulingType = original.JitSchedulingType
@@ -68,17 +118,18 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	ProvisioningStateAccepted  ProvisioningState = original.ProvisioningStateAccepted
-	ProvisioningStateCanceled  ProvisioningState = original.ProvisioningStateCanceled
-	ProvisioningStateCreated   ProvisioningState = original.ProvisioningStateCreated
-	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
-	ProvisioningStateDeleted   ProvisioningState = original.ProvisioningStateDeleted
-	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
-	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
-	ProvisioningStateReady     ProvisioningState = original.ProvisioningStateReady
-	ProvisioningStateRunning   ProvisioningState = original.ProvisioningStateRunning
-	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
-	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
+	ProvisioningStateAccepted     ProvisioningState = original.ProvisioningStateAccepted
+	ProvisioningStateCanceled     ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreated      ProvisioningState = original.ProvisioningStateCreated
+	ProvisioningStateCreating     ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleted      ProvisioningState = original.ProvisioningStateDeleted
+	ProvisioningStateDeleting     ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed       ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateNotSpecified ProvisioningState = original.ProvisioningStateNotSpecified
+	ProvisioningStateReady        ProvisioningState = original.ProvisioningStateReady
+	ProvisioningStateRunning      ProvisioningState = original.ProvisioningStateRunning
+	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUpdating     ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -89,8 +140,11 @@ const (
 
 type Application = original.Application
 type ApplicationArtifact = original.ApplicationArtifact
+type ApplicationAuthorization = original.ApplicationAuthorization
+type ApplicationBillingDetailsDefinition = original.ApplicationBillingDetailsDefinition
 type ApplicationClientDetails = original.ApplicationClientDetails
 type ApplicationDefinition = original.ApplicationDefinition
+type ApplicationDefinitionArtifact = original.ApplicationDefinitionArtifact
 type ApplicationDefinitionListResult = original.ApplicationDefinitionListResult
 type ApplicationDefinitionListResultIterator = original.ApplicationDefinitionListResultIterator
 type ApplicationDefinitionListResultPage = original.ApplicationDefinitionListResultPage
@@ -100,13 +154,21 @@ type ApplicationDefinitionsCreateOrUpdateByIDFuture = original.ApplicationDefini
 type ApplicationDefinitionsCreateOrUpdateFuture = original.ApplicationDefinitionsCreateOrUpdateFuture
 type ApplicationDefinitionsDeleteByIDFuture = original.ApplicationDefinitionsDeleteByIDFuture
 type ApplicationDefinitionsDeleteFuture = original.ApplicationDefinitionsDeleteFuture
+type ApplicationDeploymentPolicy = original.ApplicationDeploymentPolicy
+type ApplicationJitAccessPolicy = original.ApplicationJitAccessPolicy
 type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
 type ApplicationListResultPage = original.ApplicationListResultPage
+type ApplicationManagementPolicy = original.ApplicationManagementPolicy
+type ApplicationNotificationEndpoint = original.ApplicationNotificationEndpoint
+type ApplicationNotificationPolicy = original.ApplicationNotificationPolicy
+type ApplicationPackageContact = original.ApplicationPackageContact
+type ApplicationPackageLockingPolicyDefinition = original.ApplicationPackageLockingPolicyDefinition
+type ApplicationPackageSupportUrls = original.ApplicationPackageSupportUrls
 type ApplicationPatchable = original.ApplicationPatchable
+type ApplicationPolicy = original.ApplicationPolicy
 type ApplicationProperties = original.ApplicationProperties
 type ApplicationPropertiesPatchable = original.ApplicationPropertiesPatchable
-type ApplicationProviderAuthorization = original.ApplicationProviderAuthorization
 type ApplicationsClient = original.ApplicationsClient
 type ApplicationsCreateOrUpdateByIDFuture = original.ApplicationsCreateOrUpdateByIDFuture
 type ApplicationsCreateOrUpdateFuture = original.ApplicationsCreateOrUpdateFuture
@@ -117,6 +179,7 @@ type BaseClient = original.BaseClient
 type ErrorResponse = original.ErrorResponse
 type GenericResource = original.GenericResource
 type Identity = original.Identity
+type JitApproverDefinition = original.JitApproverDefinition
 type JitAuthorizationPolicies = original.JitAuthorizationPolicies
 type JitRequestDefinition = original.JitRequestDefinition
 type JitRequestDefinitionListResult = original.JitRequestDefinitionListResult
@@ -177,11 +240,29 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleApplicationArtifactNameValues() []ApplicationArtifactName {
+	return original.PossibleApplicationArtifactNameValues()
+}
 func PossibleApplicationArtifactTypeValues() []ApplicationArtifactType {
 	return original.PossibleApplicationArtifactTypeValues()
 }
+func PossibleApplicationDefinitionArtifactNameValues() []ApplicationDefinitionArtifactName {
+	return original.PossibleApplicationDefinitionArtifactNameValues()
+}
 func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
 	return original.PossibleApplicationLockLevelValues()
+}
+func PossibleApplicationManagementModeValues() []ApplicationManagementMode {
+	return original.PossibleApplicationManagementModeValues()
+}
+func PossibleDeploymentModeValues() []DeploymentMode {
+	return original.PossibleDeploymentModeValues()
+}
+func PossibleJitApprovalModeValues() []JitApprovalMode {
+	return original.PossibleJitApprovalModeValues()
+}
+func PossibleJitApproverTypeValues() []JitApproverType {
+	return original.PossibleJitApproverTypeValues()
 }
 func PossibleJitRequestStateValues() []JitRequestState {
 	return original.PossibleJitRequestStateValues()

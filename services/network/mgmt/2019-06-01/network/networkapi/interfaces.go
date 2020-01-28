@@ -39,12 +39,15 @@ type ApplicationGatewaysClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, applicationGatewayName string) (result network.ApplicationGateway, err error)
 	GetSslPredefinedPolicy(ctx context.Context, predefinedPolicyName string) (result network.ApplicationGatewaySslPredefinedPolicy, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.ApplicationGatewayListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.ApplicationGatewayListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.ApplicationGatewayListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.ApplicationGatewayListResultIterator, err error)
 	ListAvailableRequestHeaders(ctx context.Context) (result network.ListString, err error)
 	ListAvailableResponseHeaders(ctx context.Context) (result network.ListString, err error)
 	ListAvailableServerVariables(ctx context.Context) (result network.ListString, err error)
 	ListAvailableSslOptions(ctx context.Context) (result network.ApplicationGatewayAvailableSslOptions, err error)
 	ListAvailableSslPredefinedPolicies(ctx context.Context) (result network.ApplicationGatewayAvailableSslPredefinedPoliciesPage, err error)
+	ListAvailableSslPredefinedPoliciesComplete(ctx context.Context) (result network.ApplicationGatewayAvailableSslPredefinedPoliciesIterator, err error)
 	ListAvailableWafRuleSets(ctx context.Context) (result network.ApplicationGatewayAvailableWafRuleSetsResult, err error)
 	Start(ctx context.Context, resourceGroupName string, applicationGatewayName string) (result network.ApplicationGatewaysStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, applicationGatewayName string) (result network.ApplicationGatewaysStopFuture, err error)
@@ -59,7 +62,9 @@ type ApplicationSecurityGroupsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string) (result network.ApplicationSecurityGroupsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string) (result network.ApplicationSecurityGroup, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.ApplicationSecurityGroupListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.ApplicationSecurityGroupListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.ApplicationSecurityGroupListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.ApplicationSecurityGroupListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, parameters network.TagsObject) (result network.ApplicationSecurityGroupsUpdateTagsFuture, err error)
 }
 
@@ -68,6 +73,7 @@ var _ ApplicationSecurityGroupsClientAPI = (*network.ApplicationSecurityGroupsCl
 // AvailableDelegationsClientAPI contains the set of methods on the AvailableDelegationsClient type.
 type AvailableDelegationsClientAPI interface {
 	List(ctx context.Context, location string) (result network.AvailableDelegationsResultPage, err error)
+	ListComplete(ctx context.Context, location string) (result network.AvailableDelegationsResultIterator, err error)
 }
 
 var _ AvailableDelegationsClientAPI = (*network.AvailableDelegationsClient)(nil)
@@ -75,6 +81,7 @@ var _ AvailableDelegationsClientAPI = (*network.AvailableDelegationsClient)(nil)
 // AvailableResourceGroupDelegationsClientAPI contains the set of methods on the AvailableResourceGroupDelegationsClient type.
 type AvailableResourceGroupDelegationsClientAPI interface {
 	List(ctx context.Context, location string, resourceGroupName string) (result network.AvailableDelegationsResultPage, err error)
+	ListComplete(ctx context.Context, location string, resourceGroupName string) (result network.AvailableDelegationsResultIterator, err error)
 }
 
 var _ AvailableResourceGroupDelegationsClientAPI = (*network.AvailableResourceGroupDelegationsClient)(nil)
@@ -85,7 +92,9 @@ type AzureFirewallsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, azureFirewallName string) (result network.AzureFirewallsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, azureFirewallName string) (result network.AzureFirewall, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.AzureFirewallListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.AzureFirewallListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.AzureFirewallListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.AzureFirewallListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters network.AzureFirewall) (result network.AzureFirewall, err error)
 }
 
@@ -94,6 +103,7 @@ var _ AzureFirewallsClientAPI = (*network.AzureFirewallsClient)(nil)
 // AzureFirewallFqdnTagsClientAPI contains the set of methods on the AzureFirewallFqdnTagsClient type.
 type AzureFirewallFqdnTagsClientAPI interface {
 	ListAll(ctx context.Context) (result network.AzureFirewallFqdnTagListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.AzureFirewallFqdnTagListResultIterator, err error)
 }
 
 var _ AzureFirewallFqdnTagsClientAPI = (*network.AzureFirewallFqdnTagsClient)(nil)
@@ -104,7 +114,9 @@ type BastionHostsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, bastionHostName string) (result network.BastionHostsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, bastionHostName string) (result network.BastionHost, err error)
 	List(ctx context.Context) (result network.BastionHostListResultPage, err error)
+	ListComplete(ctx context.Context) (result network.BastionHostListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.BastionHostListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result network.BastionHostListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, bastionHostName string, bastionHostParameters network.TagsObject) (result network.BastionHostsUpdateTagsFuture, err error)
 }
 
@@ -126,7 +138,9 @@ type DdosProtectionPlansClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string) (result network.DdosProtectionPlansDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string) (result network.DdosProtectionPlan, err error)
 	List(ctx context.Context) (result network.DdosProtectionPlanListResultPage, err error)
+	ListComplete(ctx context.Context) (result network.DdosProtectionPlanListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.DdosProtectionPlanListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result network.DdosProtectionPlanListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters network.TagsObject) (result network.DdosProtectionPlansUpdateTagsFuture, err error)
 }
 
@@ -135,6 +149,7 @@ var _ DdosProtectionPlansClientAPI = (*network.DdosProtectionPlansClient)(nil)
 // AvailableEndpointServicesClientAPI contains the set of methods on the AvailableEndpointServicesClient type.
 type AvailableEndpointServicesClientAPI interface {
 	List(ctx context.Context, location string) (result network.EndpointServicesListResultPage, err error)
+	ListComplete(ctx context.Context, location string) (result network.EndpointServicesListResultIterator, err error)
 }
 
 var _ AvailableEndpointServicesClientAPI = (*network.AvailableEndpointServicesClient)(nil)
@@ -145,6 +160,7 @@ type ExpressRouteCircuitAuthorizationsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string) (result network.ExpressRouteCircuitAuthorizationsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string) (result network.ExpressRouteCircuitAuthorization, err error)
 	List(ctx context.Context, resourceGroupName string, circuitName string) (result network.AuthorizationListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, circuitName string) (result network.AuthorizationListResultIterator, err error)
 }
 
 var _ ExpressRouteCircuitAuthorizationsClientAPI = (*network.ExpressRouteCircuitAuthorizationsClient)(nil)
@@ -155,6 +171,7 @@ type ExpressRouteCircuitPeeringsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (result network.ExpressRouteCircuitPeeringsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (result network.ExpressRouteCircuitPeering, err error)
 	List(ctx context.Context, resourceGroupName string, circuitName string) (result network.ExpressRouteCircuitPeeringListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, circuitName string) (result network.ExpressRouteCircuitPeeringListResultIterator, err error)
 }
 
 var _ ExpressRouteCircuitPeeringsClientAPI = (*network.ExpressRouteCircuitPeeringsClient)(nil)
@@ -165,6 +182,7 @@ type ExpressRouteCircuitConnectionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string) (result network.ExpressRouteCircuitConnectionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string) (result network.ExpressRouteCircuitConnection, err error)
 	List(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (result network.ExpressRouteCircuitConnectionListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (result network.ExpressRouteCircuitConnectionListResultIterator, err error)
 }
 
 var _ ExpressRouteCircuitConnectionsClientAPI = (*network.ExpressRouteCircuitConnectionsClient)(nil)
@@ -173,6 +191,7 @@ var _ ExpressRouteCircuitConnectionsClientAPI = (*network.ExpressRouteCircuitCon
 type PeerExpressRouteCircuitConnectionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string) (result network.PeerExpressRouteCircuitConnection, err error)
 	List(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (result network.PeerExpressRouteCircuitConnectionListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (result network.PeerExpressRouteCircuitConnectionListResultIterator, err error)
 }
 
 var _ PeerExpressRouteCircuitConnectionsClientAPI = (*network.PeerExpressRouteCircuitConnectionsClient)(nil)
@@ -185,7 +204,9 @@ type ExpressRouteCircuitsClientAPI interface {
 	GetPeeringStats(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (result network.ExpressRouteCircuitStats, err error)
 	GetStats(ctx context.Context, resourceGroupName string, circuitName string) (result network.ExpressRouteCircuitStats, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.ExpressRouteCircuitListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.ExpressRouteCircuitListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.ExpressRouteCircuitListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.ExpressRouteCircuitListResultIterator, err error)
 	ListArpTable(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, devicePath string) (result network.ExpressRouteCircuitsListArpTableFuture, err error)
 	ListRoutesTable(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, devicePath string) (result network.ExpressRouteCircuitsListRoutesTableFuture, err error)
 	ListRoutesTableSummary(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, devicePath string) (result network.ExpressRouteCircuitsListRoutesTableSummaryFuture, err error)
@@ -197,6 +218,7 @@ var _ ExpressRouteCircuitsClientAPI = (*network.ExpressRouteCircuitsClient)(nil)
 // ExpressRouteServiceProvidersClientAPI contains the set of methods on the ExpressRouteServiceProvidersClient type.
 type ExpressRouteServiceProvidersClientAPI interface {
 	List(ctx context.Context) (result network.ExpressRouteServiceProviderListResultPage, err error)
+	ListComplete(ctx context.Context) (result network.ExpressRouteServiceProviderListResultIterator, err error)
 }
 
 var _ ExpressRouteServiceProvidersClientAPI = (*network.ExpressRouteServiceProvidersClient)(nil)
@@ -206,8 +228,10 @@ type ExpressRouteCrossConnectionsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters network.ExpressRouteCrossConnection) (result network.ExpressRouteCrossConnectionsCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, crossConnectionName string) (result network.ExpressRouteCrossConnection, err error)
 	List(ctx context.Context) (result network.ExpressRouteCrossConnectionListResultPage, err error)
+	ListComplete(ctx context.Context) (result network.ExpressRouteCrossConnectionListResultIterator, err error)
 	ListArpTable(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, devicePath string) (result network.ExpressRouteCrossConnectionsListArpTableFuture, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.ExpressRouteCrossConnectionListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result network.ExpressRouteCrossConnectionListResultIterator, err error)
 	ListRoutesTable(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, devicePath string) (result network.ExpressRouteCrossConnectionsListRoutesTableFuture, err error)
 	ListRoutesTableSummary(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, devicePath string) (result network.ExpressRouteCrossConnectionsListRoutesTableSummaryFuture, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, crossConnectionName string, crossConnectionParameters network.TagsObject) (result network.ExpressRouteCrossConnectionsUpdateTagsFuture, err error)
@@ -221,6 +245,7 @@ type ExpressRouteCrossConnectionPeeringsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string) (result network.ExpressRouteCrossConnectionPeeringsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string) (result network.ExpressRouteCrossConnectionPeering, err error)
 	List(ctx context.Context, resourceGroupName string, crossConnectionName string) (result network.ExpressRouteCrossConnectionPeeringListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, crossConnectionName string) (result network.ExpressRouteCrossConnectionPeeringListIterator, err error)
 }
 
 var _ ExpressRouteCrossConnectionPeeringsClientAPI = (*network.ExpressRouteCrossConnectionPeeringsClient)(nil)
@@ -250,6 +275,7 @@ var _ ExpressRouteConnectionsClientAPI = (*network.ExpressRouteConnectionsClient
 type ExpressRoutePortsLocationsClientAPI interface {
 	Get(ctx context.Context, locationName string) (result network.ExpressRoutePortsLocation, err error)
 	List(ctx context.Context) (result network.ExpressRoutePortsLocationListResultPage, err error)
+	ListComplete(ctx context.Context) (result network.ExpressRoutePortsLocationListResultIterator, err error)
 }
 
 var _ ExpressRoutePortsLocationsClientAPI = (*network.ExpressRoutePortsLocationsClient)(nil)
@@ -260,7 +286,9 @@ type ExpressRoutePortsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, expressRoutePortName string) (result network.ExpressRoutePortsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, expressRoutePortName string) (result network.ExpressRoutePort, err error)
 	List(ctx context.Context) (result network.ExpressRoutePortListResultPage, err error)
+	ListComplete(ctx context.Context) (result network.ExpressRoutePortListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.ExpressRoutePortListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result network.ExpressRoutePortListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters network.TagsObject) (result network.ExpressRoutePortsUpdateTagsFuture, err error)
 }
 
@@ -270,6 +298,7 @@ var _ ExpressRoutePortsClientAPI = (*network.ExpressRoutePortsClient)(nil)
 type ExpressRouteLinksClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, expressRoutePortName string, linkName string) (result network.ExpressRouteLink, err error)
 	List(ctx context.Context, resourceGroupName string, expressRoutePortName string) (result network.ExpressRouteLinkListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, expressRoutePortName string) (result network.ExpressRouteLinkListResultIterator, err error)
 }
 
 var _ ExpressRouteLinksClientAPI = (*network.ExpressRouteLinksClient)(nil)
@@ -280,7 +309,9 @@ type FirewallPoliciesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, firewallPolicyName string) (result network.FirewallPoliciesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, expand string) (result network.FirewallPolicy, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.FirewallPolicyListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.FirewallPolicyListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.FirewallPolicyListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.FirewallPolicyListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, firewallPolicyName string, firewallPolicyParameters network.TagsObject) (result network.FirewallPolicy, err error)
 }
 
@@ -292,6 +323,7 @@ type FirewallPolicyRuleGroupsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (result network.FirewallPolicyRuleGroupsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (result network.FirewallPolicyRuleGroup, err error)
 	List(ctx context.Context, resourceGroupName string, firewallPolicyName string) (result network.FirewallPolicyRuleGroupListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, firewallPolicyName string) (result network.FirewallPolicyRuleGroupListResultIterator, err error)
 }
 
 var _ FirewallPolicyRuleGroupsClientAPI = (*network.FirewallPolicyRuleGroupsClient)(nil)
@@ -302,7 +334,9 @@ type LoadBalancersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.LoadBalancersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, expand string) (result network.LoadBalancer, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.LoadBalancerListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.LoadBalancerListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.LoadBalancerListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.LoadBalancerListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters network.TagsObject) (result network.LoadBalancersUpdateTagsFuture, err error)
 }
 
@@ -312,6 +346,7 @@ var _ LoadBalancersClientAPI = (*network.LoadBalancersClient)(nil)
 type LoadBalancerBackendAddressPoolsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, backendAddressPoolName string) (result network.BackendAddressPool, err error)
 	List(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.LoadBalancerBackendAddressPoolListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.LoadBalancerBackendAddressPoolListResultIterator, err error)
 }
 
 var _ LoadBalancerBackendAddressPoolsClientAPI = (*network.LoadBalancerBackendAddressPoolsClient)(nil)
@@ -320,6 +355,7 @@ var _ LoadBalancerBackendAddressPoolsClientAPI = (*network.LoadBalancerBackendAd
 type LoadBalancerFrontendIPConfigurationsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, frontendIPConfigurationName string) (result network.FrontendIPConfiguration, err error)
 	List(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.LoadBalancerFrontendIPConfigurationListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.LoadBalancerFrontendIPConfigurationListResultIterator, err error)
 }
 
 var _ LoadBalancerFrontendIPConfigurationsClientAPI = (*network.LoadBalancerFrontendIPConfigurationsClient)(nil)
@@ -330,6 +366,7 @@ type InboundNatRulesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string) (result network.InboundNatRulesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string, expand string) (result network.InboundNatRule, err error)
 	List(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.InboundNatRuleListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.InboundNatRuleListResultIterator, err error)
 }
 
 var _ InboundNatRulesClientAPI = (*network.InboundNatRulesClient)(nil)
@@ -338,6 +375,7 @@ var _ InboundNatRulesClientAPI = (*network.InboundNatRulesClient)(nil)
 type LoadBalancerLoadBalancingRulesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, loadBalancingRuleName string) (result network.LoadBalancingRule, err error)
 	List(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.LoadBalancerLoadBalancingRuleListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.LoadBalancerLoadBalancingRuleListResultIterator, err error)
 }
 
 var _ LoadBalancerLoadBalancingRulesClientAPI = (*network.LoadBalancerLoadBalancingRulesClient)(nil)
@@ -346,6 +384,7 @@ var _ LoadBalancerLoadBalancingRulesClientAPI = (*network.LoadBalancerLoadBalanc
 type LoadBalancerOutboundRulesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, outboundRuleName string) (result network.OutboundRule, err error)
 	List(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.LoadBalancerOutboundRuleListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.LoadBalancerOutboundRuleListResultIterator, err error)
 }
 
 var _ LoadBalancerOutboundRulesClientAPI = (*network.LoadBalancerOutboundRulesClient)(nil)
@@ -353,6 +392,7 @@ var _ LoadBalancerOutboundRulesClientAPI = (*network.LoadBalancerOutboundRulesCl
 // LoadBalancerNetworkInterfacesClientAPI contains the set of methods on the LoadBalancerNetworkInterfacesClient type.
 type LoadBalancerNetworkInterfacesClientAPI interface {
 	List(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.InterfaceListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.InterfaceListResultIterator, err error)
 }
 
 var _ LoadBalancerNetworkInterfacesClientAPI = (*network.LoadBalancerNetworkInterfacesClient)(nil)
@@ -361,6 +401,7 @@ var _ LoadBalancerNetworkInterfacesClientAPI = (*network.LoadBalancerNetworkInte
 type LoadBalancerProbesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string) (result network.Probe, err error)
 	List(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.LoadBalancerProbeListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, loadBalancerName string) (result network.LoadBalancerProbeListResultIterator, err error)
 }
 
 var _ LoadBalancerProbesClientAPI = (*network.LoadBalancerProbesClient)(nil)
@@ -371,7 +412,9 @@ type NatGatewaysClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, natGatewayName string) (result network.NatGatewaysDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, natGatewayName string, expand string) (result network.NatGateway, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.NatGatewayListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.NatGatewayListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.NatGatewayListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.NatGatewayListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, natGatewayName string, parameters network.TagsObject) (result network.NatGateway, err error)
 }
 
@@ -386,11 +429,16 @@ type InterfacesClientAPI interface {
 	GetVirtualMachineScaleSetIPConfiguration(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, IPConfigurationName string, expand string) (result network.InterfaceIPConfiguration, err error)
 	GetVirtualMachineScaleSetNetworkInterface(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand string) (result network.Interface, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.InterfaceListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.InterfaceListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.InterfaceListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.InterfaceListResultIterator, err error)
 	ListEffectiveNetworkSecurityGroups(ctx context.Context, resourceGroupName string, networkInterfaceName string) (result network.InterfacesListEffectiveNetworkSecurityGroupsFuture, err error)
 	ListVirtualMachineScaleSetIPConfigurations(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand string) (result network.InterfaceIPConfigurationListResultPage, err error)
+	ListVirtualMachineScaleSetIPConfigurationsComplete(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand string) (result network.InterfaceIPConfigurationListResultIterator, err error)
 	ListVirtualMachineScaleSetNetworkInterfaces(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string) (result network.InterfaceListResultPage, err error)
+	ListVirtualMachineScaleSetNetworkInterfacesComplete(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string) (result network.InterfaceListResultIterator, err error)
 	ListVirtualMachineScaleSetVMNetworkInterfaces(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string) (result network.InterfaceListResultPage, err error)
+	ListVirtualMachineScaleSetVMNetworkInterfacesComplete(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string) (result network.InterfaceListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters network.TagsObject) (result network.InterfacesUpdateTagsFuture, err error)
 }
 
@@ -400,6 +448,7 @@ var _ InterfacesClientAPI = (*network.InterfacesClient)(nil)
 type InterfaceIPConfigurationsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, IPConfigurationName string) (result network.InterfaceIPConfiguration, err error)
 	List(ctx context.Context, resourceGroupName string, networkInterfaceName string) (result network.InterfaceIPConfigurationListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, networkInterfaceName string) (result network.InterfaceIPConfigurationListResultIterator, err error)
 }
 
 var _ InterfaceIPConfigurationsClientAPI = (*network.InterfaceIPConfigurationsClient)(nil)
@@ -407,6 +456,7 @@ var _ InterfaceIPConfigurationsClientAPI = (*network.InterfaceIPConfigurationsCl
 // InterfaceLoadBalancersClientAPI contains the set of methods on the InterfaceLoadBalancersClient type.
 type InterfaceLoadBalancersClientAPI interface {
 	List(ctx context.Context, resourceGroupName string, networkInterfaceName string) (result network.InterfaceLoadBalancerListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, networkInterfaceName string) (result network.InterfaceLoadBalancerListResultIterator, err error)
 }
 
 var _ InterfaceLoadBalancersClientAPI = (*network.InterfaceLoadBalancersClient)(nil)
@@ -417,6 +467,7 @@ type InterfaceTapConfigurationsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string) (result network.InterfaceTapConfigurationsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string) (result network.InterfaceTapConfiguration, err error)
 	List(ctx context.Context, resourceGroupName string, networkInterfaceName string) (result network.InterfaceTapConfigurationListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, networkInterfaceName string) (result network.InterfaceTapConfigurationListResultIterator, err error)
 }
 
 var _ InterfaceTapConfigurationsClientAPI = (*network.InterfaceTapConfigurationsClient)(nil)
@@ -427,7 +478,9 @@ type ProfilesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, networkProfileName string) (result network.ProfilesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, networkProfileName string, expand string) (result network.Profile, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.ProfileListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.ProfileListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.ProfileListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.ProfileListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, networkProfileName string, parameters network.TagsObject) (result network.Profile, err error)
 }
 
@@ -439,7 +492,9 @@ type SecurityGroupsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string) (result network.SecurityGroupsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, expand string) (result network.SecurityGroup, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.SecurityGroupListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.SecurityGroupListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.SecurityGroupListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.SecurityGroupListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, parameters network.TagsObject) (result network.SecurityGroupsUpdateTagsFuture, err error)
 }
 
@@ -451,6 +506,7 @@ type SecurityRulesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string) (result network.SecurityRulesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string) (result network.SecurityRule, err error)
 	List(ctx context.Context, resourceGroupName string, networkSecurityGroupName string) (result network.SecurityRuleListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string) (result network.SecurityRuleListResultIterator, err error)
 }
 
 var _ SecurityRulesClientAPI = (*network.SecurityRulesClient)(nil)
@@ -459,6 +515,7 @@ var _ SecurityRulesClientAPI = (*network.SecurityRulesClient)(nil)
 type DefaultSecurityRulesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, defaultSecurityRuleName string) (result network.SecurityRule, err error)
 	List(ctx context.Context, resourceGroupName string, networkSecurityGroupName string) (result network.SecurityRuleListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string) (result network.SecurityRuleListResultIterator, err error)
 }
 
 var _ DefaultSecurityRulesClientAPI = (*network.DefaultSecurityRulesClient)(nil)
@@ -516,6 +573,7 @@ var _ ConnectionMonitorsClientAPI = (*network.ConnectionMonitorsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result network.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result network.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*network.OperationsClient)(nil)
@@ -526,7 +584,9 @@ type PrivateEndpointsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, privateEndpointName string) (result network.PrivateEndpointsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, privateEndpointName string, expand string) (result network.PrivateEndpoint, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.PrivateEndpointListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.PrivateEndpointListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result network.PrivateEndpointListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result network.PrivateEndpointListResultIterator, err error)
 }
 
 var _ PrivateEndpointsClientAPI = (*network.PrivateEndpointsClient)(nil)
@@ -534,7 +594,9 @@ var _ PrivateEndpointsClientAPI = (*network.PrivateEndpointsClient)(nil)
 // AvailablePrivateEndpointTypesClientAPI contains the set of methods on the AvailablePrivateEndpointTypesClient type.
 type AvailablePrivateEndpointTypesClientAPI interface {
 	List(ctx context.Context, location string) (result network.AvailablePrivateEndpointTypesResultPage, err error)
+	ListComplete(ctx context.Context, location string) (result network.AvailablePrivateEndpointTypesResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, location string, resourceGroupName string) (result network.AvailablePrivateEndpointTypesResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, location string, resourceGroupName string) (result network.AvailablePrivateEndpointTypesResultIterator, err error)
 }
 
 var _ AvailablePrivateEndpointTypesClientAPI = (*network.AvailablePrivateEndpointTypesClient)(nil)
@@ -548,9 +610,13 @@ type PrivateLinkServicesClientAPI interface {
 	DeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string) (result network.PrivateLinkServicesDeletePrivateEndpointConnectionFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, expand string) (result network.PrivateLinkService, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.PrivateLinkServiceListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.PrivateLinkServiceListResultIterator, err error)
 	ListAutoApprovedPrivateLinkServices(ctx context.Context, location string) (result network.AutoApprovedPrivateLinkServicesResultPage, err error)
+	ListAutoApprovedPrivateLinkServicesComplete(ctx context.Context, location string) (result network.AutoApprovedPrivateLinkServicesResultIterator, err error)
 	ListAutoApprovedPrivateLinkServicesByResourceGroup(ctx context.Context, location string, resourceGroupName string) (result network.AutoApprovedPrivateLinkServicesResultPage, err error)
+	ListAutoApprovedPrivateLinkServicesByResourceGroupComplete(ctx context.Context, location string, resourceGroupName string) (result network.AutoApprovedPrivateLinkServicesResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result network.PrivateLinkServiceListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result network.PrivateLinkServiceListResultIterator, err error)
 	UpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string, parameters network.PrivateEndpointConnection) (result network.PrivateEndpointConnection, err error)
 }
 
@@ -563,9 +629,13 @@ type PublicIPAddressesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, publicIPAddressName string, expand string) (result network.PublicIPAddress, err error)
 	GetVirtualMachineScaleSetPublicIPAddress(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, IPConfigurationName string, publicIPAddressName string, expand string) (result network.PublicIPAddress, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.PublicIPAddressListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.PublicIPAddressListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.PublicIPAddressListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.PublicIPAddressListResultIterator, err error)
 	ListVirtualMachineScaleSetPublicIPAddresses(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string) (result network.PublicIPAddressListResultPage, err error)
+	ListVirtualMachineScaleSetPublicIPAddressesComplete(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string) (result network.PublicIPAddressListResultIterator, err error)
 	ListVirtualMachineScaleSetVMPublicIPAddresses(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, IPConfigurationName string) (result network.PublicIPAddressListResultPage, err error)
+	ListVirtualMachineScaleSetVMPublicIPAddressesComplete(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, IPConfigurationName string) (result network.PublicIPAddressListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters network.TagsObject) (result network.PublicIPAddressesUpdateTagsFuture, err error)
 }
 
@@ -577,7 +647,9 @@ type PublicIPPrefixesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, publicIPPrefixName string) (result network.PublicIPPrefixesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, publicIPPrefixName string, expand string) (result network.PublicIPPrefix, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.PublicIPPrefixListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.PublicIPPrefixListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.PublicIPPrefixListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.PublicIPPrefixListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, publicIPPrefixName string, parameters network.TagsObject) (result network.PublicIPPrefixesUpdateTagsFuture, err error)
 }
 
@@ -589,7 +661,9 @@ type RouteFiltersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, routeFilterName string) (result network.RouteFiltersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, routeFilterName string, expand string) (result network.RouteFilter, err error)
 	List(ctx context.Context) (result network.RouteFilterListResultPage, err error)
+	ListComplete(ctx context.Context) (result network.RouteFilterListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.RouteFilterListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result network.RouteFilterListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters network.PatchRouteFilter) (result network.RouteFiltersUpdateFuture, err error)
 }
 
@@ -601,6 +675,7 @@ type RouteFilterRulesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (result network.RouteFilterRulesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (result network.RouteFilterRule, err error)
 	ListByRouteFilter(ctx context.Context, resourceGroupName string, routeFilterName string) (result network.RouteFilterRuleListResultPage, err error)
+	ListByRouteFilterComplete(ctx context.Context, resourceGroupName string, routeFilterName string) (result network.RouteFilterRuleListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters network.PatchRouteFilterRule) (result network.RouteFilterRulesUpdateFuture, err error)
 }
 
@@ -612,7 +687,9 @@ type RouteTablesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, routeTableName string) (result network.RouteTablesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, routeTableName string, expand string) (result network.RouteTable, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.RouteTableListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.RouteTableListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.RouteTableListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.RouteTableListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, routeTableName string, parameters network.TagsObject) (result network.RouteTablesUpdateTagsFuture, err error)
 }
 
@@ -624,6 +701,7 @@ type RoutesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, routeTableName string, routeName string) (result network.RoutesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, routeTableName string, routeName string) (result network.Route, err error)
 	List(ctx context.Context, resourceGroupName string, routeTableName string) (result network.RouteListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, routeTableName string) (result network.RouteListResultIterator, err error)
 }
 
 var _ RoutesClientAPI = (*network.RoutesClient)(nil)
@@ -631,6 +709,7 @@ var _ RoutesClientAPI = (*network.RoutesClient)(nil)
 // BgpServiceCommunitiesClientAPI contains the set of methods on the BgpServiceCommunitiesClient type.
 type BgpServiceCommunitiesClientAPI interface {
 	List(ctx context.Context) (result network.BgpServiceCommunityListResultPage, err error)
+	ListComplete(ctx context.Context) (result network.BgpServiceCommunityListResultIterator, err error)
 }
 
 var _ BgpServiceCommunitiesClientAPI = (*network.BgpServiceCommunitiesClient)(nil)
@@ -641,7 +720,9 @@ type ServiceEndpointPoliciesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string) (result network.ServiceEndpointPoliciesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, expand string) (result network.ServiceEndpointPolicy, err error)
 	List(ctx context.Context) (result network.ServiceEndpointPolicyListResultPage, err error)
+	ListComplete(ctx context.Context) (result network.ServiceEndpointPolicyListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.ServiceEndpointPolicyListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result network.ServiceEndpointPolicyListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters network.TagsObject) (result network.ServiceEndpointPoliciesUpdateFuture, err error)
 }
 
@@ -653,6 +734,7 @@ type ServiceEndpointPolicyDefinitionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string) (result network.ServiceEndpointPolicyDefinitionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string) (result network.ServiceEndpointPolicyDefinition, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string) (result network.ServiceEndpointPolicyDefinitionListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string) (result network.ServiceEndpointPolicyDefinitionListResultIterator, err error)
 }
 
 var _ ServiceEndpointPolicyDefinitionsClientAPI = (*network.ServiceEndpointPolicyDefinitionsClient)(nil)
@@ -667,6 +749,7 @@ var _ ServiceTagsClientAPI = (*network.ServiceTagsClient)(nil)
 // UsagesClientAPI contains the set of methods on the UsagesClient type.
 type UsagesClientAPI interface {
 	List(ctx context.Context, location string) (result network.UsagesListResultPage, err error)
+	ListComplete(ctx context.Context, location string) (result network.UsagesListResultIterator, err error)
 }
 
 var _ UsagesClientAPI = (*network.UsagesClient)(nil)
@@ -678,8 +761,11 @@ type VirtualNetworksClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, virtualNetworkName string) (result network.VirtualNetworksDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, expand string) (result network.VirtualNetwork, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.VirtualNetworkListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.VirtualNetworkListResultIterator, err error)
 	ListUsage(ctx context.Context, resourceGroupName string, virtualNetworkName string) (result network.VirtualNetworkListUsageResultPage, err error)
+	ListUsageComplete(ctx context.Context, resourceGroupName string, virtualNetworkName string) (result network.VirtualNetworkListUsageResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters network.TagsObject) (result network.VirtualNetworksUpdateTagsFuture, err error)
 }
 
@@ -691,6 +777,7 @@ type SubnetsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string) (result network.SubnetsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, expand string) (result network.Subnet, err error)
 	List(ctx context.Context, resourceGroupName string, virtualNetworkName string) (result network.SubnetListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, virtualNetworkName string) (result network.SubnetListResultIterator, err error)
 	PrepareNetworkPolicies(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, prepareNetworkPoliciesRequestParameters network.PrepareNetworkPoliciesRequest) (result network.SubnetsPrepareNetworkPoliciesFuture, err error)
 	UnprepareNetworkPolicies(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, unprepareNetworkPoliciesRequestParameters network.UnprepareNetworkPoliciesRequest) (result network.SubnetsUnprepareNetworkPoliciesFuture, err error)
 }
@@ -717,6 +804,7 @@ type VirtualNetworkPeeringsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string) (result network.VirtualNetworkPeeringsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string) (result network.VirtualNetworkPeering, err error)
 	List(ctx context.Context, resourceGroupName string, virtualNetworkName string) (result network.VirtualNetworkPeeringListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, virtualNetworkName string) (result network.VirtualNetworkPeeringListResultIterator, err error)
 }
 
 var _ VirtualNetworkPeeringsClientAPI = (*network.VirtualNetworkPeeringsClient)(nil)
@@ -735,7 +823,9 @@ type VirtualNetworkGatewaysClientAPI interface {
 	GetVpnclientIpsecParameters(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (result network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture, err error)
 	GetVpnProfilePackageURL(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (result network.VirtualNetworkGatewaysGetVpnProfilePackageURLFuture, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkGatewayListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkGatewayListResultIterator, err error)
 	ListConnections(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (result network.VirtualNetworkGatewayListConnectionsResultPage, err error)
+	ListConnectionsComplete(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (result network.VirtualNetworkGatewayListConnectionsResultIterator, err error)
 	Reset(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, gatewayVip string) (result network.VirtualNetworkGatewaysResetFuture, err error)
 	ResetVpnClientSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (result network.VirtualNetworkGatewaysResetVpnClientSharedKeyFuture, err error)
 	SetVpnclientIpsecParameters(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, vpnclientIpsecParams network.VpnClientIPsecParameters) (result network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture, err error)
@@ -753,6 +843,7 @@ type VirtualNetworkGatewayConnectionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string) (result network.VirtualNetworkGatewayConnection, err error)
 	GetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string) (result network.ConnectionSharedKey, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkGatewayConnectionListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkGatewayConnectionListResultIterator, err error)
 	ResetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters network.ConnectionResetSharedKey) (result network.VirtualNetworkGatewayConnectionsResetSharedKeyFuture, err error)
 	SetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters network.ConnectionSharedKey) (result network.VirtualNetworkGatewayConnectionsSetSharedKeyFuture, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters network.TagsObject) (result network.VirtualNetworkGatewayConnectionsUpdateTagsFuture, err error)
@@ -766,6 +857,7 @@ type LocalNetworkGatewaysClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, localNetworkGatewayName string) (result network.LocalNetworkGatewaysDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, localNetworkGatewayName string) (result network.LocalNetworkGateway, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.LocalNetworkGatewayListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.LocalNetworkGatewayListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, localNetworkGatewayName string, parameters network.TagsObject) (result network.LocalNetworkGatewaysUpdateTagsFuture, err error)
 }
 
@@ -777,7 +869,9 @@ type VirtualNetworkTapsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, tapName string) (result network.VirtualNetworkTapsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, tapName string) (result network.VirtualNetworkTap, err error)
 	ListAll(ctx context.Context) (result network.VirtualNetworkTapListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.VirtualNetworkTapListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkTapListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkTapListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, tapName string, tapParameters network.TagsObject) (result network.VirtualNetworkTapsUpdateTagsFuture, err error)
 }
 
@@ -789,7 +883,9 @@ type VirtualWansClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, virtualWANName string) (result network.VirtualWansDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualWANName string) (result network.VirtualWAN, err error)
 	List(ctx context.Context) (result network.ListVirtualWANsResultPage, err error)
+	ListComplete(ctx context.Context) (result network.ListVirtualWANsResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.ListVirtualWANsResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result network.ListVirtualWANsResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, virtualWANName string, wANParameters network.TagsObject) (result network.VirtualWansUpdateTagsFuture, err error)
 }
 
@@ -801,7 +897,9 @@ type VpnSitesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, vpnSiteName string) (result network.VpnSitesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, vpnSiteName string) (result network.VpnSite, err error)
 	List(ctx context.Context) (result network.ListVpnSitesResultPage, err error)
+	ListComplete(ctx context.Context) (result network.ListVpnSitesResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.ListVpnSitesResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result network.ListVpnSitesResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters network.TagsObject) (result network.VpnSitesUpdateTagsFuture, err error)
 }
 
@@ -811,6 +909,7 @@ var _ VpnSitesClientAPI = (*network.VpnSitesClient)(nil)
 type VpnSiteLinksClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteLinkName string) (result network.VpnSiteLink, err error)
 	ListByVpnSite(ctx context.Context, resourceGroupName string, vpnSiteName string) (result network.ListVpnSiteLinksResultPage, err error)
+	ListByVpnSiteComplete(ctx context.Context, resourceGroupName string, vpnSiteName string) (result network.ListVpnSiteLinksResultIterator, err error)
 }
 
 var _ VpnSiteLinksClientAPI = (*network.VpnSiteLinksClient)(nil)
@@ -828,7 +927,9 @@ type VirtualHubsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.VirtualHubsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.VirtualHub, err error)
 	List(ctx context.Context) (result network.ListVirtualHubsResultPage, err error)
+	ListComplete(ctx context.Context) (result network.ListVirtualHubsResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.ListVirtualHubsResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result network.ListVirtualHubsResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters network.TagsObject) (result network.VirtualHubsUpdateTagsFuture, err error)
 }
 
@@ -838,6 +939,7 @@ var _ VirtualHubsClientAPI = (*network.VirtualHubsClient)(nil)
 type HubVirtualNetworkConnectionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string) (result network.HubVirtualNetworkConnection, err error)
 	List(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.ListHubVirtualNetworkConnectionsResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.ListHubVirtualNetworkConnectionsResultIterator, err error)
 }
 
 var _ HubVirtualNetworkConnectionsClientAPI = (*network.HubVirtualNetworkConnectionsClient)(nil)
@@ -848,7 +950,9 @@ type VpnGatewaysClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, gatewayName string) (result network.VpnGatewaysDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, gatewayName string) (result network.VpnGateway, err error)
 	List(ctx context.Context) (result network.ListVpnGatewaysResultPage, err error)
+	ListComplete(ctx context.Context) (result network.ListVpnGatewaysResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.ListVpnGatewaysResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result network.ListVpnGatewaysResultIterator, err error)
 	Reset(ctx context.Context, resourceGroupName string, gatewayName string) (result network.VpnGatewaysResetFuture, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, gatewayName string, vpnGatewayParameters network.TagsObject) (result network.VpnGatewaysUpdateTagsFuture, err error)
 }
@@ -861,6 +965,7 @@ type VpnConnectionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (result network.VpnConnectionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (result network.VpnConnection, err error)
 	ListByVpnGateway(ctx context.Context, resourceGroupName string, gatewayName string) (result network.ListVpnConnectionsResultPage, err error)
+	ListByVpnGatewayComplete(ctx context.Context, resourceGroupName string, gatewayName string) (result network.ListVpnConnectionsResultIterator, err error)
 }
 
 var _ VpnConnectionsClientAPI = (*network.VpnConnectionsClient)(nil)
@@ -875,6 +980,7 @@ var _ VpnSiteLinkConnectionsClientAPI = (*network.VpnSiteLinkConnectionsClient)(
 // VpnLinkConnectionsClientAPI contains the set of methods on the VpnLinkConnectionsClient type.
 type VpnLinkConnectionsClientAPI interface {
 	ListByVpnConnection(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (result network.ListVpnSiteLinkConnectionsResultPage, err error)
+	ListByVpnConnectionComplete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (result network.ListVpnSiteLinkConnectionsResultIterator, err error)
 }
 
 var _ VpnLinkConnectionsClientAPI = (*network.VpnLinkConnectionsClient)(nil)
@@ -885,6 +991,7 @@ type P2sVpnServerConfigurationsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, virtualWanName string, p2SVpnServerConfigurationName string) (result network.P2sVpnServerConfigurationsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualWanName string, p2SVpnServerConfigurationName string) (result network.P2SVpnServerConfiguration, err error)
 	ListByVirtualWan(ctx context.Context, resourceGroupName string, virtualWanName string) (result network.ListP2SVpnServerConfigurationsResultPage, err error)
+	ListByVirtualWanComplete(ctx context.Context, resourceGroupName string, virtualWanName string) (result network.ListP2SVpnServerConfigurationsResultIterator, err error)
 }
 
 var _ P2sVpnServerConfigurationsClientAPI = (*network.P2sVpnServerConfigurationsClient)(nil)
@@ -897,7 +1004,9 @@ type P2sVpnGatewaysClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, gatewayName string) (result network.P2SVpnGateway, err error)
 	GetP2sVpnConnectionHealth(ctx context.Context, resourceGroupName string, gatewayName string) (result network.P2sVpnGatewaysGetP2sVpnConnectionHealthFuture, err error)
 	List(ctx context.Context) (result network.ListP2SVpnGatewaysResultPage, err error)
+	ListComplete(ctx context.Context) (result network.ListP2SVpnGatewaysResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.ListP2SVpnGatewaysResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result network.ListP2SVpnGatewaysResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, gatewayName string, p2SVpnGatewayParameters network.TagsObject) (result network.P2sVpnGatewaysUpdateTagsFuture, err error)
 }
 
@@ -909,7 +1018,9 @@ type WebApplicationFirewallPoliciesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, policyName string) (result network.WebApplicationFirewallPoliciesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, policyName string) (result network.WebApplicationFirewallPolicy, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.WebApplicationFirewallPolicyListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result network.WebApplicationFirewallPolicyListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.WebApplicationFirewallPolicyListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result network.WebApplicationFirewallPolicyListResultIterator, err error)
 }
 
 var _ WebApplicationFirewallPoliciesClientAPI = (*network.WebApplicationFirewallPoliciesClient)(nil)

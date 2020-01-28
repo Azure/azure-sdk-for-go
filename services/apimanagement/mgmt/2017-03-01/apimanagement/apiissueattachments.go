@@ -36,7 +36,9 @@ func NewAPIIssueAttachmentsClient(subscriptionID string) APIIssueAttachmentsClie
 	return NewAPIIssueAttachmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAPIIssueAttachmentsClientWithBaseURI creates an instance of the APIIssueAttachmentsClient client.
+// NewAPIIssueAttachmentsClientWithBaseURI creates an instance of the APIIssueAttachmentsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewAPIIssueAttachmentsClientWithBaseURI(baseURI string, subscriptionID string) APIIssueAttachmentsClient {
 	return APIIssueAttachmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

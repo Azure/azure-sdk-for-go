@@ -36,7 +36,9 @@ func NewReservationRecommendationsClient(subscriptionID string) ReservationRecom
 	return NewReservationRecommendationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewReservationRecommendationsClientWithBaseURI creates an instance of the ReservationRecommendationsClient client.
+// NewReservationRecommendationsClientWithBaseURI creates an instance of the ReservationRecommendationsClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) ReservationRecommendationsClient {
 	return ReservationRecommendationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

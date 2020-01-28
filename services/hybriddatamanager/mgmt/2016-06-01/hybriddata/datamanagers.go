@@ -36,7 +36,8 @@ func NewDataManagersClient(subscriptionID string) DataManagersClient {
 	return NewDataManagersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDataManagersClientWithBaseURI creates an instance of the DataManagersClient client.
+// NewDataManagersClientWithBaseURI creates an instance of the DataManagersClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDataManagersClientWithBaseURI(baseURI string, subscriptionID string) DataManagersClient {
 	return DataManagersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

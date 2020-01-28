@@ -38,7 +38,8 @@ func NewUsageDetailsByBillingAccountClient(subscriptionID string) UsageDetailsBy
 }
 
 // NewUsageDetailsByBillingAccountClientWithBaseURI creates an instance of the UsageDetailsByBillingAccountClient
-// client.
+// client using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI
+// (sovereign clouds, Azure stack).
 func NewUsageDetailsByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsByBillingAccountClient {
 	return UsageDetailsByBillingAccountClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -36,7 +36,9 @@ func NewSpatialAnchorsAccountsClient(subscriptionID string) SpatialAnchorsAccoun
 	return NewSpatialAnchorsAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSpatialAnchorsAccountsClientWithBaseURI creates an instance of the SpatialAnchorsAccountsClient client.
+// NewSpatialAnchorsAccountsClientWithBaseURI creates an instance of the SpatialAnchorsAccountsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewSpatialAnchorsAccountsClientWithBaseURI(baseURI string, subscriptionID string) SpatialAnchorsAccountsClient {
 	return SpatialAnchorsAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

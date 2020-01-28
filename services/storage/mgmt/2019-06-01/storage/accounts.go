@@ -437,7 +437,7 @@ func (client AccountsClient) FailoverResponder(resp *http.Response) (result auto
 // accountName - the name of the storage account within the specified resource group. Storage account names
 // must be between 3 and 24 characters in length and use numbers and lower-case letters only.
 // expand - may be used to expand the properties within account's properties. By default, data is not included
-// when fetching properties. Currently we only support geoReplicationStats.
+// when fetching properties. Currently we only support geoReplicationStats and blobRestoreStatus.
 func (client AccountsClient) GetProperties(ctx context.Context, resourceGroupName string, accountName string, expand AccountExpand) (result Account, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.GetProperties")
@@ -1114,6 +1114,104 @@ func (client AccountsClient) RegenerateKeyResponder(resp *http.Response) (result
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// RestoreBlobRanges restore blobs in the specified blob ranges
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// accountName - the name of the storage account within the specified resource group. Storage account names
+// must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+// parameters - the parameters to provide for restore blob ranges.
+func (client AccountsClient) RestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters) (result AccountsRestoreBlobRangesFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.RestoreBlobRanges")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.TimeToRestore", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.BlobRanges", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storage.AccountsClient", "RestoreBlobRanges", err.Error())
+	}
+
+	req, err := client.RestoreBlobRangesPreparer(ctx, resourceGroupName, accountName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.AccountsClient", "RestoreBlobRanges", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.RestoreBlobRangesSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.AccountsClient", "RestoreBlobRanges", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// RestoreBlobRangesPreparer prepares the RestoreBlobRanges request.
+func (client AccountsClient) RestoreBlobRangesPreparer(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/restoreBlobRanges", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RestoreBlobRangesSender sends the RestoreBlobRanges request. The method will close the
+// http.Response Body if it receives an error.
+func (client AccountsClient) RestoreBlobRangesSender(req *http.Request) (future AccountsRestoreBlobRangesFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req, sd...)
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// RestoreBlobRangesResponder handles the response to the RestoreBlobRanges request. The method always
+// closes the http.Response Body.
+func (client AccountsClient) RestoreBlobRangesResponder(resp *http.Response) (result BlobRestoreStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result notificationhubs.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result notificationhubs.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*notificationhubs.OperationsClient)(nil)
@@ -40,8 +41,11 @@ type NamespacesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, namespaceName string) (result notificationhubs.NamespaceResource, err error)
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result notificationhubs.SharedAccessAuthorizationRuleResource, err error)
 	List(ctx context.Context, resourceGroupName string) (result notificationhubs.NamespaceListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result notificationhubs.NamespaceListResultIterator, err error)
 	ListAll(ctx context.Context) (result notificationhubs.NamespaceListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result notificationhubs.NamespaceListResultIterator, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string) (result notificationhubs.SharedAccessAuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result notificationhubs.SharedAccessAuthorizationRuleListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result notificationhubs.SharedAccessAuthorizationRuleListResult, err error)
 	Patch(ctx context.Context, resourceGroupName string, namespaceName string, parameters notificationhubs.NamespacePatchParameters) (result notificationhubs.NamespaceResource, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters notificationhubs.PolicykeyResource) (result notificationhubs.ResourceListKeys, err error)
@@ -61,7 +65,9 @@ type ClientAPI interface {
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result notificationhubs.SharedAccessAuthorizationRuleResource, err error)
 	GetPnsCredentials(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string) (result notificationhubs.PnsCredentialsResource, err error)
 	List(ctx context.Context, resourceGroupName string, namespaceName string) (result notificationhubs.ListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result notificationhubs.ListResultIterator, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string) (result notificationhubs.SharedAccessAuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string) (result notificationhubs.SharedAccessAuthorizationRuleListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result notificationhubs.ResourceListKeys, err error)
 	Patch(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters *notificationhubs.PatchParameters) (result notificationhubs.ResourceType, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, parameters notificationhubs.PolicykeyResource) (result notificationhubs.ResourceListKeys, err error)

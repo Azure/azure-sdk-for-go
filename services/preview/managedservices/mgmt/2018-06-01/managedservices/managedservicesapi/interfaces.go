@@ -29,6 +29,7 @@ type RegistrationDefinitionsClientAPI interface {
 	Delete(ctx context.Context, registrationDefinitionID string, APIVersion string, scope string) (result autorest.Response, err error)
 	Get(ctx context.Context, scope string, registrationDefinitionID string, APIVersion string) (result managedservices.RegistrationDefinition, err error)
 	List(ctx context.Context, scope string, APIVersion string) (result managedservices.RegistrationDefinitionListPage, err error)
+	ListComplete(ctx context.Context, scope string, APIVersion string) (result managedservices.RegistrationDefinitionListIterator, err error)
 }
 
 var _ RegistrationDefinitionsClientAPI = (*managedservices.RegistrationDefinitionsClient)(nil)
@@ -39,6 +40,7 @@ type RegistrationAssignmentsClientAPI interface {
 	Delete(ctx context.Context, scope string, registrationAssignmentID string, APIVersion string) (result autorest.Response, err error)
 	Get(ctx context.Context, scope string, registrationAssignmentID string, APIVersion string, expandRegistrationDefinition *bool) (result managedservices.RegistrationAssignment, err error)
 	List(ctx context.Context, scope string, APIVersion string, expandRegistrationDefinition *bool) (result managedservices.RegistrationAssignmentListPage, err error)
+	ListComplete(ctx context.Context, scope string, APIVersion string, expandRegistrationDefinition *bool) (result managedservices.RegistrationAssignmentListIterator, err error)
 }
 
 var _ RegistrationAssignmentsClientAPI = (*managedservices.RegistrationAssignmentsClient)(nil)

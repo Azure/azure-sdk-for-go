@@ -29,12 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type AggregationsKind = original.AggregationsKind
-
-const (
-	AggregationsKindCasesAggregation AggregationsKind = original.AggregationsKindCasesAggregation
-)
-
 type AlertRuleKind = original.AlertRuleKind
 
 const (
@@ -125,6 +119,13 @@ const (
 	NotFinal      ConfidenceScoreStatus = original.NotFinal
 )
 
+type DataConnectorAuthorizationState = original.DataConnectorAuthorizationState
+
+const (
+	Invalid DataConnectorAuthorizationState = original.Invalid
+	Valid   DataConnectorAuthorizationState = original.Valid
+)
+
 type DataConnectorKind = original.DataConnectorKind
 
 const (
@@ -136,6 +137,14 @@ const (
 	DataConnectorKindMicrosoftDefenderAdvancedThreatProtection DataConnectorKind = original.DataConnectorKindMicrosoftDefenderAdvancedThreatProtection
 	DataConnectorKindOffice365                                 DataConnectorKind = original.DataConnectorKindOffice365
 	DataConnectorKindThreatIntelligence                        DataConnectorKind = original.DataConnectorKindThreatIntelligence
+)
+
+type DataConnectorLicenseState = original.DataConnectorLicenseState
+
+const (
+	DataConnectorLicenseStateInvalid DataConnectorLicenseState = original.DataConnectorLicenseStateInvalid
+	DataConnectorLicenseStateUnknown DataConnectorLicenseState = original.DataConnectorLicenseStateUnknown
+	DataConnectorLicenseStateValid   DataConnectorLicenseState = original.DataConnectorLicenseStateValid
 )
 
 type DataTypeState = original.DataTypeState
@@ -171,6 +180,7 @@ const (
 	EntityKindFile             EntityKind = original.EntityKindFile
 	EntityKindFileHash         EntityKind = original.EntityKindFileHash
 	EntityKindHost             EntityKind = original.EntityKindHost
+	EntityKindIoTDevice        EntityKind = original.EntityKindIoTDevice
 	EntityKindIP               EntityKind = original.EntityKindIP
 	EntityKindMalware          EntityKind = original.EntityKindMalware
 	EntityKindProcess          EntityKind = original.EntityKindProcess
@@ -192,6 +202,7 @@ const (
 	EntityTypeFileHash         EntityType = original.EntityTypeFileHash
 	EntityTypeHost             EntityType = original.EntityTypeHost
 	EntityTypeHuntingBookmark  EntityType = original.EntityTypeHuntingBookmark
+	EntityTypeIoTDevice        EntityType = original.EntityTypeIoTDevice
 	EntityTypeIP               EntityType = original.EntityTypeIP
 	EntityTypeMalware          EntityType = original.EntityTypeMalware
 	EntityTypeProcess          EntityType = original.EntityTypeProcess
@@ -291,6 +302,7 @@ const (
 	KindFile             KindBasicEntity = original.KindFile
 	KindFileHash         KindBasicEntity = original.KindFileHash
 	KindHost             KindBasicEntity = original.KindHost
+	KindIoTDevice        KindBasicEntity = original.KindIoTDevice
 	KindIP               KindBasicEntity = original.KindIP
 	KindMalware          KindBasicEntity = original.KindMalware
 	KindProcess          KindBasicEntity = original.KindProcess
@@ -407,14 +419,18 @@ const (
 	NotEqual    TriggerOperator = original.NotEqual
 )
 
+type AADCheckRequirements = original.AADCheckRequirements
 type AADDataConnector = original.AADDataConnector
 type AADDataConnectorProperties = original.AADDataConnectorProperties
+type AATPCheckRequirements = original.AATPCheckRequirements
 type AATPDataConnector = original.AATPDataConnector
 type AATPDataConnectorProperties = original.AATPDataConnectorProperties
+type ASCCheckRequirements = original.ASCCheckRequirements
 type ASCDataConnector = original.ASCDataConnector
 type ASCDataConnectorProperties = original.ASCDataConnectorProperties
 type AccountEntity = original.AccountEntity
 type AccountEntityProperties = original.AccountEntityProperties
+type ActionPropertiesBase = original.ActionPropertiesBase
 type ActionRequest = original.ActionRequest
 type ActionRequestProperties = original.ActionRequestProperties
 type ActionResponse = original.ActionResponse
@@ -424,7 +440,7 @@ type ActionsList = original.ActionsList
 type ActionsListIterator = original.ActionsListIterator
 type ActionsListPage = original.ActionsListPage
 type Aggregations = original.Aggregations
-type AggregationsKind1 = original.AggregationsKind1
+type AggregationsKind = original.AggregationsKind
 type AggregationsModel = original.AggregationsModel
 type AlertRule = original.AlertRule
 type AlertRuleKind1 = original.AlertRuleKind1
@@ -442,6 +458,7 @@ type AlertRulesListIterator = original.AlertRulesListIterator
 type AlertRulesListPage = original.AlertRulesListPage
 type AlertsDataTypeOfDataConnector = original.AlertsDataTypeOfDataConnector
 type AlertsDataTypeOfDataConnectorAlerts = original.AlertsDataTypeOfDataConnectorAlerts
+type AwsCloudTrailCheckRequirements = original.AwsCloudTrailCheckRequirements
 type AwsCloudTrailDataConnector = original.AwsCloudTrailDataConnector
 type AwsCloudTrailDataConnectorDataTypes = original.AwsCloudTrailDataConnectorDataTypes
 type AwsCloudTrailDataConnectorDataTypesLogs = original.AwsCloudTrailDataConnectorDataTypesLogs
@@ -504,9 +521,11 @@ type DataConnectorList = original.DataConnectorList
 type DataConnectorListIterator = original.DataConnectorListIterator
 type DataConnectorListPage = original.DataConnectorListPage
 type DataConnectorModel = original.DataConnectorModel
+type DataConnectorRequirementsState = original.DataConnectorRequirementsState
 type DataConnectorStatus = original.DataConnectorStatus
 type DataConnectorTenantID = original.DataConnectorTenantID
 type DataConnectorWithAlertsProperties = original.DataConnectorWithAlertsProperties
+type DataConnectorsCheckRequirements = original.DataConnectorsCheckRequirements
 type DataConnectorsClient = original.DataConnectorsClient
 type EntitiesClient = original.EntitiesClient
 type Entity = original.Entity
@@ -541,10 +560,14 @@ type HostEntityProperties = original.HostEntityProperties
 type IPEntity = original.IPEntity
 type IPEntityProperties = original.IPEntityProperties
 type IncidentInfo = original.IncidentInfo
+type IoTDeviceEntity = original.IoTDeviceEntity
+type IoTDeviceEntityProperties = original.IoTDeviceEntityProperties
+type MCASCheckRequirements = original.MCASCheckRequirements
 type MCASDataConnector = original.MCASDataConnector
 type MCASDataConnectorDataTypes = original.MCASDataConnectorDataTypes
 type MCASDataConnectorDataTypesDiscoveryLogs = original.MCASDataConnectorDataTypesDiscoveryLogs
 type MCASDataConnectorProperties = original.MCASDataConnectorProperties
+type MDATPCheckRequirements = original.MDATPCheckRequirements
 type MDATPDataConnector = original.MDATPDataConnector
 type MDATPDataConnectorProperties = original.MDATPDataConnectorProperties
 type MalwareEntity = original.MalwareEntity
@@ -597,6 +620,7 @@ type SecurityGroupEntityProperties = original.SecurityGroupEntityProperties
 type Settings = original.Settings
 type SettingsKind = original.SettingsKind
 type SettingsModel = original.SettingsModel
+type TICheckRequirements = original.TICheckRequirements
 type TIDataConnector = original.TIDataConnector
 type TIDataConnectorDataTypes = original.TIDataConnectorDataTypes
 type TIDataConnectorDataTypesIndicators = original.TIDataConnectorDataTypesIndicators
@@ -790,9 +814,6 @@ func NewProductSettingsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleAggregationsKindValues() []AggregationsKind {
-	return original.PossibleAggregationsKindValues()
-}
 func PossibleAlertRuleKindValues() []AlertRuleKind {
 	return original.PossibleAlertRuleKindValues()
 }
@@ -820,8 +841,14 @@ func PossibleConfidenceLevelValues() []ConfidenceLevel {
 func PossibleConfidenceScoreStatusValues() []ConfidenceScoreStatus {
 	return original.PossibleConfidenceScoreStatusValues()
 }
+func PossibleDataConnectorAuthorizationStateValues() []DataConnectorAuthorizationState {
+	return original.PossibleDataConnectorAuthorizationStateValues()
+}
 func PossibleDataConnectorKindValues() []DataConnectorKind {
 	return original.PossibleDataConnectorKindValues()
+}
+func PossibleDataConnectorLicenseStateValues() []DataConnectorLicenseState {
+	return original.PossibleDataConnectorLicenseStateValues()
 }
 func PossibleDataTypeStateValues() []DataTypeState {
 	return original.PossibleDataTypeStateValues()

@@ -37,7 +37,9 @@ func NewDatabaseConnectionPoliciesClient(subscriptionID string) DatabaseConnecti
 	return NewDatabaseConnectionPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDatabaseConnectionPoliciesClientWithBaseURI creates an instance of the DatabaseConnectionPoliciesClient client.
+// NewDatabaseConnectionPoliciesClientWithBaseURI creates an instance of the DatabaseConnectionPoliciesClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewDatabaseConnectionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) DatabaseConnectionPoliciesClient {
 	return DatabaseConnectionPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

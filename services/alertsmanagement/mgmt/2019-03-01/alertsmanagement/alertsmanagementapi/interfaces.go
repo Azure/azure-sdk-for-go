@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result alertsmanagement.OperationsListPage, err error)
+	ListComplete(ctx context.Context) (result alertsmanagement.OperationsListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*alertsmanagement.OperationsClient)(nil)
@@ -34,6 +35,7 @@ var _ OperationsClientAPI = (*alertsmanagement.OperationsClient)(nil)
 type AlertsClientAPI interface {
 	ChangeState(ctx context.Context, alertID string, newState alertsmanagement.AlertState) (result alertsmanagement.Alert, err error)
 	GetAll(ctx context.Context, targetResource string, targetResourceType string, targetResourceGroup string, monitorService alertsmanagement.MonitorService, monitorCondition alertsmanagement.MonitorCondition, severity alertsmanagement.Severity, alertState alertsmanagement.AlertState, alertRule string, smartGroupID string, includeContext *bool, includeEgressConfig *bool, pageCount *int32, sortBy alertsmanagement.AlertsSortByFields, sortOrder string, selectParameter string, timeRange alertsmanagement.TimeRange, customTimeRange string) (result alertsmanagement.AlertsListPage, err error)
+	GetAllComplete(ctx context.Context, targetResource string, targetResourceType string, targetResourceGroup string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, alertRule string, smartGroupID string, includeContext *bool, includeEgressConfig *bool, pageCount *int32, sortBy AlertsSortByFields, sortOrder string, selectParameter string, timeRange TimeRange, customTimeRange string) (result alertsmanagement.AlertsListIterator, err error)
 	GetByID(ctx context.Context, alertID string) (result alertsmanagement.Alert, err error)
 	GetHistory(ctx context.Context, alertID string) (result alertsmanagement.AlertModification, err error)
 	GetSummary(ctx context.Context, groupby alertsmanagement.AlertsSummaryGroupByFields, includeSmartGroupsCount *bool, targetResource string, targetResourceType string, targetResourceGroup string, monitorService alertsmanagement.MonitorService, monitorCondition alertsmanagement.MonitorCondition, severity alertsmanagement.Severity, alertState alertsmanagement.AlertState, alertRule string, timeRange alertsmanagement.TimeRange, customTimeRange string) (result alertsmanagement.AlertsSummary, err error)
@@ -57,7 +59,9 @@ type SmartDetectorAlertRulesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, alertRuleName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, alertRuleName string, expandDetector *bool) (result alertsmanagement.AlertRule, err error)
 	List(ctx context.Context) (result alertsmanagement.AlertRulesListPage, err error)
+	ListComplete(ctx context.Context) (result alertsmanagement.AlertRulesListIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result alertsmanagement.AlertRulesListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result alertsmanagement.AlertRulesListIterator, err error)
 }
 
 var _ SmartDetectorAlertRulesClientAPI = (*alertsmanagement.SmartDetectorAlertRulesClient)(nil)

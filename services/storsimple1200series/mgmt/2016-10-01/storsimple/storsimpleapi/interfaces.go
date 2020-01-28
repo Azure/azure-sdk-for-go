@@ -47,6 +47,7 @@ var _ ManagersClientAPI = (*storsimple.ManagersClient)(nil)
 // AvailableProviderOperationsClientAPI contains the set of methods on the AvailableProviderOperationsClient type.
 type AvailableProviderOperationsClientAPI interface {
 	List(ctx context.Context) (result storsimple.AvailableProviderOperationsPage, err error)
+	ListComplete(ctx context.Context) (result storsimple.AvailableProviderOperationsIterator, err error)
 }
 
 var _ AvailableProviderOperationsClientAPI = (*storsimple.AvailableProviderOperationsClient)(nil)
@@ -65,6 +66,7 @@ var _ AccessControlRecordsClientAPI = (*storsimple.AccessControlRecordsClient)(n
 type AlertsClientAPI interface {
 	Clear(ctx context.Context, request storsimple.ClearAlertRequest, resourceGroupName string, managerName string) (result autorest.Response, err error)
 	ListByManager(ctx context.Context, resourceGroupName string, managerName string, filter string) (result storsimple.AlertListPage, err error)
+	ListByManagerComplete(ctx context.Context, resourceGroupName string, managerName string, filter string) (result storsimple.AlertListIterator, err error)
 	SendTestEmail(ctx context.Context, deviceName string, request storsimple.SendTestAlertEmailRequest, resourceGroupName string, managerName string) (result autorest.Response, err error)
 }
 
@@ -75,7 +77,9 @@ type BackupsClientAPI interface {
 	Clone(ctx context.Context, deviceName string, backupName string, elementName string, cloneRequest storsimple.CloneRequest, resourceGroupName string, managerName string) (result storsimple.BackupsCloneFuture, err error)
 	Delete(ctx context.Context, deviceName string, backupName string, resourceGroupName string, managerName string) (result storsimple.BackupsDeleteFuture, err error)
 	ListByDevice(ctx context.Context, deviceName string, resourceGroupName string, managerName string, forFailover *bool, filter string) (result storsimple.BackupListPage, err error)
+	ListByDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string, managerName string, forFailover *bool, filter string) (result storsimple.BackupListIterator, err error)
 	ListByManager(ctx context.Context, resourceGroupName string, managerName string, filter string) (result storsimple.BackupListPage, err error)
+	ListByManagerComplete(ctx context.Context, resourceGroupName string, managerName string, filter string) (result storsimple.BackupListIterator, err error)
 }
 
 var _ BackupsClientAPI = (*storsimple.BackupsClient)(nil)
@@ -182,7 +186,9 @@ var _ IscsiServersClientAPI = (*storsimple.IscsiServersClient)(nil)
 type JobsClientAPI interface {
 	Get(ctx context.Context, deviceName string, jobName string, resourceGroupName string, managerName string) (result storsimple.Job, err error)
 	ListByDevice(ctx context.Context, deviceName string, resourceGroupName string, managerName string, filter string) (result storsimple.JobListPage, err error)
+	ListByDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string, managerName string, filter string) (result storsimple.JobListIterator, err error)
 	ListByManager(ctx context.Context, resourceGroupName string, managerName string, filter string) (result storsimple.JobListPage, err error)
+	ListByManagerComplete(ctx context.Context, resourceGroupName string, managerName string, filter string) (result storsimple.JobListIterator, err error)
 }
 
 var _ JobsClientAPI = (*storsimple.JobsClient)(nil)

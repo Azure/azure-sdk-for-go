@@ -36,7 +36,8 @@ func NewJobsClient(subscriptionID string, acceptLanguage string) JobsClient {
 	return NewJobsClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
-// NewJobsClientWithBaseURI creates an instance of the JobsClient client.
+// NewJobsClientWithBaseURI creates an instance of the JobsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewJobsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) JobsClient {
 	return JobsClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }

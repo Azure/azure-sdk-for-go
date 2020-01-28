@@ -36,7 +36,9 @@ func NewResourceGroupDimensionsClient(subscriptionID string) ResourceGroupDimens
 	return NewResourceGroupDimensionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewResourceGroupDimensionsClientWithBaseURI creates an instance of the ResourceGroupDimensionsClient client.
+// NewResourceGroupDimensionsClientWithBaseURI creates an instance of the ResourceGroupDimensionsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewResourceGroupDimensionsClientWithBaseURI(baseURI string, subscriptionID string) ResourceGroupDimensionsClient {
 	return ResourceGroupDimensionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

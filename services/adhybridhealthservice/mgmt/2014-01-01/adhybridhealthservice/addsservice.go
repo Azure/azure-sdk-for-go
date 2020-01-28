@@ -36,7 +36,8 @@ func NewAddsServiceClient() AddsServiceClient {
 	return NewAddsServiceClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewAddsServiceClientWithBaseURI creates an instance of the AddsServiceClient client.
+// NewAddsServiceClientWithBaseURI creates an instance of the AddsServiceClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAddsServiceClientWithBaseURI(baseURI string) AddsServiceClient {
 	return AddsServiceClient{NewWithBaseURI(baseURI)}
 }

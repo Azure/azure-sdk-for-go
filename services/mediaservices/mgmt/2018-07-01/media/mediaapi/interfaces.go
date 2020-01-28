@@ -29,6 +29,7 @@ type AccountFiltersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, filterName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, filterName string) (result media.AccountFilter, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string) (result media.AccountFilterCollectionPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string) (result media.AccountFilterCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, filterName string, parameters media.AccountFilter) (result media.AccountFilter, err error)
 }
 
@@ -37,6 +38,7 @@ var _ AccountFiltersClientAPI = (*media.AccountFiltersClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result media.OperationCollectionPage, err error)
+	ListComplete(ctx context.Context) (result media.OperationCollectionIterator, err error)
 }
 
 var _ OperationsClientAPI = (*media.OperationsClient)(nil)
@@ -48,7 +50,9 @@ type MediaservicesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, accountName string) (result media.Service, err error)
 	GetBySubscription(ctx context.Context, accountName string) (result media.SubscriptionMediaService, err error)
 	List(ctx context.Context, resourceGroupName string) (result media.ServiceCollectionPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result media.ServiceCollectionIterator, err error)
 	ListBySubscription(ctx context.Context) (result media.SubscriptionMediaServiceCollectionPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result media.SubscriptionMediaServiceCollectionIterator, err error)
 	SyncStorageKeys(ctx context.Context, resourceGroupName string, accountName string, parameters media.SyncStorageKeysInput) (result autorest.Response, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, parameters media.Service) (result media.Service, err error)
 }
@@ -69,6 +73,7 @@ type AssetsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, accountName string, assetName string) (result media.Asset, err error)
 	GetEncryptionKey(ctx context.Context, resourceGroupName string, accountName string, assetName string) (result media.StorageEncryptedAssetDecryptionData, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, orderby string) (result media.AssetCollectionPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, orderby string) (result media.AssetCollectionIterator, err error)
 	ListContainerSas(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters media.ListContainerSasInput) (result media.AssetContainerSas, err error)
 	ListStreamingLocators(ctx context.Context, resourceGroupName string, accountName string, assetName string) (result media.ListStreamingLocatorsResponse, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters media.Asset) (result media.Asset, err error)
@@ -82,6 +87,7 @@ type AssetFiltersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string) (result media.AssetFilter, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string, assetName string) (result media.AssetFilterCollectionPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, assetName string) (result media.AssetFilterCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, parameters media.AssetFilter) (result media.AssetFilter, err error)
 }
 
@@ -94,6 +100,7 @@ type ContentKeyPoliciesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string) (result media.ContentKeyPolicy, err error)
 	GetPolicyPropertiesWithSecrets(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string) (result media.ContentKeyPolicyProperties, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, orderby string) (result media.ContentKeyPolicyCollectionPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, orderby string) (result media.ContentKeyPolicyCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, parameters media.ContentKeyPolicy) (result media.ContentKeyPolicy, err error)
 }
 
@@ -105,6 +112,7 @@ type TransformsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, transformName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, transformName string) (result media.Transform, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string, filter string, orderby string) (result media.TransformCollectionPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, orderby string) (result media.TransformCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters media.Transform) (result media.Transform, err error)
 }
 
@@ -117,6 +125,7 @@ type JobsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string) (result media.Job, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string, transformName string, filter string, orderby string) (result media.JobCollectionPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, transformName string, filter string, orderby string) (result media.JobCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string, parameters media.Job) (result media.Job, err error)
 }
 
@@ -128,6 +137,7 @@ type StreamingPoliciesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string) (result media.StreamingPolicy, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, orderby string) (result media.StreamingPolicyCollectionPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, orderby string) (result media.StreamingPolicyCollectionIterator, err error)
 }
 
 var _ StreamingPoliciesClientAPI = (*media.StreamingPoliciesClient)(nil)
@@ -138,6 +148,7 @@ type StreamingLocatorsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string) (result media.StreamingLocator, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, orderby string) (result media.StreamingLocatorCollectionPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, orderby string) (result media.StreamingLocatorCollectionIterator, err error)
 	ListContentKeys(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string) (result media.ListContentKeysResponse, err error)
 	ListPaths(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string) (result media.ListPathsResponse, err error)
 }
@@ -150,6 +161,7 @@ type LiveEventsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string) (result media.LiveEventsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, liveEventName string) (result media.LiveEvent, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string) (result media.LiveEventListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string) (result media.LiveEventListResultIterator, err error)
 	Reset(ctx context.Context, resourceGroupName string, accountName string, liveEventName string) (result media.LiveEventsResetFuture, err error)
 	Start(ctx context.Context, resourceGroupName string, accountName string, liveEventName string) (result media.LiveEventsStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters media.LiveEventActionInput) (result media.LiveEventsStopFuture, err error)
@@ -164,6 +176,7 @@ type LiveOutputsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string) (result media.LiveOutputsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string) (result media.LiveOutput, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string, liveEventName string) (result media.LiveOutputListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string) (result media.LiveOutputListResultIterator, err error)
 }
 
 var _ LiveOutputsClientAPI = (*media.LiveOutputsClient)(nil)
@@ -174,6 +187,7 @@ type StreamingEndpointsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string) (result media.StreamingEndpointsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string) (result media.StreamingEndpoint, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string) (result media.StreamingEndpointListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string) (result media.StreamingEndpointListResultIterator, err error)
 	Scale(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, parameters media.StreamingEntityScaleUnit) (result media.StreamingEndpointsScaleFuture, err error)
 	Start(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string) (result media.StreamingEndpointsStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string) (result media.StreamingEndpointsStopFuture, err error)

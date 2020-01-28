@@ -35,7 +35,8 @@ func NewQueryKeysClient(subscriptionID string) QueryKeysClient {
 	return NewQueryKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewQueryKeysClientWithBaseURI creates an instance of the QueryKeysClient client.
+// NewQueryKeysClientWithBaseURI creates an instance of the QueryKeysClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryKeysClient {
 	return QueryKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

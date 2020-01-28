@@ -36,7 +36,8 @@ func NewPython2PackageClient(subscriptionID string) Python2PackageClient {
 	return NewPython2PackageClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPython2PackageClientWithBaseURI creates an instance of the Python2PackageClient client.
+// NewPython2PackageClientWithBaseURI creates an instance of the Python2PackageClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPython2PackageClientWithBaseURI(baseURI string, subscriptionID string) Python2PackageClient {
 	return Python2PackageClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

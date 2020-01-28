@@ -36,7 +36,9 @@ func NewConsumerInvitationsClient(subscriptionID string) ConsumerInvitationsClie
 	return NewConsumerInvitationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewConsumerInvitationsClientWithBaseURI creates an instance of the ConsumerInvitationsClient client.
+// NewConsumerInvitationsClientWithBaseURI creates an instance of the ConsumerInvitationsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewConsumerInvitationsClientWithBaseURI(baseURI string, subscriptionID string) ConsumerInvitationsClient {
 	return ConsumerInvitationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

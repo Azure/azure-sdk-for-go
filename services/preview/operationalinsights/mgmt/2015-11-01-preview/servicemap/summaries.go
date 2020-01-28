@@ -37,7 +37,8 @@ func NewSummariesClient(subscriptionID string) SummariesClient {
 	return NewSummariesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSummariesClientWithBaseURI creates an instance of the SummariesClient client.
+// NewSummariesClientWithBaseURI creates an instance of the SummariesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSummariesClientWithBaseURI(baseURI string, subscriptionID string) SummariesClient {
 	return SummariesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

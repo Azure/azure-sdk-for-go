@@ -1,3 +1,13 @@
+trigger:
+  paths:
+    exclude:
+    - sdk/
+
+pr:
+  paths:
+    exclude:
+    - sdk/
+
 jobs:
   - job: Build_Test
     strategy:
@@ -18,6 +28,7 @@ jobs:
       GOPATH: '$(system.defaultWorkingDirectory)/work'
       sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
       IGNORE_BREAKING_CHANGES: true
+      go.list.filter: '| grep -v vendor'
 
     steps:
     - script: |
@@ -37,13 +48,13 @@ jobs:
         go get -u golang.org/x/lint/golint
       workingDirectory: '$(sdkPath)'
       displayName: 'Install Dependencies'
-    - script: go vet $(go list ./... | grep -v vendor)
+    - script: go vet -v $(go list ./... $(go.list.filter))
       workingDirectory: '$(sdkPath)'
       displayName: 'Vet'
-    - script: go build -v $(go list ./... | grep -v vendor)
+    - script: go build -v $(go list ./... $(go.list.filter))
       workingDirectory: '$(sdkPath)'
       displayName: 'Build'
-    - script: go test $(dirname $(find . -path ./vendor -prune -o -name '*_test.go' -print) | sort -u)
+    - script: go test $(dirname $(find . -path ./vendor -prune -o -path ./sdk -prune -o -name '*_test.go' -print) | sort -u)
       workingDirectory: '$(sdkPath)'
       displayName: 'Run Tests'
     - script: go run ./tools/apidiff/main.go packages ./services FETCH_HEAD~1 FETCH_HEAD --copyrepo --breakingchanges || $IGNORE_BREAKING_CHANGES

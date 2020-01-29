@@ -25,6 +25,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result siterecovery.OperationsDiscoveryCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.OperationsDiscoveryCollectionIterator, err error)
 }
 
 var _ OperationsClientAPI = (*siterecovery.OperationsClient)(nil)
@@ -34,6 +35,7 @@ type ReplicationAlertSettingsClientAPI interface {
 	Create(ctx context.Context, alertSettingName string, request siterecovery.ConfigureAlertRequest) (result siterecovery.Alert, err error)
 	Get(ctx context.Context, alertSettingName string) (result siterecovery.Alert, err error)
 	List(ctx context.Context) (result siterecovery.AlertCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.AlertCollectionIterator, err error)
 }
 
 var _ ReplicationAlertSettingsClientAPI = (*siterecovery.ReplicationAlertSettingsClient)(nil)
@@ -50,6 +52,7 @@ var _ ReplicationEligibilityResultsClientAPI = (*siterecovery.ReplicationEligibi
 type ReplicationEventsClientAPI interface {
 	Get(ctx context.Context, eventName string) (result siterecovery.Event, err error)
 	List(ctx context.Context, filter string) (result siterecovery.EventCollectionPage, err error)
+	ListComplete(ctx context.Context, filter string) (result siterecovery.EventCollectionIterator, err error)
 }
 
 var _ ReplicationEventsClientAPI = (*siterecovery.ReplicationEventsClient)(nil)
@@ -61,6 +64,7 @@ type ReplicationFabricsClientAPI interface {
 	Delete(ctx context.Context, fabricName string) (result siterecovery.ReplicationFabricsDeleteFuture, err error)
 	Get(ctx context.Context, fabricName string) (result siterecovery.Fabric, err error)
 	List(ctx context.Context) (result siterecovery.FabricCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.FabricCollectionIterator, err error)
 	MigrateToAad(ctx context.Context, fabricName string) (result siterecovery.ReplicationFabricsMigrateToAadFuture, err error)
 	Purge(ctx context.Context, fabricName string) (result siterecovery.ReplicationFabricsPurgeFuture, err error)
 	ReassociateGateway(ctx context.Context, fabricName string, failoverProcessServerRequest siterecovery.FailoverProcessServerRequest) (result siterecovery.ReplicationFabricsReassociateGatewayFuture, err error)
@@ -73,6 +77,7 @@ var _ ReplicationFabricsClientAPI = (*siterecovery.ReplicationFabricsClient)(nil
 type ReplicationLogicalNetworksClientAPI interface {
 	Get(ctx context.Context, fabricName string, logicalNetworkName string) (result siterecovery.LogicalNetwork, err error)
 	ListByReplicationFabrics(ctx context.Context, fabricName string) (result siterecovery.LogicalNetworkCollectionPage, err error)
+	ListByReplicationFabricsComplete(ctx context.Context, fabricName string) (result siterecovery.LogicalNetworkCollectionIterator, err error)
 }
 
 var _ ReplicationLogicalNetworksClientAPI = (*siterecovery.ReplicationLogicalNetworksClient)(nil)
@@ -81,7 +86,9 @@ var _ ReplicationLogicalNetworksClientAPI = (*siterecovery.ReplicationLogicalNet
 type ReplicationNetworksClientAPI interface {
 	Get(ctx context.Context, fabricName string, networkName string) (result siterecovery.Network, err error)
 	List(ctx context.Context) (result siterecovery.NetworkCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.NetworkCollectionIterator, err error)
 	ListByReplicationFabrics(ctx context.Context, fabricName string) (result siterecovery.NetworkCollectionPage, err error)
+	ListByReplicationFabricsComplete(ctx context.Context, fabricName string) (result siterecovery.NetworkCollectionIterator, err error)
 }
 
 var _ ReplicationNetworksClientAPI = (*siterecovery.ReplicationNetworksClient)(nil)
@@ -92,7 +99,9 @@ type ReplicationNetworkMappingsClientAPI interface {
 	Delete(ctx context.Context, fabricName string, networkName string, networkMappingName string) (result siterecovery.ReplicationNetworkMappingsDeleteFuture, err error)
 	Get(ctx context.Context, fabricName string, networkName string, networkMappingName string) (result siterecovery.NetworkMapping, err error)
 	List(ctx context.Context) (result siterecovery.NetworkMappingCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.NetworkMappingCollectionIterator, err error)
 	ListByReplicationNetworks(ctx context.Context, fabricName string, networkName string) (result siterecovery.NetworkMappingCollectionPage, err error)
+	ListByReplicationNetworksComplete(ctx context.Context, fabricName string, networkName string) (result siterecovery.NetworkMappingCollectionIterator, err error)
 	Update(ctx context.Context, fabricName string, networkName string, networkMappingName string, input siterecovery.UpdateNetworkMappingInput) (result siterecovery.ReplicationNetworkMappingsUpdateFuture, err error)
 }
 
@@ -105,7 +114,9 @@ type ReplicationProtectionContainersClientAPI interface {
 	DiscoverProtectableItem(ctx context.Context, fabricName string, protectionContainerName string, discoverProtectableItemRequest siterecovery.DiscoverProtectableItemRequest) (result siterecovery.ReplicationProtectionContainersDiscoverProtectableItemFuture, err error)
 	Get(ctx context.Context, fabricName string, protectionContainerName string) (result siterecovery.ProtectionContainer, err error)
 	List(ctx context.Context) (result siterecovery.ProtectionContainerCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.ProtectionContainerCollectionIterator, err error)
 	ListByReplicationFabrics(ctx context.Context, fabricName string) (result siterecovery.ProtectionContainerCollectionPage, err error)
+	ListByReplicationFabricsComplete(ctx context.Context, fabricName string) (result siterecovery.ProtectionContainerCollectionIterator, err error)
 	SwitchProtection(ctx context.Context, fabricName string, protectionContainerName string, switchInput siterecovery.SwitchProtectionInput) (result siterecovery.ReplicationProtectionContainersSwitchProtectionFuture, err error)
 }
 
@@ -117,7 +128,9 @@ type ReplicationMigrationItemsClientAPI interface {
 	Delete(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, deleteOption string) (result siterecovery.ReplicationMigrationItemsDeleteFuture, err error)
 	Get(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string) (result siterecovery.MigrationItem, err error)
 	List(ctx context.Context, skipToken string, filter string) (result siterecovery.MigrationItemCollectionPage, err error)
+	ListComplete(ctx context.Context, skipToken string, filter string) (result siterecovery.MigrationItemCollectionIterator, err error)
 	ListByReplicationProtectionContainers(ctx context.Context, fabricName string, protectionContainerName string) (result siterecovery.MigrationItemCollectionPage, err error)
+	ListByReplicationProtectionContainersComplete(ctx context.Context, fabricName string, protectionContainerName string) (result siterecovery.MigrationItemCollectionIterator, err error)
 	Migrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrateInput siterecovery.MigrateInput) (result siterecovery.ReplicationMigrationItemsMigrateFuture, err error)
 	TestMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateInput siterecovery.TestMigrateInput) (result siterecovery.ReplicationMigrationItemsTestMigrateFuture, err error)
 	TestMigrateCleanup(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateCleanupInput siterecovery.TestMigrateCleanupInput) (result siterecovery.ReplicationMigrationItemsTestMigrateCleanupFuture, err error)
@@ -130,6 +143,7 @@ var _ ReplicationMigrationItemsClientAPI = (*siterecovery.ReplicationMigrationIt
 type MigrationRecoveryPointsClientAPI interface {
 	Get(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrationRecoveryPointName string) (result siterecovery.MigrationRecoveryPoint, err error)
 	ListByReplicationMigrationItems(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string) (result siterecovery.MigrationRecoveryPointCollectionPage, err error)
+	ListByReplicationMigrationItemsComplete(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string) (result siterecovery.MigrationRecoveryPointCollectionIterator, err error)
 }
 
 var _ MigrationRecoveryPointsClientAPI = (*siterecovery.MigrationRecoveryPointsClient)(nil)
@@ -138,6 +152,7 @@ var _ MigrationRecoveryPointsClientAPI = (*siterecovery.MigrationRecoveryPointsC
 type ReplicationProtectableItemsClientAPI interface {
 	Get(ctx context.Context, fabricName string, protectionContainerName string, protectableItemName string) (result siterecovery.ProtectableItem, err error)
 	ListByReplicationProtectionContainers(ctx context.Context, fabricName string, protectionContainerName string, filter string) (result siterecovery.ProtectableItemCollectionPage, err error)
+	ListByReplicationProtectionContainersComplete(ctx context.Context, fabricName string, protectionContainerName string, filter string) (result siterecovery.ProtectableItemCollectionIterator, err error)
 }
 
 var _ ReplicationProtectableItemsClientAPI = (*siterecovery.ReplicationProtectableItemsClient)(nil)
@@ -151,7 +166,9 @@ type ReplicationProtectedItemsClientAPI interface {
 	FailoverCommit(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string) (result siterecovery.ReplicationProtectedItemsFailoverCommitFuture, err error)
 	Get(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string) (result siterecovery.ReplicationProtectedItem, err error)
 	List(ctx context.Context, skipToken string, filter string) (result siterecovery.ReplicationProtectedItemCollectionPage, err error)
+	ListComplete(ctx context.Context, skipToken string, filter string) (result siterecovery.ReplicationProtectedItemCollectionIterator, err error)
 	ListByReplicationProtectionContainers(ctx context.Context, fabricName string, protectionContainerName string) (result siterecovery.ReplicationProtectedItemCollectionPage, err error)
+	ListByReplicationProtectionContainersComplete(ctx context.Context, fabricName string, protectionContainerName string) (result siterecovery.ReplicationProtectedItemCollectionIterator, err error)
 	PlannedFailover(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, failoverInput siterecovery.PlannedFailoverInput) (result siterecovery.ReplicationProtectedItemsPlannedFailoverFuture, err error)
 	Purge(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string) (result siterecovery.ReplicationProtectedItemsPurgeFuture, err error)
 	RemoveDisks(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, removeDisksInput siterecovery.RemoveDisksInput) (result siterecovery.ReplicationProtectedItemsRemoveDisksFuture, err error)
@@ -171,6 +188,7 @@ var _ ReplicationProtectedItemsClientAPI = (*siterecovery.ReplicationProtectedIt
 type RecoveryPointsClientAPI interface {
 	Get(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, recoveryPointName string) (result siterecovery.RecoveryPoint, err error)
 	ListByReplicationProtectedItems(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string) (result siterecovery.RecoveryPointCollectionPage, err error)
+	ListByReplicationProtectedItemsComplete(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string) (result siterecovery.RecoveryPointCollectionIterator, err error)
 }
 
 var _ RecoveryPointsClientAPI = (*siterecovery.RecoveryPointsClient)(nil)
@@ -178,6 +196,7 @@ var _ RecoveryPointsClientAPI = (*siterecovery.RecoveryPointsClient)(nil)
 // TargetComputeSizesClientAPI contains the set of methods on the TargetComputeSizesClient type.
 type TargetComputeSizesClientAPI interface {
 	ListByReplicationProtectedItems(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string) (result siterecovery.TargetComputeSizeCollectionPage, err error)
+	ListByReplicationProtectedItemsComplete(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string) (result siterecovery.TargetComputeSizeCollectionIterator, err error)
 }
 
 var _ TargetComputeSizesClientAPI = (*siterecovery.TargetComputeSizesClient)(nil)
@@ -188,7 +207,9 @@ type ReplicationProtectionContainerMappingsClientAPI interface {
 	Delete(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput siterecovery.RemoveProtectionContainerMappingInput) (result siterecovery.ReplicationProtectionContainerMappingsDeleteFuture, err error)
 	Get(ctx context.Context, fabricName string, protectionContainerName string, mappingName string) (result siterecovery.ProtectionContainerMapping, err error)
 	List(ctx context.Context) (result siterecovery.ProtectionContainerMappingCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.ProtectionContainerMappingCollectionIterator, err error)
 	ListByReplicationProtectionContainers(ctx context.Context, fabricName string, protectionContainerName string) (result siterecovery.ProtectionContainerMappingCollectionPage, err error)
+	ListByReplicationProtectionContainersComplete(ctx context.Context, fabricName string, protectionContainerName string) (result siterecovery.ProtectionContainerMappingCollectionIterator, err error)
 	Purge(ctx context.Context, fabricName string, protectionContainerName string, mappingName string) (result siterecovery.ReplicationProtectionContainerMappingsPurgeFuture, err error)
 	Update(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput siterecovery.UpdateProtectionContainerMappingInput) (result siterecovery.ReplicationProtectionContainerMappingsUpdateFuture, err error)
 }
@@ -201,7 +222,9 @@ type ReplicationRecoveryServicesProvidersClientAPI interface {
 	Delete(ctx context.Context, fabricName string, providerName string) (result siterecovery.ReplicationRecoveryServicesProvidersDeleteFuture, err error)
 	Get(ctx context.Context, fabricName string, providerName string) (result siterecovery.RecoveryServicesProvider, err error)
 	List(ctx context.Context) (result siterecovery.RecoveryServicesProviderCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.RecoveryServicesProviderCollectionIterator, err error)
 	ListByReplicationFabrics(ctx context.Context, fabricName string) (result siterecovery.RecoveryServicesProviderCollectionPage, err error)
+	ListByReplicationFabricsComplete(ctx context.Context, fabricName string) (result siterecovery.RecoveryServicesProviderCollectionIterator, err error)
 	Purge(ctx context.Context, fabricName string, providerName string) (result siterecovery.ReplicationRecoveryServicesProvidersPurgeFuture, err error)
 	RefreshProvider(ctx context.Context, fabricName string, providerName string) (result siterecovery.ReplicationRecoveryServicesProvidersRefreshProviderFuture, err error)
 }
@@ -212,7 +235,9 @@ var _ ReplicationRecoveryServicesProvidersClientAPI = (*siterecovery.Replication
 type ReplicationStorageClassificationsClientAPI interface {
 	Get(ctx context.Context, fabricName string, storageClassificationName string) (result siterecovery.StorageClassification, err error)
 	List(ctx context.Context) (result siterecovery.StorageClassificationCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.StorageClassificationCollectionIterator, err error)
 	ListByReplicationFabrics(ctx context.Context, fabricName string) (result siterecovery.StorageClassificationCollectionPage, err error)
+	ListByReplicationFabricsComplete(ctx context.Context, fabricName string) (result siterecovery.StorageClassificationCollectionIterator, err error)
 }
 
 var _ ReplicationStorageClassificationsClientAPI = (*siterecovery.ReplicationStorageClassificationsClient)(nil)
@@ -223,7 +248,9 @@ type ReplicationStorageClassificationMappingsClientAPI interface {
 	Delete(ctx context.Context, fabricName string, storageClassificationName string, storageClassificationMappingName string) (result siterecovery.ReplicationStorageClassificationMappingsDeleteFuture, err error)
 	Get(ctx context.Context, fabricName string, storageClassificationName string, storageClassificationMappingName string) (result siterecovery.StorageClassificationMapping, err error)
 	List(ctx context.Context) (result siterecovery.StorageClassificationMappingCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.StorageClassificationMappingCollectionIterator, err error)
 	ListByReplicationStorageClassifications(ctx context.Context, fabricName string, storageClassificationName string) (result siterecovery.StorageClassificationMappingCollectionPage, err error)
+	ListByReplicationStorageClassificationsComplete(ctx context.Context, fabricName string, storageClassificationName string) (result siterecovery.StorageClassificationMappingCollectionIterator, err error)
 }
 
 var _ ReplicationStorageClassificationMappingsClientAPI = (*siterecovery.ReplicationStorageClassificationMappingsClient)(nil)
@@ -234,7 +261,9 @@ type ReplicationvCentersClientAPI interface {
 	Delete(ctx context.Context, fabricName string, vCenterName string) (result siterecovery.ReplicationvCentersDeleteFuture, err error)
 	Get(ctx context.Context, fabricName string, vCenterName string) (result siterecovery.VCenter, err error)
 	List(ctx context.Context) (result siterecovery.VCenterCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.VCenterCollectionIterator, err error)
 	ListByReplicationFabrics(ctx context.Context, fabricName string) (result siterecovery.VCenterCollectionPage, err error)
+	ListByReplicationFabricsComplete(ctx context.Context, fabricName string) (result siterecovery.VCenterCollectionIterator, err error)
 	Update(ctx context.Context, fabricName string, vCenterName string, updateVCenterRequest siterecovery.UpdateVCenterRequest) (result siterecovery.ReplicationvCentersUpdateFuture, err error)
 }
 
@@ -246,6 +275,7 @@ type ReplicationJobsClientAPI interface {
 	Export(ctx context.Context, jobQueryParameter siterecovery.JobQueryParameter) (result siterecovery.ReplicationJobsExportFuture, err error)
 	Get(ctx context.Context, jobName string) (result siterecovery.Job, err error)
 	List(ctx context.Context, filter string) (result siterecovery.JobCollectionPage, err error)
+	ListComplete(ctx context.Context, filter string) (result siterecovery.JobCollectionIterator, err error)
 	Restart(ctx context.Context, jobName string) (result siterecovery.ReplicationJobsRestartFuture, err error)
 	Resume(ctx context.Context, jobName string, resumeJobParams siterecovery.ResumeJobParams) (result siterecovery.ReplicationJobsResumeFuture, err error)
 }
@@ -258,6 +288,7 @@ type ReplicationPoliciesClientAPI interface {
 	Delete(ctx context.Context, policyName string) (result siterecovery.ReplicationPoliciesDeleteFuture, err error)
 	Get(ctx context.Context, policyName string) (result siterecovery.Policy, err error)
 	List(ctx context.Context) (result siterecovery.PolicyCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.PolicyCollectionIterator, err error)
 	Update(ctx context.Context, policyName string, input siterecovery.UpdatePolicyInput) (result siterecovery.ReplicationPoliciesUpdateFuture, err error)
 }
 
@@ -270,6 +301,7 @@ type ReplicationRecoveryPlansClientAPI interface {
 	FailoverCommit(ctx context.Context, recoveryPlanName string) (result siterecovery.ReplicationRecoveryPlansFailoverCommitFuture, err error)
 	Get(ctx context.Context, recoveryPlanName string) (result siterecovery.RecoveryPlan, err error)
 	List(ctx context.Context) (result siterecovery.RecoveryPlanCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.RecoveryPlanCollectionIterator, err error)
 	PlannedFailover(ctx context.Context, recoveryPlanName string, input siterecovery.RecoveryPlanPlannedFailoverInput) (result siterecovery.ReplicationRecoveryPlansPlannedFailoverFuture, err error)
 	Reprotect(ctx context.Context, recoveryPlanName string) (result siterecovery.ReplicationRecoveryPlansReprotectFuture, err error)
 	TestFailover(ctx context.Context, recoveryPlanName string, input siterecovery.RecoveryPlanTestFailoverInput) (result siterecovery.ReplicationRecoveryPlansTestFailoverFuture, err error)
@@ -300,6 +332,7 @@ type ReplicationVaultSettingClientAPI interface {
 	Create(ctx context.Context, vaultSettingName string, input siterecovery.VaultSettingCreationInput) (result siterecovery.VaultSetting, err error)
 	Get(ctx context.Context, vaultSettingName string) (result siterecovery.VaultSetting, err error)
 	List(ctx context.Context) (result siterecovery.VaultSettingCollectionPage, err error)
+	ListComplete(ctx context.Context) (result siterecovery.VaultSettingCollectionIterator, err error)
 }
 
 var _ ReplicationVaultSettingClientAPI = (*siterecovery.ReplicationVaultSettingClient)(nil)

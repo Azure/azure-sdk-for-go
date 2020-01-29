@@ -26,6 +26,7 @@ import (
 // AuthorizationOperationsClientAPI contains the set of methods on the AuthorizationOperationsClient type.
 type AuthorizationOperationsClientAPI interface {
 	List(ctx context.Context) (result locks.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result locks.OperationListResultIterator, err error)
 }
 
 var _ AuthorizationOperationsClientAPI = (*locks.AuthorizationOperationsClient)(nil)
@@ -45,9 +46,13 @@ type ManagementLocksClientAPI interface {
 	GetAtSubscriptionLevel(ctx context.Context, lockName string) (result locks.ManagementLockObject, err error)
 	GetByScope(ctx context.Context, scope string, lockName string) (result locks.ManagementLockObject, err error)
 	ListAtResourceGroupLevel(ctx context.Context, resourceGroupName string, filter string) (result locks.ManagementLockListResultPage, err error)
+	ListAtResourceGroupLevelComplete(ctx context.Context, resourceGroupName string, filter string) (result locks.ManagementLockListResultIterator, err error)
 	ListAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result locks.ManagementLockListResultPage, err error)
+	ListAtResourceLevelComplete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result locks.ManagementLockListResultIterator, err error)
 	ListAtSubscriptionLevel(ctx context.Context, filter string) (result locks.ManagementLockListResultPage, err error)
+	ListAtSubscriptionLevelComplete(ctx context.Context, filter string) (result locks.ManagementLockListResultIterator, err error)
 	ListByScope(ctx context.Context, scope string, filter string) (result locks.ManagementLockListResultPage, err error)
+	ListByScopeComplete(ctx context.Context, scope string, filter string) (result locks.ManagementLockListResultIterator, err error)
 }
 
 var _ ManagementLocksClientAPI = (*locks.ManagementLocksClient)(nil)

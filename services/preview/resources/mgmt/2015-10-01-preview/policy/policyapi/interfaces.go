@@ -32,8 +32,11 @@ type AssignmentsClientAPI interface {
 	Get(ctx context.Context, scope string, policyAssignmentName string) (result policy.Assignment, err error)
 	GetByID(ctx context.Context, policyAssignmentID string) (result policy.Assignment, err error)
 	List(ctx context.Context, filter string) (result policy.AssignmentListResultPage, err error)
+	ListComplete(ctx context.Context, filter string) (result policy.AssignmentListResultIterator, err error)
 	ListForResource(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result policy.AssignmentListResultPage, err error)
+	ListForResourceComplete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result policy.AssignmentListResultIterator, err error)
 	ListForResourceGroup(ctx context.Context, resourceGroupName string, filter string) (result policy.AssignmentListResultPage, err error)
+	ListForResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string) (result policy.AssignmentListResultIterator, err error)
 }
 
 var _ AssignmentsClientAPI = (*policy.AssignmentsClient)(nil)
@@ -44,6 +47,7 @@ type DefinitionsClientAPI interface {
 	Delete(ctx context.Context, policyDefinitionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, policyDefinitionName string) (result policy.Definition, err error)
 	List(ctx context.Context, filter string) (result policy.DefinitionListResultPage, err error)
+	ListComplete(ctx context.Context, filter string) (result policy.DefinitionListResultIterator, err error)
 }
 
 var _ DefinitionsClientAPI = (*policy.DefinitionsClient)(nil)

@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result links.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result links.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*links.OperationsClient)(nil)
@@ -36,7 +37,9 @@ type ResourceLinksClientAPI interface {
 	Delete(ctx context.Context, linkID string) (result autorest.Response, err error)
 	Get(ctx context.Context, linkID string) (result links.ResourceLink, err error)
 	ListAtSourceScope(ctx context.Context, scope string, filter links.Filter) (result links.ResourceLinkResultPage, err error)
+	ListAtSourceScopeComplete(ctx context.Context, scope string, filter links.Filter) (result links.ResourceLinkResultIterator, err error)
 	ListAtSubscription(ctx context.Context, filter string) (result links.ResourceLinkResultPage, err error)
+	ListAtSubscriptionComplete(ctx context.Context, filter string) (result links.ResourceLinkResultIterator, err error)
 }
 
 var _ ResourceLinksClientAPI = (*links.ResourceLinksClient)(nil)

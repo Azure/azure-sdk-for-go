@@ -36,7 +36,9 @@ func NewOpenIDConnectProvidersClient(subscriptionID string) OpenIDConnectProvide
 	return NewOpenIDConnectProvidersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewOpenIDConnectProvidersClientWithBaseURI creates an instance of the OpenIDConnectProvidersClient client.
+// NewOpenIDConnectProvidersClientWithBaseURI creates an instance of the OpenIDConnectProvidersClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewOpenIDConnectProvidersClientWithBaseURI(baseURI string, subscriptionID string) OpenIDConnectProvidersClient {
 	return OpenIDConnectProvidersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -36,7 +36,9 @@ func NewIdentityProvidersClient(subscriptionID string) IdentityProvidersClient {
 	return NewIdentityProvidersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewIdentityProvidersClientWithBaseURI creates an instance of the IdentityProvidersClient client.
+// NewIdentityProvidersClientWithBaseURI creates an instance of the IdentityProvidersClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewIdentityProvidersClientWithBaseURI(baseURI string, subscriptionID string) IdentityProvidersClient {
 	return IdentityProvidersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -35,7 +35,9 @@ func NewTransactionNodesClient(subscriptionID string) TransactionNodesClient {
 	return NewTransactionNodesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewTransactionNodesClientWithBaseURI creates an instance of the TransactionNodesClient client.
+// NewTransactionNodesClientWithBaseURI creates an instance of the TransactionNodesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewTransactionNodesClientWithBaseURI(baseURI string, subscriptionID string) TransactionNodesClient {
 	return TransactionNodesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

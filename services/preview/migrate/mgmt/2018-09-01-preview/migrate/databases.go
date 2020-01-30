@@ -35,7 +35,8 @@ func NewDatabasesClient(subscriptionID string, acceptLanguage string) DatabasesC
 	return NewDatabasesClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
-// NewDatabasesClientWithBaseURI creates an instance of the DatabasesClient client.
+// NewDatabasesClientWithBaseURI creates an instance of the DatabasesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) DatabasesClient {
 	return DatabasesClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }

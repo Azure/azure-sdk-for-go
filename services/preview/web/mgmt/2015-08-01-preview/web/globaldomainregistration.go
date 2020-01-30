@@ -35,7 +35,9 @@ func NewGlobalDomainRegistrationClient(subscriptionID string) GlobalDomainRegist
 	return NewGlobalDomainRegistrationClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewGlobalDomainRegistrationClientWithBaseURI creates an instance of the GlobalDomainRegistrationClient client.
+// NewGlobalDomainRegistrationClientWithBaseURI creates an instance of the GlobalDomainRegistrationClient client using
+// a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewGlobalDomainRegistrationClientWithBaseURI(baseURI string, subscriptionID string) GlobalDomainRegistrationClient {
 	return GlobalDomainRegistrationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

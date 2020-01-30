@@ -31,7 +31,9 @@ type RegistriesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.Registry, err error)
 	ImportImage(ctx context.Context, resourceGroupName string, registryName string, parameters containerregistry.ImportImageParameters) (result containerregistry.RegistriesImportImageFuture, err error)
 	List(ctx context.Context) (result containerregistry.RegistryListResultPage, err error)
+	ListComplete(ctx context.Context) (result containerregistry.RegistryListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result containerregistry.RegistryListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result containerregistry.RegistryListResultIterator, err error)
 	ListCredentials(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.RegistryListCredentialsResult, err error)
 	ListPolicies(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.RegistryPolicies, err error)
 	ListUsages(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.RegistryUsageListResult, err error)
@@ -45,6 +47,7 @@ var _ RegistriesClientAPI = (*containerregistry.RegistriesClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result containerregistry.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result containerregistry.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*containerregistry.OperationsClient)(nil)
@@ -55,6 +58,7 @@ type ReplicationsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, registryName string, replicationName string) (result containerregistry.ReplicationsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, registryName string, replicationName string) (result containerregistry.Replication, err error)
 	List(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.ReplicationListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.ReplicationListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replicationUpdateParameters containerregistry.ReplicationUpdateParameters) (result containerregistry.ReplicationsUpdateFuture, err error)
 }
 
@@ -67,7 +71,9 @@ type WebhooksClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, registryName string, webhookName string) (result containerregistry.Webhook, err error)
 	GetCallbackConfig(ctx context.Context, resourceGroupName string, registryName string, webhookName string) (result containerregistry.CallbackConfig, err error)
 	List(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.WebhookListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.WebhookListResultIterator, err error)
 	ListEvents(ctx context.Context, resourceGroupName string, registryName string, webhookName string) (result containerregistry.EventListResultPage, err error)
+	ListEventsComplete(ctx context.Context, resourceGroupName string, registryName string, webhookName string) (result containerregistry.EventListResultIterator, err error)
 	Ping(ctx context.Context, resourceGroupName string, registryName string, webhookName string) (result containerregistry.EventInfo, err error)
 	Update(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters containerregistry.WebhookUpdateParameters) (result containerregistry.WebhooksUpdateFuture, err error)
 }
@@ -80,6 +86,7 @@ type ScopeMapsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string) (result containerregistry.ScopeMapsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string) (result containerregistry.ScopeMap, err error)
 	List(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.ScopeMapListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.ScopeMapListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters containerregistry.ScopeMapUpdateParameters) (result containerregistry.ScopeMapsUpdateFuture, err error)
 }
 
@@ -91,6 +98,7 @@ type TokensClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, registryName string, tokenName string) (result containerregistry.TokensDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, registryName string, tokenName string) (result containerregistry.Token, err error)
 	List(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.TokenListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.TokenListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, registryName string, tokenName string, tokenUpdateParameters containerregistry.TokenUpdateParameters) (result containerregistry.TokensUpdateFuture, err error)
 }
 

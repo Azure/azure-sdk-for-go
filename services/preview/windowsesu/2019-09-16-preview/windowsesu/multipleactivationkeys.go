@@ -37,7 +37,9 @@ func NewMultipleActivationKeysClient(subscriptionID string) MultipleActivationKe
 	return NewMultipleActivationKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMultipleActivationKeysClientWithBaseURI creates an instance of the MultipleActivationKeysClient client.
+// NewMultipleActivationKeysClientWithBaseURI creates an instance of the MultipleActivationKeysClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewMultipleActivationKeysClientWithBaseURI(baseURI string, subscriptionID string) MultipleActivationKeysClient {
 	return MultipleActivationKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

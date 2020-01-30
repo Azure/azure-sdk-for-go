@@ -35,7 +35,9 @@ func NewConsumerSourceDataSetsClient(subscriptionID string) ConsumerSourceDataSe
 	return NewConsumerSourceDataSetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewConsumerSourceDataSetsClientWithBaseURI creates an instance of the ConsumerSourceDataSetsClient client.
+// NewConsumerSourceDataSetsClientWithBaseURI creates an instance of the ConsumerSourceDataSetsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewConsumerSourceDataSetsClientWithBaseURI(baseURI string, subscriptionID string) ConsumerSourceDataSetsClient {
 	return ConsumerSourceDataSetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

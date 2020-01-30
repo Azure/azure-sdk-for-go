@@ -37,7 +37,8 @@ func NewMachineGroupsClient(subscriptionID string) MachineGroupsClient {
 	return NewMachineGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMachineGroupsClientWithBaseURI creates an instance of the MachineGroupsClient client.
+// NewMachineGroupsClientWithBaseURI creates an instance of the MachineGroupsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMachineGroupsClientWithBaseURI(baseURI string, subscriptionID string) MachineGroupsClient {
 	return MachineGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

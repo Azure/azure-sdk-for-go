@@ -25,6 +25,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result batchai.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result batchai.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*batchai.OperationsClient)(nil)
@@ -32,6 +33,7 @@ var _ OperationsClientAPI = (*batchai.OperationsClient)(nil)
 // UsagesClientAPI contains the set of methods on the UsagesClient type.
 type UsagesClientAPI interface {
 	List(ctx context.Context, location string) (result batchai.ListUsagesResultPage, err error)
+	ListComplete(ctx context.Context, location string) (result batchai.ListUsagesResultIterator, err error)
 }
 
 var _ UsagesClientAPI = (*batchai.UsagesClient)(nil)
@@ -42,7 +44,9 @@ type WorkspacesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string) (result batchai.WorkspacesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string) (result batchai.Workspace, err error)
 	List(ctx context.Context, maxResults *int32) (result batchai.WorkspaceListResultPage, err error)
+	ListComplete(ctx context.Context, maxResults *int32) (result batchai.WorkspaceListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, maxResults *int32) (result batchai.WorkspaceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, maxResults *int32) (result batchai.WorkspaceListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, workspaceName string, parameters batchai.WorkspaceUpdateParameters) (result batchai.Workspace, err error)
 }
 
@@ -54,6 +58,7 @@ type ExperimentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string, experimentName string) (result batchai.ExperimentsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, experimentName string) (result batchai.Experiment, err error)
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, maxResults *int32) (result batchai.ExperimentListResultPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string, maxResults *int32) (result batchai.ExperimentListResultIterator, err error)
 }
 
 var _ ExperimentsClientAPI = (*batchai.ExperimentsClient)(nil)
@@ -64,8 +69,11 @@ type JobsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string, experimentName string, jobName string) (result batchai.JobsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, experimentName string, jobName string) (result batchai.Job, err error)
 	ListByExperiment(ctx context.Context, resourceGroupName string, workspaceName string, experimentName string, maxResults *int32) (result batchai.JobListResultPage, err error)
+	ListByExperimentComplete(ctx context.Context, resourceGroupName string, workspaceName string, experimentName string, maxResults *int32) (result batchai.JobListResultIterator, err error)
 	ListOutputFiles(ctx context.Context, resourceGroupName string, workspaceName string, experimentName string, jobName string, outputdirectoryid string, directory string, linkexpiryinminutes *int32, maxResults *int32) (result batchai.FileListResultPage, err error)
+	ListOutputFilesComplete(ctx context.Context, resourceGroupName string, workspaceName string, experimentName string, jobName string, outputdirectoryid string, directory string, linkexpiryinminutes *int32, maxResults *int32) (result batchai.FileListResultIterator, err error)
 	ListRemoteLoginInformation(ctx context.Context, resourceGroupName string, workspaceName string, experimentName string, jobName string) (result batchai.RemoteLoginInformationListResultPage, err error)
+	ListRemoteLoginInformationComplete(ctx context.Context, resourceGroupName string, workspaceName string, experimentName string, jobName string) (result batchai.RemoteLoginInformationListResultIterator, err error)
 	Terminate(ctx context.Context, resourceGroupName string, workspaceName string, experimentName string, jobName string) (result batchai.JobsTerminateFuture, err error)
 }
 
@@ -77,6 +85,7 @@ type FileServersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string, fileServerName string) (result batchai.FileServersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, fileServerName string) (result batchai.FileServer, err error)
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, maxResults *int32) (result batchai.FileServerListResultPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string, maxResults *int32) (result batchai.FileServerListResultIterator, err error)
 }
 
 var _ FileServersClientAPI = (*batchai.FileServersClient)(nil)
@@ -87,7 +96,9 @@ type ClustersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string, clusterName string) (result batchai.ClustersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, clusterName string) (result batchai.Cluster, err error)
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, maxResults *int32) (result batchai.ClusterListResultPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string, maxResults *int32) (result batchai.ClusterListResultIterator, err error)
 	ListRemoteLoginInformation(ctx context.Context, resourceGroupName string, workspaceName string, clusterName string) (result batchai.RemoteLoginInformationListResultPage, err error)
+	ListRemoteLoginInformationComplete(ctx context.Context, resourceGroupName string, workspaceName string, clusterName string) (result batchai.RemoteLoginInformationListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, workspaceName string, clusterName string, parameters batchai.ClusterUpdateParameters) (result batchai.Cluster, err error)
 }
 

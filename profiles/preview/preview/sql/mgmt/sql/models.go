@@ -118,6 +118,16 @@ const (
 	SecurityAlertPolicyStateNew      SecurityAlertPolicyState = original.SecurityAlertPolicyStateNew
 )
 
+type SensitivityLabelRank = original.SensitivityLabelRank
+
+const (
+	Critical SensitivityLabelRank = original.Critical
+	High     SensitivityLabelRank = original.High
+	Low      SensitivityLabelRank = original.Low
+	Medium   SensitivityLabelRank = original.Medium
+	None     SensitivityLabelRank = original.None
+)
+
 type SensitivityLabelSource = original.SensitivityLabelSource
 
 const (
@@ -414,6 +424,9 @@ func PossibleReplicaTypeValues() []ReplicaType {
 }
 func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
 	return original.PossibleSecurityAlertPolicyStateValues()
+}
+func PossibleSensitivityLabelRankValues() []SensitivityLabelRank {
+	return original.PossibleSensitivityLabelRankValues()
 }
 func PossibleSensitivityLabelSourceValues() []SensitivityLabelSource {
 	return original.PossibleSensitivityLabelSourceValues()

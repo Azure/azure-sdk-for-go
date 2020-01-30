@@ -183,9 +183,9 @@ func (client TopicTypesClient) ListResponder(resp *http.Response) (result TopicT
 	return
 }
 
-// ListEventTypes list event types for a topic type
+// ListEventTypes list event types for a topic type.
 // Parameters:
-// topicTypeName - name of the topic type
+// topicTypeName - name of the topic type.
 func (client TopicTypesClient) ListEventTypes(ctx context.Context, topicTypeName string) (result EventTypesListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TopicTypesClient.ListEventTypes")

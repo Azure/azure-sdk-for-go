@@ -37,7 +37,8 @@ func NewQueryTextsClient(subscriptionID string) QueryTextsClient {
 	return NewQueryTextsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewQueryTextsClientWithBaseURI creates an instance of the QueryTextsClient client.
+// NewQueryTextsClientWithBaseURI creates an instance of the QueryTextsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewQueryTextsClientWithBaseURI(baseURI string, subscriptionID string) QueryTextsClient {
 	return QueryTextsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

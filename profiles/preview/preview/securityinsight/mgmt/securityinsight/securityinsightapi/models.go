@@ -24,6 +24,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/securityinsi
 type ActionsClientAPI = original.ActionsClientAPI
 type AlertRuleTemplatesClientAPI = original.AlertRuleTemplatesClientAPI
 type AlertRulesClientAPI = original.AlertRulesClientAPI
+type BaseClientAPI = original.BaseClientAPI
 type BookmarkRelationsClientAPI = original.BookmarkRelationsClientAPI
 type BookmarksClientAPI = original.BookmarksClientAPI
 type CaseCommentsClientAPI = original.CaseCommentsClientAPI

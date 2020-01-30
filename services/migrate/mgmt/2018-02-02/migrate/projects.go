@@ -35,7 +35,8 @@ func NewProjectsClient(subscriptionID string, acceptLanguage string) ProjectsCli
 	return NewProjectsClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
-// NewProjectsClientWithBaseURI creates an instance of the ProjectsClient client.
+// NewProjectsClientWithBaseURI creates an instance of the ProjectsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) ProjectsClient {
 	return ProjectsClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }

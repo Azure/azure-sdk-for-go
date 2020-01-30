@@ -35,7 +35,8 @@ func NewLineOfCreditsClient(subscriptionID string) LineOfCreditsClient {
 	return NewLineOfCreditsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewLineOfCreditsClientWithBaseURI creates an instance of the LineOfCreditsClient client.
+// NewLineOfCreditsClientWithBaseURI creates an instance of the LineOfCreditsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewLineOfCreditsClientWithBaseURI(baseURI string, subscriptionID string) LineOfCreditsClient {
 	return LineOfCreditsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

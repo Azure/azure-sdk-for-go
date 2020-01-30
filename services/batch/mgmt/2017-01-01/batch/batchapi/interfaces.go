@@ -30,7 +30,9 @@ type AccountClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, accountName string) (result batch.Account, err error)
 	GetKeys(ctx context.Context, resourceGroupName string, accountName string) (result batch.AccountKeys, err error)
 	List(ctx context.Context) (result batch.AccountListResultPage, err error)
+	ListComplete(ctx context.Context) (result batch.AccountListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result batch.AccountListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result batch.AccountListResultIterator, err error)
 	RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, parameters batch.AccountRegenerateKeyParameters) (result batch.AccountKeys, err error)
 	SynchronizeAutoStorageKeys(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, parameters batch.AccountUpdateParameters) (result batch.Account, err error)
@@ -54,6 +56,7 @@ type ApplicationClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, applicationID string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, applicationID string) (result batch.Application, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string, maxresults *int32) (result batch.ListApplicationsResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, maxresults *int32) (result batch.ListApplicationsResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, applicationID string, parameters batch.UpdateApplicationParameters) (result autorest.Response, err error)
 }
 

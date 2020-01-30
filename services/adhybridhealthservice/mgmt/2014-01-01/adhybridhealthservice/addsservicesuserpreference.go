@@ -35,7 +35,9 @@ func NewAddsServicesUserPreferenceClient() AddsServicesUserPreferenceClient {
 	return NewAddsServicesUserPreferenceClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewAddsServicesUserPreferenceClientWithBaseURI creates an instance of the AddsServicesUserPreferenceClient client.
+// NewAddsServicesUserPreferenceClientWithBaseURI creates an instance of the AddsServicesUserPreferenceClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewAddsServicesUserPreferenceClientWithBaseURI(baseURI string) AddsServicesUserPreferenceClient {
 	return AddsServicesUserPreferenceClient{NewWithBaseURI(baseURI)}
 }

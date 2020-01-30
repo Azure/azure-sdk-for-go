@@ -25,6 +25,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result databoxedge.OperationsListPage, err error)
+	ListComplete(ctx context.Context) (result databoxedge.OperationsListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*databoxedge.OperationsClient)(nil)
@@ -41,7 +42,9 @@ type DevicesClientAPI interface {
 	GetUpdateSummary(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.UpdateSummary, err error)
 	InstallUpdates(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.DevicesInstallUpdatesFuture, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, expand string) (result databoxedge.DeviceListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, expand string) (result databoxedge.DeviceListIterator, err error)
 	ListBySubscription(ctx context.Context, expand string) (result databoxedge.DeviceListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, expand string) (result databoxedge.DeviceListIterator, err error)
 	ScanForUpdates(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.DevicesScanForUpdatesFuture, err error)
 	Update(ctx context.Context, deviceName string, parameters databoxedge.DevicePatch, resourceGroupName string) (result databoxedge.Device, err error)
 	UploadCertificate(ctx context.Context, deviceName string, parameters databoxedge.UploadCertificateRequest, resourceGroupName string) (result databoxedge.UploadCertificateResponse, err error)
@@ -53,6 +56,7 @@ var _ DevicesClientAPI = (*databoxedge.DevicesClient)(nil)
 type AlertsClientAPI interface {
 	Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result databoxedge.Alert, err error)
 	ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.AlertListPage, err error)
+	ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.AlertListIterator, err error)
 }
 
 var _ AlertsClientAPI = (*databoxedge.AlertsClient)(nil)
@@ -63,6 +67,7 @@ type BandwidthSchedulesClientAPI interface {
 	Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result databoxedge.BandwidthSchedulesDeleteFuture, err error)
 	Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result databoxedge.BandwidthSchedule, err error)
 	ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.BandwidthSchedulesListPage, err error)
+	ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.BandwidthSchedulesListIterator, err error)
 }
 
 var _ BandwidthSchedulesClientAPI = (*databoxedge.BandwidthSchedulesClient)(nil)
@@ -94,6 +99,7 @@ type OrdersClientAPI interface {
 	Delete(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.OrdersDeleteFuture, err error)
 	Get(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.Order, err error)
 	ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.OrderListPage, err error)
+	ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.OrderListIterator, err error)
 }
 
 var _ OrdersClientAPI = (*databoxedge.OrdersClient)(nil)
@@ -104,6 +110,7 @@ type RolesClientAPI interface {
 	Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result databoxedge.RolesDeleteFuture, err error)
 	Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result databoxedge.RoleModel, err error)
 	ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.RoleListPage, err error)
+	ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.RoleListIterator, err error)
 }
 
 var _ RolesClientAPI = (*databoxedge.RolesClient)(nil)
@@ -114,6 +121,7 @@ type SharesClientAPI interface {
 	Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result databoxedge.SharesDeleteFuture, err error)
 	Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result databoxedge.Share, err error)
 	ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.ShareListPage, err error)
+	ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.ShareListIterator, err error)
 	Refresh(ctx context.Context, deviceName string, name string, resourceGroupName string) (result databoxedge.SharesRefreshFuture, err error)
 }
 
@@ -125,6 +133,7 @@ type StorageAccountCredentialsClientAPI interface {
 	Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result databoxedge.StorageAccountCredentialsDeleteFuture, err error)
 	Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result databoxedge.StorageAccountCredential, err error)
 	ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.StorageAccountCredentialListPage, err error)
+	ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.StorageAccountCredentialListIterator, err error)
 }
 
 var _ StorageAccountCredentialsClientAPI = (*databoxedge.StorageAccountCredentialsClient)(nil)
@@ -135,6 +144,7 @@ type TriggersClientAPI interface {
 	Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result databoxedge.TriggersDeleteFuture, err error)
 	Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result databoxedge.TriggerModel, err error)
 	ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string, expand string) (result databoxedge.TriggerListPage, err error)
+	ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string, expand string) (result databoxedge.TriggerListIterator, err error)
 }
 
 var _ TriggersClientAPI = (*databoxedge.TriggersClient)(nil)
@@ -145,6 +155,7 @@ type UsersClientAPI interface {
 	Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result databoxedge.UsersDeleteFuture, err error)
 	Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result databoxedge.User, err error)
 	ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.UserListPage, err error)
+	ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string) (result databoxedge.UserListIterator, err error)
 }
 
 var _ UsersClientAPI = (*databoxedge.UsersClient)(nil)

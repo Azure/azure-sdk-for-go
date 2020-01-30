@@ -36,7 +36,9 @@ func NewNotificationSettingsClient(subscriptionID string) NotificationSettingsCl
 	return NewNotificationSettingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewNotificationSettingsClientWithBaseURI creates an instance of the NotificationSettingsClient client.
+// NewNotificationSettingsClientWithBaseURI creates an instance of the NotificationSettingsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewNotificationSettingsClientWithBaseURI(baseURI string, subscriptionID string) NotificationSettingsClient {
 	return NotificationSettingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -36,7 +36,8 @@ func NewQuotasClient(subscriptionID string) QuotasClient {
 	return NewQuotasClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewQuotasClientWithBaseURI creates an instance of the QuotasClient client.
+// NewQuotasClientWithBaseURI creates an instance of the QuotasClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewQuotasClientWithBaseURI(baseURI string, subscriptionID string) QuotasClient {
 	return QuotasClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

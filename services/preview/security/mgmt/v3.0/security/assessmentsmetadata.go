@@ -35,7 +35,9 @@ func NewAssessmentsMetadataClient(subscriptionID string, ascLocation string) Ass
 	return NewAssessmentsMetadataClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
-// NewAssessmentsMetadataClientWithBaseURI creates an instance of the AssessmentsMetadataClient client.
+// NewAssessmentsMetadataClientWithBaseURI creates an instance of the AssessmentsMetadataClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewAssessmentsMetadataClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsMetadataClient {
 	return AssessmentsMetadataClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }

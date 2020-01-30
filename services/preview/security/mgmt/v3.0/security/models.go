@@ -133,6 +133,23 @@ func PossibleAssessedResourceTypeValues() []AssessedResourceType {
 	return []AssessedResourceType{AssessedResourceTypeAdditionalData, AssessedResourceTypeContainerRegistryVulnerability, AssessedResourceTypeServerVulnerabilityAssessment, AssessedResourceTypeSQLServerVulnerability}
 }
 
+// AssessmentStatusCode enumerates the values for assessment status code.
+type AssessmentStatusCode string
+
+const (
+	// Healthy The resource is healthy
+	Healthy AssessmentStatusCode = "Healthy"
+	// NotApplicable Assessment for this resource did not happen
+	NotApplicable AssessmentStatusCode = "NotApplicable"
+	// Unhealthy The resource has a security issue that needs to be addressed
+	Unhealthy AssessmentStatusCode = "Unhealthy"
+)
+
+// PossibleAssessmentStatusCodeValues returns an array of possible values for the AssessmentStatusCode const type.
+func PossibleAssessmentStatusCodeValues() []AssessmentStatusCode {
+	return []AssessmentStatusCode{Healthy, NotApplicable, Unhealthy}
+}
+
 // AssessmentType enumerates the values for assessment type.
 type AssessmentType string
 
@@ -360,6 +377,21 @@ const (
 // PossibleExecutableValues returns an array of possible values for the Executable const type.
 func PossibleExecutableValues() []Executable {
 	return []Executable{ExecutableAudit, ExecutableEnforce, ExecutableNone}
+}
+
+// ExpandEnum enumerates the values for expand enum.
+type ExpandEnum string
+
+const (
+	// Links All links associated with an assessment
+	Links ExpandEnum = "links"
+	// Metadata Assessment metadata
+	Metadata ExpandEnum = "metadata"
+)
+
+// PossibleExpandEnumValues returns an array of possible values for the ExpandEnum const type.
+func PossibleExpandEnumValues() []ExpandEnum {
+	return []ExpandEnum{Links, Metadata}
 }
 
 // ExportData enumerates the values for export data.
@@ -757,19 +789,19 @@ func PossibleReportedSeverityValues() []ReportedSeverity {
 type ResourceStatus string
 
 const (
-	// Healthy This assessment on the resource is healthy
-	Healthy ResourceStatus = "Healthy"
-	// NotApplicable This assessment is not applicable to this resource
-	NotApplicable ResourceStatus = "NotApplicable"
-	// NotHealthy This assessment on the resource is not healthy
-	NotHealthy ResourceStatus = "NotHealthy"
-	// OffByPolicy This assessment is turned off by policy on this subscription
-	OffByPolicy ResourceStatus = "OffByPolicy"
+	// ResourceStatusHealthy This assessment on the resource is healthy
+	ResourceStatusHealthy ResourceStatus = "Healthy"
+	// ResourceStatusNotApplicable This assessment is not applicable to this resource
+	ResourceStatusNotApplicable ResourceStatus = "NotApplicable"
+	// ResourceStatusNotHealthy This assessment on the resource is not healthy
+	ResourceStatusNotHealthy ResourceStatus = "NotHealthy"
+	// ResourceStatusOffByPolicy This assessment is turned off by policy on this subscription
+	ResourceStatusOffByPolicy ResourceStatus = "OffByPolicy"
 )
 
 // PossibleResourceStatusValues returns an array of possible values for the ResourceStatus const type.
 func PossibleResourceStatusValues() []ResourceStatus {
-	return []ResourceStatus{Healthy, NotApplicable, NotHealthy, OffByPolicy}
+	return []ResourceStatus{ResourceStatusHealthy, ResourceStatusNotApplicable, ResourceStatusNotHealthy, ResourceStatusOffByPolicy}
 }
 
 // Script enumerates the values for script.
@@ -840,17 +872,17 @@ func PossibleSolutionStatusValues() []SolutionStatus {
 type Source string
 
 const (
-	// SourceAws ...
-	SourceAws Source = "Aws"
 	// SourceAzure ...
 	SourceAzure Source = "Azure"
+	// SourceOnPremise ...
+	SourceOnPremise Source = "OnPremise"
 	// SourceResourceDetails ...
 	SourceResourceDetails Source = "ResourceDetails"
 )
 
 // PossibleSourceValues returns an array of possible values for the Source const type.
 func PossibleSourceValues() []Source {
-	return []Source{SourceAws, SourceAzure, SourceResourceDetails}
+	return []Source{SourceAzure, SourceOnPremise, SourceResourceDetails}
 }
 
 // SourceSystem enumerates the values for source system.
@@ -2160,6 +2192,230 @@ func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (
 	return AscLocationListPage{fn: getNextPage}
 }
 
+// Assessment security assessment on a resource
+type Assessment struct {
+	autorest.Response     `json:"-"`
+	*AssessmentProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Assessment.
+func (a Assessment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if a.AssessmentProperties != nil {
+		objectMap["properties"] = a.AssessmentProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Assessment struct.
+func (a *Assessment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var assessmentProperties AssessmentProperties
+				err = json.Unmarshal(*v, &assessmentProperties)
+				if err != nil {
+					return err
+				}
+				a.AssessmentProperties = &assessmentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				a.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				a.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				a.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AssessmentLinks links relevant to the assessment
+type AssessmentLinks struct {
+	// AzurePortalURI - READ-ONLY; Link to assessment in Azure Portal
+	AzurePortalURI *string `json:"azurePortalUri,omitempty"`
+}
+
+// AssessmentList page of a security assessments list
+type AssessmentList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Collection of security assessments in this page
+	Value *[]Assessment `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AssessmentListIterator provides access to a complete listing of Assessment values.
+type AssessmentListIterator struct {
+	i    int
+	page AssessmentListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AssessmentListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AssessmentListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AssessmentListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AssessmentListIterator) Response() AssessmentList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AssessmentListIterator) Value() Assessment {
+	if !iter.page.NotDone() {
+		return Assessment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AssessmentListIterator type.
+func NewAssessmentListIterator(page AssessmentListPage) AssessmentListIterator {
+	return AssessmentListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (al AssessmentList) IsEmpty() bool {
+	return al.Value == nil || len(*al.Value) == 0
+}
+
+// assessmentListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (al AssessmentList) assessmentListPreparer(ctx context.Context) (*http.Request, error) {
+	if al.NextLink == nil || len(to.String(al.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(al.NextLink)))
+}
+
+// AssessmentListPage contains a page of Assessment values.
+type AssessmentListPage struct {
+	fn func(context.Context, AssessmentList) (AssessmentList, error)
+	al AssessmentList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AssessmentListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.al)
+	if err != nil {
+		return err
+	}
+	page.al = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AssessmentListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AssessmentListPage) NotDone() bool {
+	return !page.al.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AssessmentListPage) Response() AssessmentList {
+	return page.al
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AssessmentListPage) Values() []Assessment {
+	if page.al.IsEmpty() {
+		return nil
+	}
+	return *page.al.Value
+}
+
+// Creates a new instance of the AssessmentListPage type.
+func NewAssessmentListPage(getNextPage func(context.Context, AssessmentList) (AssessmentList, error)) AssessmentListPage {
+	return AssessmentListPage{fn: getNextPage}
+}
+
 // AssessmentMetadata security assessment metadata
 type AssessmentMetadata struct {
 	autorest.Response             `json:"-"`
@@ -2400,6 +2656,102 @@ type AssessmentMetadataProperties struct {
 	Preview *bool `json:"preview,omitempty"`
 	// AssessmentType - BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition. Possible values include: 'BuiltIn', 'CustomPolicy', 'CustomerManaged'
 	AssessmentType AssessmentType `json:"assessmentType,omitempty"`
+}
+
+// AssessmentProperties describes properties of an assessment.
+type AssessmentProperties struct {
+	ResourceDetails BasicResourceDetails `json:"resourceDetails,omitempty"`
+	// DisplayName - READ-ONLY; User friendly display name of the assessment
+	DisplayName *string           `json:"displayName,omitempty"`
+	Status      *AssessmentStatus `json:"status,omitempty"`
+	// AdditionalData - Additional data regarding the assessment
+	AdditionalData map[string]*string `json:"additionalData"`
+	Links          *AssessmentLinks   `json:"links,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssessmentProperties.
+func (ap AssessmentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["resourceDetails"] = ap.ResourceDetails
+	if ap.Status != nil {
+		objectMap["status"] = ap.Status
+	}
+	if ap.AdditionalData != nil {
+		objectMap["additionalData"] = ap.AdditionalData
+	}
+	if ap.Links != nil {
+		objectMap["links"] = ap.Links
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AssessmentProperties struct.
+func (ap *AssessmentProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "resourceDetails":
+			if v != nil {
+				resourceDetails, err := unmarshalBasicResourceDetails(*v)
+				if err != nil {
+					return err
+				}
+				ap.ResourceDetails = resourceDetails
+			}
+		case "displayName":
+			if v != nil {
+				var displayName string
+				err = json.Unmarshal(*v, &displayName)
+				if err != nil {
+					return err
+				}
+				ap.DisplayName = &displayName
+			}
+		case "status":
+			if v != nil {
+				var status AssessmentStatus
+				err = json.Unmarshal(*v, &status)
+				if err != nil {
+					return err
+				}
+				ap.Status = &status
+			}
+		case "additionalData":
+			if v != nil {
+				var additionalData map[string]*string
+				err = json.Unmarshal(*v, &additionalData)
+				if err != nil {
+					return err
+				}
+				ap.AdditionalData = additionalData
+			}
+		case "links":
+			if v != nil {
+				var links AssessmentLinks
+				err = json.Unmarshal(*v, &links)
+				if err != nil {
+					return err
+				}
+				ap.Links = &links
+			}
+		}
+	}
+
+	return nil
+}
+
+// AssessmentStatus the result of the assessment
+type AssessmentStatus struct {
+	// Code - Programmatic code for the status of the assessment. Possible values include: 'Healthy', 'Unhealthy', 'NotApplicable'
+	Code AssessmentStatusCode `json:"code,omitempty"`
+	// Cause - Programmatic code for the cause of the assessment status
+	Cause *string `json:"cause,omitempty"`
+	// Description - Human readable description of the assessment status
+	Description *string `json:"description,omitempty"`
 }
 
 // AtaExternalSecuritySolution represents an ATA security solution which sends logs to an OMS workspace
@@ -2769,7 +3121,8 @@ func (aa AutomationAction) AsBasicAutomationAction() (BasicAutomationAction, boo
 	return &aa, true
 }
 
-// AutomationActionEventHub the target Event Hub to which event data will be exported.
+// AutomationActionEventHub the target Event Hub to which event data will be exported. To learn more about
+// Security Center continuous export capabilities, visit https://aka.ms/ASCExportLearnMore
 type AutomationActionEventHub struct {
 	// EventHubResourceID - The target Event Hub Azure Resource ID.
 	EventHubResourceID *string `json:"eventHubResourceId,omitempty"`
@@ -2822,7 +3175,8 @@ func (aaeh AutomationActionEventHub) AsBasicAutomationAction() (BasicAutomationA
 	return &aaeh, true
 }
 
-// AutomationActionLogicApp the logic app action that should be triggered.
+// AutomationActionLogicApp the logic app action that should be triggered. To learn more about Security
+// Center's Workflow Automation capabilities, visit https://aka.ms/ASCWorkflowAutomationLearnMore
 type AutomationActionLogicApp struct {
 	// LogicAppResourceID - The triggered Logic App Azure Resource ID. This can also reside on other subscriptions, given that you have permissions to trigger the Logic App
 	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
@@ -2877,7 +3231,8 @@ func (aala AutomationActionLogicApp) AsBasicAutomationAction() (BasicAutomationA
 // alerts data will reside in the 'SecurityAlert' table and the assessments data will reside in the
 // 'SecurityRecommendation' table (under the 'Security'/'SecurityCenterFree' solutions). Note that in order
 // to view the data in the workspace, the Security Center Log Analytics free/standard solution needs to be
-// enabled on that workspace.
+// enabled on that workspace. To learn more about Security Center continuous export capabilities, visit
+// https://aka.ms/ASCExportLearnMore
 type AutomationActionWorkspace struct {
 	// WorkspaceResourceID - The fully qualified Log Analytics Workspace Azure Resource ID.
 	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
@@ -3178,7 +3533,7 @@ type AutomationTriggeringRule struct {
 	PropertyType PropertyType `json:"propertyType,omitempty"`
 	// ExpectedValue - The expected value.
 	ExpectedValue *string `json:"expectedValue,omitempty"`
-	// Operator - A valid comparer operator to use. Possible values include: 'Equals', 'GreaterThan', 'GreaterThanOrEqualTo', 'LesserThan', 'LesserThanOrEqualTo', 'NotEquals', 'Contains', 'StartsWith', 'EndsWith'
+	// Operator - A valid comparer operator to use. A case-insensitive comparison will be applied for String PropertyType. Possible values include: 'Equals', 'GreaterThan', 'GreaterThanOrEqualTo', 'LesserThan', 'LesserThanOrEqualTo', 'NotEquals', 'Contains', 'StartsWith', 'EndsWith'
 	Operator Operator `json:"operator,omitempty"`
 }
 
@@ -3417,51 +3772,11 @@ type AutoProvisioningSettingProperties struct {
 	AutoProvision AutoProvision `json:"autoProvision,omitempty"`
 }
 
-// AwsResourceDetails details of the resource that was assessed
-type AwsResourceDetails struct {
-	// AccountID - READ-ONLY; AWS account ID
-	AccountID *string `json:"accountId,omitempty"`
-	// AwsResourceID - READ-ONLY; AWS resource ID. can be ARN or other
-	AwsResourceID *string `json:"awsResourceId,omitempty"`
-	// Source - Possible values include: 'SourceResourceDetails', 'SourceAzure', 'SourceAws'
-	Source Source `json:"source,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AwsResourceDetails.
-func (ard AwsResourceDetails) MarshalJSON() ([]byte, error) {
-	ard.Source = SourceAws
-	objectMap := make(map[string]interface{})
-	if ard.Source != "" {
-		objectMap["source"] = ard.Source
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureResourceDetails is the BasicResourceDetails implementation for AwsResourceDetails.
-func (ard AwsResourceDetails) AsAzureResourceDetails() (*AzureResourceDetails, bool) {
-	return nil, false
-}
-
-// AsAwsResourceDetails is the BasicResourceDetails implementation for AwsResourceDetails.
-func (ard AwsResourceDetails) AsAwsResourceDetails() (*AwsResourceDetails, bool) {
-	return &ard, true
-}
-
-// AsResourceDetails is the BasicResourceDetails implementation for AwsResourceDetails.
-func (ard AwsResourceDetails) AsResourceDetails() (*ResourceDetails, bool) {
-	return nil, false
-}
-
-// AsBasicResourceDetails is the BasicResourceDetails implementation for AwsResourceDetails.
-func (ard AwsResourceDetails) AsBasicResourceDetails() (BasicResourceDetails, bool) {
-	return &ard, true
-}
-
-// AzureResourceDetails details of the resource that was assessed
+// AzureResourceDetails details of the Azure resource that was assessed
 type AzureResourceDetails struct {
-	// ID - READ-ONLY; Azure resource ID of the assessed resource
+	// ID - READ-ONLY; Azure resource Id of the assessed resource
 	ID *string `json:"id,omitempty"`
-	// Source - Possible values include: 'SourceResourceDetails', 'SourceAzure', 'SourceAws'
+	// Source - Possible values include: 'SourceResourceDetails', 'SourceOnPremise', 'SourceAzure'
 	Source Source `json:"source,omitempty"`
 }
 
@@ -3475,14 +3790,14 @@ func (ard AzureResourceDetails) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsOnPremiseResourceDetails is the BasicResourceDetails implementation for AzureResourceDetails.
+func (ard AzureResourceDetails) AsOnPremiseResourceDetails() (*OnPremiseResourceDetails, bool) {
+	return nil, false
+}
+
 // AsAzureResourceDetails is the BasicResourceDetails implementation for AzureResourceDetails.
 func (ard AzureResourceDetails) AsAzureResourceDetails() (*AzureResourceDetails, bool) {
 	return &ard, true
-}
-
-// AsAwsResourceDetails is the BasicResourceDetails implementation for AzureResourceDetails.
-func (ard AzureResourceDetails) AsAwsResourceDetails() (*AwsResourceDetails, bool) {
-	return nil, false
 }
 
 // AsResourceDetails is the BasicResourceDetails implementation for AzureResourceDetails.
@@ -4167,7 +4482,7 @@ func NewComplianceResultListPage(getNextPage func(context.Context, ComplianceRes
 
 // ComplianceResultProperties compliance result data
 type ComplianceResultProperties struct {
-	// ResourceStatus - READ-ONLY; The status of the resource regarding a single assessment. Possible values include: 'Healthy', 'NotApplicable', 'OffByPolicy', 'NotHealthy'
+	// ResourceStatus - READ-ONLY; The status of the resource regarding a single assessment. Possible values include: 'ResourceStatusHealthy', 'ResourceStatusNotApplicable', 'ResourceStatusOffByPolicy', 'ResourceStatusNotHealthy'
 	ResourceStatus ResourceStatus `json:"resourceStatus,omitempty"`
 }
 
@@ -7078,6 +7393,62 @@ type Location struct {
 	Location *string `json:"location,omitempty"`
 }
 
+// OnPremiseResourceDetails details of the On Premise resource that was assessed
+type OnPremiseResourceDetails struct {
+	// WorkspaceID - Azure resource Id of the workspace the machine is attached to
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+	// Vmuuid - The unique Id of the machine
+	Vmuuid *string `json:"vmuuid,omitempty"`
+	// SourceComputerID - The oms agent Id installed on the machine
+	SourceComputerID *string `json:"sourceComputerId,omitempty"`
+	// MachineName - The name of the machine
+	MachineName *string `json:"machineName,omitempty"`
+	// Source - Possible values include: 'SourceResourceDetails', 'SourceOnPremise', 'SourceAzure'
+	Source Source `json:"source,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OnPremiseResourceDetails.
+func (oprd OnPremiseResourceDetails) MarshalJSON() ([]byte, error) {
+	oprd.Source = SourceOnPremise
+	objectMap := make(map[string]interface{})
+	if oprd.WorkspaceID != nil {
+		objectMap["workspaceId"] = oprd.WorkspaceID
+	}
+	if oprd.Vmuuid != nil {
+		objectMap["vmuuid"] = oprd.Vmuuid
+	}
+	if oprd.SourceComputerID != nil {
+		objectMap["sourceComputerId"] = oprd.SourceComputerID
+	}
+	if oprd.MachineName != nil {
+		objectMap["machineName"] = oprd.MachineName
+	}
+	if oprd.Source != "" {
+		objectMap["source"] = oprd.Source
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsOnPremiseResourceDetails is the BasicResourceDetails implementation for OnPremiseResourceDetails.
+func (oprd OnPremiseResourceDetails) AsOnPremiseResourceDetails() (*OnPremiseResourceDetails, bool) {
+	return &oprd, true
+}
+
+// AsAzureResourceDetails is the BasicResourceDetails implementation for OnPremiseResourceDetails.
+func (oprd OnPremiseResourceDetails) AsAzureResourceDetails() (*AzureResourceDetails, bool) {
+	return nil, false
+}
+
+// AsResourceDetails is the BasicResourceDetails implementation for OnPremiseResourceDetails.
+func (oprd OnPremiseResourceDetails) AsResourceDetails() (*ResourceDetails, bool) {
+	return nil, false
+}
+
+// AsBasicResourceDetails is the BasicResourceDetails implementation for OnPremiseResourceDetails.
+func (oprd OnPremiseResourceDetails) AsBasicResourceDetails() (BasicResourceDetails, bool) {
+	return &oprd, true
+}
+
 // Operation possible operation in the REST API of Microsoft.Security
 type Operation struct {
 	// Name - READ-ONLY; Name of the operation
@@ -8107,14 +8478,14 @@ type Resource struct {
 
 // BasicResourceDetails details of the resource that was assessed
 type BasicResourceDetails interface {
+	AsOnPremiseResourceDetails() (*OnPremiseResourceDetails, bool)
 	AsAzureResourceDetails() (*AzureResourceDetails, bool)
-	AsAwsResourceDetails() (*AwsResourceDetails, bool)
 	AsResourceDetails() (*ResourceDetails, bool)
 }
 
 // ResourceDetails details of the resource that was assessed
 type ResourceDetails struct {
-	// Source - Possible values include: 'SourceResourceDetails', 'SourceAzure', 'SourceAws'
+	// Source - Possible values include: 'SourceResourceDetails', 'SourceOnPremise', 'SourceAzure'
 	Source Source `json:"source,omitempty"`
 }
 
@@ -8126,12 +8497,12 @@ func unmarshalBasicResourceDetails(body []byte) (BasicResourceDetails, error) {
 	}
 
 	switch m["source"] {
+	case string(SourceOnPremise):
+		var oprd OnPremiseResourceDetails
+		err := json.Unmarshal(body, &oprd)
+		return oprd, err
 	case string(SourceAzure):
 		var ard AzureResourceDetails
-		err := json.Unmarshal(body, &ard)
-		return ard, err
-	case string(SourceAws):
-		var ard AwsResourceDetails
 		err := json.Unmarshal(body, &ard)
 		return ard, err
 	default:
@@ -8169,13 +8540,13 @@ func (rd ResourceDetails) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAzureResourceDetails is the BasicResourceDetails implementation for ResourceDetails.
-func (rd ResourceDetails) AsAzureResourceDetails() (*AzureResourceDetails, bool) {
+// AsOnPremiseResourceDetails is the BasicResourceDetails implementation for ResourceDetails.
+func (rd ResourceDetails) AsOnPremiseResourceDetails() (*OnPremiseResourceDetails, bool) {
 	return nil, false
 }
 
-// AsAwsResourceDetails is the BasicResourceDetails implementation for ResourceDetails.
-func (rd ResourceDetails) AsAwsResourceDetails() (*AwsResourceDetails, bool) {
+// AsAzureResourceDetails is the BasicResourceDetails implementation for ResourceDetails.
+func (rd ResourceDetails) AsAzureResourceDetails() (*AzureResourceDetails, bool) {
 	return nil, false
 }
 

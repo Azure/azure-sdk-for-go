@@ -35,7 +35,8 @@ func NewVirtualWANsClient(subscriptionID string) VirtualWANsClient {
 	return NewVirtualWANsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewVirtualWANsClientWithBaseURI creates an instance of the VirtualWANsClient client.
+// NewVirtualWANsClientWithBaseURI creates an instance of the VirtualWANsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewVirtualWANsClientWithBaseURI(baseURI string, subscriptionID string) VirtualWANsClient {
 	return VirtualWANsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

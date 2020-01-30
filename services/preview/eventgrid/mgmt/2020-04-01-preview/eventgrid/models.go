@@ -897,7 +897,7 @@ type DomainProperties struct {
 	InputSchema InputSchema `json:"inputSchema,omitempty"`
 	// InputSchemaMapping - Information about the InputSchemaMapping which specified the info about mapping event payload.
 	InputSchemaMapping BasicInputSchemaMapping `json:"inputSchemaMapping,omitempty"`
-	// MetricResourceID - Metric resource id for the domain.
+	// MetricResourceID - READ-ONLY; Metric resource id for the domain.
 	MetricResourceID *string `json:"metricResourceId,omitempty"`
 	// AllowTrafficFromAllIPs - This determines if IP filtering rules ought to be evaluated or not. By default it will not evaluate and will allow traffic from all IPs.
 	AllowTrafficFromAllIPs *bool `json:"allowTrafficFromAllIPs,omitempty"`
@@ -1505,6 +1505,10 @@ func NewDomainTopicsListResultPage(getNextPage func(context.Context, DomainTopic
 type DomainUpdateParameters struct {
 	// Tags - Tags of the domains resource
 	Tags map[string]*string `json:"tags"`
+	// AllowTrafficFromAllIPs - This determines if IP filtering rules ought to be evaluated or not. By default it will not evaluate and will allow traffic from all IPs.
+	AllowTrafficFromAllIPs *bool `json:"allowTrafficFromAllIPs,omitempty"`
+	// InboundIPRules - This determines the IP filtering rules that ought be applied when events are received on this domain.
+	InboundIPRules *[]InboundIPRule `json:"inboundIpRules,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DomainUpdateParameters.
@@ -1512,6 +1516,12 @@ func (dup DomainUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dup.Tags != nil {
 		objectMap["tags"] = dup.Tags
+	}
+	if dup.AllowTrafficFromAllIPs != nil {
+		objectMap["allowTrafficFromAllIPs"] = dup.AllowTrafficFromAllIPs
+	}
+	if dup.InboundIPRules != nil {
+		objectMap["inboundIpRules"] = dup.InboundIPRules
 	}
 	return json.Marshal(objectMap)
 }
@@ -4356,7 +4366,7 @@ type TopicProperties struct {
 	InputSchema InputSchema `json:"inputSchema,omitempty"`
 	// InputSchemaMapping - This enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various properties of a source schema to various required properties of the EventGridEvent schema.
 	InputSchemaMapping BasicInputSchemaMapping `json:"inputSchemaMapping,omitempty"`
-	// MetricResourceID - Metric resource id for the topic.
+	// MetricResourceID - READ-ONLY; Metric resource id for the topic.
 	MetricResourceID *string `json:"metricResourceId,omitempty"`
 	// AllowTrafficFromAllIPs - This determines if IP filtering rules ought to be evaluated or not. By default it will not evaluate and will allow traffic from all IPs.
 	AllowTrafficFromAllIPs *bool `json:"allowTrafficFromAllIPs,omitempty"`
@@ -4783,6 +4793,10 @@ type TopicTypesListResult struct {
 type TopicUpdateParameters struct {
 	// Tags - Tags of the resource.
 	Tags map[string]*string `json:"tags"`
+	// AllowTrafficFromAllIPs - This determines if IP filtering rules ought to be evaluated or not. By default it will not evaluate and will allow traffic from all IPs.
+	AllowTrafficFromAllIPs *bool `json:"allowTrafficFromAllIPs,omitempty"`
+	// InboundIPRules - This determines the IP filtering rules that ought be applied when events are received on this domain.
+	InboundIPRules *[]InboundIPRule `json:"inboundIpRules,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for TopicUpdateParameters.
@@ -4790,6 +4804,12 @@ func (tup TopicUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if tup.Tags != nil {
 		objectMap["tags"] = tup.Tags
+	}
+	if tup.AllowTrafficFromAllIPs != nil {
+		objectMap["allowTrafficFromAllIPs"] = tup.AllowTrafficFromAllIPs
+	}
+	if tup.InboundIPRules != nil {
+		objectMap["inboundIpRules"] = tup.InboundIPRules
 	}
 	return json.Marshal(objectMap)
 }

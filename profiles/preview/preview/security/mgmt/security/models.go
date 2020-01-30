@@ -77,6 +77,14 @@ const (
 	AssessedResourceTypeSQLServerVulnerability         AssessedResourceType = original.AssessedResourceTypeSQLServerVulnerability
 )
 
+type AssessmentStatusCode = original.AssessmentStatusCode
+
+const (
+	Healthy       AssessmentStatusCode = original.Healthy
+	NotApplicable AssessmentStatusCode = original.NotApplicable
+	Unhealthy     AssessmentStatusCode = original.Unhealthy
+)
+
 type AssessmentType = original.AssessmentType
 
 const (
@@ -182,6 +190,13 @@ const (
 	ExecutableAudit   Executable = original.ExecutableAudit
 	ExecutableEnforce Executable = original.ExecutableEnforce
 	ExecutableNone    Executable = original.ExecutableNone
+)
+
+type ExpandEnum = original.ExpandEnum
+
+const (
+	Links    ExpandEnum = original.Links
+	Metadata ExpandEnum = original.Metadata
 )
 
 type ExportData = original.ExportData
@@ -367,10 +382,10 @@ const (
 type ResourceStatus = original.ResourceStatus
 
 const (
-	Healthy       ResourceStatus = original.Healthy
-	NotApplicable ResourceStatus = original.NotApplicable
-	NotHealthy    ResourceStatus = original.NotHealthy
-	OffByPolicy   ResourceStatus = original.OffByPolicy
+	ResourceStatusHealthy       ResourceStatus = original.ResourceStatusHealthy
+	ResourceStatusNotApplicable ResourceStatus = original.ResourceStatusNotApplicable
+	ResourceStatusNotHealthy    ResourceStatus = original.ResourceStatusNotHealthy
+	ResourceStatusOffByPolicy   ResourceStatus = original.ResourceStatusOffByPolicy
 )
 
 type Script = original.Script
@@ -406,8 +421,8 @@ const (
 type Source = original.Source
 
 const (
-	SourceAws             Source = original.SourceAws
 	SourceAzure           Source = original.SourceAzure
+	SourceOnPremise       Source = original.SourceOnPremise
 	SourceResourceDetails Source = original.SourceResourceDetails
 )
 
@@ -531,11 +546,19 @@ type AscLocation = original.AscLocation
 type AscLocationList = original.AscLocationList
 type AscLocationListIterator = original.AscLocationListIterator
 type AscLocationListPage = original.AscLocationListPage
+type Assessment = original.Assessment
+type AssessmentLinks = original.AssessmentLinks
+type AssessmentList = original.AssessmentList
+type AssessmentListIterator = original.AssessmentListIterator
+type AssessmentListPage = original.AssessmentListPage
 type AssessmentMetadata = original.AssessmentMetadata
 type AssessmentMetadataList = original.AssessmentMetadataList
 type AssessmentMetadataListIterator = original.AssessmentMetadataListIterator
 type AssessmentMetadataListPage = original.AssessmentMetadataListPage
 type AssessmentMetadataProperties = original.AssessmentMetadataProperties
+type AssessmentProperties = original.AssessmentProperties
+type AssessmentStatus = original.AssessmentStatus
+type AssessmentsClient = original.AssessmentsClient
 type AssessmentsMetadataClient = original.AssessmentsMetadataClient
 type AssessmentsMetadataSubscriptionClient = original.AssessmentsMetadataSubscriptionClient
 type AtaExternalSecuritySolution = original.AtaExternalSecuritySolution
@@ -561,7 +584,6 @@ type AutomationSource = original.AutomationSource
 type AutomationTriggeringRule = original.AutomationTriggeringRule
 type AutomationValidationStatus = original.AutomationValidationStatus
 type AutomationsClient = original.AutomationsClient
-type AwsResourceDetails = original.AwsResourceDetails
 type AzureResourceDetails = original.AzureResourceDetails
 type BaseClient = original.BaseClient
 type BasicAdditionalData = original.BasicAdditionalData
@@ -676,6 +698,7 @@ type Kind = original.Kind
 type ListCustomAlertRule = original.ListCustomAlertRule
 type Location = original.Location
 type LocationsClient = original.LocationsClient
+type OnPremiseResourceDetails = original.OnPremiseResourceDetails
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
@@ -809,11 +832,23 @@ func NewAscLocationListIterator(page AscLocationListPage) AscLocationListIterato
 func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
 	return original.NewAscLocationListPage(getNextPage)
 }
+func NewAssessmentListIterator(page AssessmentListPage) AssessmentListIterator {
+	return original.NewAssessmentListIterator(page)
+}
+func NewAssessmentListPage(getNextPage func(context.Context, AssessmentList) (AssessmentList, error)) AssessmentListPage {
+	return original.NewAssessmentListPage(getNextPage)
+}
 func NewAssessmentMetadataListIterator(page AssessmentMetadataListPage) AssessmentMetadataListIterator {
 	return original.NewAssessmentMetadataListIterator(page)
 }
 func NewAssessmentMetadataListPage(getNextPage func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)) AssessmentMetadataListPage {
 	return original.NewAssessmentMetadataListPage(getNextPage)
+}
+func NewAssessmentsClient(subscriptionID string, ascLocation string) AssessmentsClient {
+	return original.NewAssessmentsClient(subscriptionID, ascLocation)
+}
+func NewAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsClient {
+	return original.NewAssessmentsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewAssessmentsMetadataClient(subscriptionID string, ascLocation string) AssessmentsMetadataClient {
 	return original.NewAssessmentsMetadataClient(subscriptionID, ascLocation)
@@ -1136,6 +1171,9 @@ func PossibleAlertsToAdminsValues() []AlertsToAdmins {
 func PossibleAssessedResourceTypeValues() []AssessedResourceType {
 	return original.PossibleAssessedResourceTypeValues()
 }
+func PossibleAssessmentStatusCodeValues() []AssessmentStatusCode {
+	return original.PossibleAssessmentStatusCodeValues()
+}
 func PossibleAssessmentTypeValues() []AssessmentType {
 	return original.PossibleAssessmentTypeValues()
 }
@@ -1174,6 +1212,9 @@ func PossibleExeValues() []Exe {
 }
 func PossibleExecutableValues() []Executable {
 	return original.PossibleExecutableValues()
+}
+func PossibleExpandEnumValues() []ExpandEnum {
+	return original.PossibleExpandEnumValues()
 }
 func PossibleExportDataValues() []ExportData {
 	return original.PossibleExportDataValues()

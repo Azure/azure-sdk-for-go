@@ -70,6 +70,7 @@ var _ DataConnectionsClientAPI = (*kusto.DataConnectionsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result kusto.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result kusto.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*kusto.OperationsClient)(nil)

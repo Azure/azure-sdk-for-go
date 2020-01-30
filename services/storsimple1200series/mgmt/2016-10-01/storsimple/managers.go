@@ -36,7 +36,8 @@ func NewManagersClient(subscriptionID string) ManagersClient {
 	return NewManagersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewManagersClientWithBaseURI creates an instance of the ManagersClient client.
+// NewManagersClientWithBaseURI creates an instance of the ManagersClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewManagersClientWithBaseURI(baseURI string, subscriptionID string) ManagersClient {
 	return ManagersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

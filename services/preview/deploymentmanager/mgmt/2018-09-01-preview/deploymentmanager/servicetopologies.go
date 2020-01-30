@@ -37,7 +37,9 @@ func NewServiceTopologiesClient(subscriptionID string) ServiceTopologiesClient {
 	return NewServiceTopologiesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewServiceTopologiesClientWithBaseURI creates an instance of the ServiceTopologiesClient client.
+// NewServiceTopologiesClientWithBaseURI creates an instance of the ServiceTopologiesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewServiceTopologiesClientWithBaseURI(baseURI string, subscriptionID string) ServiceTopologiesClient {
 	return ServiceTopologiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -34,8 +34,11 @@ type NamespacesClientAPI interface {
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result notificationhubs.SharedAccessAuthorizationRuleResource, err error)
 	GetLongRunningOperationStatus(ctx context.Context, operationStatusLink string) (result autorest.Response, err error)
 	List(ctx context.Context, resourceGroupName string) (result notificationhubs.NamespaceListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result notificationhubs.NamespaceListResultIterator, err error)
 	ListAll(ctx context.Context) (result notificationhubs.NamespaceListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result notificationhubs.NamespaceListResultIterator, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string) (result notificationhubs.SharedAccessAuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result notificationhubs.SharedAccessAuthorizationRuleListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result notificationhubs.ResourceListKeys, err error)
 }
 
@@ -52,7 +55,9 @@ type ClientAPI interface {
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result notificationhubs.SharedAccessAuthorizationRuleResource, err error)
 	GetPnsCredentials(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string) (result notificationhubs.ResourceType, err error)
 	List(ctx context.Context, resourceGroupName string, namespaceName string) (result notificationhubs.ListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result notificationhubs.ListResultIterator, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string) (result notificationhubs.SharedAccessAuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string) (result notificationhubs.SharedAccessAuthorizationRuleListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result notificationhubs.ResourceListKeys, err error)
 }
 

@@ -36,7 +36,9 @@ func NewApplianceDefinitionsClient(subscriptionID string) ApplianceDefinitionsCl
 	return NewApplianceDefinitionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewApplianceDefinitionsClientWithBaseURI creates an instance of the ApplianceDefinitionsClient client.
+// NewApplianceDefinitionsClientWithBaseURI creates an instance of the ApplianceDefinitionsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewApplianceDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) ApplianceDefinitionsClient {
 	return ApplianceDefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

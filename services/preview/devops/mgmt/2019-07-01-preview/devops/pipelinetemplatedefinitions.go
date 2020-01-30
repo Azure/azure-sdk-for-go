@@ -35,7 +35,9 @@ func NewPipelineTemplateDefinitionsClient(subscriptionID string) PipelineTemplat
 	return NewPipelineTemplateDefinitionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPipelineTemplateDefinitionsClientWithBaseURI creates an instance of the PipelineTemplateDefinitionsClient client.
+// NewPipelineTemplateDefinitionsClientWithBaseURI creates an instance of the PipelineTemplateDefinitionsClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewPipelineTemplateDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) PipelineTemplateDefinitionsClient {
 	return PipelineTemplateDefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

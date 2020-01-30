@@ -39,6 +39,7 @@ const (
 type AccountExpand = original.AccountExpand
 
 const (
+	AccountExpandBlobRestoreStatus   AccountExpand = original.AccountExpandBlobRestoreStatus
 	AccountExpandGeoReplicationStats AccountExpand = original.AccountExpandGeoReplicationStats
 )
 
@@ -63,6 +64,14 @@ const (
 	Change  Action1 = original.Change
 	Release Action1 = original.Release
 	Renew   Action1 = original.Renew
+)
+
+type BlobRestoreProgressStatus = original.BlobRestoreProgressStatus
+
+const (
+	Complete   BlobRestoreProgressStatus = original.Complete
+	Failed     BlobRestoreProgressStatus = original.Failed
+	InProgress BlobRestoreProgressStatus = original.InProgress
 )
 
 type Bypass = original.Bypass
@@ -203,10 +212,10 @@ const (
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
 
 const (
-	Creating  PrivateEndpointConnectionProvisioningState = original.Creating
-	Deleting  PrivateEndpointConnectionProvisioningState = original.Deleting
-	Failed    PrivateEndpointConnectionProvisioningState = original.Failed
-	Succeeded PrivateEndpointConnectionProvisioningState = original.Succeeded
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateCreating
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateDeleting
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateFailed
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
 )
 
 type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
@@ -220,9 +229,9 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	ProvisioningStateCreating     ProvisioningState = original.ProvisioningStateCreating
-	ProvisioningStateResolvingDNS ProvisioningState = original.ProvisioningStateResolvingDNS
-	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
+	Creating     ProvisioningState = original.Creating
+	ResolvingDNS ProvisioningState = original.ResolvingDNS
+	Succeeded    ProvisioningState = original.Succeeded
 )
 
 type PublicAccess = original.PublicAccess
@@ -340,12 +349,16 @@ type AccountUpdateParameters = original.AccountUpdateParameters
 type AccountsClient = original.AccountsClient
 type AccountsCreateFuture = original.AccountsCreateFuture
 type AccountsFailoverFuture = original.AccountsFailoverFuture
+type AccountsRestoreBlobRangesFuture = original.AccountsRestoreBlobRangesFuture
 type ActiveDirectoryProperties = original.ActiveDirectoryProperties
 type AzureEntityResource = original.AzureEntityResource
 type AzureFilesIdentityBasedAuthentication = original.AzureFilesIdentityBasedAuthentication
 type BaseClient = original.BaseClient
 type BlobContainer = original.BlobContainer
 type BlobContainersClient = original.BlobContainersClient
+type BlobRestoreParameters = original.BlobRestoreParameters
+type BlobRestoreRange = original.BlobRestoreRange
+type BlobRestoreStatus = original.BlobRestoreStatus
 type BlobServiceItems = original.BlobServiceItems
 type BlobServiceProperties = original.BlobServiceProperties
 type BlobServicePropertiesProperties = original.BlobServicePropertiesProperties
@@ -423,6 +436,7 @@ type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type RestorePolicyProperties = original.RestorePolicyProperties
 type Restriction = original.Restriction
 type RoutingPreference = original.RoutingPreference
 type SKUCapability = original.SKUCapability
@@ -545,6 +559,9 @@ func PossibleAction1Values() []Action1 {
 }
 func PossibleActionValues() []Action {
 	return original.PossibleActionValues()
+}
+func PossibleBlobRestoreProgressStatusValues() []BlobRestoreProgressStatus {
+	return original.PossibleBlobRestoreProgressStatusValues()
 }
 func PossibleBypassValues() []Bypass {
 	return original.PossibleBypassValues()

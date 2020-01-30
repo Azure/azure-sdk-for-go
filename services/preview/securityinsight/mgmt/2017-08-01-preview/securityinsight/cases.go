@@ -36,7 +36,8 @@ func NewCasesClient(subscriptionID string) CasesClient {
 	return NewCasesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCasesClientWithBaseURI creates an instance of the CasesClient client.
+// NewCasesClientWithBaseURI creates an instance of the CasesClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCasesClientWithBaseURI(baseURI string, subscriptionID string) CasesClient {
 	return CasesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -73,9 +74,7 @@ func (client CasesClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: caseParameter,
 			Constraints: []validation.Constraint{{Target: "caseParameter.CaseProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "caseParameter.CaseProperties.Owner", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "caseParameter.CaseProperties.Owner.ObjectID", Name: validation.Null, Rule: true, Chain: nil}}},
-					{Target: "caseParameter.CaseProperties.StartTimeUtc", Name: validation.Null, Rule: true, Chain: nil},
+				Chain: []validation.Constraint{{Target: "caseParameter.CaseProperties.StartTimeUtc", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "caseParameter.CaseProperties.Title", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("securityinsight.CasesClient", "CreateOrUpdate", err.Error())

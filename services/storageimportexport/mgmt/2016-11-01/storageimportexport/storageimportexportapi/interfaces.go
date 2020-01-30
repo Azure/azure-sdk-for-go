@@ -37,7 +37,9 @@ type JobsClientAPI interface {
 	Delete(ctx context.Context, jobName string, resourceGroupName string) (result autorest.Response, err error)
 	Get(ctx context.Context, jobName string, resourceGroupName string) (result storageimportexport.JobResponse, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, top *int32, filter string) (result storageimportexport.ListJobsResponsePage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, top *int32, filter string) (result storageimportexport.ListJobsResponseIterator, err error)
 	ListBySubscription(ctx context.Context, top *int32, filter string) (result storageimportexport.ListJobsResponsePage, err error)
+	ListBySubscriptionComplete(ctx context.Context, top *int32, filter string) (result storageimportexport.ListJobsResponseIterator, err error)
 	Update(ctx context.Context, jobName string, resourceGroupName string, body storageimportexport.UpdateJobParameters) (result storageimportexport.JobResponse, err error)
 }
 

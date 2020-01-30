@@ -35,7 +35,8 @@ func NewPaymentMethodsClient(subscriptionID string) PaymentMethodsClient {
 	return NewPaymentMethodsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPaymentMethodsClientWithBaseURI creates an instance of the PaymentMethodsClient client.
+// NewPaymentMethodsClientWithBaseURI creates an instance of the PaymentMethodsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPaymentMethodsClientWithBaseURI(baseURI string, subscriptionID string) PaymentMethodsClient {
 	return PaymentMethodsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

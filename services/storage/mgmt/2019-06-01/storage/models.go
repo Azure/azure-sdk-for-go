@@ -50,13 +50,15 @@ func PossibleAccessTierValues() []AccessTier {
 type AccountExpand string
 
 const (
+	// AccountExpandBlobRestoreStatus ...
+	AccountExpandBlobRestoreStatus AccountExpand = "blobRestoreStatus"
 	// AccountExpandGeoReplicationStats ...
 	AccountExpandGeoReplicationStats AccountExpand = "geoReplicationStats"
 )
 
 // PossibleAccountExpandValues returns an array of possible values for the AccountExpand const type.
 func PossibleAccountExpandValues() []AccountExpand {
-	return []AccountExpand{AccountExpandGeoReplicationStats}
+	return []AccountExpand{AccountExpandBlobRestoreStatus, AccountExpandGeoReplicationStats}
 }
 
 // AccountStatus enumerates the values for account status.
@@ -106,6 +108,23 @@ const (
 // PossibleAction1Values returns an array of possible values for the Action1 const type.
 func PossibleAction1Values() []Action1 {
 	return []Action1{Acquire, Break, Change, Release, Renew}
+}
+
+// BlobRestoreProgressStatus enumerates the values for blob restore progress status.
+type BlobRestoreProgressStatus string
+
+const (
+	// Complete ...
+	Complete BlobRestoreProgressStatus = "Complete"
+	// Failed ...
+	Failed BlobRestoreProgressStatus = "Failed"
+	// InProgress ...
+	InProgress BlobRestoreProgressStatus = "InProgress"
+)
+
+// PossibleBlobRestoreProgressStatusValues returns an array of possible values for the BlobRestoreProgressStatus const type.
+func PossibleBlobRestoreProgressStatusValues() []BlobRestoreProgressStatus {
+	return []BlobRestoreProgressStatus{Complete, Failed, InProgress}
 }
 
 // Bypass enumerates the values for bypass.
@@ -400,19 +419,19 @@ func PossiblePermissionsValues() []Permissions {
 type PrivateEndpointConnectionProvisioningState string
 
 const (
-	// Creating ...
-	Creating PrivateEndpointConnectionProvisioningState = "Creating"
-	// Deleting ...
-	Deleting PrivateEndpointConnectionProvisioningState = "Deleting"
-	// Failed ...
-	Failed PrivateEndpointConnectionProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded PrivateEndpointConnectionProvisioningState = "Succeeded"
+	// PrivateEndpointConnectionProvisioningStateCreating ...
+	PrivateEndpointConnectionProvisioningStateCreating PrivateEndpointConnectionProvisioningState = "Creating"
+	// PrivateEndpointConnectionProvisioningStateDeleting ...
+	PrivateEndpointConnectionProvisioningStateDeleting PrivateEndpointConnectionProvisioningState = "Deleting"
+	// PrivateEndpointConnectionProvisioningStateFailed ...
+	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
+	// PrivateEndpointConnectionProvisioningStateSucceeded ...
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
 )
 
 // PossiblePrivateEndpointConnectionProvisioningStateValues returns an array of possible values for the PrivateEndpointConnectionProvisioningState const type.
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
-	return []PrivateEndpointConnectionProvisioningState{Creating, Deleting, Failed, Succeeded}
+	return []PrivateEndpointConnectionProvisioningState{PrivateEndpointConnectionProvisioningStateCreating, PrivateEndpointConnectionProvisioningStateDeleting, PrivateEndpointConnectionProvisioningStateFailed, PrivateEndpointConnectionProvisioningStateSucceeded}
 }
 
 // PrivateEndpointServiceConnectionStatus enumerates the values for private endpoint service connection status.
@@ -436,17 +455,17 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 type ProvisioningState string
 
 const (
-	// ProvisioningStateCreating ...
-	ProvisioningStateCreating ProvisioningState = "Creating"
-	// ProvisioningStateResolvingDNS ...
-	ProvisioningStateResolvingDNS ProvisioningState = "ResolvingDNS"
-	// ProvisioningStateSucceeded ...
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	// Creating ...
+	Creating ProvisioningState = "Creating"
+	// ResolvingDNS ...
+	ResolvingDNS ProvisioningState = "ResolvingDNS"
+	// Succeeded ...
+	Succeeded ProvisioningState = "Succeeded"
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateCreating, ProvisioningStateResolvingDNS, ProvisioningStateSucceeded}
+	return []ProvisioningState{Creating, ResolvingDNS, Succeeded}
 }
 
 // PublicAccess enumerates the values for public access.
@@ -1102,7 +1121,7 @@ type AccountMicrosoftEndpoints struct {
 
 // AccountProperties properties of the storage account.
 type AccountProperties struct {
-	// ProvisioningState - READ-ONLY; Gets the status of the storage account at the time the operation was called. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateResolvingDNS', 'ProvisioningStateSucceeded'
+	// ProvisioningState - READ-ONLY; Gets the status of the storage account at the time the operation was called. Possible values include: 'Creating', 'ResolvingDNS', 'Succeeded'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrimaryEndpoints - READ-ONLY; Gets the URLs that are used to perform a retrieval of a public blob, queue, or table object. Note that Standard_ZRS and Premium_LRS accounts only return the blob endpoint.
 	PrimaryEndpoints *Endpoints `json:"primaryEndpoints,omitempty"`
@@ -1144,6 +1163,8 @@ type AccountProperties struct {
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// RoutingPreference - Maintains information about the network routing choice opted by the user for data transfer
 	RoutingPreference *RoutingPreference `json:"routingPreference,omitempty"`
+	// BlobRestoreStatus - READ-ONLY; Blob restore status
+	BlobRestoreStatus *BlobRestoreStatus `json:"blobRestoreStatus,omitempty"`
 }
 
 // AccountPropertiesCreateParameters the parameters used to create the storage account.
@@ -1263,6 +1284,35 @@ func (future *AccountsFailoverFuture) Result(client AccountsClient) (ar autorest
 		return
 	}
 	ar.Response = future.Response()
+	return
+}
+
+// AccountsRestoreBlobRangesFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AccountsRestoreBlobRangesFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AccountsRestoreBlobRangesFuture) Result(client AccountsClient) (brs BlobRestoreStatus, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.AccountsRestoreBlobRangesFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("storage.AccountsRestoreBlobRangesFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if brs.Response.Response, err = future.GetResult(sender); err == nil && brs.Response.Response.StatusCode != http.StatusNoContent {
+		brs, err = client.RestoreBlobRangesResponder(brs.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storage.AccountsRestoreBlobRangesFuture", "Result", brs.Response.Response, "Failure responding to request")
+		}
+	}
 	return
 }
 
@@ -1482,6 +1532,35 @@ func (bc *BlobContainer) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// BlobRestoreParameters blob restore parameters
+type BlobRestoreParameters struct {
+	// TimeToRestore - Restore blob to the specified time.
+	TimeToRestore *date.Time `json:"timeToRestore,omitempty"`
+	// BlobRanges - Blob ranges to restore.
+	BlobRanges *[]BlobRestoreRange `json:"blobRanges,omitempty"`
+}
+
+// BlobRestoreRange blob range
+type BlobRestoreRange struct {
+	// StartRange - Blob start range. Empty means account start.
+	StartRange *string `json:"startRange,omitempty"`
+	// EndRange - Blob end range. Empty means account end.
+	EndRange *string `json:"endRange,omitempty"`
+}
+
+// BlobRestoreStatus blob restore status.
+type BlobRestoreStatus struct {
+	autorest.Response `json:"-"`
+	// Status - READ-ONLY; The status of blob restore progress. Possible values are: - InProgress: Indicates that blob restore is ongoing. - Complete: Indicates that blob restore has been completed successfully. - Failed: Indicates that blob restore is failed. Possible values include: 'InProgress', 'Complete', 'Failed'
+	Status BlobRestoreProgressStatus `json:"status,omitempty"`
+	// FailureReason - READ-ONLY; Failure reason when blob restore is failed.
+	FailureReason *string `json:"failureReason,omitempty"`
+	// RestoreID - READ-ONLY; Id for tracking blob restore request.
+	RestoreID *string `json:"restoreId,omitempty"`
+	// Parameters - READ-ONLY; Blob restore request parameters.
+	Parameters *BlobRestoreParameters `json:"parameters,omitempty"`
+}
+
 // BlobServiceItems ...
 type BlobServiceItems struct {
 	autorest.Response `json:"-"`
@@ -1585,6 +1664,8 @@ type BlobServicePropertiesProperties struct {
 	AutomaticSnapshotPolicyEnabled *bool `json:"automaticSnapshotPolicyEnabled,omitempty"`
 	// ChangeFeed - The blob service properties for change feed events.
 	ChangeFeed *ChangeFeed `json:"changeFeed,omitempty"`
+	// RestorePolicy - The blob service properties for blob restore policy.
+	RestorePolicy *RestorePolicyProperties `json:"restorePolicy,omitempty"`
 }
 
 // ChangeFeed the blob service properties for change feed events.
@@ -3054,7 +3135,7 @@ type PrivateEndpointConnectionProperties struct {
 	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
 	// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
-	// ProvisioningState - The provisioning state of the private endpoint connection resource. Possible values include: 'Succeeded', 'Creating', 'Deleting', 'Failed'
+	// ProvisioningState - The provisioning state of the private endpoint connection resource. Possible values include: 'PrivateEndpointConnectionProvisioningStateSucceeded', 'PrivateEndpointConnectionProvisioningStateCreating', 'PrivateEndpointConnectionProvisioningStateDeleting', 'PrivateEndpointConnectionProvisioningStateFailed'
 	ProvisioningState PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -3177,6 +3258,14 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// RestorePolicyProperties the blob service properties for blob restore policy
+type RestorePolicyProperties struct {
+	// Enabled - Blob restore is enabled if set to true.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Days - how long this blob can be restored. It should be great than zero and less than DeleteRetentionPolicy.days.
+	Days *int32 `json:"days,omitempty"`
 }
 
 // Restriction the restriction because of which SKU cannot be used.

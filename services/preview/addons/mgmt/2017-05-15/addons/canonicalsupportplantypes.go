@@ -35,7 +35,9 @@ func NewCanonicalSupportPlanTypesClient(subscriptionID string) CanonicalSupportP
 	return NewCanonicalSupportPlanTypesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCanonicalSupportPlanTypesClientWithBaseURI creates an instance of the CanonicalSupportPlanTypesClient client.
+// NewCanonicalSupportPlanTypesClientWithBaseURI creates an instance of the CanonicalSupportPlanTypesClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewCanonicalSupportPlanTypesClientWithBaseURI(baseURI string, subscriptionID string) CanonicalSupportPlanTypesClient {
 	return CanonicalSupportPlanTypesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

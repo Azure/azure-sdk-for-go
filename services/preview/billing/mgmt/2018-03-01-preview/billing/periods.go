@@ -36,7 +36,8 @@ func NewPeriodsClient(subscriptionID string) PeriodsClient {
 	return NewPeriodsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPeriodsClientWithBaseURI creates an instance of the PeriodsClient client.
+// NewPeriodsClientWithBaseURI creates an instance of the PeriodsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPeriodsClientWithBaseURI(baseURI string, subscriptionID string) PeriodsClient {
 	return PeriodsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

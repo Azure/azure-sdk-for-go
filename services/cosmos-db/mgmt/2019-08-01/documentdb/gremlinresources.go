@@ -36,7 +36,9 @@ func NewGremlinResourcesClient(subscriptionID string) GremlinResourcesClient {
 	return NewGremlinResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewGremlinResourcesClientWithBaseURI creates an instance of the GremlinResourcesClient client.
+// NewGremlinResourcesClientWithBaseURI creates an instance of the GremlinResourcesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewGremlinResourcesClientWithBaseURI(baseURI string, subscriptionID string) GremlinResourcesClient {
 	return GremlinResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -26,6 +26,7 @@ import (
 // ProviderOperationsClientAPI contains the set of methods on the ProviderOperationsClient type.
 type ProviderOperationsClientAPI interface {
 	List(ctx context.Context) (result dtl.ProviderOperationResultPage, err error)
+	ListComplete(ctx context.Context) (result dtl.ProviderOperationResultIterator, err error)
 }
 
 var _ ProviderOperationsClientAPI = (*dtl.ProviderOperationsClient)(nil)
@@ -41,8 +42,11 @@ type LabsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, name string, expand string) (result dtl.Lab, err error)
 	ImportVirtualMachine(ctx context.Context, resourceGroupName string, name string, importLabVirtualMachineRequest dtl.ImportLabVirtualMachineRequest) (result dtl.LabsImportVirtualMachineFuture, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, expand string, filter string, top *int32, orderby string) (result dtl.LabListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, expand string, filter string, top *int32, orderby string) (result dtl.LabListIterator, err error)
 	ListBySubscription(ctx context.Context, expand string, filter string, top *int32, orderby string) (result dtl.LabListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, expand string, filter string, top *int32, orderby string) (result dtl.LabListIterator, err error)
 	ListVhds(ctx context.Context, resourceGroupName string, name string) (result dtl.LabVhdListPage, err error)
+	ListVhdsComplete(ctx context.Context, resourceGroupName string, name string) (result dtl.LabVhdListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, name string, lab dtl.LabFragment) (result dtl.Lab, err error)
 }
 
@@ -62,7 +66,9 @@ type GlobalSchedulesClientAPI interface {
 	Execute(ctx context.Context, resourceGroupName string, name string) (result dtl.GlobalSchedulesExecuteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, name string, expand string) (result dtl.Schedule, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, expand string, filter string, top *int32, orderby string) (result dtl.ScheduleListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, expand string, filter string, top *int32, orderby string) (result dtl.ScheduleListIterator, err error)
 	ListBySubscription(ctx context.Context, expand string, filter string, top *int32, orderby string) (result dtl.ScheduleListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, expand string, filter string, top *int32, orderby string) (result dtl.ScheduleListIterator, err error)
 	Retarget(ctx context.Context, resourceGroupName string, name string, retargetScheduleProperties dtl.RetargetScheduleProperties) (result dtl.GlobalSchedulesRetargetFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, name string, schedule dtl.ScheduleFragment) (result dtl.Schedule, err error)
 }
@@ -75,6 +81,7 @@ type ArtifactSourcesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labName string, name string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, name string, expand string) (result dtl.ArtifactSource, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.ArtifactSourceListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.ArtifactSourceListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labName string, name string, artifactSource dtl.ArtifactSourceFragment) (result dtl.ArtifactSource, err error)
 }
 
@@ -84,6 +91,7 @@ var _ ArtifactSourcesClientAPI = (*dtl.ArtifactSourcesClient)(nil)
 type ArmTemplatesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, name string, expand string) (result dtl.ArmTemplate, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, expand string, filter string, top *int32, orderby string) (result dtl.ArmTemplateListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, expand string, filter string, top *int32, orderby string) (result dtl.ArmTemplateListIterator, err error)
 }
 
 var _ ArmTemplatesClientAPI = (*dtl.ArmTemplatesClient)(nil)
@@ -93,6 +101,7 @@ type ArtifactsClientAPI interface {
 	GenerateArmTemplate(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, name string, generateArmTemplateRequest dtl.GenerateArmTemplateRequest) (result dtl.ArmTemplateInfo, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, name string, expand string) (result dtl.Artifact, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, expand string, filter string, top *int32, orderby string) (result dtl.ArtifactListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, expand string, filter string, top *int32, orderby string) (result dtl.ArtifactListIterator, err error)
 }
 
 var _ ArtifactsClientAPI = (*dtl.ArtifactsClient)(nil)
@@ -111,6 +120,7 @@ type CustomImagesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.CustomImagesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, name string, expand string) (result dtl.CustomImage, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.CustomImageListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.CustomImageListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labName string, name string, customImage dtl.CustomImageFragment) (result dtl.CustomImage, err error)
 }
 
@@ -122,6 +132,7 @@ type FormulasClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labName string, name string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, name string, expand string) (result dtl.Formula, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.FormulaListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.FormulaListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labName string, name string, formula dtl.FormulaFragment) (result dtl.Formula, err error)
 }
 
@@ -130,6 +141,7 @@ var _ FormulasClientAPI = (*dtl.FormulasClient)(nil)
 // GalleryImagesClientAPI contains the set of methods on the GalleryImagesClient type.
 type GalleryImagesClientAPI interface {
 	List(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.GalleryImageListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.GalleryImageListIterator, err error)
 }
 
 var _ GalleryImagesClientAPI = (*dtl.GalleryImagesClient)(nil)
@@ -140,6 +152,7 @@ type NotificationChannelsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labName string, name string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, name string, expand string) (result dtl.NotificationChannel, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.NotificationChannelListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.NotificationChannelListIterator, err error)
 	Notify(ctx context.Context, resourceGroupName string, labName string, name string, notifyParameters dtl.NotifyParameters) (result autorest.Response, err error)
 	Update(ctx context.Context, resourceGroupName string, labName string, name string, notificationChannel dtl.NotificationChannelFragment) (result dtl.NotificationChannel, err error)
 }
@@ -159,6 +172,7 @@ type PoliciesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, expand string) (result dtl.Policy, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, policySetName string, expand string, filter string, top *int32, orderby string) (result dtl.PolicyListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, policySetName string, expand string, filter string, top *int32, orderby string) (result dtl.PolicyListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, policy dtl.PolicyFragment) (result dtl.Policy, err error)
 }
 
@@ -171,7 +185,9 @@ type SchedulesClientAPI interface {
 	Execute(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.SchedulesExecuteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, name string, expand string) (result dtl.Schedule, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.ScheduleListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.ScheduleListIterator, err error)
 	ListApplicable(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.ScheduleListPage, err error)
+	ListApplicableComplete(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.ScheduleListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labName string, name string, schedule dtl.ScheduleFragment) (result dtl.Schedule, err error)
 }
 
@@ -192,6 +208,7 @@ type UsersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.UsersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, name string, expand string) (result dtl.User, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.UserListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.UserListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labName string, name string, userParameter dtl.UserFragment) (result dtl.User, err error)
 }
 
@@ -205,6 +222,7 @@ type DisksClientAPI interface {
 	Detach(ctx context.Context, resourceGroupName string, labName string, userName string, name string, detachDiskProperties dtl.DetachDiskProperties) (result dtl.DisksDetachFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, userName string, name string, expand string) (result dtl.Disk, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, userName string, expand string, filter string, top *int32, orderby string) (result dtl.DiskListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, userName string, expand string, filter string, top *int32, orderby string) (result dtl.DiskListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labName string, userName string, name string, disk dtl.DiskFragment) (result dtl.Disk, err error)
 }
 
@@ -216,6 +234,7 @@ type EnvironmentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labName string, userName string, name string) (result dtl.EnvironmentsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, userName string, name string, expand string) (result dtl.Environment, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, userName string, expand string, filter string, top *int32, orderby string) (result dtl.EnvironmentListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, userName string, expand string, filter string, top *int32, orderby string) (result dtl.EnvironmentListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labName string, userName string, name string, dtlEnvironment dtl.EnvironmentFragment) (result dtl.Environment, err error)
 }
 
@@ -227,6 +246,7 @@ type SecretsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labName string, userName string, name string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, userName string, name string, expand string) (result dtl.Secret, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, userName string, expand string, filter string, top *int32, orderby string) (result dtl.SecretListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, userName string, expand string, filter string, top *int32, orderby string) (result dtl.SecretListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labName string, userName string, name string, secret dtl.SecretFragment) (result dtl.Secret, err error)
 }
 
@@ -238,6 +258,7 @@ type ServiceFabricsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labName string, userName string, name string) (result dtl.ServiceFabricsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, userName string, name string, expand string) (result dtl.ServiceFabric, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, userName string, expand string, filter string, top *int32, orderby string) (result dtl.ServiceFabricListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, userName string, expand string, filter string, top *int32, orderby string) (result dtl.ServiceFabricListIterator, err error)
 	ListApplicableSchedules(ctx context.Context, resourceGroupName string, labName string, userName string, name string) (result dtl.ApplicableSchedule, err error)
 	Start(ctx context.Context, resourceGroupName string, labName string, userName string, name string) (result dtl.ServiceFabricsStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, labName string, userName string, name string) (result dtl.ServiceFabricsStopFuture, err error)
@@ -253,6 +274,7 @@ type ServiceFabricSchedulesClientAPI interface {
 	Execute(ctx context.Context, resourceGroupName string, labName string, userName string, serviceFabricName string, name string) (result dtl.ServiceFabricSchedulesExecuteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, userName string, serviceFabricName string, name string, expand string) (result dtl.Schedule, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, userName string, serviceFabricName string, expand string, filter string, top *int32, orderby string) (result dtl.ScheduleListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, userName string, serviceFabricName string, expand string, filter string, top *int32, orderby string) (result dtl.ScheduleListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labName string, userName string, serviceFabricName string, name string, schedule dtl.ScheduleFragment) (result dtl.Schedule, err error)
 }
 
@@ -269,6 +291,7 @@ type VirtualMachinesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, labName string, name string, expand string) (result dtl.LabVirtualMachine, err error)
 	GetRdpFileContents(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.RdpConnection, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.LabVirtualMachineListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.LabVirtualMachineListIterator, err error)
 	ListApplicableSchedules(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.ApplicableSchedule, err error)
 	Redeploy(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.VirtualMachinesRedeployFuture, err error)
 	Resize(ctx context.Context, resourceGroupName string, labName string, name string, resizeLabVirtualMachineProperties dtl.ResizeLabVirtualMachineProperties) (result dtl.VirtualMachinesResizeFuture, err error)
@@ -289,6 +312,7 @@ type VirtualMachineSchedulesClientAPI interface {
 	Execute(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string) (result dtl.VirtualMachineSchedulesExecuteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, expand string) (result dtl.Schedule, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, expand string, filter string, top *int32, orderby string) (result dtl.ScheduleListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, expand string, filter string, top *int32, orderby string) (result dtl.ScheduleListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, schedule dtl.ScheduleFragment) (result dtl.Schedule, err error)
 }
 
@@ -300,6 +324,7 @@ type VirtualNetworksClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.VirtualNetworksDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, name string, expand string) (result dtl.VirtualNetwork, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.VirtualNetworkListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result dtl.VirtualNetworkListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labName string, name string, virtualNetwork dtl.VirtualNetworkFragment) (result dtl.VirtualNetwork, err error)
 }
 

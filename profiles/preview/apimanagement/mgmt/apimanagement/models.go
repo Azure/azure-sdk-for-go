@@ -112,6 +112,7 @@ type ContentFormat = original.ContentFormat
 const (
 	Openapi         ContentFormat = original.Openapi
 	Openapijson     ContentFormat = original.Openapijson
+	OpenapijsonLink ContentFormat = original.OpenapijsonLink
 	OpenapiLink     ContentFormat = original.OpenapiLink
 	SwaggerJSON     ContentFormat = original.SwaggerJSON
 	SwaggerLinkJSON ContentFormat = original.SwaggerLinkJSON
@@ -154,6 +155,14 @@ const (
 	Custom   GroupType = original.Custom
 	External GroupType = original.External
 	System   GroupType = original.System
+)
+
+type HTTPCorrelationProtocol = original.HTTPCorrelationProtocol
+
+const (
+	Legacy HTTPCorrelationProtocol = original.Legacy
+	None   HTTPCorrelationProtocol = original.None
+	W3C    HTTPCorrelationProtocol = original.W3C
 )
 
 type HostnameType = original.HostnameType
@@ -254,9 +263,9 @@ const (
 type ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleType
 
 const (
-	Automatic ResourceSkuCapacityScaleType = original.Automatic
-	Manual    ResourceSkuCapacityScaleType = original.Manual
-	None      ResourceSkuCapacityScaleType = original.None
+	ResourceSkuCapacityScaleTypeAutomatic ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeAutomatic
+	ResourceSkuCapacityScaleTypeManual    ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeManual
+	ResourceSkuCapacityScaleTypeNone      ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeNone
 )
 
 type SamplingType = original.SamplingType
@@ -336,6 +345,14 @@ const (
 	UserStateBlocked UserState = original.UserStateBlocked
 	UserStateDeleted UserState = original.UserStateDeleted
 	UserStatePending UserState = original.UserStatePending
+)
+
+type Verbosity = original.Verbosity
+
+const (
+	Error       Verbosity = original.Error
+	Information Verbosity = original.Information
+	Verbose     Verbosity = original.Verbose
 )
 
 type VersioningScheme = original.VersioningScheme
@@ -1366,6 +1383,9 @@ func PossibleGrantTypeValues() []GrantType {
 func PossibleGroupTypeValues() []GroupType {
 	return original.PossibleGroupTypeValues()
 }
+func PossibleHTTPCorrelationProtocolValues() []HTTPCorrelationProtocol {
+	return original.PossibleHTTPCorrelationProtocolValues()
+}
 func PossibleHostnameTypeValues() []HostnameType {
 	return original.PossibleHostnameTypeValues()
 }
@@ -1425,6 +1445,9 @@ func PossibleTemplateNameValues() []TemplateName {
 }
 func PossibleUserStateValues() []UserState {
 	return original.PossibleUserStateValues()
+}
+func PossibleVerbosityValues() []Verbosity {
+	return original.PossibleVerbosityValues()
 }
 func PossibleVersioningScheme1Values() []VersioningScheme1 {
 	return original.PossibleVersioningScheme1Values()

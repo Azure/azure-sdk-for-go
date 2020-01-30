@@ -36,7 +36,8 @@ func NewExportsClient(subscriptionID string) ExportsClient {
 	return NewExportsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewExportsClientWithBaseURI creates an instance of the ExportsClient client.
+// NewExportsClientWithBaseURI creates an instance of the ExportsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewExportsClientWithBaseURI(baseURI string, subscriptionID string) ExportsClient {
 	return ExportsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

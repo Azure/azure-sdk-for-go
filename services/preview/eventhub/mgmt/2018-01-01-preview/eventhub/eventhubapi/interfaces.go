@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result eventhub.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result eventhub.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*eventhub.OperationsClient)(nil)
@@ -36,6 +37,7 @@ type ClustersClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.Cluster, err error)
 	ListAvailableClusters(ctx context.Context) (result eventhub.AvailableClustersList, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result eventhub.ClusterListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result eventhub.ClusterListResultIterator, err error)
 	ListNamespaces(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.EHNamespaceIDListResult, err error)
 	Patch(ctx context.Context, resourceGroupName string, clusterName string, parameters eventhub.Cluster) (result eventhub.ClustersPatchFuture, err error)
 	Put(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.ClustersPutFuture, err error)
@@ -65,9 +67,13 @@ type NamespacesClientAPI interface {
 	GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.NetworkRuleSet, err error)
 	GetVirtualNetworkRule(ctx context.Context, resourceGroupName string, namespaceName string, virtualNetworkRuleName string) (result eventhub.VirtualNetworkRule, err error)
 	List(ctx context.Context) (result eventhub.EHNamespaceListResultPage, err error)
+	ListComplete(ctx context.Context) (result eventhub.EHNamespaceListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result eventhub.EHNamespaceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result eventhub.EHNamespaceListResultIterator, err error)
 	ListIPFilterRules(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.IPFilterRuleListResultPage, err error)
+	ListIPFilterRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.IPFilterRuleListResultIterator, err error)
 	ListVirtualNetworkRules(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.VirtualNetworkRuleListResultPage, err error)
+	ListVirtualNetworkRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.VirtualNetworkRuleListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, namespaceName string, parameters eventhub.EHNamespace) (result eventhub.EHNamespace, err error)
 }
 

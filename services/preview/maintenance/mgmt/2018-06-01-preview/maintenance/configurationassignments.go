@@ -35,7 +35,9 @@ func NewConfigurationAssignmentsClient(subscriptionID string) ConfigurationAssig
 	return NewConfigurationAssignmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewConfigurationAssignmentsClientWithBaseURI creates an instance of the ConfigurationAssignmentsClient client.
+// NewConfigurationAssignmentsClientWithBaseURI creates an instance of the ConfigurationAssignmentsClient client using
+// a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewConfigurationAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationAssignmentsClient {
 	return ConfigurationAssignmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

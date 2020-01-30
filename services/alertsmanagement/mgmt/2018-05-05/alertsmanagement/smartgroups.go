@@ -35,7 +35,8 @@ func NewSmartGroupsClient(subscriptionID string) SmartGroupsClient {
 	return NewSmartGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSmartGroupsClientWithBaseURI creates an instance of the SmartGroupsClient client.
+// NewSmartGroupsClientWithBaseURI creates an instance of the SmartGroupsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSmartGroupsClientWithBaseURI(baseURI string, subscriptionID string) SmartGroupsClient {
 	return SmartGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

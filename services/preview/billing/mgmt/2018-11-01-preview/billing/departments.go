@@ -35,7 +35,8 @@ func NewDepartmentsClient(subscriptionID string) DepartmentsClient {
 	return NewDepartmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDepartmentsClientWithBaseURI creates an instance of the DepartmentsClient client.
+// NewDepartmentsClientWithBaseURI creates an instance of the DepartmentsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDepartmentsClientWithBaseURI(baseURI string, subscriptionID string) DepartmentsClient {
 	return DepartmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

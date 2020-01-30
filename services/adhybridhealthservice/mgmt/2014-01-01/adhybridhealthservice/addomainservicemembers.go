@@ -35,7 +35,9 @@ func NewAdDomainServiceMembersClient() AdDomainServiceMembersClient {
 	return NewAdDomainServiceMembersClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewAdDomainServiceMembersClientWithBaseURI creates an instance of the AdDomainServiceMembersClient client.
+// NewAdDomainServiceMembersClientWithBaseURI creates an instance of the AdDomainServiceMembersClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewAdDomainServiceMembersClientWithBaseURI(baseURI string) AdDomainServiceMembersClient {
 	return AdDomainServiceMembersClient{NewWithBaseURI(baseURI)}
 }

@@ -35,7 +35,9 @@ func NewDiagnosticSettingsClient() DiagnosticSettingsClient {
 	return NewDiagnosticSettingsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewDiagnosticSettingsClientWithBaseURI creates an instance of the DiagnosticSettingsClient client.
+// NewDiagnosticSettingsClientWithBaseURI creates an instance of the DiagnosticSettingsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewDiagnosticSettingsClientWithBaseURI(baseURI string) DiagnosticSettingsClient {
 	return DiagnosticSettingsClient{NewWithBaseURI(baseURI)}
 }

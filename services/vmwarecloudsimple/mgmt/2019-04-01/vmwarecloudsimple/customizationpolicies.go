@@ -35,7 +35,9 @@ func NewCustomizationPoliciesClient(subscriptionID string, referer string) Custo
 	return NewCustomizationPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
-// NewCustomizationPoliciesClientWithBaseURI creates an instance of the CustomizationPoliciesClient client.
+// NewCustomizationPoliciesClientWithBaseURI creates an instance of the CustomizationPoliciesClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewCustomizationPoliciesClientWithBaseURI(baseURI string, subscriptionID string, referer string) CustomizationPoliciesClient {
 	return CustomizationPoliciesClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }

@@ -31,9 +31,13 @@ type VaultsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, vaultName string) (result keyvault.Vault, err error)
 	GetDeleted(ctx context.Context, vaultName string, location string) (result keyvault.DeletedVault, err error)
 	List(ctx context.Context, top *int32) (result keyvault.ResourceListResultPage, err error)
+	ListComplete(ctx context.Context, top *int32) (result keyvault.ResourceListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, top *int32) (result keyvault.VaultListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, top *int32) (result keyvault.VaultListResultIterator, err error)
 	ListBySubscription(ctx context.Context, top *int32) (result keyvault.VaultListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, top *int32) (result keyvault.VaultListResultIterator, err error)
 	ListDeleted(ctx context.Context) (result keyvault.DeletedVaultListResultPage, err error)
+	ListDeletedComplete(ctx context.Context) (result keyvault.DeletedVaultListResultIterator, err error)
 	PurgeDeleted(ctx context.Context, vaultName string, location string) (result keyvault.VaultsPurgeDeletedFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, vaultName string, parameters keyvault.VaultPatchParameters) (result keyvault.Vault, err error)
 	UpdateAccessPolicy(ctx context.Context, resourceGroupName string, vaultName string, operationKind keyvault.AccessPolicyUpdateKind, parameters keyvault.VaultAccessPolicyParameters) (result keyvault.VaultAccessPolicyParameters, err error)
@@ -41,9 +45,26 @@ type VaultsClientAPI interface {
 
 var _ VaultsClientAPI = (*keyvault.VaultsClient)(nil)
 
+// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
+type PrivateEndpointConnectionsClientAPI interface {
+	Delete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (result keyvault.PrivateEndpointConnectionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (result keyvault.PrivateEndpointConnection, err error)
+	Put(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, properties keyvault.PrivateEndpointConnection) (result keyvault.PrivateEndpointConnection, err error)
+}
+
+var _ PrivateEndpointConnectionsClientAPI = (*keyvault.PrivateEndpointConnectionsClient)(nil)
+
+// PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
+type PrivateLinkResourcesClientAPI interface {
+	ListByVault(ctx context.Context, resourceGroupName string, vaultName string) (result keyvault.PrivateLinkResourceListResult, err error)
+}
+
+var _ PrivateLinkResourcesClientAPI = (*keyvault.PrivateLinkResourcesClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result keyvault.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result keyvault.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*keyvault.OperationsClient)(nil)

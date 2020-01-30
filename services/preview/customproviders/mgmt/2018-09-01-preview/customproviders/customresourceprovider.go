@@ -36,7 +36,9 @@ func NewCustomResourceProviderClient(subscriptionID string) CustomResourceProvid
 	return NewCustomResourceProviderClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCustomResourceProviderClientWithBaseURI creates an instance of the CustomResourceProviderClient client.
+// NewCustomResourceProviderClientWithBaseURI creates an instance of the CustomResourceProviderClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewCustomResourceProviderClientWithBaseURI(baseURI string, subscriptionID string) CustomResourceProviderClient {
 	return CustomResourceProviderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

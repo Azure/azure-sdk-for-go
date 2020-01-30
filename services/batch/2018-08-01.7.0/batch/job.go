@@ -38,7 +38,8 @@ func NewJobClient() JobClient {
 	return NewJobClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewJobClientWithBaseURI creates an instance of the JobClient client.
+// NewJobClientWithBaseURI creates an instance of the JobClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewJobClientWithBaseURI(baseURI string) JobClient {
 	return JobClient{NewWithBaseURI(baseURI)}
 }

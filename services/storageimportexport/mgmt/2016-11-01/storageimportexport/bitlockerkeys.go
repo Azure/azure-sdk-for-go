@@ -35,7 +35,8 @@ func NewBitLockerKeysClient(subscriptionID string, acceptLanguage string) BitLoc
 	return NewBitLockerKeysClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
-// NewBitLockerKeysClientWithBaseURI creates an instance of the BitLockerKeysClient client.
+// NewBitLockerKeysClientWithBaseURI creates an instance of the BitLockerKeysClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewBitLockerKeysClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BitLockerKeysClient {
 	return BitLockerKeysClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }

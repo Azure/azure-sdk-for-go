@@ -26,9 +26,13 @@ import (
 // PolicyTrackedResourcesClientAPI contains the set of methods on the PolicyTrackedResourcesClient type.
 type PolicyTrackedResourcesClientAPI interface {
 	ListQueryResultsForManagementGroup(ctx context.Context, managementGroupName string, top *int32, filter string) (result policyinsights.PolicyTrackedResourcesQueryResultsPage, err error)
+	ListQueryResultsForManagementGroupComplete(ctx context.Context, managementGroupName string, top *int32, filter string) (result policyinsights.PolicyTrackedResourcesQueryResultsIterator, err error)
 	ListQueryResultsForResource(ctx context.Context, resourceID string, top *int32, filter string) (result policyinsights.PolicyTrackedResourcesQueryResultsPage, err error)
+	ListQueryResultsForResourceComplete(ctx context.Context, resourceID string, top *int32, filter string) (result policyinsights.PolicyTrackedResourcesQueryResultsIterator, err error)
 	ListQueryResultsForResourceGroup(ctx context.Context, resourceGroupName string, subscriptionID string, top *int32, filter string) (result policyinsights.PolicyTrackedResourcesQueryResultsPage, err error)
+	ListQueryResultsForResourceGroupComplete(ctx context.Context, resourceGroupName string, subscriptionID string, top *int32, filter string) (result policyinsights.PolicyTrackedResourcesQueryResultsIterator, err error)
 	ListQueryResultsForSubscription(ctx context.Context, subscriptionID string, top *int32, filter string) (result policyinsights.PolicyTrackedResourcesQueryResultsPage, err error)
+	ListQueryResultsForSubscriptionComplete(ctx context.Context, subscriptionID string, top *int32, filter string) (result policyinsights.PolicyTrackedResourcesQueryResultsIterator, err error)
 }
 
 var _ PolicyTrackedResourcesClientAPI = (*policyinsights.PolicyTrackedResourcesClient)(nil)
@@ -52,13 +56,21 @@ type RemediationsClientAPI interface {
 	GetAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string) (result policyinsights.Remediation, err error)
 	GetAtSubscription(ctx context.Context, subscriptionID string, remediationName string) (result policyinsights.Remediation, err error)
 	ListDeploymentsAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, top *int32) (result policyinsights.RemediationDeploymentsListResultPage, err error)
+	ListDeploymentsAtManagementGroupComplete(ctx context.Context, managementGroupID string, remediationName string, top *int32) (result policyinsights.RemediationDeploymentsListResultIterator, err error)
 	ListDeploymentsAtResource(ctx context.Context, resourceID string, remediationName string, top *int32) (result policyinsights.RemediationDeploymentsListResultPage, err error)
+	ListDeploymentsAtResourceComplete(ctx context.Context, resourceID string, remediationName string, top *int32) (result policyinsights.RemediationDeploymentsListResultIterator, err error)
 	ListDeploymentsAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string, top *int32) (result policyinsights.RemediationDeploymentsListResultPage, err error)
+	ListDeploymentsAtResourceGroupComplete(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string, top *int32) (result policyinsights.RemediationDeploymentsListResultIterator, err error)
 	ListDeploymentsAtSubscription(ctx context.Context, subscriptionID string, remediationName string, top *int32) (result policyinsights.RemediationDeploymentsListResultPage, err error)
+	ListDeploymentsAtSubscriptionComplete(ctx context.Context, subscriptionID string, remediationName string, top *int32) (result policyinsights.RemediationDeploymentsListResultIterator, err error)
 	ListForManagementGroup(ctx context.Context, managementGroupID string, top *int32, filter string) (result policyinsights.RemediationListResultPage, err error)
+	ListForManagementGroupComplete(ctx context.Context, managementGroupID string, top *int32, filter string) (result policyinsights.RemediationListResultIterator, err error)
 	ListForResource(ctx context.Context, resourceID string, top *int32, filter string) (result policyinsights.RemediationListResultPage, err error)
+	ListForResourceComplete(ctx context.Context, resourceID string, top *int32, filter string) (result policyinsights.RemediationListResultIterator, err error)
 	ListForResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, top *int32, filter string) (result policyinsights.RemediationListResultPage, err error)
+	ListForResourceGroupComplete(ctx context.Context, subscriptionID string, resourceGroupName string, top *int32, filter string) (result policyinsights.RemediationListResultIterator, err error)
 	ListForSubscription(ctx context.Context, subscriptionID string, top *int32, filter string) (result policyinsights.RemediationListResultPage, err error)
+	ListForSubscriptionComplete(ctx context.Context, subscriptionID string, top *int32, filter string) (result policyinsights.RemediationListResultIterator, err error)
 }
 
 var _ RemediationsClientAPI = (*policyinsights.RemediationsClient)(nil)

@@ -35,7 +35,8 @@ func NewApplyUpdatesClient(subscriptionID string) ApplyUpdatesClient {
 	return NewApplyUpdatesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewApplyUpdatesClientWithBaseURI creates an instance of the ApplyUpdatesClient client.
+// NewApplyUpdatesClientWithBaseURI creates an instance of the ApplyUpdatesClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewApplyUpdatesClientWithBaseURI(baseURI string, subscriptionID string) ApplyUpdatesClient {
 	return ApplyUpdatesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

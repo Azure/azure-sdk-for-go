@@ -29,7 +29,9 @@ type ManagedNetworksClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedNetworkName string) (result managednetwork.ManagedNetworksDeleteFutureType, err error)
 	Get(ctx context.Context, resourceGroupName string, managedNetworkName string) (result managednetwork.ManagedNetwork, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, top *int32, skiptoken string) (result managednetwork.ListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, top *int32, skiptoken string) (result managednetwork.ListResultIterator, err error)
 	ListBySubscription(ctx context.Context, top *int32, skiptoken string) (result managednetwork.ListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, top *int32, skiptoken string) (result managednetwork.ListResultIterator, err error)
 	Update(ctx context.Context, parameters managednetwork.Update, resourceGroupName string, managedNetworkName string) (result managednetwork.ManagedNetworksUpdateFutureType, err error)
 }
 
@@ -41,6 +43,7 @@ type ScopeAssignmentsClientAPI interface {
 	Delete(ctx context.Context, scope string, scopeAssignmentName string) (result autorest.Response, err error)
 	Get(ctx context.Context, scope string, scopeAssignmentName string) (result managednetwork.ScopeAssignment, err error)
 	List(ctx context.Context, scope string) (result managednetwork.ScopeAssignmentListResultPage, err error)
+	ListComplete(ctx context.Context, scope string) (result managednetwork.ScopeAssignmentListResultIterator, err error)
 }
 
 var _ ScopeAssignmentsClientAPI = (*managednetwork.ScopeAssignmentsClient)(nil)
@@ -51,6 +54,7 @@ type GroupsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedNetworkName string, managedNetworkGroupName string) (result managednetwork.GroupsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedNetworkName string, managedNetworkGroupName string) (result managednetwork.Group, err error)
 	ListByManagedNetwork(ctx context.Context, resourceGroupName string, managedNetworkName string, top *int32, skiptoken string) (result managednetwork.GroupListResultPage, err error)
+	ListByManagedNetworkComplete(ctx context.Context, resourceGroupName string, managedNetworkName string, top *int32, skiptoken string) (result managednetwork.GroupListResultIterator, err error)
 }
 
 var _ GroupsClientAPI = (*managednetwork.GroupsClient)(nil)
@@ -61,6 +65,7 @@ type PeeringPoliciesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedNetworkName string, managedNetworkPeeringPolicyName string) (result managednetwork.PeeringPoliciesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedNetworkName string, managedNetworkPeeringPolicyName string) (result managednetwork.PeeringPolicy, err error)
 	ListByManagedNetwork(ctx context.Context, resourceGroupName string, managedNetworkName string, top *int32, skiptoken string) (result managednetwork.PeeringPolicyListResultPage, err error)
+	ListByManagedNetworkComplete(ctx context.Context, resourceGroupName string, managedNetworkName string, top *int32, skiptoken string) (result managednetwork.PeeringPolicyListResultIterator, err error)
 }
 
 var _ PeeringPoliciesClientAPI = (*managednetwork.PeeringPoliciesClient)(nil)
@@ -68,6 +73,7 @@ var _ PeeringPoliciesClientAPI = (*managednetwork.PeeringPoliciesClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result managednetwork.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result managednetwork.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*managednetwork.OperationsClient)(nil)

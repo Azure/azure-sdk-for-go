@@ -36,7 +36,8 @@ func NewGatewayClient(subscriptionID string) GatewayClient {
 	return NewGatewayClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewGatewayClientWithBaseURI creates an instance of the GatewayClient client.
+// NewGatewayClientWithBaseURI creates an instance of the GatewayClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayClient {
 	return GatewayClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -39,7 +39,8 @@ func NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClient(subscriptionID strin
 }
 
 // NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI creates an instance of the
-// IoTSecuritySolutionsAnalyticsAggregatedAlertsClient client.
+// IoTSecuritySolutionsAnalyticsAggregatedAlertsClient client using a custom endpoint.  Use this when interacting with
+// an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsAggregatedAlertsClient {
 	return IoTSecuritySolutionsAnalyticsAggregatedAlertsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }

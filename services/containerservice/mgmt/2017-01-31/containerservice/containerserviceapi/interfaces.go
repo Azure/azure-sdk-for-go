@@ -28,7 +28,9 @@ type ContainerServicesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, containerServiceName string) (result containerservice.ContainerServicesDeleteFutureType, err error)
 	Get(ctx context.Context, resourceGroupName string, containerServiceName string) (result containerservice.ContainerService, err error)
 	List(ctx context.Context) (result containerservice.ListResultPage, err error)
+	ListComplete(ctx context.Context) (result containerservice.ListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result containerservice.ListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result containerservice.ListResultIterator, err error)
 }
 
 var _ ContainerServicesClientAPI = (*containerservice.ContainerServicesClient)(nil)

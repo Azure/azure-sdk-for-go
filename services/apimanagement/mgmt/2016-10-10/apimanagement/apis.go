@@ -36,7 +36,8 @@ func NewApisClient(subscriptionID string) ApisClient {
 	return NewApisClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewApisClientWithBaseURI creates an instance of the ApisClient client.
+// NewApisClientWithBaseURI creates an instance of the ApisClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewApisClientWithBaseURI(baseURI string, subscriptionID string) ApisClient {
 	return ApisClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

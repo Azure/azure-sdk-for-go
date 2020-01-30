@@ -25,6 +25,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context, APIVersion string) (result customerlockbox.OperationListResultPage, err error)
+	ListComplete(ctx context.Context, APIVersion string) (result customerlockbox.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*customerlockbox.OperationsClient)(nil)
@@ -33,6 +34,7 @@ var _ OperationsClientAPI = (*customerlockbox.OperationsClient)(nil)
 type RequestsClientAPI interface {
 	Get(ctx context.Context, requestID string, subscriptionID string, APIVersion string) (result customerlockbox.LockboxRequestResponse, err error)
 	List(ctx context.Context, subscriptionID string, filter string) (result customerlockbox.RequestListResultPage, err error)
+	ListComplete(ctx context.Context, subscriptionID string, filter string) (result customerlockbox.RequestListResultIterator, err error)
 	UpdateStatus(ctx context.Context, approval customerlockbox.Approval, subscriptionID string, requestID string, APIVersion string) (result customerlockbox.Approval, err error)
 }
 

@@ -30,7 +30,9 @@ type AccountClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, accountName string) (result batch.Account, err error)
 	GetKeys(ctx context.Context, resourceGroupName string, accountName string) (result batch.AccountKeys, err error)
 	List(ctx context.Context) (result batch.AccountListResultPage, err error)
+	ListComplete(ctx context.Context) (result batch.AccountListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result batch.AccountListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result batch.AccountListResultIterator, err error)
 	RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, parameters batch.AccountRegenerateKeyParameters) (result batch.AccountKeys, err error)
 	SynchronizeAutoStorageKeys(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, parameters batch.AccountUpdateParameters) (result batch.Account, err error)
@@ -45,6 +47,7 @@ type ApplicationPackageClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string) (result batch.ApplicationPackage, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string, applicationName string, maxresults *int32) (result batch.ListApplicationPackagesResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, applicationName string, maxresults *int32) (result batch.ListApplicationPackagesResultIterator, err error)
 }
 
 var _ ApplicationPackageClientAPI = (*batch.ApplicationPackageClient)(nil)
@@ -55,6 +58,7 @@ type ApplicationClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, applicationName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, applicationName string) (result batch.Application, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string, maxresults *int32) (result batch.ListApplicationsResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, maxresults *int32) (result batch.ListApplicationsResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, applicationName string, parameters batch.Application) (result batch.Application, err error)
 }
 
@@ -71,6 +75,7 @@ var _ LocationClientAPI = (*batch.LocationClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result batch.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result batch.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*batch.OperationsClient)(nil)
@@ -82,6 +87,7 @@ type CertificateClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, certificateName string) (result batch.CertificateDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, certificateName string) (result batch.Certificate, err error)
 	ListByBatchAccount(ctx context.Context, resourceGroupName string, accountName string, maxresults *int32, selectParameter string, filter string) (result batch.ListCertificatesResultPage, err error)
+	ListByBatchAccountComplete(ctx context.Context, resourceGroupName string, accountName string, maxresults *int32, selectParameter string, filter string) (result batch.ListCertificatesResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, certificateName string, parameters batch.CertificateCreateOrUpdateParameters, ifMatch string) (result batch.Certificate, err error)
 }
 
@@ -94,6 +100,7 @@ type PoolClientAPI interface {
 	DisableAutoScale(ctx context.Context, resourceGroupName string, accountName string, poolName string) (result batch.Pool, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, poolName string) (result batch.Pool, err error)
 	ListByBatchAccount(ctx context.Context, resourceGroupName string, accountName string, maxresults *int32, selectParameter string, filter string) (result batch.ListPoolsResultPage, err error)
+	ListByBatchAccountComplete(ctx context.Context, resourceGroupName string, accountName string, maxresults *int32, selectParameter string, filter string) (result batch.ListPoolsResultIterator, err error)
 	StopResize(ctx context.Context, resourceGroupName string, accountName string, poolName string) (result batch.Pool, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters batch.Pool, ifMatch string) (result batch.Pool, err error)
 }

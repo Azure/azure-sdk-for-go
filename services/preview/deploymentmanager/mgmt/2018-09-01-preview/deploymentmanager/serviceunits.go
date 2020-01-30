@@ -37,7 +37,8 @@ func NewServiceUnitsClient(subscriptionID string) ServiceUnitsClient {
 	return NewServiceUnitsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewServiceUnitsClientWithBaseURI creates an instance of the ServiceUnitsClient client.
+// NewServiceUnitsClientWithBaseURI creates an instance of the ServiceUnitsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewServiceUnitsClientWithBaseURI(baseURI string, subscriptionID string) ServiceUnitsClient {
 	return ServiceUnitsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

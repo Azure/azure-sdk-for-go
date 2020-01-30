@@ -37,7 +37,9 @@ func NewManagedInstanceOperationsClient(subscriptionID string) ManagedInstanceOp
 	return NewManagedInstanceOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewManagedInstanceOperationsClientWithBaseURI creates an instance of the ManagedInstanceOperationsClient client.
+// NewManagedInstanceOperationsClientWithBaseURI creates an instance of the ManagedInstanceOperationsClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewManagedInstanceOperationsClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceOperationsClient {
 	return ManagedInstanceOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

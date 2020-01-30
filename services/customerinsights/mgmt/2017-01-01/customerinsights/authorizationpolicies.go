@@ -38,7 +38,9 @@ func NewAuthorizationPoliciesClient(subscriptionID string) AuthorizationPolicies
 	return NewAuthorizationPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAuthorizationPoliciesClientWithBaseURI creates an instance of the AuthorizationPoliciesClient client.
+// NewAuthorizationPoliciesClientWithBaseURI creates an instance of the AuthorizationPoliciesClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewAuthorizationPoliciesClientWithBaseURI(baseURI string, subscriptionID string) AuthorizationPoliciesClient {
 	return AuthorizationPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

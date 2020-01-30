@@ -35,7 +35,9 @@ type HanaInstancesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result hanaonazure.HanaInstancesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result hanaonazure.HanaInstance, err error)
 	List(ctx context.Context) (result hanaonazure.HanaInstancesListResultPage, err error)
+	ListComplete(ctx context.Context) (result hanaonazure.HanaInstancesListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result hanaonazure.HanaInstancesListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result hanaonazure.HanaInstancesListResultIterator, err error)
 	Restart(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result hanaonazure.HanaInstancesRestartFuture, err error)
 	Shutdown(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result hanaonazure.HanaInstancesShutdownFuture, err error)
 	Start(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result hanaonazure.HanaInstancesStartFuture, err error)
@@ -50,6 +52,7 @@ type SapMonitorsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, sapMonitorName string) (result hanaonazure.SapMonitorsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, sapMonitorName string) (result hanaonazure.SapMonitor, err error)
 	List(ctx context.Context) (result hanaonazure.SapMonitorListResultPage, err error)
+	ListComplete(ctx context.Context) (result hanaonazure.SapMonitorListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, sapMonitorName string, tagsParameter hanaonazure.Tags) (result hanaonazure.SapMonitor, err error)
 }
 

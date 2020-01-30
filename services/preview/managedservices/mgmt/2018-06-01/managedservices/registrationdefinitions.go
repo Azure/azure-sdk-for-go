@@ -36,7 +36,9 @@ func NewRegistrationDefinitionsClient() RegistrationDefinitionsClient {
 	return NewRegistrationDefinitionsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewRegistrationDefinitionsClientWithBaseURI creates an instance of the RegistrationDefinitionsClient client.
+// NewRegistrationDefinitionsClientWithBaseURI creates an instance of the RegistrationDefinitionsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewRegistrationDefinitionsClientWithBaseURI(baseURI string) RegistrationDefinitionsClient {
 	return RegistrationDefinitionsClient{NewWithBaseURI(baseURI)}
 }

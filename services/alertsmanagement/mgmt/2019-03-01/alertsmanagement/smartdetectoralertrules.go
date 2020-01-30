@@ -36,7 +36,9 @@ func NewSmartDetectorAlertRulesClient(scope string, subscriptionID string, subsc
 	return NewSmartDetectorAlertRulesClientWithBaseURI(DefaultBaseURI, scope, subscriptionID, subscriptionID1)
 }
 
-// NewSmartDetectorAlertRulesClientWithBaseURI creates an instance of the SmartDetectorAlertRulesClient client.
+// NewSmartDetectorAlertRulesClientWithBaseURI creates an instance of the SmartDetectorAlertRulesClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewSmartDetectorAlertRulesClientWithBaseURI(baseURI string, scope string, subscriptionID string, subscriptionID1 string) SmartDetectorAlertRulesClient {
 	return SmartDetectorAlertRulesClient{NewWithBaseURI(baseURI, scope, subscriptionID, subscriptionID1)}
 }

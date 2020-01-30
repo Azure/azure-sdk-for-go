@@ -37,7 +37,9 @@ func NewMonitorInstancesClient(subscriptionID string) MonitorInstancesClient {
 	return NewMonitorInstancesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMonitorInstancesClientWithBaseURI creates an instance of the MonitorInstancesClient client.
+// NewMonitorInstancesClientWithBaseURI creates an instance of the MonitorInstancesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewMonitorInstancesClientWithBaseURI(baseURI string, subscriptionID string) MonitorInstancesClient {
 	return MonitorInstancesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -37,7 +37,8 @@ func NewLocalClient() LocalClient {
 	return NewLocalClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewLocalClientWithBaseURI creates an instance of the LocalClient client.
+// NewLocalClientWithBaseURI creates an instance of the LocalClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewLocalClientWithBaseURI(baseURI string) LocalClient {
 	return LocalClient{NewWithBaseURI(baseURI)}
 }

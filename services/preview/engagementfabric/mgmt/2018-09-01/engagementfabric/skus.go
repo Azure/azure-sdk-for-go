@@ -35,7 +35,8 @@ func NewSKUsClient(subscriptionID string) SKUsClient {
 	return NewSKUsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSKUsClientWithBaseURI creates an instance of the SKUsClient client.
+// NewSKUsClientWithBaseURI creates an instance of the SKUsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSKUsClientWithBaseURI(baseURI string, subscriptionID string) SKUsClient {
 	return SKUsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

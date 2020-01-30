@@ -36,7 +36,8 @@ func NewActionRulesClient(subscriptionID string) ActionRulesClient {
 	return NewActionRulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewActionRulesClientWithBaseURI creates an instance of the ActionRulesClient client.
+// NewActionRulesClientWithBaseURI creates an instance of the ActionRulesClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewActionRulesClientWithBaseURI(baseURI string, subscriptionID string) ActionRulesClient {
 	return ActionRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

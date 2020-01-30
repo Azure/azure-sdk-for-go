@@ -36,7 +36,9 @@ func NewBookmarkRelationsClient(subscriptionID string) BookmarkRelationsClient {
 	return NewBookmarkRelationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBookmarkRelationsClientWithBaseURI creates an instance of the BookmarkRelationsClient client.
+// NewBookmarkRelationsClientWithBaseURI creates an instance of the BookmarkRelationsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewBookmarkRelationsClientWithBaseURI(baseURI string, subscriptionID string) BookmarkRelationsClient {
 	return BookmarkRelationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

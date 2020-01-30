@@ -36,7 +36,8 @@ func NewAggregatedCostClient(subscriptionID string) AggregatedCostClient {
 	return NewAggregatedCostClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAggregatedCostClientWithBaseURI creates an instance of the AggregatedCostClient client.
+// NewAggregatedCostClientWithBaseURI creates an instance of the AggregatedCostClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAggregatedCostClientWithBaseURI(baseURI string, subscriptionID string) AggregatedCostClient {
 	return AggregatedCostClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

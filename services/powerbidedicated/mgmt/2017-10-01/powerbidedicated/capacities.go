@@ -37,7 +37,8 @@ func NewCapacitiesClient(subscriptionID string) CapacitiesClient {
 	return NewCapacitiesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCapacitiesClientWithBaseURI creates an instance of the CapacitiesClient client.
+// NewCapacitiesClientWithBaseURI creates an instance of the CapacitiesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCapacitiesClientWithBaseURI(baseURI string, subscriptionID string) CapacitiesClient {
 	return CapacitiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

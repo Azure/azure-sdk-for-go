@@ -36,7 +36,9 @@ func NewIoTSecuritySolutionsClient(subscriptionID string, ascLocation string) Io
 	return NewIoTSecuritySolutionsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
-// NewIoTSecuritySolutionsClientWithBaseURI creates an instance of the IoTSecuritySolutionsClient client.
+// NewIoTSecuritySolutionsClientWithBaseURI creates an instance of the IoTSecuritySolutionsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewIoTSecuritySolutionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsClient {
 	return IoTSecuritySolutionsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }

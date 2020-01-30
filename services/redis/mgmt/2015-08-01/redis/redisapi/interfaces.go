@@ -30,7 +30,9 @@ type ClientAPI interface {
 	ForceReboot(ctx context.Context, resourceGroupName string, name string, parameters redis.RebootParameters) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, name string) (result redis.ResourceType, err error)
 	List(ctx context.Context) (result redis.ListResultPage, err error)
+	ListComplete(ctx context.Context) (result redis.ListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result redis.ListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result redis.ListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, name string) (result redis.ListKeysResult, err error)
 	RegenerateKey(ctx context.Context, resourceGroupName string, name string, parameters redis.RegenerateKeyParameters) (result redis.ListKeysResult, err error)
 }

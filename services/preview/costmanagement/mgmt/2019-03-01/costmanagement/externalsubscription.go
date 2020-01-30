@@ -35,7 +35,9 @@ func NewExternalSubscriptionClient(subscriptionID string) ExternalSubscriptionCl
 	return NewExternalSubscriptionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewExternalSubscriptionClientWithBaseURI creates an instance of the ExternalSubscriptionClient client.
+// NewExternalSubscriptionClientWithBaseURI creates an instance of the ExternalSubscriptionClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewExternalSubscriptionClientWithBaseURI(baseURI string, subscriptionID string) ExternalSubscriptionClient {
 	return ExternalSubscriptionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

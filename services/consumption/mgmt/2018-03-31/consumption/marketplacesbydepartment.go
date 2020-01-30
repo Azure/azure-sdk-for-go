@@ -37,7 +37,9 @@ func NewMarketplacesByDepartmentClient(subscriptionID string) MarketplacesByDepa
 	return NewMarketplacesByDepartmentClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMarketplacesByDepartmentClientWithBaseURI creates an instance of the MarketplacesByDepartmentClient client.
+// NewMarketplacesByDepartmentClientWithBaseURI creates an instance of the MarketplacesByDepartmentClient client using
+// a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewMarketplacesByDepartmentClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesByDepartmentClient {
 	return MarketplacesByDepartmentClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

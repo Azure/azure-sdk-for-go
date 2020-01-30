@@ -37,7 +37,9 @@ func NewSourceControlSyncJobClient(subscriptionID string) SourceControlSyncJobCl
 	return NewSourceControlSyncJobClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSourceControlSyncJobClientWithBaseURI creates an instance of the SourceControlSyncJobClient client.
+// NewSourceControlSyncJobClientWithBaseURI creates an instance of the SourceControlSyncJobClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewSourceControlSyncJobClientWithBaseURI(baseURI string, subscriptionID string) SourceControlSyncJobClient {
 	return SourceControlSyncJobClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

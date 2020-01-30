@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result servicefabricmesh.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result servicefabricmesh.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*servicefabricmesh.OperationsClient)(nil)
@@ -36,7 +37,9 @@ type SecretClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, secretResourceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, secretResourceName string) (result servicefabricmesh.SecretResourceDescription, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result servicefabricmesh.SecretResourceDescriptionListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result servicefabricmesh.SecretResourceDescriptionListIterator, err error)
 	ListBySubscription(ctx context.Context) (result servicefabricmesh.SecretResourceDescriptionListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result servicefabricmesh.SecretResourceDescriptionListIterator, err error)
 }
 
 var _ SecretClientAPI = (*servicefabricmesh.SecretClient)(nil)
@@ -47,6 +50,7 @@ type SecretValueClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, secretResourceName string, secretValueResourceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, secretResourceName string, secretValueResourceName string) (result servicefabricmesh.SecretValueResourceDescription, err error)
 	List(ctx context.Context, resourceGroupName string, secretResourceName string) (result servicefabricmesh.SecretValueResourceDescriptionListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, secretResourceName string) (result servicefabricmesh.SecretValueResourceDescriptionListIterator, err error)
 	ListValue(ctx context.Context, resourceGroupName string, secretResourceName string, secretValueResourceName string) (result servicefabricmesh.SecretValue, err error)
 }
 
@@ -58,7 +62,9 @@ type VolumeClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, volumeResourceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, volumeResourceName string) (result servicefabricmesh.VolumeResourceDescription, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result servicefabricmesh.VolumeResourceDescriptionListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result servicefabricmesh.VolumeResourceDescriptionListIterator, err error)
 	ListBySubscription(ctx context.Context) (result servicefabricmesh.VolumeResourceDescriptionListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result servicefabricmesh.VolumeResourceDescriptionListIterator, err error)
 }
 
 var _ VolumeClientAPI = (*servicefabricmesh.VolumeClient)(nil)
@@ -69,7 +75,9 @@ type NetworkClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, networkResourceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, networkResourceName string) (result servicefabricmesh.NetworkResourceDescription, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result servicefabricmesh.NetworkResourceDescriptionListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result servicefabricmesh.NetworkResourceDescriptionListIterator, err error)
 	ListBySubscription(ctx context.Context) (result servicefabricmesh.NetworkResourceDescriptionListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result servicefabricmesh.NetworkResourceDescriptionListIterator, err error)
 }
 
 var _ NetworkClientAPI = (*servicefabricmesh.NetworkClient)(nil)
@@ -80,7 +88,9 @@ type GatewayClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, gatewayResourceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, gatewayResourceName string) (result servicefabricmesh.GatewayResourceDescription, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result servicefabricmesh.GatewayResourceDescriptionListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result servicefabricmesh.GatewayResourceDescriptionListIterator, err error)
 	ListBySubscription(ctx context.Context) (result servicefabricmesh.GatewayResourceDescriptionListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result servicefabricmesh.GatewayResourceDescriptionListIterator, err error)
 }
 
 var _ GatewayClientAPI = (*servicefabricmesh.GatewayClient)(nil)
@@ -91,7 +101,9 @@ type ApplicationClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, applicationResourceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, applicationResourceName string) (result servicefabricmesh.ApplicationResourceDescription, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result servicefabricmesh.ApplicationResourceDescriptionListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result servicefabricmesh.ApplicationResourceDescriptionListIterator, err error)
 	ListBySubscription(ctx context.Context) (result servicefabricmesh.ApplicationResourceDescriptionListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result servicefabricmesh.ApplicationResourceDescriptionListIterator, err error)
 }
 
 var _ ApplicationClientAPI = (*servicefabricmesh.ApplicationClient)(nil)
@@ -100,6 +112,7 @@ var _ ApplicationClientAPI = (*servicefabricmesh.ApplicationClient)(nil)
 type ServiceClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, applicationResourceName string, serviceResourceName string) (result servicefabricmesh.ServiceResourceDescription, err error)
 	List(ctx context.Context, resourceGroupName string, applicationResourceName string) (result servicefabricmesh.ServiceResourceDescriptionListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, applicationResourceName string) (result servicefabricmesh.ServiceResourceDescriptionListIterator, err error)
 }
 
 var _ ServiceClientAPI = (*servicefabricmesh.ServiceClient)(nil)
@@ -108,6 +121,7 @@ var _ ServiceClientAPI = (*servicefabricmesh.ServiceClient)(nil)
 type ServiceReplicaClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, applicationResourceName string, serviceResourceName string, replicaName string) (result servicefabricmesh.ServiceReplicaDescription, err error)
 	List(ctx context.Context, resourceGroupName string, applicationResourceName string, serviceResourceName string) (result servicefabricmesh.ServiceReplicaDescriptionListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, applicationResourceName string, serviceResourceName string) (result servicefabricmesh.ServiceReplicaDescriptionListIterator, err error)
 }
 
 var _ ServiceReplicaClientAPI = (*servicefabricmesh.ServiceReplicaClient)(nil)

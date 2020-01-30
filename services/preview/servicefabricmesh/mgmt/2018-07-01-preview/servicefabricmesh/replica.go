@@ -35,7 +35,8 @@ func NewReplicaClient(subscriptionID string) ReplicaClient {
 	return NewReplicaClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewReplicaClientWithBaseURI creates an instance of the ReplicaClient client.
+// NewReplicaClientWithBaseURI creates an instance of the ReplicaClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewReplicaClientWithBaseURI(baseURI string, subscriptionID string) ReplicaClient {
 	return ReplicaClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

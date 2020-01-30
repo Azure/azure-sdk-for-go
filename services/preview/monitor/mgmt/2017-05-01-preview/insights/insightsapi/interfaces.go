@@ -29,7 +29,9 @@ type AutoscaleSettingsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (result insights.AutoscaleSettingResource, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result insights.AutoscaleSettingResourceCollectionPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result insights.AutoscaleSettingResourceCollectionIterator, err error)
 	ListBySubscription(ctx context.Context) (result insights.AutoscaleSettingResourceCollectionPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result insights.AutoscaleSettingResourceCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource insights.AutoscaleSettingResourcePatch) (result insights.AutoscaleSettingResource, err error)
 }
 
@@ -119,6 +121,7 @@ var _ ActivityLogAlertsClientAPI = (*insights.ActivityLogAlertsClient)(nil)
 // ActivityLogsClientAPI contains the set of methods on the ActivityLogsClient type.
 type ActivityLogsClientAPI interface {
 	List(ctx context.Context, filter string, selectParameter string) (result insights.EventDataCollectionPage, err error)
+	ListComplete(ctx context.Context, filter string, selectParameter string) (result insights.EventDataCollectionIterator, err error)
 }
 
 var _ ActivityLogsClientAPI = (*insights.ActivityLogsClient)(nil)
@@ -133,6 +136,7 @@ var _ EventCategoriesClientAPI = (*insights.EventCategoriesClient)(nil)
 // TenantActivityLogsClientAPI contains the set of methods on the TenantActivityLogsClient type.
 type TenantActivityLogsClientAPI interface {
 	List(ctx context.Context, filter string, selectParameter string) (result insights.EventDataCollectionPage, err error)
+	ListComplete(ctx context.Context, filter string, selectParameter string) (result insights.EventDataCollectionIterator, err error)
 }
 
 var _ TenantActivityLogsClientAPI = (*insights.TenantActivityLogsClient)(nil)

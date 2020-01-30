@@ -31,7 +31,9 @@ type JobCollectionsClientAPI interface {
 	Enable(ctx context.Context, resourceGroupName string, jobCollectionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, jobCollectionName string) (result scheduler.JobCollectionDefinition, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result scheduler.JobCollectionListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result scheduler.JobCollectionListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result scheduler.JobCollectionListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result scheduler.JobCollectionListResultIterator, err error)
 	Patch(ctx context.Context, resourceGroupName string, jobCollectionName string, jobCollection scheduler.JobCollectionDefinition) (result scheduler.JobCollectionDefinition, err error)
 }
 
@@ -43,7 +45,9 @@ type JobsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string) (result scheduler.JobDefinition, err error)
 	List(ctx context.Context, resourceGroupName string, jobCollectionName string, top *int32, skip *int32, filter string) (result scheduler.JobListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, jobCollectionName string, top *int32, skip *int32, filter string) (result scheduler.JobListResultIterator, err error)
 	ListJobHistory(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, top *int32, skip *int32, filter string) (result scheduler.JobHistoryListResultPage, err error)
+	ListJobHistoryComplete(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, top *int32, skip *int32, filter string) (result scheduler.JobHistoryListResultIterator, err error)
 	Patch(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, job scheduler.JobDefinition) (result scheduler.JobDefinition, err error)
 	Run(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string) (result autorest.Response, err error)
 }

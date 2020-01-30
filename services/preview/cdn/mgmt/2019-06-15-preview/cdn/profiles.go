@@ -36,7 +36,8 @@ func NewProfilesClient(subscriptionID string, subscriptionID1 string) ProfilesCl
 	return NewProfilesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
-// NewProfilesClientWithBaseURI creates an instance of the ProfilesClient client.
+// NewProfilesClientWithBaseURI creates an instance of the ProfilesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ProfilesClient {
 	return ProfilesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }

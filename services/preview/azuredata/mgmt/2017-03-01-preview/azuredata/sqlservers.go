@@ -36,7 +36,8 @@ func NewSQLServersClient(subscriptionID string) SQLServersClient {
 	return NewSQLServersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSQLServersClientWithBaseURI creates an instance of the SQLServersClient client.
+// NewSQLServersClientWithBaseURI creates an instance of the SQLServersClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSQLServersClientWithBaseURI(baseURI string, subscriptionID string) SQLServersClient {
 	return SQLServersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

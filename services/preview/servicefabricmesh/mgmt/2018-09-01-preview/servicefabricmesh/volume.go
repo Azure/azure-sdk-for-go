@@ -36,7 +36,8 @@ func NewVolumeClient(subscriptionID string) VolumeClient {
 	return NewVolumeClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewVolumeClientWithBaseURI creates an instance of the VolumeClient client.
+// NewVolumeClientWithBaseURI creates an instance of the VolumeClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewVolumeClientWithBaseURI(baseURI string, subscriptionID string) VolumeClient {
 	return VolumeClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

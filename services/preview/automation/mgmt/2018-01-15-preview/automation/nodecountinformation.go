@@ -36,7 +36,9 @@ func NewNodeCountInformationClient(subscriptionID string) NodeCountInformationCl
 	return NewNodeCountInformationClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewNodeCountInformationClientWithBaseURI creates an instance of the NodeCountInformationClient client.
+// NewNodeCountInformationClientWithBaseURI creates an instance of the NodeCountInformationClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewNodeCountInformationClientWithBaseURI(baseURI string, subscriptionID string) NodeCountInformationClient {
 	return NodeCountInformationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

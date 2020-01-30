@@ -38,7 +38,9 @@ func NewConnectorMappingsClient(subscriptionID string) ConnectorMappingsClient {
 	return NewConnectorMappingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewConnectorMappingsClientWithBaseURI creates an instance of the ConnectorMappingsClient client.
+// NewConnectorMappingsClientWithBaseURI creates an instance of the ConnectorMappingsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewConnectorMappingsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorMappingsClient {
 	return ConnectorMappingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

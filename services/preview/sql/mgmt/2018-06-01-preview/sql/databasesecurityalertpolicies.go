@@ -38,7 +38,8 @@ func NewDatabaseSecurityAlertPoliciesClient(subscriptionID string) DatabaseSecur
 }
 
 // NewDatabaseSecurityAlertPoliciesClientWithBaseURI creates an instance of the DatabaseSecurityAlertPoliciesClient
-// client.
+// client using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI
+// (sovereign clouds, Azure stack).
 func NewDatabaseSecurityAlertPoliciesClientWithBaseURI(baseURI string, subscriptionID string) DatabaseSecurityAlertPoliciesClient {
 	return DatabaseSecurityAlertPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

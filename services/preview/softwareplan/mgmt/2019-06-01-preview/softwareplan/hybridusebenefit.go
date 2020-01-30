@@ -37,7 +37,9 @@ func NewHybridUseBenefitClient(subscriptionID string) HybridUseBenefitClient {
 	return NewHybridUseBenefitClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewHybridUseBenefitClientWithBaseURI creates an instance of the HybridUseBenefitClient client.
+// NewHybridUseBenefitClientWithBaseURI creates an instance of the HybridUseBenefitClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewHybridUseBenefitClientWithBaseURI(baseURI string, subscriptionID string) HybridUseBenefitClient {
 	return HybridUseBenefitClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

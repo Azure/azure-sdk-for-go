@@ -35,7 +35,9 @@ func NewWorkspaceFeaturesClient(subscriptionID string) WorkspaceFeaturesClient {
 	return NewWorkspaceFeaturesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWorkspaceFeaturesClientWithBaseURI creates an instance of the WorkspaceFeaturesClient client.
+// NewWorkspaceFeaturesClientWithBaseURI creates an instance of the WorkspaceFeaturesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewWorkspaceFeaturesClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceFeaturesClient {
 	return WorkspaceFeaturesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

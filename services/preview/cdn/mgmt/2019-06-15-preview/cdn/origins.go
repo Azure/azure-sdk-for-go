@@ -36,7 +36,8 @@ func NewOriginsClient(subscriptionID string, subscriptionID1 string) OriginsClie
 	return NewOriginsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
-// NewOriginsClientWithBaseURI creates an instance of the OriginsClient client.
+// NewOriginsClientWithBaseURI creates an instance of the OriginsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OriginsClient {
 	return OriginsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }

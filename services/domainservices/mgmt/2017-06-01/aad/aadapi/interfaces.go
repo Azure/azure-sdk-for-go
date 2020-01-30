@@ -25,6 +25,7 @@ import (
 // DomainServiceOperationsClientAPI contains the set of methods on the DomainServiceOperationsClient type.
 type DomainServiceOperationsClientAPI interface {
 	List(ctx context.Context) (result aad.OperationEntityListResultPage, err error)
+	ListComplete(ctx context.Context) (result aad.OperationEntityListResultIterator, err error)
 }
 
 var _ DomainServiceOperationsClientAPI = (*aad.DomainServiceOperationsClient)(nil)
@@ -35,7 +36,9 @@ type DomainServicesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, domainServiceName string) (result aad.DomainServicesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, domainServiceName string) (result aad.DomainService, err error)
 	List(ctx context.Context) (result aad.DomainServiceListResultPage, err error)
+	ListComplete(ctx context.Context) (result aad.DomainServiceListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result aad.DomainServiceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result aad.DomainServiceListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, domainServiceName string, domainService aad.DomainService) (result aad.DomainServicesUpdateFuture, err error)
 }
 

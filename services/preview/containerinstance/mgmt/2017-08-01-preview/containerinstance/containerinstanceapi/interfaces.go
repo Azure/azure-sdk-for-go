@@ -28,7 +28,9 @@ type ContainerGroupsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, containerGroupName string) (result containerinstance.ContainerGroup, err error)
 	Get(ctx context.Context, resourceGroupName string, containerGroupName string) (result containerinstance.ContainerGroup, err error)
 	List(ctx context.Context) (result containerinstance.ContainerGroupListResultPage, err error)
+	ListComplete(ctx context.Context) (result containerinstance.ContainerGroupListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result containerinstance.ContainerGroupListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result containerinstance.ContainerGroupListResultIterator, err error)
 }
 
 var _ ContainerGroupsClientAPI = (*containerinstance.ContainerGroupsClient)(nil)

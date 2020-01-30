@@ -34,13 +34,19 @@ type AddsServicesClientAPI interface {
 	GetMetricMetadata(ctx context.Context, serviceName string, metricName string) (result adhybridhealthservice.MetricMetadata, err error)
 	GetMetricMetadataForGroup(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (result adhybridhealthservice.MetricSets, err error)
 	List(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result adhybridhealthservice.ServicesPage, err error)
+	ListComplete(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result adhybridhealthservice.ServicesIterator, err error)
 	ListMetricMetadata(ctx context.Context, serviceName string, filter string, perfCounter *bool) (result adhybridhealthservice.MetricMetadataListPage, err error)
+	ListMetricMetadataComplete(ctx context.Context, serviceName string, filter string, perfCounter *bool) (result adhybridhealthservice.MetricMetadataListIterator, err error)
 	ListMetricsAverage(ctx context.Context, serviceName string, metricName string, groupName string) (result adhybridhealthservice.MetricsPage, err error)
+	ListMetricsAverageComplete(ctx context.Context, serviceName string, metricName string, groupName string) (result adhybridhealthservice.MetricsIterator, err error)
 	ListMetricsSum(ctx context.Context, serviceName string, metricName string, groupName string) (result adhybridhealthservice.MetricsPage, err error)
+	ListMetricsSumComplete(ctx context.Context, serviceName string, metricName string, groupName string) (result adhybridhealthservice.MetricsIterator, err error)
 	ListPremiumServices(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result adhybridhealthservice.ServicesPage, err error)
+	ListPremiumServicesComplete(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result adhybridhealthservice.ServicesIterator, err error)
 	ListReplicationDetails(ctx context.Context, serviceName string, filter string, withDetails *bool) (result adhybridhealthservice.ReplicationDetailsList, err error)
 	ListReplicationSummary(ctx context.Context, serviceName string, isGroupbySite bool, query string, filter string, takeCount *int32) (result adhybridhealthservice.ReplicationSummaryList, err error)
 	ListServerAlerts(ctx context.Context, serviceMemberID uuid.UUID, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result adhybridhealthservice.AlertsPage, err error)
+	ListServerAlertsComplete(ctx context.Context, serviceMemberID uuid.UUID, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result adhybridhealthservice.AlertsIterator, err error)
 	Update(ctx context.Context, serviceName string, service adhybridhealthservice.ServiceProperties) (result adhybridhealthservice.ServiceProperties, err error)
 }
 
@@ -49,6 +55,7 @@ var _ AddsServicesClientAPI = (*adhybridhealthservice.AddsServicesClient)(nil)
 // AlertsClientAPI contains the set of methods on the AlertsClient type.
 type AlertsClientAPI interface {
 	ListAddsAlerts(ctx context.Context, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result adhybridhealthservice.AlertsPage, err error)
+	ListAddsAlertsComplete(ctx context.Context, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result adhybridhealthservice.AlertsIterator, err error)
 }
 
 var _ AlertsClientAPI = (*adhybridhealthservice.AlertsClient)(nil)
@@ -58,6 +65,7 @@ type ConfigurationClientAPI interface {
 	Add(ctx context.Context) (result adhybridhealthservice.Tenant, err error)
 	Get(ctx context.Context) (result adhybridhealthservice.Tenant, err error)
 	ListAddsConfigurations(ctx context.Context, serviceName string, grouping string) (result adhybridhealthservice.AddsConfigurationPage, err error)
+	ListAddsConfigurationsComplete(ctx context.Context, serviceName string, grouping string) (result adhybridhealthservice.AddsConfigurationIterator, err error)
 	Update(ctx context.Context, tenant adhybridhealthservice.Tenant) (result adhybridhealthservice.Tenant, err error)
 }
 
@@ -66,6 +74,7 @@ var _ ConfigurationClientAPI = (*adhybridhealthservice.ConfigurationClient)(nil)
 // DimensionsClientAPI contains the set of methods on the DimensionsClient type.
 type DimensionsClientAPI interface {
 	ListAddsDimensions(ctx context.Context, serviceName string, dimension string) (result adhybridhealthservice.DimensionsPage, err error)
+	ListAddsDimensionsComplete(ctx context.Context, serviceName string, dimension string) (result adhybridhealthservice.DimensionsIterator, err error)
 }
 
 var _ DimensionsClientAPI = (*adhybridhealthservice.DimensionsClient)(nil)
@@ -75,6 +84,7 @@ type AddsServiceMembersClientAPI interface {
 	Delete(ctx context.Context, serviceName string, serviceMemberID uuid.UUID, confirm *bool) (result autorest.Response, err error)
 	Get(ctx context.Context, serviceName string, serviceMemberID uuid.UUID) (result adhybridhealthservice.ServiceMember, err error)
 	List(ctx context.Context, serviceName string, filter string) (result adhybridhealthservice.AddsServiceMembersPage, err error)
+	ListComplete(ctx context.Context, serviceName string, filter string) (result adhybridhealthservice.AddsServiceMembersIterator, err error)
 	ListCredentials(ctx context.Context, serviceName string, serviceMemberID uuid.UUID, filter string) (result adhybridhealthservice.Credentials, err error)
 }
 
@@ -83,6 +93,7 @@ var _ AddsServiceMembersClientAPI = (*adhybridhealthservice.AddsServiceMembersCl
 // AdDomainServiceMembersClientAPI contains the set of methods on the AdDomainServiceMembersClient type.
 type AdDomainServiceMembersClientAPI interface {
 	List(ctx context.Context, serviceName string, isGroupbySite bool, filter string, query string, takeCount *int32) (result adhybridhealthservice.AddsServiceMembersPage, err error)
+	ListComplete(ctx context.Context, serviceName string, isGroupbySite bool, filter string, query string, takeCount *int32) (result adhybridhealthservice.AddsServiceMembersIterator, err error)
 }
 
 var _ AdDomainServiceMembersClientAPI = (*adhybridhealthservice.AdDomainServiceMembersClient)(nil)
@@ -114,6 +125,7 @@ var _ AddsServicesReplicationStatusClientAPI = (*adhybridhealthservice.AddsServi
 type AddsServicesServiceMembersClientAPI interface {
 	Add(ctx context.Context, serviceName string, serviceMember adhybridhealthservice.ServiceMember) (result adhybridhealthservice.ServiceMember, err error)
 	List(ctx context.Context, serviceName string, filter string, dimensionType string, dimensionSignature string) (result adhybridhealthservice.ServiceMembersPage, err error)
+	ListComplete(ctx context.Context, serviceName string, filter string, dimensionType string, dimensionSignature string) (result adhybridhealthservice.ServiceMembersIterator, err error)
 }
 
 var _ AddsServicesServiceMembersClientAPI = (*adhybridhealthservice.AddsServicesServiceMembersClient)(nil)
@@ -121,6 +133,7 @@ var _ AddsServicesServiceMembersClientAPI = (*adhybridhealthservice.AddsServices
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result adhybridhealthservice.OperationListResponsePage, err error)
+	ListComplete(ctx context.Context) (result adhybridhealthservice.OperationListResponseIterator, err error)
 }
 
 var _ OperationsClientAPI = (*adhybridhealthservice.OperationsClient)(nil)
@@ -143,18 +156,25 @@ type ServicesClientAPI interface {
 	GetMetricMetadataForGroup(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (result adhybridhealthservice.MetricSets, err error)
 	GetTenantWhitelisting(ctx context.Context, serviceName string, featureName string) (result adhybridhealthservice.Result, err error)
 	List(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result adhybridhealthservice.ServicesPage, err error)
+	ListComplete(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result adhybridhealthservice.ServicesIterator, err error)
 	ListAlertFeedback(ctx context.Context, serviceName string, shortName string) (result adhybridhealthservice.AlertFeedbacks, err error)
 	ListAlerts(ctx context.Context, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result adhybridhealthservice.AlertsPage, err error)
+	ListAlertsComplete(ctx context.Context, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result adhybridhealthservice.AlertsIterator, err error)
 	ListAllRiskyIPDownloadReport(ctx context.Context, serviceName string) (result adhybridhealthservice.RiskyIPBlobUris, err error)
 	ListCurrentRiskyIPDownloadReport(ctx context.Context, serviceName string) (result adhybridhealthservice.RiskyIPBlobUris, err error)
 	ListExportErrors(ctx context.Context, serviceName string) (result adhybridhealthservice.ErrorCounts, err error)
 	ListExportErrorsV2(ctx context.Context, serviceName string, errorBucket string) (result adhybridhealthservice.MergedExportErrors, err error)
 	ListExportStatus(ctx context.Context, serviceName string) (result adhybridhealthservice.ExportStatusesPage, err error)
+	ListExportStatusComplete(ctx context.Context, serviceName string) (result adhybridhealthservice.ExportStatusesIterator, err error)
 	ListMetricMetadata(ctx context.Context, serviceName string, filter string, perfCounter *bool) (result adhybridhealthservice.MetricMetadataListPage, err error)
+	ListMetricMetadataComplete(ctx context.Context, serviceName string, filter string, perfCounter *bool) (result adhybridhealthservice.MetricMetadataListIterator, err error)
 	ListMetricsAverage(ctx context.Context, serviceName string, metricName string, groupName string) (result adhybridhealthservice.MetricsPage, err error)
+	ListMetricsAverageComplete(ctx context.Context, serviceName string, metricName string, groupName string) (result adhybridhealthservice.MetricsIterator, err error)
 	ListMetricsSum(ctx context.Context, serviceName string, metricName string, groupName string) (result adhybridhealthservice.MetricsPage, err error)
+	ListMetricsSumComplete(ctx context.Context, serviceName string, metricName string, groupName string) (result adhybridhealthservice.MetricsIterator, err error)
 	ListMonitoringConfigurations(ctx context.Context, serviceName string) (result adhybridhealthservice.Items, err error)
 	ListPremium(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result adhybridhealthservice.ServicesPage, err error)
+	ListPremiumComplete(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result adhybridhealthservice.ServicesIterator, err error)
 	ListUserBadPasswordReport(ctx context.Context, serviceName string, dataSource string) (result adhybridhealthservice.ErrorReportUsersEntries, err error)
 	Update(ctx context.Context, serviceName string, service adhybridhealthservice.ServiceProperties) (result adhybridhealthservice.ServiceProperties, err error)
 	UpdateMonitoringConfiguration(ctx context.Context, serviceName string, configurationSetting adhybridhealthservice.Item) (result autorest.Response, err error)
@@ -179,11 +199,14 @@ type ServiceMembersClientAPI interface {
 	GetMetrics(ctx context.Context, serviceName string, metricName string, groupName string, serviceMemberID uuid.UUID, groupKey string, fromDate *date.Time, toDate *date.Time) (result adhybridhealthservice.MetricSets, err error)
 	GetServiceConfiguration(ctx context.Context, serviceName string, serviceMemberID string) (result adhybridhealthservice.ServiceConfiguration, err error)
 	List(ctx context.Context, serviceName string, filter string, dimensionType string, dimensionSignature string) (result adhybridhealthservice.ServiceMembersPage, err error)
+	ListComplete(ctx context.Context, serviceName string, filter string, dimensionType string, dimensionSignature string) (result adhybridhealthservice.ServiceMembersIterator, err error)
 	ListAlerts(ctx context.Context, serviceMemberID uuid.UUID, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result adhybridhealthservice.AlertsPage, err error)
+	ListAlertsComplete(ctx context.Context, serviceMemberID uuid.UUID, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result adhybridhealthservice.AlertsIterator, err error)
 	ListConnectors(ctx context.Context, serviceName string, serviceMemberID uuid.UUID) (result adhybridhealthservice.Connectors, err error)
 	ListCredentials(ctx context.Context, serviceName string, serviceMemberID uuid.UUID, filter string) (result adhybridhealthservice.Credentials, err error)
 	ListDataFreshness(ctx context.Context, serviceName string, serviceMemberID uuid.UUID) (result adhybridhealthservice.DataFreshnessDetails, err error)
 	ListExportStatus(ctx context.Context, serviceName string, serviceMemberID uuid.UUID) (result adhybridhealthservice.ExportStatusesPage, err error)
+	ListExportStatusComplete(ctx context.Context, serviceName string, serviceMemberID uuid.UUID) (result adhybridhealthservice.ExportStatusesIterator, err error)
 	ListGlobalConfiguration(ctx context.Context, serviceName string, serviceMemberID string) (result adhybridhealthservice.GlobalConfigurations, err error)
 }
 

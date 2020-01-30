@@ -35,7 +35,9 @@ func NewSkusAvailabilityClient(subscriptionID string, referer string) SkusAvaila
 	return NewSkusAvailabilityClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
-// NewSkusAvailabilityClientWithBaseURI creates an instance of the SkusAvailabilityClient client.
+// NewSkusAvailabilityClientWithBaseURI creates an instance of the SkusAvailabilityClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewSkusAvailabilityClientWithBaseURI(baseURI string, subscriptionID string, referer string) SkusAvailabilityClient {
 	return SkusAvailabilityClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }

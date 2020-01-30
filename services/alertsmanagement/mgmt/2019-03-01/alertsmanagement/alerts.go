@@ -35,7 +35,8 @@ func NewAlertsClient(scope string, subscriptionID string, subscriptionID1 string
 	return NewAlertsClientWithBaseURI(DefaultBaseURI, scope, subscriptionID, subscriptionID1)
 }
 
-// NewAlertsClientWithBaseURI creates an instance of the AlertsClient client.
+// NewAlertsClientWithBaseURI creates an instance of the AlertsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAlertsClientWithBaseURI(baseURI string, scope string, subscriptionID string, subscriptionID1 string) AlertsClient {
 	return AlertsClient{NewWithBaseURI(baseURI, scope, subscriptionID, subscriptionID1)}
 }

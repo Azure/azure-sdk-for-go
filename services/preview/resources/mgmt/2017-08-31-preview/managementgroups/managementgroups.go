@@ -38,7 +38,8 @@ func NewClient(groupID uuid.UUID) Client {
 	return NewClientWithBaseURI(DefaultBaseURI, groupID)
 }
 
-// NewClientWithBaseURI creates an instance of the Client client.
+// NewClientWithBaseURI creates an instance of the Client client using a custom endpoint.  Use this when interacting
+// with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewClientWithBaseURI(baseURI string, groupID uuid.UUID) Client {
 	return Client{NewWithBaseURI(baseURI, groupID)}
 }

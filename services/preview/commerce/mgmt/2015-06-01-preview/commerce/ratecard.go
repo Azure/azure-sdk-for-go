@@ -35,7 +35,8 @@ func NewRateCardClient(subscriptionID string) RateCardClient {
 	return NewRateCardClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewRateCardClientWithBaseURI creates an instance of the RateCardClient client.
+// NewRateCardClientWithBaseURI creates an instance of the RateCardClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewRateCardClientWithBaseURI(baseURI string, subscriptionID string) RateCardClient {
 	return RateCardClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

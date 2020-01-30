@@ -36,7 +36,8 @@ func NewAssessmentsClient(subscriptionID string, acceptLanguage string) Assessme
 	return NewAssessmentsClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
-// NewAssessmentsClientWithBaseURI creates an instance of the AssessmentsClient client.
+// NewAssessmentsClientWithBaseURI creates an instance of the AssessmentsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) AssessmentsClient {
 	return AssessmentsClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }

@@ -35,7 +35,9 @@ func NewAssessedMachinesClient(subscriptionID string, acceptLanguage string) Ass
 	return NewAssessedMachinesClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
-// NewAssessedMachinesClientWithBaseURI creates an instance of the AssessedMachinesClient client.
+// NewAssessedMachinesClientWithBaseURI creates an instance of the AssessedMachinesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewAssessedMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) AssessedMachinesClient {
 	return AssessedMachinesClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }

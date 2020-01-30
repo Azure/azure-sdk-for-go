@@ -35,7 +35,9 @@ type ClientAPI interface {
 	AvailableScopes(ctx context.Context, reservationOrderID string, reservationID string, body []string) (result reservations.ReservationAvailableScopesFuture, err error)
 	Get(ctx context.Context, reservationID string, reservationOrderID string, expand string) (result reservations.Response, err error)
 	List(ctx context.Context, reservationOrderID string) (result reservations.ListPage, err error)
+	ListComplete(ctx context.Context, reservationOrderID string) (result reservations.ListIterator, err error)
 	ListRevisions(ctx context.Context, reservationID string, reservationOrderID string) (result reservations.ListPage, err error)
+	ListRevisionsComplete(ctx context.Context, reservationID string, reservationOrderID string) (result reservations.ListIterator, err error)
 	Merge(ctx context.Context, reservationOrderID string, body reservations.MergeRequest) (result reservations.ReservationMergeFuture, err error)
 	Split(ctx context.Context, reservationOrderID string, body reservations.SplitRequest) (result reservations.SplitFuture, err error)
 	Update(ctx context.Context, reservationOrderID string, reservationID string, parameters reservations.Patch) (result reservations.ReservationUpdateFuture, err error)
@@ -48,6 +50,7 @@ type OrderClientAPI interface {
 	Calculate(ctx context.Context, body reservations.PurchaseRequest) (result reservations.CalculatePriceResponse, err error)
 	Get(ctx context.Context, reservationOrderID string, expand string) (result reservations.OrderResponse, err error)
 	List(ctx context.Context) (result reservations.OrderListPage, err error)
+	ListComplete(ctx context.Context) (result reservations.OrderListIterator, err error)
 	Purchase(ctx context.Context, reservationOrderID string, body reservations.PurchaseRequest) (result reservations.OrderPurchaseFuture, err error)
 }
 
@@ -56,6 +59,7 @@ var _ OrderClientAPI = (*reservations.OrderClient)(nil)
 // OperationClientAPI contains the set of methods on the OperationClient type.
 type OperationClientAPI interface {
 	List(ctx context.Context) (result reservations.OperationListPage, err error)
+	ListComplete(ctx context.Context) (result reservations.OperationListIterator, err error)
 }
 
 var _ OperationClientAPI = (*reservations.OperationClient)(nil)

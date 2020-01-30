@@ -36,7 +36,8 @@ func NewCaseRelationsClient(subscriptionID string) CaseRelationsClient {
 	return NewCaseRelationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCaseRelationsClientWithBaseURI creates an instance of the CaseRelationsClient client.
+// NewCaseRelationsClientWithBaseURI creates an instance of the CaseRelationsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCaseRelationsClientWithBaseURI(baseURI string, subscriptionID string) CaseRelationsClient {
 	return CaseRelationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

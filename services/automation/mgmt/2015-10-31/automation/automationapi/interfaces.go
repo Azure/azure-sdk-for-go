@@ -31,7 +31,9 @@ type AccountClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, automationAccountName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.Account, err error)
 	List(ctx context.Context) (result automation.AccountListResultPage, err error)
+	ListComplete(ctx context.Context) (result automation.AccountListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result automation.AccountListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result automation.AccountListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, automationAccountName string, parameters automation.AccountUpdateParameters) (result automation.Account, err error)
 }
 
@@ -71,6 +73,7 @@ type CertificateClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string) (result automation.Certificate, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.CertificateListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.CertificateListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, parameters automation.CertificateUpdateParameters) (result automation.Certificate, err error)
 }
 
@@ -82,6 +85,7 @@ type ConnectionClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, automationAccountName string, connectionName string) (result automation.Connection, err error)
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, connectionName string) (result automation.Connection, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.ConnectionListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.ConnectionListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, automationAccountName string, connectionName string, parameters automation.ConnectionUpdateParameters) (result automation.Connection, err error)
 }
 
@@ -93,6 +97,7 @@ type ConnectionTypeClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, automationAccountName string, connectionTypeName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, connectionTypeName string) (result automation.ConnectionType, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.ConnectionTypeListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.ConnectionTypeListResultIterator, err error)
 }
 
 var _ ConnectionTypeClientAPI = (*automation.ConnectionTypeClient)(nil)
@@ -103,6 +108,7 @@ type CredentialClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string) (result automation.Credential, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.CredentialListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.CredentialListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, parameters automation.CredentialUpdateParameters) (result automation.Credential, err error)
 }
 
@@ -114,6 +120,7 @@ type DscCompilationJobClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, compilationJobID uuid.UUID) (result automation.DscCompilationJob, err error)
 	GetStream(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID, jobStreamID string) (result automation.JobStream, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.DscCompilationJobListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.DscCompilationJobListResultIterator, err error)
 }
 
 var _ DscCompilationJobClientAPI = (*automation.DscCompilationJobClient)(nil)
@@ -132,6 +139,7 @@ type DscConfigurationClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string) (result automation.DscConfiguration, err error)
 	GetContent(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string) (result automation.ReadCloser, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string, skip *int32, top *int32, inlinecount string) (result automation.DscConfigurationListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, filter string, skip *int32, top *int32, inlinecount string) (result automation.DscConfigurationListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters *automation.DscConfigurationUpdateParameters) (result automation.DscConfiguration, err error)
 }
 
@@ -150,6 +158,7 @@ type DscNodeClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string) (result automation.DscNode, err error)
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string) (result automation.DscNode, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.DscNodeListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.DscNodeListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, parameters automation.DscNodeUpdateParameters) (result automation.DscNode, err error)
 }
 
@@ -160,6 +169,7 @@ type NodeReportsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, reportID string) (result automation.DscNodeReport, err error)
 	GetContent(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, reportID string) (result automation.SetObject, err error)
 	ListByNode(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, filter string) (result automation.DscNodeReportListResultPage, err error)
+	ListByNodeComplete(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, filter string) (result automation.DscNodeReportListResultIterator, err error)
 }
 
 var _ NodeReportsClientAPI = (*automation.NodeReportsClient)(nil)
@@ -170,6 +180,7 @@ type DscNodeConfigurationClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string) (result automation.DscNodeConfiguration, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.DscNodeConfigurationListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.DscNodeConfigurationListResultIterator, err error)
 }
 
 var _ DscNodeConfigurationClientAPI = (*automation.DscNodeConfigurationClient)(nil)
@@ -179,6 +190,7 @@ type HybridRunbookWorkerGroupClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string) (result automation.HybridRunbookWorkerGroup, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.HybridRunbookWorkerGroupsListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.HybridRunbookWorkerGroupsListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, parameters automation.HybridRunbookWorkerGroupUpdateParameters) (result automation.HybridRunbookWorkerGroup, err error)
 }
 
@@ -191,6 +203,7 @@ type JobClientAPI interface {
 	GetOutput(ctx context.Context, resourceGroupName string, automationAccountName string, jobID string) (result automation.ReadCloser, err error)
 	GetRunbookContent(ctx context.Context, resourceGroupName string, automationAccountName string, jobID string) (result automation.ReadCloser, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.JobListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.JobListResultIterator, err error)
 	Resume(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID) (result autorest.Response, err error)
 	Stop(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID) (result autorest.Response, err error)
 	Suspend(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID) (result autorest.Response, err error)
@@ -202,6 +215,7 @@ var _ JobClientAPI = (*automation.JobClient)(nil)
 type JobStreamClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, jobID string, jobStreamID string) (result automation.JobStream, err error)
 	ListByJob(ctx context.Context, resourceGroupName string, automationAccountName string, jobID string, filter string) (result automation.JobStreamListResultPage, err error)
+	ListByJobComplete(ctx context.Context, resourceGroupName string, automationAccountName string, jobID string, filter string) (result automation.JobStreamListResultIterator, err error)
 }
 
 var _ JobStreamClientAPI = (*automation.JobStreamClient)(nil)
@@ -212,6 +226,7 @@ type JobScheduleClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, automationAccountName string, jobScheduleID uuid.UUID) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, jobScheduleID uuid.UUID) (result automation.JobSchedule, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.JobScheduleListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.JobScheduleListResultIterator, err error)
 }
 
 var _ JobScheduleClientAPI = (*automation.JobScheduleClient)(nil)
@@ -227,6 +242,7 @@ var _ LinkedWorkspaceClientAPI = (*automation.LinkedWorkspaceClient)(nil)
 type ActivityClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, activityName string) (result automation.Activity, err error)
 	ListByModule(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string) (result automation.ActivityListResultPage, err error)
+	ListByModuleComplete(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string) (result automation.ActivityListResultIterator, err error)
 }
 
 var _ ActivityClientAPI = (*automation.ActivityClient)(nil)
@@ -237,6 +253,7 @@ type ModuleClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string) (result automation.Module, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.ModuleListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.ModuleListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, parameters automation.ModuleUpdateParameters) (result automation.Module, err error)
 }
 
@@ -275,6 +292,7 @@ type RunbookClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string) (result automation.Runbook, err error)
 	GetContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string) (result automation.ReadCloser, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.RunbookListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.RunbookListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters automation.RunbookUpdateParameters) (result automation.Runbook, err error)
 }
 
@@ -284,6 +302,7 @@ var _ RunbookClientAPI = (*automation.RunbookClient)(nil)
 type TestJobStreamsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, jobStreamID string) (result automation.JobStream, err error)
 	ListByTestJob(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, filter string) (result automation.JobStreamListResultPage, err error)
+	ListByTestJobComplete(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, filter string) (result automation.JobStreamListResultIterator, err error)
 }
 
 var _ TestJobStreamsClientAPI = (*automation.TestJobStreamsClient)(nil)
@@ -305,6 +324,7 @@ type ScheduleClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string) (result automation.Schedule, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.ScheduleListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.ScheduleListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, parameters automation.ScheduleUpdateParameters) (result automation.Schedule, err error)
 }
 
@@ -316,6 +336,7 @@ type VariableClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string) (result automation.Variable, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.VariableListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.VariableListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, parameters automation.VariableUpdateParameters) (result automation.Variable, err error)
 }
 
@@ -328,6 +349,7 @@ type WebhookClientAPI interface {
 	GenerateURI(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.String, err error)
 	Get(ctx context.Context, resourceGroupName string, automationAccountName string, webhookName string) (result automation.Webhook, err error)
 	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.WebhookListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.WebhookListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, automationAccountName string, webhookName string, parameters automation.WebhookUpdateParameters) (result automation.Webhook, err error)
 }
 

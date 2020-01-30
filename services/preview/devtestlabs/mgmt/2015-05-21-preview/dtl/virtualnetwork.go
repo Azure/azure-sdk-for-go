@@ -35,7 +35,8 @@ func NewVirtualNetworkClient(subscriptionID string) VirtualNetworkClient {
 	return NewVirtualNetworkClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewVirtualNetworkClientWithBaseURI creates an instance of the VirtualNetworkClient client.
+// NewVirtualNetworkClientWithBaseURI creates an instance of the VirtualNetworkClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewVirtualNetworkClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkClient {
 	return VirtualNetworkClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -34,6 +34,7 @@ var _ BaseClientAPI = (*reservations.BaseClient)(nil)
 type OrderClientAPI interface {
 	Get(ctx context.Context, reservationOrderID string) (result reservations.OrderResponse, err error)
 	List(ctx context.Context) (result reservations.OrderListPage, err error)
+	ListComplete(ctx context.Context) (result reservations.OrderListIterator, err error)
 }
 
 var _ OrderClientAPI = (*reservations.OrderClient)(nil)
@@ -42,7 +43,9 @@ var _ OrderClientAPI = (*reservations.OrderClient)(nil)
 type ClientAPI interface {
 	Get(ctx context.Context, reservationID string, reservationOrderID string) (result reservations.Response, err error)
 	List(ctx context.Context, reservationOrderID string) (result reservations.ListPage, err error)
+	ListComplete(ctx context.Context, reservationOrderID string) (result reservations.ListIterator, err error)
 	ListRevisions(ctx context.Context, reservationID string, reservationOrderID string) (result reservations.ListPage, err error)
+	ListRevisionsComplete(ctx context.Context, reservationID string, reservationOrderID string) (result reservations.ListIterator, err error)
 	Merge(ctx context.Context, reservationOrderID string, body reservations.MergeRequest) (result reservations.ReservationMergeFuture, err error)
 	Split(ctx context.Context, reservationOrderID string, body reservations.SplitRequest) (result reservations.SplitFuture, err error)
 	Update(ctx context.Context, reservationOrderID string, reservationID string, parameters reservations.Patch) (result reservations.ReservationUpdateFuture, err error)
@@ -53,6 +56,7 @@ var _ ClientAPI = (*reservations.Client)(nil)
 // OperationClientAPI contains the set of methods on the OperationClient type.
 type OperationClientAPI interface {
 	List(ctx context.Context) (result reservations.OperationListPage, err error)
+	ListComplete(ctx context.Context) (result reservations.OperationListIterator, err error)
 }
 
 var _ OperationClientAPI = (*reservations.OperationClient)(nil)

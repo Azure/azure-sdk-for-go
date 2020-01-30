@@ -25,6 +25,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result windowsiot.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result windowsiot.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*windowsiot.OperationsClient)(nil)
@@ -36,7 +37,9 @@ type ServicesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, deviceName string) (result windowsiot.DeviceService, err error)
 	Get(ctx context.Context, resourceGroupName string, deviceName string) (result windowsiot.DeviceService, err error)
 	List(ctx context.Context) (result windowsiot.DeviceServiceDescriptionListResultPage, err error)
+	ListComplete(ctx context.Context) (result windowsiot.DeviceServiceDescriptionListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result windowsiot.DeviceServiceDescriptionListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result windowsiot.DeviceServiceDescriptionListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, deviceName string, deviceService windowsiot.DeviceServiceProperties, ifMatch string) (result windowsiot.DeviceService, err error)
 }
 

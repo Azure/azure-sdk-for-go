@@ -36,7 +36,8 @@ func NewCaseCommentsClient(subscriptionID string) CaseCommentsClient {
 	return NewCaseCommentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCaseCommentsClientWithBaseURI creates an instance of the CaseCommentsClient client.
+// NewCaseCommentsClientWithBaseURI creates an instance of the CaseCommentsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCaseCommentsClientWithBaseURI(baseURI string, subscriptionID string) CaseCommentsClient {
 	return CaseCommentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -74,10 +75,7 @@ func (client CaseCommentsClient) CreateComment(ctx context.Context, resourceGrou
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: caseComment,
 			Constraints: []validation.Constraint{{Target: "caseComment.CaseCommentProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "caseComment.CaseCommentProperties.Message", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "caseComment.CaseCommentProperties.UserInfo", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "caseComment.CaseCommentProperties.UserInfo.ObjectID", Name: validation.Null, Rule: true, Chain: nil}}},
-				}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "caseComment.CaseCommentProperties.Message", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("securityinsight.CaseCommentsClient", "CreateComment", err.Error())
 	}
 

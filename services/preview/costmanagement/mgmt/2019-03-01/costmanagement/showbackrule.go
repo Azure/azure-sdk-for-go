@@ -35,7 +35,8 @@ func NewShowbackRuleClient(subscriptionID string) ShowbackRuleClient {
 	return NewShowbackRuleClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewShowbackRuleClientWithBaseURI creates an instance of the ShowbackRuleClient client.
+// NewShowbackRuleClientWithBaseURI creates an instance of the ShowbackRuleClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewShowbackRuleClientWithBaseURI(baseURI string, subscriptionID string) ShowbackRuleClient {
 	return ShowbackRuleClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

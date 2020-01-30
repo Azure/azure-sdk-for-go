@@ -29,7 +29,9 @@ type ServicesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result healthcareapis.ServicesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result healthcareapis.ServicesDescription, err error)
 	List(ctx context.Context) (result healthcareapis.ServicesDescriptionListResultPage, err error)
+	ListComplete(ctx context.Context) (result healthcareapis.ServicesDescriptionListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result healthcareapis.ServicesDescriptionListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result healthcareapis.ServicesDescriptionListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription healthcareapis.ServicesPatchDescription) (result healthcareapis.ServicesUpdateFuture, err error)
 }
 
@@ -38,6 +40,7 @@ var _ ServicesClientAPI = (*healthcareapis.ServicesClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result healthcareapis.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result healthcareapis.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*healthcareapis.OperationsClient)(nil)

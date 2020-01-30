@@ -221,6 +221,27 @@ func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
 	return []SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled, SecurityAlertPolicyStateNew}
 }
 
+// SensitivityLabelRank enumerates the values for sensitivity label rank.
+type SensitivityLabelRank string
+
+const (
+	// Critical ...
+	Critical SensitivityLabelRank = "Critical"
+	// High ...
+	High SensitivityLabelRank = "High"
+	// Low ...
+	Low SensitivityLabelRank = "Low"
+	// Medium ...
+	Medium SensitivityLabelRank = "Medium"
+	// None ...
+	None SensitivityLabelRank = "None"
+)
+
+// PossibleSensitivityLabelRankValues returns an array of possible values for the SensitivityLabelRank const type.
+func PossibleSensitivityLabelRankValues() []SensitivityLabelRank {
+	return []SensitivityLabelRank{Critical, High, Low, Medium, None}
+}
+
 // SensitivityLabelSource enumerates the values for sensitivity label source.
 type SensitivityLabelSource string
 
@@ -3111,6 +3132,8 @@ type SensitivityLabelProperties struct {
 	InformationTypeID *string `json:"informationTypeId,omitempty"`
 	// IsDisabled - READ-ONLY; Is sensitivity recommendation disabled. Applicable for recommended sensitivity label only. Specifies whether the sensitivity recommendation on this column is disabled (dismissed) or not.
 	IsDisabled *bool `json:"isDisabled,omitempty"`
+	// Rank - Possible values include: 'None', 'Low', 'Medium', 'High', 'Critical'
+	Rank SensitivityLabelRank `json:"rank,omitempty"`
 }
 
 // ServerAzureADAdministrator azure Active Directory administrator.

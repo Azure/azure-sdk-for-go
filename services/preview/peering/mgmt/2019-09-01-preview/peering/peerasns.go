@@ -35,7 +35,8 @@ func NewPeerAsnsClient(subscriptionID string) PeerAsnsClient {
 	return NewPeerAsnsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPeerAsnsClientWithBaseURI creates an instance of the PeerAsnsClient client.
+// NewPeerAsnsClientWithBaseURI creates an instance of the PeerAsnsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPeerAsnsClientWithBaseURI(baseURI string, subscriptionID string) PeerAsnsClient {
 	return PeerAsnsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

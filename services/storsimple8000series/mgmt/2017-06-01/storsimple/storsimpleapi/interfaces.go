@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result storsimple.AvailableProviderOperationListPage, err error)
+	ListComplete(ctx context.Context) (result storsimple.AvailableProviderOperationListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*storsimple.OperationsClient)(nil)
@@ -68,6 +69,7 @@ var _ AccessControlRecordsClientAPI = (*storsimple.AccessControlRecordsClient)(n
 type AlertsClientAPI interface {
 	Clear(ctx context.Context, parameters storsimple.ClearAlertRequest, resourceGroupName string, managerName string) (result autorest.Response, err error)
 	ListByManager(ctx context.Context, resourceGroupName string, managerName string, filter string) (result storsimple.AlertListPage, err error)
+	ListByManagerComplete(ctx context.Context, resourceGroupName string, managerName string, filter string) (result storsimple.AlertListIterator, err error)
 	SendTestEmail(ctx context.Context, deviceName string, parameters storsimple.SendTestAlertEmailRequest, resourceGroupName string, managerName string) (result autorest.Response, err error)
 }
 
@@ -153,6 +155,7 @@ type BackupsClientAPI interface {
 	Clone(ctx context.Context, deviceName string, backupName string, backupElementName string, parameters storsimple.CloneRequest, resourceGroupName string, managerName string) (result storsimple.BackupsCloneFuture, err error)
 	Delete(ctx context.Context, deviceName string, backupName string, resourceGroupName string, managerName string) (result storsimple.BackupsDeleteFuture, err error)
 	ListByDevice(ctx context.Context, deviceName string, resourceGroupName string, managerName string, filter string) (result storsimple.BackupListPage, err error)
+	ListByDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string, managerName string, filter string) (result storsimple.BackupListIterator, err error)
 	Restore(ctx context.Context, deviceName string, backupName string, resourceGroupName string, managerName string) (result storsimple.BackupsRestoreFuture, err error)
 }
 
@@ -171,7 +174,9 @@ type JobsClientAPI interface {
 	Cancel(ctx context.Context, deviceName string, jobName string, resourceGroupName string, managerName string) (result storsimple.JobsCancelFuture, err error)
 	Get(ctx context.Context, deviceName string, jobName string, resourceGroupName string, managerName string) (result storsimple.Job, err error)
 	ListByDevice(ctx context.Context, deviceName string, resourceGroupName string, managerName string, filter string) (result storsimple.JobListPage, err error)
+	ListByDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string, managerName string, filter string) (result storsimple.JobListIterator, err error)
 	ListByManager(ctx context.Context, resourceGroupName string, managerName string, filter string) (result storsimple.JobListPage, err error)
+	ListByManagerComplete(ctx context.Context, resourceGroupName string, managerName string, filter string) (result storsimple.JobListIterator, err error)
 }
 
 var _ JobsClientAPI = (*storsimple.JobsClient)(nil)

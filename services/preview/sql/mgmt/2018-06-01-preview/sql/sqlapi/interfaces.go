@@ -28,6 +28,7 @@ type DatabaseSecurityAlertPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.DatabaseSecurityAlertPolicy) (result sql.DatabaseSecurityAlertPolicy, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseSecurityAlertPolicy, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseSecurityAlertListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseSecurityAlertListResultIterator, err error)
 }
 
 var _ DatabaseSecurityAlertPoliciesClientAPI = (*sql.DatabaseSecurityAlertPoliciesClient)(nil)
@@ -40,7 +41,9 @@ type ManagedDatabaseSensitivityLabelsClientAPI interface {
 	EnableRecommendation(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource sql.SensitivityLabelSource) (result sql.SensitivityLabel, err error)
 	ListCurrentByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, filter string) (result sql.SensitivityLabelListResultPage, err error)
+	ListCurrentByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, filter string) (result sql.SensitivityLabelListResultIterator, err error)
 	ListRecommendedByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, includeDisabledRecommendations *bool, skipToken string, filter string) (result sql.SensitivityLabelListResultPage, err error)
+	ListRecommendedByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, includeDisabledRecommendations *bool, skipToken string, filter string) (result sql.SensitivityLabelListResultIterator, err error)
 }
 
 var _ ManagedDatabaseSensitivityLabelsClientAPI = (*sql.ManagedDatabaseSensitivityLabelsClient)(nil)
@@ -51,6 +54,7 @@ type ManagedInstanceVulnerabilityAssessmentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceVulnerabilityAssessment, err error)
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceVulnerabilityAssessmentListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceVulnerabilityAssessmentListResultIterator, err error)
 }
 
 var _ ManagedInstanceVulnerabilityAssessmentsClientAPI = (*sql.ManagedInstanceVulnerabilityAssessmentsClient)(nil)
@@ -58,6 +62,7 @@ var _ ManagedInstanceVulnerabilityAssessmentsClientAPI = (*sql.ManagedInstanceVu
 // ManagedInstanceOperationsClientAPI contains the set of methods on the ManagedInstanceOperationsClient type.
 type ManagedInstanceOperationsClientAPI interface {
 	ListByManagedInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceOperationListResultPage, err error)
+	ListByManagedInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceOperationListResultIterator, err error)
 }
 
 var _ ManagedInstanceOperationsClientAPI = (*sql.ManagedInstanceOperationsClient)(nil)
@@ -68,6 +73,7 @@ type ServerVulnerabilityAssessmentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerVulnerabilityAssessment, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerVulnerabilityAssessmentListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerVulnerabilityAssessmentListResultIterator, err error)
 }
 
 var _ ServerVulnerabilityAssessmentsClientAPI = (*sql.ServerVulnerabilityAssessmentsClient)(nil)
@@ -78,7 +84,9 @@ type InstancePoolsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.InstancePoolsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.InstancePool, err error)
 	List(ctx context.Context) (result sql.InstancePoolListResultPage, err error)
+	ListComplete(ctx context.Context) (result sql.InstancePoolListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.InstancePoolListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result sql.InstancePoolListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, instancePoolName string, parameters sql.InstancePoolUpdate) (result sql.InstancePoolsUpdateFuture, err error)
 }
 
@@ -87,6 +95,7 @@ var _ InstancePoolsClientAPI = (*sql.InstancePoolsClient)(nil)
 // UsagesClientAPI contains the set of methods on the UsagesClient type.
 type UsagesClientAPI interface {
 	ListByInstancePool(ctx context.Context, resourceGroupName string, instancePoolName string, expandChildren *bool) (result sql.UsageListResultPage, err error)
+	ListByInstancePoolComplete(ctx context.Context, resourceGroupName string, instancePoolName string, expandChildren *bool) (result sql.UsageListResultIterator, err error)
 }
 
 var _ UsagesClientAPI = (*sql.UsagesClient)(nil)
@@ -97,8 +106,11 @@ type ManagedInstancesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstancesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstance, err error)
 	List(ctx context.Context) (result sql.ManagedInstanceListResultPage, err error)
+	ListComplete(ctx context.Context) (result sql.ManagedInstanceListResultIterator, err error)
 	ListByInstancePool(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.ManagedInstanceListResultPage, err error)
+	ListByInstancePoolComplete(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.ManagedInstanceListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.ManagedInstanceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result sql.ManagedInstanceListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstanceUpdate) (result sql.ManagedInstancesUpdateFuture, err error)
 }
 
@@ -118,6 +130,7 @@ type ManagedDatabasesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabasesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabase, err error)
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedDatabaseListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedDatabaseListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.ManagedDatabaseUpdate) (result sql.ManagedDatabasesUpdateFuture, err error)
 }
 
@@ -143,6 +156,7 @@ type PrivateEndpointConnectionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string) (result sql.PrivateEndpointConnectionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string) (result sql.PrivateEndpointConnection, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.PrivateEndpointConnectionListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.PrivateEndpointConnectionListResultIterator, err error)
 }
 
 var _ PrivateEndpointConnectionsClientAPI = (*sql.PrivateEndpointConnectionsClient)(nil)
@@ -153,6 +167,7 @@ type ServerAzureADAdministratorsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministratorsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministrator, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.AdministratorListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.AdministratorListResultIterator, err error)
 }
 
 var _ ServerAzureADAdministratorsClientAPI = (*sql.ServerAzureADAdministratorsClient)(nil)

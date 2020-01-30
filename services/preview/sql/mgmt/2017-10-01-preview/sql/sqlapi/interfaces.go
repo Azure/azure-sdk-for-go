@@ -28,6 +28,7 @@ import (
 type DatabaseOperationsClientAPI interface {
 	Cancel(ctx context.Context, resourceGroupName string, serverName string, databaseName string, operationID uuid.UUID) (result autorest.Response, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseOperationListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseOperationListResultIterator, err error)
 }
 
 var _ DatabaseOperationsClientAPI = (*sql.DatabaseOperationsClient)(nil)
@@ -36,6 +37,7 @@ var _ DatabaseOperationsClientAPI = (*sql.DatabaseOperationsClient)(nil)
 type ElasticPoolOperationsClientAPI interface {
 	Cancel(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, operationID uuid.UUID) (result autorest.Response, err error)
 	ListByElasticPool(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.ElasticPoolOperationListResultPage, err error)
+	ListByElasticPoolComplete(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.ElasticPoolOperationListResultIterator, err error)
 }
 
 var _ ElasticPoolOperationsClientAPI = (*sql.ElasticPoolOperationsClient)(nil)
@@ -46,6 +48,7 @@ type DatabaseVulnerabilityAssessmentScansClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, scanID string) (result sql.VulnerabilityAssessmentScanRecord, err error)
 	InitiateScan(ctx context.Context, resourceGroupName string, serverName string, databaseName string, scanID string) (result sql.DatabaseVulnerabilityAssessmentScansInitiateScanFuture, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.VulnerabilityAssessmentScanRecordListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.VulnerabilityAssessmentScanRecordListResultIterator, err error)
 }
 
 var _ DatabaseVulnerabilityAssessmentScansClientAPI = (*sql.DatabaseVulnerabilityAssessmentScansClient)(nil)
@@ -65,6 +68,7 @@ type ManagedDatabaseVulnerabilityAssessmentScansClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, scanID string) (result sql.VulnerabilityAssessmentScanRecord, err error)
 	InitiateScan(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, scanID string) (result sql.ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.VulnerabilityAssessmentScanRecordListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.VulnerabilityAssessmentScanRecordListResultIterator, err error)
 }
 
 var _ ManagedDatabaseVulnerabilityAssessmentScansClientAPI = (*sql.ManagedDatabaseVulnerabilityAssessmentScansClient)(nil)
@@ -75,6 +79,7 @@ type ManagedDatabaseVulnerabilityAssessmentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.DatabaseVulnerabilityAssessment, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.DatabaseVulnerabilityAssessmentListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.DatabaseVulnerabilityAssessmentListResultIterator, err error)
 }
 
 var _ ManagedDatabaseVulnerabilityAssessmentsClientAPI = (*sql.ManagedDatabaseVulnerabilityAssessmentsClient)(nil)
@@ -92,7 +97,9 @@ type DatabasesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabasesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.Database, err error)
 	ListByElasticPool(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.DatabaseListResultPage, err error)
+	ListByElasticPoolComplete(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.DatabaseListResultIterator, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.DatabaseListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.DatabaseListResultIterator, err error)
 	Pause(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabasesPauseFuture, err error)
 	Rename(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.ResourceMoveDefinition) (result autorest.Response, err error)
 	Resume(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabasesResumeFuture, err error)
@@ -108,6 +115,7 @@ type ElasticPoolsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.ElasticPoolsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.ElasticPool, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string, skip *int32) (result sql.ElasticPoolListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string, skip *int32) (result sql.ElasticPoolListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters sql.ElasticPoolUpdate) (result sql.ElasticPoolsUpdateFuture, err error)
 }
 
@@ -121,6 +129,7 @@ type InstanceFailoverGroupsClientAPI interface {
 	ForceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string) (result sql.InstanceFailoverGroupsForceFailoverAllowDataLossFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string) (result sql.InstanceFailoverGroup, err error)
 	ListByLocation(ctx context.Context, resourceGroupName string, locationName string) (result sql.InstanceFailoverGroupListResultPage, err error)
+	ListByLocationComplete(ctx context.Context, resourceGroupName string, locationName string) (result sql.InstanceFailoverGroupListResultIterator, err error)
 }
 
 var _ InstanceFailoverGroupsClientAPI = (*sql.InstanceFailoverGroupsClient)(nil)
@@ -130,6 +139,7 @@ type BackupShortTermRetentionPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.BackupShortTermRetentionPolicy) (result sql.BackupShortTermRetentionPoliciesCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupShortTermRetentionPolicy, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupShortTermRetentionPolicyListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupShortTermRetentionPolicyListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.BackupShortTermRetentionPolicy) (result sql.BackupShortTermRetentionPoliciesUpdateFuture, err error)
 }
 
@@ -155,6 +165,7 @@ type ManagedInstanceKeysClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string) (result sql.ManagedInstanceKeysDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string) (result sql.ManagedInstanceKey, err error)
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string, filter string) (result sql.ManagedInstanceKeyListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, filter string) (result sql.ManagedInstanceKeyListResultIterator, err error)
 }
 
 var _ ManagedInstanceKeysClientAPI = (*sql.ManagedInstanceKeysClient)(nil)
@@ -164,6 +175,7 @@ type ManagedInstanceEncryptionProtectorsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstanceEncryptionProtector) (result sql.ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceEncryptionProtector, err error)
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceEncryptionProtectorListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceEncryptionProtectorListResultIterator, err error)
 	Revalidate(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceEncryptionProtectorsRevalidateFuture, err error)
 }
 
@@ -173,6 +185,7 @@ var _ ManagedInstanceEncryptionProtectorsClientAPI = (*sql.ManagedInstanceEncryp
 type RecoverableManagedDatabasesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, recoverableDatabaseName string) (result sql.RecoverableManagedDatabase, err error)
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.RecoverableManagedDatabaseListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.RecoverableManagedDatabaseListResultIterator, err error)
 }
 
 var _ RecoverableManagedDatabasesClientAPI = (*sql.RecoverableManagedDatabasesClient)(nil)

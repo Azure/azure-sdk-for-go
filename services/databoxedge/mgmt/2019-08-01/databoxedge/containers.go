@@ -36,7 +36,8 @@ func NewContainersClient(subscriptionID string) ContainersClient {
 	return NewContainersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewContainersClientWithBaseURI creates an instance of the ContainersClient client.
+// NewContainersClientWithBaseURI creates an instance of the ContainersClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewContainersClientWithBaseURI(baseURI string, subscriptionID string) ContainersClient {
 	return ContainersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

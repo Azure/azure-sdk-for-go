@@ -35,7 +35,8 @@ func NewRequestsClient() RequestsClient {
 	return NewRequestsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewRequestsClientWithBaseURI creates an instance of the RequestsClient client.
+// NewRequestsClientWithBaseURI creates an instance of the RequestsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewRequestsClientWithBaseURI(baseURI string) RequestsClient {
 	return RequestsClient{NewWithBaseURI(baseURI)}
 }

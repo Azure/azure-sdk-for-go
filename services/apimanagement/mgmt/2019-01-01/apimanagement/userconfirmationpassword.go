@@ -36,7 +36,9 @@ func NewUserConfirmationPasswordClient(subscriptionID string) UserConfirmationPa
 	return NewUserConfirmationPasswordClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewUserConfirmationPasswordClientWithBaseURI creates an instance of the UserConfirmationPasswordClient client.
+// NewUserConfirmationPasswordClientWithBaseURI creates an instance of the UserConfirmationPasswordClient client using
+// a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewUserConfirmationPasswordClientWithBaseURI(baseURI string, subscriptionID string) UserConfirmationPasswordClient {
 	return UserConfirmationPasswordClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

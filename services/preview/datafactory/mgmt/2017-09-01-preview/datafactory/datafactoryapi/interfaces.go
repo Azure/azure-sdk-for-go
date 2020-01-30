@@ -39,7 +39,9 @@ type FactoriesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, factoryName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.Factory, err error)
 	List(ctx context.Context) (result datafactory.FactoryListResponsePage, err error)
+	ListComplete(ctx context.Context) (result datafactory.FactoryListResponseIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result datafactory.FactoryListResponsePage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result datafactory.FactoryListResponseIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, factoryName string, factoryUpdateParameters datafactory.FactoryUpdateParameters) (result datafactory.Factory, err error)
 }
 
@@ -55,6 +57,7 @@ type IntegrationRuntimesClientAPI interface {
 	GetStatus(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (result datafactory.IntegrationRuntimeStatusResponse, err error)
 	ListAuthKeys(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (result datafactory.IntegrationRuntimeAuthKeys, err error)
 	ListByFactory(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.IntegrationRuntimeListResponsePage, err error)
+	ListByFactoryComplete(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.IntegrationRuntimeListResponseIterator, err error)
 	RegenerateAuthKey(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, regenerateKeyParameters datafactory.IntegrationRuntimeRegenerateKeyParameters) (result datafactory.IntegrationRuntimeAuthKeys, err error)
 	RemoveNode(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, removeNodeParameters datafactory.IntegrationRuntimeRemoveNodeRequest) (result autorest.Response, err error)
 	Start(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (result datafactory.IntegrationRuntimesStartFuture, err error)
@@ -81,6 +84,7 @@ type LinkedServicesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string) (result datafactory.LinkedServiceResource, err error)
 	ListByFactory(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.LinkedServiceListResponsePage, err error)
+	ListByFactoryComplete(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.LinkedServiceListResponseIterator, err error)
 }
 
 var _ LinkedServicesClientAPI = (*datafactory.LinkedServicesClient)(nil)
@@ -91,6 +95,7 @@ type DatasetsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, factoryName string, datasetName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, factoryName string, datasetName string) (result datafactory.DatasetResource, err error)
 	ListByFactory(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.DatasetListResponsePage, err error)
+	ListByFactoryComplete(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.DatasetListResponseIterator, err error)
 }
 
 var _ DatasetsClientAPI = (*datafactory.DatasetsClient)(nil)
@@ -102,6 +107,7 @@ type PipelinesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string) (result datafactory.PipelineResource, err error)
 	ListByFactory(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.PipelineListResponsePage, err error)
+	ListByFactoryComplete(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.PipelineListResponseIterator, err error)
 }
 
 var _ PipelinesClientAPI = (*datafactory.PipelinesClient)(nil)
@@ -117,6 +123,7 @@ var _ PipelineRunsClientAPI = (*datafactory.PipelineRunsClient)(nil)
 // ActivityRunsClientAPI contains the set of methods on the ActivityRunsClient type.
 type ActivityRunsClientAPI interface {
 	ListByPipelineRun(ctx context.Context, resourceGroupName string, factoryName string, runID string, startTime date.Time, endTime date.Time, status string, activityName string, linkedServiceName string) (result datafactory.ActivityRunsListResponsePage, err error)
+	ListByPipelineRunComplete(ctx context.Context, resourceGroupName string, factoryName string, runID string, startTime date.Time, endTime date.Time, status string, activityName string, linkedServiceName string) (result datafactory.ActivityRunsListResponseIterator, err error)
 }
 
 var _ ActivityRunsClientAPI = (*datafactory.ActivityRunsClient)(nil)
@@ -127,7 +134,9 @@ type TriggersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result datafactory.TriggerResource, err error)
 	ListByFactory(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.TriggerListResponsePage, err error)
+	ListByFactoryComplete(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.TriggerListResponseIterator, err error)
 	ListRuns(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, startTime date.Time, endTime date.Time) (result datafactory.TriggerRunListResponsePage, err error)
+	ListRunsComplete(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, startTime date.Time, endTime date.Time) (result datafactory.TriggerRunListResponseIterator, err error)
 	Start(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result datafactory.TriggersStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result datafactory.TriggersStopFuture, err error)
 }

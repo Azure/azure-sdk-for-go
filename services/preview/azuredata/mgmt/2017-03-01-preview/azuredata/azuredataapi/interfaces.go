@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result azuredata.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result azuredata.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*azuredata.OperationsClient)(nil)
@@ -36,7 +37,9 @@ type SQLServerRegistrationsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, SQLServerRegistrationName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, SQLServerRegistrationName string) (result azuredata.SQLServerRegistration, err error)
 	List(ctx context.Context) (result azuredata.SQLServerRegistrationListResultPage, err error)
+	ListComplete(ctx context.Context) (result azuredata.SQLServerRegistrationListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result azuredata.SQLServerRegistrationListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result azuredata.SQLServerRegistrationListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, SQLServerRegistrationName string, parameters azuredata.SQLServerRegistrationUpdate) (result azuredata.SQLServerRegistration, err error)
 }
 
@@ -48,6 +51,7 @@ type SQLServersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, SQLServerRegistrationName string, SQLServerName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, SQLServerRegistrationName string, SQLServerName string, expand string) (result azuredata.SQLServer, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, SQLServerRegistrationName string, expand string) (result azuredata.SQLServerListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, SQLServerRegistrationName string, expand string) (result azuredata.SQLServerListResultIterator, err error)
 }
 
 var _ SQLServersClientAPI = (*azuredata.SQLServersClient)(nil)

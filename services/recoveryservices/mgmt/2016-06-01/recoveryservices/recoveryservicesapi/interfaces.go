@@ -57,7 +57,9 @@ type VaultsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, vaultName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, vaultName string) (result recoveryservices.Vault, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result recoveryservices.VaultListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result recoveryservices.VaultListIterator, err error)
 	ListBySubscriptionID(ctx context.Context) (result recoveryservices.VaultListPage, err error)
+	ListBySubscriptionIDComplete(ctx context.Context) (result recoveryservices.VaultListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, vaultName string, vault recoveryservices.PatchVault) (result recoveryservices.Vault, err error)
 }
 
@@ -66,6 +68,7 @@ var _ VaultsClientAPI = (*recoveryservices.VaultsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result recoveryservices.ClientDiscoveryResponsePage, err error)
+	ListComplete(ctx context.Context) (result recoveryservices.ClientDiscoveryResponseIterator, err error)
 }
 
 var _ OperationsClientAPI = (*recoveryservices.OperationsClient)(nil)

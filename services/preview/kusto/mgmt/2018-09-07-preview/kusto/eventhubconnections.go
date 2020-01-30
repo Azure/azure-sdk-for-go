@@ -38,7 +38,9 @@ func NewEventHubConnectionsClient(subscriptionID string) EventHubConnectionsClie
 	return NewEventHubConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewEventHubConnectionsClientWithBaseURI creates an instance of the EventHubConnectionsClient client.
+// NewEventHubConnectionsClientWithBaseURI creates an instance of the EventHubConnectionsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewEventHubConnectionsClientWithBaseURI(baseURI string, subscriptionID string) EventHubConnectionsClient {
 	return EventHubConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

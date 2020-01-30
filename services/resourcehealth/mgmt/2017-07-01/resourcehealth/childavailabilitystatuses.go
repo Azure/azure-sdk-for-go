@@ -35,7 +35,9 @@ func NewChildAvailabilityStatusesClient(subscriptionID string) ChildAvailability
 	return NewChildAvailabilityStatusesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewChildAvailabilityStatusesClientWithBaseURI creates an instance of the ChildAvailabilityStatusesClient client.
+// NewChildAvailabilityStatusesClientWithBaseURI creates an instance of the ChildAvailabilityStatusesClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewChildAvailabilityStatusesClientWithBaseURI(baseURI string, subscriptionID string) ChildAvailabilityStatusesClient {
 	return ChildAvailabilityStatusesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

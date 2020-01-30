@@ -37,7 +37,8 @@ func NewClient(operationResultID string, skiptoken string) Client {
 	return NewClientWithBaseURI(DefaultBaseURI, operationResultID, skiptoken)
 }
 
-// NewClientWithBaseURI creates an instance of the Client client.
+// NewClientWithBaseURI creates an instance of the Client client using a custom endpoint.  Use this when interacting
+// with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) Client {
 	return Client{NewWithBaseURI(baseURI, operationResultID, skiptoken)}
 }

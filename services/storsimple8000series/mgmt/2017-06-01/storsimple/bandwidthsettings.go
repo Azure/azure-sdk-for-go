@@ -36,7 +36,9 @@ func NewBandwidthSettingsClient(subscriptionID string) BandwidthSettingsClient {
 	return NewBandwidthSettingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBandwidthSettingsClientWithBaseURI creates an instance of the BandwidthSettingsClient client.
+// NewBandwidthSettingsClientWithBaseURI creates an instance of the BandwidthSettingsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewBandwidthSettingsClientWithBaseURI(baseURI string, subscriptionID string) BandwidthSettingsClient {
 	return BandwidthSettingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

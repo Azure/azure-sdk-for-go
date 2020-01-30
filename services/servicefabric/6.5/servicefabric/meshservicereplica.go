@@ -36,7 +36,9 @@ func NewMeshServiceReplicaClient() MeshServiceReplicaClient {
 	return NewMeshServiceReplicaClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewMeshServiceReplicaClientWithBaseURI creates an instance of the MeshServiceReplicaClient client.
+// NewMeshServiceReplicaClientWithBaseURI creates an instance of the MeshServiceReplicaClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewMeshServiceReplicaClientWithBaseURI(baseURI string) MeshServiceReplicaClient {
 	return MeshServiceReplicaClient{NewWithBaseURI(baseURI)}
 }

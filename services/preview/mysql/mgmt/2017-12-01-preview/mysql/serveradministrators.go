@@ -38,7 +38,9 @@ func NewServerAdministratorsClient(subscriptionID string) ServerAdministratorsCl
 	return NewServerAdministratorsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewServerAdministratorsClientWithBaseURI creates an instance of the ServerAdministratorsClient client.
+// NewServerAdministratorsClientWithBaseURI creates an instance of the ServerAdministratorsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewServerAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ServerAdministratorsClient {
 	return ServerAdministratorsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

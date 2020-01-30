@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result eventhub.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result eventhub.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*eventhub.OperationsClient)(nil)
@@ -40,8 +41,11 @@ type NamespacesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.NamespaceResource, err error)
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result eventhub.SharedAccessAuthorizationRuleResource, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.SharedAccessAuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.SharedAccessAuthorizationRuleListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result eventhub.NamespaceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result eventhub.NamespaceListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result eventhub.NamespaceListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result eventhub.NamespaceListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result eventhub.ResourceListKeys, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters eventhub.RegenerateKeysParameters) (result eventhub.ResourceListKeys, err error)
 	Update(ctx context.Context, resourceGroupName string, namespaceName string, parameters eventhub.NamespaceUpdateParameter) (result eventhub.NamespaceResource, err error)
@@ -58,7 +62,9 @@ type EventHubsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (result eventhub.ResourceType, err error)
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string) (result eventhub.SharedAccessAuthorizationRuleResource, err error)
 	ListAll(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.ListResultPage, err error)
+	ListAllComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.ListResultIterator, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (result eventhub.SharedAccessAuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (result eventhub.SharedAccessAuthorizationRuleListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string) (result eventhub.ResourceListKeys, err error)
 	PostAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string) (result eventhub.SharedAccessAuthorizationRuleResource, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters eventhub.RegenerateKeysParameters) (result eventhub.ResourceListKeys, err error)
@@ -72,6 +78,7 @@ type ConsumerGroupsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string) (result eventhub.ConsumerGroupResource, err error)
 	ListAll(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (result eventhub.ConsumerGroupListResultPage, err error)
+	ListAllComplete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (result eventhub.ConsumerGroupListResultIterator, err error)
 }
 
 var _ ConsumerGroupsClientAPI = (*eventhub.ConsumerGroupsClient)(nil)

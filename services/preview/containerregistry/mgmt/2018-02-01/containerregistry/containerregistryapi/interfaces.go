@@ -31,7 +31,9 @@ type RegistriesClientAPI interface {
 	GetBuildSourceUploadURL(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.SourceUploadDefinition, err error)
 	ImportImage(ctx context.Context, resourceGroupName string, registryName string, parameters containerregistry.ImportImageParameters) (result containerregistry.RegistriesImportImageFuture, err error)
 	List(ctx context.Context) (result containerregistry.RegistryListResultPage, err error)
+	ListComplete(ctx context.Context) (result containerregistry.RegistryListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result containerregistry.RegistryListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result containerregistry.RegistryListResultIterator, err error)
 	ListCredentials(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.RegistryListCredentialsResult, err error)
 	ListPolicies(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.RegistryPolicies, err error)
 	ListUsages(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.RegistryUsageListResult, err error)
@@ -46,6 +48,7 @@ var _ RegistriesClientAPI = (*containerregistry.RegistriesClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result containerregistry.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result containerregistry.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*containerregistry.OperationsClient)(nil)
@@ -56,6 +59,7 @@ type ReplicationsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, registryName string, replicationName string) (result containerregistry.ReplicationsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, registryName string, replicationName string) (result containerregistry.Replication, err error)
 	List(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.ReplicationListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.ReplicationListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replicationUpdateParameters containerregistry.ReplicationUpdateParameters) (result containerregistry.ReplicationsUpdateFuture, err error)
 }
 
@@ -68,7 +72,9 @@ type WebhooksClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, registryName string, webhookName string) (result containerregistry.Webhook, err error)
 	GetCallbackConfig(ctx context.Context, resourceGroupName string, registryName string, webhookName string) (result containerregistry.CallbackConfig, err error)
 	List(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.WebhookListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.WebhookListResultIterator, err error)
 	ListEvents(ctx context.Context, resourceGroupName string, registryName string, webhookName string) (result containerregistry.EventListResultPage, err error)
+	ListEventsComplete(ctx context.Context, resourceGroupName string, registryName string, webhookName string) (result containerregistry.EventListResultIterator, err error)
 	Ping(ctx context.Context, resourceGroupName string, registryName string, webhookName string) (result containerregistry.EventInfo, err error)
 	Update(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters containerregistry.WebhookUpdateParameters) (result containerregistry.WebhooksUpdateFuture, err error)
 }
@@ -81,6 +87,7 @@ type BuildsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, registryName string, buildID string) (result containerregistry.Build, err error)
 	GetLogLink(ctx context.Context, resourceGroupName string, registryName string, buildID string) (result containerregistry.BuildGetLogResult, err error)
 	List(ctx context.Context, resourceGroupName string, registryName string, filter string, top *int32, skipToken string) (result containerregistry.BuildListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, registryName string, filter string, top *int32, skipToken string) (result containerregistry.BuildListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, registryName string, buildID string, buildUpdateParameters containerregistry.BuildUpdateParameters) (result containerregistry.BuildsUpdateFuture, err error)
 }
 
@@ -92,7 +99,9 @@ type BuildStepsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, registryName string, buildTaskName string, stepName string) (result containerregistry.BuildStepsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, registryName string, buildTaskName string, stepName string) (result containerregistry.BuildStep, err error)
 	List(ctx context.Context, resourceGroupName string, registryName string, buildTaskName string) (result containerregistry.BuildStepListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, registryName string, buildTaskName string) (result containerregistry.BuildStepListIterator, err error)
 	ListBuildArguments(ctx context.Context, resourceGroupName string, registryName string, buildTaskName string, stepName string) (result containerregistry.BuildArgumentListPage, err error)
+	ListBuildArgumentsComplete(ctx context.Context, resourceGroupName string, registryName string, buildTaskName string, stepName string) (result containerregistry.BuildArgumentListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, registryName string, buildTaskName string, stepName string, buildStepUpdateParameters containerregistry.BuildStepUpdateParameters) (result containerregistry.BuildStepsUpdateFuture, err error)
 }
 
@@ -104,6 +113,7 @@ type BuildTasksClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, registryName string, buildTaskName string) (result containerregistry.BuildTasksDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, registryName string, buildTaskName string) (result containerregistry.BuildTask, err error)
 	List(ctx context.Context, resourceGroupName string, registryName string, filter string, skipToken string) (result containerregistry.BuildTaskListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, registryName string, filter string, skipToken string) (result containerregistry.BuildTaskListResultIterator, err error)
 	ListSourceRepositoryProperties(ctx context.Context, resourceGroupName string, registryName string, buildTaskName string) (result containerregistry.SourceRepositoryProperties, err error)
 	Update(ctx context.Context, resourceGroupName string, registryName string, buildTaskName string, buildTaskUpdateParameters containerregistry.BuildTaskUpdateParameters) (result containerregistry.BuildTasksUpdateFuture, err error)
 }

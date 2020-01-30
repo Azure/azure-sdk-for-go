@@ -33,8 +33,11 @@ type ClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, accountName string) (result account.DataLakeStoreAccount, err error)
 	GetFirewallRule(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string) (result account.FirewallRule, err error)
 	List(ctx context.Context, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result account.DataLakeStoreAccountListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result account.DataLakeStoreAccountListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result account.DataLakeStoreAccountListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result account.DataLakeStoreAccountListResultIterator, err error)
 	ListFirewallRules(ctx context.Context, resourceGroupName string, accountName string) (result account.DataLakeStoreFirewallRuleListResultPage, err error)
+	ListFirewallRulesComplete(ctx context.Context, resourceGroupName string, accountName string) (result account.DataLakeStoreFirewallRuleListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, name string, parameters account.DataLakeStoreAccount) (result account.UpdateFuture, err error)
 }
 

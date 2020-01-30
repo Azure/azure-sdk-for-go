@@ -35,7 +35,8 @@ func NewLegacyPeeringsClient(subscriptionID string) LegacyPeeringsClient {
 	return NewLegacyPeeringsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewLegacyPeeringsClientWithBaseURI creates an instance of the LegacyPeeringsClient client.
+// NewLegacyPeeringsClientWithBaseURI creates an instance of the LegacyPeeringsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewLegacyPeeringsClientWithBaseURI(baseURI string, subscriptionID string) LegacyPeeringsClient {
 	return LegacyPeeringsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

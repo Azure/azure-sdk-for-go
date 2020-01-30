@@ -36,7 +36,8 @@ func NewADCOperationsClient(subscriptionID string, catalogName string) ADCOperat
 	return NewADCOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID, catalogName)
 }
 
-// NewADCOperationsClientWithBaseURI creates an instance of the ADCOperationsClient client.
+// NewADCOperationsClientWithBaseURI creates an instance of the ADCOperationsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewADCOperationsClientWithBaseURI(baseURI string, subscriptionID string, catalogName string) ADCOperationsClient {
 	return ADCOperationsClient{NewWithBaseURI(baseURI, subscriptionID, catalogName)}
 }

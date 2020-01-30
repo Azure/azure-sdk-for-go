@@ -38,7 +38,9 @@ func NewAvailabilityGroupListenersClient(subscriptionID string) AvailabilityGrou
 	return NewAvailabilityGroupListenersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAvailabilityGroupListenersClientWithBaseURI creates an instance of the AvailabilityGroupListenersClient client.
+// NewAvailabilityGroupListenersClientWithBaseURI creates an instance of the AvailabilityGroupListenersClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewAvailabilityGroupListenersClientWithBaseURI(baseURI string, subscriptionID string) AvailabilityGroupListenersClient {
 	return AvailabilityGroupListenersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

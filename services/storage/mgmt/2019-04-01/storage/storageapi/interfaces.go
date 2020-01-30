@@ -45,6 +45,7 @@ type AccountsClientAPI interface {
 	Failover(ctx context.Context, resourceGroupName string, accountName string) (result storage.AccountsFailoverFuture, err error)
 	GetProperties(ctx context.Context, resourceGroupName string, accountName string, expand storage.AccountExpand) (result storage.Account, err error)
 	List(ctx context.Context) (result storage.AccountListResultPage, err error)
+	ListComplete(ctx context.Context) (result storage.AccountListResultIterator, err error)
 	ListAccountSAS(ctx context.Context, resourceGroupName string, accountName string, parameters storage.AccountSasParameters) (result storage.ListAccountSasResponse, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result storage.AccountListResult, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, accountName string, expand storage.ListKeyExpand) (result storage.AccountListKeysResult, err error)
@@ -93,6 +94,7 @@ type BlobContainersClientAPI interface {
 	GetImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string) (result storage.ImmutabilityPolicy, err error)
 	Lease(ctx context.Context, resourceGroupName string, accountName string, containerName string, parameters *storage.LeaseContainerRequest) (result storage.LeaseContainerResponse, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string, skipToken string, maxpagesize string, filter string) (result storage.ListContainerItemsPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, skipToken string, maxpagesize string, filter string) (result storage.ListContainerItemsIterator, err error)
 	LockImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string) (result storage.ImmutabilityPolicy, err error)
 	SetLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold storage.LegalHold) (result storage.LegalHold, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer storage.BlobContainer) (result storage.BlobContainer, err error)
@@ -115,6 +117,7 @@ type FileSharesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, shareName string) (result storage.FileShare, err error)
 	List(ctx context.Context, resourceGroupName string, accountName string, skipToken string, maxpagesize string, filter string) (result storage.FileShareItemsPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, skipToken string, maxpagesize string, filter string) (result storage.FileShareItemsIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare storage.FileShare) (result storage.FileShare, err error)
 }
 

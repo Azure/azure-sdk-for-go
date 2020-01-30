@@ -35,7 +35,9 @@ func NewIntegrationAccountMapsClient(subscriptionID string) IntegrationAccountMa
 	return NewIntegrationAccountMapsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewIntegrationAccountMapsClientWithBaseURI creates an instance of the IntegrationAccountMapsClient client.
+// NewIntegrationAccountMapsClientWithBaseURI creates an instance of the IntegrationAccountMapsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewIntegrationAccountMapsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountMapsClient {
 	return IntegrationAccountMapsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

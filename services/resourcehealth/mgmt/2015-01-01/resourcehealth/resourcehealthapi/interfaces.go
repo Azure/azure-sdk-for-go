@@ -26,8 +26,11 @@ import (
 type AvailabilityStatusesClientAPI interface {
 	GetByResource(ctx context.Context, resourceURI string, filter string, expand string) (result resourcehealth.AvailabilityStatus, err error)
 	List(ctx context.Context, resourceURI string, filter string, expand string) (result resourcehealth.AvailabilityStatusListResultPage, err error)
+	ListComplete(ctx context.Context, resourceURI string, filter string, expand string) (result resourcehealth.AvailabilityStatusListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, expand string) (result resourcehealth.AvailabilityStatusListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, expand string) (result resourcehealth.AvailabilityStatusListResultIterator, err error)
 	ListBySubscriptionID(ctx context.Context, filter string, expand string) (result resourcehealth.AvailabilityStatusListResultPage, err error)
+	ListBySubscriptionIDComplete(ctx context.Context, filter string, expand string) (result resourcehealth.AvailabilityStatusListResultIterator, err error)
 }
 
 var _ AvailabilityStatusesClientAPI = (*resourcehealth.AvailabilityStatusesClient)(nil)
@@ -36,6 +39,7 @@ var _ AvailabilityStatusesClientAPI = (*resourcehealth.AvailabilityStatusesClien
 type ChildAvailabilityStatusesClientAPI interface {
 	GetByResource(ctx context.Context, resourceURI string, filter string, expand string) (result resourcehealth.AvailabilityStatus, err error)
 	List(ctx context.Context, resourceURI string, filter string, expand string) (result resourcehealth.AvailabilityStatusListResultPage, err error)
+	ListComplete(ctx context.Context, resourceURI string, filter string, expand string) (result resourcehealth.AvailabilityStatusListResultIterator, err error)
 }
 
 var _ ChildAvailabilityStatusesClientAPI = (*resourcehealth.ChildAvailabilityStatusesClient)(nil)
@@ -43,6 +47,7 @@ var _ ChildAvailabilityStatusesClientAPI = (*resourcehealth.ChildAvailabilitySta
 // ChildResourcesClientAPI contains the set of methods on the ChildResourcesClient type.
 type ChildResourcesClientAPI interface {
 	List(ctx context.Context, resourceURI string, filter string, expand string) (result resourcehealth.AvailabilityStatusListResultPage, err error)
+	ListComplete(ctx context.Context, resourceURI string, filter string, expand string) (result resourcehealth.AvailabilityStatusListResultIterator, err error)
 }
 
 var _ ChildResourcesClientAPI = (*resourcehealth.ChildResourcesClient)(nil)

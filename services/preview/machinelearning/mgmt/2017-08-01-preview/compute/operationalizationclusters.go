@@ -40,7 +40,9 @@ func NewOperationalizationClustersClient(subscriptionID string) Operationalizati
 	return NewOperationalizationClustersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewOperationalizationClustersClientWithBaseURI creates an instance of the OperationalizationClustersClient client.
+// NewOperationalizationClustersClientWithBaseURI creates an instance of the OperationalizationClustersClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewOperationalizationClustersClientWithBaseURI(baseURI string, subscriptionID string) OperationalizationClustersClient {
 	return OperationalizationClustersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -35,7 +35,8 @@ func NewDataSetMappingsClient(subscriptionID string) DataSetMappingsClient {
 	return NewDataSetMappingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDataSetMappingsClientWithBaseURI creates an instance of the DataSetMappingsClient client.
+// NewDataSetMappingsClientWithBaseURI creates an instance of the DataSetMappingsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDataSetMappingsClientWithBaseURI(baseURI string, subscriptionID string) DataSetMappingsClient {
 	return DataSetMappingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -35,7 +35,8 @@ func NewEmergingIssuesClient(subscriptionID string) EmergingIssuesClient {
 	return NewEmergingIssuesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewEmergingIssuesClientWithBaseURI creates an instance of the EmergingIssuesClient client.
+// NewEmergingIssuesClientWithBaseURI creates an instance of the EmergingIssuesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewEmergingIssuesClientWithBaseURI(baseURI string, subscriptionID string) EmergingIssuesClient {
 	return EmergingIssuesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

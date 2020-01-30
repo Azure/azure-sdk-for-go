@@ -22,7 +22,7 @@ package kusto
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-09-07/kusto"
+	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-11-09/kusto"
 )
 
 const (
@@ -61,21 +61,18 @@ const (
 	Standard AzureSkuTier = original.Standard
 )
 
-type DataFormat = original.DataFormat
+type ClusterPrincipalRole = original.ClusterPrincipalRole
 
 const (
-	AVRO       DataFormat = original.AVRO
-	CSV        DataFormat = original.CSV
-	JSON       DataFormat = original.JSON
-	MULTIJSON  DataFormat = original.MULTIJSON
-	PSV        DataFormat = original.PSV
-	RAW        DataFormat = original.RAW
-	SCSV       DataFormat = original.SCSV
-	SINGLEJSON DataFormat = original.SINGLEJSON
-	SOHSV      DataFormat = original.SOHSV
-	TSV        DataFormat = original.TSV
-	TSVE       DataFormat = original.TSVE
-	TXT        DataFormat = original.TXT
+	AllDatabasesAdmin  ClusterPrincipalRole = original.AllDatabasesAdmin
+	AllDatabasesViewer ClusterPrincipalRole = original.AllDatabasesViewer
+)
+
+type Compression = original.Compression
+
+const (
+	CompressionGZip Compression = original.CompressionGZip
+	CompressionNone Compression = original.CompressionNone
 )
 
 type DatabasePrincipalRole = original.DatabasePrincipalRole
@@ -105,11 +102,68 @@ const (
 	DefaultPrincipalsModificationKindUnion   DefaultPrincipalsModificationKind = original.DefaultPrincipalsModificationKindUnion
 )
 
+type EventGridDataFormat = original.EventGridDataFormat
+
+const (
+	AVRO       EventGridDataFormat = original.AVRO
+	CSV        EventGridDataFormat = original.CSV
+	JSON       EventGridDataFormat = original.JSON
+	MULTIJSON  EventGridDataFormat = original.MULTIJSON
+	ORC        EventGridDataFormat = original.ORC
+	PARQUET    EventGridDataFormat = original.PARQUET
+	PSV        EventGridDataFormat = original.PSV
+	RAW        EventGridDataFormat = original.RAW
+	SCSV       EventGridDataFormat = original.SCSV
+	SINGLEJSON EventGridDataFormat = original.SINGLEJSON
+	SOHSV      EventGridDataFormat = original.SOHSV
+	TSV        EventGridDataFormat = original.TSV
+	TSVE       EventGridDataFormat = original.TSVE
+	TXT        EventGridDataFormat = original.TXT
+)
+
+type EventHubDataFormat = original.EventHubDataFormat
+
+const (
+	EventHubDataFormatAVRO       EventHubDataFormat = original.EventHubDataFormatAVRO
+	EventHubDataFormatCSV        EventHubDataFormat = original.EventHubDataFormatCSV
+	EventHubDataFormatJSON       EventHubDataFormat = original.EventHubDataFormatJSON
+	EventHubDataFormatMULTIJSON  EventHubDataFormat = original.EventHubDataFormatMULTIJSON
+	EventHubDataFormatORC        EventHubDataFormat = original.EventHubDataFormatORC
+	EventHubDataFormatPARQUET    EventHubDataFormat = original.EventHubDataFormatPARQUET
+	EventHubDataFormatPSV        EventHubDataFormat = original.EventHubDataFormatPSV
+	EventHubDataFormatRAW        EventHubDataFormat = original.EventHubDataFormatRAW
+	EventHubDataFormatSCSV       EventHubDataFormat = original.EventHubDataFormatSCSV
+	EventHubDataFormatSINGLEJSON EventHubDataFormat = original.EventHubDataFormatSINGLEJSON
+	EventHubDataFormatSOHSV      EventHubDataFormat = original.EventHubDataFormatSOHSV
+	EventHubDataFormatTSV        EventHubDataFormat = original.EventHubDataFormatTSV
+	EventHubDataFormatTSVE       EventHubDataFormat = original.EventHubDataFormatTSVE
+	EventHubDataFormatTXT        EventHubDataFormat = original.EventHubDataFormatTXT
+)
+
 type IdentityType = original.IdentityType
 
 const (
 	IdentityTypeNone           IdentityType = original.IdentityTypeNone
 	IdentityTypeSystemAssigned IdentityType = original.IdentityTypeSystemAssigned
+)
+
+type IotHubDataFormat = original.IotHubDataFormat
+
+const (
+	IotHubDataFormatAVRO       IotHubDataFormat = original.IotHubDataFormatAVRO
+	IotHubDataFormatCSV        IotHubDataFormat = original.IotHubDataFormatCSV
+	IotHubDataFormatJSON       IotHubDataFormat = original.IotHubDataFormatJSON
+	IotHubDataFormatMULTIJSON  IotHubDataFormat = original.IotHubDataFormatMULTIJSON
+	IotHubDataFormatORC        IotHubDataFormat = original.IotHubDataFormatORC
+	IotHubDataFormatPARQUET    IotHubDataFormat = original.IotHubDataFormatPARQUET
+	IotHubDataFormatPSV        IotHubDataFormat = original.IotHubDataFormatPSV
+	IotHubDataFormatRAW        IotHubDataFormat = original.IotHubDataFormatRAW
+	IotHubDataFormatSCSV       IotHubDataFormat = original.IotHubDataFormatSCSV
+	IotHubDataFormatSINGLEJSON IotHubDataFormat = original.IotHubDataFormatSINGLEJSON
+	IotHubDataFormatSOHSV      IotHubDataFormat = original.IotHubDataFormatSOHSV
+	IotHubDataFormatTSV        IotHubDataFormat = original.IotHubDataFormatTSV
+	IotHubDataFormatTSVE       IotHubDataFormat = original.IotHubDataFormatTSVE
+	IotHubDataFormatTXT        IotHubDataFormat = original.IotHubDataFormatTXT
 )
 
 type Kind = original.Kind
@@ -127,6 +181,14 @@ const (
 	KindEventGrid      KindBasicDataConnection = original.KindEventGrid
 	KindEventHub       KindBasicDataConnection = original.KindEventHub
 	KindIotHub         KindBasicDataConnection = original.KindIotHub
+)
+
+type PrincipalType = original.PrincipalType
+
+const (
+	PrincipalTypeApp   PrincipalType = original.PrincipalTypeApp
+	PrincipalTypeGroup PrincipalType = original.PrincipalTypeGroup
+	PrincipalTypeUser  PrincipalType = original.PrincipalTypeUser
 )
 
 type PrincipalsModificationKind = original.PrincipalsModificationKind
@@ -196,12 +258,20 @@ type CloudErrorBody = original.CloudErrorBody
 type Cluster = original.Cluster
 type ClusterCheckNameRequest = original.ClusterCheckNameRequest
 type ClusterListResult = original.ClusterListResult
+type ClusterPrincipalAssignment = original.ClusterPrincipalAssignment
+type ClusterPrincipalAssignmentCheckNameRequest = original.ClusterPrincipalAssignmentCheckNameRequest
+type ClusterPrincipalAssignmentListResult = original.ClusterPrincipalAssignmentListResult
+type ClusterPrincipalAssignmentsClient = original.ClusterPrincipalAssignmentsClient
+type ClusterPrincipalAssignmentsCreateOrUpdateFuture = original.ClusterPrincipalAssignmentsCreateOrUpdateFuture
+type ClusterPrincipalAssignmentsDeleteFuture = original.ClusterPrincipalAssignmentsDeleteFuture
+type ClusterPrincipalProperties = original.ClusterPrincipalProperties
 type ClusterProperties = original.ClusterProperties
 type ClusterUpdate = original.ClusterUpdate
 type ClustersClient = original.ClustersClient
 type ClustersCreateOrUpdateFuture = original.ClustersCreateOrUpdateFuture
 type ClustersDeleteFuture = original.ClustersDeleteFuture
 type ClustersDetachFollowerDatabasesFuture = original.ClustersDetachFollowerDatabasesFuture
+type ClustersDiagnoseVirtualNetworkFuture = original.ClustersDiagnoseVirtualNetworkFuture
 type ClustersStartFuture = original.ClustersStartFuture
 type ClustersStopFuture = original.ClustersStopFuture
 type ClustersUpdateFuture = original.ClustersUpdateFuture
@@ -220,13 +290,21 @@ type Database = original.Database
 type DatabaseListResult = original.DatabaseListResult
 type DatabaseModel = original.DatabaseModel
 type DatabasePrincipal = original.DatabasePrincipal
+type DatabasePrincipalAssignment = original.DatabasePrincipalAssignment
+type DatabasePrincipalAssignmentCheckNameRequest = original.DatabasePrincipalAssignmentCheckNameRequest
+type DatabasePrincipalAssignmentListResult = original.DatabasePrincipalAssignmentListResult
+type DatabasePrincipalAssignmentsClient = original.DatabasePrincipalAssignmentsClient
+type DatabasePrincipalAssignmentsCreateOrUpdateFuture = original.DatabasePrincipalAssignmentsCreateOrUpdateFuture
+type DatabasePrincipalAssignmentsDeleteFuture = original.DatabasePrincipalAssignmentsDeleteFuture
 type DatabasePrincipalListRequest = original.DatabasePrincipalListRequest
 type DatabasePrincipalListResult = original.DatabasePrincipalListResult
+type DatabasePrincipalProperties = original.DatabasePrincipalProperties
 type DatabaseStatistics = original.DatabaseStatistics
 type DatabasesClient = original.DatabasesClient
 type DatabasesCreateOrUpdateFuture = original.DatabasesCreateOrUpdateFuture
 type DatabasesDeleteFuture = original.DatabasesDeleteFuture
 type DatabasesUpdateFuture = original.DatabasesUpdateFuture
+type DiagnoseVirtualNetworkResult = original.DiagnoseVirtualNetworkResult
 type EventGridConnectionProperties = original.EventGridConnectionProperties
 type EventGridDataConnection = original.EventGridDataConnection
 type EventHubConnectionProperties = original.EventHubConnectionProperties
@@ -268,6 +346,12 @@ func NewAttachedDatabaseConfigurationsClient(subscriptionID string) AttachedData
 func NewAttachedDatabaseConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) AttachedDatabaseConfigurationsClient {
 	return original.NewAttachedDatabaseConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewClusterPrincipalAssignmentsClient(subscriptionID string) ClusterPrincipalAssignmentsClient {
+	return original.NewClusterPrincipalAssignmentsClient(subscriptionID)
+}
+func NewClusterPrincipalAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) ClusterPrincipalAssignmentsClient {
+	return original.NewClusterPrincipalAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
 }
@@ -279,6 +363,12 @@ func NewDataConnectionsClient(subscriptionID string) DataConnectionsClient {
 }
 func NewDataConnectionsClientWithBaseURI(baseURI string, subscriptionID string) DataConnectionsClient {
 	return original.NewDataConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDatabasePrincipalAssignmentsClient(subscriptionID string) DatabasePrincipalAssignmentsClient {
+	return original.NewDatabasePrincipalAssignmentsClient(subscriptionID)
+}
+func NewDatabasePrincipalAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) DatabasePrincipalAssignmentsClient {
+	return original.NewDatabasePrincipalAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDatabasesClient(subscriptionID string) DatabasesClient {
 	return original.NewDatabasesClient(subscriptionID)
@@ -310,8 +400,11 @@ func PossibleAzureSkuNameValues() []AzureSkuName {
 func PossibleAzureSkuTierValues() []AzureSkuTier {
 	return original.PossibleAzureSkuTierValues()
 }
-func PossibleDataFormatValues() []DataFormat {
-	return original.PossibleDataFormatValues()
+func PossibleClusterPrincipalRoleValues() []ClusterPrincipalRole {
+	return original.PossibleClusterPrincipalRoleValues()
+}
+func PossibleCompressionValues() []Compression {
+	return original.PossibleCompressionValues()
 }
 func PossibleDatabasePrincipalRoleValues() []DatabasePrincipalRole {
 	return original.PossibleDatabasePrincipalRoleValues()
@@ -322,14 +415,26 @@ func PossibleDatabasePrincipalTypeValues() []DatabasePrincipalType {
 func PossibleDefaultPrincipalsModificationKindValues() []DefaultPrincipalsModificationKind {
 	return original.PossibleDefaultPrincipalsModificationKindValues()
 }
+func PossibleEventGridDataFormatValues() []EventGridDataFormat {
+	return original.PossibleEventGridDataFormatValues()
+}
+func PossibleEventHubDataFormatValues() []EventHubDataFormat {
+	return original.PossibleEventHubDataFormatValues()
+}
 func PossibleIdentityTypeValues() []IdentityType {
 	return original.PossibleIdentityTypeValues()
+}
+func PossibleIotHubDataFormatValues() []IotHubDataFormat {
+	return original.PossibleIotHubDataFormatValues()
 }
 func PossibleKindBasicDataConnectionValues() []KindBasicDataConnection {
 	return original.PossibleKindBasicDataConnectionValues()
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
+}
+func PossiblePrincipalTypeValues() []PrincipalType {
+	return original.PossiblePrincipalTypeValues()
 }
 func PossiblePrincipalsModificationKindValues() []PrincipalsModificationKind {
 	return original.PossiblePrincipalsModificationKindValues()

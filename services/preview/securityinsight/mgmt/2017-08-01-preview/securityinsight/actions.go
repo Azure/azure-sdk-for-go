@@ -36,7 +36,8 @@ func NewActionsClient(subscriptionID string) ActionsClient {
 	return NewActionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewActionsClientWithBaseURI creates an instance of the ActionsClient client.
+// NewActionsClientWithBaseURI creates an instance of the ActionsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewActionsClientWithBaseURI(baseURI string, subscriptionID string) ActionsClient {
 	return ActionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

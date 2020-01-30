@@ -36,7 +36,9 @@ func NewMonitorInstancesSummaryClient(subscriptionID string) MonitorInstancesSum
 	return NewMonitorInstancesSummaryClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMonitorInstancesSummaryClientWithBaseURI creates an instance of the MonitorInstancesSummaryClient client.
+// NewMonitorInstancesSummaryClientWithBaseURI creates an instance of the MonitorInstancesSummaryClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewMonitorInstancesSummaryClientWithBaseURI(baseURI string, subscriptionID string) MonitorInstancesSummaryClient {
 	return MonitorInstancesSummaryClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

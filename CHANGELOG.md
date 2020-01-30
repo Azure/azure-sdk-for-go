@@ -1,5 +1,60 @@
 # CHANGELOG
 
+## `v39.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| appconfiguration | 2019-11-01-preview |
+| backup | 2019-06-15 |
+| containerregistry | 2019-08-15-preview |
+| containerservice | 2020-01-01 |
+| digitaltwins | 2020-03-01-preview |
+| documentdb | 2019-12-12 |
+| frontdoor | 2020-01-01 |
+| hybridcompute | 2019-12-12 |
+| kusto | 2019-11-09 |
+| netapp | 2019-11-01 |
+| network | 2019-11-01 |
+| support | 2019-05-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| blueprint | 2018-11-01-preview |
+| compute | 2019-07-01 |
+| containerservice | 2019-11-01 |
+| eventgrid | 2020-04-01-preview |
+| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+| healthcareapis | 2019-09-16 |
+| keyvault | 2018-02-14 |
+| operationalinsights | 2015-11-01-preview |
+| policy | 2019-09-01 |
+| qnamaker | v4.0 |
+| search | 2015-08-19 |
+| siterecovery | 2018-07-10 |
+| sql | 2017-03-01-preview<br/>2018-06-01-preview<br/>v3.0 |
+| web | 2019-08-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2019-01-01 |
+| containerservice | 2017-07-01<br/>2017-08-31<br/>2017-09-30<br/>2018-03-31 |
+| insights | 2018-03-01<br/>2018-09-01<br/>2018-11-01-preview<br/>2019-03-01<br/>2019-06-01 |
+| machinelearningservices | 2018-11-19<br/>2019-05-01<br/>2019-06-01<br/>2019-11-01<br/>2020-01-01 |
+| managedapplications | 2019-07-01 |
+| mariadb | 2018-06-01 |
+| netapp | 2019-05-01<br/>2019-06-01<br/>2019-07-01<br/>2019-08-01<br/>2019-10-01 |
+| network | 2019-09-01 |
+| security | v1.0<br/>v2.0<br/>v3.0 |
+| securityinsight | 2017-08-01-preview |
+| siterecovery | 2018-01-10 |
+| storage | 2019-06-01 |
+
 ## `v38.2.0`
 
 ### New Packages

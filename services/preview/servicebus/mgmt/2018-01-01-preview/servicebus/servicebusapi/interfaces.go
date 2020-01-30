@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result servicebus.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result servicebus.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*servicebus.OperationsClient)(nil)
@@ -44,9 +45,13 @@ type NamespacesClientAPI interface {
 	GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.NetworkRuleSet, err error)
 	GetVirtualNetworkRule(ctx context.Context, resourceGroupName string, namespaceName string, virtualNetworkRuleName string) (result servicebus.VirtualNetworkRule, err error)
 	List(ctx context.Context) (result servicebus.SBNamespaceListResultPage, err error)
+	ListComplete(ctx context.Context) (result servicebus.SBNamespaceListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result servicebus.SBNamespaceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result servicebus.SBNamespaceListResultIterator, err error)
 	ListIPFilterRules(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.IPFilterRuleListResultPage, err error)
+	ListIPFilterRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.IPFilterRuleListResultIterator, err error)
 	ListVirtualNetworkRules(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.VirtualNetworkRuleListResultPage, err error)
+	ListVirtualNetworkRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.VirtualNetworkRuleListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, namespaceName string, parameters servicebus.SBNamespaceUpdateParameters) (result servicebus.SBNamespace, err error)
 }
 

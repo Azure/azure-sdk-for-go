@@ -37,7 +37,8 @@ func NewMeshGatewayClient() MeshGatewayClient {
 	return NewMeshGatewayClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewMeshGatewayClientWithBaseURI creates an instance of the MeshGatewayClient client.
+// NewMeshGatewayClientWithBaseURI creates an instance of the MeshGatewayClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMeshGatewayClientWithBaseURI(baseURI string) MeshGatewayClient {
 	return MeshGatewayClient{NewWithBaseURI(baseURI)}
 }

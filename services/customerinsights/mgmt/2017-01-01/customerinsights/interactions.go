@@ -38,7 +38,8 @@ func NewInteractionsClient(subscriptionID string) InteractionsClient {
 	return NewInteractionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewInteractionsClientWithBaseURI creates an instance of the InteractionsClient client.
+// NewInteractionsClientWithBaseURI creates an instance of the InteractionsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewInteractionsClientWithBaseURI(baseURI string, subscriptionID string) InteractionsClient {
 	return InteractionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

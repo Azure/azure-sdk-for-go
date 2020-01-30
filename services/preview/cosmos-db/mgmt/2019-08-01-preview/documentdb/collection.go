@@ -36,7 +36,8 @@ func NewCollectionClient(subscriptionID string, subscriptionID1 string) Collecti
 	return NewCollectionClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
-// NewCollectionClientWithBaseURI creates an instance of the CollectionClient client.
+// NewCollectionClientWithBaseURI creates an instance of the CollectionClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCollectionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionClient {
 	return CollectionClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }

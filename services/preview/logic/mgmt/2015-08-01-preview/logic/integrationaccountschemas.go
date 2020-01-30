@@ -35,7 +35,9 @@ func NewIntegrationAccountSchemasClient(subscriptionID string) IntegrationAccoun
 	return NewIntegrationAccountSchemasClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewIntegrationAccountSchemasClientWithBaseURI creates an instance of the IntegrationAccountSchemasClient client.
+// NewIntegrationAccountSchemasClientWithBaseURI creates an instance of the IntegrationAccountSchemasClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewIntegrationAccountSchemasClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountSchemasClient {
 	return IntegrationAccountSchemasClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -37,7 +37,8 @@ func NewWidgetTypesClient(subscriptionID string) WidgetTypesClient {
 	return NewWidgetTypesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWidgetTypesClientWithBaseURI creates an instance of the WidgetTypesClient client.
+// NewWidgetTypesClientWithBaseURI creates an instance of the WidgetTypesClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewWidgetTypesClientWithBaseURI(baseURI string, subscriptionID string) WidgetTypesClient {
 	return WidgetTypesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

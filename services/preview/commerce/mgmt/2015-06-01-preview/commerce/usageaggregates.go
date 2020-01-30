@@ -36,7 +36,8 @@ func NewUsageAggregatesClient(subscriptionID string) UsageAggregatesClient {
 	return NewUsageAggregatesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewUsageAggregatesClientWithBaseURI creates an instance of the UsageAggregatesClient client.
+// NewUsageAggregatesClientWithBaseURI creates an instance of the UsageAggregatesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewUsageAggregatesClientWithBaseURI(baseURI string, subscriptionID string) UsageAggregatesClient {
 	return UsageAggregatesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

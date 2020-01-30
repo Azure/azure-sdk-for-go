@@ -29,10 +29,15 @@ type MachinesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, timestamp *date.Time) (result servicemap.Machine, err error)
 	GetLiveness(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, startTime *date.Time, endTime *date.Time) (result servicemap.Liveness, err error)
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, live *bool, startTime *date.Time, endTime *date.Time, timestamp *date.Time, top *int32) (result servicemap.MachineCollectionPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string, live *bool, startTime *date.Time, endTime *date.Time, timestamp *date.Time, top *int32) (result servicemap.MachineCollectionIterator, err error)
 	ListConnections(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, startTime *date.Time, endTime *date.Time) (result servicemap.ConnectionCollectionPage, err error)
+	ListConnectionsComplete(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, startTime *date.Time, endTime *date.Time) (result servicemap.ConnectionCollectionIterator, err error)
 	ListMachineGroupMembership(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, startTime *date.Time, endTime *date.Time) (result servicemap.MachineGroupCollectionPage, err error)
+	ListMachineGroupMembershipComplete(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, startTime *date.Time, endTime *date.Time) (result servicemap.MachineGroupCollectionIterator, err error)
 	ListPorts(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, startTime *date.Time, endTime *date.Time) (result servicemap.PortCollectionPage, err error)
+	ListPortsComplete(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, startTime *date.Time, endTime *date.Time) (result servicemap.PortCollectionIterator, err error)
 	ListProcesses(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, live *bool, startTime *date.Time, endTime *date.Time, timestamp *date.Time) (result servicemap.ProcessCollectionPage, err error)
+	ListProcessesComplete(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, live *bool, startTime *date.Time, endTime *date.Time, timestamp *date.Time) (result servicemap.ProcessCollectionIterator, err error)
 }
 
 var _ MachinesClientAPI = (*servicemap.MachinesClient)(nil)
@@ -42,7 +47,9 @@ type ProcessesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, processName string, timestamp *date.Time) (result servicemap.Process, err error)
 	GetLiveness(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, processName string, startTime *date.Time, endTime *date.Time) (result servicemap.Liveness, err error)
 	ListAcceptingPorts(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, processName string, startTime *date.Time, endTime *date.Time) (result servicemap.PortCollectionPage, err error)
+	ListAcceptingPortsComplete(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, processName string, startTime *date.Time, endTime *date.Time) (result servicemap.PortCollectionIterator, err error)
 	ListConnections(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, processName string, startTime *date.Time, endTime *date.Time) (result servicemap.ConnectionCollectionPage, err error)
+	ListConnectionsComplete(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, processName string, startTime *date.Time, endTime *date.Time) (result servicemap.ConnectionCollectionIterator, err error)
 }
 
 var _ ProcessesClientAPI = (*servicemap.ProcessesClient)(nil)
@@ -52,7 +59,9 @@ type PortsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, portName string, startTime *date.Time, endTime *date.Time) (result servicemap.Port, err error)
 	GetLiveness(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, portName string, startTime *date.Time, endTime *date.Time) (result servicemap.Liveness, err error)
 	ListAcceptingProcesses(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, portName string, startTime *date.Time, endTime *date.Time) (result servicemap.ProcessCollectionPage, err error)
+	ListAcceptingProcessesComplete(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, portName string, startTime *date.Time, endTime *date.Time) (result servicemap.ProcessCollectionIterator, err error)
 	ListConnections(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, portName string, startTime *date.Time, endTime *date.Time) (result servicemap.ConnectionCollectionPage, err error)
+	ListConnectionsComplete(ctx context.Context, resourceGroupName string, workspaceName string, machineName string, portName string, startTime *date.Time, endTime *date.Time) (result servicemap.ConnectionCollectionIterator, err error)
 }
 
 var _ PortsClientAPI = (*servicemap.PortsClient)(nil)
@@ -62,6 +71,7 @@ type ClientGroupsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, clientGroupName string, startTime *date.Time, endTime *date.Time) (result servicemap.ClientGroup, err error)
 	GetMembersCount(ctx context.Context, resourceGroupName string, workspaceName string, clientGroupName string, startTime *date.Time, endTime *date.Time) (result servicemap.ClientGroupMembersCount, err error)
 	ListMembers(ctx context.Context, resourceGroupName string, workspaceName string, clientGroupName string, startTime *date.Time, endTime *date.Time, top *int32) (result servicemap.ClientGroupMembersCollectionPage, err error)
+	ListMembersComplete(ctx context.Context, resourceGroupName string, workspaceName string, clientGroupName string, startTime *date.Time, endTime *date.Time, top *int32) (result servicemap.ClientGroupMembersCollectionIterator, err error)
 }
 
 var _ ClientGroupsClientAPI = (*servicemap.ClientGroupsClient)(nil)
@@ -86,6 +96,7 @@ type MachineGroupsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string, machineGroupName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, machineGroupName string, startTime *date.Time, endTime *date.Time) (result servicemap.MachineGroup, err error)
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, startTime *date.Time, endTime *date.Time) (result servicemap.MachineGroupCollectionPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string, startTime *date.Time, endTime *date.Time) (result servicemap.MachineGroupCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, workspaceName string, machineGroupName string, machineGroup servicemap.MachineGroup) (result servicemap.MachineGroup, err error)
 }
 

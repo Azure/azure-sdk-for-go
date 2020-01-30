@@ -36,7 +36,8 @@ func NewTenantsClient(subscriptionID string) TenantsClient {
 	return NewTenantsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewTenantsClientWithBaseURI creates an instance of the TenantsClient client.
+// NewTenantsClientWithBaseURI creates an instance of the TenantsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewTenantsClientWithBaseURI(baseURI string, subscriptionID string) TenantsClient {
 	return TenantsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -121,6 +121,7 @@ type ProtectedItemsClientAPI interface {
 	Delete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string) (result autorest.Response, err error)
 	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.ProtectedItemResource, err error)
 	List(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.ProtectedItemResourceListPage, err error)
+	ListComplete(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.ProtectedItemResourceListIterator, err error)
 }
 
 var _ ProtectedItemsClientAPI = (*backup.ProtectedItemsClient)(nil)
@@ -128,6 +129,7 @@ var _ ProtectedItemsClientAPI = (*backup.ProtectedItemsClient)(nil)
 // ProtectableItemsClientAPI contains the set of methods on the ProtectableItemsClient type.
 type ProtectableItemsClientAPI interface {
 	List(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.WorkloadProtectableItemResourceListPage, err error)
+	ListComplete(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.WorkloadProtectableItemResourceListIterator, err error)
 }
 
 var _ ProtectableItemsClientAPI = (*backup.ProtectableItemsClient)(nil)
@@ -150,6 +152,7 @@ var _ JobOperationResultsClientAPI = (*backup.JobOperationResultsClient)(nil)
 type JobsClientAPI interface {
 	Export(ctx context.Context, vaultName string, resourceGroupName string, filter string) (result autorest.Response, err error)
 	List(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.JobResourceListPage, err error)
+	ListComplete(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.JobResourceListIterator, err error)
 }
 
 var _ JobsClientAPI = (*backup.JobsClient)(nil)
@@ -185,6 +188,7 @@ var _ OperationResultsClientAPI = (*backup.OperationResultsClient)(nil)
 // EnginesClientAPI contains the set of methods on the EnginesClient type.
 type EnginesClientAPI interface {
 	Get(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.EngineBaseResourceListPage, err error)
+	GetComplete(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.EngineBaseResourceListIterator, err error)
 }
 
 var _ EnginesClientAPI = (*backup.EnginesClient)(nil)

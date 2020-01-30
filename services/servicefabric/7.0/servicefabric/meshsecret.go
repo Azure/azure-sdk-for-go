@@ -37,7 +37,8 @@ func NewMeshSecretClient() MeshSecretClient {
 	return NewMeshSecretClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewMeshSecretClientWithBaseURI creates an instance of the MeshSecretClient client.
+// NewMeshSecretClientWithBaseURI creates an instance of the MeshSecretClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMeshSecretClientWithBaseURI(baseURI string) MeshSecretClient {
 	return MeshSecretClient{NewWithBaseURI(baseURI)}
 }

@@ -36,7 +36,8 @@ func NewIscsiDisksClient(subscriptionID string) IscsiDisksClient {
 	return NewIscsiDisksClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewIscsiDisksClientWithBaseURI creates an instance of the IscsiDisksClient client.
+// NewIscsiDisksClientWithBaseURI creates an instance of the IscsiDisksClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewIscsiDisksClientWithBaseURI(baseURI string, subscriptionID string) IscsiDisksClient {
 	return IscsiDisksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

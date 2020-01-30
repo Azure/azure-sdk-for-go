@@ -26,6 +26,7 @@ import (
 // ResourceSkusClientAPI contains the set of methods on the ResourceSkusClient type.
 type ResourceSkusClientAPI interface {
 	ListSkus(ctx context.Context) (result datamigration.ResourceSkusResultPage, err error)
+	ListSkusComplete(ctx context.Context) (result datamigration.ResourceSkusResultIterator, err error)
 }
 
 var _ ResourceSkusClientAPI = (*datamigration.ResourceSkusClient)(nil)
@@ -39,8 +40,11 @@ type ServicesClientAPI interface {
 	Delete(ctx context.Context, groupName string, serviceName string, deleteRunningTasks *bool) (result datamigration.ServicesDeleteFuture, err error)
 	Get(ctx context.Context, groupName string, serviceName string) (result datamigration.Service, err error)
 	List(ctx context.Context) (result datamigration.ServiceListPage, err error)
+	ListComplete(ctx context.Context) (result datamigration.ServiceListIterator, err error)
 	ListByResourceGroup(ctx context.Context, groupName string) (result datamigration.ServiceListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, groupName string) (result datamigration.ServiceListIterator, err error)
 	ListSkus(ctx context.Context, groupName string, serviceName string) (result datamigration.ServiceSkuListPage, err error)
+	ListSkusComplete(ctx context.Context, groupName string, serviceName string) (result datamigration.ServiceSkuListIterator, err error)
 	Start(ctx context.Context, groupName string, serviceName string) (result datamigration.ServicesStartFuture, err error)
 	Stop(ctx context.Context, groupName string, serviceName string) (result datamigration.ServicesStopFuture, err error)
 	Update(ctx context.Context, parameters datamigration.Service, groupName string, serviceName string) (result datamigration.ServicesUpdateFuture, err error)
@@ -56,6 +60,7 @@ type TasksClientAPI interface {
 	Delete(ctx context.Context, groupName string, serviceName string, projectName string, taskName string, deleteRunningTasks *bool) (result autorest.Response, err error)
 	Get(ctx context.Context, groupName string, serviceName string, projectName string, taskName string, expand string) (result datamigration.ProjectTask, err error)
 	List(ctx context.Context, groupName string, serviceName string, projectName string, taskType string) (result datamigration.TaskListPage, err error)
+	ListComplete(ctx context.Context, groupName string, serviceName string, projectName string, taskType string) (result datamigration.TaskListIterator, err error)
 	Update(ctx context.Context, parameters datamigration.ProjectTask, groupName string, serviceName string, projectName string, taskName string) (result datamigration.ProjectTask, err error)
 }
 
@@ -68,6 +73,7 @@ type ServiceTasksClientAPI interface {
 	Delete(ctx context.Context, groupName string, serviceName string, taskName string, deleteRunningTasks *bool) (result autorest.Response, err error)
 	Get(ctx context.Context, groupName string, serviceName string, taskName string, expand string) (result datamigration.ProjectTask, err error)
 	List(ctx context.Context, groupName string, serviceName string, taskType string) (result datamigration.TaskListPage, err error)
+	ListComplete(ctx context.Context, groupName string, serviceName string, taskType string) (result datamigration.TaskListIterator, err error)
 	Update(ctx context.Context, parameters datamigration.ProjectTask, groupName string, serviceName string, taskName string) (result datamigration.ProjectTask, err error)
 }
 
@@ -79,6 +85,7 @@ type ProjectsClientAPI interface {
 	Delete(ctx context.Context, groupName string, serviceName string, projectName string, deleteRunningTasks *bool) (result autorest.Response, err error)
 	Get(ctx context.Context, groupName string, serviceName string, projectName string) (result datamigration.Project, err error)
 	List(ctx context.Context, groupName string, serviceName string) (result datamigration.ProjectListPage, err error)
+	ListComplete(ctx context.Context, groupName string, serviceName string) (result datamigration.ProjectListIterator, err error)
 	Update(ctx context.Context, parameters datamigration.Project, groupName string, serviceName string, projectName string) (result datamigration.Project, err error)
 }
 
@@ -87,6 +94,7 @@ var _ ProjectsClientAPI = (*datamigration.ProjectsClient)(nil)
 // UsagesClientAPI contains the set of methods on the UsagesClient type.
 type UsagesClientAPI interface {
 	List(ctx context.Context, location string) (result datamigration.QuotaListPage, err error)
+	ListComplete(ctx context.Context, location string) (result datamigration.QuotaListIterator, err error)
 }
 
 var _ UsagesClientAPI = (*datamigration.UsagesClient)(nil)
@@ -94,6 +102,7 @@ var _ UsagesClientAPI = (*datamigration.UsagesClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result datamigration.ServiceOperationListPage, err error)
+	ListComplete(ctx context.Context) (result datamigration.ServiceOperationListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*datamigration.OperationsClient)(nil)
@@ -104,6 +113,7 @@ type FilesClientAPI interface {
 	Delete(ctx context.Context, groupName string, serviceName string, projectName string, fileName string) (result autorest.Response, err error)
 	Get(ctx context.Context, groupName string, serviceName string, projectName string, fileName string) (result datamigration.ProjectFile, err error)
 	List(ctx context.Context, groupName string, serviceName string, projectName string) (result datamigration.FileListPage, err error)
+	ListComplete(ctx context.Context, groupName string, serviceName string, projectName string) (result datamigration.FileListIterator, err error)
 	Read(ctx context.Context, groupName string, serviceName string, projectName string, fileName string) (result datamigration.FileStorageInfo, err error)
 	ReadWrite(ctx context.Context, groupName string, serviceName string, projectName string, fileName string) (result datamigration.FileStorageInfo, err error)
 	Update(ctx context.Context, parameters datamigration.ProjectFile, groupName string, serviceName string, projectName string, fileName string) (result datamigration.ProjectFile, err error)

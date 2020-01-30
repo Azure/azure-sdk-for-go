@@ -29,7 +29,9 @@ type RecordSetsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, zoneName string, recordType dns.RecordType, relativeRecordSetName string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, zoneName string, recordType dns.RecordType, relativeRecordSetName string) (result dns.RecordSet, err error)
 	List(ctx context.Context, resourceGroupName string, zoneName string, recordType dns.RecordType, top string, filter string) (result dns.RecordSetListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, zoneName string, recordType dns.RecordType, top string, filter string) (result dns.RecordSetListResultIterator, err error)
 	ListAll(ctx context.Context, resourceGroupName string, zoneName string, top string, filter string) (result dns.RecordSetListResultPage, err error)
+	ListAllComplete(ctx context.Context, resourceGroupName string, zoneName string, top string, filter string) (result dns.RecordSetListResultIterator, err error)
 }
 
 var _ RecordSetsClientAPI = (*dns.RecordSetsClient)(nil)
@@ -40,7 +42,9 @@ type ZonesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, zoneName string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, zoneName string) (result dns.Zone, err error)
 	ListZonesInResourceGroup(ctx context.Context, resourceGroupName string, top string, filter string) (result dns.ZoneListResultPage, err error)
+	ListZonesInResourceGroupComplete(ctx context.Context, resourceGroupName string, top string, filter string) (result dns.ZoneListResultIterator, err error)
 	ListZonesInSubscription(ctx context.Context, top string, filter string) (result dns.ZoneListResultPage, err error)
+	ListZonesInSubscriptionComplete(ctx context.Context, top string, filter string) (result dns.ZoneListResultIterator, err error)
 }
 
 var _ ZonesClientAPI = (*dns.ZonesClient)(nil)

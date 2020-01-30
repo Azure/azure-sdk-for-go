@@ -25,6 +25,7 @@ import (
 // ResourceSkusClientAPI contains the set of methods on the ResourceSkusClient type.
 type ResourceSkusClientAPI interface {
 	List(ctx context.Context) (result skus.ResourceSkusResultPage, err error)
+	ListComplete(ctx context.Context) (result skus.ResourceSkusResultIterator, err error)
 }
 
 var _ ResourceSkusClientAPI = (*skus.ResourceSkusClient)(nil)

@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result insights.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result insights.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*insights.OperationsClient)(nil)
@@ -106,7 +107,9 @@ type ComponentsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result insights.ApplicationInsightsComponent, err error)
 	GetPurgeStatus(ctx context.Context, resourceGroupName string, resourceName string, purgeID string) (result insights.ComponentPurgeStatusResponse, err error)
 	List(ctx context.Context) (result insights.ApplicationInsightsComponentListResultPage, err error)
+	ListComplete(ctx context.Context) (result insights.ApplicationInsightsComponentListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result insights.ApplicationInsightsComponentListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result insights.ApplicationInsightsComponentListResultIterator, err error)
 	Purge(ctx context.Context, resourceGroupName string, resourceName string, body insights.ComponentPurgeBody) (result insights.ComponentPurgeResponse, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, resourceName string, componentTags insights.TagsResource) (result insights.ApplicationInsightsComponent, err error)
 }
@@ -149,8 +152,11 @@ type WebTestsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, webTestName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, webTestName string) (result insights.WebTest, err error)
 	List(ctx context.Context) (result insights.WebTestListResultPage, err error)
+	ListComplete(ctx context.Context) (result insights.WebTestListResultIterator, err error)
 	ListByComponent(ctx context.Context, componentName string, resourceGroupName string) (result insights.WebTestListResultPage, err error)
+	ListByComponentComplete(ctx context.Context, componentName string, resourceGroupName string) (result insights.WebTestListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result insights.WebTestListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result insights.WebTestListResultIterator, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, webTestName string, webTestTags insights.TagsResource) (result insights.WebTest, err error)
 }
 

@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result eventhub.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result eventhub.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*eventhub.OperationsClient)(nil)
@@ -43,10 +44,14 @@ type NamespacesClientAPI interface {
 	GetMessagingPlan(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.MessagingPlan, err error)
 	GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.NetworkRuleSet, err error)
 	List(ctx context.Context) (result eventhub.EHNamespaceListResultPage, err error)
+	ListComplete(ctx context.Context) (result eventhub.EHNamespaceListResultIterator, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.AuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.AuthorizationRuleListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result eventhub.EHNamespaceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result eventhub.EHNamespaceListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result eventhub.AccessKeys, err error)
 	ListNetworkRuleSets(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.NetworkRuleSetListResultPage, err error)
+	ListNetworkRuleSetsComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.NetworkRuleSetListResultIterator, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters eventhub.RegenerateAccessKeyParameters) (result eventhub.AccessKeys, err error)
 	Update(ctx context.Context, resourceGroupName string, namespaceName string, parameters eventhub.EHNamespace) (result eventhub.EHNamespace, err error)
 }
@@ -63,7 +68,9 @@ type DisasterRecoveryConfigsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (result eventhub.ArmDisasterRecovery, err error)
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string) (result eventhub.AuthorizationRule, err error)
 	List(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.ArmDisasterRecoveryListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.ArmDisasterRecoveryListResultIterator, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (result eventhub.AuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (result eventhub.AuthorizationRuleListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string) (result eventhub.AccessKeys, err error)
 }
 
@@ -78,7 +85,9 @@ type EventHubsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (result eventhub.Model, err error)
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string) (result eventhub.AuthorizationRule, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (result eventhub.AuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (result eventhub.AuthorizationRuleListResultIterator, err error)
 	ListByNamespace(ctx context.Context, resourceGroupName string, namespaceName string, skip *int32, top *int32) (result eventhub.ListResultPage, err error)
+	ListByNamespaceComplete(ctx context.Context, resourceGroupName string, namespaceName string, skip *int32, top *int32) (result eventhub.ListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string) (result eventhub.AccessKeys, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters eventhub.RegenerateAccessKeyParameters) (result eventhub.AccessKeys, err error)
 }
@@ -91,6 +100,7 @@ type ConsumerGroupsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string) (result eventhub.ConsumerGroup, err error)
 	ListByEventHub(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, skip *int32, top *int32) (result eventhub.ConsumerGroupListResultPage, err error)
+	ListByEventHubComplete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, skip *int32, top *int32) (result eventhub.ConsumerGroupListResultIterator, err error)
 }
 
 var _ ConsumerGroupsClientAPI = (*eventhub.ConsumerGroupsClient)(nil)
@@ -98,6 +108,7 @@ var _ ConsumerGroupsClientAPI = (*eventhub.ConsumerGroupsClient)(nil)
 // RegionsClientAPI contains the set of methods on the RegionsClient type.
 type RegionsClientAPI interface {
 	ListBySku(ctx context.Context, sku string) (result eventhub.MessagingRegionsListResultPage, err error)
+	ListBySkuComplete(ctx context.Context, sku string) (result eventhub.MessagingRegionsListResultIterator, err error)
 }
 
 var _ RegionsClientAPI = (*eventhub.RegionsClient)(nil)

@@ -37,7 +37,8 @@ func NewIntegrationServiceEnvironmentSkusClient(subscriptionID string) Integrati
 }
 
 // NewIntegrationServiceEnvironmentSkusClientWithBaseURI creates an instance of the
-// IntegrationServiceEnvironmentSkusClient client.
+// IntegrationServiceEnvironmentSkusClient client using a custom endpoint.  Use this when interacting with an Azure
+// cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewIntegrationServiceEnvironmentSkusClientWithBaseURI(baseURI string, subscriptionID string) IntegrationServiceEnvironmentSkusClient {
 	return IntegrationServiceEnvironmentSkusClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

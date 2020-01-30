@@ -36,7 +36,8 @@ func NewCostTagsClient(subscriptionID string) CostTagsClient {
 	return NewCostTagsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCostTagsClientWithBaseURI creates an instance of the CostTagsClient client.
+// NewCostTagsClientWithBaseURI creates an instance of the CostTagsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCostTagsClientWithBaseURI(baseURI string, subscriptionID string) CostTagsClient {
 	return CostTagsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

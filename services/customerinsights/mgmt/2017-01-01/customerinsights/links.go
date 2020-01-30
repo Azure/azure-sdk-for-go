@@ -38,7 +38,8 @@ func NewLinksClient(subscriptionID string) LinksClient {
 	return NewLinksClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewLinksClientWithBaseURI creates an instance of the LinksClient client.
+// NewLinksClientWithBaseURI creates an instance of the LinksClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewLinksClientWithBaseURI(baseURI string, subscriptionID string) LinksClient {
 	return LinksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

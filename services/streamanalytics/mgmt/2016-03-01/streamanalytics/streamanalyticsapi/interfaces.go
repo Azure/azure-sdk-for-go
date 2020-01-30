@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result streamanalytics.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result streamanalytics.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*streamanalytics.OperationsClient)(nil)
@@ -36,7 +37,9 @@ type StreamingJobsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, jobName string) (result streamanalytics.StreamingJobsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, jobName string, expand string) (result streamanalytics.StreamingJob, err error)
 	List(ctx context.Context, expand string) (result streamanalytics.StreamingJobListResultPage, err error)
+	ListComplete(ctx context.Context, expand string) (result streamanalytics.StreamingJobListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, expand string) (result streamanalytics.StreamingJobListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, expand string) (result streamanalytics.StreamingJobListResultIterator, err error)
 	Start(ctx context.Context, resourceGroupName string, jobName string, startJobParameters *streamanalytics.StartStreamingJobParameters) (result streamanalytics.StreamingJobsStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, jobName string) (result streamanalytics.StreamingJobsStopFuture, err error)
 	Update(ctx context.Context, streamingJob streamanalytics.StreamingJob, resourceGroupName string, jobName string, ifMatch string) (result streamanalytics.StreamingJob, err error)
@@ -50,6 +53,7 @@ type InputsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, jobName string, inputName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, jobName string, inputName string) (result streamanalytics.Input, err error)
 	ListByStreamingJob(ctx context.Context, resourceGroupName string, jobName string, selectParameter string) (result streamanalytics.InputListResultPage, err error)
+	ListByStreamingJobComplete(ctx context.Context, resourceGroupName string, jobName string, selectParameter string) (result streamanalytics.InputListResultIterator, err error)
 	Test(ctx context.Context, resourceGroupName string, jobName string, inputName string, input *streamanalytics.Input) (result streamanalytics.InputsTestFuture, err error)
 	Update(ctx context.Context, input streamanalytics.Input, resourceGroupName string, jobName string, inputName string, ifMatch string) (result streamanalytics.Input, err error)
 }
@@ -62,6 +66,7 @@ type OutputsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, jobName string, outputName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, jobName string, outputName string) (result streamanalytics.Output, err error)
 	ListByStreamingJob(ctx context.Context, resourceGroupName string, jobName string, selectParameter string) (result streamanalytics.OutputListResultPage, err error)
+	ListByStreamingJobComplete(ctx context.Context, resourceGroupName string, jobName string, selectParameter string) (result streamanalytics.OutputListResultIterator, err error)
 	Test(ctx context.Context, resourceGroupName string, jobName string, outputName string, output *streamanalytics.Output) (result streamanalytics.OutputsTestFuture, err error)
 	Update(ctx context.Context, output streamanalytics.Output, resourceGroupName string, jobName string, outputName string, ifMatch string) (result streamanalytics.Output, err error)
 }
@@ -83,6 +88,7 @@ type FunctionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, jobName string, functionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, jobName string, functionName string) (result streamanalytics.Function, err error)
 	ListByStreamingJob(ctx context.Context, resourceGroupName string, jobName string, selectParameter string) (result streamanalytics.FunctionListResultPage, err error)
+	ListByStreamingJobComplete(ctx context.Context, resourceGroupName string, jobName string, selectParameter string) (result streamanalytics.FunctionListResultIterator, err error)
 	RetrieveDefaultDefinition(ctx context.Context, resourceGroupName string, jobName string, functionName string, functionRetrieveDefaultDefinitionParameters *streamanalytics.BasicFunctionRetrieveDefaultDefinitionParameters) (result streamanalytics.Function, err error)
 	Test(ctx context.Context, resourceGroupName string, jobName string, functionName string, function *streamanalytics.Function) (result streamanalytics.FunctionsTestFuture, err error)
 	Update(ctx context.Context, function streamanalytics.Function, resourceGroupName string, jobName string, functionName string, ifMatch string) (result streamanalytics.Function, err error)

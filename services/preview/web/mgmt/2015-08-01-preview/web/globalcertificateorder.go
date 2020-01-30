@@ -35,7 +35,9 @@ func NewGlobalCertificateOrderClient(subscriptionID string) GlobalCertificateOrd
 	return NewGlobalCertificateOrderClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewGlobalCertificateOrderClientWithBaseURI creates an instance of the GlobalCertificateOrderClient client.
+// NewGlobalCertificateOrderClientWithBaseURI creates an instance of the GlobalCertificateOrderClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewGlobalCertificateOrderClientWithBaseURI(baseURI string, subscriptionID string) GlobalCertificateOrderClient {
 	return GlobalCertificateOrderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

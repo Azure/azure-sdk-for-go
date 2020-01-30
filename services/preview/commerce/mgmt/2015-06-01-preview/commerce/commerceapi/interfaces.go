@@ -26,6 +26,7 @@ import (
 // UsageAggregatesClientAPI contains the set of methods on the UsageAggregatesClient type.
 type UsageAggregatesClientAPI interface {
 	List(ctx context.Context, reportedStartTime date.Time, reportedEndTime date.Time, showDetails *bool, aggregationGranularity commerce.AggregationGranularity, continuationToken string) (result commerce.UsageAggregationListResultPage, err error)
+	ListComplete(ctx context.Context, reportedStartTime date.Time, reportedEndTime date.Time, showDetails *bool, aggregationGranularity commerce.AggregationGranularity, continuationToken string) (result commerce.UsageAggregationListResultIterator, err error)
 }
 
 var _ UsageAggregatesClientAPI = (*commerce.UsageAggregatesClient)(nil)

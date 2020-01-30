@@ -36,7 +36,9 @@ type AccountsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string) (result experimentation.Account, err error)
 	List(ctx context.Context) (result experimentation.AccountListResultPage, err error)
+	ListComplete(ctx context.Context) (result experimentation.AccountListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result experimentation.AccountListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result experimentation.AccountListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, parameters experimentation.AccountUpdateParameters) (result experimentation.Account, err error)
 }
 
@@ -48,6 +50,7 @@ type WorkspacesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, workspaceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, workspaceName string) (result experimentation.Workspace, err error)
 	ListByAccounts(ctx context.Context, accountName string, resourceGroupName string) (result experimentation.WorkspaceListResultPage, err error)
+	ListByAccountsComplete(ctx context.Context, accountName string, resourceGroupName string) (result experimentation.WorkspaceListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, workspaceName string, parameters experimentation.WorkspaceUpdateParameters) (result experimentation.Workspace, err error)
 }
 
@@ -59,6 +62,7 @@ type ProjectsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, workspaceName string, projectName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, workspaceName string, projectName string) (result experimentation.Project, err error)
 	ListByWorkspace(ctx context.Context, accountName string, workspaceName string, resourceGroupName string) (result experimentation.ProjectListResultPage, err error)
+	ListByWorkspaceComplete(ctx context.Context, accountName string, workspaceName string, resourceGroupName string) (result experimentation.ProjectListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, workspaceName string, projectName string, parameters experimentation.ProjectUpdateParameters) (result experimentation.Project, err error)
 }
 

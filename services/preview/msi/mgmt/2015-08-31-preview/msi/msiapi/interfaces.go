@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result msi.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result msi.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*msi.OperationsClient)(nil)
@@ -36,7 +37,9 @@ type UserAssignedIdentitiesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result msi.Identity, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result msi.UserAssignedIdentitiesListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result msi.UserAssignedIdentitiesListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result msi.UserAssignedIdentitiesListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result msi.UserAssignedIdentitiesListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, parameters msi.Identity) (result msi.Identity, err error)
 }
 

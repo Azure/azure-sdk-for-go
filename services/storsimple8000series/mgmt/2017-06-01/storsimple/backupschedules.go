@@ -36,7 +36,8 @@ func NewBackupSchedulesClient(subscriptionID string) BackupSchedulesClient {
 	return NewBackupSchedulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBackupSchedulesClientWithBaseURI creates an instance of the BackupSchedulesClient client.
+// NewBackupSchedulesClientWithBaseURI creates an instance of the BackupSchedulesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewBackupSchedulesClientWithBaseURI(baseURI string, subscriptionID string) BackupSchedulesClient {
 	return BackupSchedulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

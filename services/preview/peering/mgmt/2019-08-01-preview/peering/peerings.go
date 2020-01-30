@@ -36,7 +36,8 @@ func NewPeeringsClient(subscriptionID string) PeeringsClient {
 	return NewPeeringsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPeeringsClientWithBaseURI creates an instance of the PeeringsClient client.
+// NewPeeringsClientWithBaseURI creates an instance of the PeeringsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPeeringsClientWithBaseURI(baseURI string, subscriptionID string) PeeringsClient {
 	return PeeringsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

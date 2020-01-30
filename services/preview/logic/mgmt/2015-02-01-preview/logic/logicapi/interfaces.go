@@ -31,7 +31,9 @@ type WorkflowsClientAPI interface {
 	Enable(ctx context.Context, resourceGroupName string, workflowName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, workflowName string) (result logic.Workflow, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, top *int32, filter string) (result logic.WorkflowListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, top *int32, filter string) (result logic.WorkflowListResultIterator, err error)
 	ListBySubscription(ctx context.Context, top *int32, filter string) (result logic.WorkflowListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, top *int32, filter string) (result logic.WorkflowListResultIterator, err error)
 	Run(ctx context.Context, resourceGroupName string, workflowName string, parameters logic.RunWorkflowParameters) (result logic.WorkflowsRunFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, workflowName string, workflow logic.Workflow) (result logic.Workflow, err error)
 	Validate(ctx context.Context, resourceGroupName string, workflowName string, workflow logic.Workflow) (result autorest.Response, err error)
@@ -52,6 +54,7 @@ type WorkflowAccessKeysClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, workflowName string, accessKeyName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, workflowName string, accessKeyName string) (result logic.WorkflowAccessKey, err error)
 	List(ctx context.Context, resourceGroupName string, workflowName string, top *int32) (result logic.WorkflowAccessKeyListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workflowName string, top *int32) (result logic.WorkflowAccessKeyListResultIterator, err error)
 	ListSecretKeys(ctx context.Context, resourceGroupName string, workflowName string, accessKeyName string) (result logic.WorkflowSecretKeys, err error)
 	RegenerateSecretKey(ctx context.Context, resourceGroupName string, workflowName string, accessKeyName string, parameters logic.RegenerateSecretKeyParameters) (result logic.WorkflowSecretKeys, err error)
 }
@@ -62,6 +65,7 @@ var _ WorkflowAccessKeysClientAPI = (*logic.WorkflowAccessKeysClient)(nil)
 type WorkflowTriggersClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result logic.WorkflowTrigger, err error)
 	List(ctx context.Context, resourceGroupName string, workflowName string, top *int32, filter string) (result logic.WorkflowTriggerListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workflowName string, top *int32, filter string) (result logic.WorkflowTriggerListResultIterator, err error)
 	Run(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result autorest.Response, err error)
 }
 
@@ -71,6 +75,7 @@ var _ WorkflowTriggersClientAPI = (*logic.WorkflowTriggersClient)(nil)
 type WorkflowTriggerHistoriesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, historyName string) (result logic.WorkflowTriggerHistory, err error)
 	List(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, top *int32, filter string) (result logic.WorkflowTriggerHistoryListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, top *int32, filter string) (result logic.WorkflowTriggerHistoryListResultIterator, err error)
 }
 
 var _ WorkflowTriggerHistoriesClientAPI = (*logic.WorkflowTriggerHistoriesClient)(nil)
@@ -80,6 +85,7 @@ type WorkflowRunsClientAPI interface {
 	Cancel(ctx context.Context, resourceGroupName string, workflowName string, runName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, workflowName string, runName string) (result logic.WorkflowRun, err error)
 	List(ctx context.Context, resourceGroupName string, workflowName string, top *int32, filter string) (result logic.WorkflowRunListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workflowName string, top *int32, filter string) (result logic.WorkflowRunListResultIterator, err error)
 }
 
 var _ WorkflowRunsClientAPI = (*logic.WorkflowRunsClient)(nil)
@@ -88,6 +94,7 @@ var _ WorkflowRunsClientAPI = (*logic.WorkflowRunsClient)(nil)
 type WorkflowRunActionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result logic.WorkflowRunAction, err error)
 	List(ctx context.Context, resourceGroupName string, workflowName string, runName string, top *int32, filter string) (result logic.WorkflowRunActionListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workflowName string, runName string, top *int32, filter string) (result logic.WorkflowRunActionListResultIterator, err error)
 }
 
 var _ WorkflowRunActionsClientAPI = (*logic.WorkflowRunActionsClient)(nil)

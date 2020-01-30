@@ -36,7 +36,9 @@ func NewPercentileSourceTargetClient(subscriptionID string, subscriptionID1 stri
 	return NewPercentileSourceTargetClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
-// NewPercentileSourceTargetClientWithBaseURI creates an instance of the PercentileSourceTargetClient client.
+// NewPercentileSourceTargetClientWithBaseURI creates an instance of the PercentileSourceTargetClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewPercentileSourceTargetClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PercentileSourceTargetClient {
 	return PercentileSourceTargetClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }

@@ -37,7 +37,8 @@ func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
 	return NewUsageDetailsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewUsageDetailsClientWithBaseURI creates an instance of the UsageDetailsClient client.
+// NewUsageDetailsClientWithBaseURI creates an instance of the UsageDetailsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
 	return UsageDetailsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

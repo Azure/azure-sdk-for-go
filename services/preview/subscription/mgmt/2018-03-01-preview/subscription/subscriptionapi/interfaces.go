@@ -40,6 +40,7 @@ var _ FactoryClientAPI = (*subscription.FactoryClient)(nil)
 type SubscriptionsClientAPI interface {
 	Get(ctx context.Context, subscriptionID string) (result subscription.Model, err error)
 	List(ctx context.Context) (result subscription.ListResultPage, err error)
+	ListComplete(ctx context.Context) (result subscription.ListResultIterator, err error)
 	ListLocations(ctx context.Context, subscriptionID string) (result subscription.LocationListResult, err error)
 }
 
@@ -48,6 +49,7 @@ var _ SubscriptionsClientAPI = (*subscription.SubscriptionsClient)(nil)
 // TenantsClientAPI contains the set of methods on the TenantsClient type.
 type TenantsClientAPI interface {
 	List(ctx context.Context) (result subscription.TenantListResultPage, err error)
+	ListComplete(ctx context.Context) (result subscription.TenantListResultIterator, err error)
 }
 
 var _ TenantsClientAPI = (*subscription.TenantsClient)(nil)

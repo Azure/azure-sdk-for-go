@@ -36,7 +36,8 @@ func NewRegionClient(subscriptionID string) RegionClient {
 	return NewRegionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewRegionClientWithBaseURI creates an instance of the RegionClient client.
+// NewRegionClientWithBaseURI creates an instance of the RegionClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewRegionClientWithBaseURI(baseURI string, subscriptionID string) RegionClient {
 	return RegionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

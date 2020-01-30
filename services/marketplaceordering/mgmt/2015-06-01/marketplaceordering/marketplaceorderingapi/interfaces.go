@@ -37,6 +37,7 @@ var _ MarketplaceAgreementsClientAPI = (*marketplaceordering.MarketplaceAgreemen
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result marketplaceordering.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result marketplaceordering.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*marketplaceordering.OperationsClient)(nil)

@@ -39,8 +39,11 @@ type ProfilesClientAPI interface {
 	GenerateSsoURI(ctx context.Context, resourceGroupName string, profileName string) (result cdn.SsoURI, err error)
 	Get(ctx context.Context, resourceGroupName string, profileName string) (result cdn.Profile, err error)
 	List(ctx context.Context) (result cdn.ProfileListResultPage, err error)
+	ListComplete(ctx context.Context) (result cdn.ProfileListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result cdn.ProfileListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result cdn.ProfileListResultIterator, err error)
 	ListResourceUsage(ctx context.Context, resourceGroupName string, profileName string) (result cdn.ResourceUsageListResultPage, err error)
+	ListResourceUsageComplete(ctx context.Context, resourceGroupName string, profileName string) (result cdn.ResourceUsageListResultIterator, err error)
 	ListSupportedOptimizationTypes(ctx context.Context, resourceGroupName string, profileName string) (result cdn.SupportedOptimizationTypesListResult, err error)
 	Update(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters cdn.ProfileUpdateParameters) (result cdn.ProfilesUpdateFuture, err error)
 }
@@ -53,7 +56,9 @@ type EndpointsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.EndpointsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.Endpoint, err error)
 	ListByProfile(ctx context.Context, resourceGroupName string, profileName string) (result cdn.EndpointListResultPage, err error)
+	ListByProfileComplete(ctx context.Context, resourceGroupName string, profileName string) (result cdn.EndpointListResultIterator, err error)
 	ListResourceUsage(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.ResourceUsageListResultPage, err error)
+	ListResourceUsageComplete(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.ResourceUsageListResultIterator, err error)
 	LoadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths cdn.LoadParameters) (result cdn.EndpointsLoadContentFuture, err error)
 	PurgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths cdn.PurgeParameters) (result cdn.EndpointsPurgeContentFuture, err error)
 	Start(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.EndpointsStartFuture, err error)
@@ -68,6 +73,7 @@ var _ EndpointsClientAPI = (*cdn.EndpointsClient)(nil)
 type OriginsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string) (result cdn.Origin, err error)
 	ListByEndpoint(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.OriginListResultPage, err error)
+	ListByEndpointComplete(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.OriginListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, originUpdateProperties cdn.OriginUpdateParameters) (result cdn.OriginsUpdateFuture, err error)
 }
 
@@ -81,6 +87,7 @@ type CustomDomainsClientAPI interface {
 	EnableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainHTTPSParameters *cdn.BasicCustomDomainHTTPSParameters) (result cdn.CustomDomain, err error)
 	Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string) (result cdn.CustomDomain, err error)
 	ListByEndpoint(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.CustomDomainListResultPage, err error)
+	ListByEndpointComplete(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.CustomDomainListResultIterator, err error)
 }
 
 var _ CustomDomainsClientAPI = (*cdn.CustomDomainsClient)(nil)
@@ -88,6 +95,7 @@ var _ CustomDomainsClientAPI = (*cdn.CustomDomainsClient)(nil)
 // ResourceUsageClientAPI contains the set of methods on the ResourceUsageClient type.
 type ResourceUsageClientAPI interface {
 	List(ctx context.Context) (result cdn.ResourceUsageListResultPage, err error)
+	ListComplete(ctx context.Context) (result cdn.ResourceUsageListResultIterator, err error)
 }
 
 var _ ResourceUsageClientAPI = (*cdn.ResourceUsageClient)(nil)
@@ -95,6 +103,7 @@ var _ ResourceUsageClientAPI = (*cdn.ResourceUsageClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result cdn.OperationsListResultPage, err error)
+	ListComplete(ctx context.Context) (result cdn.OperationsListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*cdn.OperationsClient)(nil)
@@ -102,6 +111,7 @@ var _ OperationsClientAPI = (*cdn.OperationsClient)(nil)
 // EdgeNodesClientAPI contains the set of methods on the EdgeNodesClient type.
 type EdgeNodesClientAPI interface {
 	List(ctx context.Context) (result cdn.EdgenodeResultPage, err error)
+	ListComplete(ctx context.Context) (result cdn.EdgenodeResultIterator, err error)
 }
 
 var _ EdgeNodesClientAPI = (*cdn.EdgeNodesClient)(nil)
@@ -112,6 +122,7 @@ type PoliciesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, policyName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, policyName string) (result cdn.WebApplicationFirewallPolicy, err error)
 	List(ctx context.Context, resourceGroupName string) (result cdn.WebApplicationFirewallPolicyListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result cdn.WebApplicationFirewallPolicyListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicyPatchParameters cdn.WebApplicationFirewallPolicyPatchParameters) (result cdn.PoliciesUpdateFuture, err error)
 }
 
@@ -120,6 +131,7 @@ var _ PoliciesClientAPI = (*cdn.PoliciesClient)(nil)
 // ManagedRuleSetsClientAPI contains the set of methods on the ManagedRuleSetsClient type.
 type ManagedRuleSetsClientAPI interface {
 	List(ctx context.Context) (result cdn.ManagedRuleSetDefinitionListPage, err error)
+	ListComplete(ctx context.Context) (result cdn.ManagedRuleSetDefinitionListIterator, err error)
 }
 
 var _ ManagedRuleSetsClientAPI = (*cdn.ManagedRuleSetsClient)(nil)

@@ -38,7 +38,8 @@ func NewManagedNetworksClient(subscriptionID string) ManagedNetworksClient {
 	return NewManagedNetworksClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewManagedNetworksClientWithBaseURI creates an instance of the ManagedNetworksClient client.
+// NewManagedNetworksClientWithBaseURI creates an instance of the ManagedNetworksClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewManagedNetworksClientWithBaseURI(baseURI string, subscriptionID string) ManagedNetworksClient {
 	return ManagedNetworksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

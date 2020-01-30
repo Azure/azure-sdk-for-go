@@ -39,7 +39,9 @@ func NewMachineLearningComputeClient(subscriptionID string) MachineLearningCompu
 	return NewMachineLearningComputeClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMachineLearningComputeClientWithBaseURI creates an instance of the MachineLearningComputeClient client.
+// NewMachineLearningComputeClientWithBaseURI creates an instance of the MachineLearningComputeClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
 	return MachineLearningComputeClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

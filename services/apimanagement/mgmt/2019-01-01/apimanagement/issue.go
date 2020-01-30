@@ -36,7 +36,8 @@ func NewIssueClient(subscriptionID string) IssueClient {
 	return NewIssueClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewIssueClientWithBaseURI creates an instance of the IssueClient client.
+// NewIssueClientWithBaseURI creates an instance of the IssueClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewIssueClientWithBaseURI(baseURI string, subscriptionID string) IssueClient {
 	return IssueClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

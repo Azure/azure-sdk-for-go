@@ -37,7 +37,8 @@ func NewIntegrationServiceEnvironmentManagedApisClient(subscriptionID string) In
 }
 
 // NewIntegrationServiceEnvironmentManagedApisClientWithBaseURI creates an instance of the
-// IntegrationServiceEnvironmentManagedApisClient client.
+// IntegrationServiceEnvironmentManagedApisClient client using a custom endpoint.  Use this when interacting with an
+// Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewIntegrationServiceEnvironmentManagedApisClientWithBaseURI(baseURI string, subscriptionID string) IntegrationServiceEnvironmentManagedApisClient {
 	return IntegrationServiceEnvironmentManagedApisClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

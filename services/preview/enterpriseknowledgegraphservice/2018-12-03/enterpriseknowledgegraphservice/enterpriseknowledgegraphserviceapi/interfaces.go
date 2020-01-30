@@ -29,7 +29,9 @@ type EnterpriseKnowledgeGraphClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result enterpriseknowledgegraphservice.EnterpriseKnowledgeGraph, err error)
 	List(ctx context.Context) (result enterpriseknowledgegraphservice.EnterpriseKnowledgeGraphResponseListPage, err error)
+	ListComplete(ctx context.Context) (result enterpriseknowledgegraphservice.EnterpriseKnowledgeGraphResponseListIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result enterpriseknowledgegraphservice.EnterpriseKnowledgeGraphResponseListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result enterpriseknowledgegraphservice.EnterpriseKnowledgeGraphResponseListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, parameters enterpriseknowledgegraphservice.EnterpriseKnowledgeGraph) (result enterpriseknowledgegraphservice.EnterpriseKnowledgeGraph, err error)
 }
 
@@ -38,6 +40,7 @@ var _ EnterpriseKnowledgeGraphClientAPI = (*enterpriseknowledgegraphservice.Ente
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result enterpriseknowledgegraphservice.OperationEntityListResultPage, err error)
+	ListComplete(ctx context.Context) (result enterpriseknowledgegraphservice.OperationEntityListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*enterpriseknowledgegraphservice.OperationsClient)(nil)

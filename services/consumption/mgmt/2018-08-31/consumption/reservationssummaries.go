@@ -36,7 +36,9 @@ func NewReservationsSummariesClient(subscriptionID string) ReservationsSummaries
 	return NewReservationsSummariesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewReservationsSummariesClientWithBaseURI creates an instance of the ReservationsSummariesClient client.
+// NewReservationsSummariesClientWithBaseURI creates an instance of the ReservationsSummariesClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
 	return ReservationsSummariesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -36,7 +36,8 @@ func NewMeshCodePackageClient() MeshCodePackageClient {
 	return NewMeshCodePackageClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewMeshCodePackageClientWithBaseURI creates an instance of the MeshCodePackageClient client.
+// NewMeshCodePackageClientWithBaseURI creates an instance of the MeshCodePackageClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMeshCodePackageClientWithBaseURI(baseURI string) MeshCodePackageClient {
 	return MeshCodePackageClient{NewWithBaseURI(baseURI)}
 }

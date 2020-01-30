@@ -23,9 +23,17 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
+	ListDataConnectorRequirements(ctx context.Context, resourceGroupName string, workspaceName string, operationalInsightsResourceProvider string, dataConnectorsCheckRequirements securityinsight.DataConnectorsCheckRequirements) (result securityinsight.DataConnectorRequirementsState, err error)
+}
+
+var _ BaseClientAPI = (*securityinsight.BaseClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result securityinsight.OperationsListPage, err error)
+	ListComplete(ctx context.Context) (result securityinsight.OperationsListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*securityinsight.OperationsClient)(nil)
@@ -39,6 +47,7 @@ type AlertRulesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result securityinsight.AlertRuleModel, err error)
 	GetAction(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string) (result securityinsight.ActionResponse, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.AlertRulesListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.AlertRulesListIterator, err error)
 }
 
 var _ AlertRulesClientAPI = (*securityinsight.AlertRulesClient)(nil)
@@ -46,6 +55,7 @@ var _ AlertRulesClientAPI = (*securityinsight.AlertRulesClient)(nil)
 // ActionsClientAPI contains the set of methods on the ActionsClient type.
 type ActionsClientAPI interface {
 	ListByAlertRule(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result securityinsight.ActionsListPage, err error)
+	ListByAlertRuleComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result securityinsight.ActionsListIterator, err error)
 }
 
 var _ ActionsClientAPI = (*securityinsight.ActionsClient)(nil)
@@ -54,6 +64,7 @@ var _ ActionsClientAPI = (*securityinsight.ActionsClient)(nil)
 type AlertRuleTemplatesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, alertRuleTemplateID string) (result securityinsight.AlertRuleTemplateModel, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.AlertRuleTemplatesListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.AlertRuleTemplatesListIterator, err error)
 }
 
 var _ AlertRuleTemplatesClientAPI = (*securityinsight.AlertRuleTemplatesClient)(nil)
@@ -65,6 +76,7 @@ type CasesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string) (result securityinsight.Case, err error)
 	GetComment(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseCommentID string) (result securityinsight.CaseComment, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.CaseListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.CaseListIterator, err error)
 }
 
 var _ CasesClientAPI = (*securityinsight.CasesClient)(nil)
@@ -72,6 +84,7 @@ var _ CasesClientAPI = (*securityinsight.CasesClient)(nil)
 // CommentsClientAPI contains the set of methods on the CommentsClient type.
 type CommentsClientAPI interface {
 	ListByCase(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.CaseCommentListPage, err error)
+	ListByCaseComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.CaseCommentListIterator, err error)
 }
 
 var _ CommentsClientAPI = (*securityinsight.CommentsClient)(nil)
@@ -89,6 +102,7 @@ type BookmarksClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string) (result securityinsight.Bookmark, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.BookmarkListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.BookmarkListIterator, err error)
 }
 
 var _ BookmarksClientAPI = (*securityinsight.BookmarksClient)(nil)
@@ -99,6 +113,7 @@ type CaseRelationsClientAPI interface {
 	DeleteRelation(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, relationName string) (result autorest.Response, err error)
 	GetRelation(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, relationName string) (result securityinsight.CaseRelation, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.CaseRelationListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.CaseRelationListIterator, err error)
 }
 
 var _ CaseRelationsClientAPI = (*securityinsight.CaseRelationsClient)(nil)
@@ -109,6 +124,7 @@ type BookmarkRelationsClientAPI interface {
 	DeleteRelation(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, relationName string) (result autorest.Response, err error)
 	GetRelation(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, relationName string) (result securityinsight.BookmarkRelation, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.BookmarkRelationListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.BookmarkRelationListIterator, err error)
 }
 
 var _ BookmarkRelationsClientAPI = (*securityinsight.BookmarkRelationsClient)(nil)
@@ -119,6 +135,7 @@ type DataConnectorsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (result securityinsight.DataConnectorModel, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.DataConnectorListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.DataConnectorListIterator, err error)
 }
 
 var _ DataConnectorsClientAPI = (*securityinsight.DataConnectorsClient)(nil)
@@ -128,6 +145,7 @@ type EntitiesClientAPI interface {
 	Expand(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string, parameters securityinsight.EntityExpandParameters) (result securityinsight.EntityExpandResponse, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string) (result securityinsight.EntityModel, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityListIterator, err error)
 }
 
 var _ EntitiesClientAPI = (*securityinsight.EntitiesClient)(nil)
@@ -137,6 +155,7 @@ type OfficeConsentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, consentID string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, consentID string) (result securityinsight.OfficeConsent, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.OfficeConsentListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.OfficeConsentListIterator, err error)
 }
 
 var _ OfficeConsentsClientAPI = (*securityinsight.OfficeConsentsClient)(nil)
@@ -160,6 +179,7 @@ var _ CasesAggregationsClientAPI = (*securityinsight.CasesAggregationsClient)(ni
 type EntityQueriesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityQueryID string) (result securityinsight.EntityQuery, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityQueryListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityQueryListIterator, err error)
 }
 
 var _ EntityQueriesClientAPI = (*securityinsight.EntityQueriesClient)(nil)

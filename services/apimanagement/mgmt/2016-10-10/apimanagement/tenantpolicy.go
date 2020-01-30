@@ -37,7 +37,8 @@ func NewTenantPolicyClient(subscriptionID string) TenantPolicyClient {
 	return NewTenantPolicyClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewTenantPolicyClientWithBaseURI creates an instance of the TenantPolicyClient client.
+// NewTenantPolicyClientWithBaseURI creates an instance of the TenantPolicyClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewTenantPolicyClientWithBaseURI(baseURI string, subscriptionID string) TenantPolicyClient {
 	return TenantPolicyClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

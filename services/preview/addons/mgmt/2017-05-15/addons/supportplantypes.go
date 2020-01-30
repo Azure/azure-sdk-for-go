@@ -35,7 +35,9 @@ func NewSupportPlanTypesClient(subscriptionID string) SupportPlanTypesClient {
 	return NewSupportPlanTypesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSupportPlanTypesClientWithBaseURI creates an instance of the SupportPlanTypesClient client.
+// NewSupportPlanTypesClientWithBaseURI creates an instance of the SupportPlanTypesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewSupportPlanTypesClientWithBaseURI(baseURI string, subscriptionID string) SupportPlanTypesClient {
 	return SupportPlanTypesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

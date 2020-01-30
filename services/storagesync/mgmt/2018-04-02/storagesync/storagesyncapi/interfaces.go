@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result storagesync.OperationEntityListResultPage, err error)
+	ListComplete(ctx context.Context) (result storagesync.OperationEntityListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*storagesync.OperationsClient)(nil)

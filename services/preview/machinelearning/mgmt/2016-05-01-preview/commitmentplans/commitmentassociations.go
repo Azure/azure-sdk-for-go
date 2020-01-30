@@ -38,7 +38,9 @@ func NewCommitmentAssociationsClient(subscriptionID string) CommitmentAssociatio
 	return NewCommitmentAssociationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCommitmentAssociationsClientWithBaseURI creates an instance of the CommitmentAssociationsClient client.
+// NewCommitmentAssociationsClientWithBaseURI creates an instance of the CommitmentAssociationsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID string) CommitmentAssociationsClient {
 	return CommitmentAssociationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -36,7 +36,8 @@ func NewBackupPoliciesClient(subscriptionID string) BackupPoliciesClient {
 	return NewBackupPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBackupPoliciesClientWithBaseURI creates an instance of the BackupPoliciesClient client.
+// NewBackupPoliciesClientWithBaseURI creates an instance of the BackupPoliciesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupPoliciesClient {
 	return BackupPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

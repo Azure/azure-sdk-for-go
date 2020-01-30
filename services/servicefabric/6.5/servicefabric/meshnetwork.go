@@ -37,7 +37,8 @@ func NewMeshNetworkClient() MeshNetworkClient {
 	return NewMeshNetworkClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewMeshNetworkClientWithBaseURI creates an instance of the MeshNetworkClient client.
+// NewMeshNetworkClientWithBaseURI creates an instance of the MeshNetworkClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMeshNetworkClientWithBaseURI(baseURI string) MeshNetworkClient {
 	return MeshNetworkClient{NewWithBaseURI(baseURI)}
 }

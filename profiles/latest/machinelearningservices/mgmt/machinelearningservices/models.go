@@ -77,6 +77,13 @@ const (
 	ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine ComputeTypeBasicComputeSecrets = original.ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine
 )
 
+type EncryptionStatus = original.EncryptionStatus
+
+const (
+	Disabled EncryptionStatus = original.Disabled
+	Enabled  EncryptionStatus = original.Enabled
+)
+
 type NodeState = original.NodeState
 
 const (
@@ -161,8 +168,8 @@ const (
 type Status1 = original.Status1
 
 const (
-	Disabled Status1 = original.Disabled
-	Enabled  Status1 = original.Enabled
+	Status1Disabled Status1 = original.Status1Disabled
+	Status1Enabled  Status1 = original.Status1Enabled
 )
 
 type UnderlyingResourceAction = original.UnderlyingResourceAction
@@ -211,12 +218,14 @@ type DataLakeAnalyticsProperties = original.DataLakeAnalyticsProperties
 type Databricks = original.Databricks
 type DatabricksComputeSecrets = original.DatabricksComputeSecrets
 type DatabricksProperties = original.DatabricksProperties
+type EncryptionProperty = original.EncryptionProperty
 type Error = original.Error
 type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
 type HDInsight = original.HDInsight
 type HDInsightProperties = original.HDInsightProperties
 type Identity = original.Identity
+type KeyVaultProperties = original.KeyVaultProperties
 type ListAmlUserFeatureResult = original.ListAmlUserFeatureResult
 type ListAmlUserFeatureResultIterator = original.ListAmlUserFeatureResultIterator
 type ListAmlUserFeatureResultPage = original.ListAmlUserFeatureResultPage
@@ -292,6 +301,7 @@ type WorkspacePropertiesUpdateParameters = original.WorkspacePropertiesUpdatePar
 type WorkspaceSku = original.WorkspaceSku
 type WorkspaceUpdateParameters = original.WorkspaceUpdateParameters
 type WorkspacesClient = original.WorkspacesClient
+type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -403,6 +413,9 @@ func PossibleComputeTypeBasicComputeValues() []ComputeTypeBasicCompute {
 }
 func PossibleComputeTypeValues() []ComputeType {
 	return original.PossibleComputeTypeValues()
+}
+func PossibleEncryptionStatusValues() []EncryptionStatus {
+	return original.PossibleEncryptionStatusValues()
 }
 func PossibleNodeStateValues() []NodeState {
 	return original.PossibleNodeStateValues()

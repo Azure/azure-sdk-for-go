@@ -35,7 +35,9 @@ func NewRecipientTransfersClient(subscriptionID string) RecipientTransfersClient
 	return NewRecipientTransfersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewRecipientTransfersClientWithBaseURI creates an instance of the RecipientTransfersClient client.
+// NewRecipientTransfersClientWithBaseURI creates an instance of the RecipientTransfersClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewRecipientTransfersClientWithBaseURI(baseURI string, subscriptionID string) RecipientTransfersClient {
 	return RecipientTransfersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

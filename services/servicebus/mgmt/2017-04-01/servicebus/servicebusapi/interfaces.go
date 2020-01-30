@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result servicebus.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result servicebus.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*servicebus.OperationsClient)(nil)
@@ -42,10 +43,14 @@ type NamespacesClientAPI interface {
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result servicebus.SBAuthorizationRule, err error)
 	GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.NetworkRuleSet, err error)
 	List(ctx context.Context) (result servicebus.SBNamespaceListResultPage, err error)
+	ListComplete(ctx context.Context) (result servicebus.SBNamespaceListResultIterator, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.SBAuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.SBAuthorizationRuleListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result servicebus.SBNamespaceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result servicebus.SBNamespaceListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result servicebus.AccessKeys, err error)
 	ListNetworkRuleSets(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.NetworkRuleSetListResultPage, err error)
+	ListNetworkRuleSetsComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.NetworkRuleSetListResultIterator, err error)
 	Migrate(ctx context.Context, resourceGroupName string, namespaceName string, parameters servicebus.SBNamespaceMigrate) (result autorest.Response, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters servicebus.RegenerateAccessKeyParameters) (result servicebus.AccessKeys, err error)
 	Update(ctx context.Context, resourceGroupName string, namespaceName string, parameters servicebus.SBNamespaceUpdateParameters) (result servicebus.SBNamespace, err error)
@@ -63,7 +68,9 @@ type DisasterRecoveryConfigsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (result servicebus.ArmDisasterRecovery, err error)
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string) (result servicebus.SBAuthorizationRule, err error)
 	List(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.ArmDisasterRecoveryListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.ArmDisasterRecoveryListResultIterator, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (result servicebus.SBAuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (result servicebus.SBAuthorizationRuleListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string) (result servicebus.AccessKeys, err error)
 }
 
@@ -76,6 +83,7 @@ type MigrationConfigsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, namespaceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.MigrationConfigProperties, err error)
 	List(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.MigrationConfigListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.MigrationConfigListResultIterator, err error)
 	Revert(ctx context.Context, resourceGroupName string, namespaceName string) (result autorest.Response, err error)
 }
 
@@ -90,7 +98,9 @@ type QueuesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, queueName string) (result servicebus.SBQueue, err error)
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string) (result servicebus.SBAuthorizationRule, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, queueName string) (result servicebus.SBAuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string, queueName string) (result servicebus.SBAuthorizationRuleListResultIterator, err error)
 	ListByNamespace(ctx context.Context, resourceGroupName string, namespaceName string, skip *int32, top *int32) (result servicebus.SBQueueListResultPage, err error)
+	ListByNamespaceComplete(ctx context.Context, resourceGroupName string, namespaceName string, skip *int32, top *int32) (result servicebus.SBQueueListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string) (result servicebus.AccessKeys, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, parameters servicebus.RegenerateAccessKeyParameters) (result servicebus.AccessKeys, err error)
 }
@@ -106,7 +116,9 @@ type TopicsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, topicName string) (result servicebus.SBTopic, err error)
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string) (result servicebus.SBAuthorizationRule, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, topicName string) (result servicebus.SBAuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string) (result servicebus.SBAuthorizationRuleListResultIterator, err error)
 	ListByNamespace(ctx context.Context, resourceGroupName string, namespaceName string, skip *int32, top *int32) (result servicebus.SBTopicListResultPage, err error)
+	ListByNamespaceComplete(ctx context.Context, resourceGroupName string, namespaceName string, skip *int32, top *int32) (result servicebus.SBTopicListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string) (result servicebus.AccessKeys, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string, parameters servicebus.RegenerateAccessKeyParameters) (result servicebus.AccessKeys, err error)
 }
@@ -119,6 +131,7 @@ type SubscriptionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string) (result servicebus.SBSubscription, err error)
 	ListByTopic(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, skip *int32, top *int32) (result servicebus.SBSubscriptionListResultPage, err error)
+	ListByTopicComplete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, skip *int32, top *int32) (result servicebus.SBSubscriptionListResultIterator, err error)
 }
 
 var _ SubscriptionsClientAPI = (*servicebus.SubscriptionsClient)(nil)
@@ -129,6 +142,7 @@ type RulesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string) (result servicebus.Rule, err error)
 	ListBySubscriptions(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, skip *int32, top *int32) (result servicebus.RuleListResultPage, err error)
+	ListBySubscriptionsComplete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, skip *int32, top *int32) (result servicebus.RuleListResultIterator, err error)
 }
 
 var _ RulesClientAPI = (*servicebus.RulesClient)(nil)
@@ -136,6 +150,7 @@ var _ RulesClientAPI = (*servicebus.RulesClient)(nil)
 // RegionsClientAPI contains the set of methods on the RegionsClient type.
 type RegionsClientAPI interface {
 	ListBySku(ctx context.Context, sku string) (result servicebus.PremiumMessagingRegionsListResultPage, err error)
+	ListBySkuComplete(ctx context.Context, sku string) (result servicebus.PremiumMessagingRegionsListResultIterator, err error)
 }
 
 var _ RegionsClientAPI = (*servicebus.RegionsClient)(nil)
@@ -143,6 +158,7 @@ var _ RegionsClientAPI = (*servicebus.RegionsClient)(nil)
 // PremiumMessagingRegionsClientAPI contains the set of methods on the PremiumMessagingRegionsClient type.
 type PremiumMessagingRegionsClientAPI interface {
 	List(ctx context.Context) (result servicebus.PremiumMessagingRegionsListResultPage, err error)
+	ListComplete(ctx context.Context) (result servicebus.PremiumMessagingRegionsListResultIterator, err error)
 }
 
 var _ PremiumMessagingRegionsClientAPI = (*servicebus.PremiumMessagingRegionsClient)(nil)
@@ -150,6 +166,7 @@ var _ PremiumMessagingRegionsClientAPI = (*servicebus.PremiumMessagingRegionsCli
 // EventHubsClientAPI contains the set of methods on the EventHubsClient type.
 type EventHubsClientAPI interface {
 	ListByNamespace(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.EventHubListResultPage, err error)
+	ListByNamespaceComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.EventHubListResultIterator, err error)
 }
 
 var _ EventHubsClientAPI = (*servicebus.EventHubsClient)(nil)

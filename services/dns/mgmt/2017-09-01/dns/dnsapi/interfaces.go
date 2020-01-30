@@ -29,7 +29,9 @@ type RecordSetsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, zoneName string, relativeRecordSetName string, recordType dns.RecordType, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, zoneName string, relativeRecordSetName string, recordType dns.RecordType) (result dns.RecordSet, err error)
 	ListByDNSZone(ctx context.Context, resourceGroupName string, zoneName string, top *int32, recordsetnamesuffix string) (result dns.RecordSetListResultPage, err error)
+	ListByDNSZoneComplete(ctx context.Context, resourceGroupName string, zoneName string, top *int32, recordsetnamesuffix string) (result dns.RecordSetListResultIterator, err error)
 	ListByType(ctx context.Context, resourceGroupName string, zoneName string, recordType dns.RecordType, top *int32, recordsetnamesuffix string) (result dns.RecordSetListResultPage, err error)
+	ListByTypeComplete(ctx context.Context, resourceGroupName string, zoneName string, recordType dns.RecordType, top *int32, recordsetnamesuffix string) (result dns.RecordSetListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, zoneName string, relativeRecordSetName string, recordType dns.RecordType, parameters dns.RecordSet, ifMatch string) (result dns.RecordSet, err error)
 }
 
@@ -41,7 +43,9 @@ type ZonesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, zoneName string, ifMatch string) (result dns.ZonesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, zoneName string) (result dns.Zone, err error)
 	List(ctx context.Context, top *int32) (result dns.ZoneListResultPage, err error)
+	ListComplete(ctx context.Context, top *int32) (result dns.ZoneListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, top *int32) (result dns.ZoneListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, top *int32) (result dns.ZoneListResultIterator, err error)
 }
 
 var _ ZonesClientAPI = (*dns.ZonesClient)(nil)

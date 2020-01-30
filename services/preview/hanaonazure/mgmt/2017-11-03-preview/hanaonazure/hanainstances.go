@@ -35,7 +35,8 @@ func NewHanaInstancesClient(subscriptionID string) HanaInstancesClient {
 	return NewHanaInstancesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewHanaInstancesClientWithBaseURI creates an instance of the HanaInstancesClient client.
+// NewHanaInstancesClientWithBaseURI creates an instance of the HanaInstancesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewHanaInstancesClientWithBaseURI(baseURI string, subscriptionID string) HanaInstancesClient {
 	return HanaInstancesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

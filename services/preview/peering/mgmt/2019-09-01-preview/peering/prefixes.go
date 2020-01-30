@@ -35,7 +35,8 @@ func NewPrefixesClient(subscriptionID string) PrefixesClient {
 	return NewPrefixesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPrefixesClientWithBaseURI creates an instance of the PrefixesClient client.
+// NewPrefixesClientWithBaseURI creates an instance of the PrefixesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPrefixesClientWithBaseURI(baseURI string, subscriptionID string) PrefixesClient {
 	return PrefixesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -33,6 +33,7 @@ var _ BaseClientAPI = (*peering.BaseClient)(nil)
 // LegacyPeeringsClientAPI contains the set of methods on the LegacyPeeringsClient type.
 type LegacyPeeringsClientAPI interface {
 	List(ctx context.Context, peeringLocation string, kind string) (result peering.ListResultPage, err error)
+	ListComplete(ctx context.Context, peeringLocation string, kind string) (result peering.ListResultIterator, err error)
 }
 
 var _ LegacyPeeringsClientAPI = (*peering.LegacyPeeringsClient)(nil)
@@ -40,6 +41,7 @@ var _ LegacyPeeringsClientAPI = (*peering.LegacyPeeringsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result peering.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result peering.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*peering.OperationsClient)(nil)
@@ -50,6 +52,7 @@ type PeerAsnsClientAPI interface {
 	Delete(ctx context.Context, peerAsnName string) (result autorest.Response, err error)
 	Get(ctx context.Context, peerAsnName string) (result peering.PeerAsn, err error)
 	ListBySubscription(ctx context.Context) (result peering.PeerAsnListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result peering.PeerAsnListResultIterator, err error)
 }
 
 var _ PeerAsnsClientAPI = (*peering.PeerAsnsClient)(nil)
@@ -57,6 +60,7 @@ var _ PeerAsnsClientAPI = (*peering.PeerAsnsClient)(nil)
 // LocationsClientAPI contains the set of methods on the LocationsClient type.
 type LocationsClientAPI interface {
 	List(ctx context.Context, kind string, directPeeringType string) (result peering.LocationListResultPage, err error)
+	ListComplete(ctx context.Context, kind string, directPeeringType string) (result peering.LocationListResultIterator, err error)
 }
 
 var _ LocationsClientAPI = (*peering.LocationsClient)(nil)
@@ -67,7 +71,9 @@ type PeeringsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, peeringName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, peeringName string) (result peering.Model, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result peering.ListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result peering.ListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result peering.ListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result peering.ListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, peeringName string, tags peering.ResourceTags) (result peering.Model, err error)
 }
 
@@ -76,6 +82,7 @@ var _ PeeringsClientAPI = (*peering.PeeringsClient)(nil)
 // ServiceLocationsClientAPI contains the set of methods on the ServiceLocationsClient type.
 type ServiceLocationsClientAPI interface {
 	List(ctx context.Context) (result peering.ServiceLocationListResultPage, err error)
+	ListComplete(ctx context.Context) (result peering.ServiceLocationListResultIterator, err error)
 }
 
 var _ ServiceLocationsClientAPI = (*peering.ServiceLocationsClient)(nil)
@@ -86,6 +93,7 @@ type PrefixesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, expand string) (result peering.ServicePrefix, err error)
 	ListByPeeringService(ctx context.Context, resourceGroupName string, peeringServiceName string, expand string) (result peering.ServicePrefixListResultPage, err error)
+	ListByPeeringServiceComplete(ctx context.Context, resourceGroupName string, peeringServiceName string, expand string) (result peering.ServicePrefixListResultIterator, err error)
 }
 
 var _ PrefixesClientAPI = (*peering.PrefixesClient)(nil)
@@ -93,6 +101,7 @@ var _ PrefixesClientAPI = (*peering.PrefixesClient)(nil)
 // ServiceProvidersClientAPI contains the set of methods on the ServiceProvidersClient type.
 type ServiceProvidersClientAPI interface {
 	List(ctx context.Context) (result peering.ServiceProviderListResultPage, err error)
+	ListComplete(ctx context.Context) (result peering.ServiceProviderListResultIterator, err error)
 }
 
 var _ ServiceProvidersClientAPI = (*peering.ServiceProvidersClient)(nil)
@@ -103,7 +112,9 @@ type ServicesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, peeringServiceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, peeringServiceName string) (result peering.Service, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result peering.ServiceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result peering.ServiceListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result peering.ServiceListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result peering.ServiceListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, peeringServiceName string, tags peering.ResourceTags) (result peering.Service, err error)
 }
 

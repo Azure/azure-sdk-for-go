@@ -36,7 +36,9 @@ func NewHybridUseBenefitRevisionClient(subscriptionID string) HybridUseBenefitRe
 	return NewHybridUseBenefitRevisionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewHybridUseBenefitRevisionClientWithBaseURI creates an instance of the HybridUseBenefitRevisionClient client.
+// NewHybridUseBenefitRevisionClientWithBaseURI creates an instance of the HybridUseBenefitRevisionClient client using
+// a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewHybridUseBenefitRevisionClientWithBaseURI(baseURI string, subscriptionID string) HybridUseBenefitRevisionClient {
 	return HybridUseBenefitRevisionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

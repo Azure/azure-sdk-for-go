@@ -35,7 +35,8 @@ func NewPartnerClient() PartnerClient {
 	return NewPartnerClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewPartnerClientWithBaseURI creates an instance of the PartnerClient client.
+// NewPartnerClientWithBaseURI creates an instance of the PartnerClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPartnerClientWithBaseURI(baseURI string) PartnerClient {
 	return PartnerClient{NewWithBaseURI(baseURI)}
 }

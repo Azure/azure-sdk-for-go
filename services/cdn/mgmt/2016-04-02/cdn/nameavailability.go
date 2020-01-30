@@ -36,7 +36,9 @@ func NewNameAvailabilityClient(subscriptionID string) NameAvailabilityClient {
 	return NewNameAvailabilityClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewNameAvailabilityClientWithBaseURI creates an instance of the NameAvailabilityClient client.
+// NewNameAvailabilityClientWithBaseURI creates an instance of the NameAvailabilityClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewNameAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) NameAvailabilityClient {
 	return NameAvailabilityClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

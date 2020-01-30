@@ -27,6 +27,7 @@ import (
 type SignedInUserClientAPI interface {
 	Get(ctx context.Context) (result graphrbac.User, err error)
 	ListOwnedObjects(ctx context.Context) (result graphrbac.DirectoryObjectListResultPage, err error)
+	ListOwnedObjectsComplete(ctx context.Context) (result graphrbac.DirectoryObjectListResultIterator, err error)
 	ListOwnedObjectsNext(ctx context.Context, nextLink string) (result graphrbac.DirectoryObjectListResult, err error)
 }
 
@@ -40,9 +41,11 @@ type ApplicationsClientAPI interface {
 	Get(ctx context.Context, applicationObjectID string) (result graphrbac.Application, err error)
 	GetServicePrincipalsIDByAppID(ctx context.Context, applicationID string) (result graphrbac.ServicePrincipalObjectResult, err error)
 	List(ctx context.Context, filter string) (result graphrbac.ApplicationListResultPage, err error)
+	ListComplete(ctx context.Context, filter string) (result graphrbac.ApplicationListResultIterator, err error)
 	ListKeyCredentials(ctx context.Context, applicationObjectID string) (result graphrbac.KeyCredentialListResult, err error)
 	ListNext(ctx context.Context, nextLink string) (result graphrbac.ApplicationListResult, err error)
 	ListOwners(ctx context.Context, applicationObjectID string) (result graphrbac.DirectoryObjectListResultPage, err error)
+	ListOwnersComplete(ctx context.Context, applicationObjectID string) (result graphrbac.DirectoryObjectListResultIterator, err error)
 	ListPasswordCredentials(ctx context.Context, applicationObjectID string) (result graphrbac.PasswordCredentialListResult, err error)
 	Patch(ctx context.Context, applicationObjectID string, parameters graphrbac.ApplicationUpdateParameters) (result autorest.Response, err error)
 	RemoveOwner(ctx context.Context, applicationObjectID string, ownerObjectID string) (result autorest.Response, err error)
@@ -56,6 +59,7 @@ var _ ApplicationsClientAPI = (*graphrbac.ApplicationsClient)(nil)
 type DeletedApplicationsClientAPI interface {
 	HardDelete(ctx context.Context, applicationObjectID string) (result autorest.Response, err error)
 	List(ctx context.Context, filter string) (result graphrbac.ApplicationListResultPage, err error)
+	ListComplete(ctx context.Context, filter string) (result graphrbac.ApplicationListResultIterator, err error)
 	ListNext(ctx context.Context, nextLink string) (result graphrbac.ApplicationListResult, err error)
 	Restore(ctx context.Context, objectID string) (result graphrbac.Application, err error)
 }
@@ -70,12 +74,15 @@ type GroupsClientAPI interface {
 	Delete(ctx context.Context, objectID string) (result autorest.Response, err error)
 	Get(ctx context.Context, objectID string) (result graphrbac.ADGroup, err error)
 	GetGroupMembers(ctx context.Context, objectID string) (result graphrbac.DirectoryObjectListResultPage, err error)
+	GetGroupMembersComplete(ctx context.Context, objectID string) (result graphrbac.DirectoryObjectListResultIterator, err error)
 	GetGroupMembersNext(ctx context.Context, nextLink string) (result graphrbac.DirectoryObjectListResult, err error)
 	GetMemberGroups(ctx context.Context, objectID string, parameters graphrbac.GroupGetMemberGroupsParameters) (result graphrbac.GroupGetMemberGroupsResult, err error)
 	IsMemberOf(ctx context.Context, parameters graphrbac.CheckGroupMembershipParameters) (result graphrbac.CheckGroupMembershipResult, err error)
 	List(ctx context.Context, filter string) (result graphrbac.GroupListResultPage, err error)
+	ListComplete(ctx context.Context, filter string) (result graphrbac.GroupListResultIterator, err error)
 	ListNext(ctx context.Context, nextLink string) (result graphrbac.GroupListResult, err error)
 	ListOwners(ctx context.Context, objectID string) (result graphrbac.DirectoryObjectListResultPage, err error)
+	ListOwnersComplete(ctx context.Context, objectID string) (result graphrbac.DirectoryObjectListResultIterator, err error)
 	RemoveMember(ctx context.Context, groupObjectID string, memberObjectID string) (result autorest.Response, err error)
 	RemoveOwner(ctx context.Context, objectID string, ownerObjectID string) (result autorest.Response, err error)
 }
@@ -88,9 +95,11 @@ type ServicePrincipalsClientAPI interface {
 	Delete(ctx context.Context, objectID string) (result autorest.Response, err error)
 	Get(ctx context.Context, objectID string) (result graphrbac.ServicePrincipal, err error)
 	List(ctx context.Context, filter string) (result graphrbac.ServicePrincipalListResultPage, err error)
+	ListComplete(ctx context.Context, filter string) (result graphrbac.ServicePrincipalListResultIterator, err error)
 	ListKeyCredentials(ctx context.Context, objectID string) (result graphrbac.KeyCredentialListResult, err error)
 	ListNext(ctx context.Context, nextLink string) (result graphrbac.ServicePrincipalListResult, err error)
 	ListOwners(ctx context.Context, objectID string) (result graphrbac.DirectoryObjectListResultPage, err error)
+	ListOwnersComplete(ctx context.Context, objectID string) (result graphrbac.DirectoryObjectListResultIterator, err error)
 	ListPasswordCredentials(ctx context.Context, objectID string) (result graphrbac.PasswordCredentialListResult, err error)
 	Update(ctx context.Context, objectID string, parameters graphrbac.ServicePrincipalUpdateParameters) (result autorest.Response, err error)
 	UpdateKeyCredentials(ctx context.Context, objectID string, parameters graphrbac.KeyCredentialsUpdateParameters) (result autorest.Response, err error)
@@ -106,6 +115,7 @@ type UsersClientAPI interface {
 	Get(ctx context.Context, upnOrObjectID string) (result graphrbac.User, err error)
 	GetMemberGroups(ctx context.Context, objectID string, parameters graphrbac.UserGetMemberGroupsParameters) (result graphrbac.UserGetMemberGroupsResult, err error)
 	List(ctx context.Context, filter string) (result graphrbac.UserListResultPage, err error)
+	ListComplete(ctx context.Context, filter string) (result graphrbac.UserListResultIterator, err error)
 	ListNext(ctx context.Context, nextLink string) (result graphrbac.UserListResult, err error)
 	Update(ctx context.Context, upnOrObjectID string, parameters graphrbac.UserUpdateParameters) (result autorest.Response, err error)
 }
@@ -115,6 +125,7 @@ var _ UsersClientAPI = (*graphrbac.UsersClient)(nil)
 // ObjectsClientAPI contains the set of methods on the ObjectsClient type.
 type ObjectsClientAPI interface {
 	GetObjectsByObjectIds(ctx context.Context, parameters graphrbac.GetObjectsParameters) (result graphrbac.DirectoryObjectListResultPage, err error)
+	GetObjectsByObjectIdsComplete(ctx context.Context, parameters graphrbac.GetObjectsParameters) (result graphrbac.DirectoryObjectListResultIterator, err error)
 	GetObjectsByObjectIdsNext(ctx context.Context, nextLink string) (result graphrbac.DirectoryObjectListResult, err error)
 }
 
@@ -133,6 +144,7 @@ type OAuth2PermissionGrantClientAPI interface {
 	Create(ctx context.Context, body *graphrbac.OAuth2PermissionGrant) (result graphrbac.OAuth2PermissionGrant, err error)
 	Delete(ctx context.Context, objectID string) (result autorest.Response, err error)
 	List(ctx context.Context, filter string) (result graphrbac.OAuth2PermissionGrantListResultPage, err error)
+	ListComplete(ctx context.Context, filter string) (result graphrbac.OAuth2PermissionGrantListResultIterator, err error)
 	ListNext(ctx context.Context, nextLink string) (result graphrbac.OAuth2PermissionGrantListResult, err error)
 }
 

@@ -37,7 +37,8 @@ func NewStepsClient(subscriptionID string) StepsClient {
 	return NewStepsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewStepsClientWithBaseURI creates an instance of the StepsClient client.
+// NewStepsClientWithBaseURI creates an instance of the StepsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewStepsClientWithBaseURI(baseURI string, subscriptionID string) StepsClient {
 	return StepsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

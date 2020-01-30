@@ -36,7 +36,9 @@ func NewServiceFabricSchedulesClient(subscriptionID string) ServiceFabricSchedul
 	return NewServiceFabricSchedulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewServiceFabricSchedulesClientWithBaseURI creates an instance of the ServiceFabricSchedulesClient client.
+// NewServiceFabricSchedulesClientWithBaseURI creates an instance of the ServiceFabricSchedulesClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewServiceFabricSchedulesClientWithBaseURI(baseURI string, subscriptionID string) ServiceFabricSchedulesClient {
 	return ServiceFabricSchedulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

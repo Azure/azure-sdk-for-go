@@ -32,7 +32,9 @@ type WorkflowsClientAPI interface {
 	GenerateUpgradedDefinition(ctx context.Context, resourceGroupName string, workflowName string, parameters logic.GenerateUpgradedDefinitionParameters) (result logic.SetObject, err error)
 	Get(ctx context.Context, resourceGroupName string, workflowName string) (result logic.Workflow, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, top *int32, filter string) (result logic.WorkflowListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, top *int32, filter string) (result logic.WorkflowListResultIterator, err error)
 	ListBySubscription(ctx context.Context, top *int32, filter string) (result logic.WorkflowListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, top *int32, filter string) (result logic.WorkflowListResultIterator, err error)
 	ListCallbackURL(ctx context.Context, resourceGroupName string, workflowName string, listCallbackURL logic.GetCallbackURLParameters) (result logic.WorkflowTriggerCallbackURL, err error)
 	ListSwagger(ctx context.Context, resourceGroupName string, workflowName string) (result logic.SetObject, err error)
 	Move(ctx context.Context, resourceGroupName string, workflowName string, move logic.Workflow) (result logic.WorkflowsMoveFuture, err error)
@@ -48,6 +50,7 @@ var _ WorkflowsClientAPI = (*logic.WorkflowsClient)(nil)
 type WorkflowVersionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workflowName string, versionID string) (result logic.WorkflowVersion, err error)
 	List(ctx context.Context, resourceGroupName string, workflowName string, top *int32) (result logic.WorkflowVersionListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workflowName string, top *int32) (result logic.WorkflowVersionListResultIterator, err error)
 }
 
 var _ WorkflowVersionsClientAPI = (*logic.WorkflowVersionsClient)(nil)
@@ -57,6 +60,7 @@ type WorkflowTriggersClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result logic.WorkflowTrigger, err error)
 	GetSchemaJSON(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result logic.JSONSchema, err error)
 	List(ctx context.Context, resourceGroupName string, workflowName string, top *int32, filter string) (result logic.WorkflowTriggerListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workflowName string, top *int32, filter string) (result logic.WorkflowTriggerListResultIterator, err error)
 	ListCallbackURL(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result logic.WorkflowTriggerCallbackURL, err error)
 	Reset(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result autorest.Response, err error)
 	Run(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result logic.SetObject, err error)
@@ -76,6 +80,7 @@ var _ WorkflowVersionTriggersClientAPI = (*logic.WorkflowVersionTriggersClient)(
 type WorkflowTriggerHistoriesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, historyName string) (result logic.WorkflowTriggerHistory, err error)
 	List(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, top *int32, filter string) (result logic.WorkflowTriggerHistoryListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, top *int32, filter string) (result logic.WorkflowTriggerHistoryListResultIterator, err error)
 	Resubmit(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, historyName string) (result autorest.Response, err error)
 }
 
@@ -86,6 +91,7 @@ type WorkflowRunsClientAPI interface {
 	Cancel(ctx context.Context, resourceGroupName string, workflowName string, runName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, workflowName string, runName string) (result logic.WorkflowRun, err error)
 	List(ctx context.Context, resourceGroupName string, workflowName string, top *int32, filter string) (result logic.WorkflowRunListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workflowName string, top *int32, filter string) (result logic.WorkflowRunListResultIterator, err error)
 }
 
 var _ WorkflowRunsClientAPI = (*logic.WorkflowRunsClient)(nil)
@@ -94,6 +100,7 @@ var _ WorkflowRunsClientAPI = (*logic.WorkflowRunsClient)(nil)
 type WorkflowRunActionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result logic.WorkflowRunAction, err error)
 	List(ctx context.Context, resourceGroupName string, workflowName string, runName string, top *int32, filter string) (result logic.WorkflowRunActionListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workflowName string, runName string, top *int32, filter string) (result logic.WorkflowRunActionListResultIterator, err error)
 	ListExpressionTraces(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result logic.ExpressionTraces, err error)
 }
 
@@ -112,6 +119,7 @@ var _ WorkflowRunActionRepetitionsClientAPI = (*logic.WorkflowRunActionRepetitio
 type WorkflowRunActionRepetitionsRequestHistoriesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, requestHistoryName string) (result logic.RequestHistory, err error)
 	List(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string) (result logic.RequestHistoryListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string) (result logic.RequestHistoryListResultIterator, err error)
 }
 
 var _ WorkflowRunActionRepetitionsRequestHistoriesClientAPI = (*logic.WorkflowRunActionRepetitionsRequestHistoriesClient)(nil)
@@ -120,6 +128,7 @@ var _ WorkflowRunActionRepetitionsRequestHistoriesClientAPI = (*logic.WorkflowRu
 type WorkflowRunActionRequestHistoriesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, requestHistoryName string) (result logic.RequestHistory, err error)
 	List(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result logic.RequestHistoryListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result logic.RequestHistoryListResultIterator, err error)
 }
 
 var _ WorkflowRunActionRequestHistoriesClientAPI = (*logic.WorkflowRunActionRequestHistoriesClient)(nil)
@@ -145,7 +154,9 @@ type IntegrationAccountsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, integrationAccountName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, integrationAccountName string) (result logic.IntegrationAccount, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, top *int32) (result logic.IntegrationAccountListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, top *int32) (result logic.IntegrationAccountListResultIterator, err error)
 	ListBySubscription(ctx context.Context, top *int32) (result logic.IntegrationAccountListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, top *int32) (result logic.IntegrationAccountListResultIterator, err error)
 	ListCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, parameters logic.GetCallbackURLParameters) (result logic.CallbackURL, err error)
 	ListKeyVaultKeys(ctx context.Context, resourceGroupName string, integrationAccountName string, listKeyVaultKeys logic.ListKeyVaultKeysDefinition) (result logic.KeyVaultKeyCollection, err error)
 	LogTrackingEvents(ctx context.Context, resourceGroupName string, integrationAccountName string, logTrackingEvents logic.TrackingEventsDefinition) (result autorest.Response, err error)
@@ -182,6 +193,7 @@ type IntegrationAccountSchemasClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string) (result logic.IntegrationAccountSchema, err error)
 	List(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountSchemaListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountSchemaListResultIterator, err error)
 	ListContentCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, listContentCallbackURL logic.GetCallbackURLParameters) (result logic.WorkflowTriggerCallbackURL, err error)
 }
 
@@ -193,6 +205,7 @@ type IntegrationAccountMapsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string) (result logic.IntegrationAccountMap, err error)
 	List(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountMapListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountMapListResultIterator, err error)
 	ListContentCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, listContentCallbackURL logic.GetCallbackURLParameters) (result logic.WorkflowTriggerCallbackURL, err error)
 }
 
@@ -204,6 +217,7 @@ type IntegrationAccountPartnersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string) (result logic.IntegrationAccountPartner, err error)
 	List(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountPartnerListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountPartnerListResultIterator, err error)
 	ListContentCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, listContentCallbackURL logic.GetCallbackURLParameters) (result logic.WorkflowTriggerCallbackURL, err error)
 }
 
@@ -215,6 +229,7 @@ type IntegrationAccountAgreementsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string) (result logic.IntegrationAccountAgreement, err error)
 	List(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountAgreementListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountAgreementListResultIterator, err error)
 	ListContentCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, listContentCallbackURL logic.GetCallbackURLParameters) (result logic.WorkflowTriggerCallbackURL, err error)
 }
 
@@ -226,6 +241,7 @@ type IntegrationAccountCertificatesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string) (result logic.IntegrationAccountCertificate, err error)
 	List(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32) (result logic.IntegrationAccountCertificateListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32) (result logic.IntegrationAccountCertificateListResultIterator, err error)
 }
 
 var _ IntegrationAccountCertificatesClientAPI = (*logic.IntegrationAccountCertificatesClient)(nil)
@@ -236,6 +252,7 @@ type IntegrationAccountSessionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, sessionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, integrationAccountName string, sessionName string) (result logic.IntegrationAccountSession, err error)
 	List(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountSessionListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountSessionListResultIterator, err error)
 }
 
 var _ IntegrationAccountSessionsClientAPI = (*logic.IntegrationAccountSessionsClient)(nil)
@@ -246,7 +263,9 @@ type IntegrationServiceEnvironmentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (result logic.IntegrationServiceEnvironment, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroup string, top *int32) (result logic.IntegrationServiceEnvironmentListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroup string, top *int32) (result logic.IntegrationServiceEnvironmentListResultIterator, err error)
 	ListBySubscription(ctx context.Context, top *int32) (result logic.IntegrationServiceEnvironmentListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, top *int32) (result logic.IntegrationServiceEnvironmentListResultIterator, err error)
 	Restart(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (result autorest.Response, err error)
 	Update(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment logic.IntegrationServiceEnvironment) (result logic.IntegrationServiceEnvironmentsUpdateFuture, err error)
 }
@@ -256,6 +275,7 @@ var _ IntegrationServiceEnvironmentsClientAPI = (*logic.IntegrationServiceEnviro
 // IntegrationServiceEnvironmentSkusClientAPI contains the set of methods on the IntegrationServiceEnvironmentSkusClient type.
 type IntegrationServiceEnvironmentSkusClientAPI interface {
 	List(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (result logic.IntegrationServiceEnvironmentSkuListPage, err error)
+	ListComplete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (result logic.IntegrationServiceEnvironmentSkuListIterator, err error)
 }
 
 var _ IntegrationServiceEnvironmentSkusClientAPI = (*logic.IntegrationServiceEnvironmentSkusClient)(nil)
@@ -272,6 +292,7 @@ type IntegrationServiceEnvironmentManagedApisClientAPI interface {
 	Delete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.IntegrationServiceEnvironmentManagedApisDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.ManagedAPI, err error)
 	List(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (result logic.ManagedAPIListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (result logic.ManagedAPIListResultIterator, err error)
 	Put(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.IntegrationServiceEnvironmentManagedApisPutFuture, err error)
 }
 
@@ -280,6 +301,7 @@ var _ IntegrationServiceEnvironmentManagedApisClientAPI = (*logic.IntegrationSer
 // IntegrationServiceEnvironmentManagedAPIOperationsClientAPI contains the set of methods on the IntegrationServiceEnvironmentManagedAPIOperationsClient type.
 type IntegrationServiceEnvironmentManagedAPIOperationsClientAPI interface {
 	List(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.APIOperationListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.APIOperationListResultIterator, err error)
 }
 
 var _ IntegrationServiceEnvironmentManagedAPIOperationsClientAPI = (*logic.IntegrationServiceEnvironmentManagedAPIOperationsClient)(nil)
@@ -287,6 +309,7 @@ var _ IntegrationServiceEnvironmentManagedAPIOperationsClientAPI = (*logic.Integ
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result logic.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result logic.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*logic.OperationsClient)(nil)

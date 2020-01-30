@@ -36,7 +36,8 @@ func NewTokensClient(subscriptionID string) TokensClient {
 	return NewTokensClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewTokensClientWithBaseURI creates an instance of the TokensClient client.
+// NewTokensClientWithBaseURI creates an instance of the TokensClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewTokensClientWithBaseURI(baseURI string, subscriptionID string) TokensClient {
 	return TokensClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

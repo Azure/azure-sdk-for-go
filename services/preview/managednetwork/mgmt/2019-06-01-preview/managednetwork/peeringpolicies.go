@@ -38,7 +38,8 @@ func NewPeeringPoliciesClient(subscriptionID string) PeeringPoliciesClient {
 	return NewPeeringPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPeeringPoliciesClientWithBaseURI creates an instance of the PeeringPoliciesClient client.
+// NewPeeringPoliciesClientWithBaseURI creates an instance of the PeeringPoliciesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPeeringPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PeeringPoliciesClient {
 	return PeeringPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

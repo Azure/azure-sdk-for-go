@@ -53,6 +53,7 @@ type APIClientAPI interface {
 	Delete(ctx context.Context, apimBaseURL string, apiid string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, apimBaseURL string, apiid string) (result apimanagement.APIContract, err error)
 	List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.APICollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.APICollectionIterator, err error)
 	Update(ctx context.Context, apimBaseURL string, apiid string, parameters apimanagement.APIUpdateContract, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -64,6 +65,7 @@ type APIOperationClientAPI interface {
 	Delete(ctx context.Context, apimBaseURL string, apiid string, operationID string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, apimBaseURL string, apiid string, operationID string) (result apimanagement.OperationContract, err error)
 	ListByAPI(ctx context.Context, apimBaseURL string, apiid string, filter string, top *int32, skip *int32) (result apimanagement.OperationCollectionPage, err error)
+	ListByAPIComplete(ctx context.Context, apimBaseURL string, apiid string, filter string, top *int32, skip *int32) (result apimanagement.OperationCollectionIterator, err error)
 	Update(ctx context.Context, apimBaseURL string, apiid string, operationID string, parameters apimanagement.OperationUpdateContract, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -82,6 +84,7 @@ var _ APIOperationPolicyClientAPI = (*apimanagement.APIOperationPolicyClient)(ni
 // APIProductClientAPI contains the set of methods on the APIProductClient type.
 type APIProductClientAPI interface {
 	ListByApis(ctx context.Context, apimBaseURL string, apiid string, filter string, top *int32, skip *int32) (result apimanagement.ProductCollectionPage, err error)
+	ListByApisComplete(ctx context.Context, apimBaseURL string, apiid string, filter string, top *int32, skip *int32) (result apimanagement.ProductCollectionIterator, err error)
 }
 
 var _ APIProductClientAPI = (*apimanagement.APIProductClient)(nil)
@@ -102,6 +105,7 @@ type APISchemaClientAPI interface {
 	Delete(ctx context.Context, apimBaseURL string, apiid string, schemaID string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, apimBaseURL string, apiid string, schemaID string) (result apimanagement.SchemaContract, err error)
 	ListByAPI(ctx context.Context, apimBaseURL string, apiid string) (result apimanagement.SchemaCollectionPage, err error)
+	ListByAPIComplete(ctx context.Context, apimBaseURL string, apiid string) (result apimanagement.SchemaCollectionIterator, err error)
 }
 
 var _ APISchemaClientAPI = (*apimanagement.APISchemaClient)(nil)
@@ -112,6 +116,7 @@ type AuthorizationServerClientAPI interface {
 	Delete(ctx context.Context, apimBaseURL string, authsid string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, apimBaseURL string, authsid string) (result apimanagement.AuthorizationServerContract, err error)
 	List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.AuthorizationServerCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.AuthorizationServerCollectionIterator, err error)
 	Update(ctx context.Context, apimBaseURL string, authsid string, parameters apimanagement.AuthorizationServerUpdateContract, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -123,6 +128,7 @@ type BackendClientAPI interface {
 	Delete(ctx context.Context, apimBaseURL string, backendid string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, apimBaseURL string, backendid string) (result apimanagement.BackendContract, err error)
 	List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.BackendCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.BackendCollectionIterator, err error)
 	Update(ctx context.Context, apimBaseURL string, backendid string, parameters apimanagement.BackendUpdateParameters, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -134,6 +140,7 @@ type CertificateClientAPI interface {
 	Delete(ctx context.Context, apimBaseURL string, certificateID string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, apimBaseURL string, certificateID string) (result apimanagement.CertificateContract, err error)
 	List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.CertificateCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.CertificateCollectionIterator, err error)
 }
 
 var _ CertificateClientAPI = (*apimanagement.CertificateClient)(nil)
@@ -144,6 +151,7 @@ type EmailTemplateClientAPI interface {
 	Delete(ctx context.Context, apimBaseURL string, templateName apimanagement.TemplateName, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, apimBaseURL string, templateName apimanagement.TemplateName) (result apimanagement.EmailTemplateContract, err error)
 	List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.EmailTemplateCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.EmailTemplateCollectionIterator, err error)
 	Update(ctx context.Context, apimBaseURL string, templateName apimanagement.TemplateName, parameters apimanagement.EmailTemplateUpdateParameters) (result autorest.Response, err error)
 }
 
@@ -155,6 +163,7 @@ type GroupClientAPI interface {
 	Delete(ctx context.Context, apimBaseURL string, groupID string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, apimBaseURL string, groupID string) (result apimanagement.GroupContract, err error)
 	List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.GroupCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.GroupCollectionIterator, err error)
 	Update(ctx context.Context, apimBaseURL string, groupID string, parameters apimanagement.GroupUpdateParameters, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -165,6 +174,7 @@ type GroupUserClientAPI interface {
 	Create(ctx context.Context, apimBaseURL string, groupID string, UID string) (result apimanagement.UserContract, err error)
 	Delete(ctx context.Context, apimBaseURL string, groupID string, UID string) (result autorest.Response, err error)
 	List(ctx context.Context, apimBaseURL string, groupID string, filter string, top *int32, skip *int32) (result apimanagement.UserCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, groupID string, filter string, top *int32, skip *int32) (result apimanagement.UserCollectionIterator, err error)
 }
 
 var _ GroupUserClientAPI = (*apimanagement.GroupUserClient)(nil)
@@ -186,6 +196,7 @@ type LoggerClientAPI interface {
 	Delete(ctx context.Context, apimBaseURL string, loggerid string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, apimBaseURL string, loggerid string) (result apimanagement.LoggerContract, err error)
 	List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.LoggerCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.LoggerCollectionIterator, err error)
 	Update(ctx context.Context, apimBaseURL string, loggerid string, parameters apimanagement.LoggerUpdateContract, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -197,6 +208,7 @@ type OpenIDConnectProviderClientAPI interface {
 	Delete(ctx context.Context, apimBaseURL string, opid string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, apimBaseURL string, opid string) (result apimanagement.OpenidConnectProviderContract, err error)
 	List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.OpenIDConnectProviderCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.OpenIDConnectProviderCollectionIterator, err error)
 	Update(ctx context.Context, apimBaseURL string, opid string, parameters apimanagement.OpenidConnectProviderUpdateContract, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -235,6 +247,7 @@ type ProductClientAPI interface {
 	Delete(ctx context.Context, apimBaseURL string, productID string, ifMatch string, deleteSubscriptions *bool) (result autorest.Response, err error)
 	Get(ctx context.Context, apimBaseURL string, productID string) (result apimanagement.ProductContract, err error)
 	List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32, expandGroups *bool) (result apimanagement.ProductCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32, expandGroups *bool) (result apimanagement.ProductCollectionIterator, err error)
 	Update(ctx context.Context, apimBaseURL string, productID string, parameters apimanagement.ProductUpdateParameters, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -245,6 +258,7 @@ type ProductAPIClientAPI interface {
 	CreateOrUpdate(ctx context.Context, apimBaseURL string, productID string, apiid string) (result apimanagement.APIContract, err error)
 	Delete(ctx context.Context, apimBaseURL string, productID string, apiid string) (result autorest.Response, err error)
 	ListByProduct(ctx context.Context, apimBaseURL string, productID string, filter string, top *int32, skip *int32) (result apimanagement.APICollectionPage, err error)
+	ListByProductComplete(ctx context.Context, apimBaseURL string, productID string, filter string, top *int32, skip *int32) (result apimanagement.APICollectionIterator, err error)
 }
 
 var _ ProductAPIClientAPI = (*apimanagement.ProductAPIClient)(nil)
@@ -254,6 +268,7 @@ type ProductGroupClientAPI interface {
 	CreateOrUpdate(ctx context.Context, apimBaseURL string, productID string, groupID string) (result apimanagement.GroupContract, err error)
 	Delete(ctx context.Context, apimBaseURL string, productID string, groupID string) (result autorest.Response, err error)
 	ListByProduct(ctx context.Context, apimBaseURL string, productID string, filter string, top *int32, skip *int32) (result apimanagement.GroupCollectionPage, err error)
+	ListByProductComplete(ctx context.Context, apimBaseURL string, productID string, filter string, top *int32, skip *int32) (result apimanagement.GroupCollectionIterator, err error)
 }
 
 var _ ProductGroupClientAPI = (*apimanagement.ProductGroupClient)(nil)
@@ -261,6 +276,7 @@ var _ ProductGroupClientAPI = (*apimanagement.ProductGroupClient)(nil)
 // ProductSubscriptionsClientAPI contains the set of methods on the ProductSubscriptionsClient type.
 type ProductSubscriptionsClientAPI interface {
 	List(ctx context.Context, apimBaseURL string, productID string, filter string, top *int32, skip *int32) (result apimanagement.SubscriptionCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, productID string, filter string, top *int32, skip *int32) (result apimanagement.SubscriptionCollectionIterator, err error)
 }
 
 var _ ProductSubscriptionsClientAPI = (*apimanagement.ProductSubscriptionsClient)(nil)
@@ -281,6 +297,7 @@ type PropertyClientAPI interface {
 	Delete(ctx context.Context, apimBaseURL string, propID string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, apimBaseURL string, propID string) (result apimanagement.PropertyContract, err error)
 	List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.PropertyCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.PropertyCollectionIterator, err error)
 	Update(ctx context.Context, apimBaseURL string, propID string, parameters apimanagement.PropertyUpdateParameters, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -305,13 +322,20 @@ var _ QuotaByPeriodKeysClientAPI = (*apimanagement.QuotaByPeriodKeysClient)(nil)
 // ReportsClientAPI contains the set of methods on the ReportsClient type.
 type ReportsClientAPI interface {
 	ListByAPI(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.ReportCollectionPage, err error)
+	ListByAPIComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.ReportCollectionIterator, err error)
 	ListByGeo(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.ReportCollectionPage, err error)
+	ListByGeoComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.ReportCollectionIterator, err error)
 	ListByOperation(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.ReportCollectionPage, err error)
+	ListByOperationComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.ReportCollectionIterator, err error)
 	ListByProduct(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.ReportCollectionPage, err error)
+	ListByProductComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.ReportCollectionIterator, err error)
 	ListByRequest(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.RequestReportCollection, err error)
 	ListBySubscription(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.ReportCollectionPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.ReportCollectionIterator, err error)
 	ListByTime(ctx context.Context, apimBaseURL string, interval string, filter string, top *int32, skip *int32) (result apimanagement.ReportCollectionPage, err error)
+	ListByTimeComplete(ctx context.Context, apimBaseURL string, interval string, filter string, top *int32, skip *int32) (result apimanagement.ReportCollectionIterator, err error)
 	ListByUser(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.ReportCollectionPage, err error)
+	ListByUserComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.ReportCollectionIterator, err error)
 }
 
 var _ ReportsClientAPI = (*apimanagement.ReportsClient)(nil)
@@ -322,6 +346,7 @@ type SubscriptionClientAPI interface {
 	Delete(ctx context.Context, apimBaseURL string, sid string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, apimBaseURL string, sid string) (result apimanagement.SubscriptionContract, err error)
 	List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.SubscriptionCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.SubscriptionCollectionIterator, err error)
 	RegeneratePrimaryKey(ctx context.Context, apimBaseURL string, sid string) (result autorest.Response, err error)
 	RegenerateSecondaryKey(ctx context.Context, apimBaseURL string, sid string) (result autorest.Response, err error)
 	Update(ctx context.Context, apimBaseURL string, sid string, parameters apimanagement.SubscriptionUpdateParameters, ifMatch string, notify string) (result autorest.Response, err error)
@@ -366,6 +391,7 @@ type UserClientAPI interface {
 	Get(ctx context.Context, apimBaseURL string, UID string) (result apimanagement.UserContract, err error)
 	GetSharedAccessToken(ctx context.Context, apimBaseURL string, UID string, parameters apimanagement.UserTokenParameters) (result apimanagement.UserTokenResult, err error)
 	List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.UserCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result apimanagement.UserCollectionIterator, err error)
 	Update(ctx context.Context, apimBaseURL string, UID string, parameters apimanagement.UserUpdateParameters, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -374,6 +400,7 @@ var _ UserClientAPI = (*apimanagement.UserClient)(nil)
 // UserGroupClientAPI contains the set of methods on the UserGroupClient type.
 type UserGroupClientAPI interface {
 	List(ctx context.Context, apimBaseURL string, UID string, filter string, top *int32, skip *int32) (result apimanagement.GroupCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, UID string, filter string, top *int32, skip *int32) (result apimanagement.GroupCollectionIterator, err error)
 }
 
 var _ UserGroupClientAPI = (*apimanagement.UserGroupClient)(nil)
@@ -381,6 +408,7 @@ var _ UserGroupClientAPI = (*apimanagement.UserGroupClient)(nil)
 // UserSubscriptionClientAPI contains the set of methods on the UserSubscriptionClient type.
 type UserSubscriptionClientAPI interface {
 	List(ctx context.Context, apimBaseURL string, UID string, filter string, top *int32, skip *int32) (result apimanagement.SubscriptionCollectionPage, err error)
+	ListComplete(ctx context.Context, apimBaseURL string, UID string, filter string, top *int32, skip *int32) (result apimanagement.SubscriptionCollectionIterator, err error)
 }
 
 var _ UserSubscriptionClientAPI = (*apimanagement.UserSubscriptionClient)(nil)

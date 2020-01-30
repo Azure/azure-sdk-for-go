@@ -36,7 +36,8 @@ func NewOrdersClient(subscriptionID string) OrdersClient {
 	return NewOrdersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewOrdersClientWithBaseURI creates an instance of the OrdersClient client.
+// NewOrdersClientWithBaseURI creates an instance of the OrdersClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewOrdersClientWithBaseURI(baseURI string, subscriptionID string) OrdersClient {
 	return OrdersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

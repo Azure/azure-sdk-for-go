@@ -69,15 +69,15 @@ func theUpdateSDKCommand(sdk string) error {
 	majorVersion = currentMajorVersion + 1
 	printf("Next major version: %d\n", majorVersion)
 	vprintf("Checking out to latest branch in %s\n", cwd)
-	err = wt.Checkout(latest)
+	err = wt.Checkout(master)
 	if err != nil {
 		return fmt.Errorf("checkout failed: %v", err)
 	}
-	err = wt.Pull(upstream, latest)
+	err = wt.Pull(upstream, master)
 	if err != nil {
 		return fmt.Errorf("pull failed: %v", err)
 	}
-	vprintf("Checking out to new branch based on %s", latest)
+	vprintf("Checking out to new branch based on %s", master)
 	branchName := fmt.Sprintf(branchPattern, majorVersion)
 	err = createNewBranch(wt, branchName)
 	if err != nil {

@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:2e9f9f3381b65a6f99438e30ce398cbc13eb224187950158321ad9e560261f40"
+  digest = "1:46eaa8d8d35d2004f218ad6c48b6c81e0b1c3457915f55a40831b5af3fb43b76"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -17,8 +17,8 @@
     "tracing",
   ]
   pruneopts = "UT"
-  revision = "21d4b01533b1005be0d020da67a6d3f8ebdf0141"
-  version = "v13.3.1"
+  revision = "20a15b4e99645bc30a1cf8de518a6e8ac331c864"
+  version = "v13.3.2"
 
 [[projects]]
   digest = "1:f313598719f69ec4edbcd75b0f2ef1c8ed9e00f6ff3d7583ac3966db2d70d326"

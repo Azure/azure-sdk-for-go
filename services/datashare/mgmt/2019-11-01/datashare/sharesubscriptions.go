@@ -36,7 +36,9 @@ func NewShareSubscriptionsClient(subscriptionID string) ShareSubscriptionsClient
 	return NewShareSubscriptionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewShareSubscriptionsClientWithBaseURI creates an instance of the ShareSubscriptionsClient client.
+// NewShareSubscriptionsClientWithBaseURI creates an instance of the ShareSubscriptionsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewShareSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) ShareSubscriptionsClient {
 	return ShareSubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

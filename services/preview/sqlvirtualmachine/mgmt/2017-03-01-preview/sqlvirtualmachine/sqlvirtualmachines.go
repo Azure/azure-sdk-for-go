@@ -38,7 +38,9 @@ func NewSQLVirtualMachinesClient(subscriptionID string) SQLVirtualMachinesClient
 	return NewSQLVirtualMachinesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSQLVirtualMachinesClientWithBaseURI creates an instance of the SQLVirtualMachinesClient client.
+// NewSQLVirtualMachinesClientWithBaseURI creates an instance of the SQLVirtualMachinesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewSQLVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) SQLVirtualMachinesClient {
 	return SQLVirtualMachinesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

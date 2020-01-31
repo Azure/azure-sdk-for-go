@@ -35,7 +35,8 @@ func NewChildResourcesClient(subscriptionID string) ChildResourcesClient {
 	return NewChildResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewChildResourcesClientWithBaseURI creates an instance of the ChildResourcesClient client.
+// NewChildResourcesClientWithBaseURI creates an instance of the ChildResourcesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewChildResourcesClientWithBaseURI(baseURI string, subscriptionID string) ChildResourcesClient {
 	return ChildResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

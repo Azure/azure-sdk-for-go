@@ -35,7 +35,9 @@ func NewAssignmentOperationsClient() AssignmentOperationsClient {
 	return NewAssignmentOperationsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewAssignmentOperationsClientWithBaseURI creates an instance of the AssignmentOperationsClient client.
+// NewAssignmentOperationsClientWithBaseURI creates an instance of the AssignmentOperationsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewAssignmentOperationsClientWithBaseURI(baseURI string) AssignmentOperationsClient {
 	return AssignmentOperationsClient{NewWithBaseURI(baseURI)}
 }

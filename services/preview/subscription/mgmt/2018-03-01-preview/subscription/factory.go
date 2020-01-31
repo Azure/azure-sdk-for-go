@@ -35,7 +35,8 @@ func NewFactoryClient() FactoryClient {
 	return NewFactoryClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewFactoryClientWithBaseURI creates an instance of the FactoryClient client.
+// NewFactoryClientWithBaseURI creates an instance of the FactoryClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewFactoryClientWithBaseURI(baseURI string) FactoryClient {
 	return FactoryClient{NewWithBaseURI(baseURI)}
 }

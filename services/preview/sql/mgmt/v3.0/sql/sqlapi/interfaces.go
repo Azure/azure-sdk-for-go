@@ -48,7 +48,9 @@ type ServersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.Server, err error)
 	List(ctx context.Context) (result sql.ServerListResultPage, err error)
+	ListComplete(ctx context.Context) (result sql.ServerListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.ServerListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result sql.ServerListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerUpdate) (result sql.ServersUpdateFuture, err error)
 }
 
@@ -115,7 +117,9 @@ type DatabasesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.Database, err error)
 	Import(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ImportRequest) (result sql.DatabasesImportFuture, err error)
 	ListByElasticPool(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.DatabaseListResultPage, err error)
+	ListByElasticPoolComplete(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.DatabaseListResultIterator, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.DatabaseListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.DatabaseListResultIterator, err error)
 	ListMetricDefinitions(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.MetricDefinitionListResult, err error)
 	ListMetrics(ctx context.Context, resourceGroupName string, serverName string, databaseName string, filter string) (result sql.MetricListResult, err error)
 	Pause(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabasesPauseFuture, err error)
@@ -134,6 +138,7 @@ type ElasticPoolsClientAPI interface {
 	Failover(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.ElasticPoolsFailoverFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.ElasticPool, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string, skip *int32) (result sql.ElasticPoolListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string, skip *int32) (result sql.ElasticPoolListResultIterator, err error)
 	ListMetricDefinitions(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.MetricDefinitionListResult, err error)
 	ListMetrics(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, filter string) (result sql.MetricListResult, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters sql.ElasticPoolUpdate) (result sql.ElasticPoolsUpdateFuture, err error)
@@ -243,6 +248,7 @@ type EncryptionProtectorsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.EncryptionProtector) (result sql.EncryptionProtectorsCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtector, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtectorListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtectorListResultIterator, err error)
 	Revalidate(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtectorsRevalidateFuture, err error)
 }
 
@@ -256,6 +262,7 @@ type FailoverGroupsClientAPI interface {
 	ForceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string) (result sql.FailoverGroupsForceFailoverAllowDataLossFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string) (result sql.FailoverGroup, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.FailoverGroupListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.FailoverGroupListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters sql.FailoverGroupUpdate) (result sql.FailoverGroupsUpdateFuture, err error)
 }
 
@@ -264,6 +271,7 @@ var _ FailoverGroupsClientAPI = (*sql.FailoverGroupsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result sql.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result sql.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*sql.OperationsClient)(nil)
@@ -274,6 +282,7 @@ type ServerKeysClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, keyName string) (result sql.ServerKeysDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, keyName string) (result sql.ServerKey, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerKeyListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerKeyListResultIterator, err error)
 }
 
 var _ ServerKeysClientAPI = (*sql.ServerKeysClient)(nil)
@@ -285,7 +294,9 @@ type SyncAgentsClientAPI interface {
 	GenerateKey(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string) (result sql.SyncAgentKeyProperties, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string) (result sql.SyncAgent, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.SyncAgentListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.SyncAgentListResultIterator, err error)
 	ListLinkedDatabases(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string) (result sql.SyncAgentLinkedDatabaseListResultPage, err error)
+	ListLinkedDatabasesComplete(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string) (result sql.SyncAgentLinkedDatabaseListResultIterator, err error)
 }
 
 var _ SyncAgentsClientAPI = (*sql.SyncAgentsClient)(nil)
@@ -297,9 +308,13 @@ type SyncGroupsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncGroupsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncGroup, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.SyncGroupListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.SyncGroupListResultIterator, err error)
 	ListHubSchemas(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncFullSchemaPropertiesListResultPage, err error)
+	ListHubSchemasComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncFullSchemaPropertiesListResultIterator, err error)
 	ListLogs(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParameter string, continuationToken string) (result sql.SyncGroupLogListResultPage, err error)
+	ListLogsComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParameter string, continuationToken string) (result sql.SyncGroupLogListResultIterator, err error)
 	ListSyncDatabaseIds(ctx context.Context, locationName string) (result sql.SyncDatabaseIDListResultPage, err error)
+	ListSyncDatabaseIdsComplete(ctx context.Context, locationName string) (result sql.SyncDatabaseIDListResultIterator, err error)
 	RefreshHubSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncGroupsRefreshHubSchemaFuture, err error)
 	TriggerSync(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result autorest.Response, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters sql.SyncGroup) (result sql.SyncGroupsUpdateFuture, err error)
@@ -313,7 +328,9 @@ type SyncMembersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncMembersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncMember, err error)
 	ListBySyncGroup(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncMemberListResultPage, err error)
+	ListBySyncGroupComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncMemberListResultIterator, err error)
 	ListMemberSchemas(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncFullSchemaPropertiesListResultPage, err error)
+	ListMemberSchemasComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncFullSchemaPropertiesListResultIterator, err error)
 	RefreshMemberSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncMembersRefreshMemberSchemaFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters sql.SyncMember) (result sql.SyncMembersUpdateFuture, err error)
 }
@@ -324,6 +341,7 @@ var _ SyncMembersClientAPI = (*sql.SyncMembersClient)(nil)
 type SubscriptionUsagesClientAPI interface {
 	Get(ctx context.Context, locationName string, usageName string) (result sql.SubscriptionUsage, err error)
 	ListByLocation(ctx context.Context, locationName string) (result sql.SubscriptionUsageListResultPage, err error)
+	ListByLocationComplete(ctx context.Context, locationName string) (result sql.SubscriptionUsageListResultIterator, err error)
 }
 
 var _ SubscriptionUsagesClientAPI = (*sql.SubscriptionUsagesClient)(nil)
@@ -333,7 +351,9 @@ type VirtualClustersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, virtualClusterName string) (result sql.VirtualClustersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualClusterName string) (result sql.VirtualCluster, err error)
 	List(ctx context.Context) (result sql.VirtualClusterListResultPage, err error)
+	ListComplete(ctx context.Context) (result sql.VirtualClusterListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.VirtualClusterListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result sql.VirtualClusterListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, virtualClusterName string, parameters sql.VirtualClusterUpdate) (result sql.VirtualClustersUpdateFuture, err error)
 }
 
@@ -345,6 +365,7 @@ type VirtualNetworkRulesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, virtualNetworkRuleName string) (result sql.VirtualNetworkRulesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, virtualNetworkRuleName string) (result sql.VirtualNetworkRule, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.VirtualNetworkRuleListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.VirtualNetworkRuleListResultIterator, err error)
 }
 
 var _ VirtualNetworkRulesClientAPI = (*sql.VirtualNetworkRulesClient)(nil)
@@ -370,6 +391,7 @@ type ServerBlobAuditingPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerBlobAuditingPolicy) (result sql.ServerBlobAuditingPoliciesCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerBlobAuditingPolicy, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerBlobAuditingPolicyListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerBlobAuditingPolicyListResultIterator, err error)
 }
 
 var _ ServerBlobAuditingPoliciesClientAPI = (*sql.ServerBlobAuditingPoliciesClient)(nil)
@@ -379,6 +401,7 @@ type DatabaseBlobAuditingPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.DatabaseBlobAuditingPolicy) (result sql.DatabaseBlobAuditingPolicy, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseBlobAuditingPolicy, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseBlobAuditingPolicyListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseBlobAuditingPolicyListResultIterator, err error)
 }
 
 var _ DatabaseBlobAuditingPoliciesClientAPI = (*sql.DatabaseBlobAuditingPoliciesClient)(nil)
@@ -398,6 +421,7 @@ type DatabaseVulnerabilityAssessmentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseVulnerabilityAssessment, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseVulnerabilityAssessmentListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseVulnerabilityAssessmentListResultIterator, err error)
 }
 
 var _ DatabaseVulnerabilityAssessmentsClientAPI = (*sql.DatabaseVulnerabilityAssessmentsClient)(nil)
@@ -408,6 +432,7 @@ type JobAgentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string) (result sql.JobAgentsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string) (result sql.JobAgent, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.JobAgentListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.JobAgentListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters sql.JobAgentUpdate) (result sql.JobAgentsUpdateFuture, err error)
 }
 
@@ -419,6 +444,7 @@ type JobCredentialsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string) (result sql.JobCredential, err error)
 	ListByAgent(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string) (result sql.JobCredentialListResultPage, err error)
+	ListByAgentComplete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string) (result sql.JobCredentialListResultIterator, err error)
 }
 
 var _ JobCredentialsClientAPI = (*sql.JobCredentialsClient)(nil)
@@ -430,7 +456,9 @@ type JobExecutionsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID uuid.UUID) (result sql.JobExecutionsCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID uuid.UUID) (result sql.JobExecution, err error)
 	ListByAgent(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, createTimeMin *date.Time, createTimeMax *date.Time, endTimeMin *date.Time, endTimeMax *date.Time, isActive *bool, skip *int32, top *int32) (result sql.JobExecutionListResultPage, err error)
+	ListByAgentComplete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, createTimeMin *date.Time, createTimeMax *date.Time, endTimeMin *date.Time, endTimeMax *date.Time, isActive *bool, skip *int32, top *int32) (result sql.JobExecutionListResultIterator, err error)
 	ListByJob(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, createTimeMin *date.Time, createTimeMax *date.Time, endTimeMin *date.Time, endTimeMax *date.Time, isActive *bool, skip *int32, top *int32) (result sql.JobExecutionListResultPage, err error)
+	ListByJobComplete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, createTimeMin *date.Time, createTimeMax *date.Time, endTimeMin *date.Time, endTimeMax *date.Time, isActive *bool, skip *int32, top *int32) (result sql.JobExecutionListResultIterator, err error)
 }
 
 var _ JobExecutionsClientAPI = (*sql.JobExecutionsClient)(nil)
@@ -441,6 +469,7 @@ type JobsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string) (result sql.Job, err error)
 	ListByAgent(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string) (result sql.JobListResultPage, err error)
+	ListByAgentComplete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string) (result sql.JobListResultIterator, err error)
 }
 
 var _ JobsClientAPI = (*sql.JobsClient)(nil)
@@ -449,6 +478,7 @@ var _ JobsClientAPI = (*sql.JobsClient)(nil)
 type JobStepExecutionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID uuid.UUID, stepName string) (result sql.JobExecution, err error)
 	ListByJobExecution(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID uuid.UUID, createTimeMin *date.Time, createTimeMax *date.Time, endTimeMin *date.Time, endTimeMax *date.Time, isActive *bool, skip *int32, top *int32) (result sql.JobExecutionListResultPage, err error)
+	ListByJobExecutionComplete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID uuid.UUID, createTimeMin *date.Time, createTimeMax *date.Time, endTimeMin *date.Time, endTimeMax *date.Time, isActive *bool, skip *int32, top *int32) (result sql.JobExecutionListResultIterator, err error)
 }
 
 var _ JobStepExecutionsClientAPI = (*sql.JobStepExecutionsClient)(nil)
@@ -460,7 +490,9 @@ type JobStepsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, stepName string) (result sql.JobStep, err error)
 	GetByVersion(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, stepName string) (result sql.JobStep, err error)
 	ListByJob(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string) (result sql.JobStepListResultPage, err error)
+	ListByJobComplete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string) (result sql.JobStepListResultIterator, err error)
 	ListByVersion(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32) (result sql.JobStepListResultPage, err error)
+	ListByVersionComplete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32) (result sql.JobStepListResultIterator, err error)
 }
 
 var _ JobStepsClientAPI = (*sql.JobStepsClient)(nil)
@@ -469,7 +501,9 @@ var _ JobStepsClientAPI = (*sql.JobStepsClient)(nil)
 type JobTargetExecutionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID uuid.UUID, stepName string, targetID uuid.UUID) (result sql.JobExecution, err error)
 	ListByJobExecution(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID uuid.UUID, createTimeMin *date.Time, createTimeMax *date.Time, endTimeMin *date.Time, endTimeMax *date.Time, isActive *bool, skip *int32, top *int32) (result sql.JobExecutionListResultPage, err error)
+	ListByJobExecutionComplete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID uuid.UUID, createTimeMin *date.Time, createTimeMax *date.Time, endTimeMin *date.Time, endTimeMax *date.Time, isActive *bool, skip *int32, top *int32) (result sql.JobExecutionListResultIterator, err error)
 	ListByStep(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID uuid.UUID, stepName string, createTimeMin *date.Time, createTimeMax *date.Time, endTimeMin *date.Time, endTimeMax *date.Time, isActive *bool, skip *int32, top *int32) (result sql.JobExecutionListResultPage, err error)
+	ListByStepComplete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID uuid.UUID, stepName string, createTimeMin *date.Time, createTimeMax *date.Time, endTimeMin *date.Time, endTimeMax *date.Time, isActive *bool, skip *int32, top *int32) (result sql.JobExecutionListResultIterator, err error)
 }
 
 var _ JobTargetExecutionsClientAPI = (*sql.JobTargetExecutionsClient)(nil)
@@ -480,6 +514,7 @@ type JobTargetGroupsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, targetGroupName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, targetGroupName string) (result sql.JobTargetGroup, err error)
 	ListByAgent(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string) (result sql.JobTargetGroupListResultPage, err error)
+	ListByAgentComplete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string) (result sql.JobTargetGroupListResultIterator, err error)
 }
 
 var _ JobTargetGroupsClientAPI = (*sql.JobTargetGroupsClient)(nil)
@@ -488,6 +523,7 @@ var _ JobTargetGroupsClientAPI = (*sql.JobTargetGroupsClient)(nil)
 type JobVersionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32) (result sql.JobVersion, err error)
 	ListByJob(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string) (result sql.JobVersionListResultPage, err error)
+	ListByJobComplete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string) (result sql.JobVersionListResultIterator, err error)
 }
 
 var _ JobVersionsClientAPI = (*sql.JobVersionsClient)(nil)
@@ -499,11 +535,17 @@ type LongTermRetentionBackupsClientAPI interface {
 	Get(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackup, err error)
 	GetByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string) (result sql.LongTermRetentionBackup, err error)
 	ListByDatabase(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
 	ListByLocation(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByLocationComplete(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
 	ListByResourceGroupDatabase(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupDatabaseComplete(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
 	ListByResourceGroupLocation(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupLocationComplete(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
 	ListByResourceGroupServer(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupServerComplete(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
 	ListByServer(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultPage, err error)
+	ListByServerComplete(ctx context.Context, locationName string, longTermRetentionServerName string, onlyLatestPerDatabase *bool, databaseState sql.LongTermRetentionDatabaseState) (result sql.LongTermRetentionBackupListResultIterator, err error)
 }
 
 var _ LongTermRetentionBackupsClientAPI = (*sql.LongTermRetentionBackupsClient)(nil)
@@ -522,6 +564,7 @@ type ManagedBackupShortTermRetentionPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.ManagedBackupShortTermRetentionPolicy) (result sql.ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedBackupShortTermRetentionPolicy, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedBackupShortTermRetentionPolicyListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedBackupShortTermRetentionPolicyListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.ManagedBackupShortTermRetentionPolicy) (result sql.ManagedBackupShortTermRetentionPoliciesUpdateFuture, err error)
 }
 
@@ -532,6 +575,7 @@ type ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientAPI i
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, parameters sql.ManagedBackupShortTermRetentionPolicy) (result sql.ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string) (result sql.ManagedBackupShortTermRetentionPolicy, err error)
 	ListByRestorableDroppedDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string) (result sql.ManagedBackupShortTermRetentionPolicyListResultPage, err error)
+	ListByRestorableDroppedDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string) (result sql.ManagedBackupShortTermRetentionPolicyListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, parameters sql.ManagedBackupShortTermRetentionPolicy) (result sql.ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdateFuture, err error)
 }
 
@@ -552,6 +596,7 @@ type ServerDNSAliasesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, DNSAliasName string) (result sql.ServerDNSAliasesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, DNSAliasName string) (result sql.ServerDNSAlias, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerDNSAliasListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerDNSAliasListResultIterator, err error)
 }
 
 var _ ServerDNSAliasesClientAPI = (*sql.ServerDNSAliasesClient)(nil)
@@ -561,6 +606,7 @@ type ServerSecurityAlertPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerSecurityAlertPolicy) (result sql.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerSecurityAlertPolicy, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.LogicalServerSecurityAlertPolicyListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.LogicalServerSecurityAlertPolicyListResultIterator, err error)
 }
 
 var _ ServerSecurityAlertPoliciesClientAPI = (*sql.ServerSecurityAlertPoliciesClient)(nil)
@@ -569,6 +615,7 @@ var _ ServerSecurityAlertPoliciesClientAPI = (*sql.ServerSecurityAlertPoliciesCl
 type RestorableDroppedManagedDatabasesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string) (result sql.RestorableDroppedManagedDatabase, err error)
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.RestorableDroppedManagedDatabaseListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.RestorableDroppedManagedDatabaseListResultIterator, err error)
 }
 
 var _ RestorableDroppedManagedDatabasesClientAPI = (*sql.RestorableDroppedManagedDatabasesClient)(nil)
@@ -588,6 +635,7 @@ type ManagedDatabaseSecurityAlertPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.ManagedDatabaseSecurityAlertPolicy) (result sql.ManagedDatabaseSecurityAlertPolicy, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabaseSecurityAlertPolicy, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabaseSecurityAlertPolicyListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabaseSecurityAlertPolicyListResultIterator, err error)
 }
 
 var _ ManagedDatabaseSecurityAlertPoliciesClientAPI = (*sql.ManagedDatabaseSecurityAlertPoliciesClient)(nil)
@@ -597,6 +645,7 @@ type ManagedServerSecurityAlertPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedServerSecurityAlertPolicy) (result sql.ManagedServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedServerSecurityAlertPolicy, err error)
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedServerSecurityAlertPolicyListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedServerSecurityAlertPolicyListResultIterator, err error)
 }
 
 var _ ManagedServerSecurityAlertPoliciesClientAPI = (*sql.ManagedServerSecurityAlertPoliciesClient)(nil)
@@ -609,7 +658,9 @@ type SensitivityLabelsClientAPI interface {
 	EnableRecommendation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource sql.SensitivityLabelSource) (result sql.SensitivityLabel, err error)
 	ListCurrentByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, filter string) (result sql.SensitivityLabelListResultPage, err error)
+	ListCurrentByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, filter string) (result sql.SensitivityLabelListResultIterator, err error)
 	ListRecommendedByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, includeDisabledRecommendations *bool, skipToken string, filter string) (result sql.SensitivityLabelListResultPage, err error)
+	ListRecommendedByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, includeDisabledRecommendations *bool, skipToken string, filter string) (result sql.SensitivityLabelListResultIterator, err error)
 }
 
 var _ SensitivityLabelsClientAPI = (*sql.SensitivityLabelsClient)(nil)
@@ -620,6 +671,7 @@ type ManagedInstanceAdministratorsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceAdministratorsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceAdministrator, err error)
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceAdministratorListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceAdministratorListResultIterator, err error)
 }
 
 var _ ManagedInstanceAdministratorsClientAPI = (*sql.ManagedInstanceAdministratorsClient)(nil)
@@ -628,6 +680,7 @@ var _ ManagedInstanceAdministratorsClientAPI = (*sql.ManagedInstanceAdministrato
 type DatabaseOperationsClientAPI interface {
 	Cancel(ctx context.Context, resourceGroupName string, serverName string, databaseName string, operationID uuid.UUID) (result autorest.Response, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseOperationListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseOperationListResultIterator, err error)
 }
 
 var _ DatabaseOperationsClientAPI = (*sql.DatabaseOperationsClient)(nil)
@@ -636,6 +689,7 @@ var _ DatabaseOperationsClientAPI = (*sql.DatabaseOperationsClient)(nil)
 type ElasticPoolOperationsClientAPI interface {
 	Cancel(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, operationID uuid.UUID) (result autorest.Response, err error)
 	ListByElasticPool(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.ElasticPoolOperationListResultPage, err error)
+	ListByElasticPoolComplete(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result sql.ElasticPoolOperationListResultIterator, err error)
 }
 
 var _ ElasticPoolOperationsClientAPI = (*sql.ElasticPoolOperationsClient)(nil)
@@ -646,6 +700,7 @@ type DatabaseVulnerabilityAssessmentScansClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, scanID string) (result sql.VulnerabilityAssessmentScanRecord, err error)
 	InitiateScan(ctx context.Context, resourceGroupName string, serverName string, databaseName string, scanID string) (result sql.DatabaseVulnerabilityAssessmentScansInitiateScanFuture, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.VulnerabilityAssessmentScanRecordListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.VulnerabilityAssessmentScanRecordListResultIterator, err error)
 }
 
 var _ DatabaseVulnerabilityAssessmentScansClientAPI = (*sql.DatabaseVulnerabilityAssessmentScansClient)(nil)
@@ -665,6 +720,7 @@ type ManagedDatabaseVulnerabilityAssessmentScansClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, scanID string) (result sql.VulnerabilityAssessmentScanRecord, err error)
 	InitiateScan(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, scanID string) (result sql.ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.VulnerabilityAssessmentScanRecordListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.VulnerabilityAssessmentScanRecordListResultIterator, err error)
 }
 
 var _ ManagedDatabaseVulnerabilityAssessmentScansClientAPI = (*sql.ManagedDatabaseVulnerabilityAssessmentScansClient)(nil)
@@ -675,6 +731,7 @@ type ManagedDatabaseVulnerabilityAssessmentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.DatabaseVulnerabilityAssessment, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.DatabaseVulnerabilityAssessmentListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.DatabaseVulnerabilityAssessmentListResultIterator, err error)
 }
 
 var _ ManagedDatabaseVulnerabilityAssessmentsClientAPI = (*sql.ManagedDatabaseVulnerabilityAssessmentsClient)(nil)
@@ -687,6 +744,7 @@ type InstanceFailoverGroupsClientAPI interface {
 	ForceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string) (result sql.InstanceFailoverGroupsForceFailoverAllowDataLossFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string) (result sql.InstanceFailoverGroup, err error)
 	ListByLocation(ctx context.Context, resourceGroupName string, locationName string) (result sql.InstanceFailoverGroupListResultPage, err error)
+	ListByLocationComplete(ctx context.Context, resourceGroupName string, locationName string) (result sql.InstanceFailoverGroupListResultIterator, err error)
 }
 
 var _ InstanceFailoverGroupsClientAPI = (*sql.InstanceFailoverGroupsClient)(nil)
@@ -696,6 +754,7 @@ type BackupShortTermRetentionPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.BackupShortTermRetentionPolicy) (result sql.BackupShortTermRetentionPoliciesCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupShortTermRetentionPolicy, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupShortTermRetentionPolicyListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupShortTermRetentionPolicyListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.BackupShortTermRetentionPolicy) (result sql.BackupShortTermRetentionPoliciesUpdateFuture, err error)
 }
 
@@ -721,6 +780,7 @@ type ManagedInstanceKeysClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string) (result sql.ManagedInstanceKeysDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string) (result sql.ManagedInstanceKey, err error)
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string, filter string) (result sql.ManagedInstanceKeyListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, filter string) (result sql.ManagedInstanceKeyListResultIterator, err error)
 }
 
 var _ ManagedInstanceKeysClientAPI = (*sql.ManagedInstanceKeysClient)(nil)
@@ -730,6 +790,7 @@ type ManagedInstanceEncryptionProtectorsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstanceEncryptionProtector) (result sql.ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceEncryptionProtector, err error)
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceEncryptionProtectorListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceEncryptionProtectorListResultIterator, err error)
 	Revalidate(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceEncryptionProtectorsRevalidateFuture, err error)
 }
 
@@ -739,6 +800,7 @@ var _ ManagedInstanceEncryptionProtectorsClientAPI = (*sql.ManagedInstanceEncryp
 type RecoverableManagedDatabasesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, recoverableDatabaseName string) (result sql.RecoverableManagedDatabase, err error)
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.RecoverableManagedDatabaseListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.RecoverableManagedDatabaseListResultIterator, err error)
 }
 
 var _ RecoverableManagedDatabasesClientAPI = (*sql.RecoverableManagedDatabasesClient)(nil)
@@ -749,6 +811,7 @@ type ManagedInstanceVulnerabilityAssessmentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceVulnerabilityAssessment, err error)
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceVulnerabilityAssessmentListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceVulnerabilityAssessmentListResultIterator, err error)
 }
 
 var _ ManagedInstanceVulnerabilityAssessmentsClientAPI = (*sql.ManagedInstanceVulnerabilityAssessmentsClient)(nil)
@@ -759,6 +822,7 @@ type ServerVulnerabilityAssessmentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerVulnerabilityAssessment, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerVulnerabilityAssessmentListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerVulnerabilityAssessmentListResultIterator, err error)
 }
 
 var _ ServerVulnerabilityAssessmentsClientAPI = (*sql.ServerVulnerabilityAssessmentsClient)(nil)
@@ -771,7 +835,9 @@ type ManagedDatabaseSensitivityLabelsClientAPI interface {
 	EnableRecommendation(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource sql.SensitivityLabelSource) (result sql.SensitivityLabel, err error)
 	ListCurrentByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, filter string) (result sql.SensitivityLabelListResultPage, err error)
+	ListCurrentByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, filter string) (result sql.SensitivityLabelListResultIterator, err error)
 	ListRecommendedByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, includeDisabledRecommendations *bool, skipToken string, filter string) (result sql.SensitivityLabelListResultPage, err error)
+	ListRecommendedByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, includeDisabledRecommendations *bool, skipToken string, filter string) (result sql.SensitivityLabelListResultIterator, err error)
 }
 
 var _ ManagedDatabaseSensitivityLabelsClientAPI = (*sql.ManagedDatabaseSensitivityLabelsClient)(nil)
@@ -782,7 +848,9 @@ type InstancePoolsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.InstancePoolsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.InstancePool, err error)
 	List(ctx context.Context) (result sql.InstancePoolListResultPage, err error)
+	ListComplete(ctx context.Context) (result sql.InstancePoolListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.InstancePoolListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result sql.InstancePoolListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, instancePoolName string, parameters sql.InstancePoolUpdate) (result sql.InstancePoolsUpdateFuture, err error)
 }
 
@@ -791,6 +859,7 @@ var _ InstancePoolsClientAPI = (*sql.InstancePoolsClient)(nil)
 // UsagesClientAPI contains the set of methods on the UsagesClient type.
 type UsagesClientAPI interface {
 	ListByInstancePool(ctx context.Context, resourceGroupName string, instancePoolName string, expandChildren *bool) (result sql.UsageListResultPage, err error)
+	ListByInstancePoolComplete(ctx context.Context, resourceGroupName string, instancePoolName string, expandChildren *bool) (result sql.UsageListResultIterator, err error)
 }
 
 var _ UsagesClientAPI = (*sql.UsagesClient)(nil)
@@ -801,8 +870,11 @@ type ManagedInstancesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstancesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstance, err error)
 	List(ctx context.Context) (result sql.ManagedInstanceListResultPage, err error)
+	ListComplete(ctx context.Context) (result sql.ManagedInstanceListResultIterator, err error)
 	ListByInstancePool(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.ManagedInstanceListResultPage, err error)
+	ListByInstancePoolComplete(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.ManagedInstanceListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.ManagedInstanceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result sql.ManagedInstanceListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstanceUpdate) (result sql.ManagedInstancesUpdateFuture, err error)
 }
 
@@ -822,6 +894,7 @@ type ManagedDatabasesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabasesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabase, err error)
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedDatabaseListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedDatabaseListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.ManagedDatabaseUpdate) (result sql.ManagedDatabasesUpdateFuture, err error)
 }
 
@@ -833,6 +906,7 @@ type PrivateEndpointConnectionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string) (result sql.PrivateEndpointConnectionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string) (result sql.PrivateEndpointConnection, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.PrivateEndpointConnectionListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.PrivateEndpointConnectionListResultIterator, err error)
 }
 
 var _ PrivateEndpointConnectionsClientAPI = (*sql.PrivateEndpointConnectionsClient)(nil)
@@ -841,6 +915,7 @@ var _ PrivateEndpointConnectionsClientAPI = (*sql.PrivateEndpointConnectionsClie
 type PrivateLinkResourcesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, groupName string) (result sql.PrivateLinkResource, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.PrivateLinkResourceListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.PrivateLinkResourceListResultIterator, err error)
 }
 
 var _ PrivateLinkResourcesClientAPI = (*sql.PrivateLinkResourcesClient)(nil)
@@ -851,6 +926,7 @@ type ServerAzureADAdministratorsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministratorsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministrator, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.AdministratorListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.AdministratorListResultIterator, err error)
 }
 
 var _ ServerAzureADAdministratorsClientAPI = (*sql.ServerAzureADAdministratorsClient)(nil)
@@ -868,6 +944,7 @@ type WorkloadGroupsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string) (result sql.WorkloadGroupsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string) (result sql.WorkloadGroup, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.WorkloadGroupListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.WorkloadGroupListResultIterator, err error)
 }
 
 var _ WorkloadGroupsClientAPI = (*sql.WorkloadGroupsClient)(nil)
@@ -878,6 +955,7 @@ type WorkloadClassifiersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string) (result sql.WorkloadClassifiersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string) (result sql.WorkloadClassifier, err error)
 	ListByWorkloadGroup(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string) (result sql.WorkloadClassifierListResultPage, err error)
+	ListByWorkloadGroupComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string) (result sql.WorkloadClassifierListResultIterator, err error)
 }
 
 var _ WorkloadClassifiersClientAPI = (*sql.WorkloadClassifiersClient)(nil)

@@ -39,7 +39,8 @@ func NewIoTSecuritySolutionsAnalyticsRecommendationsClient(subscriptionID string
 }
 
 // NewIoTSecuritySolutionsAnalyticsRecommendationsClientWithBaseURI creates an instance of the
-// IoTSecuritySolutionsAnalyticsRecommendationsClient client.
+// IoTSecuritySolutionsAnalyticsRecommendationsClient client using a custom endpoint.  Use this when interacting with
+// an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewIoTSecuritySolutionsAnalyticsRecommendationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsRecommendationsClient {
 	return IoTSecuritySolutionsAnalyticsRecommendationsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }

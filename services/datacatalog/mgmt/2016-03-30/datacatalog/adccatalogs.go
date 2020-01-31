@@ -37,7 +37,8 @@ func NewADCCatalogsClient(subscriptionID string, catalogName string) ADCCatalogs
 	return NewADCCatalogsClientWithBaseURI(DefaultBaseURI, subscriptionID, catalogName)
 }
 
-// NewADCCatalogsClientWithBaseURI creates an instance of the ADCCatalogsClient client.
+// NewADCCatalogsClientWithBaseURI creates an instance of the ADCCatalogsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewADCCatalogsClientWithBaseURI(baseURI string, subscriptionID string, catalogName string) ADCCatalogsClient {
 	return ADCCatalogsClient{NewWithBaseURI(baseURI, subscriptionID, catalogName)}
 }

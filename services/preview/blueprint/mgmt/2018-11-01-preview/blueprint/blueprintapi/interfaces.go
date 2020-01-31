@@ -28,6 +28,7 @@ type BlueprintsClientAPI interface {
 	Delete(ctx context.Context, scope string, blueprintName string) (result blueprint.Model, err error)
 	Get(ctx context.Context, scope string, blueprintName string) (result blueprint.Model, err error)
 	List(ctx context.Context, scope string) (result blueprint.ListPage, err error)
+	ListComplete(ctx context.Context, scope string) (result blueprint.ListIterator, err error)
 }
 
 var _ BlueprintsClientAPI = (*blueprint.BlueprintsClient)(nil)
@@ -38,6 +39,7 @@ type ArtifactsClientAPI interface {
 	Delete(ctx context.Context, scope string, blueprintName string, artifactName string) (result blueprint.ArtifactModel, err error)
 	Get(ctx context.Context, scope string, blueprintName string, artifactName string) (result blueprint.ArtifactModel, err error)
 	List(ctx context.Context, scope string, blueprintName string) (result blueprint.ArtifactListPage, err error)
+	ListComplete(ctx context.Context, scope string, blueprintName string) (result blueprint.ArtifactListIterator, err error)
 }
 
 var _ ArtifactsClientAPI = (*blueprint.ArtifactsClient)(nil)
@@ -48,6 +50,7 @@ type PublishedBlueprintsClientAPI interface {
 	Delete(ctx context.Context, scope string, blueprintName string, versionID string) (result blueprint.PublishedBlueprint, err error)
 	Get(ctx context.Context, scope string, blueprintName string, versionID string) (result blueprint.PublishedBlueprint, err error)
 	List(ctx context.Context, scope string, blueprintName string) (result blueprint.PublishedBlueprintListPage, err error)
+	ListComplete(ctx context.Context, scope string, blueprintName string) (result blueprint.PublishedBlueprintListIterator, err error)
 }
 
 var _ PublishedBlueprintsClientAPI = (*blueprint.PublishedBlueprintsClient)(nil)
@@ -56,6 +59,7 @@ var _ PublishedBlueprintsClientAPI = (*blueprint.PublishedBlueprintsClient)(nil)
 type PublishedArtifactsClientAPI interface {
 	Get(ctx context.Context, scope string, blueprintName string, versionID string, artifactName string) (result blueprint.ArtifactModel, err error)
 	List(ctx context.Context, scope string, blueprintName string, versionID string) (result blueprint.ArtifactListPage, err error)
+	ListComplete(ctx context.Context, scope string, blueprintName string, versionID string) (result blueprint.ArtifactListIterator, err error)
 }
 
 var _ PublishedArtifactsClientAPI = (*blueprint.PublishedArtifactsClient)(nil)
@@ -66,6 +70,7 @@ type AssignmentsClientAPI interface {
 	Delete(ctx context.Context, scope string, assignmentName string) (result blueprint.Assignment, err error)
 	Get(ctx context.Context, scope string, assignmentName string) (result blueprint.Assignment, err error)
 	List(ctx context.Context, scope string) (result blueprint.AssignmentListPage, err error)
+	ListComplete(ctx context.Context, scope string) (result blueprint.AssignmentListIterator, err error)
 	WhoIsBlueprint(ctx context.Context, scope string, assignmentName string) (result blueprint.WhoIsBlueprintContract, err error)
 }
 
@@ -75,6 +80,7 @@ var _ AssignmentsClientAPI = (*blueprint.AssignmentsClient)(nil)
 type AssignmentOperationsClientAPI interface {
 	Get(ctx context.Context, scope string, assignmentName string, assignmentOperationName string) (result blueprint.AssignmentOperation, err error)
 	List(ctx context.Context, scope string, assignmentName string) (result blueprint.AssignmentOperationListPage, err error)
+	ListComplete(ctx context.Context, scope string, assignmentName string) (result blueprint.AssignmentOperationListIterator, err error)
 }
 
 var _ AssignmentOperationsClientAPI = (*blueprint.AssignmentOperationsClient)(nil)

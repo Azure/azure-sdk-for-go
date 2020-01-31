@@ -35,7 +35,8 @@ func NewMachinesClient(subscriptionID string, acceptLanguage string) MachinesCli
 	return NewMachinesClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
-// NewMachinesClientWithBaseURI creates an instance of the MachinesClient client.
+// NewMachinesClientWithBaseURI creates an instance of the MachinesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) MachinesClient {
 	return MachinesClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }

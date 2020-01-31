@@ -36,7 +36,8 @@ func NewForecastClient(subscriptionID string) ForecastClient {
 	return NewForecastClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewForecastClientWithBaseURI creates an instance of the ForecastClient client.
+// NewForecastClientWithBaseURI creates an instance of the ForecastClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewForecastClientWithBaseURI(baseURI string, subscriptionID string) ForecastClient {
 	return ForecastClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

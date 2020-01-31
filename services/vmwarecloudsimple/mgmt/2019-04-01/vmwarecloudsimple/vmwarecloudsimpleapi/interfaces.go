@@ -27,6 +27,7 @@ import (
 type OperationsClientAPI interface {
 	Get(ctx context.Context, regionID string, operationID string) (result vmwarecloudsimple.OperationResource, err error)
 	List(ctx context.Context) (result vmwarecloudsimple.AvailableOperationsListResponsePage, err error)
+	ListComplete(ctx context.Context) (result vmwarecloudsimple.AvailableOperationsListResponseIterator, err error)
 }
 
 var _ OperationsClientAPI = (*vmwarecloudsimple.OperationsClient)(nil)
@@ -37,7 +38,9 @@ type DedicatedCloudNodesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string) (result vmwarecloudsimple.DedicatedCloudNode, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result vmwarecloudsimple.DedicatedCloudNodeListResponsePage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result vmwarecloudsimple.DedicatedCloudNodeListResponseIterator, err error)
 	ListBySubscription(ctx context.Context, filter string, top *int32, skipToken string) (result vmwarecloudsimple.DedicatedCloudNodeListResponsePage, err error)
+	ListBySubscriptionComplete(ctx context.Context, filter string, top *int32, skipToken string) (result vmwarecloudsimple.DedicatedCloudNodeListResponseIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest vmwarecloudsimple.PatchPayload) (result vmwarecloudsimple.DedicatedCloudNode, err error)
 }
 
@@ -49,7 +52,9 @@ type DedicatedCloudServicesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string) (result vmwarecloudsimple.DedicatedCloudServicesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string) (result vmwarecloudsimple.DedicatedCloudService, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result vmwarecloudsimple.DedicatedCloudServiceListResponsePage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result vmwarecloudsimple.DedicatedCloudServiceListResponseIterator, err error)
 	ListBySubscription(ctx context.Context, filter string, top *int32, skipToken string) (result vmwarecloudsimple.DedicatedCloudServiceListResponsePage, err error)
+	ListBySubscriptionComplete(ctx context.Context, filter string, top *int32, skipToken string) (result vmwarecloudsimple.DedicatedCloudServiceListResponseIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string, dedicatedCloudServiceRequest vmwarecloudsimple.PatchPayload) (result vmwarecloudsimple.DedicatedCloudService, err error)
 }
 
@@ -58,6 +63,7 @@ var _ DedicatedCloudServicesClientAPI = (*vmwarecloudsimple.DedicatedCloudServic
 // SkusAvailabilityClientAPI contains the set of methods on the SkusAvailabilityClient type.
 type SkusAvailabilityClientAPI interface {
 	List(ctx context.Context, regionID string, skuID string) (result vmwarecloudsimple.SkuAvailabilityListResponsePage, err error)
+	ListComplete(ctx context.Context, regionID string, skuID string) (result vmwarecloudsimple.SkuAvailabilityListResponseIterator, err error)
 }
 
 var _ SkusAvailabilityClientAPI = (*vmwarecloudsimple.SkusAvailabilityClient)(nil)
@@ -66,6 +72,7 @@ var _ SkusAvailabilityClientAPI = (*vmwarecloudsimple.SkusAvailabilityClient)(ni
 type PrivateCloudsClientAPI interface {
 	Get(ctx context.Context, pcName string, regionID string) (result vmwarecloudsimple.PrivateCloud, err error)
 	List(ctx context.Context, regionID string) (result vmwarecloudsimple.PrivateCloudListPage, err error)
+	ListComplete(ctx context.Context, regionID string) (result vmwarecloudsimple.PrivateCloudListIterator, err error)
 }
 
 var _ PrivateCloudsClientAPI = (*vmwarecloudsimple.PrivateCloudsClient)(nil)
@@ -74,6 +81,7 @@ var _ PrivateCloudsClientAPI = (*vmwarecloudsimple.PrivateCloudsClient)(nil)
 type CustomizationPoliciesClientAPI interface {
 	Get(ctx context.Context, regionID string, pcName string, customizationPolicyName string) (result vmwarecloudsimple.CustomizationPolicy, err error)
 	List(ctx context.Context, regionID string, pcName string, filter string) (result vmwarecloudsimple.CustomizationPoliciesListResponsePage, err error)
+	ListComplete(ctx context.Context, regionID string, pcName string, filter string) (result vmwarecloudsimple.CustomizationPoliciesListResponseIterator, err error)
 }
 
 var _ CustomizationPoliciesClientAPI = (*vmwarecloudsimple.CustomizationPoliciesClient)(nil)
@@ -82,6 +90,7 @@ var _ CustomizationPoliciesClientAPI = (*vmwarecloudsimple.CustomizationPolicies
 type ResourcePoolsClientAPI interface {
 	Get(ctx context.Context, regionID string, pcName string, resourcePoolName string) (result vmwarecloudsimple.ResourcePool, err error)
 	List(ctx context.Context, regionID string, pcName string) (result vmwarecloudsimple.ResourcePoolsListResponsePage, err error)
+	ListComplete(ctx context.Context, regionID string, pcName string) (result vmwarecloudsimple.ResourcePoolsListResponseIterator, err error)
 }
 
 var _ ResourcePoolsClientAPI = (*vmwarecloudsimple.ResourcePoolsClient)(nil)
@@ -90,6 +99,7 @@ var _ ResourcePoolsClientAPI = (*vmwarecloudsimple.ResourcePoolsClient)(nil)
 type VirtualMachineTemplatesClientAPI interface {
 	Get(ctx context.Context, regionID string, pcName string, virtualMachineTemplateName string) (result vmwarecloudsimple.VirtualMachineTemplate, err error)
 	List(ctx context.Context, pcName string, regionID string, resourcePoolName string) (result vmwarecloudsimple.VirtualMachineTemplateListResponsePage, err error)
+	ListComplete(ctx context.Context, pcName string, regionID string, resourcePoolName string) (result vmwarecloudsimple.VirtualMachineTemplateListResponseIterator, err error)
 }
 
 var _ VirtualMachineTemplatesClientAPI = (*vmwarecloudsimple.VirtualMachineTemplatesClient)(nil)
@@ -98,6 +108,7 @@ var _ VirtualMachineTemplatesClientAPI = (*vmwarecloudsimple.VirtualMachineTempl
 type VirtualNetworksClientAPI interface {
 	Get(ctx context.Context, regionID string, pcName string, virtualNetworkName string) (result vmwarecloudsimple.VirtualNetwork, err error)
 	List(ctx context.Context, regionID string, pcName string, resourcePoolName string) (result vmwarecloudsimple.VirtualNetworkListResponsePage, err error)
+	ListComplete(ctx context.Context, regionID string, pcName string, resourcePoolName string) (result vmwarecloudsimple.VirtualNetworkListResponseIterator, err error)
 }
 
 var _ VirtualNetworksClientAPI = (*vmwarecloudsimple.VirtualNetworksClient)(nil)
@@ -105,6 +116,7 @@ var _ VirtualNetworksClientAPI = (*vmwarecloudsimple.VirtualNetworksClient)(nil)
 // UsagesClientAPI contains the set of methods on the UsagesClient type.
 type UsagesClientAPI interface {
 	List(ctx context.Context, regionID string, filter string) (result vmwarecloudsimple.UsageListResponsePage, err error)
+	ListComplete(ctx context.Context, regionID string, filter string) (result vmwarecloudsimple.UsageListResponseIterator, err error)
 }
 
 var _ UsagesClientAPI = (*vmwarecloudsimple.UsagesClient)(nil)
@@ -115,7 +127,9 @@ type VirtualMachinesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, virtualMachineName string) (result vmwarecloudsimple.VirtualMachinesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualMachineName string) (result vmwarecloudsimple.VirtualMachine, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result vmwarecloudsimple.VirtualMachineListResponsePage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result vmwarecloudsimple.VirtualMachineListResponseIterator, err error)
 	ListBySubscription(ctx context.Context, filter string, top *int32, skipToken string) (result vmwarecloudsimple.VirtualMachineListResponsePage, err error)
+	ListBySubscriptionComplete(ctx context.Context, filter string, top *int32, skipToken string) (result vmwarecloudsimple.VirtualMachineListResponseIterator, err error)
 	Start(ctx context.Context, resourceGroupName string, virtualMachineName string) (result vmwarecloudsimple.VirtualMachinesStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, virtualMachineName string, mParameter *vmwarecloudsimple.VirtualMachineStopMode, mode vmwarecloudsimple.StopMode) (result vmwarecloudsimple.VirtualMachinesStopFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineRequest vmwarecloudsimple.PatchPayload) (result vmwarecloudsimple.VirtualMachinesUpdateFuture, err error)

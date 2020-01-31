@@ -19,7 +19,8 @@
 
 package hybridcomputeapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/hybridcompute/mgmt/2019-03-18-preview/hybridcompute/hybridcomputeapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/hybridcompute/mgmt/2019-12-12/hybridcompute/hybridcomputeapi"
 
+type MachineExtensionsClientAPI = original.MachineExtensionsClientAPI
 type MachinesClientAPI = original.MachinesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

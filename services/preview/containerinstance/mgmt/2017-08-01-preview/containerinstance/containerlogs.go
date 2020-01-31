@@ -35,7 +35,8 @@ func NewContainerLogsClient(subscriptionID string) ContainerLogsClient {
 	return NewContainerLogsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewContainerLogsClientWithBaseURI creates an instance of the ContainerLogsClient client.
+// NewContainerLogsClientWithBaseURI creates an instance of the ContainerLogsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewContainerLogsClientWithBaseURI(baseURI string, subscriptionID string) ContainerLogsClient {
 	return ContainerLogsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

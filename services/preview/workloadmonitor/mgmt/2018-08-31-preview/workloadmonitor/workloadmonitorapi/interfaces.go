@@ -27,6 +27,7 @@ import (
 type MonitorsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, monitorID string) (result workloadmonitor.Monitor, err error)
 	ListByResource(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, filter string, skiptoken string) (result workloadmonitor.MonitorsCollectionPage, err error)
+	ListByResourceComplete(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, filter string, skiptoken string) (result workloadmonitor.MonitorsCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, monitorID string, body workloadmonitor.Monitor) (result workloadmonitor.Monitor, err error)
 }
 
@@ -36,6 +37,7 @@ var _ MonitorsClientAPI = (*workloadmonitor.MonitorsClient)(nil)
 type ComponentsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, componentID uuid.UUID, selectParameter string, expand string) (result workloadmonitor.Component, err error)
 	ListByResource(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, selectParameter string, filter string, apply string, orderby string, expand string, top string, skiptoken string) (result workloadmonitor.ComponentsCollectionPage, err error)
+	ListByResourceComplete(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, selectParameter string, filter string, apply string, orderby string, expand string, top string, skiptoken string) (result workloadmonitor.ComponentsCollectionIterator, err error)
 }
 
 var _ ComponentsClientAPI = (*workloadmonitor.ComponentsClient)(nil)
@@ -44,6 +46,7 @@ var _ ComponentsClientAPI = (*workloadmonitor.ComponentsClient)(nil)
 type MonitorInstancesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, monitorInstanceID uuid.UUID, selectParameter string, expand string) (result workloadmonitor.MonitorInstance, err error)
 	ListByResource(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, selectParameter string, filter string, apply string, orderby string, expand string, top string, skiptoken string) (result workloadmonitor.MonitorInstancesCollectionPage, err error)
+	ListByResourceComplete(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, selectParameter string, filter string, apply string, orderby string, expand string, top string, skiptoken string) (result workloadmonitor.MonitorInstancesCollectionIterator, err error)
 }
 
 var _ MonitorInstancesClientAPI = (*workloadmonitor.MonitorInstancesClient)(nil)
@@ -52,6 +55,7 @@ var _ MonitorInstancesClientAPI = (*workloadmonitor.MonitorInstancesClient)(nil)
 type NotificationSettingsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result workloadmonitor.NotificationSetting, err error)
 	ListByResource(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, skiptoken string) (result workloadmonitor.NotificationSettingsCollectionPage, err error)
+	ListByResourceComplete(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, skiptoken string) (result workloadmonitor.NotificationSettingsCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, body workloadmonitor.NotificationSetting) (result workloadmonitor.NotificationSetting, err error)
 }
 
@@ -60,6 +64,7 @@ var _ NotificationSettingsClientAPI = (*workloadmonitor.NotificationSettingsClie
 // ComponentsSummaryClientAPI contains the set of methods on the ComponentsSummaryClient type.
 type ComponentsSummaryClientAPI interface {
 	List(ctx context.Context, selectParameter string, filter string, apply string, orderby string, expand string, top string, skiptoken string) (result workloadmonitor.ComponentsCollectionPage, err error)
+	ListComplete(ctx context.Context, selectParameter string, filter string, apply string, orderby string, expand string, top string, skiptoken string) (result workloadmonitor.ComponentsCollectionIterator, err error)
 }
 
 var _ ComponentsSummaryClientAPI = (*workloadmonitor.ComponentsSummaryClient)(nil)
@@ -67,6 +72,7 @@ var _ ComponentsSummaryClientAPI = (*workloadmonitor.ComponentsSummaryClient)(ni
 // MonitorInstancesSummaryClientAPI contains the set of methods on the MonitorInstancesSummaryClient type.
 type MonitorInstancesSummaryClientAPI interface {
 	List(ctx context.Context, selectParameter string, filter string, apply string, orderby string, expand string, top string, skiptoken string) (result workloadmonitor.MonitorInstancesCollectionPage, err error)
+	ListComplete(ctx context.Context, selectParameter string, filter string, apply string, orderby string, expand string, top string, skiptoken string) (result workloadmonitor.MonitorInstancesCollectionIterator, err error)
 }
 
 var _ MonitorInstancesSummaryClientAPI = (*workloadmonitor.MonitorInstancesSummaryClient)(nil)
@@ -74,6 +80,7 @@ var _ MonitorInstancesSummaryClientAPI = (*workloadmonitor.MonitorInstancesSumma
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context, skiptoken string) (result workloadmonitor.OperationListResultPage, err error)
+	ListComplete(ctx context.Context, skiptoken string) (result workloadmonitor.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*workloadmonitor.OperationsClient)(nil)

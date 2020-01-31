@@ -36,7 +36,8 @@ func NewCommentsClient(subscriptionID string) CommentsClient {
 	return NewCommentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCommentsClientWithBaseURI creates an instance of the CommentsClient client.
+// NewCommentsClientWithBaseURI creates an instance of the CommentsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCommentsClientWithBaseURI(baseURI string, subscriptionID string) CommentsClient {
 	return CommentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -36,7 +36,8 @@ func NewNetworkClient(subscriptionID string) NetworkClient {
 	return NewNetworkClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewNetworkClientWithBaseURI creates an instance of the NetworkClient client.
+// NewNetworkClientWithBaseURI creates an instance of the NetworkClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewNetworkClientWithBaseURI(baseURI string, subscriptionID string) NetworkClient {
 	return NetworkClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

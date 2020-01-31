@@ -36,7 +36,8 @@ func NewIotHubClient(subscriptionID string) IotHubClient {
 	return NewIotHubClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewIotHubClientWithBaseURI creates an instance of the IotHubClient client.
+// NewIotHubClientWithBaseURI creates an instance of the IotHubClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewIotHubClientWithBaseURI(baseURI string, subscriptionID string) IotHubClient {
 	return IotHubClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

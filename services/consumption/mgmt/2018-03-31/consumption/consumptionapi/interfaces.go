@@ -33,7 +33,9 @@ var _ BaseClientAPI = (*consumption.BaseClient)(nil)
 // UsageDetailsClientAPI contains the set of methods on the UsageDetailsClient type.
 type UsageDetailsClientAPI interface {
 	List(ctx context.Context, expand string, filter string, skiptoken string, top *int32, apply string) (result consumption.UsageDetailsListResultPage, err error)
+	ListComplete(ctx context.Context, expand string, filter string, skiptoken string, top *int32, apply string) (result consumption.UsageDetailsListResultIterator, err error)
 	ListByBillingPeriod(ctx context.Context, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result consumption.UsageDetailsListResultPage, err error)
+	ListByBillingPeriodComplete(ctx context.Context, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result consumption.UsageDetailsListResultIterator, err error)
 }
 
 var _ UsageDetailsClientAPI = (*consumption.UsageDetailsClient)(nil)
@@ -41,7 +43,9 @@ var _ UsageDetailsClientAPI = (*consumption.UsageDetailsClient)(nil)
 // UsageDetailsByBillingAccountClientAPI contains the set of methods on the UsageDetailsByBillingAccountClient type.
 type UsageDetailsByBillingAccountClientAPI interface {
 	List(ctx context.Context, billingAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (result consumption.UsageDetailsListResultPage, err error)
+	ListComplete(ctx context.Context, billingAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (result consumption.UsageDetailsListResultIterator, err error)
 	ListByBillingPeriod(ctx context.Context, billingAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result consumption.UsageDetailsListResultPage, err error)
+	ListByBillingPeriodComplete(ctx context.Context, billingAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result consumption.UsageDetailsListResultIterator, err error)
 }
 
 var _ UsageDetailsByBillingAccountClientAPI = (*consumption.UsageDetailsByBillingAccountClient)(nil)
@@ -49,7 +53,9 @@ var _ UsageDetailsByBillingAccountClientAPI = (*consumption.UsageDetailsByBillin
 // UsageDetailsByDepartmentClientAPI contains the set of methods on the UsageDetailsByDepartmentClient type.
 type UsageDetailsByDepartmentClientAPI interface {
 	List(ctx context.Context, departmentID string, expand string, filter string, skiptoken string, top *int32, apply string) (result consumption.UsageDetailsListResultPage, err error)
+	ListComplete(ctx context.Context, departmentID string, expand string, filter string, skiptoken string, top *int32, apply string) (result consumption.UsageDetailsListResultIterator, err error)
 	ListByBillingPeriod(ctx context.Context, departmentID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result consumption.UsageDetailsListResultPage, err error)
+	ListByBillingPeriodComplete(ctx context.Context, departmentID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result consumption.UsageDetailsListResultIterator, err error)
 }
 
 var _ UsageDetailsByDepartmentClientAPI = (*consumption.UsageDetailsByDepartmentClient)(nil)
@@ -57,7 +63,9 @@ var _ UsageDetailsByDepartmentClientAPI = (*consumption.UsageDetailsByDepartment
 // UsageDetailsByEnrollmentAccountClientAPI contains the set of methods on the UsageDetailsByEnrollmentAccountClient type.
 type UsageDetailsByEnrollmentAccountClientAPI interface {
 	List(ctx context.Context, enrollmentAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (result consumption.UsageDetailsListResultPage, err error)
+	ListComplete(ctx context.Context, enrollmentAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (result consumption.UsageDetailsListResultIterator, err error)
 	ListByBillingPeriod(ctx context.Context, enrollmentAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result consumption.UsageDetailsListResultPage, err error)
+	ListByBillingPeriodComplete(ctx context.Context, enrollmentAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result consumption.UsageDetailsListResultIterator, err error)
 }
 
 var _ UsageDetailsByEnrollmentAccountClientAPI = (*consumption.UsageDetailsByEnrollmentAccountClient)(nil)
@@ -65,7 +73,9 @@ var _ UsageDetailsByEnrollmentAccountClientAPI = (*consumption.UsageDetailsByEnr
 // MarketplacesClientAPI contains the set of methods on the MarketplacesClient type.
 type MarketplacesClientAPI interface {
 	List(ctx context.Context, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultIterator, err error)
 	ListByBillingPeriod(ctx context.Context, billingPeriodName string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultPage, err error)
+	ListByBillingPeriodComplete(ctx context.Context, billingPeriodName string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultIterator, err error)
 }
 
 var _ MarketplacesClientAPI = (*consumption.MarketplacesClient)(nil)
@@ -73,7 +83,9 @@ var _ MarketplacesClientAPI = (*consumption.MarketplacesClient)(nil)
 // MarketplacesByBillingAccountClientAPI contains the set of methods on the MarketplacesByBillingAccountClient type.
 type MarketplacesByBillingAccountClientAPI interface {
 	List(ctx context.Context, billingAccountID string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultPage, err error)
+	ListComplete(ctx context.Context, billingAccountID string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultIterator, err error)
 	ListByBillingPeriod(ctx context.Context, billingAccountID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultPage, err error)
+	ListByBillingPeriodComplete(ctx context.Context, billingAccountID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultIterator, err error)
 }
 
 var _ MarketplacesByBillingAccountClientAPI = (*consumption.MarketplacesByBillingAccountClient)(nil)
@@ -81,7 +93,9 @@ var _ MarketplacesByBillingAccountClientAPI = (*consumption.MarketplacesByBillin
 // MarketplacesByDepartmentClientAPI contains the set of methods on the MarketplacesByDepartmentClient type.
 type MarketplacesByDepartmentClientAPI interface {
 	List(ctx context.Context, departmentID string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultPage, err error)
+	ListComplete(ctx context.Context, departmentID string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultIterator, err error)
 	ListByBillingPeriod(ctx context.Context, departmentID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultPage, err error)
+	ListByBillingPeriodComplete(ctx context.Context, departmentID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultIterator, err error)
 }
 
 var _ MarketplacesByDepartmentClientAPI = (*consumption.MarketplacesByDepartmentClient)(nil)
@@ -89,7 +103,9 @@ var _ MarketplacesByDepartmentClientAPI = (*consumption.MarketplacesByDepartment
 // MarketplacesByEnrollmentAccountsClientAPI contains the set of methods on the MarketplacesByEnrollmentAccountsClient type.
 type MarketplacesByEnrollmentAccountsClientAPI interface {
 	List(ctx context.Context, enrollmentAccountID string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultPage, err error)
+	ListComplete(ctx context.Context, enrollmentAccountID string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultIterator, err error)
 	ListByBillingPeriod(ctx context.Context, enrollmentAccountID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultPage, err error)
+	ListByBillingPeriodComplete(ctx context.Context, enrollmentAccountID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultIterator, err error)
 }
 
 var _ MarketplacesByEnrollmentAccountsClientAPI = (*consumption.MarketplacesByEnrollmentAccountsClient)(nil)
@@ -104,7 +120,9 @@ var _ GetBalancesByBillingAccountClientAPI = (*consumption.GetBalancesByBillingA
 // ReservationsSummariesClientAPI contains the set of methods on the ReservationsSummariesClient type.
 type ReservationsSummariesClientAPI interface {
 	ListByReservationOrder(ctx context.Context, reservationOrderID string, grain consumption.Datagrain, filter string) (result consumption.ReservationSummariesListResultPage, err error)
+	ListByReservationOrderComplete(ctx context.Context, reservationOrderID string, grain consumption.Datagrain, filter string) (result consumption.ReservationSummariesListResultIterator, err error)
 	ListByReservationOrderAndReservation(ctx context.Context, reservationOrderID string, reservationID string, grain consumption.Datagrain, filter string) (result consumption.ReservationSummariesListResultPage, err error)
+	ListByReservationOrderAndReservationComplete(ctx context.Context, reservationOrderID string, reservationID string, grain consumption.Datagrain, filter string) (result consumption.ReservationSummariesListResultIterator, err error)
 }
 
 var _ ReservationsSummariesClientAPI = (*consumption.ReservationsSummariesClient)(nil)
@@ -112,7 +130,9 @@ var _ ReservationsSummariesClientAPI = (*consumption.ReservationsSummariesClient
 // ReservationsDetailsClientAPI contains the set of methods on the ReservationsDetailsClient type.
 type ReservationsDetailsClientAPI interface {
 	ListByReservationOrder(ctx context.Context, reservationOrderID string, filter string) (result consumption.ReservationDetailsListResultPage, err error)
+	ListByReservationOrderComplete(ctx context.Context, reservationOrderID string, filter string) (result consumption.ReservationDetailsListResultIterator, err error)
 	ListByReservationOrderAndReservation(ctx context.Context, reservationOrderID string, reservationID string, filter string) (result consumption.ReservationDetailsListResultPage, err error)
+	ListByReservationOrderAndReservationComplete(ctx context.Context, reservationOrderID string, reservationID string, filter string) (result consumption.ReservationDetailsListResultIterator, err error)
 }
 
 var _ ReservationsDetailsClientAPI = (*consumption.ReservationsDetailsClient)(nil)
@@ -120,6 +140,7 @@ var _ ReservationsDetailsClientAPI = (*consumption.ReservationsDetailsClient)(ni
 // ReservationRecommendationsClientAPI contains the set of methods on the ReservationRecommendationsClient type.
 type ReservationRecommendationsClientAPI interface {
 	List(ctx context.Context, filter string) (result consumption.ReservationRecommendationsListResultPage, err error)
+	ListComplete(ctx context.Context, filter string) (result consumption.ReservationRecommendationsListResultIterator, err error)
 }
 
 var _ ReservationRecommendationsClientAPI = (*consumption.ReservationRecommendationsClient)(nil)
@@ -133,7 +154,9 @@ type BudgetsClientAPI interface {
 	Get(ctx context.Context, budgetName string) (result consumption.Budget, err error)
 	GetByResourceGroupName(ctx context.Context, resourceGroupName string, budgetName string) (result consumption.Budget, err error)
 	List(ctx context.Context) (result consumption.BudgetsListResultPage, err error)
+	ListComplete(ctx context.Context) (result consumption.BudgetsListResultIterator, err error)
 	ListByResourceGroupName(ctx context.Context, resourceGroupName string) (result consumption.BudgetsListResultPage, err error)
+	ListByResourceGroupNameComplete(ctx context.Context, resourceGroupName string) (result consumption.BudgetsListResultIterator, err error)
 }
 
 var _ BudgetsClientAPI = (*consumption.BudgetsClient)(nil)
@@ -141,6 +164,7 @@ var _ BudgetsClientAPI = (*consumption.BudgetsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result consumption.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result consumption.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*consumption.OperationsClient)(nil)

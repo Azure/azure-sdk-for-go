@@ -36,7 +36,9 @@ func NewDedicatedCloudNodesClient(subscriptionID string, referer string) Dedicat
 	return NewDedicatedCloudNodesClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
-// NewDedicatedCloudNodesClientWithBaseURI creates an instance of the DedicatedCloudNodesClient client.
+// NewDedicatedCloudNodesClientWithBaseURI creates an instance of the DedicatedCloudNodesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewDedicatedCloudNodesClientWithBaseURI(baseURI string, subscriptionID string, referer string) DedicatedCloudNodesClient {
 	return DedicatedCloudNodesClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }

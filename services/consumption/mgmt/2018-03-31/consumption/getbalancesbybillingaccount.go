@@ -36,7 +36,9 @@ func NewGetBalancesByBillingAccountClient(subscriptionID string) GetBalancesByBi
 	return NewGetBalancesByBillingAccountClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewGetBalancesByBillingAccountClientWithBaseURI creates an instance of the GetBalancesByBillingAccountClient client.
+// NewGetBalancesByBillingAccountClientWithBaseURI creates an instance of the GetBalancesByBillingAccountClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewGetBalancesByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) GetBalancesByBillingAccountClient {
 	return GetBalancesByBillingAccountClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

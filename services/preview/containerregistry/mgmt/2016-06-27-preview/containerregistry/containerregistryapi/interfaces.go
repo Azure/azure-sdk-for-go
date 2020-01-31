@@ -31,7 +31,9 @@ type RegistriesClientAPI interface {
 	GetCredentials(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.RegistryCredentials, err error)
 	GetProperties(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.Registry, err error)
 	List(ctx context.Context) (result containerregistry.RegistryListResultPage, err error)
+	ListComplete(ctx context.Context) (result containerregistry.RegistryListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result containerregistry.RegistryListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result containerregistry.RegistryListResultIterator, err error)
 	RegenerateCredentials(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.RegistryCredentials, err error)
 	Update(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters containerregistry.RegistryUpdateParameters) (result containerregistry.Registry, err error)
 }

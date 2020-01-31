@@ -29,7 +29,9 @@ type VaultsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, vaultName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, vaultName string) (result keyvault.Vault, err error)
 	List(ctx context.Context, top *int32) (result keyvault.ResourceListResultPage, err error)
+	ListComplete(ctx context.Context, top *int32) (result keyvault.ResourceListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, top *int32) (result keyvault.VaultListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, top *int32) (result keyvault.VaultListResultIterator, err error)
 }
 
 var _ VaultsClientAPI = (*keyvault.VaultsClient)(nil)

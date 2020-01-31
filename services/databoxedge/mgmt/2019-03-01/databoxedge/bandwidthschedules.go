@@ -36,7 +36,9 @@ func NewBandwidthSchedulesClient(subscriptionID string) BandwidthSchedulesClient
 	return NewBandwidthSchedulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBandwidthSchedulesClientWithBaseURI creates an instance of the BandwidthSchedulesClient client.
+// NewBandwidthSchedulesClientWithBaseURI creates an instance of the BandwidthSchedulesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewBandwidthSchedulesClientWithBaseURI(baseURI string, subscriptionID string) BandwidthSchedulesClient {
 	return BandwidthSchedulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

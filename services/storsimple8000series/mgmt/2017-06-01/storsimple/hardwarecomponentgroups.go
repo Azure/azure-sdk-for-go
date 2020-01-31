@@ -36,7 +36,9 @@ func NewHardwareComponentGroupsClient(subscriptionID string) HardwareComponentGr
 	return NewHardwareComponentGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewHardwareComponentGroupsClientWithBaseURI creates an instance of the HardwareComponentGroupsClient client.
+// NewHardwareComponentGroupsClientWithBaseURI creates an instance of the HardwareComponentGroupsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewHardwareComponentGroupsClientWithBaseURI(baseURI string, subscriptionID string) HardwareComponentGroupsClient {
 	return HardwareComponentGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -35,7 +35,8 @@ func NewFormulaClient(subscriptionID string) FormulaClient {
 	return NewFormulaClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewFormulaClientWithBaseURI creates an instance of the FormulaClient client.
+// NewFormulaClientWithBaseURI creates an instance of the FormulaClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewFormulaClientWithBaseURI(baseURI string, subscriptionID string) FormulaClient {
 	return FormulaClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

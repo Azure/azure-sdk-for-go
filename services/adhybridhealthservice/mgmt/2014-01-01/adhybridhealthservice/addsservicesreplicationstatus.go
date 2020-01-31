@@ -36,7 +36,8 @@ func NewAddsServicesReplicationStatusClient() AddsServicesReplicationStatusClien
 }
 
 // NewAddsServicesReplicationStatusClientWithBaseURI creates an instance of the AddsServicesReplicationStatusClient
-// client.
+// client using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI
+// (sovereign clouds, Azure stack).
 func NewAddsServicesReplicationStatusClientWithBaseURI(baseURI string) AddsServicesReplicationStatusClient {
 	return AddsServicesReplicationStatusClient{NewWithBaseURI(baseURI)}
 }

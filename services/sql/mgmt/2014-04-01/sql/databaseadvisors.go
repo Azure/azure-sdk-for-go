@@ -37,7 +37,9 @@ func NewDatabaseAdvisorsClient(subscriptionID string) DatabaseAdvisorsClient {
 	return NewDatabaseAdvisorsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDatabaseAdvisorsClientWithBaseURI creates an instance of the DatabaseAdvisorsClient client.
+// NewDatabaseAdvisorsClientWithBaseURI creates an instance of the DatabaseAdvisorsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewDatabaseAdvisorsClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAdvisorsClient {
 	return DatabaseAdvisorsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

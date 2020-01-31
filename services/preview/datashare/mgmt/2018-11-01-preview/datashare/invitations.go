@@ -35,7 +35,8 @@ func NewInvitationsClient(subscriptionID string) InvitationsClient {
 	return NewInvitationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewInvitationsClientWithBaseURI creates an instance of the InvitationsClient client.
+// NewInvitationsClientWithBaseURI creates an instance of the InvitationsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewInvitationsClientWithBaseURI(baseURI string, subscriptionID string) InvitationsClient {
 	return InvitationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

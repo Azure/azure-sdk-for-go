@@ -38,7 +38,9 @@ func NewRelationshipLinksClient(subscriptionID string) RelationshipLinksClient {
 	return NewRelationshipLinksClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewRelationshipLinksClientWithBaseURI creates an instance of the RelationshipLinksClient client.
+// NewRelationshipLinksClientWithBaseURI creates an instance of the RelationshipLinksClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewRelationshipLinksClientWithBaseURI(baseURI string, subscriptionID string) RelationshipLinksClient {
 	return RelationshipLinksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

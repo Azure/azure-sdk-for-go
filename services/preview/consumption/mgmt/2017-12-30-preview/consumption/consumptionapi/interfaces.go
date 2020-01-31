@@ -36,6 +36,7 @@ var _ BudgetsClientAPI = (*consumption.BudgetsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result consumption.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result consumption.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*consumption.OperationsClient)(nil)

@@ -36,7 +36,8 @@ func NewDataStoreTypesClient(subscriptionID string) DataStoreTypesClient {
 	return NewDataStoreTypesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDataStoreTypesClientWithBaseURI creates an instance of the DataStoreTypesClient client.
+// NewDataStoreTypesClientWithBaseURI creates an instance of the DataStoreTypesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDataStoreTypesClientWithBaseURI(baseURI string, subscriptionID string) DataStoreTypesClient {
 	return DataStoreTypesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

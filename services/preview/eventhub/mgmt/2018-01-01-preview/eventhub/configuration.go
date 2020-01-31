@@ -37,7 +37,8 @@ func NewConfigurationClient(subscriptionID string) ConfigurationClient {
 	return NewConfigurationClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewConfigurationClientWithBaseURI creates an instance of the ConfigurationClient client.
+// NewConfigurationClientWithBaseURI creates an instance of the ConfigurationClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewConfigurationClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationClient {
 	return ConfigurationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

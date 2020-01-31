@@ -104,11 +104,17 @@ type AlertsClientAPI interface {
 	GetByResourceGroupName(ctx context.Context, resourceGroupName string, alertID string) (result costmanagement.Alert, err error)
 	GetBySubscription(ctx context.Context, alertID string) (result costmanagement.Alert, err error)
 	List(ctx context.Context, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultIterator, err error)
 	ListByAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
+	ListByAccountComplete(ctx context.Context, billingAccountID string, enrollmentAccountID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultIterator, err error)
 	ListByDepartment(ctx context.Context, billingAccountID string, departmentID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
+	ListByDepartmentComplete(ctx context.Context, billingAccountID string, departmentID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultIterator, err error)
 	ListByEnrollment(ctx context.Context, billingAccountID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
+	ListByEnrollmentComplete(ctx context.Context, billingAccountID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultIterator, err error)
 	ListByManagementGroups(ctx context.Context, managementGroupID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
+	ListByManagementGroupsComplete(ctx context.Context, managementGroupID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultIterator, err error)
 	ListByResourceGroupName(ctx context.Context, resourceGroupName string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
+	ListByResourceGroupNameComplete(ctx context.Context, resourceGroupName string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultIterator, err error)
 	UpdateBillingAccountAlertStatus(ctx context.Context, billingAccountID string, alertID string, parameters costmanagement.Alert) (result costmanagement.Alert, err error)
 	UpdateDepartmentsAlertStatus(ctx context.Context, billingAccountID string, departmentID string, alertID string, parameters costmanagement.Alert) (result costmanagement.Alert, err error)
 	UpdateEnrollmentAccountAlertStatus(ctx context.Context, billingAccountID string, enrollmentAccountID string, alertID string, parameters costmanagement.Alert) (result costmanagement.Alert, err error)
@@ -122,6 +128,7 @@ var _ AlertsClientAPI = (*costmanagement.AlertsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result costmanagement.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result costmanagement.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*costmanagement.OperationsClient)(nil)

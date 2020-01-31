@@ -30,8 +30,11 @@ type AppsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result iotcentral.AppsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result iotcentral.App, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result iotcentral.AppListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result iotcentral.AppListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result iotcentral.AppListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result iotcentral.AppListResultIterator, err error)
 	ListTemplates(ctx context.Context) (result iotcentral.AppTemplatesResultPage, err error)
+	ListTemplatesComplete(ctx context.Context) (result iotcentral.AppTemplatesResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, appPatch iotcentral.AppPatch) (result iotcentral.AppsUpdateFuture, err error)
 }
 
@@ -40,6 +43,7 @@ var _ AppsClientAPI = (*iotcentral.AppsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result iotcentral.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result iotcentral.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*iotcentral.OperationsClient)(nil)

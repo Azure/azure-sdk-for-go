@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result customerinsights.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result customerinsights.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*customerinsights.OperationsClient)(nil)
@@ -36,7 +37,9 @@ type HubsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.HubsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.Hub, err error)
 	List(ctx context.Context) (result customerinsights.HubListResultPage, err error)
+	ListComplete(ctx context.Context) (result customerinsights.HubListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result customerinsights.HubListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result customerinsights.HubListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, hubName string, parameters customerinsights.Hub) (result customerinsights.Hub, err error)
 }
 
@@ -49,6 +52,7 @@ type ProfilesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, hubName string, profileName string, localeCode string) (result customerinsights.ProfileResourceFormat, err error)
 	GetEnrichingKpis(ctx context.Context, resourceGroupName string, hubName string, profileName string) (result customerinsights.ListKpiDefinition, err error)
 	ListByHub(ctx context.Context, resourceGroupName string, hubName string, localeCode string) (result customerinsights.ProfileListResultPage, err error)
+	ListByHubComplete(ctx context.Context, resourceGroupName string, hubName string, localeCode string) (result customerinsights.ProfileListResultIterator, err error)
 }
 
 var _ ProfilesClientAPI = (*customerinsights.ProfilesClient)(nil)
@@ -58,6 +62,7 @@ type InteractionsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, hubName string, interactionName string, parameters customerinsights.InteractionResourceFormat) (result customerinsights.InteractionsCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, hubName string, interactionName string, localeCode string) (result customerinsights.InteractionResourceFormat, err error)
 	ListByHub(ctx context.Context, resourceGroupName string, hubName string, localeCode string) (result customerinsights.InteractionListResultPage, err error)
+	ListByHubComplete(ctx context.Context, resourceGroupName string, hubName string, localeCode string) (result customerinsights.InteractionListResultIterator, err error)
 	SuggestRelationshipLinks(ctx context.Context, resourceGroupName string, hubName string, interactionName string) (result customerinsights.SuggestRelationshipLinksResponse, err error)
 }
 
@@ -69,6 +74,7 @@ type RelationshipsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, hubName string, relationshipName string) (result customerinsights.RelationshipsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, hubName string, relationshipName string) (result customerinsights.RelationshipResourceFormat, err error)
 	ListByHub(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.RelationshipListResultPage, err error)
+	ListByHubComplete(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.RelationshipListResultIterator, err error)
 }
 
 var _ RelationshipsClientAPI = (*customerinsights.RelationshipsClient)(nil)
@@ -79,6 +85,7 @@ type RelationshipLinksClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, hubName string, relationshipLinkName string) (result customerinsights.RelationshipLinksDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, hubName string, relationshipLinkName string) (result customerinsights.RelationshipLinkResourceFormat, err error)
 	ListByHub(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.RelationshipLinkListResultPage, err error)
+	ListByHubComplete(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.RelationshipLinkListResultIterator, err error)
 }
 
 var _ RelationshipLinksClientAPI = (*customerinsights.RelationshipLinksClient)(nil)
@@ -88,6 +95,7 @@ type AuthorizationPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, hubName string, authorizationPolicyName string, parameters customerinsights.AuthorizationPolicyResourceFormat) (result customerinsights.AuthorizationPolicyResourceFormat, err error)
 	Get(ctx context.Context, resourceGroupName string, hubName string, authorizationPolicyName string) (result customerinsights.AuthorizationPolicyResourceFormat, err error)
 	ListByHub(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.AuthorizationPolicyListResultPage, err error)
+	ListByHubComplete(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.AuthorizationPolicyListResultIterator, err error)
 	RegeneratePrimaryKey(ctx context.Context, resourceGroupName string, hubName string, authorizationPolicyName string) (result customerinsights.AuthorizationPolicy, err error)
 	RegenerateSecondaryKey(ctx context.Context, resourceGroupName string, hubName string, authorizationPolicyName string) (result customerinsights.AuthorizationPolicy, err error)
 }
@@ -100,6 +108,7 @@ type ConnectorsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, hubName string, connectorName string) (result customerinsights.ConnectorsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, hubName string, connectorName string) (result customerinsights.ConnectorResourceFormat, err error)
 	ListByHub(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.ConnectorListResultPage, err error)
+	ListByHubComplete(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.ConnectorListResultIterator, err error)
 }
 
 var _ ConnectorsClientAPI = (*customerinsights.ConnectorsClient)(nil)
@@ -110,6 +119,7 @@ type ConnectorMappingsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, hubName string, connectorName string, mappingName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, hubName string, connectorName string, mappingName string) (result customerinsights.ConnectorMappingResourceFormat, err error)
 	ListByConnector(ctx context.Context, resourceGroupName string, hubName string, connectorName string) (result customerinsights.ConnectorMappingListResultPage, err error)
+	ListByConnectorComplete(ctx context.Context, resourceGroupName string, hubName string, connectorName string) (result customerinsights.ConnectorMappingListResultIterator, err error)
 }
 
 var _ ConnectorMappingsClientAPI = (*customerinsights.ConnectorMappingsClient)(nil)
@@ -120,6 +130,7 @@ type KpiClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, hubName string, kpiName string) (result customerinsights.KpiDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, hubName string, kpiName string) (result customerinsights.KpiResourceFormat, err error)
 	ListByHub(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.KpiListResultPage, err error)
+	ListByHubComplete(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.KpiListResultIterator, err error)
 	Reprocess(ctx context.Context, resourceGroupName string, hubName string, kpiName string) (result autorest.Response, err error)
 }
 
@@ -129,6 +140,7 @@ var _ KpiClientAPI = (*customerinsights.KpiClient)(nil)
 type WidgetTypesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, hubName string, widgetTypeName string) (result customerinsights.WidgetTypeResourceFormat, err error)
 	ListByHub(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.WidgetTypeListResultPage, err error)
+	ListByHubComplete(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.WidgetTypeListResultIterator, err error)
 }
 
 var _ WidgetTypesClientAPI = (*customerinsights.WidgetTypesClient)(nil)
@@ -139,6 +151,7 @@ type ViewsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, hubName string, viewName string, userID string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, hubName string, viewName string, userID string) (result customerinsights.ViewResourceFormat, err error)
 	ListByHub(ctx context.Context, resourceGroupName string, hubName string, userID string) (result customerinsights.ViewListResultPage, err error)
+	ListByHubComplete(ctx context.Context, resourceGroupName string, hubName string, userID string) (result customerinsights.ViewListResultIterator, err error)
 }
 
 var _ ViewsClientAPI = (*customerinsights.ViewsClient)(nil)
@@ -149,6 +162,7 @@ type LinksClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, hubName string, linkName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, hubName string, linkName string) (result customerinsights.LinkResourceFormat, err error)
 	ListByHub(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.LinkListResultPage, err error)
+	ListByHubComplete(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.LinkListResultIterator, err error)
 }
 
 var _ LinksClientAPI = (*customerinsights.LinksClient)(nil)
@@ -156,6 +170,7 @@ var _ LinksClientAPI = (*customerinsights.LinksClient)(nil)
 // RolesClientAPI contains the set of methods on the RolesClient type.
 type RolesClientAPI interface {
 	ListByHub(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.RoleListResultPage, err error)
+	ListByHubComplete(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.RoleListResultIterator, err error)
 }
 
 var _ RolesClientAPI = (*customerinsights.RolesClient)(nil)
@@ -166,6 +181,7 @@ type RoleAssignmentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, hubName string, assignmentName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, hubName string, assignmentName string) (result customerinsights.RoleAssignmentResourceFormat, err error)
 	ListByHub(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.RoleAssignmentListResultPage, err error)
+	ListByHubComplete(ctx context.Context, resourceGroupName string, hubName string) (result customerinsights.RoleAssignmentListResultIterator, err error)
 }
 
 var _ RoleAssignmentsClientAPI = (*customerinsights.RoleAssignmentsClient)(nil)

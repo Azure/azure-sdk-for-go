@@ -39,7 +39,8 @@ func NewSoftwareUpdateConfigurationMachineRunsClient(subscriptionID string) Soft
 }
 
 // NewSoftwareUpdateConfigurationMachineRunsClientWithBaseURI creates an instance of the
-// SoftwareUpdateConfigurationMachineRunsClient client.
+// SoftwareUpdateConfigurationMachineRunsClient client using a custom endpoint.  Use this when interacting with an
+// Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSoftwareUpdateConfigurationMachineRunsClientWithBaseURI(baseURI string, subscriptionID string) SoftwareUpdateConfigurationMachineRunsClient {
 	return SoftwareUpdateConfigurationMachineRunsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

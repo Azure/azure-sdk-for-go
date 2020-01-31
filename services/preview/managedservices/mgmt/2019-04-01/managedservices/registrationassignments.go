@@ -36,7 +36,9 @@ func NewRegistrationAssignmentsClient() RegistrationAssignmentsClient {
 	return NewRegistrationAssignmentsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewRegistrationAssignmentsClientWithBaseURI creates an instance of the RegistrationAssignmentsClient client.
+// NewRegistrationAssignmentsClientWithBaseURI creates an instance of the RegistrationAssignmentsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewRegistrationAssignmentsClientWithBaseURI(baseURI string) RegistrationAssignmentsClient {
 	return RegistrationAssignmentsClient{NewWithBaseURI(baseURI)}
 }

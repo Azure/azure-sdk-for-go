@@ -36,7 +36,8 @@ func NewGlobalUsersClient(subscriptionID string) GlobalUsersClient {
 	return NewGlobalUsersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewGlobalUsersClientWithBaseURI creates an instance of the GlobalUsersClient client.
+// NewGlobalUsersClientWithBaseURI creates an instance of the GlobalUsersClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewGlobalUsersClientWithBaseURI(baseURI string, subscriptionID string) GlobalUsersClient {
 	return GlobalUsersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

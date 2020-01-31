@@ -35,7 +35,9 @@ func NewVirtualMachineTemplatesClient(subscriptionID string, referer string) Vir
 	return NewVirtualMachineTemplatesClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
-// NewVirtualMachineTemplatesClientWithBaseURI creates an instance of the VirtualMachineTemplatesClient client.
+// NewVirtualMachineTemplatesClientWithBaseURI creates an instance of the VirtualMachineTemplatesClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewVirtualMachineTemplatesClientWithBaseURI(baseURI string, subscriptionID string, referer string) VirtualMachineTemplatesClient {
 	return VirtualMachineTemplatesClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }

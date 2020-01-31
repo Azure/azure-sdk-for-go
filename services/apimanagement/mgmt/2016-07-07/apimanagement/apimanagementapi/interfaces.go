@@ -30,6 +30,7 @@ type ApisClientAPI interface {
 	Export(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (result apimanagement.APIExportResult, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (result apimanagement.APIContract, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.APICollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.APICollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, apiid string, parameters apimanagement.PatchParameters, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -41,6 +42,7 @@ type APIOperationsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (result apimanagement.OperationContract, err error)
 	ListByAPI(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result apimanagement.OperationCollectionPage, err error)
+	ListByAPIComplete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result apimanagement.OperationCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, parameters apimanagement.PatchParameters, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -49,6 +51,7 @@ var _ APIOperationsClientAPI = (*apimanagement.APIOperationsClient)(nil)
 // APIProductsClientAPI contains the set of methods on the APIProductsClient type.
 type APIProductsClientAPI interface {
 	ListByAPI(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result apimanagement.ProductCollectionPage, err error)
+	ListByAPIComplete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result apimanagement.ProductCollectionIterator, err error)
 }
 
 var _ APIProductsClientAPI = (*apimanagement.APIProductsClient)(nil)
@@ -59,6 +62,7 @@ type SubscriptionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, sid string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, sid string) (result apimanagement.SubscriptionContract, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.SubscriptionCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.SubscriptionCollectionIterator, err error)
 	RegeneratePrimaryKey(ctx context.Context, resourceGroupName string, serviceName string, sid string) (result autorest.Response, err error)
 	RegenerateSecondaryKey(ctx context.Context, resourceGroupName string, serviceName string, sid string) (result autorest.Response, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, sid string, parameters apimanagement.SubscriptionUpdateParameters, ifMatch string) (result autorest.Response, err error)
@@ -72,6 +76,7 @@ type ProductsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, deleteSubscriptions *bool) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, productID string) (result apimanagement.ProductContract, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, expandGroups *bool) (result apimanagement.ProductCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, expandGroups *bool) (result apimanagement.ProductCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters apimanagement.ProductUpdateParameters, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -81,6 +86,7 @@ var _ ProductsClientAPI = (*apimanagement.ProductsClient)(nil)
 type ProductApisClientAPI interface {
 	Add(ctx context.Context, resourceGroupName string, serviceName string, productID string, apiid string) (result autorest.Response, err error)
 	ListByProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, filter string, top *int32, skip *int32) (result apimanagement.APICollectionPage, err error)
+	ListByProductComplete(ctx context.Context, resourceGroupName string, serviceName string, productID string, filter string, top *int32, skip *int32) (result apimanagement.APICollectionIterator, err error)
 	Remove(ctx context.Context, resourceGroupName string, serviceName string, productID string, apiid string) (result autorest.Response, err error)
 }
 
@@ -90,6 +96,7 @@ var _ ProductApisClientAPI = (*apimanagement.ProductApisClient)(nil)
 type ProductGroupsClientAPI interface {
 	Add(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string) (result autorest.Response, err error)
 	ListByProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, filter string, top *int32, skip *int32) (result apimanagement.GroupCollectionPage, err error)
+	ListByProductComplete(ctx context.Context, resourceGroupName string, serviceName string, productID string, filter string, top *int32, skip *int32) (result apimanagement.GroupCollectionIterator, err error)
 	Remove(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string) (result apimanagement.ErrorBodyContract, err error)
 }
 
@@ -101,6 +108,7 @@ type GroupsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, groupID string, ifMatch string) (result apimanagement.ErrorBodyContract, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, groupID string) (result apimanagement.GroupContract, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.GroupCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.GroupCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, groupID string, parameters apimanagement.GroupUpdateParameters, ifMatch string) (result apimanagement.ErrorBodyContract, err error)
 }
 
@@ -110,6 +118,7 @@ var _ GroupsClientAPI = (*apimanagement.GroupsClient)(nil)
 type GroupUsersClientAPI interface {
 	Add(ctx context.Context, resourceGroupName string, serviceName string, groupID string, UID string) (result apimanagement.ErrorBodyContract, err error)
 	ListByGroup(ctx context.Context, resourceGroupName string, serviceName string, groupID string, filter string, top *int32, skip *int32) (result apimanagement.UserCollectionPage, err error)
+	ListByGroupComplete(ctx context.Context, resourceGroupName string, serviceName string, groupID string, filter string, top *int32, skip *int32) (result apimanagement.UserCollectionIterator, err error)
 	Remove(ctx context.Context, resourceGroupName string, serviceName string, groupID string, UID string) (result apimanagement.ErrorBodyContract, err error)
 }
 
@@ -121,6 +130,7 @@ type CertificatesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, certificateID string) (result apimanagement.CertificateContract, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.CertificateCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.CertificateCollectionIterator, err error)
 }
 
 var _ CertificatesClientAPI = (*apimanagement.CertificatesClient)(nil)
@@ -135,6 +145,7 @@ var _ PolicySnippetsClientAPI = (*apimanagement.PolicySnippetsClient)(nil)
 // ProductSubscriptionsClientAPI contains the set of methods on the ProductSubscriptionsClient type.
 type ProductSubscriptionsClientAPI interface {
 	ListByProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, filter string, top *int32, skip *int32) (result apimanagement.SubscriptionCollectionPage, err error)
+	ListByProductComplete(ctx context.Context, resourceGroupName string, serviceName string, productID string, filter string, top *int32, skip *int32) (result apimanagement.SubscriptionCollectionIterator, err error)
 }
 
 var _ ProductSubscriptionsClientAPI = (*apimanagement.ProductSubscriptionsClient)(nil)
@@ -146,6 +157,7 @@ type UsersClientAPI interface {
 	GenerateSsoURL(ctx context.Context, resourceGroupName string, serviceName string, UID string) (result apimanagement.GenerateSsoURLResult, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, UID string) (result apimanagement.UserContract, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.UserCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.UserCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, UID string, parameters apimanagement.UserUpdateParameters, ifMatch string) (result apimanagement.ErrorBodyContract, err error)
 }
 
@@ -154,6 +166,7 @@ var _ UsersClientAPI = (*apimanagement.UsersClient)(nil)
 // UserGroupsClientAPI contains the set of methods on the UserGroupsClient type.
 type UserGroupsClientAPI interface {
 	ListByUser(ctx context.Context, resourceGroupName string, serviceName string, UID string, filter string, top *int32, skip *int32) (result apimanagement.GroupCollectionPage, err error)
+	ListByUserComplete(ctx context.Context, resourceGroupName string, serviceName string, UID string, filter string, top *int32, skip *int32) (result apimanagement.GroupCollectionIterator, err error)
 }
 
 var _ UserGroupsClientAPI = (*apimanagement.UserGroupsClient)(nil)
@@ -161,6 +174,7 @@ var _ UserGroupsClientAPI = (*apimanagement.UserGroupsClient)(nil)
 // UserSubscriptionsClientAPI contains the set of methods on the UserSubscriptionsClient type.
 type UserSubscriptionsClientAPI interface {
 	ListByUser(ctx context.Context, resourceGroupName string, serviceName string, UID string, filter string, top *int32, skip *int32) (result apimanagement.SubscriptionCollectionPage, err error)
+	ListByUserComplete(ctx context.Context, resourceGroupName string, serviceName string, UID string, filter string, top *int32, skip *int32) (result apimanagement.SubscriptionCollectionIterator, err error)
 }
 
 var _ UserSubscriptionsClientAPI = (*apimanagement.UserSubscriptionsClient)(nil)
@@ -171,6 +185,7 @@ type AuthorizationServersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, authsid string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, authsid string) (result apimanagement.OAuth2AuthorizationServerContract, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.AuthorizationServerCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.AuthorizationServerCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, authsid string, parameters apimanagement.OAuth2AuthorizationServerUpdateContract, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -193,6 +208,7 @@ var _ UserIdentitiesClientAPI = (*apimanagement.UserIdentitiesClient)(nil)
 // ReportsClientAPI contains the set of methods on the ReportsClient type.
 type ReportsClientAPI interface {
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, aggregation apimanagement.ReportsAggregation, filter string, top *int32, skip *int32, interval string) (result apimanagement.ReportCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, aggregation apimanagement.ReportsAggregation, filter string, top *int32, skip *int32, interval string) (result apimanagement.ReportCollectionIterator, err error)
 }
 
 var _ ReportsClientAPI = (*apimanagement.ReportsClient)(nil)
@@ -213,6 +229,7 @@ type LoggersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, loggerid string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, loggerid string) (result apimanagement.LoggerResponse, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.LoggerCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.LoggerCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, loggerid string, parameters apimanagement.LoggerUpdateParameters, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -224,6 +241,7 @@ type PropertyClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, propID string, ifMatch string) (result apimanagement.ErrorBodyContract, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, propID string) (result apimanagement.PropertyContract, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.PropertyCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.PropertyCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, propID string, parameters apimanagement.PropertyUpdateParameters, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -235,6 +253,7 @@ type OpenIDConnectProvidersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, opid string, ifMatch string) (result apimanagement.ErrorBodyContract, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, opid string) (result apimanagement.OpenidConnectProviderContract, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.OpenIDConnectProviderCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.OpenIDConnectProviderCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters apimanagement.OpenidConnectProviderUpdateContract, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -271,6 +290,7 @@ type BackendsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, backendid string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, backendid string) (result apimanagement.BackendResponse, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.BackendCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.BackendCollectionIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, backendid string, parameters apimanagement.BackendUpdateParameters, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -312,7 +332,9 @@ type ServicesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serviceName string) (result apimanagement.SetObject, err error)
 	GetSsoToken(ctx context.Context, resourceGroupName string, serviceName string) (result apimanagement.ServiceGetSsoTokenResult, err error)
 	List(ctx context.Context) (result apimanagement.ServiceListResultPage, err error)
+	ListComplete(ctx context.Context) (result apimanagement.ServiceListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result apimanagement.ServiceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result apimanagement.ServiceListResultIterator, err error)
 	ManageDeployments(ctx context.Context, resourceGroupName string, serviceName string, parameters apimanagement.ServiceManageDeploymentsParameters) (result apimanagement.ServicesManageDeploymentsFuture, err error)
 	Restore(ctx context.Context, resourceGroupName string, serviceName string, parameters apimanagement.ServiceBackupRestoreParameters) (result apimanagement.ServicesRestoreFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, parameters apimanagement.ServiceBaseParameters) (result apimanagement.ServicesUpdateFuture, err error)

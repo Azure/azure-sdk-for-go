@@ -31,7 +31,9 @@ type AccountsClientAPI interface {
 	EnableKeyVault(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string) (result account.DataLakeStoreAccount, err error)
 	List(ctx context.Context, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.DataLakeStoreAccountListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.DataLakeStoreAccountListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.DataLakeStoreAccountListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.DataLakeStoreAccountListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, parameters account.UpdateDataLakeStoreAccountParameters) (result account.AccountsUpdateFutureType, err error)
 }
 
@@ -43,6 +45,7 @@ type FirewallRulesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string) (result account.FirewallRule, err error)
 	ListByAccount(ctx context.Context, resourceGroupName string, accountName string) (result account.FirewallRuleListResultPage, err error)
+	ListByAccountComplete(ctx context.Context, resourceGroupName string, accountName string) (result account.FirewallRuleListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, parameters *account.UpdateFirewallRuleParameters) (result account.FirewallRule, err error)
 }
 
@@ -54,6 +57,7 @@ type VirtualNetworkRulesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string) (result account.VirtualNetworkRule, err error)
 	ListByAccount(ctx context.Context, resourceGroupName string, accountName string) (result account.VirtualNetworkRuleListResultPage, err error)
+	ListByAccountComplete(ctx context.Context, resourceGroupName string, accountName string) (result account.VirtualNetworkRuleListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, parameters *account.UpdateVirtualNetworkRuleParameters) (result account.VirtualNetworkRule, err error)
 }
 
@@ -65,6 +69,7 @@ type TrustedIDProvidersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string) (result account.TrustedIDProvider, err error)
 	ListByAccount(ctx context.Context, resourceGroupName string, accountName string) (result account.TrustedIDProviderListResultPage, err error)
+	ListByAccountComplete(ctx context.Context, resourceGroupName string, accountName string) (result account.TrustedIDProviderListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, parameters *account.UpdateTrustedIDProviderParameters) (result account.TrustedIDProvider, err error)
 }
 

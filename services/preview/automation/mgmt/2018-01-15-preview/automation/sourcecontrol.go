@@ -36,7 +36,8 @@ func NewSourceControlClient(subscriptionID string) SourceControlClient {
 	return NewSourceControlClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSourceControlClientWithBaseURI creates an instance of the SourceControlClient client.
+// NewSourceControlClientWithBaseURI creates an instance of the SourceControlClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSourceControlClientWithBaseURI(baseURI string, subscriptionID string) SourceControlClient {
 	return SourceControlClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

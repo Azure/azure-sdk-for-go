@@ -41,6 +41,7 @@ var _ SkusClientAPI = (*commitmentplans.SkusClient)(nil)
 type CommitmentAssociationsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentAssociationName string) (result commitmentplans.CommitmentAssociation, err error)
 	List(ctx context.Context, resourceGroupName string, commitmentPlanName string, skipToken string) (result commitmentplans.CommitmentAssociationListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, commitmentPlanName string, skipToken string) (result commitmentplans.CommitmentAssociationListResultIterator, err error)
 	Move(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentAssociationName string, movePayload commitmentplans.MoveCommitmentAssociationRequest) (result commitmentplans.CommitmentAssociation, err error)
 }
 
@@ -51,7 +52,9 @@ type ClientAPI interface {
 	CreateOrUpdate(ctx context.Context, createOrUpdatePayload commitmentplans.CommitmentPlan, resourceGroupName string, commitmentPlanName string) (result commitmentplans.CommitmentPlan, err error)
 	Get(ctx context.Context, resourceGroupName string, commitmentPlanName string) (result commitmentplans.CommitmentPlan, err error)
 	List(ctx context.Context, skipToken string) (result commitmentplans.ListResultPage, err error)
+	ListComplete(ctx context.Context, skipToken string) (result commitmentplans.ListResultIterator, err error)
 	ListInResourceGroup(ctx context.Context, resourceGroupName string, skipToken string) (result commitmentplans.ListResultPage, err error)
+	ListInResourceGroupComplete(ctx context.Context, resourceGroupName string, skipToken string) (result commitmentplans.ListResultIterator, err error)
 	Patch(ctx context.Context, patchPayload commitmentplans.PatchPayload, resourceGroupName string, commitmentPlanName string) (result commitmentplans.CommitmentPlan, err error)
 	Remove(ctx context.Context, resourceGroupName string, commitmentPlanName string) (result autorest.Response, err error)
 }
@@ -61,6 +64,7 @@ var _ ClientAPI = (*commitmentplans.Client)(nil)
 // UsageHistoryClientAPI contains the set of methods on the UsageHistoryClient type.
 type UsageHistoryClientAPI interface {
 	List(ctx context.Context, resourceGroupName string, commitmentPlanName string, skipToken string) (result commitmentplans.PlanUsageHistoryListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, commitmentPlanName string, skipToken string) (result commitmentplans.PlanUsageHistoryListResultIterator, err error)
 }
 
 var _ UsageHistoryClientAPI = (*commitmentplans.UsageHistoryClient)(nil)

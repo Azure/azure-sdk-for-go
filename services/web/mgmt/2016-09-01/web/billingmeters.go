@@ -35,7 +35,8 @@ func NewBillingMetersClient(subscriptionID string) BillingMetersClient {
 	return NewBillingMetersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBillingMetersClientWithBaseURI creates an instance of the BillingMetersClient client.
+// NewBillingMetersClientWithBaseURI creates an instance of the BillingMetersClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewBillingMetersClientWithBaseURI(baseURI string, subscriptionID string) BillingMetersClient {
 	return BillingMetersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -35,7 +35,8 @@ func NewFilesClient(subscriptionID string) FilesClient {
 	return NewFilesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewFilesClientWithBaseURI creates an instance of the FilesClient client.
+// NewFilesClientWithBaseURI creates an instance of the FilesClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewFilesClientWithBaseURI(baseURI string, subscriptionID string) FilesClient {
 	return FilesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

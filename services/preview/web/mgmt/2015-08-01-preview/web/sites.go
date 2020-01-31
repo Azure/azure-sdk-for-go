@@ -35,7 +35,8 @@ func NewSitesClient(subscriptionID string) SitesClient {
 	return NewSitesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSitesClientWithBaseURI creates an instance of the SitesClient client.
+// NewSitesClientWithBaseURI creates an instance of the SitesClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSitesClientWithBaseURI(baseURI string, subscriptionID string) SitesClient {
 	return SitesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

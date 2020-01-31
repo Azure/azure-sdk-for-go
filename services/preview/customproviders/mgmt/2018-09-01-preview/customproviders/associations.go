@@ -35,7 +35,8 @@ func NewAssociationsClient(subscriptionID string) AssociationsClient {
 	return NewAssociationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAssociationsClientWithBaseURI creates an instance of the AssociationsClient client.
+// NewAssociationsClientWithBaseURI creates an instance of the AssociationsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAssociationsClientWithBaseURI(baseURI string, subscriptionID string) AssociationsClient {
 	return AssociationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

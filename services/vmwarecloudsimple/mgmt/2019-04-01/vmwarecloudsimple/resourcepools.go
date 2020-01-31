@@ -35,7 +35,8 @@ func NewResourcePoolsClient(subscriptionID string, referer string) ResourcePools
 	return NewResourcePoolsClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
-// NewResourcePoolsClientWithBaseURI creates an instance of the ResourcePoolsClient client.
+// NewResourcePoolsClientWithBaseURI creates an instance of the ResourcePoolsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewResourcePoolsClientWithBaseURI(baseURI string, subscriptionID string, referer string) ResourcePoolsClient {
 	return ResourcePoolsClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }

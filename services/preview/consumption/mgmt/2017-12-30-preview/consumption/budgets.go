@@ -37,7 +37,8 @@ func NewBudgetsClient(subscriptionID string, name string) BudgetsClient {
 	return NewBudgetsClientWithBaseURI(DefaultBaseURI, subscriptionID, name)
 }
 
-// NewBudgetsClientWithBaseURI creates an instance of the BudgetsClient client.
+// NewBudgetsClientWithBaseURI creates an instance of the BudgetsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string, name string) BudgetsClient {
 	return BudgetsClient{NewWithBaseURI(baseURI, subscriptionID, name)}
 }

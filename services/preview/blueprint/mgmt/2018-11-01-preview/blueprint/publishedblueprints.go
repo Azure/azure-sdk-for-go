@@ -36,7 +36,9 @@ func NewPublishedBlueprintsClient() PublishedBlueprintsClient {
 	return NewPublishedBlueprintsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewPublishedBlueprintsClientWithBaseURI creates an instance of the PublishedBlueprintsClient client.
+// NewPublishedBlueprintsClientWithBaseURI creates an instance of the PublishedBlueprintsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewPublishedBlueprintsClientWithBaseURI(baseURI string) PublishedBlueprintsClient {
 	return PublishedBlueprintsClient{NewWithBaseURI(baseURI)}
 }

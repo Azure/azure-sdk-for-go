@@ -37,7 +37,8 @@ func NewIntegrationServiceEnvironmentNetworkHealthClient(subscriptionID string) 
 }
 
 // NewIntegrationServiceEnvironmentNetworkHealthClientWithBaseURI creates an instance of the
-// IntegrationServiceEnvironmentNetworkHealthClient client.
+// IntegrationServiceEnvironmentNetworkHealthClient client using a custom endpoint.  Use this when interacting with an
+// Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewIntegrationServiceEnvironmentNetworkHealthClientWithBaseURI(baseURI string, subscriptionID string) IntegrationServiceEnvironmentNetworkHealthClient {
 	return IntegrationServiceEnvironmentNetworkHealthClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

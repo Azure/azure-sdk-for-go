@@ -108,6 +108,7 @@ var _ ShowbackRuleClientAPI = (*costmanagement.ShowbackRuleClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result costmanagement.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result costmanagement.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*costmanagement.OperationsClient)(nil)

@@ -28,7 +28,9 @@ type WorkspacesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string) (result databricks.WorkspacesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string) (result databricks.Workspace, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result databricks.WorkspaceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result databricks.WorkspaceListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result databricks.WorkspaceListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result databricks.WorkspaceListResultIterator, err error)
 	Update(ctx context.Context, parameters databricks.WorkspaceUpdate, resourceGroupName string, workspaceName string) (result databricks.WorkspacesUpdateFuture, err error)
 }
 
@@ -37,6 +39,7 @@ var _ WorkspacesClientAPI = (*databricks.WorkspacesClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result databricks.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result databricks.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*databricks.OperationsClient)(nil)

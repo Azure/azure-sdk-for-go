@@ -37,7 +37,8 @@ func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
 	return NewPriceSheetClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPriceSheetClientWithBaseURI creates an instance of the PriceSheetClient client.
+// NewPriceSheetClientWithBaseURI creates an instance of the PriceSheetClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
 	return PriceSheetClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

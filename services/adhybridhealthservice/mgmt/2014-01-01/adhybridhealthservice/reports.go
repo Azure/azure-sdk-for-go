@@ -35,7 +35,8 @@ func NewReportsClient() ReportsClient {
 	return NewReportsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewReportsClientWithBaseURI creates an instance of the ReportsClient client.
+// NewReportsClientWithBaseURI creates an instance of the ReportsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewReportsClientWithBaseURI(baseURI string) ReportsClient {
 	return ReportsClient{NewWithBaseURI(baseURI)}
 }

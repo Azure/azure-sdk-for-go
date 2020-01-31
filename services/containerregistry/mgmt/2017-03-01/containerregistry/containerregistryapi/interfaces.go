@@ -30,7 +30,9 @@ type RegistriesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, registryName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.Registry, err error)
 	List(ctx context.Context) (result containerregistry.RegistryListResultPage, err error)
+	ListComplete(ctx context.Context) (result containerregistry.RegistryListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result containerregistry.RegistryListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result containerregistry.RegistryListResultIterator, err error)
 	ListCredentials(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.RegistryListCredentialsResult, err error)
 	RegenerateCredential(ctx context.Context, resourceGroupName string, registryName string, regenerateCredentialParameters containerregistry.RegenerateCredentialParameters) (result containerregistry.RegistryListCredentialsResult, err error)
 	Update(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters containerregistry.RegistryUpdateParameters) (result containerregistry.Registry, err error)
@@ -41,6 +43,7 @@ var _ RegistriesClientAPI = (*containerregistry.RegistriesClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result containerregistry.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result containerregistry.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*containerregistry.OperationsClient)(nil)

@@ -35,7 +35,8 @@ func NewBindingsClient(subscriptionID string) BindingsClient {
 	return NewBindingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBindingsClientWithBaseURI creates an instance of the BindingsClient client.
+// NewBindingsClientWithBaseURI creates an instance of the BindingsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewBindingsClientWithBaseURI(baseURI string, subscriptionID string) BindingsClient {
 	return BindingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

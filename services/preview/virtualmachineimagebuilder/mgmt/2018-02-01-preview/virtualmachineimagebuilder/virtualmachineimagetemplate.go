@@ -36,7 +36,9 @@ func NewVirtualMachineImageTemplateClient(subscriptionID string) VirtualMachineI
 	return NewVirtualMachineImageTemplateClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewVirtualMachineImageTemplateClientWithBaseURI creates an instance of the VirtualMachineImageTemplateClient client.
+// NewVirtualMachineImageTemplateClientWithBaseURI creates an instance of the VirtualMachineImageTemplateClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewVirtualMachineImageTemplateClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImageTemplateClient {
 	return VirtualMachineImageTemplateClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

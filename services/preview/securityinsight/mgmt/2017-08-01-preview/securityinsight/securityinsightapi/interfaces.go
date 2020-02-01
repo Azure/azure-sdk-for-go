@@ -150,6 +150,21 @@ type EntitiesClientAPI interface {
 
 var _ EntitiesClientAPI = (*securityinsight.EntitiesClient)(nil)
 
+// EntitiesRelationsClientAPI contains the set of methods on the EntitiesRelationsClient type.
+type EntitiesRelationsClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.RelationListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.RelationListIterator, err error)
+}
+
+var _ EntitiesRelationsClientAPI = (*securityinsight.EntitiesRelationsClient)(nil)
+
+// EntityRelationsClientAPI contains the set of methods on the EntityRelationsClient type.
+type EntityRelationsClientAPI interface {
+	GetRelation(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string, relationName string) (result securityinsight.Relation, err error)
+}
+
+var _ EntityRelationsClientAPI = (*securityinsight.EntityRelationsClient)(nil)
+
 // OfficeConsentsClientAPI contains the set of methods on the OfficeConsentsClient type.
 type OfficeConsentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, consentID string) (result autorest.Response, err error)
@@ -183,3 +198,35 @@ type EntityQueriesClientAPI interface {
 }
 
 var _ EntityQueriesClientAPI = (*securityinsight.EntityQueriesClient)(nil)
+
+// IncidentsClientAPI contains the set of methods on the IncidentsClient type.
+type IncidentsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, incident securityinsight.Incident) (result securityinsight.Incident, err error)
+	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string) (result securityinsight.Incident, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.IncidentListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.IncidentListIterator, err error)
+}
+
+var _ IncidentsClientAPI = (*securityinsight.IncidentsClient)(nil)
+
+// IncidentCommentsClientAPI contains the set of methods on the IncidentCommentsClient type.
+type IncidentCommentsClientAPI interface {
+	CreateComment(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, incidentCommentID string, incidentComment securityinsight.IncidentComment) (result securityinsight.IncidentComment, err error)
+	GetComment(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, incidentCommentID string) (result securityinsight.IncidentComment, err error)
+	ListByIncident(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.IncidentCommentListPage, err error)
+	ListByIncidentComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.IncidentCommentListIterator, err error)
+}
+
+var _ IncidentCommentsClientAPI = (*securityinsight.IncidentCommentsClient)(nil)
+
+// IncidentRelationsClientAPI contains the set of methods on the IncidentRelationsClient type.
+type IncidentRelationsClientAPI interface {
+	CreateOrUpdateRelation(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, relationName string, relation securityinsight.Relation) (result securityinsight.Relation, err error)
+	DeleteRelation(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, relationName string) (result autorest.Response, err error)
+	GetRelation(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, relationName string) (result securityinsight.Relation, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.RelationListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.RelationListIterator, err error)
+}
+
+var _ IncidentRelationsClientAPI = (*securityinsight.IncidentRelationsClient)(nil)

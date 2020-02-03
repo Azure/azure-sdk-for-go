@@ -9542,6 +9542,8 @@ type ServiceBaseProperties struct {
 	PortalURL *string `json:"portalUrl,omitempty"`
 	// ManagementAPIURL - READ-ONLY; Management API endpoint URL of the API Management service.
 	ManagementAPIURL *string `json:"managementApiUrl,omitempty"`
+	// DeveloperPortalURL - READ-ONLY; Developer Portal endpoint URL of the API Management service.
+	DeveloperPortalURL *string `json:"developerPortalUrl,omitempty"`
 	// ScmURL - READ-ONLY; SCM endpoint URL of the API Management service.
 	ScmURL *string `json:"scmUrl,omitempty"`
 	// HostnameConfigurations - Custom hostname configuration of the API Management service.
@@ -9854,6 +9856,8 @@ type ServiceProperties struct {
 	PortalURL *string `json:"portalUrl,omitempty"`
 	// ManagementAPIURL - READ-ONLY; Management API endpoint URL of the API Management service.
 	ManagementAPIURL *string `json:"managementApiUrl,omitempty"`
+	// DeveloperPortalURL - READ-ONLY; Developer Portal endpoint URL of the API Management service.
+	DeveloperPortalURL *string `json:"developerPortalUrl,omitempty"`
 	// ScmURL - READ-ONLY; SCM endpoint URL of the API Management service.
 	ScmURL *string `json:"scmUrl,omitempty"`
 	// HostnameConfigurations - Custom hostname configuration of the API Management service.
@@ -10265,6 +10269,8 @@ type ServiceUpdateProperties struct {
 	PortalURL *string `json:"portalUrl,omitempty"`
 	// ManagementAPIURL - READ-ONLY; Management API endpoint URL of the API Management service.
 	ManagementAPIURL *string `json:"managementApiUrl,omitempty"`
+	// DeveloperPortalURL - READ-ONLY; Developer Portal endpoint URL of the API Management service.
+	DeveloperPortalURL *string `json:"developerPortalUrl,omitempty"`
 	// ScmURL - READ-ONLY; SCM endpoint URL of the API Management service.
 	ScmURL *string `json:"scmUrl,omitempty"`
 	// HostnameConfigurations - Custom hostname configuration of the API Management service.

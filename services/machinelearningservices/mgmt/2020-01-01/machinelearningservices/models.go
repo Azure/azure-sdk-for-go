@@ -3613,6 +3613,8 @@ type WorkspaceProperties struct {
 	Encryption *EncryptionProperty `json:"encryption,omitempty"`
 	// HbiWorkspace - The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service
 	HbiWorkspace *bool `json:"hbiWorkspace,omitempty"`
+	// ServiceProvisionedResourceGroup - READ-ONLY; The name of the managed resource group created by workspace RP in customer subscription if the workspace is CMK workspace
+	ServiceProvisionedResourceGroup *string `json:"serviceProvisionedResourceGroup,omitempty"`
 }
 
 // WorkspacePropertiesUpdateParameters the parameters for updating the properties of a machine learning

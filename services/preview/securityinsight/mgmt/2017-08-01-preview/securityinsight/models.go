@@ -257,11 +257,13 @@ const (
 	DataConnectorKindOffice365 DataConnectorKind = "Office365"
 	// DataConnectorKindThreatIntelligence ...
 	DataConnectorKindThreatIntelligence DataConnectorKind = "ThreatIntelligence"
+	// DataConnectorKindThreatIntelligenceTaxii ...
+	DataConnectorKindThreatIntelligenceTaxii DataConnectorKind = "ThreatIntelligenceTaxii"
 )
 
 // PossibleDataConnectorKindValues returns an array of possible values for the DataConnectorKind const type.
 func PossibleDataConnectorKindValues() []DataConnectorKind {
-	return []DataConnectorKind{DataConnectorKindAmazonWebServicesCloudTrail, DataConnectorKindAzureActiveDirectory, DataConnectorKindAzureAdvancedThreatProtection, DataConnectorKindAzureSecurityCenter, DataConnectorKindMicrosoftCloudAppSecurity, DataConnectorKindMicrosoftDefenderAdvancedThreatProtection, DataConnectorKindOffice365, DataConnectorKindThreatIntelligence}
+	return []DataConnectorKind{DataConnectorKindAmazonWebServicesCloudTrail, DataConnectorKindAzureActiveDirectory, DataConnectorKindAzureAdvancedThreatProtection, DataConnectorKindAzureSecurityCenter, DataConnectorKindMicrosoftCloudAppSecurity, DataConnectorKindMicrosoftDefenderAdvancedThreatProtection, DataConnectorKindOffice365, DataConnectorKindThreatIntelligence, DataConnectorKindThreatIntelligenceTaxii}
 }
 
 // DataConnectorLicenseState enumerates the values for data connector license state.
@@ -439,12 +441,42 @@ func PossibleFileHashAlgorithmValues() []FileHashAlgorithm {
 	return []FileHashAlgorithm{MD5, SHA1, SHA256, SHA256AC, Unknown}
 }
 
+// IncidentClassification enumerates the values for incident classification.
+type IncidentClassification string
+
+const (
+	// IncidentClassificationFalsePositive Incident was false positive
+	IncidentClassificationFalsePositive IncidentClassification = "FalsePositive"
+	// IncidentClassificationTruePositive Incident was true positive
+	IncidentClassificationTruePositive IncidentClassification = "TruePositive"
+	// IncidentClassificationUnknown Incident classification was not set
+	IncidentClassificationUnknown IncidentClassification = "Unknown"
+)
+
+// PossibleIncidentClassificationValues returns an array of possible values for the IncidentClassification const type.
+func PossibleIncidentClassificationValues() []IncidentClassification {
+	return []IncidentClassification{IncidentClassificationFalsePositive, IncidentClassificationTruePositive, IncidentClassificationUnknown}
+}
+
+// IncidentLabelType enumerates the values for incident label type.
+type IncidentLabelType string
+
+const (
+	// System Label automatically created by the system
+	System IncidentLabelType = "System"
+	// User Label manually created by a user
+	User IncidentLabelType = "User"
+)
+
+// PossibleIncidentLabelTypeValues returns an array of possible values for the IncidentLabelType const type.
+func PossibleIncidentLabelTypeValues() []IncidentLabelType {
+	return []IncidentLabelType{System, User}
+}
+
 // IncidentSeverity enumerates the values for incident severity.
 type IncidentSeverity string
 
 const (
-	// IncidentSeverityCritical Critical severity
-	IncidentSeverityCritical IncidentSeverity = "Critical"
 	// IncidentSeverityHigh High severity
 	IncidentSeverityHigh IncidentSeverity = "High"
 	// IncidentSeverityInformational Informational severity
@@ -457,7 +489,24 @@ const (
 
 // PossibleIncidentSeverityValues returns an array of possible values for the IncidentSeverity const type.
 func PossibleIncidentSeverityValues() []IncidentSeverity {
-	return []IncidentSeverity{IncidentSeverityCritical, IncidentSeverityHigh, IncidentSeverityInformational, IncidentSeverityLow, IncidentSeverityMedium}
+	return []IncidentSeverity{IncidentSeverityHigh, IncidentSeverityInformational, IncidentSeverityLow, IncidentSeverityMedium}
+}
+
+// IncidentStatus enumerates the values for incident status.
+type IncidentStatus string
+
+const (
+	// IncidentStatusActive An active incident which is being handled
+	IncidentStatusActive IncidentStatus = "Active"
+	// IncidentStatusClosed A non-active incident
+	IncidentStatusClosed IncidentStatus = "Closed"
+	// IncidentStatusNew An active incident which isn't being handled currently
+	IncidentStatusNew IncidentStatus = "New"
+)
+
+// PossibleIncidentStatusValues returns an array of possible values for the IncidentStatus const type.
+func PossibleIncidentStatusValues() []IncidentStatus {
+	return []IncidentStatus{IncidentStatusActive, IncidentStatusClosed, IncidentStatusNew}
 }
 
 // KillChainIntent enumerates the values for kill chain intent.
@@ -613,11 +662,13 @@ const (
 	KindOffice365 KindBasicDataConnector = "Office365"
 	// KindThreatIntelligence ...
 	KindThreatIntelligence KindBasicDataConnector = "ThreatIntelligence"
+	// KindThreatIntelligenceTaxii ...
+	KindThreatIntelligenceTaxii KindBasicDataConnector = "ThreatIntelligenceTaxii"
 )
 
 // PossibleKindBasicDataConnectorValues returns an array of possible values for the KindBasicDataConnector const type.
 func PossibleKindBasicDataConnectorValues() []KindBasicDataConnector {
-	return []KindBasicDataConnector{KindAmazonWebServicesCloudTrail, KindAzureActiveDirectory, KindAzureAdvancedThreatProtection, KindAzureSecurityCenter, KindDataConnector, KindMicrosoftCloudAppSecurity, KindMicrosoftDefenderAdvancedThreatProtection, KindOffice365, KindThreatIntelligence}
+	return []KindBasicDataConnector{KindAmazonWebServicesCloudTrail, KindAzureActiveDirectory, KindAzureAdvancedThreatProtection, KindAzureSecurityCenter, KindDataConnector, KindMicrosoftCloudAppSecurity, KindMicrosoftDefenderAdvancedThreatProtection, KindOffice365, KindThreatIntelligence, KindThreatIntelligenceTaxii}
 }
 
 // KindBasicEntity enumerates the values for kind basic entity.
@@ -907,7 +958,7 @@ type AADDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence', 'KindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -964,6 +1015,11 @@ func (adc AADDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool)
 
 // AsTIDataConnector is the BasicDataConnector implementation for AADDataConnector.
 func (adc AADDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+	return nil, false
+}
+
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -1072,7 +1128,7 @@ type AATPDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence', 'KindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -1129,6 +1185,11 @@ func (adc AATPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool
 
 // AsTIDataConnector is the BasicDataConnector implementation for AATPDataConnector.
 func (adc AATPDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+	return nil, false
+}
+
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -2514,7 +2575,7 @@ type AlertsDataTypeOfDataConnectorAlerts struct {
 type ASCCheckRequirements struct {
 	// SubscriptionID - The subscription id to connect to, and get the data from.
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
+	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindThreatIntelligenceTaxii', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
 	Kind DataConnectorKind `json:"kind,omitempty"`
 }
 
@@ -2530,7 +2591,7 @@ type ASCDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence', 'KindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -2587,6 +2648,11 @@ func (adc ASCDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool)
 
 // AsTIDataConnector is the BasicDataConnector implementation for ASCDataConnector.
 func (adc ASCDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+	return nil, false
+}
+
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -2679,7 +2745,7 @@ type ASCDataConnectorProperties struct {
 
 // AwsCloudTrailCheckRequirements amazon Web Services CloudTrail requirements check properties.
 type AwsCloudTrailCheckRequirements struct {
-	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
+	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindThreatIntelligenceTaxii', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
 	Kind DataConnectorKind `json:"kind,omitempty"`
 }
 
@@ -2695,7 +2761,7 @@ type AwsCloudTrailDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence', 'KindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -2752,6 +2818,11 @@ func (actdc AwsCloudTrailDataConnector) AsOfficeDataConnector() (*OfficeDataConn
 
 // AsTIDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
 func (actdc AwsCloudTrailDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+	return nil, false
+}
+
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -4453,6 +4524,18 @@ type CasesAggregationProperties struct {
 	AggregationByStatus *CasesAggregationByStatusProperties `json:"aggregationByStatus,omitempty"`
 }
 
+// ClientInfo information on the client (user or application) that made some action
+type ClientInfo struct {
+	// Email - The email of the client.
+	Email *string `json:"email,omitempty"`
+	// Name - The name of the client.
+	Name *string `json:"name,omitempty"`
+	// ObjectID - The object id of the client.
+	ObjectID *uuid.UUID `json:"objectId,omitempty"`
+	// UserPrincipalName - The user principal name of the client.
+	UserPrincipalName *string `json:"userPrincipalName,omitempty"`
+}
+
 // CloudApplicationEntity represents a cloud application entity.
 type CloudApplicationEntity struct {
 	// CloudApplicationEntityProperties - CloudApplication entity properties
@@ -4707,6 +4790,7 @@ type BasicDataConnector interface {
 	AsMDATPDataConnector() (*MDATPDataConnector, bool)
 	AsOfficeDataConnector() (*OfficeDataConnector, bool)
 	AsTIDataConnector() (*TIDataConnector, bool)
+	AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool)
 	AsDataConnector() (*DataConnector, bool)
 }
 
@@ -4721,7 +4805,7 @@ type DataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence', 'KindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -4765,6 +4849,10 @@ func unmarshalBasicDataConnector(body []byte) (BasicDataConnector, error) {
 		var tdc TIDataConnector
 		err := json.Unmarshal(body, &tdc)
 		return tdc, err
+	case string(KindThreatIntelligenceTaxii):
+		var ttdc TiTaxiiDataConnector
+		err := json.Unmarshal(body, &ttdc)
+		return ttdc, err
 	default:
 		var dc DataConnector
 		err := json.Unmarshal(body, &dc)
@@ -4843,6 +4931,11 @@ func (dc DataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+	return nil, false
+}
+
 // AsDataConnector is the BasicDataConnector implementation for DataConnector.
 func (dc DataConnector) AsDataConnector() (*DataConnector, bool) {
 	return &dc, true
@@ -4861,7 +4954,7 @@ type DataConnectorDataTypeCommon struct {
 
 // DataConnectorKind1 describes an Azure resource with kind.
 type DataConnectorKind1 struct {
-	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
+	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindThreatIntelligenceTaxii', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
 	Kind DataConnectorKind `json:"kind,omitempty"`
 }
 
@@ -5071,7 +5164,7 @@ type DataConnectorRequirementsState struct {
 
 // DataConnectorsCheckRequirements data connector requirements properties.
 type DataConnectorsCheckRequirements struct {
-	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
+	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindThreatIntelligenceTaxii', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
 	Kind DataConnectorKind `json:"kind,omitempty"`
 }
 
@@ -6953,16 +7046,540 @@ func (hep HostEntityProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Incident represents an incident in Azure Security Insights.
+type Incident struct {
+	autorest.Response `json:"-"`
+	// IncidentProperties - Incident properties
+	*IncidentProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Incident.
+func (i Incident) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.IncidentProperties != nil {
+		objectMap["properties"] = i.IncidentProperties
+	}
+	if i.Etag != nil {
+		objectMap["etag"] = i.Etag
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Incident struct.
+func (i *Incident) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var incidentProperties IncidentProperties
+				err = json.Unmarshal(*v, &incidentProperties)
+				if err != nil {
+					return err
+				}
+				i.IncidentProperties = &incidentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				i.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				i.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				i.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				i.Etag = &etag
+			}
+		}
+	}
+
+	return nil
+}
+
+// IncidentAdditionalData incident additional data property bag.
+type IncidentAdditionalData struct {
+	// AlertsCount - READ-ONLY; The number of alerts in the incident
+	AlertsCount *int32 `json:"alertsCount,omitempty"`
+	// BookmarksCount - READ-ONLY; The number of bookmarks in the incident
+	BookmarksCount *int32 `json:"bookmarksCount,omitempty"`
+	// CommentsCount - READ-ONLY; The number of comments in the incident
+	CommentsCount *int32 `json:"commentsCount,omitempty"`
+	// AlertProductNames - READ-ONLY; List of product names of alerts in the incident
+	AlertProductNames *[]string `json:"alertProductNames,omitempty"`
+}
+
+// IncidentComment represents an incident comment
+type IncidentComment struct {
+	autorest.Response `json:"-"`
+	// IncidentCommentProperties - Incident comment properties
+	*IncidentCommentProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IncidentComment.
+func (ic IncidentComment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ic.IncidentCommentProperties != nil {
+		objectMap["properties"] = ic.IncidentCommentProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IncidentComment struct.
+func (ic *IncidentComment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var incidentCommentProperties IncidentCommentProperties
+				err = json.Unmarshal(*v, &incidentCommentProperties)
+				if err != nil {
+					return err
+				}
+				ic.IncidentCommentProperties = &incidentCommentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ic.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ic.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ic.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// IncidentCommentList list of incident comments.
+type IncidentCommentList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of comments.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of comments.
+	Value *[]IncidentComment `json:"value,omitempty"`
+}
+
+// IncidentCommentListIterator provides access to a complete listing of IncidentComment values.
+type IncidentCommentListIterator struct {
+	i    int
+	page IncidentCommentListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IncidentCommentListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IncidentCommentListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IncidentCommentListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IncidentCommentListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IncidentCommentListIterator) Response() IncidentCommentList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IncidentCommentListIterator) Value() IncidentComment {
+	if !iter.page.NotDone() {
+		return IncidentComment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IncidentCommentListIterator type.
+func NewIncidentCommentListIterator(page IncidentCommentListPage) IncidentCommentListIterator {
+	return IncidentCommentListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (icl IncidentCommentList) IsEmpty() bool {
+	return icl.Value == nil || len(*icl.Value) == 0
+}
+
+// incidentCommentListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (icl IncidentCommentList) incidentCommentListPreparer(ctx context.Context) (*http.Request, error) {
+	if icl.NextLink == nil || len(to.String(icl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(icl.NextLink)))
+}
+
+// IncidentCommentListPage contains a page of IncidentComment values.
+type IncidentCommentListPage struct {
+	fn  func(context.Context, IncidentCommentList) (IncidentCommentList, error)
+	icl IncidentCommentList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IncidentCommentListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IncidentCommentListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.icl)
+	if err != nil {
+		return err
+	}
+	page.icl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IncidentCommentListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IncidentCommentListPage) NotDone() bool {
+	return !page.icl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IncidentCommentListPage) Response() IncidentCommentList {
+	return page.icl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IncidentCommentListPage) Values() []IncidentComment {
+	if page.icl.IsEmpty() {
+		return nil
+	}
+	return *page.icl.Value
+}
+
+// Creates a new instance of the IncidentCommentListPage type.
+func NewIncidentCommentListPage(getNextPage func(context.Context, IncidentCommentList) (IncidentCommentList, error)) IncidentCommentListPage {
+	return IncidentCommentListPage{fn: getNextPage}
+}
+
+// IncidentCommentProperties incident comment property bag.
+type IncidentCommentProperties struct {
+	// CreatedTimeUtc - READ-ONLY; The time the comment was created
+	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
+	// Message - The comment message
+	Message *string `json:"message,omitempty"`
+	// Author - READ-ONLY; Describes the client that created the comment
+	Author *ClientInfo `json:"author,omitempty"`
+}
+
 // IncidentInfo describes related incident information for the bookmark
 type IncidentInfo struct {
 	// IncidentID - Incident Id
 	IncidentID *string `json:"incidentId,omitempty"`
-	// Severity - The severity of the incident. Possible values include: 'IncidentSeverityCritical', 'IncidentSeverityHigh', 'IncidentSeverityMedium', 'IncidentSeverityLow', 'IncidentSeverityInformational'
-	Severity IncidentSeverity `json:"severity,omitempty"`
+	// Severity - The severity of the incident. Possible values include: 'CaseSeverityCritical', 'CaseSeverityHigh', 'CaseSeverityMedium', 'CaseSeverityLow', 'CaseSeverityInformational'
+	Severity CaseSeverity `json:"severity,omitempty"`
 	// Title - The title of the incident
 	Title *string `json:"title,omitempty"`
 	// RelationName - Relation Name
 	RelationName *string `json:"relationName,omitempty"`
+}
+
+// IncidentLabel represents an incident label
+type IncidentLabel struct {
+	// LabelName - The name of the label
+	LabelName *string `json:"labelName,omitempty"`
+	// LabelType - READ-ONLY; The type of the label. Possible values include: 'User', 'System'
+	LabelType IncidentLabelType `json:"labelType,omitempty"`
+}
+
+// IncidentList list all the incidents.
+type IncidentList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of incidents.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of incidents.
+	Value *[]Incident `json:"value,omitempty"`
+}
+
+// IncidentListIterator provides access to a complete listing of Incident values.
+type IncidentListIterator struct {
+	i    int
+	page IncidentListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IncidentListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IncidentListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IncidentListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IncidentListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IncidentListIterator) Response() IncidentList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IncidentListIterator) Value() Incident {
+	if !iter.page.NotDone() {
+		return Incident{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IncidentListIterator type.
+func NewIncidentListIterator(page IncidentListPage) IncidentListIterator {
+	return IncidentListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (il IncidentList) IsEmpty() bool {
+	return il.Value == nil || len(*il.Value) == 0
+}
+
+// incidentListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (il IncidentList) incidentListPreparer(ctx context.Context) (*http.Request, error) {
+	if il.NextLink == nil || len(to.String(il.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(il.NextLink)))
+}
+
+// IncidentListPage contains a page of Incident values.
+type IncidentListPage struct {
+	fn func(context.Context, IncidentList) (IncidentList, error)
+	il IncidentList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IncidentListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IncidentListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.il)
+	if err != nil {
+		return err
+	}
+	page.il = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IncidentListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IncidentListPage) NotDone() bool {
+	return !page.il.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IncidentListPage) Response() IncidentList {
+	return page.il
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IncidentListPage) Values() []Incident {
+	if page.il.IsEmpty() {
+		return nil
+	}
+	return *page.il.Value
+}
+
+// Creates a new instance of the IncidentListPage type.
+func NewIncidentListPage(getNextPage func(context.Context, IncidentList) (IncidentList, error)) IncidentListPage {
+	return IncidentListPage{fn: getNextPage}
+}
+
+// IncidentOwnerInfo information on the user an incident is assigned to
+type IncidentOwnerInfo struct {
+	// Email - The email of the user the incident is assigned to.
+	Email *string `json:"email,omitempty"`
+	// AssignedTo - The name of the user the incident is assigned to.
+	AssignedTo *string `json:"assignedTo,omitempty"`
+	// ObjectID - The object id of the user the incident is assigned to.
+	ObjectID *uuid.UUID `json:"objectId,omitempty"`
+	// UserPrincipalName - The user principal name of the user the incident is assigned to.
+	UserPrincipalName *string `json:"userPrincipalName,omitempty"`
+}
+
+// IncidentProperties describes incident properties
+type IncidentProperties struct {
+	// AdditionalData - READ-ONLY; Additional data on the incident
+	AdditionalData *IncidentAdditionalData `json:"additionalData,omitempty"`
+	// Classification - The reason the incident was closed. Possible values include: 'IncidentClassificationUnknown', 'IncidentClassificationTruePositive', 'IncidentClassificationFalsePositive'
+	Classification IncidentClassification `json:"classification,omitempty"`
+	// CreatedTimeUtc - READ-ONLY; The time the incident was created
+	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
+	// Description - The description of the incident
+	Description *string `json:"description,omitempty"`
+	// FirstActivityTimeUtc - The time of the first activity in the incident
+	FirstActivityTimeUtc *date.Time `json:"firstActivityTimeUtc,omitempty"`
+	// IncidentNumber - READ-ONLY; A sequential number
+	IncidentNumber *int32 `json:"incidentNumber,omitempty"`
+	// Labels - List of labels relevant to this incident
+	Labels *[]IncidentLabel `json:"labels,omitempty"`
+	// LastActivityTimeUtc - The time of the last activity in the incident
+	LastActivityTimeUtc *date.Time `json:"lastActivityTimeUtc,omitempty"`
+	// LastModifiedTimeUtc - READ-ONLY; The last time the incident was updated
+	LastModifiedTimeUtc *date.Time `json:"lastModifiedTimeUtc,omitempty"`
+	// Owner - Describes a user that the incident is assigned to
+	Owner *IncidentOwnerInfo `json:"owner,omitempty"`
+	// Severity - The severity of the incident. Possible values include: 'IncidentSeverityHigh', 'IncidentSeverityMedium', 'IncidentSeverityLow', 'IncidentSeverityInformational'
+	Severity IncidentSeverity `json:"severity,omitempty"`
+	// Status - The status of the incident. Possible values include: 'IncidentStatusNew', 'IncidentStatusActive', 'IncidentStatusClosed'
+	Status IncidentStatus `json:"status,omitempty"`
+	// Title - The title of the incident
+	Title *string `json:"title,omitempty"`
 }
 
 // IoTDeviceEntity represents an IoT device entity.
@@ -7589,7 +8206,7 @@ type MCASDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence', 'KindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -7646,6 +8263,11 @@ func (mdc MCASDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool
 
 // AsTIDataConnector is the BasicDataConnector implementation for MCASDataConnector.
 func (mdc MCASDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+	return nil, false
+}
+
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -7770,7 +8392,7 @@ type MDATPDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence', 'KindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -7827,6 +8449,11 @@ func (mdc MDATPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, boo
 
 // AsTIDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
 func (mdc MDATPDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+	return nil, false
+}
+
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -8455,7 +9082,7 @@ type OfficeDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence', 'KindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -8512,6 +9139,11 @@ func (odc OfficeDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bo
 
 // AsTIDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
 func (odc OfficeDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+	return nil, false
+}
+
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
 	return nil, false
 }
 
@@ -9394,6 +10026,93 @@ func (rvep RegistryValueEntityProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Relation represents a relation between two resources
+type Relation struct {
+	autorest.Response `json:"-"`
+	// RelationProperties - Relation properties
+	*RelationProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Relation.
+func (r Relation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.RelationProperties != nil {
+		objectMap["properties"] = r.RelationProperties
+	}
+	if r.Etag != nil {
+		objectMap["etag"] = r.Etag
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Relation struct.
+func (r *Relation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var relationProperties RelationProperties
+				err = json.Unmarshal(*v, &relationProperties)
+				if err != nil {
+					return err
+				}
+				r.RelationProperties = &relationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				r.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				r.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				r.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				r.Etag = &etag
+			}
+		}
+	}
+
+	return nil
+}
+
 // RelationBase represents a relation
 type RelationBase struct {
 	// Kind - READ-ONLY; The type of relation node. Possible values include: 'CasesToBookmarks'
@@ -9406,6 +10125,152 @@ type RelationBase struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
+}
+
+// RelationList list of relations.
+type RelationList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of relations.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of relations.
+	Value *[]Relation `json:"value,omitempty"`
+}
+
+// RelationListIterator provides access to a complete listing of Relation values.
+type RelationListIterator struct {
+	i    int
+	page RelationListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *RelationListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RelationListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RelationListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter RelationListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter RelationListIterator) Response() RelationList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter RelationListIterator) Value() Relation {
+	if !iter.page.NotDone() {
+		return Relation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the RelationListIterator type.
+func NewRelationListIterator(page RelationListPage) RelationListIterator {
+	return RelationListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rl RelationList) IsEmpty() bool {
+	return rl.Value == nil || len(*rl.Value) == 0
+}
+
+// relationListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rl RelationList) relationListPreparer(ctx context.Context) (*http.Request, error) {
+	if rl.NextLink == nil || len(to.String(rl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rl.NextLink)))
+}
+
+// RelationListPage contains a page of Relation values.
+type RelationListPage struct {
+	fn func(context.Context, RelationList) (RelationList, error)
+	rl RelationList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *RelationListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RelationListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rl)
+	if err != nil {
+		return err
+	}
+	page.rl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RelationListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page RelationListPage) NotDone() bool {
+	return !page.rl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page RelationListPage) Response() RelationList {
+	return page.rl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page RelationListPage) Values() []Relation {
+	if page.rl.IsEmpty() {
+		return nil
+	}
+	return *page.rl.Value
+}
+
+// Creates a new instance of the RelationListPage type.
+func NewRelationListPage(getNextPage func(context.Context, RelationList) (RelationList, error)) RelationListPage {
+	return RelationListPage{fn: getNextPage}
 }
 
 // RelationNode relation node
@@ -9433,6 +10298,18 @@ func (rn RelationNode) MarshalJSON() ([]byte, error) {
 		objectMap["relationAdditionalProperties"] = rn.RelationAdditionalProperties
 	}
 	return json.Marshal(objectMap)
+}
+
+// RelationProperties relation property bag.
+type RelationProperties struct {
+	// RelatedResourceID - The resource ID of the related resource
+	RelatedResourceID *string `json:"relatedResourceId,omitempty"`
+	// RelatedResourceName - The name of the related resource
+	RelatedResourceName *string `json:"relatedResourceName,omitempty"`
+	// RelatedResourceType - READ-ONLY; The resource type of the related resource
+	RelatedResourceType *string `json:"relatedResourceType,omitempty"`
+	// RelatedResourceKind - READ-ONLY; The resource kind of the related resource
+	RelatedResourceKind *string `json:"relatedResourceKind,omitempty"`
 }
 
 // RelationsModelInput relation input model
@@ -10079,6 +10956,8 @@ type SecurityAlertProperties struct {
 	EndTimeUtc *date.Time `json:"endTimeUtc,omitempty"`
 	// Intent - READ-ONLY; Holds the alert intent stage(s) mapping for this alert. Possible values include: 'KillChainIntentUnknown', 'KillChainIntentProbing', 'KillChainIntentExploitation', 'KillChainIntentPersistence', 'KillChainIntentPrivilegeEscalation', 'KillChainIntentDefenseEvasion', 'KillChainIntentCredentialAccess', 'KillChainIntentDiscovery', 'KillChainIntentLateralMovement', 'KillChainIntentExecution', 'KillChainIntentCollection', 'KillChainIntentExfiltration', 'KillChainIntentCommandAndControl', 'KillChainIntentImpact'
 	Intent KillChainIntent `json:"intent,omitempty"`
+	// ProviderAlertID - READ-ONLY; The identifier of the alert inside the product which generated the alert.
+	ProviderAlertID *string `json:"providerAlertId,omitempty"`
 	// ProcessingEndTime - READ-ONLY; The time the alert was made available for consumption.
 	ProcessingEndTime *date.Time `json:"processingEndTime,omitempty"`
 	// ProductComponentName - READ-ONLY; The name of a component inside the product which generated the alert.
@@ -10097,6 +10976,8 @@ type SecurityAlertProperties struct {
 	Status AlertStatus `json:"status,omitempty"`
 	// SystemAlertID - READ-ONLY; Holds the product identifier of the alert for the product.
 	SystemAlertID *string `json:"systemAlertId,omitempty"`
+	// Tactics - READ-ONLY; The tactics of the alert
+	Tactics *[]AttackTactic `json:"tactics,omitempty"`
 	// TimeGenerated - READ-ONLY; The time the alert was generated.
 	TimeGenerated *date.Time `json:"timeGenerated,omitempty"`
 	// VendorName - READ-ONLY; The name of the vendor that raise the alert.
@@ -10474,7 +11355,7 @@ type TIDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence', 'KindThreatIntelligenceTaxii'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -10532,6 +11413,11 @@ func (tdc TIDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) 
 // AsTIDataConnector is the BasicDataConnector implementation for TIDataConnector.
 func (tdc TIDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return &tdc, true
+}
+
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+	return nil, false
 }
 
 // AsDataConnector is the BasicDataConnector implementation for TIDataConnector.
@@ -10629,6 +11515,201 @@ type TIDataConnectorDataTypesIndicators struct {
 type TIDataConnectorProperties struct {
 	// DataTypes - The available data types for the connector.
 	DataTypes *TIDataConnectorDataTypes `json:"dataTypes,omitempty"`
+	// TenantID - The tenant id to connect to, and get the data from.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// TiTaxiiCheckRequirements ti Taxii (Threat Intelligence Taxii) requirements check properties.
+type TiTaxiiCheckRequirements struct {
+	// TenantID - The tenant id to connect to, and get the data from.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// TiTaxiiDataConnector represents threat intelligence taxii data connector.
+type TiTaxiiDataConnector struct {
+	// TiTaxiiDataConnectorProperties - Threat intelligence taxii client data connector properties.
+	*TiTaxiiDataConnectorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence', 'KindThreatIntelligenceTaxii'
+	Kind KindBasicDataConnector `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) MarshalJSON() ([]byte, error) {
+	ttdc.Kind = KindThreatIntelligenceTaxii
+	objectMap := make(map[string]interface{})
+	if ttdc.TiTaxiiDataConnectorProperties != nil {
+		objectMap["properties"] = ttdc.TiTaxiiDataConnectorProperties
+	}
+	if ttdc.Etag != nil {
+		objectMap["etag"] = ttdc.Etag
+	}
+	if ttdc.Kind != "" {
+		objectMap["kind"] = ttdc.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsMDATPDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsOfficeDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
+}
+
+// AsTIDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+	return nil, false
+}
+
+// AsTiTaxiiDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsTiTaxiiDataConnector() (*TiTaxiiDataConnector, bool) {
+	return &ttdc, true
+}
+
+// AsDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsDataConnector() (*DataConnector, bool) {
+	return nil, false
+}
+
+// AsBasicDataConnector is the BasicDataConnector implementation for TiTaxiiDataConnector.
+func (ttdc TiTaxiiDataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
+	return &ttdc, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for TiTaxiiDataConnector struct.
+func (ttdc *TiTaxiiDataConnector) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var tiTaxiiDataConnectorProperties TiTaxiiDataConnectorProperties
+				err = json.Unmarshal(*v, &tiTaxiiDataConnectorProperties)
+				if err != nil {
+					return err
+				}
+				ttdc.TiTaxiiDataConnectorProperties = &tiTaxiiDataConnectorProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ttdc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ttdc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ttdc.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				ttdc.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicDataConnector
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ttdc.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// TiTaxiiDataConnectorDataTypes the available data types for Threat Intelligence taxii client data
+// connector.
+type TiTaxiiDataConnectorDataTypes struct {
+	// TaxiiClient - Data type for taxii client.
+	TaxiiClient *TiTaxiiDataConnectorDataTypesTaxiiClient `json:"taxiiClient,omitempty"`
+}
+
+// TiTaxiiDataConnectorDataTypesTaxiiClient data type for taxii client.
+type TiTaxiiDataConnectorDataTypesTaxiiClient struct {
+	// State - Describe whether this data type connection is enabled or not. Possible values include: 'Enabled', 'Disabled'
+	State DataTypeState `json:"state,omitempty"`
+}
+
+// TiTaxiiDataConnectorProperties threat Intelligence taxii client data connector properties.
+type TiTaxiiDataConnectorProperties struct {
+	// WorkspaceID - The workspace id.
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+	// FriendlyName - The friendly name for taxii client connector.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+	// TaxiiServer - The API root server for taxii client.
+	TaxiiServer *string `json:"taxiiServer,omitempty"`
+	// CollectionID - The taxii collection id.
+	CollectionID *string `json:"collectionId,omitempty"`
+	// UserName - The taxii server user name.
+	UserName *string `json:"userName,omitempty"`
+	// Password - The taxii server password.
+	Password *string `json:"password,omitempty"`
+	// DataTypes - The available data types for the connector.
+	DataTypes *TiTaxiiDataConnectorDataTypes `json:"dataTypes,omitempty"`
 	// TenantID - The tenant id to connect to, and get the data from.
 	TenantID *string `json:"tenantId,omitempty"`
 }

@@ -106,6 +106,7 @@ package main
 
 import (
 	"context"
+
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-09-01/network"
 
 	"github.com/Azure/go-autorest/autorest/azure/auth"
@@ -164,7 +165,7 @@ VM. The following snippet from [the previous section](#use) demonstrates
 this helper.
 
 ```go
-import github.com/Azure/go-autorest/autorest/azure/auth
+import "github.com/Azure/go-autorest/autorest/azure/auth"
 
 // create a VirtualNetworks client
 vnetClient := network.NewVirtualNetworksClient("<subscriptionID>")
@@ -279,7 +280,7 @@ below.
 
   ```go
   config := auth.NewDeviceFlowConfig(clientID, tenantID)
-  a, err = config.Authorizer()
+  a, err := config.Authorizer()
   ```
 
 [device flow]: https://oauth.net/2/device-flow/
@@ -415,7 +416,7 @@ vnetClient := network.NewVirtualNetworksClient("<subscriptionID>")
 vnetClient.RequestInspector = LogRequest()
 vnetClient.ResponseInspector = LogResponse()
 
-...
+// ...
 
 func LogRequest() autorest.PrepareDecorator {
 	return func(p autorest.Preparer) autorest.Preparer {
@@ -457,7 +458,7 @@ By default, no tracing provider will be compiled into your program, and the lega
 To enable tracing, you must now add the following include to your source file.
 
 ``` go
-    include _ "github.com/Azure/go-autorest/tracing/opencensus"
+import _ "github.com/Azure/go-autorest/tracing/opencensus"
 ```
 
 To hook up a tracer simply call `tracing.Register()` passing in a type that satisfies the `tracing.Tracer` interface.
@@ -472,27 +473,27 @@ To correlate the SDK calls between them and with the rest of your code, pass in 
 
 ```go
 func doAzureCalls() {
-    // The resulting context will be initialized with a root span as the context passed to
-    // trace.StartSpan() has no existing span.
-    ctx, span := trace.StartSpan(context.Background(),"doAzureCalls", trace.WithSampler(trace.AlwaysSample()))
-    defer span.End()
+	// The resulting context will be initialized with a root span as the context passed to
+	// trace.StartSpan() has no existing span.
+	ctx, span := trace.StartSpan(context.Background(), "doAzureCalls", trace.WithSampler(trace.AlwaysSample()))
+	defer span.End()
 
-    // The traces from the SDK calls will be correlated under the span inside the context that is passed in.
-    zone, _ := zonesClient.CreateOrUpdate(ctx, rg, zoneName, dns.Zone{Location: to.StringPtr("global")}, "", "")
-    zone, _ = zonesClient.Get(ctx, rg, *zone.Name)
-    for i := 0; i < rrCount; i++ {
-        rr, _ := recordsClient.CreateOrUpdate(ctx, rg, zoneName, fmt.Sprintf("rr%d", i), dns.CNAME, rdSet{
-            RecordSetProperties: &dns.RecordSetProperties{
-                TTL: to.Int64Ptr(3600),
-                CnameRecord: &dns.CnameRecord{
-                    Cname: to.StringPtr("vladdbCname"),
-                },
-            },
-        },
-            "",
-            "",
-        )
-    }
+	// The traces from the SDK calls will be correlated under the span inside the context that is passed in.
+	zone, _ := zonesClient.CreateOrUpdate(ctx, rg, zoneName, dns.Zone{Location: to.StringPtr("global")}, "", "")
+	zone, _ = zonesClient.Get(ctx, rg, *zone.Name)
+	for i := 0; i < rrCount; i++ {
+		rr, _ := recordsClient.CreateOrUpdate(ctx, rg, zoneName, fmt.Sprintf("rr%d", i), dns.CNAME, rdSet{
+			RecordSetProperties: &dns.RecordSetProperties{
+				TTL: to.Int64Ptr(3600),
+				CnameRecord: &dns.CnameRecord{
+					Cname: to.StringPtr("vladdbCname"),
+				},
+			},
+		},
+			"",
+			"",
+		)
+	}
 }
 ```
 
@@ -528,7 +529,7 @@ ctx := context.Background()
 autorest.WithSendDecorators(ctx, []autorest.SendDecorator{
 	autorest.DoRetryForStatusCodesWithCap(client.RetryAttempts,
 		client.RetryDuration, time.Duration(0),
-        autorest.StatusCodesForRetry...)})
+		autorest.StatusCodesForRetry...)})
 client.List(ctx)
 ```
 
@@ -546,7 +547,21 @@ The `PollingDelay` and `PollingDuration` values are used exclusively by [WaitFor
 
 ## License
 
-Apache 2.0, see [LICENSE](./LICENSE).
+```
+   Copyright 2020 Microsoft Corporation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
 
 ## Contribute
 

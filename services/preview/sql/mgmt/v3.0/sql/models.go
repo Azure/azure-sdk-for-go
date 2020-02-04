@@ -953,6 +953,61 @@ func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 	return []PrimaryAggregationType{Average, Count, Maximum, Minimum, None, Total}
 }
 
+// PrivateEndpointProvisioningState enumerates the values for private endpoint provisioning state.
+type PrivateEndpointProvisioningState string
+
+const (
+	// PrivateEndpointProvisioningStateApproving ...
+	PrivateEndpointProvisioningStateApproving PrivateEndpointProvisioningState = "Approving"
+	// PrivateEndpointProvisioningStateDropping ...
+	PrivateEndpointProvisioningStateDropping PrivateEndpointProvisioningState = "Dropping"
+	// PrivateEndpointProvisioningStateFailed ...
+	PrivateEndpointProvisioningStateFailed PrivateEndpointProvisioningState = "Failed"
+	// PrivateEndpointProvisioningStateReady ...
+	PrivateEndpointProvisioningStateReady PrivateEndpointProvisioningState = "Ready"
+	// PrivateEndpointProvisioningStateRejecting ...
+	PrivateEndpointProvisioningStateRejecting PrivateEndpointProvisioningState = "Rejecting"
+)
+
+// PossiblePrivateEndpointProvisioningStateValues returns an array of possible values for the PrivateEndpointProvisioningState const type.
+func PossiblePrivateEndpointProvisioningStateValues() []PrivateEndpointProvisioningState {
+	return []PrivateEndpointProvisioningState{PrivateEndpointProvisioningStateApproving, PrivateEndpointProvisioningStateDropping, PrivateEndpointProvisioningStateFailed, PrivateEndpointProvisioningStateReady, PrivateEndpointProvisioningStateRejecting}
+}
+
+// PrivateLinkServiceConnectionStateActionsRequire enumerates the values for private link service connection
+// state actions require.
+type PrivateLinkServiceConnectionStateActionsRequire string
+
+const (
+	// PrivateLinkServiceConnectionStateActionsRequireNone ...
+	PrivateLinkServiceConnectionStateActionsRequireNone PrivateLinkServiceConnectionStateActionsRequire = "None"
+)
+
+// PossiblePrivateLinkServiceConnectionStateActionsRequireValues returns an array of possible values for the PrivateLinkServiceConnectionStateActionsRequire const type.
+func PossiblePrivateLinkServiceConnectionStateActionsRequireValues() []PrivateLinkServiceConnectionStateActionsRequire {
+	return []PrivateLinkServiceConnectionStateActionsRequire{PrivateLinkServiceConnectionStateActionsRequireNone}
+}
+
+// PrivateLinkServiceConnectionStateStatus enumerates the values for private link service connection state
+// status.
+type PrivateLinkServiceConnectionStateStatus string
+
+const (
+	// Approved ...
+	Approved PrivateLinkServiceConnectionStateStatus = "Approved"
+	// Disconnected ...
+	Disconnected PrivateLinkServiceConnectionStateStatus = "Disconnected"
+	// Pending ...
+	Pending PrivateLinkServiceConnectionStateStatus = "Pending"
+	// Rejected ...
+	Rejected PrivateLinkServiceConnectionStateStatus = "Rejected"
+)
+
+// PossiblePrivateLinkServiceConnectionStateStatusValues returns an array of possible values for the PrivateLinkServiceConnectionStateStatus const type.
+func PossiblePrivateLinkServiceConnectionStateStatusValues() []PrivateLinkServiceConnectionStateStatus {
+	return []PrivateLinkServiceConnectionStateStatus{Approved, Disconnected, Pending, Rejected}
+}
+
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -1025,33 +1080,33 @@ func PossibleRecommendedIndexActionValues() []RecommendedIndexAction {
 type RecommendedIndexState string
 
 const (
-	// Active ...
-	Active RecommendedIndexState = "Active"
-	// Blocked ...
-	Blocked RecommendedIndexState = "Blocked"
-	// Executing ...
-	Executing RecommendedIndexState = "Executing"
-	// Expired ...
-	Expired RecommendedIndexState = "Expired"
-	// Ignored ...
-	Ignored RecommendedIndexState = "Ignored"
-	// Pending ...
-	Pending RecommendedIndexState = "Pending"
-	// PendingRevert ...
-	PendingRevert RecommendedIndexState = "Pending Revert"
-	// Reverted ...
-	Reverted RecommendedIndexState = "Reverted"
-	// Reverting ...
-	Reverting RecommendedIndexState = "Reverting"
-	// Success ...
-	Success RecommendedIndexState = "Success"
-	// Verifying ...
-	Verifying RecommendedIndexState = "Verifying"
+	// RecommendedIndexStateActive ...
+	RecommendedIndexStateActive RecommendedIndexState = "Active"
+	// RecommendedIndexStateBlocked ...
+	RecommendedIndexStateBlocked RecommendedIndexState = "Blocked"
+	// RecommendedIndexStateExecuting ...
+	RecommendedIndexStateExecuting RecommendedIndexState = "Executing"
+	// RecommendedIndexStateExpired ...
+	RecommendedIndexStateExpired RecommendedIndexState = "Expired"
+	// RecommendedIndexStateIgnored ...
+	RecommendedIndexStateIgnored RecommendedIndexState = "Ignored"
+	// RecommendedIndexStatePending ...
+	RecommendedIndexStatePending RecommendedIndexState = "Pending"
+	// RecommendedIndexStatePendingRevert ...
+	RecommendedIndexStatePendingRevert RecommendedIndexState = "Pending Revert"
+	// RecommendedIndexStateReverted ...
+	RecommendedIndexStateReverted RecommendedIndexState = "Reverted"
+	// RecommendedIndexStateReverting ...
+	RecommendedIndexStateReverting RecommendedIndexState = "Reverting"
+	// RecommendedIndexStateSuccess ...
+	RecommendedIndexStateSuccess RecommendedIndexState = "Success"
+	// RecommendedIndexStateVerifying ...
+	RecommendedIndexStateVerifying RecommendedIndexState = "Verifying"
 )
 
 // PossibleRecommendedIndexStateValues returns an array of possible values for the RecommendedIndexState const type.
 func PossibleRecommendedIndexStateValues() []RecommendedIndexState {
-	return []RecommendedIndexState{Active, Blocked, Executing, Expired, Ignored, Pending, PendingRevert, Reverted, Reverting, Success, Verifying}
+	return []RecommendedIndexState{RecommendedIndexStateActive, RecommendedIndexStateBlocked, RecommendedIndexStateExecuting, RecommendedIndexStateExpired, RecommendedIndexStateIgnored, RecommendedIndexStatePending, RecommendedIndexStatePendingRevert, RecommendedIndexStateReverted, RecommendedIndexStateReverting, RecommendedIndexStateSuccess, RecommendedIndexStateVerifying}
 }
 
 // RecommendedIndexType enumerates the values for recommended index type.
@@ -2356,24 +2411,21 @@ type BackupShortTermRetentionPolicyProperties struct {
 
 // CheckNameAvailabilityRequest a request to check whether the specified name for a resource is available.
 type CheckNameAvailabilityRequest struct {
-	// Name - The name whose availability is to be checked.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of resource that is used as the scope of the availability check.
 	Type *string `json:"type,omitempty"`
 }
 
-// CheckNameAvailabilityResponse a response indicating whether the specified name for a resource is
-// available.
+// CheckNameAvailabilityResponse the result of a name availability check.
 type CheckNameAvailabilityResponse struct {
 	autorest.Response `json:"-"`
-	// Available - READ-ONLY; True if the name is available, otherwise false.
-	Available *bool `json:"available,omitempty"`
-	// Message - READ-ONLY; A message explaining why the name is unavailable. Will be null if the name is available.
-	Message *string `json:"message,omitempty"`
 	// Name - READ-ONLY; The name whose availability was checked.
 	Name *string `json:"name,omitempty"`
-	// Reason - READ-ONLY; The reason code explaining why the name is unavailable. Will be null if the name is available. Possible values include: 'Invalid', 'AlreadyExists'
+	// Available - READ-ONLY; True if the name is available, otherwise false.
+	Available *bool `json:"available,omitempty"`
+	// Reason - READ-ONLY; The reason code explaining why the name is unavailable. Will be undefined if the name is available. Possible values include: 'Invalid', 'AlreadyExists'
 	Reason CheckNameAvailabilityReason `json:"reason,omitempty"`
+	// Message - READ-ONLY; A message explaining why the name is unavailable. Will be undefined if the name is available.
+	Message *string `json:"message,omitempty"`
 }
 
 // CompleteDatabaseRestoreDefinition contains the information necessary to perform a complete database
@@ -13922,8 +13974,8 @@ type PrivateEndpointConnectionProperties struct {
 	PrivateEndpoint *PrivateEndpointProperty `json:"privateEndpoint,omitempty"`
 	// PrivateLinkServiceConnectionState - Connection state of the private endpoint connection.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty `json:"privateLinkServiceConnectionState,omitempty"`
-	// ProvisioningState - READ-ONLY; State of the private endpoint connection.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// ProvisioningState - READ-ONLY; State of the private endpoint connection. Possible values include: 'PrivateEndpointProvisioningStateApproving', 'PrivateEndpointProvisioningStateReady', 'PrivateEndpointProvisioningStateDropping', 'PrivateEndpointProvisioningStateFailed', 'PrivateEndpointProvisioningStateRejecting'
+	ProvisioningState PrivateEndpointProvisioningState `json:"provisioningState,omitempty"`
 }
 
 // PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
@@ -14154,12 +14206,12 @@ type PrivateLinkResourceProperties struct {
 
 // PrivateLinkServiceConnectionStateProperty ...
 type PrivateLinkServiceConnectionStateProperty struct {
-	// Status - The private link service connection status.
-	Status *string `json:"status,omitempty"`
+	// Status - The private link service connection status. Possible values include: 'Approved', 'Pending', 'Rejected', 'Disconnected'
+	Status PrivateLinkServiceConnectionStateStatus `json:"status,omitempty"`
 	// Description - The private link service connection description.
 	Description *string `json:"description,omitempty"`
-	// ActionsRequired - READ-ONLY; The actions required for private link service connection.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	// ActionsRequired - READ-ONLY; The actions required for private link service connection. Possible values include: 'PrivateLinkServiceConnectionStateActionsRequireNone'
+	ActionsRequired PrivateLinkServiceConnectionStateActionsRequire `json:"actionsRequired,omitempty"`
 }
 
 // ProxyResource ARM proxy resource.
@@ -14379,7 +14431,7 @@ func (ri *RecommendedIndex) UnmarshalJSON(body []byte) error {
 type RecommendedIndexProperties struct {
 	// Action - READ-ONLY; The proposed index action. You can create a missing index, drop an unused index, or rebuild an existing index to improve its performance. Possible values include: 'Create', 'Drop', 'Rebuild'
 	Action RecommendedIndexAction `json:"action,omitempty"`
-	// State - READ-ONLY; The current recommendation state. Possible values include: 'Active', 'Pending', 'Executing', 'Verifying', 'PendingRevert', 'Reverting', 'Reverted', 'Ignored', 'Expired', 'Blocked', 'Success'
+	// State - READ-ONLY; The current recommendation state. Possible values include: 'RecommendedIndexStateActive', 'RecommendedIndexStatePending', 'RecommendedIndexStateExecuting', 'RecommendedIndexStateVerifying', 'RecommendedIndexStatePendingRevert', 'RecommendedIndexStateReverting', 'RecommendedIndexStateReverted', 'RecommendedIndexStateIgnored', 'RecommendedIndexStateExpired', 'RecommendedIndexStateBlocked', 'RecommendedIndexStateSuccess'
 	State RecommendedIndexState `json:"state,omitempty"`
 	// Created - READ-ONLY; The UTC datetime showing when this resource was created (ISO8601 format).
 	Created *date.Time `json:"created,omitempty"`
@@ -17333,6 +17385,14 @@ func NewServerListResultPage(getNextPage func(context.Context, ServerListResult)
 	return ServerListResultPage{fn: getNextPage}
 }
 
+// ServerPrivateEndpointConnection a private endpoint connection under a server
+type ServerPrivateEndpointConnection struct {
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Properties - READ-ONLY; Private endpoint connection properties
+	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+}
+
 // ServerProperties the properties of a server.
 type ServerProperties struct {
 	// AdministratorLogin - Administrator username for the server. Once created it cannot be changed.
@@ -17345,6 +17405,8 @@ type ServerProperties struct {
 	State *string `json:"state,omitempty"`
 	// FullyQualifiedDomainName - READ-ONLY; The fully qualified domain name of the server.
 	FullyQualifiedDomainName *string `json:"fullyQualifiedDomainName,omitempty"`
+	// PrivateEndpointConnections - READ-ONLY; List of private endpoint connections on a server
+	PrivateEndpointConnections *[]ServerPrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 }
 
 // ServersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running

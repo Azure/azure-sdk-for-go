@@ -17,6 +17,12 @@ _cgo_defun.c
 _cgo_gotypes.go
 _cgo_export.*
 
+# ignore any generated coverage files
+coverage.txt
+coverage.json
+coverage.xml
+coverage.html
+
 _testmain.go
 
 *.exe

@@ -34,20 +34,18 @@ import (
 // BaseClient is the base client for Prediction.
 type BaseClient struct {
 	autorest.Client
-	APIKey   string
 	Endpoint string
 }
 
 // New creates an instance of the BaseClient client.
-func New(aPIKey string, endpoint string) BaseClient {
-	return NewWithoutDefaults(aPIKey, endpoint)
+func New(endpoint string) BaseClient {
+	return NewWithoutDefaults(endpoint)
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
-func NewWithoutDefaults(aPIKey string, endpoint string) BaseClient {
+func NewWithoutDefaults(endpoint string) BaseClient {
 	return BaseClient{
 		Client:   autorest.NewClientWithUserAgent(UserAgent()),
-		APIKey:   aPIKey,
 		Endpoint: endpoint,
 	}
 }
@@ -115,8 +113,7 @@ func (client BaseClient) ClassifyImagePreparer(ctx context.Context, projectID uu
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/classify/iterations/{publishedName}/image", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
-		autorest.WithMultiPartFormData(formDataParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithMultiPartFormData(formDataParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -206,8 +203,7 @@ func (client BaseClient) ClassifyImageURLPreparer(ctx context.Context, projectID
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/classify/iterations/{publishedName}/url", pathParameters),
 		autorest.WithJSON(imageURL),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -297,8 +293,7 @@ func (client BaseClient) ClassifyImageURLWithNoStorePreparer(ctx context.Context
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/classify/iterations/{publishedName}/url/nostore", pathParameters),
 		autorest.WithJSON(imageURL),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -385,8 +380,7 @@ func (client BaseClient) ClassifyImageWithNoStorePreparer(ctx context.Context, p
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/classify/iterations/{publishedName}/image/nostore", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
-		autorest.WithMultiPartFormData(formDataParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithMultiPartFormData(formDataParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -473,8 +467,7 @@ func (client BaseClient) DetectImagePreparer(ctx context.Context, projectID uuid
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/detect/iterations/{publishedName}/image", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
-		autorest.WithMultiPartFormData(formDataParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithMultiPartFormData(formDataParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -564,8 +557,7 @@ func (client BaseClient) DetectImageURLPreparer(ctx context.Context, projectID u
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/detect/iterations/{publishedName}/url", pathParameters),
 		autorest.WithJSON(imageURL),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -655,8 +647,7 @@ func (client BaseClient) DetectImageURLWithNoStorePreparer(ctx context.Context, 
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/detect/iterations/{publishedName}/url/nostore", pathParameters),
 		autorest.WithJSON(imageURL),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -743,8 +734,7 @@ func (client BaseClient) DetectImageWithNoStorePreparer(ctx context.Context, pro
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/detect/iterations/{publishedName}/image/nostore", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
-		autorest.WithMultiPartFormData(formDataParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithMultiPartFormData(formDataParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

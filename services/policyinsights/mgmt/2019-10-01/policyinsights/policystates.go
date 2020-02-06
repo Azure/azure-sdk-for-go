@@ -1812,3 +1812,151 @@ func (client PolicyStatesClient) SummarizeForSubscriptionLevelPolicyAssignmentRe
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// TriggerResourceGroupEvaluation triggers a policy evaluation scan for all the resources under the resource group.
+// Parameters:
+// subscriptionID - microsoft Azure subscription ID.
+// resourceGroupName - resource group name.
+func (client PolicyStatesClient) TriggerResourceGroupEvaluation(ctx context.Context, subscriptionID string, resourceGroupName string) (result PolicyStatesTriggerResourceGroupEvaluationFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyStatesClient.TriggerResourceGroupEvaluation")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.TriggerResourceGroupEvaluationPreparer(ctx, subscriptionID, resourceGroupName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "policyinsights.PolicyStatesClient", "TriggerResourceGroupEvaluation", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.TriggerResourceGroupEvaluationSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "policyinsights.PolicyStatesClient", "TriggerResourceGroupEvaluation", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// TriggerResourceGroupEvaluationPreparer prepares the TriggerResourceGroupEvaluation request.
+func (client PolicyStatesClient) TriggerResourceGroupEvaluationPreparer(ctx context.Context, subscriptionID string, resourceGroupName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
+	}
+
+	const APIVersion = "2019-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/policyStates/latest/triggerEvaluation", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// TriggerResourceGroupEvaluationSender sends the TriggerResourceGroupEvaluation request. The method will close the
+// http.Response Body if it receives an error.
+func (client PolicyStatesClient) TriggerResourceGroupEvaluationSender(req *http.Request) (future PolicyStatesTriggerResourceGroupEvaluationFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req, sd...)
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// TriggerResourceGroupEvaluationResponder handles the response to the TriggerResourceGroupEvaluation request. The method always
+// closes the http.Response Body.
+func (client PolicyStatesClient) TriggerResourceGroupEvaluationResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// TriggerSubscriptionEvaluation triggers a policy evaluation scan for all the resources under the subscription
+// Parameters:
+// subscriptionID - microsoft Azure subscription ID.
+func (client PolicyStatesClient) TriggerSubscriptionEvaluation(ctx context.Context, subscriptionID string) (result PolicyStatesTriggerSubscriptionEvaluationFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyStatesClient.TriggerSubscriptionEvaluation")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.TriggerSubscriptionEvaluationPreparer(ctx, subscriptionID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "policyinsights.PolicyStatesClient", "TriggerSubscriptionEvaluation", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.TriggerSubscriptionEvaluationSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "policyinsights.PolicyStatesClient", "TriggerSubscriptionEvaluation", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// TriggerSubscriptionEvaluationPreparer prepares the TriggerSubscriptionEvaluation request.
+func (client PolicyStatesClient) TriggerSubscriptionEvaluationPreparer(ctx context.Context, subscriptionID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", subscriptionID),
+	}
+
+	const APIVersion = "2019-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/policyStates/latest/triggerEvaluation", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// TriggerSubscriptionEvaluationSender sends the TriggerSubscriptionEvaluation request. The method will close the
+// http.Response Body if it receives an error.
+func (client PolicyStatesClient) TriggerSubscriptionEvaluationSender(req *http.Request) (future PolicyStatesTriggerSubscriptionEvaluationFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req, sd...)
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// TriggerSubscriptionEvaluationResponder handles the response to the TriggerSubscriptionEvaluation request. The method always
+// closes the http.Response Body.
+func (client PolicyStatesClient) TriggerSubscriptionEvaluationResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}

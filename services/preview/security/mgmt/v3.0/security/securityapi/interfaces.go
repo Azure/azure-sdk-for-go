@@ -71,6 +71,14 @@ type SettingsClientAPI interface {
 
 var _ SettingsClientAPI = (*security.SettingsClient)(nil)
 
+// AdvancedThreatProtectionClientAPI contains the set of methods on the AdvancedThreatProtectionClient type.
+type AdvancedThreatProtectionClientAPI interface {
+	Create(ctx context.Context, resourceID string, advancedThreatProtectionSetting security.AdvancedThreatProtectionSetting) (result security.AdvancedThreatProtectionSetting, err error)
+	Get(ctx context.Context, resourceID string) (result security.AdvancedThreatProtectionSetting, err error)
+}
+
+var _ AdvancedThreatProtectionClientAPI = (*security.AdvancedThreatProtectionClient)(nil)
+
 // DeviceSecurityGroupsClientAPI contains the set of methods on the DeviceSecurityGroupsClient type.
 type DeviceSecurityGroupsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceID string, deviceSecurityGroupName string, deviceSecurityGroup security.DeviceSecurityGroup) (result security.DeviceSecurityGroup, err error)
@@ -226,14 +234,6 @@ type TopologyClientAPI interface {
 }
 
 var _ TopologyClientAPI = (*security.TopologyClient)(nil)
-
-// AdvancedThreatProtectionClientAPI contains the set of methods on the AdvancedThreatProtectionClient type.
-type AdvancedThreatProtectionClientAPI interface {
-	Create(ctx context.Context, resourceID string, advancedThreatProtectionSetting security.AdvancedThreatProtectionSetting) (result security.AdvancedThreatProtectionSetting, err error)
-	Get(ctx context.Context, resourceID string) (result security.AdvancedThreatProtectionSetting, err error)
-}
-
-var _ AdvancedThreatProtectionClientAPI = (*security.AdvancedThreatProtectionClient)(nil)
 
 // AutoProvisioningSettingsClientAPI contains the set of methods on the AutoProvisioningSettingsClient type.
 type AutoProvisioningSettingsClientAPI interface {

@@ -628,6 +628,29 @@ func PossibleProjectTargetPlatformValues() []ProjectTargetPlatform {
 	return []ProjectTargetPlatform{ProjectTargetPlatformAzureDbForMySQL, ProjectTargetPlatformAzureDbForPostgreSQL, ProjectTargetPlatformMongoDb, ProjectTargetPlatformSQLDB, ProjectTargetPlatformSQLMI, ProjectTargetPlatformUnknown}
 }
 
+// ReplicateMigrationState enumerates the values for replicate migration state.
+type ReplicateMigrationState string
+
+const (
+	// ReplicateMigrationStateACTIONREQUIRED ...
+	ReplicateMigrationStateACTIONREQUIRED ReplicateMigrationState = "ACTION_REQUIRED"
+	// ReplicateMigrationStateCOMPLETE ...
+	ReplicateMigrationStateCOMPLETE ReplicateMigrationState = "COMPLETE"
+	// ReplicateMigrationStateFAILED ...
+	ReplicateMigrationStateFAILED ReplicateMigrationState = "FAILED"
+	// ReplicateMigrationStatePENDING ...
+	ReplicateMigrationStatePENDING ReplicateMigrationState = "PENDING"
+	// ReplicateMigrationStateUNDEFINED ...
+	ReplicateMigrationStateUNDEFINED ReplicateMigrationState = "UNDEFINED"
+	// ReplicateMigrationStateVALIDATING ...
+	ReplicateMigrationStateVALIDATING ReplicateMigrationState = "VALIDATING"
+)
+
+// PossibleReplicateMigrationStateValues returns an array of possible values for the ReplicateMigrationState const type.
+func PossibleReplicateMigrationStateValues() []ReplicateMigrationState {
+	return []ReplicateMigrationState{ReplicateMigrationStateACTIONREQUIRED, ReplicateMigrationStateCOMPLETE, ReplicateMigrationStateFAILED, ReplicateMigrationStatePENDING, ReplicateMigrationStateUNDEFINED, ReplicateMigrationStateVALIDATING}
+}
+
 // ResourceSkuCapacityScaleType enumerates the values for resource sku capacity scale type.
 type ResourceSkuCapacityScaleType string
 
@@ -700,17 +723,17 @@ func PossibleResultCodeValues() []ResultCode {
 type ResultType string
 
 const (
-	// ResultTypeCollection ...
-	ResultTypeCollection ResultType = "Collection"
-	// ResultTypeDatabase ...
-	ResultTypeDatabase ResultType = "Database"
-	// ResultTypeMigration ...
-	ResultTypeMigration ResultType = "Migration"
+	// ResultTypeMigrateSsisTaskOutput ...
+	ResultTypeMigrateSsisTaskOutput ResultType = "MigrateSsisTaskOutput"
+	// ResultTypeMigrationLevelOutput ...
+	ResultTypeMigrationLevelOutput ResultType = "MigrationLevelOutput"
+	// ResultTypeSsisProjectLevelOutput ...
+	ResultTypeSsisProjectLevelOutput ResultType = "SsisProjectLevelOutput"
 )
 
 // PossibleResultTypeValues returns an array of possible values for the ResultType const type.
 func PossibleResultTypeValues() []ResultType {
-	return []ResultType{ResultTypeCollection, ResultTypeDatabase, ResultTypeMigration}
+	return []ResultType{ResultTypeMigrateSsisTaskOutput, ResultTypeMigrationLevelOutput, ResultTypeSsisProjectLevelOutput}
 }
 
 // ResultTypeBasicConnectToSourceSQLServerTaskOutput enumerates the values for result type basic connect to
@@ -919,21 +942,81 @@ func PossibleResultTypeBasicMigrateSQLServerSQLMITaskOutputValues() []ResultType
 	return []ResultTypeBasicMigrateSQLServerSQLMITaskOutput{ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput, ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput, ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput, ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput, ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput, ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput}
 }
 
-// ResultTypeBasicMigrateSsisTaskOutput enumerates the values for result type basic migrate ssis task output.
-type ResultTypeBasicMigrateSsisTaskOutput string
+// ResultTypeBasicMongoDbProgress enumerates the values for result type basic mongo db progress.
+type ResultTypeBasicMongoDbProgress string
 
 const (
-	// ResultTypeMigrateSsisTaskOutput ...
-	ResultTypeMigrateSsisTaskOutput ResultTypeBasicMigrateSsisTaskOutput = "MigrateSsisTaskOutput"
-	// ResultTypeMigrationLevelOutput ...
-	ResultTypeMigrationLevelOutput ResultTypeBasicMigrateSsisTaskOutput = "MigrationLevelOutput"
-	// ResultTypeSsisProjectLevelOutput ...
-	ResultTypeSsisProjectLevelOutput ResultTypeBasicMigrateSsisTaskOutput = "SsisProjectLevelOutput"
+	// ResultTypeCollection ...
+	ResultTypeCollection ResultTypeBasicMongoDbProgress = "Collection"
+	// ResultTypeDatabase ...
+	ResultTypeDatabase ResultTypeBasicMongoDbProgress = "Database"
+	// ResultTypeMigration ...
+	ResultTypeMigration ResultTypeBasicMongoDbProgress = "Migration"
+	// ResultTypeMongoDbProgress ...
+	ResultTypeMongoDbProgress ResultTypeBasicMongoDbProgress = "MongoDbProgress"
 )
 
-// PossibleResultTypeBasicMigrateSsisTaskOutputValues returns an array of possible values for the ResultTypeBasicMigrateSsisTaskOutput const type.
-func PossibleResultTypeBasicMigrateSsisTaskOutputValues() []ResultTypeBasicMigrateSsisTaskOutput {
-	return []ResultTypeBasicMigrateSsisTaskOutput{ResultTypeMigrateSsisTaskOutput, ResultTypeMigrationLevelOutput, ResultTypeSsisProjectLevelOutput}
+// PossibleResultTypeBasicMongoDbProgressValues returns an array of possible values for the ResultTypeBasicMongoDbProgress const type.
+func PossibleResultTypeBasicMongoDbProgressValues() []ResultTypeBasicMongoDbProgress {
+	return []ResultTypeBasicMongoDbProgress{ResultTypeCollection, ResultTypeDatabase, ResultTypeMigration, ResultTypeMongoDbProgress}
+}
+
+// ScenarioSource enumerates the values for scenario source.
+type ScenarioSource string
+
+const (
+	// Access ...
+	Access ScenarioSource = "Access"
+	// DB2 ...
+	DB2 ScenarioSource = "DB2"
+	// MongoDB ...
+	MongoDB ScenarioSource = "MongoDB"
+	// MySQL ...
+	MySQL ScenarioSource = "MySQL"
+	// MySQLRDS ...
+	MySQLRDS ScenarioSource = "MySQLRDS"
+	// Oracle ...
+	Oracle ScenarioSource = "Oracle"
+	// PostgreSQL ...
+	PostgreSQL ScenarioSource = "PostgreSQL"
+	// PostgreSQLRDS ...
+	PostgreSQLRDS ScenarioSource = "PostgreSQLRDS"
+	// SQL ...
+	SQL ScenarioSource = "SQL"
+	// SQLRDS ...
+	SQLRDS ScenarioSource = "SQLRDS"
+	// Sybase ...
+	Sybase ScenarioSource = "Sybase"
+)
+
+// PossibleScenarioSourceValues returns an array of possible values for the ScenarioSource const type.
+func PossibleScenarioSourceValues() []ScenarioSource {
+	return []ScenarioSource{Access, DB2, MongoDB, MySQL, MySQLRDS, Oracle, PostgreSQL, PostgreSQLRDS, SQL, SQLRDS, Sybase}
+}
+
+// ScenarioTarget enumerates the values for scenario target.
+type ScenarioTarget string
+
+const (
+	// ScenarioTargetAzureDBForMySQL ...
+	ScenarioTargetAzureDBForMySQL ScenarioTarget = "AzureDBForMySql"
+	// ScenarioTargetAzureDBForPostgresSQL ...
+	ScenarioTargetAzureDBForPostgresSQL ScenarioTarget = "AzureDBForPostgresSQL"
+	// ScenarioTargetMongoDB ...
+	ScenarioTargetMongoDB ScenarioTarget = "MongoDB"
+	// ScenarioTargetSQLDB ...
+	ScenarioTargetSQLDB ScenarioTarget = "SQLDB"
+	// ScenarioTargetSQLDW ...
+	ScenarioTargetSQLDW ScenarioTarget = "SQLDW"
+	// ScenarioTargetSQLMI ...
+	ScenarioTargetSQLMI ScenarioTarget = "SQLMI"
+	// ScenarioTargetSQLServer ...
+	ScenarioTargetSQLServer ScenarioTarget = "SQLServer"
+)
+
+// PossibleScenarioTargetValues returns an array of possible values for the ScenarioTarget const type.
+func PossibleScenarioTargetValues() []ScenarioTarget {
+	return []ScenarioTarget{ScenarioTargetAzureDBForMySQL, ScenarioTargetAzureDBForPostgresSQL, ScenarioTargetMongoDB, ScenarioTargetSQLDB, ScenarioTargetSQLDW, ScenarioTargetSQLMI, ScenarioTargetSQLServer}
 }
 
 // SchemaMigrationOption enumerates the values for schema migration option.
@@ -1132,6 +1215,10 @@ func PossibleSsisStoreTypeValues() []SsisStoreType {
 type SyncDatabaseMigrationReportingState string
 
 const (
+	// SyncDatabaseMigrationReportingStateBACKUPCOMPLETED ...
+	SyncDatabaseMigrationReportingStateBACKUPCOMPLETED SyncDatabaseMigrationReportingState = "BACKUP_COMPLETED"
+	// SyncDatabaseMigrationReportingStateBACKUPINPROGRESS ...
+	SyncDatabaseMigrationReportingStateBACKUPINPROGRESS SyncDatabaseMigrationReportingState = "BACKUP_IN_PROGRESS"
 	// SyncDatabaseMigrationReportingStateCANCELLED ...
 	SyncDatabaseMigrationReportingStateCANCELLED SyncDatabaseMigrationReportingState = "CANCELLED"
 	// SyncDatabaseMigrationReportingStateCANCELLING ...
@@ -1148,17 +1235,27 @@ const (
 	SyncDatabaseMigrationReportingStateINITIALIAZING SyncDatabaseMigrationReportingState = "INITIALIAZING"
 	// SyncDatabaseMigrationReportingStateREADYTOCOMPLETE ...
 	SyncDatabaseMigrationReportingStateREADYTOCOMPLETE SyncDatabaseMigrationReportingState = "READY_TO_COMPLETE"
+	// SyncDatabaseMigrationReportingStateRESTORECOMPLETED ...
+	SyncDatabaseMigrationReportingStateRESTORECOMPLETED SyncDatabaseMigrationReportingState = "RESTORE_COMPLETED"
+	// SyncDatabaseMigrationReportingStateRESTOREINPROGRESS ...
+	SyncDatabaseMigrationReportingStateRESTOREINPROGRESS SyncDatabaseMigrationReportingState = "RESTORE_IN_PROGRESS"
 	// SyncDatabaseMigrationReportingStateRUNNING ...
 	SyncDatabaseMigrationReportingStateRUNNING SyncDatabaseMigrationReportingState = "RUNNING"
 	// SyncDatabaseMigrationReportingStateSTARTING ...
 	SyncDatabaseMigrationReportingStateSTARTING SyncDatabaseMigrationReportingState = "STARTING"
 	// SyncDatabaseMigrationReportingStateUNDEFINED ...
 	SyncDatabaseMigrationReportingStateUNDEFINED SyncDatabaseMigrationReportingState = "UNDEFINED"
+	// SyncDatabaseMigrationReportingStateVALIDATING ...
+	SyncDatabaseMigrationReportingStateVALIDATING SyncDatabaseMigrationReportingState = "VALIDATING"
+	// SyncDatabaseMigrationReportingStateVALIDATIONCOMPLETE ...
+	SyncDatabaseMigrationReportingStateVALIDATIONCOMPLETE SyncDatabaseMigrationReportingState = "VALIDATION_COMPLETE"
+	// SyncDatabaseMigrationReportingStateVALIDATIONFAILED ...
+	SyncDatabaseMigrationReportingStateVALIDATIONFAILED SyncDatabaseMigrationReportingState = "VALIDATION_FAILED"
 )
 
 // PossibleSyncDatabaseMigrationReportingStateValues returns an array of possible values for the SyncDatabaseMigrationReportingState const type.
 func PossibleSyncDatabaseMigrationReportingStateValues() []SyncDatabaseMigrationReportingState {
-	return []SyncDatabaseMigrationReportingState{SyncDatabaseMigrationReportingStateCANCELLED, SyncDatabaseMigrationReportingStateCANCELLING, SyncDatabaseMigrationReportingStateCOMPLETE, SyncDatabaseMigrationReportingStateCOMPLETING, SyncDatabaseMigrationReportingStateCONFIGURING, SyncDatabaseMigrationReportingStateFAILED, SyncDatabaseMigrationReportingStateINITIALIAZING, SyncDatabaseMigrationReportingStateREADYTOCOMPLETE, SyncDatabaseMigrationReportingStateRUNNING, SyncDatabaseMigrationReportingStateSTARTING, SyncDatabaseMigrationReportingStateUNDEFINED}
+	return []SyncDatabaseMigrationReportingState{SyncDatabaseMigrationReportingStateBACKUPCOMPLETED, SyncDatabaseMigrationReportingStateBACKUPINPROGRESS, SyncDatabaseMigrationReportingStateCANCELLED, SyncDatabaseMigrationReportingStateCANCELLING, SyncDatabaseMigrationReportingStateCOMPLETE, SyncDatabaseMigrationReportingStateCOMPLETING, SyncDatabaseMigrationReportingStateCONFIGURING, SyncDatabaseMigrationReportingStateFAILED, SyncDatabaseMigrationReportingStateINITIALIAZING, SyncDatabaseMigrationReportingStateREADYTOCOMPLETE, SyncDatabaseMigrationReportingStateRESTORECOMPLETED, SyncDatabaseMigrationReportingStateRESTOREINPROGRESS, SyncDatabaseMigrationReportingStateRUNNING, SyncDatabaseMigrationReportingStateSTARTING, SyncDatabaseMigrationReportingStateUNDEFINED, SyncDatabaseMigrationReportingStateVALIDATING, SyncDatabaseMigrationReportingStateVALIDATIONCOMPLETE, SyncDatabaseMigrationReportingStateVALIDATIONFAILED}
 }
 
 // SyncTableMigrationState enumerates the values for sync table migration state.
@@ -1257,8 +1354,8 @@ const (
 	TaskTypeMigrateMySQLAzureDbForMySQLSync TaskType = "Migrate.MySql.AzureDbForMySql.Sync"
 	// TaskTypeMigrateOracleAzureDbForPostgreSQLSync ...
 	TaskTypeMigrateOracleAzureDbForPostgreSQLSync TaskType = "Migrate.Oracle.AzureDbForPostgreSql.Sync"
-	// TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync ...
-	TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync TaskType = "Migrate.PostgreSql.AzureDbForPostgreSql.Sync"
+	// TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2 ...
+	TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2 TaskType = "Migrate.PostgreSql.AzureDbForPostgreSql.SyncV2"
 	// TaskTypeMigrateSchemaSQLServerSQLDb ...
 	TaskTypeMigrateSchemaSQLServerSQLDb TaskType = "MigrateSchemaSqlServerSqlDb"
 	// TaskTypeMigrateSQLServerAzureSQLDbMI ...
@@ -1293,7 +1390,7 @@ const (
 
 // PossibleTaskTypeValues returns an array of possible values for the TaskType const type.
 func PossibleTaskTypeValues() []TaskType {
-	return []TaskType{TaskTypeConnectMongoDb, TaskTypeConnectToSourceMySQL, TaskTypeConnectToSourceOracleSync, TaskTypeConnectToSourcePostgreSQLSync, TaskTypeConnectToSourceSQLServer, TaskTypeConnectToSourceSQLServerSync, TaskTypeConnectToTargetAzureDbForMySQL, TaskTypeConnectToTargetAzureDbForPostgreSQLSync, TaskTypeConnectToTargetAzureSQLDbMI, TaskTypeConnectToTargetAzureSQLDbMISyncLRS, TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync, TaskTypeConnectToTargetSQLDb, TaskTypeConnectToTargetSQLDbSync, TaskTypeGetTDECertificatesSQL, TaskTypeGetUserTablesAzureSQLDbSync, TaskTypeGetUserTablesOracle, TaskTypeGetUserTablesPostgreSQL, TaskTypeGetUserTablesSQL, TaskTypeMigrateMongoDb, TaskTypeMigrateMySQLAzureDbForMySQLSync, TaskTypeMigrateOracleAzureDbForPostgreSQLSync, TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync, TaskTypeMigrateSchemaSQLServerSQLDb, TaskTypeMigrateSQLServerAzureSQLDbMI, TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS, TaskTypeMigrateSQLServerAzureSQLDbSync, TaskTypeMigrateSQLServerSQLDb, TaskTypeMigrateSsis, TaskTypeProjectTaskProperties, TaskTypeServiceCheckOCI, TaskTypeServiceInstallOCI, TaskTypeServiceUploadOCI, TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI, TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS, TaskTypeValidateMigrationInputSQLServerSQLDbSync, TaskTypeValidateMongoDb, TaskTypeValidateOracleAzureDbPostgreSQLSync}
+	return []TaskType{TaskTypeConnectMongoDb, TaskTypeConnectToSourceMySQL, TaskTypeConnectToSourceOracleSync, TaskTypeConnectToSourcePostgreSQLSync, TaskTypeConnectToSourceSQLServer, TaskTypeConnectToSourceSQLServerSync, TaskTypeConnectToTargetAzureDbForMySQL, TaskTypeConnectToTargetAzureDbForPostgreSQLSync, TaskTypeConnectToTargetAzureSQLDbMI, TaskTypeConnectToTargetAzureSQLDbMISyncLRS, TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync, TaskTypeConnectToTargetSQLDb, TaskTypeConnectToTargetSQLDbSync, TaskTypeGetTDECertificatesSQL, TaskTypeGetUserTablesAzureSQLDbSync, TaskTypeGetUserTablesOracle, TaskTypeGetUserTablesPostgreSQL, TaskTypeGetUserTablesSQL, TaskTypeMigrateMongoDb, TaskTypeMigrateMySQLAzureDbForMySQLSync, TaskTypeMigrateOracleAzureDbForPostgreSQLSync, TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2, TaskTypeMigrateSchemaSQLServerSQLDb, TaskTypeMigrateSQLServerAzureSQLDbMI, TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS, TaskTypeMigrateSQLServerAzureSQLDbSync, TaskTypeMigrateSQLServerSQLDb, TaskTypeMigrateSsis, TaskTypeProjectTaskProperties, TaskTypeServiceCheckOCI, TaskTypeServiceInstallOCI, TaskTypeServiceUploadOCI, TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI, TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS, TaskTypeValidateMigrationInputSQLServerSQLDbSync, TaskTypeValidateMongoDb, TaskTypeValidateOracleAzureDbPostgreSQLSync}
 }
 
 // Type enumerates the values for type.
@@ -1482,7 +1579,7 @@ type CheckOCIDriverTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -2055,7 +2152,7 @@ type ConnectToMongoDbTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -2366,7 +2463,7 @@ type ConnectToSourceMySQLTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -2700,7 +2797,7 @@ type ConnectToSourceOracleSyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -3024,7 +3121,7 @@ type ConnectToSourcePostgreSQLSyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -3326,7 +3423,7 @@ type ConnectToSourceSQLServerSyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -3998,7 +4095,7 @@ type ConnectToSourceSQLServerTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -4323,7 +4420,7 @@ type ConnectToTargetAzureDbForMySQLTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -4649,7 +4746,7 @@ type ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -4980,7 +5077,7 @@ type ConnectToTargetOracleAzureDbForPostgreSQLSyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -5308,7 +5405,7 @@ type ConnectToTargetSQLDbTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -5630,7 +5727,7 @@ type ConnectToTargetSQLMISyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -5962,7 +6059,7 @@ type ConnectToTargetSQLMITaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -6273,7 +6370,7 @@ type ConnectToTargetSQLSQLDbSyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -7013,7 +7110,7 @@ type GetTdeCertificatesSQLTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -7335,7 +7432,7 @@ type GetUserTablesOracleTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -7657,7 +7754,7 @@ type GetUserTablesPostgreSQLTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -7991,7 +8088,7 @@ type GetUserTablesSQLSyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -8317,7 +8414,7 @@ type GetUserTablesSQLTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -8629,7 +8726,7 @@ type InstallOCIDriverTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -8997,7 +9094,7 @@ func (mmsccp MigrateMISyncCompleteCommandProperties) AsBasicCommandProperties() 
 type MigrateMongoDbTaskProperties struct {
 	Input *MongoDbMigrationSettings `json:"input,omitempty"`
 	// Output - READ-ONLY
-	Output *[]MongoDbProgress `json:"output,omitempty"`
+	Output *[]BasicMongoDbProgress `json:"output,omitempty"`
 	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
@@ -9006,7 +9103,7 @@ type MigrateMongoDbTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -9236,8 +9333,7 @@ func (mmdtp *MigrateMongoDbTaskProperties) UnmarshalJSON(body []byte) error {
 			}
 		case "output":
 			if v != nil {
-				var output []MongoDbProgress
-				err = json.Unmarshal(*v, &output)
+				output, err := unmarshalBasicMongoDbProgressArray(*v)
 				if err != nil {
 					return err
 				}
@@ -9529,7 +9625,7 @@ type MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel struct {
 	StartedOn *date.Time `json:"startedOn,omitempty"`
 	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// MigrationState - READ-ONLY; Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED'
+	// MigrationState - READ-ONLY; Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED', 'SyncDatabaseMigrationReportingStateVALIDATING', 'SyncDatabaseMigrationReportingStateVALIDATIONCOMPLETE', 'SyncDatabaseMigrationReportingStateVALIDATIONFAILED', 'SyncDatabaseMigrationReportingStateRESTOREINPROGRESS', 'SyncDatabaseMigrationReportingStateRESTORECOMPLETED', 'SyncDatabaseMigrationReportingStateBACKUPINPROGRESS', 'SyncDatabaseMigrationReportingStateBACKUPCOMPLETED'
 	MigrationState SyncDatabaseMigrationReportingState `json:"migrationState,omitempty"`
 	// IncomingChanges - READ-ONLY; Number of incoming changes
 	IncomingChanges *int64 `json:"incomingChanges,omitempty"`
@@ -9818,7 +9914,7 @@ type MigrateMySQLAzureDbForMySQLSyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -10119,7 +10215,7 @@ type MigrateOracleAzureDbForPostgreSQLSyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -10656,7 +10752,7 @@ type MigrateOracleAzureDbPostgreSQLSyncTaskOutputDatabaseLevel struct {
 	StartedOn *date.Time `json:"startedOn,omitempty"`
 	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// MigrationState - READ-ONLY; Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED'
+	// MigrationState - READ-ONLY; Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED', 'SyncDatabaseMigrationReportingStateVALIDATING', 'SyncDatabaseMigrationReportingStateVALIDATIONCOMPLETE', 'SyncDatabaseMigrationReportingStateVALIDATIONFAILED', 'SyncDatabaseMigrationReportingStateRESTOREINPROGRESS', 'SyncDatabaseMigrationReportingStateRESTORECOMPLETED', 'SyncDatabaseMigrationReportingStateBACKUPINPROGRESS', 'SyncDatabaseMigrationReportingStateBACKUPCOMPLETED'
 	MigrationState SyncDatabaseMigrationReportingState `json:"migrationState,omitempty"`
 	// IncomingChanges - READ-ONLY; Number of incoming changes
 	IncomingChanges *int64 `json:"incomingChanges,omitempty"`
@@ -11166,7 +11262,7 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel struct {
 	StartedOn *date.Time `json:"startedOn,omitempty"`
 	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// MigrationState - READ-ONLY; Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED'
+	// MigrationState - READ-ONLY; Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED', 'SyncDatabaseMigrationReportingStateVALIDATING', 'SyncDatabaseMigrationReportingStateVALIDATIONCOMPLETE', 'SyncDatabaseMigrationReportingStateVALIDATIONFAILED', 'SyncDatabaseMigrationReportingStateRESTOREINPROGRESS', 'SyncDatabaseMigrationReportingStateRESTORECOMPLETED', 'SyncDatabaseMigrationReportingStateBACKUPINPROGRESS', 'SyncDatabaseMigrationReportingStateBACKUPCOMPLETED'
 	MigrationState SyncDatabaseMigrationReportingState `json:"migrationState,omitempty"`
 	// IncomingChanges - READ-ONLY; Number of incoming changes
 	IncomingChanges *int64 `json:"incomingChanges,omitempty"`
@@ -11310,6 +11406,12 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel struct {
 	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
 	// TargetServer - READ-ONLY; Target server name
 	TargetServer *string `json:"targetServer,omitempty"`
+	// SourceServerType - READ-ONLY; Source server type. Possible values include: 'Access', 'DB2', 'MySQL', 'Oracle', 'SQL', 'Sybase', 'PostgreSQL', 'MongoDB', 'SQLRDS', 'MySQLRDS', 'PostgreSQLRDS'
+	SourceServerType ScenarioSource `json:"sourceServerType,omitempty"`
+	// TargetServerType - READ-ONLY; Target server type. Possible values include: 'ScenarioTargetSQLServer', 'ScenarioTargetSQLDB', 'ScenarioTargetSQLDW', 'ScenarioTargetSQLMI', 'ScenarioTargetAzureDBForMySQL', 'ScenarioTargetAzureDBForPostgresSQL', 'ScenarioTargetMongoDB'
+	TargetServerType ScenarioTarget `json:"targetServerType,omitempty"`
+	// State - READ-ONLY; Migration status. Possible values include: 'ReplicateMigrationStateUNDEFINED', 'ReplicateMigrationStateVALIDATING', 'ReplicateMigrationStatePENDING', 'ReplicateMigrationStateCOMPLETE', 'ReplicateMigrationStateACTIONREQUIRED', 'ReplicateMigrationStateFAILED'
+	State ReplicateMigrationState `json:"state,omitempty"`
 	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput'
@@ -11455,13 +11557,13 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
 func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) MarshalJSON() ([]byte, error) {
-	mpsadfpsstp.TaskType = TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync
+	mpsadfpsstp.TaskType = TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2
 	objectMap := make(map[string]interface{})
 	if mpsadfpsstp.Input != nil {
 		objectMap["input"] = mpsadfpsstp.Input
@@ -12068,7 +12170,7 @@ type MigrateSchemaSQLServerSQLDbTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -12688,7 +12790,7 @@ type MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel struct {
 	StartedOn *date.Time `json:"startedOn,omitempty"`
 	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// MigrationState - READ-ONLY; Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED'
+	// MigrationState - READ-ONLY; Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED', 'SyncDatabaseMigrationReportingStateVALIDATING', 'SyncDatabaseMigrationReportingStateVALIDATIONCOMPLETE', 'SyncDatabaseMigrationReportingStateVALIDATIONFAILED', 'SyncDatabaseMigrationReportingStateRESTOREINPROGRESS', 'SyncDatabaseMigrationReportingStateRESTORECOMPLETED', 'SyncDatabaseMigrationReportingStateBACKUPINPROGRESS', 'SyncDatabaseMigrationReportingStateBACKUPCOMPLETED'
 	MigrationState SyncDatabaseMigrationReportingState `json:"migrationState,omitempty"`
 	// IncomingChanges - READ-ONLY; Number of incoming changes
 	IncomingChanges *int64 `json:"incomingChanges,omitempty"`
@@ -12979,7 +13081,7 @@ type MigrateSQLServerSQLDbSyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -13679,7 +13781,7 @@ type MigrateSQLServerSQLDbTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -14283,7 +14385,7 @@ type MigrateSQLServerSQLMISyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -15066,7 +15168,7 @@ type MigrateSQLServerSQLMITaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -15390,7 +15492,7 @@ type MigrateSsisTaskOutput struct {
 	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeMigrateSsisTaskOutput', 'ResultTypeSsisProjectLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultTypeBasicMigrateSsisTaskOutput `json:"resultType,omitempty"`
+	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 func unmarshalBasicMigrateSsisTaskOutput(body []byte) (BasicMigrateSsisTaskOutput, error) {
@@ -15489,7 +15591,7 @@ type MigrateSsisTaskOutputMigrationLevel struct {
 	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeMigrateSsisTaskOutput', 'ResultTypeSsisProjectLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultTypeBasicMigrateSsisTaskOutput `json:"resultType,omitempty"`
+	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSsisTaskOutputMigrationLevel.
@@ -15543,7 +15645,7 @@ type MigrateSsisTaskOutputProjectLevel struct {
 	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeMigrateSsisTaskOutput', 'ResultTypeSsisProjectLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultTypeBasicMigrateSsisTaskOutput `json:"resultType,omitempty"`
+	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSsisTaskOutputProjectLevel.
@@ -15591,7 +15693,7 @@ type MigrateSsisTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -16247,18 +16349,19 @@ type MongoDbCollectionProgress struct {
 	Name *string `json:"name,omitempty"`
 	// QualifiedName - The qualified name of the progress object. For a collection, this is the database-qualified name. For a database, this is the database name. For the overall migration, this is null.
 	QualifiedName *string `json:"qualifiedName,omitempty"`
-	// ResultType - The type of progress object. Possible values include: 'ResultTypeMigration', 'ResultTypeDatabase', 'ResultTypeCollection'
-	ResultType ResultType `json:"resultType,omitempty"`
 	// State - Possible values include: 'MongoDbMigrationStateNotStarted', 'MongoDbMigrationStateValidatingInput', 'MongoDbMigrationStateInitializing', 'MongoDbMigrationStateRestarting', 'MongoDbMigrationStateCopying', 'MongoDbMigrationStateInitialReplay', 'MongoDbMigrationStateReplaying', 'MongoDbMigrationStateFinalizing', 'MongoDbMigrationStateComplete', 'MongoDbMigrationStateCanceled', 'MongoDbMigrationStateFailed'
 	State MongoDbMigrationState `json:"state,omitempty"`
 	// TotalBytes - The total number of document bytes on the source at the beginning of the Copying stage, or -1 if the total size was unknown
 	TotalBytes *int64 `json:"totalBytes,omitempty"`
 	// TotalDocuments - The total number of documents on the source at the beginning of the Copying stage, or -1 if the total count was unknown
 	TotalDocuments *int64 `json:"totalDocuments,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMongoDbProgress', 'ResultTypeCollection', 'ResultTypeDatabase', 'ResultTypeMigration'
+	ResultType ResultTypeBasicMongoDbProgress `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MongoDbCollectionProgress.
 func (mdcp MongoDbCollectionProgress) MarshalJSON() ([]byte, error) {
+	mdcp.ResultType = ResultTypeCollection
 	objectMap := make(map[string]interface{})
 	if mdcp.BytesCopied != nil {
 		objectMap["bytesCopied"] = mdcp.BytesCopied
@@ -16290,9 +16393,6 @@ func (mdcp MongoDbCollectionProgress) MarshalJSON() ([]byte, error) {
 	if mdcp.QualifiedName != nil {
 		objectMap["qualifiedName"] = mdcp.QualifiedName
 	}
-	if mdcp.ResultType != "" {
-		objectMap["resultType"] = mdcp.ResultType
-	}
 	if mdcp.State != "" {
 		objectMap["state"] = mdcp.State
 	}
@@ -16302,7 +16402,35 @@ func (mdcp MongoDbCollectionProgress) MarshalJSON() ([]byte, error) {
 	if mdcp.TotalDocuments != nil {
 		objectMap["totalDocuments"] = mdcp.TotalDocuments
 	}
+	if mdcp.ResultType != "" {
+		objectMap["resultType"] = mdcp.ResultType
+	}
 	return json.Marshal(objectMap)
+}
+
+// AsMongoDbCollectionProgress is the BasicMongoDbProgress implementation for MongoDbCollectionProgress.
+func (mdcp MongoDbCollectionProgress) AsMongoDbCollectionProgress() (*MongoDbCollectionProgress, bool) {
+	return &mdcp, true
+}
+
+// AsMongoDbDatabaseProgress is the BasicMongoDbProgress implementation for MongoDbCollectionProgress.
+func (mdcp MongoDbCollectionProgress) AsMongoDbDatabaseProgress() (*MongoDbDatabaseProgress, bool) {
+	return nil, false
+}
+
+// AsMongoDbMigrationProgress is the BasicMongoDbProgress implementation for MongoDbCollectionProgress.
+func (mdcp MongoDbCollectionProgress) AsMongoDbMigrationProgress() (*MongoDbMigrationProgress, bool) {
+	return nil, false
+}
+
+// AsMongoDbProgress is the BasicMongoDbProgress implementation for MongoDbCollectionProgress.
+func (mdcp MongoDbCollectionProgress) AsMongoDbProgress() (*MongoDbProgress, bool) {
+	return nil, false
+}
+
+// AsBasicMongoDbProgress is the BasicMongoDbProgress implementation for MongoDbCollectionProgress.
+func (mdcp MongoDbCollectionProgress) AsBasicMongoDbProgress() (BasicMongoDbProgress, bool) {
+	return &mdcp, true
 }
 
 // MongoDbCollectionSettings describes how an individual MongoDB collection should be migrated
@@ -16433,18 +16561,19 @@ type MongoDbDatabaseProgress struct {
 	Name *string `json:"name,omitempty"`
 	// QualifiedName - The qualified name of the progress object. For a collection, this is the database-qualified name. For a database, this is the database name. For the overall migration, this is null.
 	QualifiedName *string `json:"qualifiedName,omitempty"`
-	// ResultType - The type of progress object. Possible values include: 'ResultTypeMigration', 'ResultTypeDatabase', 'ResultTypeCollection'
-	ResultType ResultType `json:"resultType,omitempty"`
 	// State - Possible values include: 'MongoDbMigrationStateNotStarted', 'MongoDbMigrationStateValidatingInput', 'MongoDbMigrationStateInitializing', 'MongoDbMigrationStateRestarting', 'MongoDbMigrationStateCopying', 'MongoDbMigrationStateInitialReplay', 'MongoDbMigrationStateReplaying', 'MongoDbMigrationStateFinalizing', 'MongoDbMigrationStateComplete', 'MongoDbMigrationStateCanceled', 'MongoDbMigrationStateFailed'
 	State MongoDbMigrationState `json:"state,omitempty"`
 	// TotalBytes - The total number of document bytes on the source at the beginning of the Copying stage, or -1 if the total size was unknown
 	TotalBytes *int64 `json:"totalBytes,omitempty"`
 	// TotalDocuments - The total number of documents on the source at the beginning of the Copying stage, or -1 if the total count was unknown
 	TotalDocuments *int64 `json:"totalDocuments,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMongoDbProgress', 'ResultTypeCollection', 'ResultTypeDatabase', 'ResultTypeMigration'
+	ResultType ResultTypeBasicMongoDbProgress `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MongoDbDatabaseProgress.
 func (mddp MongoDbDatabaseProgress) MarshalJSON() ([]byte, error) {
+	mddp.ResultType = ResultTypeDatabase
 	objectMap := make(map[string]interface{})
 	if mddp.Collections != nil {
 		objectMap["collections"] = mddp.Collections
@@ -16479,9 +16608,6 @@ func (mddp MongoDbDatabaseProgress) MarshalJSON() ([]byte, error) {
 	if mddp.QualifiedName != nil {
 		objectMap["qualifiedName"] = mddp.QualifiedName
 	}
-	if mddp.ResultType != "" {
-		objectMap["resultType"] = mddp.ResultType
-	}
 	if mddp.State != "" {
 		objectMap["state"] = mddp.State
 	}
@@ -16491,7 +16617,35 @@ func (mddp MongoDbDatabaseProgress) MarshalJSON() ([]byte, error) {
 	if mddp.TotalDocuments != nil {
 		objectMap["totalDocuments"] = mddp.TotalDocuments
 	}
+	if mddp.ResultType != "" {
+		objectMap["resultType"] = mddp.ResultType
+	}
 	return json.Marshal(objectMap)
+}
+
+// AsMongoDbCollectionProgress is the BasicMongoDbProgress implementation for MongoDbDatabaseProgress.
+func (mddp MongoDbDatabaseProgress) AsMongoDbCollectionProgress() (*MongoDbCollectionProgress, bool) {
+	return nil, false
+}
+
+// AsMongoDbDatabaseProgress is the BasicMongoDbProgress implementation for MongoDbDatabaseProgress.
+func (mddp MongoDbDatabaseProgress) AsMongoDbDatabaseProgress() (*MongoDbDatabaseProgress, bool) {
+	return &mddp, true
+}
+
+// AsMongoDbMigrationProgress is the BasicMongoDbProgress implementation for MongoDbDatabaseProgress.
+func (mddp MongoDbDatabaseProgress) AsMongoDbMigrationProgress() (*MongoDbMigrationProgress, bool) {
+	return nil, false
+}
+
+// AsMongoDbProgress is the BasicMongoDbProgress implementation for MongoDbDatabaseProgress.
+func (mddp MongoDbDatabaseProgress) AsMongoDbProgress() (*MongoDbProgress, bool) {
+	return nil, false
+}
+
+// AsBasicMongoDbProgress is the BasicMongoDbProgress implementation for MongoDbDatabaseProgress.
+func (mddp MongoDbDatabaseProgress) AsBasicMongoDbProgress() (BasicMongoDbProgress, bool) {
+	return &mddp, true
 }
 
 // MongoDbDatabaseSettings describes how an individual MongoDB database should be migrated
@@ -16618,18 +16772,19 @@ type MongoDbMigrationProgress struct {
 	Name *string `json:"name,omitempty"`
 	// QualifiedName - The qualified name of the progress object. For a collection, this is the database-qualified name. For a database, this is the database name. For the overall migration, this is null.
 	QualifiedName *string `json:"qualifiedName,omitempty"`
-	// ResultType - The type of progress object. Possible values include: 'ResultTypeMigration', 'ResultTypeDatabase', 'ResultTypeCollection'
-	ResultType ResultType `json:"resultType,omitempty"`
 	// State - Possible values include: 'MongoDbMigrationStateNotStarted', 'MongoDbMigrationStateValidatingInput', 'MongoDbMigrationStateInitializing', 'MongoDbMigrationStateRestarting', 'MongoDbMigrationStateCopying', 'MongoDbMigrationStateInitialReplay', 'MongoDbMigrationStateReplaying', 'MongoDbMigrationStateFinalizing', 'MongoDbMigrationStateComplete', 'MongoDbMigrationStateCanceled', 'MongoDbMigrationStateFailed'
 	State MongoDbMigrationState `json:"state,omitempty"`
 	// TotalBytes - The total number of document bytes on the source at the beginning of the Copying stage, or -1 if the total size was unknown
 	TotalBytes *int64 `json:"totalBytes,omitempty"`
 	// TotalDocuments - The total number of documents on the source at the beginning of the Copying stage, or -1 if the total count was unknown
 	TotalDocuments *int64 `json:"totalDocuments,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMongoDbProgress', 'ResultTypeCollection', 'ResultTypeDatabase', 'ResultTypeMigration'
+	ResultType ResultTypeBasicMongoDbProgress `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MongoDbMigrationProgress.
 func (mdmp MongoDbMigrationProgress) MarshalJSON() ([]byte, error) {
+	mdmp.ResultType = ResultTypeMigration
 	objectMap := make(map[string]interface{})
 	if mdmp.Databases != nil {
 		objectMap["databases"] = mdmp.Databases
@@ -16664,9 +16819,6 @@ func (mdmp MongoDbMigrationProgress) MarshalJSON() ([]byte, error) {
 	if mdmp.QualifiedName != nil {
 		objectMap["qualifiedName"] = mdmp.QualifiedName
 	}
-	if mdmp.ResultType != "" {
-		objectMap["resultType"] = mdmp.ResultType
-	}
 	if mdmp.State != "" {
 		objectMap["state"] = mdmp.State
 	}
@@ -16676,7 +16828,35 @@ func (mdmp MongoDbMigrationProgress) MarshalJSON() ([]byte, error) {
 	if mdmp.TotalDocuments != nil {
 		objectMap["totalDocuments"] = mdmp.TotalDocuments
 	}
+	if mdmp.ResultType != "" {
+		objectMap["resultType"] = mdmp.ResultType
+	}
 	return json.Marshal(objectMap)
+}
+
+// AsMongoDbCollectionProgress is the BasicMongoDbProgress implementation for MongoDbMigrationProgress.
+func (mdmp MongoDbMigrationProgress) AsMongoDbCollectionProgress() (*MongoDbCollectionProgress, bool) {
+	return nil, false
+}
+
+// AsMongoDbDatabaseProgress is the BasicMongoDbProgress implementation for MongoDbMigrationProgress.
+func (mdmp MongoDbMigrationProgress) AsMongoDbDatabaseProgress() (*MongoDbDatabaseProgress, bool) {
+	return nil, false
+}
+
+// AsMongoDbMigrationProgress is the BasicMongoDbProgress implementation for MongoDbMigrationProgress.
+func (mdmp MongoDbMigrationProgress) AsMongoDbMigrationProgress() (*MongoDbMigrationProgress, bool) {
+	return &mdmp, true
+}
+
+// AsMongoDbProgress is the BasicMongoDbProgress implementation for MongoDbMigrationProgress.
+func (mdmp MongoDbMigrationProgress) AsMongoDbProgress() (*MongoDbProgress, bool) {
+	return nil, false
+}
+
+// AsBasicMongoDbProgress is the BasicMongoDbProgress implementation for MongoDbMigrationProgress.
+func (mdmp MongoDbMigrationProgress) AsBasicMongoDbProgress() (BasicMongoDbProgress, bool) {
+	return &mdmp, true
 }
 
 // MongoDbMigrationSettings describes how a MongoDB data migration should be performed
@@ -16733,6 +16913,14 @@ type MongoDbObjectInfo struct {
 	QualifiedName *string `json:"qualifiedName,omitempty"`
 }
 
+// BasicMongoDbProgress base class for MongoDB migration outputs
+type BasicMongoDbProgress interface {
+	AsMongoDbCollectionProgress() (*MongoDbCollectionProgress, bool)
+	AsMongoDbDatabaseProgress() (*MongoDbDatabaseProgress, bool)
+	AsMongoDbMigrationProgress() (*MongoDbMigrationProgress, bool)
+	AsMongoDbProgress() (*MongoDbProgress, bool)
+}
+
 // MongoDbProgress base class for MongoDB migration outputs
 type MongoDbProgress struct {
 	// BytesCopied - The number of document bytes copied during the Copying stage
@@ -16755,18 +16943,64 @@ type MongoDbProgress struct {
 	Name *string `json:"name,omitempty"`
 	// QualifiedName - The qualified name of the progress object. For a collection, this is the database-qualified name. For a database, this is the database name. For the overall migration, this is null.
 	QualifiedName *string `json:"qualifiedName,omitempty"`
-	// ResultType - The type of progress object. Possible values include: 'ResultTypeMigration', 'ResultTypeDatabase', 'ResultTypeCollection'
-	ResultType ResultType `json:"resultType,omitempty"`
 	// State - Possible values include: 'MongoDbMigrationStateNotStarted', 'MongoDbMigrationStateValidatingInput', 'MongoDbMigrationStateInitializing', 'MongoDbMigrationStateRestarting', 'MongoDbMigrationStateCopying', 'MongoDbMigrationStateInitialReplay', 'MongoDbMigrationStateReplaying', 'MongoDbMigrationStateFinalizing', 'MongoDbMigrationStateComplete', 'MongoDbMigrationStateCanceled', 'MongoDbMigrationStateFailed'
 	State MongoDbMigrationState `json:"state,omitempty"`
 	// TotalBytes - The total number of document bytes on the source at the beginning of the Copying stage, or -1 if the total size was unknown
 	TotalBytes *int64 `json:"totalBytes,omitempty"`
 	// TotalDocuments - The total number of documents on the source at the beginning of the Copying stage, or -1 if the total count was unknown
 	TotalDocuments *int64 `json:"totalDocuments,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMongoDbProgress', 'ResultTypeCollection', 'ResultTypeDatabase', 'ResultTypeMigration'
+	ResultType ResultTypeBasicMongoDbProgress `json:"resultType,omitempty"`
+}
+
+func unmarshalBasicMongoDbProgress(body []byte) (BasicMongoDbProgress, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["resultType"] {
+	case string(ResultTypeCollection):
+		var mdcp MongoDbCollectionProgress
+		err := json.Unmarshal(body, &mdcp)
+		return mdcp, err
+	case string(ResultTypeDatabase):
+		var mddp MongoDbDatabaseProgress
+		err := json.Unmarshal(body, &mddp)
+		return mddp, err
+	case string(ResultTypeMigration):
+		var mdmp MongoDbMigrationProgress
+		err := json.Unmarshal(body, &mdmp)
+		return mdmp, err
+	default:
+		var mdp MongoDbProgress
+		err := json.Unmarshal(body, &mdp)
+		return mdp, err
+	}
+}
+func unmarshalBasicMongoDbProgressArray(body []byte) ([]BasicMongoDbProgress, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	mdpArray := make([]BasicMongoDbProgress, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		mdp, err := unmarshalBasicMongoDbProgress(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		mdpArray[index] = mdp
+	}
+	return mdpArray, nil
 }
 
 // MarshalJSON is the custom marshaler for MongoDbProgress.
 func (mdp MongoDbProgress) MarshalJSON() ([]byte, error) {
+	mdp.ResultType = ResultTypeMongoDbProgress
 	objectMap := make(map[string]interface{})
 	if mdp.BytesCopied != nil {
 		objectMap["bytesCopied"] = mdp.BytesCopied
@@ -16798,9 +17032,6 @@ func (mdp MongoDbProgress) MarshalJSON() ([]byte, error) {
 	if mdp.QualifiedName != nil {
 		objectMap["qualifiedName"] = mdp.QualifiedName
 	}
-	if mdp.ResultType != "" {
-		objectMap["resultType"] = mdp.ResultType
-	}
 	if mdp.State != "" {
 		objectMap["state"] = mdp.State
 	}
@@ -16810,7 +17041,35 @@ func (mdp MongoDbProgress) MarshalJSON() ([]byte, error) {
 	if mdp.TotalDocuments != nil {
 		objectMap["totalDocuments"] = mdp.TotalDocuments
 	}
+	if mdp.ResultType != "" {
+		objectMap["resultType"] = mdp.ResultType
+	}
 	return json.Marshal(objectMap)
+}
+
+// AsMongoDbCollectionProgress is the BasicMongoDbProgress implementation for MongoDbProgress.
+func (mdp MongoDbProgress) AsMongoDbCollectionProgress() (*MongoDbCollectionProgress, bool) {
+	return nil, false
+}
+
+// AsMongoDbDatabaseProgress is the BasicMongoDbProgress implementation for MongoDbProgress.
+func (mdp MongoDbProgress) AsMongoDbDatabaseProgress() (*MongoDbDatabaseProgress, bool) {
+	return nil, false
+}
+
+// AsMongoDbMigrationProgress is the BasicMongoDbProgress implementation for MongoDbProgress.
+func (mdp MongoDbProgress) AsMongoDbMigrationProgress() (*MongoDbMigrationProgress, bool) {
+	return nil, false
+}
+
+// AsMongoDbProgress is the BasicMongoDbProgress implementation for MongoDbProgress.
+func (mdp MongoDbProgress) AsMongoDbProgress() (*MongoDbProgress, bool) {
+	return &mdp, true
+}
+
+// AsBasicMongoDbProgress is the BasicMongoDbProgress implementation for MongoDbProgress.
+func (mdp MongoDbProgress) AsBasicMongoDbProgress() (BasicMongoDbProgress, bool) {
+	return &mdp, true
 }
 
 // MongoDbRestartCommand properties for the command that restarts a migration in whole or in part
@@ -17179,6 +17438,10 @@ type PostgreSQLConnectionInfo struct {
 	DatabaseName *string `json:"databaseName,omitempty"`
 	// Port - Port for Server
 	Port *int32 `json:"port,omitempty"`
+	// EncryptConnection - Whether to encrypt the connection
+	EncryptConnection *bool `json:"encryptConnection,omitempty"`
+	// TrustServerCertificate - Whether to trust the server certificate
+	TrustServerCertificate *bool `json:"trustServerCertificate,omitempty"`
 	// UserName - User name
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
@@ -17199,6 +17462,12 @@ func (psci PostgreSQLConnectionInfo) MarshalJSON() ([]byte, error) {
 	}
 	if psci.Port != nil {
 		objectMap["port"] = psci.Port
+	}
+	if psci.EncryptConnection != nil {
+		objectMap["encryptConnection"] = psci.EncryptConnection
+	}
+	if psci.TrustServerCertificate != nil {
+		objectMap["trustServerCertificate"] = psci.TrustServerCertificate
 	}
 	if psci.UserName != nil {
 		objectMap["userName"] = psci.UserName
@@ -17769,7 +18038,7 @@ type ProjectTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -17813,7 +18082,7 @@ func unmarshalBasicProjectTaskProperties(body []byte) (BasicProjectTaskPropertie
 		var moadfpsstp MigrateOracleAzureDbForPostgreSQLSyncTaskProperties
 		err := json.Unmarshal(body, &moadfpsstp)
 		return moadfpsstp, err
-	case string(TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync):
+	case string(TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2):
 		var mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties
 		err := json.Unmarshal(body, &mpsadfpsstp)
 		return mpsadfpsstp, err
@@ -19827,7 +20096,7 @@ type UploadOCIDriverTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -20129,7 +20398,7 @@ type ValidateMigrationInputSQLServerSQLDbSyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -20459,7 +20728,7 @@ type ValidateMigrationInputSQLServerSQLMISyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -20801,7 +21070,7 @@ type ValidateMigrationInputSQLServerSQLMITaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -21102,7 +21371,7 @@ type ValidateMongoDbTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -21403,7 +21672,7 @@ type ValidateOracleAzureDbForPostgreSQLSyncTaskProperties struct {
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// ClientData - Key value pairs of client data to attach meta data information to task
 	ClientData map[string]*string `json:"clientData"`
-	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeMigrateSsis', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateOracleAzureDbPostgreSQLSync', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigrateOracleAzureDbForPostgreSQLSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesPostgreSQL', 'TaskTypeGetUserTablesOracle', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetOracleAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceOracleSync', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb', 'TaskTypeServiceCheckOCI', 'TaskTypeServiceUploadOCI', 'TaskTypeServiceInstallOCI'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 

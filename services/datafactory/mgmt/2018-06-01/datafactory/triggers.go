@@ -566,6 +566,98 @@ func (client TriggersClient) ListByFactoryComplete(ctx context.Context, resource
 	return
 }
 
+// QueryByFactory query triggers.
+// Parameters:
+// resourceGroupName - the resource group name.
+// factoryName - the factory name.
+// filterParameters - parameters to filter the triggers.
+func (client TriggersClient) QueryByFactory(ctx context.Context, resourceGroupName string, factoryName string, filterParameters TriggerFilterParameters) (result TriggerQueryResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.QueryByFactory")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: factoryName,
+			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("datafactory.TriggersClient", "QueryByFactory", err.Error())
+	}
+
+	req, err := client.QueryByFactoryPreparer(ctx, resourceGroupName, factoryName, filterParameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "QueryByFactory", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.QueryByFactorySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "QueryByFactory", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.QueryByFactoryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "QueryByFactory", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// QueryByFactoryPreparer prepares the QueryByFactory request.
+func (client TriggersClient) QueryByFactoryPreparer(ctx context.Context, resourceGroupName string, factoryName string, filterParameters TriggerFilterParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/querytriggers", pathParameters),
+		autorest.WithJSON(filterParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// QueryByFactorySender sends the QueryByFactory request. The method will close the
+// http.Response Body if it receives an error.
+func (client TriggersClient) QueryByFactorySender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// QueryByFactoryResponder handles the response to the QueryByFactory request. The method always
+// closes the http.Response Body.
+func (client TriggersClient) QueryByFactoryResponder(resp *http.Response) (result TriggerQueryResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Start starts a trigger.
 // Parameters:
 // resourceGroupName - the resource group name.

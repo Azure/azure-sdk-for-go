@@ -1875,16 +1875,7 @@ type RedshiftUnloadSettings = original.RedshiftUnloadSettings
 type RelationalSource = original.RelationalSource
 type RelationalTableDataset = original.RelationalTableDataset
 type RelationalTableDatasetTypeProperties = original.RelationalTableDatasetTypeProperties
-type RerunTriggerListResponse = original.RerunTriggerListResponse
-type RerunTriggerListResponseIterator = original.RerunTriggerListResponseIterator
-type RerunTriggerListResponsePage = original.RerunTriggerListResponsePage
-type RerunTriggerResource = original.RerunTriggerResource
-type RerunTriggersCancelFuture = original.RerunTriggersCancelFuture
-type RerunTriggersClient = original.RerunTriggersClient
-type RerunTriggersStartFuture = original.RerunTriggersStartFuture
-type RerunTriggersStopFuture = original.RerunTriggersStopFuture
 type RerunTumblingWindowTrigger = original.RerunTumblingWindowTrigger
-type RerunTumblingWindowTriggerActionParameters = original.RerunTumblingWindowTriggerActionParameters
 type RerunTumblingWindowTriggerTypeProperties = original.RerunTumblingWindowTriggerTypeProperties
 type Resource = original.Resource
 type ResponsysLinkedService = original.ResponsysLinkedService
@@ -2042,10 +2033,12 @@ type TextFormat = original.TextFormat
 type Transformation = original.Transformation
 type Trigger = original.Trigger
 type TriggerDependencyReference = original.TriggerDependencyReference
+type TriggerFilterParameters = original.TriggerFilterParameters
 type TriggerListResponse = original.TriggerListResponse
 type TriggerListResponseIterator = original.TriggerListResponseIterator
 type TriggerListResponsePage = original.TriggerListResponsePage
 type TriggerPipelineReference = original.TriggerPipelineReference
+type TriggerQueryResponse = original.TriggerQueryResponse
 type TriggerReference = original.TriggerReference
 type TriggerResource = original.TriggerResource
 type TriggerRun = original.TriggerRun
@@ -2226,18 +2219,6 @@ func NewQueryDataFlowDebugSessionsResponseIterator(page QueryDataFlowDebugSessio
 }
 func NewQueryDataFlowDebugSessionsResponsePage(getNextPage func(context.Context, QueryDataFlowDebugSessionsResponse) (QueryDataFlowDebugSessionsResponse, error)) QueryDataFlowDebugSessionsResponsePage {
 	return original.NewQueryDataFlowDebugSessionsResponsePage(getNextPage)
-}
-func NewRerunTriggerListResponseIterator(page RerunTriggerListResponsePage) RerunTriggerListResponseIterator {
-	return original.NewRerunTriggerListResponseIterator(page)
-}
-func NewRerunTriggerListResponsePage(getNextPage func(context.Context, RerunTriggerListResponse) (RerunTriggerListResponse, error)) RerunTriggerListResponsePage {
-	return original.NewRerunTriggerListResponsePage(getNextPage)
-}
-func NewRerunTriggersClient(subscriptionID string) RerunTriggersClient {
-	return original.NewRerunTriggersClient(subscriptionID)
-}
-func NewRerunTriggersClientWithBaseURI(baseURI string, subscriptionID string) RerunTriggersClient {
-	return original.NewRerunTriggersClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTriggerListResponseIterator(page TriggerListResponsePage) TriggerListResponseIterator {
 	return original.NewTriggerListResponseIterator(page)

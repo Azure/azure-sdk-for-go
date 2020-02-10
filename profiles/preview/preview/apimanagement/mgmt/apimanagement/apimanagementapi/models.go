@@ -19,7 +19,7 @@
 
 package apimanagementapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2018-06-01-preview/apimanagement/apimanagementapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2019-12-01-preview/apimanagement/apimanagementapi"
 
 type APIClientAPI = original.APIClientAPI
 type APIDiagnosticClientAPI = original.APIDiagnosticClientAPI
@@ -32,8 +32,9 @@ type APIOperationPolicyClientAPI = original.APIOperationPolicyClientAPI
 type APIPolicyClientAPI = original.APIPolicyClientAPI
 type APIProductClientAPI = original.APIProductClientAPI
 type APIReleaseClientAPI = original.APIReleaseClientAPI
-type APIRevisionsClientAPI = original.APIRevisionsClientAPI
+type APIRevisionClientAPI = original.APIRevisionClientAPI
 type APISchemaClientAPI = original.APISchemaClientAPI
+type APITagDescriptionClientAPI = original.APITagDescriptionClientAPI
 type APIVersionSetClientAPI = original.APIVersionSetClientAPI
 type AuthorizationServerClientAPI = original.AuthorizationServerClientAPI
 type BackendClientAPI = original.BackendClientAPI
@@ -47,6 +48,7 @@ type GroupUserClientAPI = original.GroupUserClientAPI
 type IdentityProviderClientAPI = original.IdentityProviderClientAPI
 type IssueClientAPI = original.IssueClientAPI
 type LoggerClientAPI = original.LoggerClientAPI
+type NamedValueClientAPI = original.NamedValueClientAPI
 type NetworkStatusClientAPI = original.NetworkStatusClientAPI
 type NotificationClientAPI = original.NotificationClientAPI
 type NotificationRecipientEmailClientAPI = original.NotificationRecipientEmailClientAPI
@@ -55,13 +57,12 @@ type OpenIDConnectProviderClientAPI = original.OpenIDConnectProviderClientAPI
 type OperationClientAPI = original.OperationClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PolicyClientAPI = original.PolicyClientAPI
-type PolicySnippetsClientAPI = original.PolicySnippetsClientAPI
+type PolicyDescriptionClientAPI = original.PolicyDescriptionClientAPI
 type ProductAPIClientAPI = original.ProductAPIClientAPI
 type ProductClientAPI = original.ProductClientAPI
 type ProductGroupClientAPI = original.ProductGroupClientAPI
 type ProductPolicyClientAPI = original.ProductPolicyClientAPI
 type ProductSubscriptionsClientAPI = original.ProductSubscriptionsClientAPI
-type PropertyClientAPI = original.PropertyClientAPI
 type QuotaByCounterKeysClientAPI = original.QuotaByCounterKeysClientAPI
 type QuotaByPeriodKeysClientAPI = original.QuotaByPeriodKeysClientAPI
 type RegionClientAPI = original.RegionClientAPI
@@ -72,7 +73,6 @@ type SignInSettingsClientAPI = original.SignInSettingsClientAPI
 type SignUpSettingsClientAPI = original.SignUpSettingsClientAPI
 type SubscriptionClientAPI = original.SubscriptionClientAPI
 type TagClientAPI = original.TagClientAPI
-type TagDescriptionClientAPI = original.TagDescriptionClientAPI
 type TagResourceClientAPI = original.TagResourceClientAPI
 type TenantAccessClientAPI = original.TenantAccessClientAPI
 type TenantAccessGitClientAPI = original.TenantAccessGitClientAPI

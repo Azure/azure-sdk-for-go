@@ -96,7 +96,7 @@ func (client AssessmentsMetadataSubscriptionClient) CreatePreparer(ctx context.C
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -180,7 +180,7 @@ func (client AssessmentsMetadataSubscriptionClient) DeletePreparer(ctx context.C
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -260,7 +260,7 @@ func (client AssessmentsMetadataSubscriptionClient) GetPreparer(ctx context.Cont
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -339,7 +339,7 @@ func (client AssessmentsMetadataSubscriptionClient) ListPreparer(ctx context.Con
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

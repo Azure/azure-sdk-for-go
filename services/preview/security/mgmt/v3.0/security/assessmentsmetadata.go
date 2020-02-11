@@ -83,7 +83,7 @@ func (client AssessmentsMetadataClient) GetPreparer(ctx context.Context, assessm
 		"assessmentMetadataName": autorest.Encode("path", assessmentMetadataName),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -152,7 +152,7 @@ func (client AssessmentsMetadataClient) List(ctx context.Context) (result Assess
 
 // ListPreparer prepares the List request.
 func (client AssessmentsMetadataClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

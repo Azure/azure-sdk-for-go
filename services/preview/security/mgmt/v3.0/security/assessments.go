@@ -64,6 +64,8 @@ func (client AssessmentsClient) CreateOrUpdate(ctx context.Context, resourceID s
 			Constraints: []validation.Constraint{{Target: "assessment.AssessmentProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "assessment.AssessmentProperties.ResourceDetails", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "assessment.AssessmentProperties.Status", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "assessment.AssessmentProperties.Metadata", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "assessment.AssessmentProperties.Metadata.DisplayName", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("security.AssessmentsClient", "CreateOrUpdate", err.Error())
 	}
@@ -96,7 +98,7 @@ func (client AssessmentsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 		"resourceId":     autorest.Encode("path", resourceID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -175,7 +177,7 @@ func (client AssessmentsClient) DeletePreparer(ctx context.Context, resourceID s
 		"resourceId":     autorest.Encode("path", resourceID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -251,7 +253,7 @@ func (client AssessmentsClient) GetPreparer(ctx context.Context, resourceID stri
 		"resourceId":     autorest.Encode("path", resourceID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -330,7 +332,7 @@ func (client AssessmentsClient) ListPreparer(ctx context.Context, scope string) 
 		"scope": autorest.Encode("path", scope),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

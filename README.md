@@ -544,6 +544,10 @@ The `PollingDelay` and `PollingDuration` values are used exclusively by [WaitFor
 - Azure API docs are at [docs.microsoft.com/rest/api](https://docs.microsoft.com/rest/api/).
 - General Azure docs are at [docs.microsoft.com/azure](https://docs.microsoft.com/azure).
 
+## Reporting security issues and security bugs
+
+Security issues and bugs should be reported privately, via email, to the Microsoft Security Response Center (MSRC) <secure@microsoft.com>. You should receive a response within 24 hours. If for some reason you do not, please follow up via email to ensure we received your original message. Further information, including the MSRC PGP key, can be found in the [Security TechCenter](https://www.microsoft.com/msrc/faqs-report-an-issue).
+
 ## License
 
 Apache 2.0, see [LICENSE](./LICENSE).

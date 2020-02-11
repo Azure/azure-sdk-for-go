@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## `v39.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2019-12-01-preview |
+| reservations | 2019-07-19-preview |
+
 ## `v39.0.0`
 
 ### New Packages

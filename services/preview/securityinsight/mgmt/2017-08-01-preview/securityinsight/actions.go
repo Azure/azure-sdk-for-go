@@ -46,11 +46,9 @@ func NewActionsClientWithBaseURI(baseURI string, subscriptionID string) ActionsC
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// operationalInsightsResourceProvider - the namespace of workspaces resource provider-
-// Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
 // ruleID - alert rule ID
-func (client ActionsClient) ListByAlertRule(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result ActionsListPage, err error) {
+func (client ActionsClient) ListByAlertRule(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string) (result ActionsListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ActionsClient.ListByAlertRule")
 		defer func() {
@@ -75,7 +73,7 @@ func (client ActionsClient) ListByAlertRule(ctx context.Context, resourceGroupNa
 	}
 
 	result.fn = client.listByAlertRuleNextResults
-	req, err := client.ListByAlertRulePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID)
+	req, err := client.ListByAlertRulePreparer(ctx, resourceGroupName, workspaceName, ruleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.ActionsClient", "ListByAlertRule", nil, "Failure preparing request")
 		return
@@ -97,16 +95,15 @@ func (client ActionsClient) ListByAlertRule(ctx context.Context, resourceGroupNa
 }
 
 // ListByAlertRulePreparer prepares the ListByAlertRule request.
-func (client ActionsClient) ListByAlertRulePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (*http.Request, error) {
+func (client ActionsClient) ListByAlertRulePreparer(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
-		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
-		"ruleId":                              autorest.Encode("path", ruleID),
-		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":                       autorest.Encode("path", workspaceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"ruleId":            autorest.Encode("path", ruleID),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -114,7 +111,7 @@ func (client ActionsClient) ListByAlertRulePreparer(ctx context.Context, resourc
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -161,7 +158,7 @@ func (client ActionsClient) listByAlertRuleNextResults(ctx context.Context, last
 }
 
 // ListByAlertRuleComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ActionsClient) ListByAlertRuleComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result ActionsListIterator, err error) {
+func (client ActionsClient) ListByAlertRuleComplete(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string) (result ActionsListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ActionsClient.ListByAlertRule")
 		defer func() {
@@ -172,6 +169,6 @@ func (client ActionsClient) ListByAlertRuleComplete(ctx context.Context, resourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByAlertRule(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID)
+	result.page, err = client.ListByAlertRule(ctx, resourceGroupName, workspaceName, ruleID)
 	return
 }

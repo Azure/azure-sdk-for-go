@@ -42,7 +42,7 @@ func NewServiceLocationsClientWithBaseURI(baseURI string, subscriptionID string)
 	return ServiceLocationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists all of the available peering service locations for the specified kind of peering.
+// List lists all of the available locations for peering service.
 func (client ServiceLocationsClient) List(ctx context.Context) (result ServiceLocationListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceLocationsClient.List")

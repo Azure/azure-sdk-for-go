@@ -49,9 +49,9 @@ type RetryOptions struct {
 
 var (
 	// StatusCodesForRetry is the default set of HTTP status code for which the policy will retry.
-	StatusCodesForRetry = [6]int{
+	// Changing the value of StatusCodesForRetry will affect all clients that use the default values.
+	StatusCodesForRetry = []int{
 		http.StatusRequestTimeout,      // 408
-		http.StatusTooManyRequests,     // 429
 		http.StatusInternalServerError, // 500
 		http.StatusBadGateway,          // 502
 		http.StatusServiceUnavailable,  // 503
@@ -62,12 +62,20 @@ var (
 // DefaultRetryOptions returns an instance of RetryOptions initialized with default values.
 func DefaultRetryOptions() RetryOptions {
 	return RetryOptions{
-		StatusCodes:   StatusCodesForRetry[:],
+		StatusCodes:   StatusCodesForRetry,
 		MaxTries:      defaultMaxTries,
 		TryTimeout:    1 * time.Minute,
 		RetryDelay:    4 * time.Second,
 		MaxRetryDelay: 120 * time.Second,
 	}
+}
+
+type ctxWithRetryOptionsKey struct{}
+
+// WithRetryOptions adds the specified RetryOptions to the parent context.
+// Use this to specify custom RetryOptions at the API-call level.
+func WithRetryOptions(parent context.Context, options RetryOptions) context.Context {
+	return context.WithValue(parent, ctxWithRetryOptionsKey{}, options)
 }
 
 func (o RetryOptions) calcDelay(try int32) time.Duration { // try is >=1; never 0
@@ -105,6 +113,11 @@ type retryPolicy struct {
 }
 
 func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err error) {
+	options := p.options
+	// check if the retry options have been overridden for this call
+	if override := ctx.Value(ctxWithRetryOptionsKey{}); override != nil {
+		options = override.(RetryOptions)
+	}
 	// Exponential retry algorithm: ((2 ^ attempt) - 1) * delay * random(0.8, 1.2)
 	// When to retry: connection failure or temporary/timeout.
 	if req.Body != nil {
@@ -134,14 +147,14 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		}
 
 		// Set the time for this particular retry operation and then Do the operation.
-		tryCtx, tryCancel := context.WithTimeout(ctx, p.options.TryTimeout)
+		tryCtx, tryCancel := context.WithTimeout(ctx, options.TryTimeout)
 		resp, err = req.Next(tryCtx) // Make the request
 		tryCancel()
 		if shouldLog {
 			Log().Write(LogRetryPolicy, fmt.Sprintf("Err=%v, response=%v\n", err, resp))
 		}
 
-		if err == nil && !resp.HasStatusCode(p.options.StatusCodes...) {
+		if err == nil && !resp.HasStatusCode(options.StatusCodes...) {
 			// if there is no error and the response code isn't in the list of retry codes then we're done.
 			return
 		} else if ctx.Err() != nil {
@@ -155,7 +168,7 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		// drain before retrying so nothing is leaked
 		resp.Drain()
 
-		if try == p.options.MaxTries {
+		if try == options.MaxTries {
 			// max number of tries has been reached, don't sleep again
 			return
 		}
@@ -163,7 +176,7 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		// use the delay from retry-after if available
 		delay, ok := resp.RetryAfter()
 		if !ok {
-			delay = p.options.calcDelay(try)
+			delay = options.calcDelay(try)
 		}
 		if shouldLog {
 			Log().Write(LogRetryPolicy, fmt.Sprintf("Try=%d, Delay=%v\n", try, delay))

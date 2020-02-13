@@ -212,6 +212,35 @@ func TestRetryPolicyIsNotRetriable(t *testing.T) {
 	}
 }
 
+func TestWithRetryOptions(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.RepeatResponse(9, mock.WithStatusCode(http.StatusRequestTimeout))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	defaultOptions := testRetryOptions()
+	pl := NewPipeline(srv, NewRetryPolicy(defaultOptions))
+	customOptions := *defaultOptions
+	customOptions.MaxTries = 10
+	customOptions.MaxRetryDelay = 200 * time.Millisecond
+	retryCtx := WithRetryOptions(context.Background(), customOptions)
+	req := NewRequest(http.MethodGet, srv.URL())
+	body := newRewindTrackingBody("stuff")
+	req.SetBody(body)
+	resp, err := pl.Do(retryCtx, req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if body.rcount != 9 {
+		t.Fatalf("unexpected rewind count: %d", body.rcount)
+	}
+	if !body.closed {
+		t.Fatal("request body wasn't closed")
+	}
+}
+
 // TODO: add test for retry failing to read response body
 
 // TODO: add test for per-retry timeout failed but e2e succeeded

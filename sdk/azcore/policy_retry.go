@@ -21,14 +21,11 @@ const (
 // RetryOptions configures the retry policy's behavior.
 type RetryOptions struct {
 	// MaxTries specifies the maximum number of attempts an operation will be tried before producing an error (0=default).
-	// A value of zero means that you accept our default policy. A value of 1 means 1 try and no retries.
+	// A value of zero means that you accept the default value. A value of 1 means 1 try and no retries.
 	MaxTries int32
 
 	// TryTimeout indicates the maximum time allowed for any single try of an HTTP request.
-	// A value of zero means that you accept our default timeout. NOTE: When transferring large amounts
-	// of data, the default TryTimeout will probably not be sufficient. You should override this value
-	// based on the bandwidth available to the host machine and proximity to the service. A good
-	// starting point may be something like (60 seconds per MB of anticipated-payload-size).
+	// A value of zero means that you accept the default timeout.
 	TryTimeout time.Duration
 
 	// RetryDelay specifies the amount of delay to use before retrying an operation (0=default).

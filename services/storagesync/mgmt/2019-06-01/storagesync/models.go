@@ -1969,7 +1969,7 @@ func (scp ServiceCreateParameters) MarshalJSON() ([]byte, error) {
 // ServiceProperties storage Sync Service Properties object.
 type ServiceProperties struct {
 	// StorageSyncServiceStatus - READ-ONLY; Storage Sync service status.
-	StorageSyncServiceStatus *int32 `json:"storageSyncServiceStatus,omitempty"`
+	StorageSyncServiceStatus *string `json:"storageSyncServiceStatus,omitempty"`
 	// StorageSyncServiceUID - READ-ONLY; Storage Sync service Uid
 	StorageSyncServiceUID *string `json:"storageSyncServiceUid,omitempty"`
 }

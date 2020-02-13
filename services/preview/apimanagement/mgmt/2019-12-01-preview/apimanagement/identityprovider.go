@@ -50,7 +50,7 @@ func NewIdentityProviderClientWithBaseURI(baseURI string, subscriptionID string)
 // identityProviderName - identity Provider Type identifier.
 // parameters - create parameters.
 // ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
-func (client IdentityProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderContract, ifMatch string) (result IdentityProviderContract, err error) {
+func (client IdentityProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderCreateContract, ifMatch string) (result IdentityProviderContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IdentityProviderClient.CreateOrUpdate")
 		defer func() {
@@ -67,11 +67,11 @@ func (client IdentityProviderClient) CreateOrUpdate(ctx context.Context, resourc
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.IdentityProviderContractProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.IdentityProviderContractProperties.ClientID", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "parameters.IdentityProviderContractProperties.ClientID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-					{Target: "parameters.IdentityProviderContractProperties.ClientSecret", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.IdentityProviderContractProperties.ClientSecret", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "parameters.IdentityProviderCreateContractProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.IdentityProviderCreateContractProperties.ClientID", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "parameters.IdentityProviderCreateContractProperties.ClientID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+					{Target: "parameters.IdentityProviderCreateContractProperties.ClientSecret", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "parameters.IdentityProviderCreateContractProperties.ClientSecret", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("apimanagement.IdentityProviderClient", "CreateOrUpdate", err.Error())
 	}
@@ -98,7 +98,7 @@ func (client IdentityProviderClient) CreateOrUpdate(ctx context.Context, resourc
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client IdentityProviderClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderContract, ifMatch string) (*http.Request, error) {
+func (client IdentityProviderClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderCreateContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"identityProviderName": autorest.Encode("path", identityProviderName),
 		"resourceGroupName":    autorest.Encode("path", resourceGroupName),

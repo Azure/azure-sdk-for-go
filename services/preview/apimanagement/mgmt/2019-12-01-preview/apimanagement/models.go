@@ -2461,8 +2461,6 @@ type AuthorizationServerContractBaseProperties struct {
 	DefaultScope *string `json:"defaultScope,omitempty"`
 	// BearerTokenSendingMethods - Specifies the mechanism by which access token is passed to the API.
 	BearerTokenSendingMethods *[]BearerTokenSendingMethod `json:"bearerTokenSendingMethods,omitempty"`
-	// ClientSecret - Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-	ClientSecret *string `json:"clientSecret,omitempty"`
 	// ResourceOwnerUsername - Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username.
 	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
 	// ResourceOwnerPassword - Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password.
@@ -2481,6 +2479,8 @@ type AuthorizationServerContractProperties struct {
 	GrantTypes *[]GrantType `json:"grantTypes,omitempty"`
 	// ClientID - Client or app id registered with this authorization server.
 	ClientID *string `json:"clientId,omitempty"`
+	// ClientSecret - Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+	ClientSecret *string `json:"clientSecret,omitempty"`
 	// Description - Description of the authorization server. Can contain HTML formatting tags.
 	Description *string `json:"description,omitempty"`
 	// AuthorizationMethods - HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional.
@@ -2497,8 +2497,6 @@ type AuthorizationServerContractProperties struct {
 	DefaultScope *string `json:"defaultScope,omitempty"`
 	// BearerTokenSendingMethods - Specifies the mechanism by which access token is passed to the API.
 	BearerTokenSendingMethods *[]BearerTokenSendingMethod `json:"bearerTokenSendingMethods,omitempty"`
-	// ClientSecret - Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-	ClientSecret *string `json:"clientSecret,omitempty"`
 	// ResourceOwnerUsername - Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username.
 	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
 	// ResourceOwnerPassword - Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password.
@@ -2590,6 +2588,8 @@ type AuthorizationServerUpdateContractProperties struct {
 	GrantTypes *[]GrantType `json:"grantTypes,omitempty"`
 	// ClientID - Client or app id registered with this authorization server.
 	ClientID *string `json:"clientId,omitempty"`
+	// ClientSecret - Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+	ClientSecret *string `json:"clientSecret,omitempty"`
 	// Description - Description of the authorization server. Can contain HTML formatting tags.
 	Description *string `json:"description,omitempty"`
 	// AuthorizationMethods - HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional.
@@ -2606,8 +2606,6 @@ type AuthorizationServerUpdateContractProperties struct {
 	DefaultScope *string `json:"defaultScope,omitempty"`
 	// BearerTokenSendingMethods - Specifies the mechanism by which access token is passed to the API.
 	BearerTokenSendingMethods *[]BearerTokenSendingMethod `json:"bearerTokenSendingMethods,omitempty"`
-	// ClientSecret - Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-	ClientSecret *string `json:"clientSecret,omitempty"`
 	// ResourceOwnerUsername - Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username.
 	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
 	// ResourceOwnerPassword - Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password.
@@ -4824,6 +4822,104 @@ type IdentityProviderContractProperties struct {
 	PasswordResetPolicyName *string `json:"passwordResetPolicyName,omitempty"`
 }
 
+// IdentityProviderCreateContract identity Provider details.
+type IdentityProviderCreateContract struct {
+	// IdentityProviderCreateContractProperties - Identity Provider contract properties.
+	*IdentityProviderCreateContractProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type for API Management resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IdentityProviderCreateContract.
+func (ipcc IdentityProviderCreateContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ipcc.IdentityProviderCreateContractProperties != nil {
+		objectMap["properties"] = ipcc.IdentityProviderCreateContractProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IdentityProviderCreateContract struct.
+func (ipcc *IdentityProviderCreateContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var identityProviderCreateContractProperties IdentityProviderCreateContractProperties
+				err = json.Unmarshal(*v, &identityProviderCreateContractProperties)
+				if err != nil {
+					return err
+				}
+				ipcc.IdentityProviderCreateContractProperties = &identityProviderCreateContractProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ipcc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ipcc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ipcc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// IdentityProviderCreateContractProperties the external Identity Providers like Facebook, Google,
+// Microsoft, Twitter or Azure Active Directory which can be used to enable access to the API Management
+// service developer portal for all users.
+type IdentityProviderCreateContractProperties struct {
+	// ClientID - Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for Google login, App ID for Microsoft.
+	ClientID *string `json:"clientId,omitempty"`
+	// ClientSecret - Client secret of the Application in external Identity Provider, used to authenticate login request. For example, it is App Secret for Facebook login, API Key for Google login, Public Key for Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+	ClientSecret *string `json:"clientSecret,omitempty"`
+	// Type - Identity Provider Type identifier. Possible values include: 'Facebook', 'Google', 'Microsoft', 'Twitter', 'Aad', 'AadB2C'
+	Type IdentityProviderType `json:"type,omitempty"`
+	// SigninTenant - The TenantId to use instead of Common when logging into Active Directory
+	SigninTenant *string `json:"signinTenant,omitempty"`
+	// AllowedTenants - List of Allowed Tenants when configuring Azure Active Directory login.
+	AllowedTenants *[]string `json:"allowedTenants,omitempty"`
+	// Authority - OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
+	Authority *string `json:"authority,omitempty"`
+	// SignupPolicyName - Signup Policy Name. Only applies to AAD B2C Identity Provider.
+	SignupPolicyName *string `json:"signupPolicyName,omitempty"`
+	// SigninPolicyName - Signin Policy Name. Only applies to AAD B2C Identity Provider.
+	SigninPolicyName *string `json:"signinPolicyName,omitempty"`
+	// ProfileEditingPolicyName - Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.
+	ProfileEditingPolicyName *string `json:"profileEditingPolicyName,omitempty"`
+	// PasswordResetPolicyName - Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
+	PasswordResetPolicyName *string `json:"passwordResetPolicyName,omitempty"`
+}
+
 // IdentityProviderList list of all the Identity Providers configured on the service instance.
 type IdentityProviderList struct {
 	autorest.Response `json:"-"`
@@ -6349,7 +6445,91 @@ func (nvc *NamedValueContract) UnmarshalJSON(body []byte) error {
 type NamedValueContractProperties struct {
 	// DisplayName - Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.
 	DisplayName *string `json:"displayName,omitempty"`
-	// Value - Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace.
+	// Value - Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+	Value *string `json:"value,omitempty"`
+	// Tags - Optional tags that when provided can be used to filter the NamedValue list.
+	Tags *[]string `json:"tags,omitempty"`
+	// Secret - Determines whether the value is a secret and should be encrypted or not. Default value is false.
+	Secret *bool `json:"secret,omitempty"`
+}
+
+// NamedValueCreateContract namedValue details.
+type NamedValueCreateContract struct {
+	// NamedValueCreateContractProperties - NamedValue entity contract properties for PUT operation.
+	*NamedValueCreateContractProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type for API Management resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NamedValueCreateContract.
+func (nvcc NamedValueCreateContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nvcc.NamedValueCreateContractProperties != nil {
+		objectMap["properties"] = nvcc.NamedValueCreateContractProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for NamedValueCreateContract struct.
+func (nvcc *NamedValueCreateContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var namedValueCreateContractProperties NamedValueCreateContractProperties
+				err = json.Unmarshal(*v, &namedValueCreateContractProperties)
+				if err != nil {
+					return err
+				}
+				nvcc.NamedValueCreateContractProperties = &namedValueCreateContractProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				nvcc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				nvcc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				nvcc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// NamedValueCreateContractProperties namedValue Contract properties.
+type NamedValueCreateContractProperties struct {
+	// DisplayName - Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Value - Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
 	Value *string `json:"value,omitempty"`
 	// Tags - Optional tags that when provided can be used to filter the NamedValue list.
 	Tags *[]string `json:"tags,omitempty"`
@@ -6958,6 +7138,92 @@ func (ocpc *OpenidConnectProviderContract) UnmarshalJSON(body []byte) error {
 
 // OpenidConnectProviderContractProperties openID Connect Providers Contract.
 type OpenidConnectProviderContractProperties struct {
+	// DisplayName - User-friendly OpenID Connect Provider name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - User-friendly description of OpenID Connect Provider.
+	Description *string `json:"description,omitempty"`
+	// MetadataEndpoint - Metadata endpoint URI.
+	MetadataEndpoint *string `json:"metadataEndpoint,omitempty"`
+	// ClientID - Client ID of developer console which is the client application.
+	ClientID *string `json:"clientId,omitempty"`
+	// ClientSecret - Client Secret of developer console which is the client application.
+	ClientSecret *string `json:"clientSecret,omitempty"`
+}
+
+// OpenidConnectProviderCreateContract openId Connect Provider details.
+type OpenidConnectProviderCreateContract struct {
+	// OpenidConnectProviderCreateContractProperties - OpenId Connect Provider contract properties.
+	*OpenidConnectProviderCreateContractProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type for API Management resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OpenidConnectProviderCreateContract.
+func (ocpcc OpenidConnectProviderCreateContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ocpcc.OpenidConnectProviderCreateContractProperties != nil {
+		objectMap["properties"] = ocpcc.OpenidConnectProviderCreateContractProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for OpenidConnectProviderCreateContract struct.
+func (ocpcc *OpenidConnectProviderCreateContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var openidConnectProviderCreateContractProperties OpenidConnectProviderCreateContractProperties
+				err = json.Unmarshal(*v, &openidConnectProviderCreateContractProperties)
+				if err != nil {
+					return err
+				}
+				ocpcc.OpenidConnectProviderCreateContractProperties = &openidConnectProviderCreateContractProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ocpcc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ocpcc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ocpcc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// OpenidConnectProviderCreateContractProperties openID Connect Providers Contract.
+type OpenidConnectProviderCreateContractProperties struct {
 	// DisplayName - User-friendly OpenID Connect Provider name.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Description - User-friendly description of OpenID Connect Provider.
@@ -7844,6 +8110,13 @@ type PortalDelegationSettingsProperties struct {
 	UserRegistration *RegistrationDelegationSettingsProperties `json:"userRegistration,omitempty"`
 }
 
+// PortalSettingValidationKeyContract client or app secret used in IdentityProviders, Aad, OpenID or OAuth.
+type PortalSettingValidationKeyContract struct {
+	autorest.Response `json:"-"`
+	// ValidationKey - This is secret value of the validation key in portal settings.
+	ValidationKey *string `json:"validationKey,omitempty"`
+}
+
 // PortalSigninSettingProperties sign-in settings contract properties.
 type PortalSigninSettingProperties struct {
 	// Enabled - Redirect Anonymous users to the Sign-In page.
@@ -8332,6 +8605,13 @@ type ProductUpdateProperties struct {
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
+}
+
+// PropertyValueContract client or app secret used in IdentityProviders, Aad, OpenID or OAuth.
+type PropertyValueContract struct {
+	autorest.Response `json:"-"`
+	// Value - This is secret value of the NamedValue entity.
+	Value *string `json:"value,omitempty"`
 }
 
 // QuotaCounterCollection paged Quota Counter list representation.

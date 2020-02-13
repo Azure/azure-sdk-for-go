@@ -49,7 +49,7 @@ func NewNamedValueClientWithBaseURI(baseURI string, subscriptionID string) Named
 // namedValueID - identifier of the NamedValue.
 // parameters - create parameters.
 // ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
-func (client NamedValueClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, parameters NamedValueContract, ifMatch string) (result NamedValueCreateOrUpdateFuture, err error) {
+func (client NamedValueClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, parameters NamedValueCreateContract, ifMatch string) (result NamedValueCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NamedValueClient.CreateOrUpdate")
 		defer func() {
@@ -69,15 +69,15 @@ func (client NamedValueClient) CreateOrUpdate(ctx context.Context, resourceGroup
 			Constraints: []validation.Constraint{{Target: "namedValueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "namedValueID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.NamedValueContractProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.NamedValueContractProperties.DisplayName", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "parameters.NamedValueContractProperties.DisplayName", Name: validation.MaxLength, Rule: 256, Chain: nil},
-						{Target: "parameters.NamedValueContractProperties.DisplayName", Name: validation.MinLength, Rule: 1, Chain: nil},
-						{Target: "parameters.NamedValueContractProperties.DisplayName", Name: validation.Pattern, Rule: `^[A-Za-z0-9-._]+$`, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "parameters.NamedValueCreateContractProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.NamedValueCreateContractProperties.DisplayName", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "parameters.NamedValueCreateContractProperties.DisplayName", Name: validation.MaxLength, Rule: 256, Chain: nil},
+						{Target: "parameters.NamedValueCreateContractProperties.DisplayName", Name: validation.MinLength, Rule: 1, Chain: nil},
+						{Target: "parameters.NamedValueCreateContractProperties.DisplayName", Name: validation.Pattern, Rule: `^[A-Za-z0-9-._]+$`, Chain: nil},
 					}},
-					{Target: "parameters.NamedValueContractProperties.Value", Name: validation.Null, Rule: true,
-						Chain: []validation.Constraint{{Target: "parameters.NamedValueContractProperties.Value", Name: validation.MaxLength, Rule: 4096, Chain: nil},
-							{Target: "parameters.NamedValueContractProperties.Value", Name: validation.MinLength, Rule: 1, Chain: nil},
+					{Target: "parameters.NamedValueCreateContractProperties.Value", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "parameters.NamedValueCreateContractProperties.Value", Name: validation.MaxLength, Rule: 4096, Chain: nil},
+							{Target: "parameters.NamedValueCreateContractProperties.Value", Name: validation.MinLength, Rule: 1, Chain: nil},
 						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("apimanagement.NamedValueClient", "CreateOrUpdate", err.Error())
@@ -99,7 +99,7 @@ func (client NamedValueClient) CreateOrUpdate(ctx context.Context, resourceGroup
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client NamedValueClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, parameters NamedValueContract, ifMatch string) (*http.Request, error) {
+func (client NamedValueClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, parameters NamedValueCreateContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"namedValueId":      autorest.Encode("path", namedValueID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -564,6 +564,96 @@ func (client NamedValueClient) ListByServiceComplete(ctx context.Context, resour
 		}()
 	}
 	result.page, err = client.ListByService(ctx, resourceGroupName, serviceName, filter, top, skip)
+	return
+}
+
+// ListValue gets the secret value of the NamedValue.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// namedValueID - identifier of the NamedValue.
+func (client NamedValueClient) ListValue(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string) (result PropertyValueContract, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NamedValueClient.ListValue")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: serviceName,
+			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
+		{TargetValue: namedValueID,
+			Constraints: []validation.Constraint{{Target: "namedValueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "namedValueID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("apimanagement.NamedValueClient", "ListValue", err.Error())
+	}
+
+	req, err := client.ListValuePreparer(ctx, resourceGroupName, serviceName, namedValueID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.NamedValueClient", "ListValue", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListValueSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "apimanagement.NamedValueClient", "ListValue", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListValueResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.NamedValueClient", "ListValue", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListValuePreparer prepares the ListValue request.
+func (client NamedValueClient) ListValuePreparer(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"namedValueId":      autorest.Encode("path", namedValueID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serviceName":       autorest.Encode("path", serviceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-12-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/namedValues/{namedValueId}/listValue", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListValueSender sends the ListValue request. The method will close the
+// http.Response Body if it receives an error.
+func (client NamedValueClient) ListValueSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListValueResponder handles the response to the ListValue request. The method always
+// closes the http.Response Body.
+func (client NamedValueClient) ListValueResponder(resp *http.Response) (result PropertyValueContract, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 

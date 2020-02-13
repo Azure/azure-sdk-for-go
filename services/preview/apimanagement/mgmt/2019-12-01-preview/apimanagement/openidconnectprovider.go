@@ -50,7 +50,7 @@ func NewOpenIDConnectProviderClientWithBaseURI(baseURI string, subscriptionID st
 // opid - identifier of the OpenID Connect Provider.
 // parameters - create parameters.
 // ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
-func (client OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderContract, ifMatch string) (result OpenidConnectProviderContract, err error) {
+func (client OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderCreateContract, ifMatch string) (result OpenidConnectProviderContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OpenIDConnectProviderClient.CreateOrUpdate")
 		defer func() {
@@ -70,11 +70,12 @@ func (client OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, re
 			Constraints: []validation.Constraint{{Target: "opid", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "opid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.OpenidConnectProviderContractProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.OpenidConnectProviderContractProperties.DisplayName", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "parameters.OpenidConnectProviderContractProperties.DisplayName", Name: validation.MaxLength, Rule: 50, Chain: nil}}},
-					{Target: "parameters.OpenidConnectProviderContractProperties.MetadataEndpoint", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.OpenidConnectProviderContractProperties.ClientID", Name: validation.Null, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "parameters.OpenidConnectProviderCreateContractProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.OpenidConnectProviderCreateContractProperties.DisplayName", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "parameters.OpenidConnectProviderCreateContractProperties.DisplayName", Name: validation.MaxLength, Rule: 50, Chain: nil}}},
+					{Target: "parameters.OpenidConnectProviderCreateContractProperties.MetadataEndpoint", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.OpenidConnectProviderCreateContractProperties.ClientID", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.OpenidConnectProviderCreateContractProperties.ClientSecret", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("apimanagement.OpenIDConnectProviderClient", "CreateOrUpdate", err.Error())
 	}
@@ -101,7 +102,7 @@ func (client OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, re
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client OpenIDConnectProviderClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderContract, ifMatch string) (*http.Request, error) {
+func (client OpenIDConnectProviderClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderCreateContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"opid":              autorest.Encode("path", opid),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),

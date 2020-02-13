@@ -1660,7 +1660,9 @@ type BlobServicePropertiesProperties struct {
 	DefaultServiceVersion *string `json:"defaultServiceVersion,omitempty"`
 	// DeleteRetentionPolicy - The blob service properties for blob soft delete.
 	DeleteRetentionPolicy *DeleteRetentionPolicy `json:"deleteRetentionPolicy,omitempty"`
-	// AutomaticSnapshotPolicyEnabled - Automatic Snapshot is enabled if set to true.
+	// IsVersioningEnabled - Versioning is enabled if set to true.
+	IsVersioningEnabled *bool `json:"isVersioningEnabled,omitempty"`
+	// AutomaticSnapshotPolicyEnabled - Deprecated in favor of isVersioningEnabled property.
 	AutomaticSnapshotPolicyEnabled *bool `json:"automaticSnapshotPolicyEnabled,omitempty"`
 	// ChangeFeed - The blob service properties for change feed events.
 	ChangeFeed *ChangeFeed `json:"changeFeed,omitempty"`

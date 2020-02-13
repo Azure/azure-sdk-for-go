@@ -233,7 +233,7 @@ func TestWithRetryOptions(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if body.rcount != 9 {
+	if body.rcount != int(customOptions.MaxTries-1) {
 		t.Fatalf("unexpected rewind count: %d", body.rcount)
 	}
 	if !body.closed {

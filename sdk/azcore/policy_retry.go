@@ -70,6 +70,7 @@ func DefaultRetryOptions() RetryOptions {
 	}
 }
 
+// used as a context key for adding/retrieving RetryOptions
 type ctxWithRetryOptionsKey struct{}
 
 // WithRetryOptions adds the specified RetryOptions to the parent context.

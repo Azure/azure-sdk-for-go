@@ -49,9 +49,9 @@ func NewQuotaByCounterKeysClientWithBaseURI(baseURI string, subscriptionID strin
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
 // quotaCounterKey - quota counter key identifier.This is the result of expression defined in counter-key
-// attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
-// accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible
-// by "ba" key
+// attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then
+// it���s accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be
+// accessible by "ba" key
 func (client QuotaByCounterKeysClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string) (result QuotaCounterCollection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/QuotaByCounterKeysClient.ListByService")
@@ -140,9 +140,9 @@ func (client QuotaByCounterKeysClient) ListByServiceResponder(resp *http.Respons
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
 // quotaCounterKey - quota counter key identifier.This is the result of expression defined in counter-key
-// attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
-// accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible
-// by "ba" key
+// attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then
+// it���s accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be
+// accessible by "ba" key
 // parameters - the value of the quota counter to be applied to all quota counter periods.
 func (client QuotaByCounterKeysClient) Update(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, parameters QuotaCounterValueContractProperties) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {

@@ -65,9 +65,7 @@ func (client PrivateEndpointConnectionsClient) CreateOrUpdate(ctx context.Contex
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.PrivateEndpointConnectionProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.PrivateEndpointConnectionProperties.PrivateLinkServiceConnectionState", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.PrivateEndpointConnectionProperties.PrivateLinkServiceConnectionState.Status", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "parameters.PrivateEndpointConnectionProperties.PrivateLinkServiceConnectionState.Description", Name: validation.Null, Rule: true, Chain: nil},
-					}},
+					Chain: []validation.Constraint{{Target: "parameters.PrivateEndpointConnectionProperties.PrivateLinkServiceConnectionState.Description", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("sql.PrivateEndpointConnectionsClient", "CreateOrUpdate", err.Error())
 	}

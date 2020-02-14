@@ -116,16 +116,15 @@ func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *test
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to get a token but expected none")
 	}
-	var authErr *AuthenticationFailedError
-	if !errors.As(err, &authErr) {
-		t.Fatalf("Expected Error Type: AuthenticationFailedError, ReceivedErrorType: %T", err)
+	if tk.Token != tokenValue {
+		t.Fatalf("Received an incorrect access token")
 	}
-	if len(err.Error()) == 0 {
-		t.Fatalf("Did not create an appropriate error message")
+	if tk.ExpiresOn.IsZero() {
+		t.Fatalf("Received an incorrect time in the response")
 	}
 }
 

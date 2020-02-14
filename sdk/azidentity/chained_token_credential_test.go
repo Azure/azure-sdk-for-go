@@ -55,7 +55,7 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create environment credential: %v", err)
 	}
-	cred, err := NewChainedTokenCredential(envCred, secCred)
+	cred, err := NewChainedTokenCredential(secCred, envCred)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

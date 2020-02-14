@@ -107,7 +107,7 @@ func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *test
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	// It doesn't matter what credential we add to the chain as long as it is not a nil credential.
+	// The chain has the same credential twice, since it doesn't matter what credential we add to the chain as long as it is not a nil credential.
 	// Most credentials will not be instantiated if the conditions do not exist to allow them to be used, thus returning a
 	// CredentialUnavailable error from the constructor. In order to test the CredentialUnavailable functionality for
 	// ChainedTokenCredential we have to mock with two valid credentials, but the first will fail since the first response queued

@@ -203,3 +203,10 @@ func WithHeader(k, v string) ResponseOption {
 		mr.headers.Add(k, v)
 	})
 }
+
+// WithError sets the HTTP response's error to the specified value.
+func WithError(e error) ResponseOption {
+	return fnRespOpt(func(mr *mockResponse) {
+		mr.err = e
+	})
+}

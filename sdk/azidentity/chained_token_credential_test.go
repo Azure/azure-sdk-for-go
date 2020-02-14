@@ -55,7 +55,7 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create environment credential: %v", err)
 	}
-	cred, err := NewChainedTokenCredential(secCred, envCred)
+	cred, err := NewChainedTokenCredential(envCred, secCred)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -87,6 +87,38 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
+	}
+	var authErr *AuthenticationFailedError
+	if !errors.As(err, &authErr) {
+		t.Fatalf("Expected Error Type: AuthenticationFailedError, ReceivedErrorType: %T", err)
+	}
+	if len(err.Error()) == 0 {
+		t.Fatalf("Did not create an appropriate error message")
+	}
+}
+
+func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithError(&CredentialUnavailableError{CredentialType: "MockCredential", Message: "Mocking a credential unavailable error"}))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	testURL := srv.URL()
+	secCred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &testURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+	// It doesn't matter what credential we add to the chain as long as it is not a nil credential.
+	// Most credentials will not be instantiated if the conditions do not exist to allow them to be used, thus returning a
+	// CredentialUnavailable error from the constructor. In order to test the CredentialUnavailable functionality for
+	// ChainedTokenCredential we have to mock with two valid credentials, but the first will fail since the first response queued
+	// in the test server is a CredentialUnavailable error.
+	cred, err := NewChainedTokenCredential(secCred, secCred)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	if err != nil {
+		t.Fatalf("Received an error when attempting to get a token but expected none")
 	}
 	var authErr *AuthenticationFailedError
 	if !errors.As(err, &authErr) {

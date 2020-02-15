@@ -196,3 +196,10 @@ func WithBody(b []byte) ResponseOption {
 		mr.body = b
 	})
 }
+
+// WithHeader adds the specified header and value to the HTTP response.
+func WithHeader(k, v string) ResponseOption {
+	return fnRespOpt(func(mr *mockResponse) {
+		mr.headers.Add(k, v)
+	})
+}

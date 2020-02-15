@@ -97,6 +97,37 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	}
 }
 
+func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendError(&CredentialUnavailableError{CredentialType: "MockCredential", Message: "Mocking a credential unavailable error"})
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	testURL := srv.URL()
+	secCred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &testURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+	// The chain has the same credential twice, since it doesn't matter what credential we add to the chain as long as it is not a nil credential.
+	// Most credentials will not be instantiated if the conditions do not exist to allow them to be used, thus returning a
+	// CredentialUnavailable error from the constructor. In order to test the CredentialUnavailable functionality for
+	// ChainedTokenCredential we have to mock with two valid credentials, but the first will fail since the first response queued
+	// in the test server is a CredentialUnavailable error.
+	cred, err := NewChainedTokenCredential(secCred, secCred)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	if err != nil {
+		t.Fatalf("Received an error when attempting to get a token but expected none")
+	}
+	if tk.Token != tokenValue {
+		t.Fatalf("Received an incorrect access token")
+	}
+	if tk.ExpiresOn.IsZero() {
+		t.Fatalf("Received an incorrect time in the response")
+	}
+}
+
 func TestBearerPolicy_ChainedTokenCredential(t *testing.T) {
 	err := initEnvironmentVarsForTest()
 	if err != nil {

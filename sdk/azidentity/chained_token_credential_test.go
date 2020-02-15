@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"testing"
 
@@ -100,7 +101,7 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithError(&CredentialUnavailableError{CredentialType: "MockCredential", Message: "Mocking a credential unavailable error"}))
+	srv.AppendError(&CredentialUnavailableError{CredentialType: "MockCredential", Message: "Mocking a credential unavailable error"})
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	testURL := srv.URL()
 	secCred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &testURL})
@@ -120,6 +121,7 @@ func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *test
 	if err != nil {
 		t.Fatalf("Received an error when attempting to get a token but expected none")
 	}
+	fmt.Println("CRED:" + cred.GetAuthenticatedCredentialType().credential.String() + " ClientID:" + cred.GetAuthenticatedCredentialType().credentialClientID)
 	if tk.Token != tokenValue {
 		t.Fatalf("Received an incorrect access token")
 	}

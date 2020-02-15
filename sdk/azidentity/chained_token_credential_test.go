@@ -6,7 +6,6 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 	"testing"
 
@@ -121,7 +120,6 @@ func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *test
 	if err != nil {
 		t.Fatalf("Received an error when attempting to get a token but expected none")
 	}
-	fmt.Println("CRED:" + cred.GetAuthenticatedCredentialType().credential.String() + " ClientID:" + cred.GetAuthenticatedCredentialType().credentialClientID)
 	if tk.Token != tokenValue {
 		t.Fatalf("Received an incorrect access token")
 	}

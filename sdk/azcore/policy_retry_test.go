@@ -212,7 +212,7 @@ func TestRetryPolicyIsNotRetriable(t *testing.T) {
 	}
 }
 
-func TestContextWithRetryOptions(t *testing.T) {
+func TestWithRetryOptions(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.RepeatResponse(9, mock.WithStatusCode(http.StatusRequestTimeout))
@@ -222,7 +222,7 @@ func TestContextWithRetryOptions(t *testing.T) {
 	customOptions := *defaultOptions
 	customOptions.MaxRetries = 10
 	customOptions.MaxRetryDelay = 200 * time.Millisecond
-	retryCtx := ContextWithRetryOptions(context.Background(), customOptions)
+	retryCtx := WithRetryOptions(context.Background(), customOptions)
 	req := NewRequest(http.MethodGet, srv.URL())
 	body := newRewindTrackingBody("stuff")
 	req.SetBody(body)

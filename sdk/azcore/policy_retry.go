@@ -69,9 +69,9 @@ func DefaultRetryOptions() RetryOptions {
 // used as a context key for adding/retrieving RetryOptions
 type ctxWithRetryOptionsKey struct{}
 
-// ContextWithRetryOptions adds the specified RetryOptions to the parent context.
+// WithRetryOptions adds the specified RetryOptions to the parent context.
 // Use this to specify custom RetryOptions at the API-call level.
-func ContextWithRetryOptions(parent context.Context, options RetryOptions) context.Context {
+func WithRetryOptions(parent context.Context, options RetryOptions) context.Context {
 	return context.WithValue(parent, ctxWithRetryOptionsKey{}, options)
 }
 

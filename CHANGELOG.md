@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v39.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| containerservice | 2020-02-01 |
+
 ## `v39.1.0`
 
 ### New Packages

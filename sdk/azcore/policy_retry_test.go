@@ -61,10 +61,10 @@ func TestRetryPolicyFailOnStatusCode(t *testing.T) {
 	if resp.StatusCode != http.StatusInternalServerError {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if r := srv.Requests(); r != defaultMaxTries {
-		t.Fatalf("wrong retry count, got %d expected %d", r, defaultMaxTries)
+	if r := srv.Requests(); r != defaultMaxRetries+1 {
+		t.Fatalf("wrong request count, got %d expected %d", r, defaultMaxRetries+1)
 	}
-	if body.rcount != defaultMaxTries-1 {
+	if body.rcount != defaultMaxRetries {
 		t.Fatalf("unexpected rewind count: %d", body.rcount)
 	}
 	if !body.closed {
@@ -116,10 +116,10 @@ func TestRetryPolicyFailOnError(t *testing.T) {
 	if resp != nil {
 		t.Fatal("unexpected response")
 	}
-	if r := srv.Requests(); r != defaultMaxTries {
-		t.Fatalf("wrong retry count, got %d expected %d", r, defaultMaxTries)
+	if r := srv.Requests(); r != defaultMaxRetries+1 {
+		t.Fatalf("wrong request count, got %d expected %d", r, defaultMaxRetries+1)
 	}
-	if body.rcount != defaultMaxTries-1 {
+	if body.rcount != defaultMaxRetries {
 		t.Fatalf("unexpected rewind count: %d", body.rcount)
 	}
 	if !body.closed {
@@ -145,10 +145,10 @@ func TestRetryPolicySuccessWithRetryComplex(t *testing.T) {
 	if resp.StatusCode != http.StatusAccepted {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if r := srv.Requests(); r != defaultMaxTries {
-		t.Fatalf("wrong retry count, got %d expected %d", r, 3)
+	if r := srv.Requests(); r != defaultMaxRetries+1 {
+		t.Fatalf("wrong request count, got %d expected %d", r, defaultMaxRetries+1)
 	}
-	if body.rcount != defaultMaxTries-1 {
+	if body.rcount != defaultMaxRetries {
 		t.Fatalf("unexpected rewind count: %d", body.rcount)
 	}
 	if !body.closed {
@@ -220,7 +220,7 @@ func TestContextWithRetryOptions(t *testing.T) {
 	defaultOptions := testRetryOptions()
 	pl := NewPipeline(srv, NewRetryPolicy(defaultOptions))
 	customOptions := *defaultOptions
-	customOptions.MaxTries = 10
+	customOptions.MaxRetries = 10
 	customOptions.MaxRetryDelay = 200 * time.Millisecond
 	retryCtx := ContextWithRetryOptions(context.Background(), customOptions)
 	req := NewRequest(http.MethodGet, srv.URL())
@@ -233,7 +233,7 @@ func TestContextWithRetryOptions(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if body.rcount != int(customOptions.MaxTries-1) {
+	if body.rcount != int(customOptions.MaxRetries-1) {
 		t.Fatalf("unexpected rewind count: %d", body.rcount)
 	}
 	if !body.closed {

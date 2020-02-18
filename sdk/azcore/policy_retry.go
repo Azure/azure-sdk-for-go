@@ -15,27 +15,26 @@ import (
 )
 
 const (
-	defaultMaxTries = 4
+	defaultMaxRetries = 3
 )
 
 // RetryOptions configures the retry policy's behavior.
 type RetryOptions struct {
-	// MaxTries specifies the maximum number of attempts an operation will be tried before producing an error (0=default).
-	// A value of zero means that you accept the default value. A value of 1 means 1 try and no retries.
-	MaxTries int32
+	// MaxRetries specifies the maximum number of attempts a failed operation will be retried
+	// before producing an error.  A value of zero means one try and no retries.
+	MaxRetries int32
 
 	// TryTimeout indicates the maximum time allowed for any single try of an HTTP request.
-	// A value of zero means that you accept the default timeout.
 	TryTimeout time.Duration
 
-	// RetryDelay specifies the amount of delay to use before retrying an operation (0=default).
+	// RetryDelay specifies the amount of delay to use before retrying an operation.
 	// The delay increases exponentially with each retry up to a maximum specified by MaxRetryDelay.
 	// If you specify 0, then you must also specify 0 for MaxRetryDelay.
 	// If you specify RetryDelay, then you must also specify MaxRetryDelay, and MaxRetryDelay should be
 	// equal to or greater than RetryDelay.
 	RetryDelay time.Duration
 
-	// MaxRetryDelay specifies the maximum delay allowed before retrying an operation (0=default).
+	// MaxRetryDelay specifies the maximum delay allowed before retrying an operation.
 	// If you specify 0, then you must also specify 0 for RetryDelay.
 	MaxRetryDelay time.Duration
 
@@ -46,7 +45,7 @@ type RetryOptions struct {
 
 var (
 	// StatusCodesForRetry is the default set of HTTP status code for which the policy will retry.
-	// Changing the value of StatusCodesForRetry will affect all clients that use the default values.
+	// Changing its value will affect future created clients that use the default values.
 	StatusCodesForRetry = []int{
 		http.StatusRequestTimeout,      // 408
 		http.StatusInternalServerError, // 500
@@ -60,7 +59,7 @@ var (
 func DefaultRetryOptions() RetryOptions {
 	return RetryOptions{
 		StatusCodes:   StatusCodesForRetry,
-		MaxTries:      defaultMaxTries,
+		MaxRetries:    defaultMaxRetries,
 		TryTimeout:    1 * time.Minute,
 		RetryDelay:    4 * time.Second,
 		MaxRetryDelay: 120 * time.Second,
@@ -166,7 +165,7 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		// drain before retrying so nothing is leaked
 		resp.Drain()
 
-		if try == options.MaxTries {
+		if try == options.MaxRetries+1 {
 			// max number of tries has been reached, don't sleep again
 			return
 		}

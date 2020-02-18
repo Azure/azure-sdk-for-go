@@ -22,6 +22,7 @@ const (
 	HeaderIfUnmodifiedSince  = "If-Unmodified-Since"
 	HeaderMetadata           = "Metadata"
 	HeaderRange              = "Range"
+	HeaderRetryAfter         = "Retry-After"
 	HeaderURLEncoded         = "application/x-www-form-urlencoded"
 	HeaderUserAgent          = "User-Agent"
 	HeaderXmsDate            = "x-ms-date"

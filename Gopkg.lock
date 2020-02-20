@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:46eaa8d8d35d2004f218ad6c48b6c81e0b1c3457915f55a40831b5af3fb43b76"
+  digest = "1:0f5cec94ea46ab37f6b95e52a4b70761ada57b809059aba2d332ec0813416920"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -17,8 +17,8 @@
     "tracing",
   ]
   pruneopts = "UT"
-  revision = "20a15b4e99645bc30a1cf8de518a6e8ac331c864"
-  version = "v13.3.2"
+  revision = "327ff6ce8b902f9afe648d5ea8ff6dc26c26f150"
+  version = "v13.4.0"
 
 [[projects]]
   digest = "1:f313598719f69ec4edbcd75b0f2ef1c8ed9e00f6ff3d7583ac3966db2d70d326"
@@ -86,12 +86,12 @@
   version = "v0.2.0"
 
 [[projects]]
-  digest = "1:15b5cc79aad436d47019f814fde81a10221c740dc8ddf769221a65097fb6c2e9"
+  digest = "1:7218fd69ff5436d016101bbc6183cdc289aa45ac37b48e78846318e4ef389bea"
   name = "github.com/kr/text"
   packages = ["."]
   pruneopts = "UT"
-  revision = "e2ffdb16a802fe2bb95e2e35ff34f0e53aeef34f"
-  version = "v0.1.0"
+  revision = "702c74938df48b97370179f33ce2107bd7ff3b3e"
+  version = "v0.2.0"
 
 [[projects]]
   digest = "1:5d231480e1c64a726869bc4142d270184c419749d34f167646baa21008eb0a79"
@@ -150,11 +150,22 @@
     "pkcs12/internal/rc2",
   ]
   pruneopts = "UT"
-  revision = "69ecbb4d6d5dab05e49161c6e77ea40a030884e1"
+  revision = "1d94cc7ab1c630336ab82ccb9c9cda72a875c382"
+
+[[projects]]
+  digest = "1:467bb8fb8fa786448b8d486cd0bb7c1a5577dcd7310441aa02a20110cd9f727d"
+  name = "golang.org/x/mod"
+  packages = [
+    "module",
+    "semver",
+  ]
+  pruneopts = "UT"
+  revision = "ed3ec21bb8e252814c380df79a80f366440ddb2d"
+  version = "v0.2.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:22bcbe2280ed955f8207e503921c3999bd63de4b07daf41a5306e34e492e4f57"
+  digest = "1:d85ff5b2e5b485021f821f10030cdf46f723c3c84c9482835a4c9c462a7edfba"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -162,11 +173,20 @@
     "internal/fastwalk",
     "internal/gopathwalk",
     "internal/imports",
-    "internal/module",
-    "internal/semver",
   ]
   pruneopts = "UT"
-  revision = "2f3ba24bd6e75104fb11be4edf062de340ffd1ab"
+  revision = "5fb17a1e7b9b41efa62ea3f2c593156af7609897"
+
+[[projects]]
+  branch = "master"
+  digest = "1:918a46e4a2fb83df33f668f5a6bd51b2996775d073fce1800d3ec01b0a5ddd2b"
+  name = "golang.org/x/xerrors"
+  packages = [
+    ".",
+    "internal",
+  ]
+  pruneopts = "UT"
+  revision = "9bdfabe68543c54f90421aeb9a60ef8061b5b544"
 
 [[projects]]
   branch = "v1"

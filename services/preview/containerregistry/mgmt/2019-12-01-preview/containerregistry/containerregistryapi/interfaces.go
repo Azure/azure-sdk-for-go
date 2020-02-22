@@ -34,6 +34,8 @@ type RegistriesClientAPI interface {
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result containerregistry.RegistryListResultPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result containerregistry.RegistryListResultIterator, err error)
 	ListCredentials(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.RegistryListCredentialsResult, err error)
+	ListPrivateLinkResources(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.PrivateLinkResourceListResultPage, err error)
+	ListPrivateLinkResourcesComplete(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.PrivateLinkResourceListResultIterator, err error)
 	ListUsages(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.RegistryUsageListResult, err error)
 	RegenerateCredential(ctx context.Context, resourceGroupName string, registryName string, regenerateCredentialParameters containerregistry.RegenerateCredentialParameters) (result containerregistry.RegistryListCredentialsResult, err error)
 	Update(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters containerregistry.RegistryUpdateParameters) (result containerregistry.RegistriesUpdateFuture, err error)
@@ -48,6 +50,17 @@ type OperationsClientAPI interface {
 }
 
 var _ OperationsClientAPI = (*containerregistry.OperationsClient)(nil)
+
+// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
+type PrivateEndpointConnectionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, registryName string, privateEndpointConnectionName string, privateEndpointConnection containerregistry.PrivateEndpointConnection) (result containerregistry.PrivateEndpointConnectionsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, registryName string, privateEndpointConnectionName string) (result containerregistry.PrivateEndpointConnectionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, registryName string, privateEndpointConnectionName string) (result containerregistry.PrivateEndpointConnection, err error)
+	List(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.PrivateEndpointConnectionListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.PrivateEndpointConnectionListResultIterator, err error)
+}
+
+var _ PrivateEndpointConnectionsClientAPI = (*containerregistry.PrivateEndpointConnectionsClient)(nil)
 
 // ReplicationsClientAPI contains the set of methods on the ReplicationsClient type.
 type ReplicationsClientAPI interface {

@@ -41,21 +41,6 @@ type RestorableDroppedDatabasesClientAPI interface {
 
 var _ RestorableDroppedDatabasesClientAPI = (*sql.RestorableDroppedDatabasesClient)(nil)
 
-// ServersClientAPI contains the set of methods on the ServersClient type.
-type ServersClientAPI interface {
-	CheckNameAvailability(ctx context.Context, parameters sql.CheckNameAvailabilityRequest) (result sql.CheckNameAvailabilityResponse, err error)
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.Server) (result sql.ServersCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServersDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.Server, err error)
-	List(ctx context.Context) (result sql.ServerListResultPage, err error)
-	ListComplete(ctx context.Context) (result sql.ServerListResultIterator, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.ServerListResultPage, err error)
-	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result sql.ServerListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerUpdate) (result sql.ServersUpdateFuture, err error)
-}
-
-var _ ServersClientAPI = (*sql.ServersClient)(nil)
-
 // ServerConnectionPoliciesClientAPI contains the set of methods on the ServerConnectionPoliciesClient type.
 type ServerConnectionPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerConnectionPolicy) (result sql.ServerConnectionPolicy, err error)
@@ -880,26 +865,6 @@ type ManagedInstancesClientAPI interface {
 
 var _ ManagedInstancesClientAPI = (*sql.ManagedInstancesClient)(nil)
 
-// ManagedDatabaseRestoreDetailsClientAPI contains the set of methods on the ManagedDatabaseRestoreDetailsClient type.
-type ManagedDatabaseRestoreDetailsClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabaseRestoreDetailsResult, err error)
-}
-
-var _ ManagedDatabaseRestoreDetailsClientAPI = (*sql.ManagedDatabaseRestoreDetailsClient)(nil)
-
-// ManagedDatabasesClientAPI contains the set of methods on the ManagedDatabasesClient type.
-type ManagedDatabasesClientAPI interface {
-	CompleteRestore(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.CompleteDatabaseRestoreDefinition) (result sql.ManagedDatabasesCompleteRestoreFuture, err error)
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.ManagedDatabase) (result sql.ManagedDatabasesCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabasesDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabase, err error)
-	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedDatabaseListResultPage, err error)
-	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedDatabaseListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.ManagedDatabaseUpdate) (result sql.ManagedDatabasesUpdateFuture, err error)
-}
-
-var _ ManagedDatabasesClientAPI = (*sql.ManagedDatabasesClient)(nil)
-
 // PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
 type PrivateEndpointConnectionsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, parameters sql.PrivateEndpointConnection) (result sql.PrivateEndpointConnectionsCreateOrUpdateFuture, err error)
@@ -920,6 +885,21 @@ type PrivateLinkResourcesClientAPI interface {
 
 var _ PrivateLinkResourcesClientAPI = (*sql.PrivateLinkResourcesClient)(nil)
 
+// ServersClientAPI contains the set of methods on the ServersClient type.
+type ServersClientAPI interface {
+	CheckNameAvailability(ctx context.Context, parameters sql.CheckNameAvailabilityRequest) (result sql.CheckNameAvailabilityResponse, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.Server) (result sql.ServersCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServersDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.Server, err error)
+	List(ctx context.Context) (result sql.ServerListResultPage, err error)
+	ListComplete(ctx context.Context) (result sql.ServerListResultIterator, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.ServerListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result sql.ServerListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerUpdate) (result sql.ServersUpdateFuture, err error)
+}
+
+var _ ServersClientAPI = (*sql.ServersClient)(nil)
+
 // ServerAzureADAdministratorsClientAPI contains the set of methods on the ServerAzureADAdministratorsClient type.
 type ServerAzureADAdministratorsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerAzureADAdministrator) (result sql.ServerAzureADAdministratorsCreateOrUpdateFuture, err error)
@@ -937,6 +917,38 @@ type CapabilitiesClientAPI interface {
 }
 
 var _ CapabilitiesClientAPI = (*sql.CapabilitiesClient)(nil)
+
+// LongTermRetentionManagedInstanceBackupsClientAPI contains the set of methods on the LongTermRetentionManagedInstanceBackupsClient type.
+type LongTermRetentionManagedInstanceBackupsClientAPI interface {
+	Delete(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.LongTermRetentionManagedInstanceBackupsDeleteFuture, err error)
+	DeleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture, err error)
+	Get(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.ManagedInstanceLongTermRetentionBackup, err error)
+	GetByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string) (result sql.ManagedInstanceLongTermRetentionBackup, err error)
+	ListByDatabase(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState1) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState1) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByInstance(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState2) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState2) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByLocation(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState3) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByLocationComplete(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState3) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupDatabase(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState4) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupDatabaseComplete(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState4) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupInstance(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState5) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupInstanceComplete(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState5) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+	ListByResourceGroupLocation(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState6) (result sql.ManagedInstanceLongTermRetentionBackupListResultPage, err error)
+	ListByResourceGroupLocationComplete(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState sql.DatabaseState6) (result sql.ManagedInstanceLongTermRetentionBackupListResultIterator, err error)
+}
+
+var _ LongTermRetentionManagedInstanceBackupsClientAPI = (*sql.LongTermRetentionManagedInstanceBackupsClient)(nil)
+
+// ManagedInstanceLongTermRetentionPoliciesClientAPI contains the set of methods on the ManagedInstanceLongTermRetentionPoliciesClient type.
+type ManagedInstanceLongTermRetentionPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.ManagedInstanceLongTermRetentionPolicy) (result sql.ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedInstanceLongTermRetentionPolicy, err error)
+	ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedInstanceLongTermRetentionPolicyListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedInstanceLongTermRetentionPolicyListResultIterator, err error)
+}
+
+var _ ManagedInstanceLongTermRetentionPoliciesClientAPI = (*sql.ManagedInstanceLongTermRetentionPoliciesClient)(nil)
 
 // WorkloadGroupsClientAPI contains the set of methods on the WorkloadGroupsClient type.
 type WorkloadGroupsClientAPI interface {
@@ -959,3 +971,18 @@ type WorkloadClassifiersClientAPI interface {
 }
 
 var _ WorkloadClassifiersClientAPI = (*sql.WorkloadClassifiersClient)(nil)
+
+// ManagedDatabasesClientAPI contains the set of methods on the ManagedDatabasesClient type.
+type ManagedDatabasesClientAPI interface {
+	CompleteRestore(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.CompleteDatabaseRestoreDefinition) (result sql.ManagedDatabasesCompleteRestoreFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.ManagedDatabase) (result sql.ManagedDatabasesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabasesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabase, err error)
+	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedDatabaseListResultPage, err error)
+	ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedDatabaseListResultIterator, err error)
+	ListInaccessibleByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedDatabaseListResultPage, err error)
+	ListInaccessibleByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedDatabaseListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.ManagedDatabaseUpdate) (result sql.ManagedDatabasesUpdateFuture, err error)
+}
+
+var _ ManagedDatabasesClientAPI = (*sql.ManagedDatabasesClient)(nil)

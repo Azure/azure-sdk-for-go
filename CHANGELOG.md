@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## `v39.3.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| containerservice | 2019-10-27-preview |
+| synapse | 2019-06-01-preview |
+
 ## `v39.2.0`
 
 ### New Packages

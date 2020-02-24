@@ -119,9 +119,8 @@ func (client TableResourcesClient) CreateUpdateTablePreparer(ctx context.Context
 // CreateUpdateTableSender sends the CreateUpdateTable request. The method will close the
 // http.Response Body if it receives an error.
 func (client TableResourcesClient) CreateUpdateTableSender(req *http.Request) (future TableResourcesCreateUpdateTableFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -210,9 +209,8 @@ func (client TableResourcesClient) DeleteTablePreparer(ctx context.Context, reso
 // DeleteTableSender sends the DeleteTable request. The method will close the
 // http.Response Body if it receives an error.
 func (client TableResourcesClient) DeleteTableSender(req *http.Request) (future TableResourcesDeleteTableFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -306,8 +304,7 @@ func (client TableResourcesClient) GetTablePreparer(ctx context.Context, resourc
 // GetTableSender sends the GetTable request. The method will close the
 // http.Response Body if it receives an error.
 func (client TableResourcesClient) GetTableSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetTableResponder handles the response to the GetTable request. The method always
@@ -398,8 +395,7 @@ func (client TableResourcesClient) GetTableThroughputPreparer(ctx context.Contex
 // GetTableThroughputSender sends the GetTableThroughput request. The method will close the
 // http.Response Body if it receives an error.
 func (client TableResourcesClient) GetTableThroughputSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetTableThroughputResponder handles the response to the GetTableThroughput request. The method always
@@ -487,8 +483,7 @@ func (client TableResourcesClient) ListTablesPreparer(ctx context.Context, resou
 // ListTablesSender sends the ListTables request. The method will close the
 // http.Response Body if it receives an error.
 func (client TableResourcesClient) ListTablesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListTablesResponder handles the response to the ListTables request. The method always
@@ -580,9 +575,8 @@ func (client TableResourcesClient) UpdateTableThroughputPreparer(ctx context.Con
 // UpdateTableThroughputSender sends the UpdateTableThroughput request. The method will close the
 // http.Response Body if it receives an error.
 func (client TableResourcesClient) UpdateTableThroughputSender(req *http.Request) (future TableResourcesUpdateTableThroughputFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

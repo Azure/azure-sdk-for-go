@@ -143,10 +143,18 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 			return
 		}
 
-		// Set the time for this particular retry operation and then Do the operation.
+		// Set the per-try time for this particular retry operation and then Do the operation.
 		tryCtx, tryCancel := context.WithTimeout(ctx, options.TryTimeout)
 		resp, err = req.Next(tryCtx) // Make the request
-		tryCancel()
+		if req.bodyDownloadEnabled() {
+			// if auto-downloading of the response body is enabled then
+			// it's been read and closed by this point so cancel the timeout
+			tryCancel()
+		} else {
+			// wrap the response body in a responseBodyReader.
+			// closing the responseBodyReader will cancel the timeout.
+			resp.Body = &responseBodyReader{rb: resp.Body, cancelFunc: tryCancel}
+		}
 		if shouldLog {
 			Log().Write(LogRetryPolicy, fmt.Sprintf("Err=%v, response=%v\n", err, resp))
 		}
@@ -215,4 +223,19 @@ func (b *retryableRequestBody) realClose() error {
 		return c.Close()
 	}
 	return nil
+}
+
+// used when returning the response body to the caller for reading/closing
+type responseBodyReader struct {
+	rb         io.ReadCloser
+	cancelFunc context.CancelFunc
+}
+
+func (r *responseBodyReader) Read(p []byte) (int, error) {
+	return r.rb.Read(p)
+}
+
+func (r *responseBodyReader) Close() error {
+	r.cancelFunc()
+	return r.rb.Close()
 }

@@ -43,7 +43,7 @@ func TestDefaultTokenCredential_ExcludeMSICredential(t *testing.T) {
 
 }
 
-func TestDefaultTokenCredential_ExcludeCliCredential(t *testing.T) {
+func TestDefaultTokenCredential_ExcludeCLICredential(t *testing.T) {
 	err := initEnvironmentVarsForTest()
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)

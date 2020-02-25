@@ -15,7 +15,7 @@ type AzureCLICredential struct {
 	shellClient shellClient
 }
 
-// AzureCLICredentialOptions contains the parameters for the ShellClient to execute the Azure CLI command that will return an Access Token.
+// AzureCLICredentialOptions contains the parameters for the shellClient to execute the Azure CLI command that will return an Access Token.
 type AzureCLICredentialOptions struct {
 	shellClientOption shellClient
 }
@@ -24,8 +24,12 @@ type AzureCLICredentialOptions struct {
 func NewAzureCLICredential(options *AzureCLICredentialOptions) *AzureCLICredential {
 	var client = newAzureCLICredentialClient()
 	if options == nil {
-		options = options.setDefaultCLIOptions(client)
+		var shellClient shellClient
+		shellClient = client
+
+		return &AzureCLICredential{client: client, shellClient: shellClient}
 	}
+
 	return &AzureCLICredential{client: client, shellClient: options.shellClientOption}
 }
 
@@ -40,9 +44,4 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequ
 // AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.
 func (c *AzureCLICredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
-}
-
-func (c *AzureCLICredentialOptions) setDefaultCLIOptions(CLIClient *azureCLICredentialClient) *AzureCLICredentialOptions {
-	c.shellClientOption = CLIClient
-	return c
 }

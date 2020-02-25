@@ -42,7 +42,7 @@ type shellClient interface {
 type azureCLICredentialClient struct {
 }
 
-// newAzureCLICredentialClient creates a new instance of the AzureCLICredentialClient.
+// newAzureCLICredentialClient creates a new instance of the azureCLICredentialClient.
 func newAzureCLICredentialClient() *azureCLICredentialClient {
 	return &azureCLICredentialClient{}
 }

@@ -10,15 +10,9 @@ stages:
         - template: ../variables/globals.yml
       strategy:
         matrix:
-          Linux_Go112:
-            vm.image: 'ubuntu-18.04'
-            go.version: '1.12'
           Linux_Go113:
             vm.image: 'ubuntu-18.04'
             go.version: '1.13'
-          Windows_Go112:
-            vm.image: 'windows-2019'
-            go.version: '1.12'
           Windows_Go113:
             vm.image: 'windows-2019'
             go.version: '1.13'

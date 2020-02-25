@@ -9,24 +9,24 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// Enables authentication to Azure Active Directory using Azure CLI to generated an access token.
+// AzureCLICredential enables authentication to Azure Active Directory using Azure CLI to generated an access token.
 type AzureCLICredential struct {
-	Client      *azureCLICredentialClient
+	client      *azureCLICredentialClient
 	shellClient shellClient
 }
 
 // AzureCLICredentialOptions contains the parameters for the ShellClient to execute the Azure CLI command that will return an Access Token.
-type AzureCLICredentialOption struct {
+type AzureCLICredentialOptions struct {
 	shellClientOption shellClient
 }
 
 // NewAzureCLICredential creates an instance of AzureCLICredential to authenticate against Azure Active Directory with Azure CLI Credential's token.
-func NewAzureCLICredential(options *AzureCLICredentialOption) *AzureCLICredential {
-	var Client = newAzureCLICredentialClient()
+func NewAzureCLICredential(options *AzureCLICredentialOptions) *AzureCLICredential {
+	var client = newAzureCLICredentialClient()
 	if options == nil {
-		options = options.setDefaultCLIOptions(Client)
+		options = options.setDefaultCLIOptions(client)
 	}
-	return &AzureCLICredential{Client: Client, shellClient: options.shellClientOption}
+	return &AzureCLICredential{client: client, shellClient: options.shellClientOption}
 }
 
 // GetToken obtains a token from Azure CLI, using Azure CLI to generated an access token to authenticate.
@@ -34,7 +34,7 @@ func NewAzureCLICredential(options *AzureCLICredentialOption) *AzureCLICredentia
 // ctx: controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service Client calls.
 func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return c.Client.authenticate(ctx, opts.Scopes, c.shellClient)
+	return c.client.authenticate(ctx, opts.Scopes, c.shellClient)
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.
@@ -42,7 +42,7 @@ func (c *AzureCLICredential) AuthenticationPolicy(options azcore.AuthenticationP
 	return newBearerTokenPolicy(c, options)
 }
 
-func (c *AzureCLICredentialOption) setDefaultCLIOptions(CLIClient *azureCLICredentialClient) *AzureCLICredentialOption {
+func (c *AzureCLICredentialOptions) setDefaultCLIOptions(CLIClient *azureCLICredentialClient) *AzureCLICredentialOptions {
 	c.shellClientOption = CLIClient
 	return c
 }

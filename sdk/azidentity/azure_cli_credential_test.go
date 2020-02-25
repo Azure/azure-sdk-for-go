@@ -32,8 +32,8 @@ func TestCLICredential_GetTokenSuccessMock(t *testing.T) {
 	var shellClientMock shellClient
 	shellClientMock = &getTokenMock{}
 
-	var options *AzureCLICredentialOption
-	options = &AzureCLICredentialOption{shellClientOption: shellClientMock}
+	var options *AzureCLICredentialOptions
+	options = &AzureCLICredentialOptions{shellClientOption: shellClientMock}
 	cred := NewAzureCLICredential(options)
 
 	accessToken, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{mockScope}})
@@ -57,8 +57,8 @@ func TestCLICredential_AzNotLogin(t *testing.T) {
 	var shellClientMock shellClient
 	shellClientMock = &azNotLoginMock{}
 
-	var options *AzureCLICredentialOption
-	options = &AzureCLICredentialOption{shellClientOption: shellClientMock}
+	var options *AzureCLICredentialOptions
+	options = &AzureCLICredentialOptions{shellClientOption: shellClientMock}
 
 	cred := NewAzureCLICredential(options)
 
@@ -85,8 +85,8 @@ func TestCLICredential_WinAzureCLINotInstalled(t *testing.T) {
 	var shellClientMock shellClient
 	shellClientMock = &winAzureCLINotInstalledMock{}
 
-	var options *AzureCLICredentialOption
-	options = &AzureCLICredentialOption{shellClientOption: shellClientMock}
+	var options *AzureCLICredentialOptions
+	options = &AzureCLICredentialOptions{shellClientOption: shellClientMock}
 
 	cred := NewAzureCLICredential(options)
 
@@ -113,8 +113,8 @@ func TestCLICredential_LinuxAzureCLINotInstalled(t *testing.T) {
 	var shellClientMock shellClient
 	shellClientMock = &linuxAzureCLINotInstalledMock{}
 
-	var options *AzureCLICredentialOption
-	options = &AzureCLICredentialOption{shellClientOption: shellClientMock}
+	var options *AzureCLICredentialOptions
+	options = &AzureCLICredentialOptions{shellClientOption: shellClientMock}
 
 	cred := NewAzureCLICredential(options)
 
@@ -141,8 +141,8 @@ func TestCLICredential_MacAzureCLINotInstalled(t *testing.T) {
 	var shellClientMock shellClient
 	shellClientMock = &macAzureCLINotInstalledMock{}
 
-	var options *AzureCLICredentialOption
-	options = &AzureCLICredentialOption{shellClientOption: shellClientMock}
+	var options *AzureCLICredentialOptions
+	options = &AzureCLICredentialOptions{shellClientOption: shellClientMock}
 
 	cred := NewAzureCLICredential(options)
 

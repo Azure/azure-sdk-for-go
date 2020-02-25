@@ -19,10 +19,10 @@ import (
 )
 
 const (
-	DefaultSuffix        = "/.default"
-	AzureCLINotInstalled = "Azure CLI not installed"
-	AzNotLogIn           = "ERROR: Please run 'az login'"
-	WinAzureCLIError     = "'az' is not recognized"
+	suffix               = "/.default"
+	azureCLINotInstalled = "Azure CLI not installed"
+	azNotLogIn           = "ERROR: Please run 'az login'"
+	winAzureCLIError     = "'az' is not recognized"
 	invalidResourceError = "Resource is not in expected format. Only alphanumeric characters, '.', ':', '-', and '/' are allowed"
 )
 
@@ -38,16 +38,16 @@ type shellClient interface {
 	getAzureCLIAccessToken(command string) ([]byte, string, error)
 }
 
-// AzureCLICredentialClient provides the base for authenticating with Azure CLI Credential.
+// azureCLICredentialClient provides the client for authenticating with Azure CLI Credential.
 type azureCLICredentialClient struct {
 }
 
-// NewAzureCLICredentialClient creates a new instance of the AzureCLICredentialClient.
+// newAzureCLICredentialClient creates a new instance of the AzureCLICredentialClient.
 func newAzureCLICredentialClient() *azureCLICredentialClient {
 	return &azureCLICredentialClient{}
 }
 
-// Authenticate runs a Azure CLI command for a Azure CLI Credential and returns the resulting Access Token or
+// authenticate runs Azure CLI command for Azure CLI Credential and returns the resulting Access Token or
 // an error in case of authentication failure.
 // ctx: The current request context
 // scopes: The scopes required for the token
@@ -75,20 +75,20 @@ func (c *azureCLICredentialClient) authenticate(ctx context.Context, scopes []st
 
 	// Determining Azure CLI errors
 	if err != nil {
-		isLoginError := strings.HasPrefix(errout, AzNotLogIn)
+		isLoginError := strings.HasPrefix(errout, azNotLogIn)
 
 		// Is Azure CLI installed or not
-		isWinError := strings.HasPrefix(errout, WinAzureCLIError)
+		isWinError := strings.HasPrefix(errout, winAzureCLIError)
 		isOtherOsError, err := regexp.MatchString("az:(.*)not found", errout)
 		if err != nil {
 			return nil, err
 		} else if isWinError || isOtherOsError {
-			return nil, &AuthenticationFailedError{inner: errors.New(AzureCLINotInstalled)}
+			return nil, &AuthenticationFailedError{inner: errors.New(azureCLINotInstalled)}
 		}
 
 		// Is user log in or not
 		if isLoginError {
-			return nil, &AuthenticationFailedError{inner: errors.New(AzNotLogIn)}
+			return nil, &AuthenticationFailedError{inner: errors.New(azNotLogIn)}
 		}
 
 		return nil, &AuthenticationFailedError{inner: errors.New(errout)}
@@ -145,11 +145,11 @@ func (c *azureCLICredentialClient) createAccessToken(output []byte) (*azcore.Acc
 }
 
 func (c *azureCLICredentialClient) scopeToResource(scopes []string) string {
-	if !strings.HasSuffix(scopes[0], DefaultSuffix) {
+	if !strings.HasSuffix(scopes[0], suffix) {
 		return scopes[0]
 	}
 
-	resource := scopes[0][0:strings.Index(scopes[0], ".default")]
+	resource := scopes[0][0:strings.Index(scopes[0], suffix)]
 
 	return resource
 }

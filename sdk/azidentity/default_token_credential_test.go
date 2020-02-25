@@ -49,7 +49,7 @@ func TestDefaultTokenCredential_ExcludeCliCredential(t *testing.T) {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}
 	_ = os.Setenv("MSI_ENDPOINT", "http://localhost:3000")
-	cred, err := NewDefaultTokenCredential(&DefaultTokenCredentialOptions{ExcludeCliCredential: true})
+	cred, err := NewDefaultTokenCredential(&DefaultTokenCredentialOptions{ExcludeCLICredential: true})
 	if err != nil {
 		t.Fatalf("Did not expect to receive an error in creating the credential")
 	}
@@ -65,7 +65,7 @@ func TestDefaultTokenCredential_ExcludeAllCredentials(t *testing.T) {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}
 	var credUnavailable *CredentialUnavailableError
-	_, err = NewDefaultTokenCredential(&DefaultTokenCredentialOptions{ExcludeEnvironmentCredential: false, ExcludeMSICredential: true, ExcludeCliCredential: true})
+	_, err = NewDefaultTokenCredential(&DefaultTokenCredentialOptions{ExcludeEnvironmentCredential: false, ExcludeMSICredential: true, ExcludeCLICredential: true})
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
 	}

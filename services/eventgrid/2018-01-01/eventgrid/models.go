@@ -1933,6 +1933,50 @@ type MediaLiveEventTrackDiscontinuityDetectedEventData struct {
 	DiscontinuityGap *string `json:"discontinuityGap,omitempty"`
 }
 
+// RedisExportRDBCompletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Cache.ExportRDBCompleted event.
+type RedisExportRDBCompletedEventData struct {
+	// Timestamp - The time at which the event occurred.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Name - The name of this event.
+	Name *string `json:"name,omitempty"`
+	// Status - The status of this event. Failed or  succeeded
+	Status *string `json:"status,omitempty"`
+}
+
+// RedisImportRDBCompletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Cache.ImportRDBCompleted event.
+type RedisImportRDBCompletedEventData struct {
+	// Timestamp - The time at which the event occurred.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Name - The name of this event.
+	Name *string `json:"name,omitempty"`
+	// Status - The status of this event. Failed or  succeeded
+	Status *string `json:"status,omitempty"`
+}
+
+// RedisPatchingCompletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Cache.PatchingCompleted event.
+type RedisPatchingCompletedEventData struct {
+	// Timestamp - The time at which the event occurred.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Name - The name of this event.
+	Name *string `json:"name,omitempty"`
+	// Status - The status of this event. Failed or  succeeded
+	Status *string `json:"status,omitempty"`
+}
+
+// RedisScalingCompletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Cache.ScalingCompleted event.
+type RedisScalingCompletedEventData struct {
+	// Timestamp - The time at which the event occurred.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Name - The name of this event.
+	Name *string `json:"name,omitempty"`
+	// Status - The status of this event. Failed or  succeeded
+	Status *string `json:"status,omitempty"`
+}
+
 // ResourceActionCancelData schema of the Data property of an EventGridEvent for an
 // Microsoft.Resources.ResourceActionCancel event. This is raised when a resource action operation is
 // canceled.

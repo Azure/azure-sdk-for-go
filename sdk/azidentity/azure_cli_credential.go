@@ -18,10 +18,8 @@ type AzureCLICredential struct {
 // NewAzureCLICredential creates an instance of AzureCLICredential to authenticate against Azure Active Directory with Azure CLI Credential's token.
 func NewAzureCLICredential(execManager execManager) *AzureCLICredential {
 	var client = newAzureCLICredentialClient()
-
 	if execManager == nil {
-		execManager = &execManage{}
-		return &AzureCLICredential{client: client, execManager: execManager}
+		return &AzureCLICredential{client: client, execManager: &execManagerStruct{}}
 	}
 
 	return &AzureCLICredential{client: client, execManager: execManager}

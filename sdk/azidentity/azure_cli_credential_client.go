@@ -24,25 +24,17 @@ const (
 	invalidResourceError = "Resource is not in expected format. Only alphanumeric characters, '.', ':', '-', and '/' are allowed"
 )
 
-type azureCLIAccessToken struct {
-	Token        string `json:"accessToken"`
-	ExpiresOn    string `json:"expiresOn"`
-	Subscription string `json:"subscription"`
-	Tenant       string `json:"tenant"`
-	TokenType    string `json:"tokenType"`
-}
-
-// execManager that helps mock invoking a Azure CLI command and getting the result from standard output and error streams.
+// execManager that helps mock run Azure CLI command and getting the result from standard output and error streams.
 type execManager interface {
 	getAzureCLIAccessToken(resource string) ([]byte, string, error)
 }
 
-// azureCLICredentialClient provides the client for authenticating with Azure CLI Credential.
-type azureCLICredentialClient struct {
+// execManagerStruct implements the interface execManager.
+type execManagerStruct struct {
 }
 
-// execManage invokes Azure CLI command 'account get-access-token' to get a token.
-type execManage struct {
+// azureCLICredentialClient provides the client for authenticating with Azure CLI Credential.
+type azureCLICredentialClient struct {
 }
 
 // newAzureCLICredentialClient creates a new instance of the azureCLICredentialClient.
@@ -54,7 +46,7 @@ func newAzureCLICredentialClient() *azureCLICredentialClient {
 // an error in case of authentication failure.
 // ctx: The current request context
 // scopes: The scopes required for the token
-func (c *azureCLICredentialClient) authenticate(ctx context.Context, scopes []string, execManage execManager) (*azcore.AccessToken, error) {
+func (c *azureCLICredentialClient) authenticate(ctx context.Context, scopes []string, execManager execManager) (*azcore.AccessToken, error) {
 	// covert the scopes to a resource string
 	resource := c.scopeToResource(scopes)
 
@@ -68,7 +60,7 @@ func (c *azureCLICredentialClient) authenticate(ctx context.Context, scopes []st
 	}
 
 	// Execute Azure CLI command 'az account get-access-token --output json --resource' to get a token to authenticate
-	out, errout, err := execManage.getAzureCLIAccessToken(resource)
+	out, errout, err := execManager.getAzureCLIAccessToken(resource)
 	if err != nil {
 		return nil, &CredentialUnavailableError{Message: errout}
 	}
@@ -76,7 +68,8 @@ func (c *azureCLICredentialClient) authenticate(ctx context.Context, scopes []st
 	return c.createAccessToken(out)
 }
 
-func (c *execManage) getAzureCLIAccessToken(resource string) ([]byte, string, error) {
+// getAzureCLIAccessToken implements the execManager interface on execManagerSturct
+func (c *execManagerStruct) getAzureCLIAccessToken(resource string) ([]byte, string, error) {
 	var stderr bytes.Buffer
 	var stdout bytes.Buffer
 	var cmd *exec.Cmd
@@ -102,16 +95,22 @@ func (c *execManage) getAzureCLIAccessToken(resource string) ([]byte, string, er
 }
 
 func (c *azureCLICredentialClient) createAccessToken(output []byte) (*azcore.AccessToken, error) {
-	token := azureCLIAccessToken{}
+	value := struct {
+		// these are the only fields that we use
+		Token        string `json:"accessToken"`
+		ExpiresOn    string `json:"expiresOn"`
+		Subscription string `json:"subscription"`
+		Tenant       string `json:"tenant"`
+		TokenType    string `json:"tokenType"`
+	}{}
 	accessToken := &azcore.AccessToken{}
-
-	err := json.Unmarshal(output, &token)
+	err := json.Unmarshal(output, &value)
 	if err != nil {
 		return nil, err
 	}
 
 	// Parse expiresOn string to date as required time format
-	dateString := token.ExpiresOn
+	dateString := value.ExpiresOn
 	timeformat := "2006-01-02 15:04:05.999999"
 	expiresOnValue, err := time.ParseInLocation(timeformat, dateString, time.Local)
 	if err != nil {
@@ -119,7 +118,7 @@ func (c *azureCLICredentialClient) createAccessToken(output []byte) (*azcore.Acc
 	}
 
 	accessToken.ExpiresOn = expiresOnValue.In(time.UTC)
-	accessToken.Token = token.Token
+	accessToken.Token = value.Token
 
 	return accessToken, err
 }

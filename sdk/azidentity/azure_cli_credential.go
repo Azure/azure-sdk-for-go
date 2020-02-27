@@ -12,25 +12,19 @@ import (
 // AzureCLICredential enables authentication to Azure Active Directory using Azure CLI to generated an access token.
 type AzureCLICredential struct {
 	client      *azureCLICredentialClient
-	shellClient shellClient
-}
-
-// AzureCLICredentialOptions contains the parameters for the shellClient to execute the Azure CLI command that will return an Access Token.
-type AzureCLICredentialOptions struct {
-	shellClientOption shellClient
+	execManager execManager
 }
 
 // NewAzureCLICredential creates an instance of AzureCLICredential to authenticate against Azure Active Directory with Azure CLI Credential's token.
-func NewAzureCLICredential(options *AzureCLICredentialOptions) *AzureCLICredential {
+func NewAzureCLICredential(execManager execManager) *AzureCLICredential {
 	var client = newAzureCLICredentialClient()
-	if options == nil {
-		var shellClient shellClient
-		shellClient = client
 
-		return &AzureCLICredential{client: client, shellClient: shellClient}
+	if execManager == nil {
+		execManager = &execManage{}
+		return &AzureCLICredential{client: client, execManager: execManager}
 	}
 
-	return &AzureCLICredential{client: client, shellClient: options.shellClientOption}
+	return &AzureCLICredential{client: client, execManager: execManager}
 }
 
 // GetToken obtains a token from Azure CLI, using Azure CLI to generated an access token to authenticate.
@@ -38,7 +32,7 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) *AzureCLICredenti
 // ctx: controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service Client calls.
 func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return c.client.authenticate(ctx, opts.Scopes, c.shellClient)
+	return c.client.authenticate(ctx, opts.Scopes, c.execManager)
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.

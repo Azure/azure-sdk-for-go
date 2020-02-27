@@ -7,7 +7,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"os/exec"
 	"regexp"
@@ -20,9 +19,8 @@ import (
 
 const (
 	suffix               = "/.default"
-	azureCLINotInstalled = "Azure CLI not installed"
-	azNotLogIn           = "ERROR: Please run 'az login'"
-	winAzureCLIError     = "'az' is not recognized"
+	getTokenCommand      = "az account get-access-token -o json "
+	resourceArgumentName = "--resource "
 	invalidResourceError = "Resource is not in expected format. Only alphanumeric characters, '.', ':', '-', and '/' are allowed"
 )
 
@@ -34,12 +32,17 @@ type azureCLIAccessToken struct {
 	TokenType    string `json:"tokenType"`
 }
 
-type shellClient interface {
-	getAzureCLIAccessToken(command string) ([]byte, string, error)
+// execManager that helps mock invoking a Azure CLI command and getting the result from standard output and error streams.
+type execManager interface {
+	getAzureCLIAccessToken(resource string) ([]byte, string, error)
 }
 
 // azureCLICredentialClient provides the client for authenticating with Azure CLI Credential.
 type azureCLICredentialClient struct {
+}
+
+// execManage invokes Azure CLI command 'account get-access-token' to get a token.
+type execManage struct {
 }
 
 // newAzureCLICredentialClient creates a new instance of the azureCLICredentialClient.
@@ -51,53 +54,29 @@ func newAzureCLICredentialClient() *azureCLICredentialClient {
 // an error in case of authentication failure.
 // ctx: The current request context
 // scopes: The scopes required for the token
-func (c *azureCLICredentialClient) authenticate(ctx context.Context, scopes []string, credentialClient shellClient) (*azcore.AccessToken, error) {
-	// The command that Azure CLI would be run
-	command := "az account get-access-token --output json"
-	if scopes != nil {
+func (c *azureCLICredentialClient) authenticate(ctx context.Context, scopes []string, execManage execManager) (*azcore.AccessToken, error) {
+	// covert the scopes to a resource string
+	resource := c.scopeToResource(scopes)
 
-		// covert the scopes to a resource string
-		resource := c.scopeToResource(scopes)
-
-		// Validate the resource to make sure it doesn't include shell-meta characters since it gets sent as a command line argument to Azure CLI
-		isResourceMatch, error := regexp.MatchString("^[0-9a-zA-Z-.:/]+$", resource)
-		if error != nil {
-			return nil, error
-		}
-		if !isResourceMatch {
-			return nil, fmt.Errorf(invalidResourceError)
-		}
-
-		command = command + " --resource " + resource
+	// Validate the resource to make sure it doesn't include shell-meta characters since it gets sent as a command line argument to Azure CLI
+	isResourceMatch, error := regexp.MatchString("^[0-9a-zA-Z-.:/]+$", resource)
+	if error != nil {
+		return nil, error
 	}
-	// Execute Azure CLI command(az account get-access-token --output json --resource) to get a token to authenticate
-	out, errout, err := credentialClient.getAzureCLIAccessToken(command)
+	if !isResourceMatch {
+		return nil, fmt.Errorf(invalidResourceError)
+	}
 
-	// Determining Azure CLI errors
+	// Execute Azure CLI command 'az account get-access-token --output json --resource' to get a token to authenticate
+	out, errout, err := execManage.getAzureCLIAccessToken(resource)
 	if err != nil {
-		isLoginError := strings.HasPrefix(errout, azNotLogIn)
-
-		// Is Azure CLI installed or not
-		isWinError := strings.HasPrefix(errout, winAzureCLIError)
-		isOtherOsError, err := regexp.MatchString("az:(.*)not found", errout)
-		if err != nil {
-			return nil, err
-		} else if isWinError || isOtherOsError {
-			return nil, &AuthenticationFailedError{inner: errors.New(azureCLINotInstalled)}
-		}
-
-		// Is user log in or not
-		if isLoginError {
-			return nil, &AuthenticationFailedError{inner: errors.New(azNotLogIn)}
-		}
-
-		return nil, &AuthenticationFailedError{inner: errors.New(errout)}
+		return nil, &CredentialUnavailableError{Message: errout}
 	}
 
 	return c.createAccessToken(out)
 }
 
-func (c *azureCLICredentialClient) getAzureCLIAccessToken(command string) ([]byte, string, error) {
+func (c *execManage) getAzureCLIAccessToken(resource string) ([]byte, string, error) {
 	var stderr bytes.Buffer
 	var stdout bytes.Buffer
 	var cmd *exec.Cmd
@@ -113,6 +92,7 @@ func (c *azureCLICredentialClient) getAzureCLIAccessToken(command string) ([]byt
 	}
 
 	// Run Azure CLI command to return resulting Access Token or error
+	command := getTokenCommand + resourceArgumentName + resource
 	cmd = exec.Command(shell, executePara, command)
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
@@ -145,11 +125,14 @@ func (c *azureCLICredentialClient) createAccessToken(output []byte) (*azcore.Acc
 }
 
 func (c *azureCLICredentialClient) scopeToResource(scopes []string) string {
+	// Return the 0th scope directly if it doesn't end with suffix
 	if !strings.HasSuffix(scopes[0], suffix) {
 		return scopes[0]
 	}
 
-	resource := scopes[0][0:strings.Index(scopes[0], suffix)]
+	// The following code will remove the suffix from any scopes passed into the method
+	// since AzureCLICredential expect a resource string instead of a scope string
+	scope := scopes[0][0:strings.Index(scopes[0], suffix)]
 
-	return resource
+	return scope
 }

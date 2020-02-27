@@ -95,8 +95,7 @@ func (client ManifestsClient) CreatePreparer(ctx context.Context, name string, r
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManifestsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -170,8 +169,7 @@ func (client ManifestsClient) DeletePreparer(ctx context.Context, name string, r
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManifestsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -249,8 +247,7 @@ func (client ManifestsClient) GetPreparer(ctx context.Context, name string, refe
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManifestsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -323,8 +320,7 @@ func (client ManifestsClient) GetAttributesPreparer(ctx context.Context, name st
 // GetAttributesSender sends the GetAttributes request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManifestsClient) GetAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAttributesResponder handles the response to the GetAttributes request. The method always
@@ -411,8 +407,7 @@ func (client ManifestsClient) GetListPreparer(ctx context.Context, name string, 
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManifestsClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -491,8 +486,7 @@ func (client ManifestsClient) UpdateAttributesPreparer(ctx context.Context, name
 // UpdateAttributesSender sends the UpdateAttributes request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManifestsClient) UpdateAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateAttributesResponder handles the response to the UpdateAttributes request. The method always

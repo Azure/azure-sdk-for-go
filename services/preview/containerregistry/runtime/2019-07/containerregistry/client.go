@@ -107,8 +107,7 @@ func (client BaseClient) CreateManifestPreparer(ctx context.Context, name string
 // CreateManifestSender sends the CreateManifest request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateManifestSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateManifestResponder handles the response to the CreateManifest request. The method always
@@ -179,8 +178,7 @@ func (client BaseClient) DeleteAcrRepositoryPreparer(ctx context.Context, name s
 // DeleteAcrRepositorySender sends the DeleteAcrRepository request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteAcrRepositorySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteAcrRepositoryResponder handles the response to the DeleteAcrRepository request. The method always
@@ -253,8 +251,7 @@ func (client BaseClient) DeleteAcrTagPreparer(ctx context.Context, name string, 
 // DeleteAcrTagSender sends the DeleteAcrTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteAcrTagSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteAcrTagResponder handles the response to the DeleteAcrTag request. The method always
@@ -327,8 +324,7 @@ func (client BaseClient) DeleteManifestPreparer(ctx context.Context, name string
 // DeleteManifestSender sends the DeleteManifest request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteManifestSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteManifestResponder handles the response to the DeleteManifest request. The method always
@@ -405,8 +401,7 @@ func (client BaseClient) GetAcrAccessTokenPreparer(ctx context.Context, service 
 // GetAcrAccessTokenSender sends the GetAcrAccessToken request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetAcrAccessTokenSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAcrAccessTokenResponder handles the response to the GetAcrAccessToken request. The method always
@@ -481,8 +476,7 @@ func (client BaseClient) GetAcrAccessTokenFromLoginPreparer(ctx context.Context,
 // GetAcrAccessTokenFromLoginSender sends the GetAcrAccessTokenFromLogin request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetAcrAccessTokenFromLoginSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAcrAccessTokenFromLoginResponder handles the response to the GetAcrAccessTokenFromLogin request. The method always
@@ -555,8 +549,7 @@ func (client BaseClient) GetAcrManifestAttributesPreparer(ctx context.Context, n
 // GetAcrManifestAttributesSender sends the GetAcrManifestAttributes request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetAcrManifestAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAcrManifestAttributesResponder handles the response to the GetAcrManifestAttributes request. The method always
@@ -643,8 +636,7 @@ func (client BaseClient) GetAcrManifestsPreparer(ctx context.Context, name strin
 // GetAcrManifestsSender sends the GetAcrManifests request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetAcrManifestsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAcrManifestsResponder handles the response to the GetAcrManifests request. The method always
@@ -730,8 +722,7 @@ func (client BaseClient) GetAcrRefreshTokenFromExchangePreparer(ctx context.Cont
 // GetAcrRefreshTokenFromExchangeSender sends the GetAcrRefreshTokenFromExchange request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetAcrRefreshTokenFromExchangeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAcrRefreshTokenFromExchangeResponder handles the response to the GetAcrRefreshTokenFromExchange request. The method always
@@ -809,8 +800,7 @@ func (client BaseClient) GetAcrRepositoriesPreparer(ctx context.Context, last st
 // GetAcrRepositoriesSender sends the GetAcrRepositories request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetAcrRepositoriesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAcrRepositoriesResponder handles the response to the GetAcrRepositories request. The method always
@@ -881,8 +871,7 @@ func (client BaseClient) GetAcrRepositoryAttributesPreparer(ctx context.Context,
 // GetAcrRepositoryAttributesSender sends the GetAcrRepositoryAttributes request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetAcrRepositoryAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAcrRepositoryAttributesResponder handles the response to the GetAcrRepositoryAttributes request. The method always
@@ -955,8 +944,7 @@ func (client BaseClient) GetAcrTagAttributesPreparer(ctx context.Context, name s
 // GetAcrTagAttributesSender sends the GetAcrTagAttributes request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetAcrTagAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAcrTagAttributesResponder handles the response to the GetAcrTagAttributes request. The method always
@@ -1047,8 +1035,7 @@ func (client BaseClient) GetAcrTagsPreparer(ctx context.Context, name string, la
 // GetAcrTagsSender sends the GetAcrTags request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetAcrTagsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAcrTagsResponder handles the response to the GetAcrTags request. The method always
@@ -1113,8 +1100,7 @@ func (client BaseClient) GetDockerRegistryV2SupportPreparer(ctx context.Context)
 // GetDockerRegistryV2SupportSender sends the GetDockerRegistryV2Support request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetDockerRegistryV2SupportSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDockerRegistryV2SupportResponder handles the response to the GetDockerRegistryV2Support request. The method always
@@ -1193,8 +1179,7 @@ func (client BaseClient) GetManifestPreparer(ctx context.Context, name string, r
 // GetManifestSender sends the GetManifest request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetManifestSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetManifestResponder handles the response to the GetManifest request. The method always
@@ -1272,8 +1257,7 @@ func (client BaseClient) GetRepositoriesPreparer(ctx context.Context, last strin
 // GetRepositoriesSender sends the GetRepositories request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetRepositoriesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetRepositoriesResponder handles the response to the GetRepositories request. The method always
@@ -1344,8 +1328,7 @@ func (client BaseClient) GetTagListPreparer(ctx context.Context, name string) (*
 // GetTagListSender sends the GetTagList request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetTagListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetTagListResponder handles the response to the GetTagList request. The method always
@@ -1424,8 +1407,7 @@ func (client BaseClient) UpdateAcrManifestAttributesPreparer(ctx context.Context
 // UpdateAcrManifestAttributesSender sends the UpdateAcrManifestAttributes request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateAcrManifestAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateAcrManifestAttributesResponder handles the response to the UpdateAcrManifestAttributes request. The method always
@@ -1502,8 +1484,7 @@ func (client BaseClient) UpdateAcrRepositoryAttributesPreparer(ctx context.Conte
 // UpdateAcrRepositoryAttributesSender sends the UpdateAcrRepositoryAttributes request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateAcrRepositoryAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateAcrRepositoryAttributesResponder handles the response to the UpdateAcrRepositoryAttributes request. The method always
@@ -1581,8 +1562,7 @@ func (client BaseClient) UpdateAcrTagAttributesPreparer(ctx context.Context, nam
 // UpdateAcrTagAttributesSender sends the UpdateAcrTagAttributes request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateAcrTagAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateAcrTagAttributesResponder handles the response to the UpdateAcrTagAttributes request. The method always

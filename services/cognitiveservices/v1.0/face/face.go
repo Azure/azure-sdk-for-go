@@ -182,8 +182,7 @@ func (client Client) DetectWithStreamPreparer(ctx context.Context, imageParamete
 // DetectWithStreamSender sends the DetectWithStream request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) DetectWithStreamSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DetectWithStreamResponder handles the response to the DetectWithStream request. The method always
@@ -350,8 +349,7 @@ func (client Client) DetectWithURLPreparer(ctx context.Context, imageURL ImageUR
 // DetectWithURLSender sends the DetectWithURL request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) DetectWithURLSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DetectWithURLResponder handles the response to the DetectWithURL request. The method always
@@ -455,8 +453,7 @@ func (client Client) FindSimilarPreparer(ctx context.Context, body FindSimilarRe
 // FindSimilarSender sends the FindSimilar request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) FindSimilarSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // FindSimilarResponder handles the response to the FindSimilar request. The method always
@@ -541,8 +538,7 @@ func (client Client) GroupPreparer(ctx context.Context, body GroupRequest) (*htt
 // GroupSender sends the Group request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GroupResponder handles the response to the Group request. The method always
@@ -651,8 +647,7 @@ func (client Client) IdentifyPreparer(ctx context.Context, body IdentifyRequest)
 // IdentifySender sends the Identify request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) IdentifySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // IdentifyResponder handles the response to the Identify request. The method always
@@ -735,8 +730,7 @@ func (client Client) VerifyFaceToFacePreparer(ctx context.Context, body VerifyFa
 // VerifyFaceToFaceSender sends the VerifyFaceToFace request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) VerifyFaceToFaceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // VerifyFaceToFaceResponder handles the response to the VerifyFaceToFace request. The method always
@@ -820,8 +814,7 @@ func (client Client) VerifyFaceToPersonPreparer(ctx context.Context, body Verify
 // VerifyFaceToPersonSender sends the VerifyFaceToPerson request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) VerifyFaceToPersonSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // VerifyFaceToPersonResponder handles the response to the VerifyFaceToPerson request. The method always

@@ -144,8 +144,7 @@ func (client AccountClient) ListNodeAgentSkusPreparer(ctx context.Context, filte
 // ListNodeAgentSkusSender sends the ListNodeAgentSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AccountClient) ListNodeAgentSkusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListNodeAgentSkusResponder handles the response to the ListNodeAgentSkus request. The method always

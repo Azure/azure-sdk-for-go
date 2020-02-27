@@ -22,19 +22,6 @@ package securityinsightapi
 import original "github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2017-08-01-preview/securityinsight/securityinsightapi"
 
 type ActionsClientAPI = original.ActionsClientAPI
-type AlertRuleTemplatesClientAPI = original.AlertRuleTemplatesClientAPI
 type AlertRulesClientAPI = original.AlertRulesClientAPI
-type BaseClientAPI = original.BaseClientAPI
-type BookmarkRelationsClientAPI = original.BookmarkRelationsClientAPI
-type BookmarksClientAPI = original.BookmarksClientAPI
-type CaseCommentsClientAPI = original.CaseCommentsClientAPI
-type CaseRelationsClientAPI = original.CaseRelationsClientAPI
-type CasesAggregationsClientAPI = original.CasesAggregationsClientAPI
-type CasesClientAPI = original.CasesClientAPI
-type CommentsClientAPI = original.CommentsClientAPI
 type DataConnectorsClientAPI = original.DataConnectorsClientAPI
-type EntitiesClientAPI = original.EntitiesClientAPI
-type EntityQueriesClientAPI = original.EntityQueriesClientAPI
-type OfficeConsentsClientAPI = original.OfficeConsentsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
-type ProductSettingsClientAPI = original.ProductSettingsClientAPI

@@ -116,8 +116,7 @@ func (client AlertsClient) ListAddsAlertsPreparer(ctx context.Context, serviceNa
 // ListAddsAlertsSender sends the ListAddsAlerts request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) ListAddsAlertsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListAddsAlertsResponder handles the response to the ListAddsAlerts request. The method always

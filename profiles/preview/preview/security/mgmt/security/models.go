@@ -91,6 +91,7 @@ const (
 	BuiltIn         AssessmentType = original.BuiltIn
 	CustomerManaged AssessmentType = original.CustomerManaged
 	CustomPolicy    AssessmentType = original.CustomPolicy
+	VerifiedPartner AssessmentType = original.VerifiedPartner
 )
 
 type AutoProvision = original.AutoProvision
@@ -167,6 +168,14 @@ const (
 	EnforcementMode1Audit   EnforcementMode1 = original.EnforcementMode1Audit
 	EnforcementMode1Enforce EnforcementMode1 = original.EnforcementMode1Enforce
 	EnforcementMode1None    EnforcementMode1 = original.EnforcementMode1None
+)
+
+type EnforcementSupport = original.EnforcementSupport
+
+const (
+	NotSupported EnforcementSupport = original.NotSupported
+	Supported    EnforcementSupport = original.Supported
+	Unknown      EnforcementSupport = original.Unknown
 )
 
 type EventSource = original.EventSource
@@ -555,12 +564,13 @@ type AssessmentMetadata = original.AssessmentMetadata
 type AssessmentMetadataList = original.AssessmentMetadataList
 type AssessmentMetadataListIterator = original.AssessmentMetadataListIterator
 type AssessmentMetadataListPage = original.AssessmentMetadataListPage
+type AssessmentMetadataPartnerData = original.AssessmentMetadataPartnerData
 type AssessmentMetadataProperties = original.AssessmentMetadataProperties
+type AssessmentPartnerData = original.AssessmentPartnerData
 type AssessmentProperties = original.AssessmentProperties
 type AssessmentStatus = original.AssessmentStatus
 type AssessmentsClient = original.AssessmentsClient
 type AssessmentsMetadataClient = original.AssessmentsMetadataClient
-type AssessmentsMetadataSubscriptionClient = original.AssessmentsMetadataSubscriptionClient
 type AtaExternalSecuritySolution = original.AtaExternalSecuritySolution
 type AtaSolutionProperties = original.AtaSolutionProperties
 type AutoProvisioningSetting = original.AutoProvisioningSetting
@@ -855,12 +865,6 @@ func NewAssessmentsMetadataClient(subscriptionID string, ascLocation string) Ass
 }
 func NewAssessmentsMetadataClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsMetadataClient {
 	return original.NewAssessmentsMetadataClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewAssessmentsMetadataSubscriptionClient(subscriptionID string, ascLocation string) AssessmentsMetadataSubscriptionClient {
-	return original.NewAssessmentsMetadataSubscriptionClient(subscriptionID, ascLocation)
-}
-func NewAssessmentsMetadataSubscriptionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsMetadataSubscriptionClient {
-	return original.NewAssessmentsMetadataSubscriptionClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewAutoProvisioningSettingListIterator(page AutoProvisioningSettingListPage) AutoProvisioningSettingListIterator {
 	return original.NewAutoProvisioningSettingListIterator(page)
@@ -1203,6 +1207,9 @@ func PossibleEnforcementMode1Values() []EnforcementMode1 {
 }
 func PossibleEnforcementModeValues() []EnforcementMode {
 	return original.PossibleEnforcementModeValues()
+}
+func PossibleEnforcementSupportValues() []EnforcementSupport {
+	return original.PossibleEnforcementSupportValues()
 }
 func PossibleEventSourceValues() []EventSource {
 	return original.PossibleEventSourceValues()

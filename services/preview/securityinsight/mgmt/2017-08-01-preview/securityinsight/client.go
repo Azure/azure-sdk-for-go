@@ -1,4 +1,4 @@
-// Package securityinsight implements the Azure ARM Securityinsight service API version 2019-01-01-preview.
+// Package securityinsight implements the Azure ARM Securityinsight service API version 2020-01-01.
 //
 // API spec for Microsoft.SecurityInsights (Azure Security Insights) resource provider
 package securityinsight
@@ -21,12 +21,7 @@ package securityinsight
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
-	"github.com/Azure/go-autorest/tracing"
-	"net/http"
 )
 
 const (
@@ -54,101 +49,4 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 		BaseURI:        baseURI,
 		SubscriptionID: subscriptionID,
 	}
-}
-
-// ListDataConnectorRequirements get requirements state for a data connector type.
-// Parameters:
-// resourceGroupName - the name of the resource group within the user's subscription. The name is case
-// insensitive.
-// workspaceName - the name of the workspace.
-// operationalInsightsResourceProvider - the namespace of workspaces resource provider-
-// Microsoft.OperationalInsights.
-// dataConnectorsCheckRequirements - the parameters for requirements check message
-func (client BaseClient) ListDataConnectorRequirements(ctx context.Context, resourceGroupName string, workspaceName string, operationalInsightsResourceProvider string, dataConnectorsCheckRequirements DataConnectorsCheckRequirements) (result DataConnectorRequirementsState, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ListDataConnectorRequirements")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: workspaceName,
-			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.BaseClient", "ListDataConnectorRequirements", err.Error())
-	}
-
-	req, err := client.ListDataConnectorRequirementsPreparer(ctx, resourceGroupName, workspaceName, operationalInsightsResourceProvider, dataConnectorsCheckRequirements)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.BaseClient", "ListDataConnectorRequirements", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListDataConnectorRequirementsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.BaseClient", "ListDataConnectorRequirements", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListDataConnectorRequirementsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.BaseClient", "ListDataConnectorRequirements", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListDataConnectorRequirementsPreparer prepares the ListDataConnectorRequirements request.
-func (client BaseClient) ListDataConnectorRequirementsPreparer(ctx context.Context, resourceGroupName string, workspaceName string, operationalInsightsResourceProvider string, dataConnectorsCheckRequirements DataConnectorsCheckRequirements) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
-		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
-		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":                       autorest.Encode("path", workspaceName),
-	}
-
-	const APIVersion = "2019-01-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectorsCheckRequirements", pathParameters),
-		autorest.WithJSON(dataConnectorsCheckRequirements),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListDataConnectorRequirementsSender sends the ListDataConnectorRequirements request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) ListDataConnectorRequirementsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// ListDataConnectorRequirementsResponder handles the response to the ListDataConnectorRequirements request. The method always
-// closes the http.Response Body.
-func (client BaseClient) ListDataConnectorRequirementsResponder(resp *http.Response) (result DataConnectorRequirementsState, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
 }

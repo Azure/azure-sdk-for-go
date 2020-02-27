@@ -167,6 +167,8 @@ const (
 
 type ARMProxyResource = original.ARMProxyResource
 type ARMResourceProperties = original.ARMResourceProperties
+type AutoUpgradePolicyResource = original.AutoUpgradePolicyResource
+type AutopilotSettingsResource = original.AutopilotSettingsResource
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type Capability = original.Capability
@@ -203,6 +205,7 @@ type CompositePath = original.CompositePath
 type ConflictResolutionPolicy = original.ConflictResolutionPolicy
 type ConsistencyPolicy = original.ConsistencyPolicy
 type ContainerPartitionKey = original.ContainerPartitionKey
+type CreateUpdateOptions = original.CreateUpdateOptions
 type DatabaseAccountConnectionString = original.DatabaseAccountConnectionString
 type DatabaseAccountCreateUpdateParameters = original.DatabaseAccountCreateUpdateParameters
 type DatabaseAccountCreateUpdateProperties = original.DatabaseAccountCreateUpdateProperties
@@ -379,6 +382,7 @@ type TableResourcesClient = original.TableResourcesClient
 type TableResourcesCreateUpdateTableFuture = original.TableResourcesCreateUpdateTableFuture
 type TableResourcesDeleteTableFuture = original.TableResourcesDeleteTableFuture
 type TableResourcesUpdateTableThroughputFuture = original.TableResourcesUpdateTableThroughputFuture
+type ThroughputPolicyResource = original.ThroughputPolicyResource
 type ThroughputSettingsGetProperties = original.ThroughputSettingsGetProperties
 type ThroughputSettingsGetPropertiesResource = original.ThroughputSettingsGetPropertiesResource
 type ThroughputSettingsGetResults = original.ThroughputSettingsGetResults

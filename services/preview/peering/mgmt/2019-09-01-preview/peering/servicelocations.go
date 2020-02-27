@@ -42,7 +42,7 @@ func NewServiceLocationsClientWithBaseURI(baseURI string, subscriptionID string)
 	return ServiceLocationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists all of the available peering service locations for the specified kind of peering.
+// List lists all of the available locations for peering service.
 func (client ServiceLocationsClient) List(ctx context.Context) (result ServiceLocationListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceLocationsClient.List")
@@ -98,8 +98,7 @@ func (client ServiceLocationsClient) ListPreparer(ctx context.Context) (*http.Re
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceLocationsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always

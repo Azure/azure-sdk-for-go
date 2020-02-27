@@ -114,9 +114,8 @@ func (client ApplicationDefinitionsClient) CreateOrUpdatePreparer(ctx context.Co
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationDefinitionsClient) CreateOrUpdateSender(req *http.Request) (future ApplicationDefinitionsCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -200,9 +199,8 @@ func (client ApplicationDefinitionsClient) CreateOrUpdateByIDPreparer(ctx contex
 // CreateOrUpdateByIDSender sends the CreateOrUpdateByID request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationDefinitionsClient) CreateOrUpdateByIDSender(req *http.Request) (future ApplicationDefinitionsCreateOrUpdateByIDFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
 	}
@@ -288,9 +286,8 @@ func (client ApplicationDefinitionsClient) DeletePreparer(ctx context.Context, r
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationDefinitionsClient) DeleteSender(req *http.Request) (future ApplicationDefinitionsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -363,9 +360,8 @@ func (client ApplicationDefinitionsClient) DeleteByIDPreparer(ctx context.Contex
 // DeleteByIDSender sends the DeleteByID request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationDefinitionsClient) DeleteByIDSender(req *http.Request) (future ApplicationDefinitionsDeleteByIDFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
 	}
@@ -456,8 +452,7 @@ func (client ApplicationDefinitionsClient) GetPreparer(ctx context.Context, reso
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationDefinitionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -532,8 +527,7 @@ func (client ApplicationDefinitionsClient) GetByIDPreparer(ctx context.Context, 
 // GetByIDSender sends the GetByID request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationDefinitionsClient) GetByIDSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByIDResponder handles the response to the GetByID request. The method always
@@ -616,8 +610,7 @@ func (client ApplicationDefinitionsClient) ListByResourceGroupPreparer(ctx conte
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationDefinitionsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always

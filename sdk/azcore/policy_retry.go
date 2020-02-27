@@ -146,9 +146,12 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		// Set the per-try time for this particular retry operation and then Do the operation.
 		tryCtx, tryCancel := context.WithTimeout(ctx, options.TryTimeout)
 		resp, err = req.Next(tryCtx) // Make the request
-		if req.bodyDownloadEnabled() {
-			// if auto-downloading of the response body is enabled then
-			// it's been read and closed by this point so cancel the timeout
+		if req.bodyDownloadEnabled() || err != nil || resp.Body == nil {
+			// immediately cancel the per-try timeout if any of the following are true
+			// 1.  auto-download of the response body is enabled
+			// 2.  an error was returned
+			// 3.  there is no response body
+			// note that we have to check 2 before 3 as if 2 is true then we can't touch resp
 			tryCancel()
 		} else {
 			// wrap the response body in a responseBodyReader.

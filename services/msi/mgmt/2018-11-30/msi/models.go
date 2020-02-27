@@ -30,17 +30,16 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/msi/mgmt/2018-11-30/msi"
 
-// UserAssignedIdentities enumerates the values for user assigned identities.
-type UserAssignedIdentities string
-
-const (
-	// MicrosoftManagedIdentityuserAssignedIdentities ...
-	MicrosoftManagedIdentityuserAssignedIdentities UserAssignedIdentities = "Microsoft.ManagedIdentity/userAssignedIdentities"
-)
-
-// PossibleUserAssignedIdentitiesValues returns an array of possible values for the UserAssignedIdentities const type.
-func PossibleUserAssignedIdentitiesValues() []UserAssignedIdentities {
-	return []UserAssignedIdentities{MicrosoftManagedIdentityuserAssignedIdentities}
+// AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
+type AzureEntityResource struct {
+	// Etag - READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
 }
 
 // CloudError an error response from the ManagedServiceIdentity service.
@@ -64,31 +63,28 @@ type CloudErrorBody struct {
 // Identity describes an identity resource.
 type Identity struct {
 	autorest.Response `json:"-"`
-	// ID - READ-ONLY; The id of the created identity.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the created identity.
-	Name *string `json:"name,omitempty"`
-	// Location - The Azure region where the identity lives.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags
+	// UserAssignedIdentityProperties - READ-ONLY; The properties associated with the identity.
+	*UserAssignedIdentityProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// IdentityProperties - The properties associated with the identity.
-	*IdentityProperties `json:"properties,omitempty"`
-	// Type - READ-ONLY; The type of resource i.e. Microsoft.ManagedIdentity/userAssignedIdentities. Possible values include: 'MicrosoftManagedIdentityuserAssignedIdentities'
-	Type UserAssignedIdentities `json:"type,omitempty"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Identity.
 func (i Identity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if i.Location != nil {
-		objectMap["location"] = i.Location
-	}
 	if i.Tags != nil {
 		objectMap["tags"] = i.Tags
 	}
-	if i.IdentityProperties != nil {
-		objectMap["properties"] = i.IdentityProperties
+	if i.Location != nil {
+		objectMap["location"] = i.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -102,6 +98,33 @@ func (i *Identity) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "properties":
+			if v != nil {
+				var userAssignedIdentityProperties UserAssignedIdentityProperties
+				err = json.Unmarshal(*v, &userAssignedIdentityProperties)
+				if err != nil {
+					return err
+				}
+				i.UserAssignedIdentityProperties = &userAssignedIdentityProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				i.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				i.Location = &location
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -120,6 +143,58 @@ func (i *Identity) UnmarshalJSON(body []byte) error {
 				}
 				i.Name = &name
 			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				i.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// IdentityUpdate describes an identity resource.
+type IdentityUpdate struct {
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	// UserAssignedIdentityProperties - READ-ONLY; The properties associated with the identity.
+	*UserAssignedIdentityProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IdentityUpdate.
+func (iu IdentityUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iu.Location != nil {
+		objectMap["location"] = iu.Location
+	}
+	if iu.Tags != nil {
+		objectMap["tags"] = iu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IdentityUpdate struct.
+func (iu *IdentityUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
 		case "location":
 			if v != nil {
 				var location string
@@ -127,7 +202,7 @@ func (i *Identity) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				i.Location = &location
+				iu.Location = &location
 			}
 		case "tags":
 			if v != nil {
@@ -136,42 +211,48 @@ func (i *Identity) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				i.Tags = tags
+				iu.Tags = tags
 			}
 		case "properties":
 			if v != nil {
-				var identityProperties IdentityProperties
-				err = json.Unmarshal(*v, &identityProperties)
+				var userAssignedIdentityProperties UserAssignedIdentityProperties
+				err = json.Unmarshal(*v, &userAssignedIdentityProperties)
 				if err != nil {
 					return err
 				}
-				i.IdentityProperties = &identityProperties
+				iu.UserAssignedIdentityProperties = &userAssignedIdentityProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				iu.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				iu.Name = &name
 			}
 		case "type":
 			if v != nil {
-				var typeVar UserAssignedIdentities
+				var typeVar string
 				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
 				}
-				i.Type = typeVar
+				iu.Type = &typeVar
 			}
 		}
 	}
 
 	return nil
-}
-
-// IdentityProperties the properties associated with the identity.
-type IdentityProperties struct {
-	// TenantID - READ-ONLY; The id of the tenant which the identity belongs to.
-	TenantID *uuid.UUID `json:"tenantId,omitempty"`
-	// PrincipalID - READ-ONLY; The id of the service principal object associated with the created identity.
-	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
-	// ClientID - READ-ONLY; The id of the app associated with the identity. This is a random generated UUID by MSI.
-	ClientID *uuid.UUID `json:"clientId,omitempty"`
-	// ClientSecretURL - READ-ONLY;  The ManagedServiceIdentity DataPlane URL that can be queried to obtain the identity credentials. If identity is user assigned, then the clientSecretUrl will not be present in the response, otherwise it will be present.
-	ClientSecretURL *string `json:"clientSecretUrl,omitempty"`
 }
 
 // Operation operation supported by the Microsoft.ManagedIdentity REST API.
@@ -340,6 +421,163 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 	return OperationListResultPage{fn: getNextPage}
 }
 
+// ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
+// required location and tags
+type ProxyResource struct {
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// Resource ...
+type Resource struct {
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// SystemAssignedIdentity describes a system assigned identity resource.
+type SystemAssignedIdentity struct {
+	autorest.Response `json:"-"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	// SystemAssignedIdentityProperties - READ-ONLY; The properties associated with the identity.
+	*SystemAssignedIdentityProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SystemAssignedIdentity.
+func (sai SystemAssignedIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sai.Location != nil {
+		objectMap["location"] = sai.Location
+	}
+	if sai.Tags != nil {
+		objectMap["tags"] = sai.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SystemAssignedIdentity struct.
+func (sai *SystemAssignedIdentity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				sai.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sai.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var systemAssignedIdentityProperties SystemAssignedIdentityProperties
+				err = json.Unmarshal(*v, &systemAssignedIdentityProperties)
+				if err != nil {
+					return err
+				}
+				sai.SystemAssignedIdentityProperties = &systemAssignedIdentityProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sai.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sai.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sai.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SystemAssignedIdentityProperties the properties associated with the system assigned identity.
+type SystemAssignedIdentityProperties struct {
+	// TenantID - READ-ONLY; The id of the tenant which the identity belongs to.
+	TenantID *uuid.UUID `json:"tenantId,omitempty"`
+	// PrincipalID - READ-ONLY; The id of the service principal object associated with the created identity.
+	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
+	// ClientID - READ-ONLY; The id of the app associated with the identity. This is a random generated UUID by MSI.
+	ClientID *uuid.UUID `json:"clientId,omitempty"`
+	// ClientSecretURL - READ-ONLY;  The ManagedServiceIdentity DataPlane URL that can be queried to obtain the identity credentials.
+	ClientSecretURL *string `json:"clientSecretUrl,omitempty"`
+}
+
+// TrackedResource the resource model definition for a ARM tracked top level resource
+type TrackedResource struct {
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TrackedResource.
+func (tr TrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
+	}
+	return json.Marshal(objectMap)
+}
+
 // UserAssignedIdentitiesListResult values returned by the List operation.
 type UserAssignedIdentitiesListResult struct {
 	autorest.Response `json:"-"`
@@ -484,4 +722,14 @@ func (page UserAssignedIdentitiesListResultPage) Values() []Identity {
 // Creates a new instance of the UserAssignedIdentitiesListResultPage type.
 func NewUserAssignedIdentitiesListResultPage(getNextPage func(context.Context, UserAssignedIdentitiesListResult) (UserAssignedIdentitiesListResult, error)) UserAssignedIdentitiesListResultPage {
 	return UserAssignedIdentitiesListResultPage{fn: getNextPage}
+}
+
+// UserAssignedIdentityProperties the properties associated with the user assigned identity.
+type UserAssignedIdentityProperties struct {
+	// TenantID - READ-ONLY; The id of the tenant which the identity belongs to.
+	TenantID *uuid.UUID `json:"tenantId,omitempty"`
+	// PrincipalID - READ-ONLY; The id of the service principal object associated with the created identity.
+	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
+	// ClientID - READ-ONLY; The id of the app associated with the identity. This is a random generated UUID by MSI.
+	ClientID *uuid.UUID `json:"clientId,omitempty"`
 }

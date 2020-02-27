@@ -23,6 +23,13 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// SystemAssignedIdentitiesClientAPI contains the set of methods on the SystemAssignedIdentitiesClient type.
+type SystemAssignedIdentitiesClientAPI interface {
+	GetByScope(ctx context.Context, scope string) (result msi.SystemAssignedIdentity, err error)
+}
+
+var _ SystemAssignedIdentitiesClientAPI = (*msi.SystemAssignedIdentitiesClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result msi.OperationListResultPage, err error)
@@ -40,7 +47,7 @@ type UserAssignedIdentitiesClientAPI interface {
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result msi.UserAssignedIdentitiesListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result msi.UserAssignedIdentitiesListResultPage, err error)
 	ListBySubscriptionComplete(ctx context.Context) (result msi.UserAssignedIdentitiesListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, resourceName string, parameters msi.Identity) (result msi.Identity, err error)
+	Update(ctx context.Context, resourceGroupName string, resourceName string, parameters msi.IdentityUpdate) (result msi.Identity, err error)
 }
 
 var _ UserAssignedIdentitiesClientAPI = (*msi.UserAssignedIdentitiesClient)(nil)

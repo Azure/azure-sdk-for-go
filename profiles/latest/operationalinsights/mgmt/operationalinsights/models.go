@@ -43,6 +43,18 @@ const (
 	Desc SearchSortEnum = original.Desc
 )
 
+type SkuNameEnum = original.SkuNameEnum
+
+const (
+	CapacityReservation SkuNameEnum = original.CapacityReservation
+	Free                SkuNameEnum = original.Free
+	PerGB2018           SkuNameEnum = original.PerGB2018
+	PerNode             SkuNameEnum = original.PerNode
+	Premium             SkuNameEnum = original.Premium
+	Standalone          SkuNameEnum = original.Standalone
+	Standard            SkuNameEnum = original.Standard
+)
+
 type StorageInsightState = original.StorageInsightState
 
 const (
@@ -50,9 +62,11 @@ const (
 	OK    StorageInsightState = original.OK
 )
 
+type AvailableServiceTier = original.AvailableServiceTier
 type BaseClient = original.BaseClient
 type CoreSummary = original.CoreSummary
 type LinkTarget = original.LinkTarget
+type ListAvailableServiceTier = original.ListAvailableServiceTier
 type ListLinkTarget = original.ListLinkTarget
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -126,6 +140,9 @@ func PossiblePurgeStateValues() []PurgeState {
 }
 func PossibleSearchSortEnumValues() []SearchSortEnum {
 	return original.PossibleSearchSortEnumValues()
+}
+func PossibleSkuNameEnumValues() []SkuNameEnum {
+	return original.PossibleSkuNameEnumValues()
 }
 func PossibleStorageInsightStateValues() []StorageInsightState {
 	return original.PossibleStorageInsightStateValues()

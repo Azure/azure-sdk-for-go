@@ -138,8 +138,7 @@ func (client FileClient) DeleteFromComputeNodePreparer(ctx context.Context, pool
 // DeleteFromComputeNodeSender sends the DeleteFromComputeNode request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) DeleteFromComputeNodeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteFromComputeNodeResponder handles the response to the DeleteFromComputeNode request. The method always
@@ -248,8 +247,7 @@ func (client FileClient) DeleteFromTaskPreparer(ctx context.Context, jobID strin
 // DeleteFromTaskSender sends the DeleteFromTask request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) DeleteFromTaskSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteFromTaskResponder handles the response to the DeleteFromTask request. The method always
@@ -371,8 +369,7 @@ func (client FileClient) GetFromComputeNodePreparer(ctx context.Context, poolID 
 // GetFromComputeNodeSender sends the GetFromComputeNode request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) GetFromComputeNodeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetFromComputeNodeResponder handles the response to the GetFromComputeNode request. The method always
@@ -494,8 +491,7 @@ func (client FileClient) GetFromTaskPreparer(ctx context.Context, jobID string, 
 // GetFromTaskSender sends the GetFromTask request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) GetFromTaskSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetFromTaskResponder handles the response to the GetFromTask request. The method always
@@ -611,8 +607,7 @@ func (client FileClient) GetPropertiesFromComputeNodePreparer(ctx context.Contex
 // GetPropertiesFromComputeNodeSender sends the GetPropertiesFromComputeNode request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) GetPropertiesFromComputeNodeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetPropertiesFromComputeNodeResponder handles the response to the GetPropertiesFromComputeNode request. The method always
@@ -728,8 +723,7 @@ func (client FileClient) GetPropertiesFromTaskPreparer(ctx context.Context, jobI
 // GetPropertiesFromTaskSender sends the GetPropertiesFromTask request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) GetPropertiesFromTaskSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetPropertiesFromTaskResponder handles the response to the GetPropertiesFromTask request. The method always
@@ -854,8 +848,7 @@ func (client FileClient) ListFromComputeNodePreparer(ctx context.Context, poolID
 // ListFromComputeNodeSender sends the ListFromComputeNode request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) ListFromComputeNodeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListFromComputeNodeResponder handles the response to the ListFromComputeNode request. The method always
@@ -1019,8 +1012,7 @@ func (client FileClient) ListFromTaskPreparer(ctx context.Context, jobID string,
 // ListFromTaskSender sends the ListFromTask request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) ListFromTaskSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListFromTaskResponder handles the response to the ListFromTask request. The method always

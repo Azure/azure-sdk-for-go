@@ -136,8 +136,7 @@ func (client FilesystemClient) CreatePreparer(ctx context.Context, filesystem st
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client FilesystemClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -264,8 +263,7 @@ func (client FilesystemClient) DeletePreparer(ctx context.Context, filesystem st
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client FilesystemClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -373,8 +371,7 @@ func (client FilesystemClient) GetPropertiesPreparer(ctx context.Context, filesy
 // GetPropertiesSender sends the GetProperties request. The method will close the
 // http.Response Body if it receives an error.
 func (client FilesystemClient) GetPropertiesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetPropertiesResponder handles the response to the GetProperties request. The method always
@@ -494,8 +491,7 @@ func (client FilesystemClient) ListPreparer(ctx context.Context, prefix string, 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client FilesystemClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -627,8 +623,7 @@ func (client FilesystemClient) SetPropertiesPreparer(ctx context.Context, filesy
 // SetPropertiesSender sends the SetProperties request. The method will close the
 // http.Response Body if it receives an error.
 func (client FilesystemClient) SetPropertiesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SetPropertiesResponder handles the response to the SetProperties request. The method always

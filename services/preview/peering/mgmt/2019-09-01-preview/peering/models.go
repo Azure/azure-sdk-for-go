@@ -1689,7 +1689,7 @@ func NewServiceListResultPage(getNextPage func(context.Context, ServiceListResul
 	return ServiceListResultPage{fn: getNextPage}
 }
 
-// ServiceLocation peeringService location
+// ServiceLocation the peering service location.
 type ServiceLocation struct {
 	// ServiceLocationProperties - The properties that define a peering service location.
 	*ServiceLocationProperties `json:"properties,omitempty"`
@@ -2402,7 +2402,7 @@ type ServiceProviderProperties struct {
 
 // Sku the SKU that defines the tier and kind of the peering.
 type Sku struct {
-	// Name - The name of the peering SKU. Possible values include: 'BasicExchangeFree', 'BasicDirectFree', 'PremiumDirectFree', 'PremiumExchangeMetered', 'PremiumDirectMetered', 'PremiumDirectUnlimited'
+	// Name - The name of the peering SKU. Possible values include: 'BasicExchangeFree', 'BasicDirectFree', 'PremiumExchangeMetered', 'PremiumDirectFree', 'PremiumDirectMetered', 'PremiumDirectUnlimited'
 	Name Name `json:"name,omitempty"`
 	// Tier - The tier of the peering SKU. Possible values include: 'Basic', 'Premium'
 	Tier Tier `json:"tier,omitempty"`

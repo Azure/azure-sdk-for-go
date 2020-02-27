@@ -66,6 +66,23 @@ func PossibleStateValues() []State {
 	return []State{Deleted, Disabled, Enabled, PastDue, Warned}
 }
 
+// TenantCategory enumerates the values for tenant category.
+type TenantCategory string
+
+const (
+	// Home ...
+	Home TenantCategory = "Home"
+	// ManagedBy ...
+	ManagedBy TenantCategory = "ManagedBy"
+	// ProjectedBy ...
+	ProjectedBy TenantCategory = "ProjectedBy"
+)
+
+// PossibleTenantCategoryValues returns an array of possible values for the TenantCategory const type.
+func PossibleTenantCategoryValues() []TenantCategory {
+	return []TenantCategory{Home, ManagedBy, ProjectedBy}
+}
+
 // ListResult subscription list operation response.
 type ListResult struct {
 	autorest.Response `json:"-"`
@@ -445,6 +462,16 @@ type TenantIDDescription struct {
 	ID *string `json:"id,omitempty"`
 	// TenantID - READ-ONLY; The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
 	TenantID *string `json:"tenantId,omitempty"`
+	// TenantCategory - READ-ONLY; The tenant category. Possible values include: 'Home', 'ProjectedBy', 'ManagedBy'
+	TenantCategory TenantCategory `json:"tenantCategory,omitempty"`
+	// Country - READ-ONLY; Country/region name of the address for the tenant.
+	Country *string `json:"country,omitempty"`
+	// CountryCode - READ-ONLY; Country/region abbreviation for the tenant.
+	CountryCode *string `json:"countryCode,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the tenant.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Domains - READ-ONLY; The list of domains for the tenant.
+	Domains *[]string `json:"domains,omitempty"`
 }
 
 // TenantListResult tenant Ids information.

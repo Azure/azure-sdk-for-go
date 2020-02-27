@@ -90,8 +90,7 @@ func (client RepositoryClient) DeletePreparer(ctx context.Context, name string) 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client RepositoryClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -162,8 +161,7 @@ func (client RepositoryClient) GetAttributesPreparer(ctx context.Context, name s
 // GetAttributesSender sends the GetAttributes request. The method will close the
 // http.Response Body if it receives an error.
 func (client RepositoryClient) GetAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAttributesResponder handles the response to the GetAttributes request. The method always
@@ -241,8 +239,7 @@ func (client RepositoryClient) GetListPreparer(ctx context.Context, last string,
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client RepositoryClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -319,8 +316,7 @@ func (client RepositoryClient) UpdateAttributesPreparer(ctx context.Context, nam
 // UpdateAttributesSender sends the UpdateAttributes request. The method will close the
 // http.Response Body if it receives an error.
 func (client RepositoryClient) UpdateAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateAttributesResponder handles the response to the UpdateAttributes request. The method always

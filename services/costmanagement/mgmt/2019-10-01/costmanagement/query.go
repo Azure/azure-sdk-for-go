@@ -151,8 +151,7 @@ func (client QueryClient) UsagePreparer(ctx context.Context, scope string, param
 // UsageSender sends the Usage request. The method will close the
 // http.Response Body if it receives an error.
 func (client QueryClient) UsageSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UsageResponder handles the response to the Usage request. The method always

@@ -113,8 +113,7 @@ func (client PrivateLinkResourcesClient) GetPreparer(ctx context.Context, resour
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PrivateLinkResourcesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -199,8 +198,7 @@ func (client PrivateLinkResourcesClient) ListByConfigurationStorePreparer(ctx co
 // ListByConfigurationStoreSender sends the ListByConfigurationStore request. The method will close the
 // http.Response Body if it receives an error.
 func (client PrivateLinkResourcesClient) ListByConfigurationStoreSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByConfigurationStoreResponder handles the response to the ListByConfigurationStore request. The method always

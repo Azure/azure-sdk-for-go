@@ -297,6 +297,7 @@ const (
 	WebhookStatusEnabled  WebhookStatus = original.WebhookStatusEnabled
 )
 
+type ActiveDirectoryObject = original.ActiveDirectoryObject
 type Actor = original.Actor
 type AgentProperties = original.AgentProperties
 type Argument = original.Argument

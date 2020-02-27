@@ -100,9 +100,8 @@ func (client ElasticPoolsClient) FailoverPreparer(ctx context.Context, resourceG
 // FailoverSender sends the Failover request. The method will close the
 // http.Response Body if it receives an error.
 func (client ElasticPoolsClient) FailoverSender(req *http.Request) (future ElasticPoolsFailoverFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

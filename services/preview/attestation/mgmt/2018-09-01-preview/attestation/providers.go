@@ -48,7 +48,7 @@ func NewProvidersClientWithBaseURI(baseURI string, subscriptionID string) Provid
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // providerName - name of the attestation service
 // creationParams - client supplied parameters.
-func (client ProvidersClient) Create(ctx context.Context, resourceGroupName string, providerName string, creationParams *ServiceCreationParams) (result Provider, err error) {
+func (client ProvidersClient) Create(ctx context.Context, resourceGroupName string, providerName string, creationParams ServiceCreationParams) (result Provider, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProvidersClient.Create")
 		defer func() {
@@ -65,7 +65,10 @@ func (client ProvidersClient) Create(ctx context.Context, resourceGroupName stri
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: creationParams,
+			Constraints: []validation.Constraint{{Target: "creationParams.Location", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "creationParams.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("attestation.ProvidersClient", "Create", err.Error())
 	}
 
@@ -91,7 +94,7 @@ func (client ProvidersClient) Create(ctx context.Context, resourceGroupName stri
 }
 
 // CreatePreparer prepares the Create request.
-func (client ProvidersClient) CreatePreparer(ctx context.Context, resourceGroupName string, providerName string, creationParams *ServiceCreationParams) (*http.Request, error) {
+func (client ProvidersClient) CreatePreparer(ctx context.Context, resourceGroupName string, providerName string, creationParams ServiceCreationParams) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"providerName":      autorest.Encode("path", providerName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -108,19 +111,15 @@ func (client ProvidersClient) CreatePreparer(ctx context.Context, resourceGroupN
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Attestation/attestationProviders/{providerName}", pathParameters),
+		autorest.WithJSON(creationParams),
 		autorest.WithQueryParameters(queryParameters))
-	if creationParams != nil {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithJSON(creationParams))
-	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProvidersClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -206,8 +205,7 @@ func (client ProvidersClient) DeletePreparer(ctx context.Context, resourceGroupN
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProvidersClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -292,8 +290,7 @@ func (client ProvidersClient) GetPreparer(ctx context.Context, resourceGroupName
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProvidersClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -370,8 +367,7 @@ func (client ProvidersClient) ListPreparer(ctx context.Context) (*http.Request, 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProvidersClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -455,13 +451,101 @@ func (client ProvidersClient) ListByResourceGroupPreparer(ctx context.Context, r
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProvidersClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
 func (client ProvidersClient) ListByResourceGroupResponder(resp *http.Response) (result ProviderListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Update updates the Attestation Provider.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// providerName - name of the attestation service
+// updateParams - client supplied parameters.
+func (client ProvidersClient) Update(ctx context.Context, resourceGroupName string, providerName string, updateParams ServicePatchParams) (result Provider, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProvidersClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("attestation.ProvidersClient", "Update", err.Error())
+	}
+
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, providerName, updateParams)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "attestation.ProvidersClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "attestation.ProvidersClient", "Update", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "attestation.ProvidersClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client ProvidersClient) UpdatePreparer(ctx context.Context, resourceGroupName string, providerName string, updateParams ServicePatchParams) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"providerName":      autorest.Encode("path", providerName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-09-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Attestation/attestationProviders/{providerName}", pathParameters),
+		autorest.WithJSON(updateParams),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProvidersClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client ProvidersClient) UpdateResponder(resp *http.Response) (result Provider, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

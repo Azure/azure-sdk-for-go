@@ -46,12 +46,10 @@ func NewDataConnectorsClientWithBaseURI(baseURI string, subscriptionID string) D
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// operationalInsightsResourceProvider - the namespace of workspaces resource provider-
-// Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
 // dataConnectorID - connector ID
 // dataConnector - the data connector
-func (client DataConnectorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string, dataConnector BasicDataConnector) (result DataConnectorModel, err error) {
+func (client DataConnectorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, dataConnector BasicDataConnector) (result DataConnectorModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorsClient.CreateOrUpdate")
 		defer func() {
@@ -75,7 +73,7 @@ func (client DataConnectorsClient) CreateOrUpdate(ctx context.Context, resourceG
 		return result, validation.NewError("securityinsight.DataConnectorsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, dataConnectorID, dataConnector)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, dataConnectorID, dataConnector)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -97,16 +95,15 @@ func (client DataConnectorsClient) CreateOrUpdate(ctx context.Context, resourceG
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DataConnectorsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string, dataConnector BasicDataConnector) (*http.Request, error) {
+func (client DataConnectorsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, dataConnector BasicDataConnector) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataConnectorId":                     autorest.Encode("path", dataConnectorID),
-		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
-		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
-		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":                       autorest.Encode("path", workspaceName),
+		"dataConnectorId":   autorest.Encode("path", dataConnectorID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -115,7 +112,7 @@ func (client DataConnectorsClient) CreateOrUpdatePreparer(ctx context.Context, r
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors/{dataConnectorId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors/{dataConnectorId}", pathParameters),
 		autorest.WithJSON(dataConnector),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -124,8 +121,7 @@ func (client DataConnectorsClient) CreateOrUpdatePreparer(ctx context.Context, r
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataConnectorsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -145,11 +141,9 @@ func (client DataConnectorsClient) CreateOrUpdateResponder(resp *http.Response) 
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// operationalInsightsResourceProvider - the namespace of workspaces resource provider-
-// Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
 // dataConnectorID - connector ID
-func (client DataConnectorsClient) Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (result autorest.Response, err error) {
+func (client DataConnectorsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorsClient.Delete")
 		defer func() {
@@ -173,7 +167,7 @@ func (client DataConnectorsClient) Delete(ctx context.Context, resourceGroupName
 		return result, validation.NewError("securityinsight.DataConnectorsClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, dataConnectorID)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName, dataConnectorID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -195,16 +189,15 @@ func (client DataConnectorsClient) Delete(ctx context.Context, resourceGroupName
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DataConnectorsClient) DeletePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (*http.Request, error) {
+func (client DataConnectorsClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataConnectorId":                     autorest.Encode("path", dataConnectorID),
-		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
-		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
-		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":                       autorest.Encode("path", workspaceName),
+		"dataConnectorId":   autorest.Encode("path", dataConnectorID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -212,7 +205,7 @@ func (client DataConnectorsClient) DeletePreparer(ctx context.Context, resourceG
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors/{dataConnectorId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors/{dataConnectorId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -220,8 +213,7 @@ func (client DataConnectorsClient) DeletePreparer(ctx context.Context, resourceG
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataConnectorsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -240,11 +232,9 @@ func (client DataConnectorsClient) DeleteResponder(resp *http.Response) (result 
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// operationalInsightsResourceProvider - the namespace of workspaces resource provider-
-// Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
 // dataConnectorID - connector ID
-func (client DataConnectorsClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (result DataConnectorModel, err error) {
+func (client DataConnectorsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string) (result DataConnectorModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorsClient.Get")
 		defer func() {
@@ -268,7 +258,7 @@ func (client DataConnectorsClient) Get(ctx context.Context, resourceGroupName st
 		return result, validation.NewError("securityinsight.DataConnectorsClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, dataConnectorID)
+	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, dataConnectorID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "Get", nil, "Failure preparing request")
 		return
@@ -290,16 +280,15 @@ func (client DataConnectorsClient) Get(ctx context.Context, resourceGroupName st
 }
 
 // GetPreparer prepares the Get request.
-func (client DataConnectorsClient) GetPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (*http.Request, error) {
+func (client DataConnectorsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataConnectorId":                     autorest.Encode("path", dataConnectorID),
-		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
-		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
-		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":                       autorest.Encode("path", workspaceName),
+		"dataConnectorId":   autorest.Encode("path", dataConnectorID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -307,7 +296,7 @@ func (client DataConnectorsClient) GetPreparer(ctx context.Context, resourceGrou
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors/{dataConnectorId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors/{dataConnectorId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -315,8 +304,7 @@ func (client DataConnectorsClient) GetPreparer(ctx context.Context, resourceGrou
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataConnectorsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -336,10 +324,8 @@ func (client DataConnectorsClient) GetResponder(resp *http.Response) (result Dat
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// operationalInsightsResourceProvider - the namespace of workspaces resource provider-
-// Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-func (client DataConnectorsClient) List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result DataConnectorListPage, err error) {
+func (client DataConnectorsClient) List(ctx context.Context, resourceGroupName string, workspaceName string) (result DataConnectorListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorsClient.List")
 		defer func() {
@@ -364,7 +350,7 @@ func (client DataConnectorsClient) List(ctx context.Context, resourceGroupName s
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName)
+	req, err := client.ListPreparer(ctx, resourceGroupName, workspaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "List", nil, "Failure preparing request")
 		return
@@ -386,15 +372,14 @@ func (client DataConnectorsClient) List(ctx context.Context, resourceGroupName s
 }
 
 // ListPreparer prepares the List request.
-func (client DataConnectorsClient) ListPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (*http.Request, error) {
+func (client DataConnectorsClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
-		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
-		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":                       autorest.Encode("path", workspaceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -402,7 +387,7 @@ func (client DataConnectorsClient) ListPreparer(ctx context.Context, resourceGro
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -410,8 +395,7 @@ func (client DataConnectorsClient) ListPreparer(ctx context.Context, resourceGro
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataConnectorsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -449,7 +433,7 @@ func (client DataConnectorsClient) listNextResults(ctx context.Context, lastResu
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client DataConnectorsClient) ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result DataConnectorListIterator, err error) {
+func (client DataConnectorsClient) ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result DataConnectorListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorsClient.List")
 		defer func() {
@@ -460,6 +444,6 @@ func (client DataConnectorsClient) ListComplete(ctx context.Context, resourceGro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName)
+	result.page, err = client.List(ctx, resourceGroupName, workspaceName)
 	return
 }

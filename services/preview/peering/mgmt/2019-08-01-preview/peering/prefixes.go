@@ -102,8 +102,7 @@ func (client PrefixesClient) ListByPeeringServicePreparer(ctx context.Context, r
 // ListByPeeringServiceSender sends the ListByPeeringService request. The method will close the
 // http.Response Body if it receives an error.
 func (client PrefixesClient) ListByPeeringServiceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByPeeringServiceResponder handles the response to the ListByPeeringService request. The method always

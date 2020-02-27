@@ -16,15 +16,6 @@ const (
 	mockScope     = "https://default.mock.auth.scope/.default"
 )
 
-func TestCLICredential_GetTokenSuccess(t *testing.T) {
-	cred := NewAzureCLICredential(nil)
-
-	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scopeResource}})
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %v", err)
-	}
-}
-
 func TestCLICredential_GetTokenSuccessMock(t *testing.T) {
 	var execManageMock execManager
 	execManageMock = &execManageGetTokenMock{}

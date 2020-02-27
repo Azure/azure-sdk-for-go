@@ -92,8 +92,7 @@ func (client TagClient) DeletePreparer(ctx context.Context, name string, referen
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -165,8 +164,7 @@ func (client TagClient) GetAttributesPreparer(ctx context.Context, name string, 
 // GetAttributesSender sends the GetAttributes request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAttributesResponder handles the response to the GetAttributes request. The method always
@@ -257,8 +255,7 @@ func (client TagClient) GetListPreparer(ctx context.Context, name string, last s
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -337,8 +334,7 @@ func (client TagClient) UpdateAttributesPreparer(ctx context.Context, name strin
 // UpdateAttributesSender sends the UpdateAttributes request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) UpdateAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateAttributesResponder handles the response to the UpdateAttributes request. The method always

@@ -93,8 +93,7 @@ func (client BlobClient) CancelUploadPreparer(ctx context.Context, location stri
 // CancelUploadSender sends the CancelUpload request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlobClient) CancelUploadSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CancelUploadResponder handles the response to the CancelUpload request. The method always
@@ -166,8 +165,7 @@ func (client BlobClient) CheckPreparer(ctx context.Context, name string, digest 
 // CheckSender sends the Check request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlobClient) CheckSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CheckResponder handles the response to the Check request. The method always
@@ -241,8 +239,7 @@ func (client BlobClient) CheckChunkPreparer(ctx context.Context, name string, di
 // CheckChunkSender sends the CheckChunk request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlobClient) CheckChunkSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CheckChunkResponder handles the response to the CheckChunk request. The method always
@@ -314,8 +311,7 @@ func (client BlobClient) DeletePreparer(ctx context.Context, name string, digest
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlobClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -399,8 +395,7 @@ func (client BlobClient) EndUploadPreparer(ctx context.Context, digest string, l
 // EndUploadSender sends the EndUpload request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlobClient) EndUploadSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // EndUploadResponder handles the response to the EndUpload request. The method always
@@ -472,8 +467,7 @@ func (client BlobClient) GetPreparer(ctx context.Context, name string, digest st
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlobClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -549,8 +543,7 @@ func (client BlobClient) GetChunkPreparer(ctx context.Context, name string, dige
 // GetChunkSender sends the GetChunk request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlobClient) GetChunkSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetChunkResponder handles the response to the GetChunk request. The method always
@@ -622,8 +615,7 @@ func (client BlobClient) GetStatusPreparer(ctx context.Context, location string)
 // GetStatusSender sends the GetStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlobClient) GetStatusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetStatusResponder handles the response to the GetStatus request. The method always
@@ -701,8 +693,7 @@ func (client BlobClient) MountPreparer(ctx context.Context, name string, from st
 // MountSender sends the Mount request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlobClient) MountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // MountResponder handles the response to the Mount request. The method always
@@ -772,8 +763,7 @@ func (client BlobClient) StartUploadPreparer(ctx context.Context, name string) (
 // StartUploadSender sends the StartUpload request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlobClient) StartUploadSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // StartUploadResponder handles the response to the StartUpload request. The method always
@@ -847,8 +837,7 @@ func (client BlobClient) UploadPreparer(ctx context.Context, value io.ReadCloser
 // UploadSender sends the Upload request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlobClient) UploadSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UploadResponder handles the response to the Upload request. The method always

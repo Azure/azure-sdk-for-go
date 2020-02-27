@@ -142,8 +142,7 @@ func (client TaskClient) AddPreparer(ctx context.Context, jobID string, task Tas
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) AddSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddResponder handles the response to the Add request. The method always
@@ -257,8 +256,7 @@ func (client TaskClient) AddCollectionPreparer(ctx context.Context, jobID string
 // AddCollectionSender sends the AddCollection request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) AddCollectionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddCollectionResponder handles the response to the AddCollection request. The method always
@@ -389,8 +387,7 @@ func (client TaskClient) DeletePreparer(ctx context.Context, jobID string, taskI
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -527,8 +524,7 @@ func (client TaskClient) GetPreparer(ctx context.Context, jobID string, taskID s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -657,8 +653,7 @@ func (client TaskClient) ListPreparer(ctx context.Context, jobID string, filter 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -801,8 +796,7 @@ func (client TaskClient) ListSubtasksPreparer(ctx context.Context, jobID string,
 // ListSubtasksSender sends the ListSubtasks request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) ListSubtasksSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListSubtasksResponder handles the response to the ListSubtasks request. The method always
@@ -935,8 +929,7 @@ func (client TaskClient) ReactivatePreparer(ctx context.Context, jobID string, t
 // ReactivateSender sends the Reactivate request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) ReactivateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ReactivateResponder handles the response to the Reactivate request. The method always
@@ -1066,8 +1059,7 @@ func (client TaskClient) TerminatePreparer(ctx context.Context, jobID string, ta
 // TerminateSender sends the Terminate request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) TerminateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // TerminateResponder handles the response to the Terminate request. The method always
@@ -1198,8 +1190,7 @@ func (client TaskClient) UpdatePreparer(ctx context.Context, jobID string, taskI
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

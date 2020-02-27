@@ -154,8 +154,7 @@ func (client PoolClient) AddPreparer(ctx context.Context, pool PoolAddParameter,
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) AddSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddResponder handles the response to the Add request. The method always
@@ -292,8 +291,7 @@ func (client PoolClient) DeletePreparer(ctx context.Context, poolID string, time
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -396,8 +394,7 @@ func (client PoolClient) DisableAutoScalePreparer(ctx context.Context, poolID st
 // DisableAutoScaleSender sends the DisableAutoScale request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) DisableAutoScaleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DisableAutoScaleResponder handles the response to the DisableAutoScale request. The method always
@@ -533,8 +530,7 @@ func (client PoolClient) EnableAutoScalePreparer(ctx context.Context, poolID str
 // EnableAutoScaleSender sends the EnableAutoScale request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) EnableAutoScaleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // EnableAutoScaleResponder handles the response to the EnableAutoScale request. The method always
@@ -647,8 +643,7 @@ func (client PoolClient) EvaluateAutoScalePreparer(ctx context.Context, poolID s
 // EvaluateAutoScaleSender sends the EvaluateAutoScale request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) EvaluateAutoScaleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // EvaluateAutoScaleResponder handles the response to the EvaluateAutoScale request. The method always
@@ -779,8 +774,7 @@ func (client PoolClient) ExistsPreparer(ctx context.Context, poolID string, time
 // ExistsSender sends the Exists request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) ExistsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ExistsResponder handles the response to the Exists request. The method always
@@ -918,8 +912,7 @@ func (client PoolClient) GetPreparer(ctx context.Context, poolID string, selectP
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -1020,8 +1013,7 @@ func (client PoolClient) GetAllLifetimeStatisticsPreparer(ctx context.Context, t
 // GetAllLifetimeStatisticsSender sends the GetAllLifetimeStatistics request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) GetAllLifetimeStatisticsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAllLifetimeStatisticsResponder handles the response to the GetAllLifetimeStatistics request. The method always
@@ -1149,8 +1141,7 @@ func (client PoolClient) ListPreparer(ctx context.Context, filter string, select
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -1322,8 +1313,7 @@ func (client PoolClient) ListUsageMetricsPreparer(ctx context.Context, startTime
 // ListUsageMetricsSender sends the ListUsageMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) ListUsageMetricsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListUsageMetricsResponder handles the response to the ListUsageMetrics request. The method always
@@ -1495,8 +1485,7 @@ func (client PoolClient) PatchPreparer(ctx context.Context, poolID string, poolP
 // PatchSender sends the Patch request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) PatchSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // PatchResponder handles the response to the Patch request. The method always
@@ -1637,8 +1626,7 @@ func (client PoolClient) RemoveNodesPreparer(ctx context.Context, poolID string,
 // RemoveNodesSender sends the RemoveNodes request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) RemoveNodesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RemoveNodesResponder handles the response to the RemoveNodes request. The method always
@@ -1775,8 +1763,7 @@ func (client PoolClient) ResizePreparer(ctx context.Context, poolID string, pool
 // ResizeSender sends the Resize request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) ResizeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ResizeResponder handles the response to the Resize request. The method always
@@ -1910,8 +1897,7 @@ func (client PoolClient) StopResizePreparer(ctx context.Context, poolID string, 
 // StopResizeSender sends the StopResize request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) StopResizeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // StopResizeResponder handles the response to the StopResize request. The method always
@@ -2037,8 +2023,7 @@ func (client PoolClient) UpdatePropertiesPreparer(ctx context.Context, poolID st
 // UpdatePropertiesSender sends the UpdateProperties request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) UpdatePropertiesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdatePropertiesResponder handles the response to the UpdateProperties request. The method always

@@ -125,10 +125,11 @@ const (
 type ExportFormat = original.ExportFormat
 
 const (
-	ExportFormatOpenapi ExportFormat = original.ExportFormatOpenapi
-	ExportFormatSwagger ExportFormat = original.ExportFormatSwagger
-	ExportFormatWadl    ExportFormat = original.ExportFormatWadl
-	ExportFormatWsdl    ExportFormat = original.ExportFormatWsdl
+	ExportFormatOpenapi     ExportFormat = original.ExportFormatOpenapi
+	ExportFormatOpenapiJSON ExportFormat = original.ExportFormatOpenapiJSON
+	ExportFormatSwagger     ExportFormat = original.ExportFormatSwagger
+	ExportFormatWadl        ExportFormat = original.ExportFormatWadl
+	ExportFormatWsdl        ExportFormat = original.ExportFormatWsdl
 )
 
 type ExportResultFormat = original.ExportResultFormat

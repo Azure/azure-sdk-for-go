@@ -98,6 +98,20 @@ const (
 	DirectoryServiceOptionsNone  DirectoryServiceOptions = original.DirectoryServiceOptionsNone
 )
 
+type EncryptionScopeSource = original.EncryptionScopeSource
+
+const (
+	MicrosoftKeyVault EncryptionScopeSource = original.MicrosoftKeyVault
+	MicrosoftStorage  EncryptionScopeSource = original.MicrosoftStorage
+)
+
+type EncryptionScopeState = original.EncryptionScopeState
+
+const (
+	Disabled EncryptionScopeState = original.Disabled
+	Enabled  EncryptionScopeState = original.Enabled
+)
+
 type GeoReplicationStatus = original.GeoReplicationStatus
 
 const (
@@ -138,8 +152,8 @@ const (
 type KeySource = original.KeySource
 
 const (
-	MicrosoftKeyvault KeySource = original.MicrosoftKeyvault
-	MicrosoftStorage  KeySource = original.MicrosoftStorage
+	KeySourceMicrosoftKeyvault KeySource = original.KeySourceMicrosoftKeyvault
+	KeySourceMicrosoftStorage  KeySource = original.KeySourceMicrosoftStorage
 )
 
 type KeyType = original.KeyType
@@ -162,8 +176,8 @@ const (
 type LargeFileSharesState = original.LargeFileSharesState
 
 const (
-	Disabled LargeFileSharesState = original.Disabled
-	Enabled  LargeFileSharesState = original.Enabled
+	LargeFileSharesStateDisabled LargeFileSharesState = original.LargeFileSharesStateDisabled
+	LargeFileSharesStateEnabled  LargeFileSharesState = original.LargeFileSharesStateEnabled
 )
 
 type LeaseDuration = original.LeaseDuration
@@ -376,6 +390,13 @@ type DateAfterModification = original.DateAfterModification
 type DeleteRetentionPolicy = original.DeleteRetentionPolicy
 type Dimension = original.Dimension
 type Encryption = original.Encryption
+type EncryptionScope = original.EncryptionScope
+type EncryptionScopeKeyVaultProperties = original.EncryptionScopeKeyVaultProperties
+type EncryptionScopeListResult = original.EncryptionScopeListResult
+type EncryptionScopeListResultIterator = original.EncryptionScopeListResultIterator
+type EncryptionScopeListResultPage = original.EncryptionScopeListResultPage
+type EncryptionScopeProperties = original.EncryptionScopeProperties
+type EncryptionScopesClient = original.EncryptionScopesClient
 type EncryptionService = original.EncryptionService
 type EncryptionServices = original.EncryptionServices
 type Endpoints = original.Endpoints
@@ -482,6 +503,18 @@ func NewBlobServicesClient(subscriptionID string) BlobServicesClient {
 func NewBlobServicesClientWithBaseURI(baseURI string, subscriptionID string) BlobServicesClient {
 	return original.NewBlobServicesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewEncryptionScopeListResultIterator(page EncryptionScopeListResultPage) EncryptionScopeListResultIterator {
+	return original.NewEncryptionScopeListResultIterator(page)
+}
+func NewEncryptionScopeListResultPage(getNextPage func(context.Context, EncryptionScopeListResult) (EncryptionScopeListResult, error)) EncryptionScopeListResultPage {
+	return original.NewEncryptionScopeListResultPage(getNextPage)
+}
+func NewEncryptionScopesClient(subscriptionID string) EncryptionScopesClient {
+	return original.NewEncryptionScopesClient(subscriptionID)
+}
+func NewEncryptionScopesClientWithBaseURI(baseURI string, subscriptionID string) EncryptionScopesClient {
+	return original.NewEncryptionScopesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewFileServicesClient(subscriptionID string) FileServicesClient {
 	return original.NewFileServicesClient(subscriptionID)
 }
@@ -571,6 +604,12 @@ func PossibleDefaultActionValues() []DefaultAction {
 }
 func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
 	return original.PossibleDirectoryServiceOptionsValues()
+}
+func PossibleEncryptionScopeSourceValues() []EncryptionScopeSource {
+	return original.PossibleEncryptionScopeSourceValues()
+}
+func PossibleEncryptionScopeStateValues() []EncryptionScopeState {
+	return original.PossibleEncryptionScopeStateValues()
 }
 func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 	return original.PossibleGeoReplicationStatusValues()

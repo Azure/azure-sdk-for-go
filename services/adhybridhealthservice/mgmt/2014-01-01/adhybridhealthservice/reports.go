@@ -92,8 +92,7 @@ func (client ReportsClient) GetDevOpsPreparer(ctx context.Context) (*http.Reques
 // GetDevOpsSender sends the GetDevOps request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) GetDevOpsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDevOpsResponder handles the response to the GetDevOps request. The method always

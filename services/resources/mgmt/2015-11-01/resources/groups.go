@@ -108,8 +108,7 @@ func (client GroupsClient) CheckExistencePreparer(ctx context.Context, resourceG
 // CheckExistenceSender sends the CheckExistence request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupsClient) CheckExistenceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CheckExistenceResponder handles the response to the CheckExistence request. The method always
@@ -196,8 +195,7 @@ func (client GroupsClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -274,9 +272,8 @@ func (client GroupsClient) DeletePreparer(ctx context.Context, resourceGroupName
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupsClient) DeleteSender(req *http.Request) (future GroupsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -362,8 +359,7 @@ func (client GroupsClient) GetPreparer(ctx context.Context, resourceGroupName st
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -444,8 +440,7 @@ func (client GroupsClient) ListPreparer(ctx context.Context, filter string, top 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -502,8 +497,10 @@ func (client GroupsClient) ListComplete(ctx context.Context, filter string, top 
 // Parameters:
 // resourceGroupName - query parameters. If null is passed returns all resource groups.
 // filter - the filter to apply on the operation.
+// expand - comma-separated list of additional properties to be included in the response. Valid values include
+// `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
 // top - query parameters. If null is passed returns all resource groups.
-func (client GroupsClient) ListResources(ctx context.Context, resourceGroupName string, filter string, top *int32) (result ListResultPage, err error) {
+func (client GroupsClient) ListResources(ctx context.Context, resourceGroupName string, filter string, expand string, top *int32) (result ListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/GroupsClient.ListResources")
 		defer func() {
@@ -523,7 +520,7 @@ func (client GroupsClient) ListResources(ctx context.Context, resourceGroupName 
 	}
 
 	result.fn = client.listResourcesNextResults
-	req, err := client.ListResourcesPreparer(ctx, resourceGroupName, filter, top)
+	req, err := client.ListResourcesPreparer(ctx, resourceGroupName, filter, expand, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.GroupsClient", "ListResources", nil, "Failure preparing request")
 		return
@@ -545,7 +542,7 @@ func (client GroupsClient) ListResources(ctx context.Context, resourceGroupName 
 }
 
 // ListResourcesPreparer prepares the ListResources request.
-func (client GroupsClient) ListResourcesPreparer(ctx context.Context, resourceGroupName string, filter string, top *int32) (*http.Request, error) {
+func (client GroupsClient) ListResourcesPreparer(ctx context.Context, resourceGroupName string, filter string, expand string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -557,6 +554,9 @@ func (client GroupsClient) ListResourcesPreparer(ctx context.Context, resourceGr
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
@@ -573,8 +573,7 @@ func (client GroupsClient) ListResourcesPreparer(ctx context.Context, resourceGr
 // ListResourcesSender sends the ListResources request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupsClient) ListResourcesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResourcesResponder handles the response to the ListResources request. The method always
@@ -612,7 +611,7 @@ func (client GroupsClient) listResourcesNextResults(ctx context.Context, lastRes
 }
 
 // ListResourcesComplete enumerates all values, automatically crossing page boundaries as required.
-func (client GroupsClient) ListResourcesComplete(ctx context.Context, resourceGroupName string, filter string, top *int32) (result ListResultIterator, err error) {
+func (client GroupsClient) ListResourcesComplete(ctx context.Context, resourceGroupName string, filter string, expand string, top *int32) (result ListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/GroupsClient.ListResources")
 		defer func() {
@@ -623,7 +622,7 @@ func (client GroupsClient) ListResourcesComplete(ctx context.Context, resourceGr
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListResources(ctx, resourceGroupName, filter, top)
+	result.page, err = client.ListResources(ctx, resourceGroupName, filter, expand, top)
 	return
 }
 
@@ -699,8 +698,7 @@ func (client GroupsClient) PatchPreparer(ctx context.Context, resourceGroupName 
 // PatchSender sends the Patch request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupsClient) PatchSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // PatchResponder handles the response to the Patch request. The method always

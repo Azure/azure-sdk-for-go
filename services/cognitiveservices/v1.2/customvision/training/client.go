@@ -115,8 +115,7 @@ func (client BaseClient) CreateImageRegionsPreparer(ctx context.Context, project
 // CreateImageRegionsSender sends the CreateImageRegions request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateImageRegionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateImageRegionsResponder handles the response to the CreateImageRegions request. The method always
@@ -198,8 +197,7 @@ func (client BaseClient) CreateImagesFromDataPreparer(ctx context.Context, proje
 // CreateImagesFromDataSender sends the CreateImagesFromData request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateImagesFromDataSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateImagesFromDataResponder handles the response to the CreateImagesFromData request. The method always
@@ -271,8 +269,7 @@ func (client BaseClient) CreateImagesFromFilesPreparer(ctx context.Context, proj
 // CreateImagesFromFilesSender sends the CreateImagesFromFiles request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateImagesFromFilesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateImagesFromFilesResponder handles the response to the CreateImagesFromFiles request. The method always
@@ -344,8 +341,7 @@ func (client BaseClient) CreateImagesFromPredictionsPreparer(ctx context.Context
 // CreateImagesFromPredictionsSender sends the CreateImagesFromPredictions request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateImagesFromPredictionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateImagesFromPredictionsResponder handles the response to the CreateImagesFromPredictions request. The method always
@@ -417,8 +413,7 @@ func (client BaseClient) CreateImagesFromUrlsPreparer(ctx context.Context, proje
 // CreateImagesFromUrlsSender sends the CreateImagesFromUrls request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateImagesFromUrlsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateImagesFromUrlsResponder handles the response to the CreateImagesFromUrls request. The method always
@@ -489,8 +484,7 @@ func (client BaseClient) CreateImageTagsPreparer(ctx context.Context, projectID 
 // CreateImageTagsSender sends the CreateImageTags request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateImageTagsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateImageTagsResponder handles the response to the CreateImageTags request. The method always
@@ -567,8 +561,7 @@ func (client BaseClient) CreateProjectPreparer(ctx context.Context, name string,
 // CreateProjectSender sends the CreateProject request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateProjectSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateProjectResponder handles the response to the CreateProject request. The method always
@@ -646,8 +639,7 @@ func (client BaseClient) CreateTagPreparer(ctx context.Context, projectID uuid.U
 // CreateTagSender sends the CreateTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateTagSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateTagResponder handles the response to the CreateTag request. The method always
@@ -727,8 +719,7 @@ func (client BaseClient) DeleteImageRegionsPreparer(ctx context.Context, project
 // DeleteImageRegionsSender sends the DeleteImageRegions request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteImageRegionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteImageRegionsResponder handles the response to the DeleteImageRegions request. The method always
@@ -807,8 +798,7 @@ func (client BaseClient) DeleteImagesPreparer(ctx context.Context, projectID uui
 // DeleteImagesSender sends the DeleteImages request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteImagesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteImagesResponder handles the response to the DeleteImages request. The method always
@@ -891,8 +881,7 @@ func (client BaseClient) DeleteImageTagsPreparer(ctx context.Context, projectID 
 // DeleteImageTagsSender sends the DeleteImageTags request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteImageTagsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteImageTagsResponder handles the response to the DeleteImageTags request. The method always
@@ -961,8 +950,7 @@ func (client BaseClient) DeleteIterationPreparer(ctx context.Context, projectID 
 // DeleteIterationSender sends the DeleteIteration request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteIterationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteIterationResponder handles the response to the DeleteIteration request. The method always
@@ -1041,8 +1029,7 @@ func (client BaseClient) DeletePredictionPreparer(ctx context.Context, projectID
 // DeletePredictionSender sends the DeletePrediction request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeletePredictionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeletePredictionResponder handles the response to the DeletePrediction request. The method always
@@ -1109,8 +1096,7 @@ func (client BaseClient) DeleteProjectPreparer(ctx context.Context, projectID uu
 // DeleteProjectSender sends the DeleteProject request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteProjectSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteProjectResponder handles the response to the DeleteProject request. The method always
@@ -1179,8 +1165,7 @@ func (client BaseClient) DeleteTagPreparer(ctx context.Context, projectID uuid.U
 // DeleteTagSender sends the DeleteTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteTagSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteTagResponder handles the response to the DeleteTag request. The method always
@@ -1259,8 +1244,7 @@ func (client BaseClient) ExportIterationPreparer(ctx context.Context, projectID 
 // ExportIterationSender sends the ExportIteration request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) ExportIterationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ExportIterationResponder handles the response to the ExportIteration request. The method always
@@ -1328,8 +1312,7 @@ func (client BaseClient) GetDomainPreparer(ctx context.Context, domainID uuid.UU
 // GetDomainSender sends the GetDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetDomainSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDomainResponder handles the response to the GetDomain request. The method always
@@ -1391,8 +1374,7 @@ func (client BaseClient) GetDomainsPreparer(ctx context.Context) (*http.Request,
 // GetDomainsSender sends the GetDomains request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetDomainsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDomainsResponder handles the response to the GetDomains request. The method always
@@ -1462,8 +1444,7 @@ func (client BaseClient) GetExportsPreparer(ctx context.Context, projectID uuid.
 // GetExportsSender sends the GetExports request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetExportsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetExportsResponder handles the response to the GetExports request. The method always
@@ -1542,8 +1523,7 @@ func (client BaseClient) GetImagePerformanceCountPreparer(ctx context.Context, p
 // GetImagePerformanceCountSender sends the GetImagePerformanceCount request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetImagePerformanceCountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetImagePerformanceCountResponder handles the response to the GetImagePerformanceCount request. The method always
@@ -1640,8 +1620,7 @@ func (client BaseClient) GetImagePerformancesPreparer(ctx context.Context, proje
 // GetImagePerformancesSender sends the GetImagePerformances request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetImagePerformancesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetImagePerformancesResponder handles the response to the GetImagePerformances request. The method always
@@ -1712,8 +1691,7 @@ func (client BaseClient) GetImageRegionProposalsPreparer(ctx context.Context, pr
 // GetImageRegionProposalsSender sends the GetImageRegionProposals request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetImageRegionProposalsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetImageRegionProposalsResponder handles the response to the GetImageRegionProposals request. The method always
@@ -1794,8 +1772,7 @@ func (client BaseClient) GetImagesByIdsPreparer(ctx context.Context, projectID u
 // GetImagesByIdsSender sends the GetImagesByIds request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetImagesByIdsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetImagesByIdsResponder handles the response to the GetImagesByIds request. The method always
@@ -1865,8 +1842,7 @@ func (client BaseClient) GetIterationPreparer(ctx context.Context, projectID uui
 // GetIterationSender sends the GetIteration request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetIterationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetIterationResponder handles the response to the GetIteration request. The method always
@@ -1947,8 +1923,7 @@ func (client BaseClient) GetIterationPerformancePreparer(ctx context.Context, pr
 // GetIterationPerformanceSender sends the GetIterationPerformance request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetIterationPerformanceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetIterationPerformanceResponder handles the response to the GetIterationPerformance request. The method always
@@ -2016,8 +1991,7 @@ func (client BaseClient) GetIterationsPreparer(ctx context.Context, projectID uu
 // GetIterationsSender sends the GetIterations request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetIterationsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetIterationsResponder handles the response to the GetIterations request. The method always
@@ -2085,8 +2059,7 @@ func (client BaseClient) GetProjectPreparer(ctx context.Context, projectID uuid.
 // GetProjectSender sends the GetProject request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetProjectSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetProjectResponder handles the response to the GetProject request. The method always
@@ -2148,8 +2121,7 @@ func (client BaseClient) GetProjectsPreparer(ctx context.Context) (*http.Request
 // GetProjectsSender sends the GetProjects request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetProjectsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetProjectsResponder handles the response to the GetProjects request. The method always
@@ -2226,8 +2198,7 @@ func (client BaseClient) GetTagPreparer(ctx context.Context, projectID uuid.UUID
 // GetTagSender sends the GetTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetTagSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetTagResponder handles the response to the GetTag request. The method always
@@ -2308,8 +2279,7 @@ func (client BaseClient) GetTaggedImageCountPreparer(ctx context.Context, projec
 // GetTaggedImageCountSender sends the GetTaggedImageCount request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetTaggedImageCountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetTaggedImageCountResponder handles the response to the GetTaggedImageCount request. The method always
@@ -2408,8 +2378,7 @@ func (client BaseClient) GetTaggedImagesPreparer(ctx context.Context, projectID 
 // GetTaggedImagesSender sends the GetTaggedImages request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetTaggedImagesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetTaggedImagesResponder handles the response to the GetTaggedImages request. The method always
@@ -2484,8 +2453,7 @@ func (client BaseClient) GetTagsPreparer(ctx context.Context, projectID uuid.UUI
 // GetTagsSender sends the GetTags request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetTagsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetTagsResponder handles the response to the GetTags request. The method always
@@ -2562,8 +2530,7 @@ func (client BaseClient) GetUntaggedImageCountPreparer(ctx context.Context, proj
 // GetUntaggedImageCountSender sends the GetUntaggedImageCount request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetUntaggedImageCountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetUntaggedImageCountResponder handles the response to the GetUntaggedImageCount request. The method always
@@ -2656,8 +2623,7 @@ func (client BaseClient) GetUntaggedImagesPreparer(ctx context.Context, projectI
 // GetUntaggedImagesSender sends the GetUntaggedImages request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetUntaggedImagesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetUntaggedImagesResponder handles the response to the GetUntaggedImages request. The method always
@@ -2728,8 +2694,7 @@ func (client BaseClient) QueryPredictionsPreparer(ctx context.Context, projectID
 // QueryPredictionsSender sends the QueryPredictions request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) QueryPredictionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // QueryPredictionsResponder handles the response to the QueryPredictions request. The method always
@@ -2810,8 +2775,7 @@ func (client BaseClient) QuickTestImagePreparer(ctx context.Context, projectID u
 // QuickTestImageSender sends the QuickTestImage request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) QuickTestImageSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // QuickTestImageResponder handles the response to the QuickTestImage request. The method always
@@ -2890,8 +2854,7 @@ func (client BaseClient) QuickTestImageURLPreparer(ctx context.Context, projectI
 // QuickTestImageURLSender sends the QuickTestImageURL request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) QuickTestImageURLSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // QuickTestImageURLResponder handles the response to the QuickTestImageURL request. The method always
@@ -2959,8 +2922,7 @@ func (client BaseClient) TrainProjectPreparer(ctx context.Context, projectID uui
 // TrainProjectSender sends the TrainProject request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) TrainProjectSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // TrainProjectResponder handles the response to the TrainProject request. The method always
@@ -3041,8 +3003,7 @@ func (client BaseClient) UpdateIterationPreparer(ctx context.Context, projectID 
 // UpdateIterationSender sends the UpdateIteration request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateIterationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateIterationResponder handles the response to the UpdateIteration request. The method always
@@ -3117,8 +3078,7 @@ func (client BaseClient) UpdateProjectPreparer(ctx context.Context, projectID uu
 // UpdateProjectSender sends the UpdateProject request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateProjectSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateProjectResponder handles the response to the UpdateProject request. The method always
@@ -3193,8 +3153,7 @@ func (client BaseClient) UpdateTagPreparer(ctx context.Context, projectID uuid.U
 // UpdateTagSender sends the UpdateTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateTagSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateTagResponder handles the response to the UpdateTag request. The method always

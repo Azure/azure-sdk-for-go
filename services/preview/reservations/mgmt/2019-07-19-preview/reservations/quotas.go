@@ -104,8 +104,7 @@ func (client QuotasClient) ListStatusPreparer(ctx context.Context, subscriptionI
 // ListStatusSender sends the ListStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client QuotasClient) ListStatusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListStatusResponder handles the response to the ListStatus request. The method always

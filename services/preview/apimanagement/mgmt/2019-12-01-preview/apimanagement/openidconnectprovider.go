@@ -50,7 +50,7 @@ func NewOpenIDConnectProviderClientWithBaseURI(baseURI string, subscriptionID st
 // opid - identifier of the OpenID Connect Provider.
 // parameters - create parameters.
 // ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
-func (client OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderContract, ifMatch string) (result OpenidConnectProviderContract, err error) {
+func (client OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderCreateContract, ifMatch string) (result OpenidConnectProviderContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OpenIDConnectProviderClient.CreateOrUpdate")
 		defer func() {
@@ -70,11 +70,12 @@ func (client OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, re
 			Constraints: []validation.Constraint{{Target: "opid", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "opid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.OpenidConnectProviderContractProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.OpenidConnectProviderContractProperties.DisplayName", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "parameters.OpenidConnectProviderContractProperties.DisplayName", Name: validation.MaxLength, Rule: 50, Chain: nil}}},
-					{Target: "parameters.OpenidConnectProviderContractProperties.MetadataEndpoint", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.OpenidConnectProviderContractProperties.ClientID", Name: validation.Null, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "parameters.OpenidConnectProviderCreateContractProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.OpenidConnectProviderCreateContractProperties.DisplayName", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "parameters.OpenidConnectProviderCreateContractProperties.DisplayName", Name: validation.MaxLength, Rule: 50, Chain: nil}}},
+					{Target: "parameters.OpenidConnectProviderCreateContractProperties.MetadataEndpoint", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.OpenidConnectProviderCreateContractProperties.ClientID", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.OpenidConnectProviderCreateContractProperties.ClientSecret", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("apimanagement.OpenIDConnectProviderClient", "CreateOrUpdate", err.Error())
 	}
@@ -101,7 +102,7 @@ func (client OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, re
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client OpenIDConnectProviderClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderContract, ifMatch string) (*http.Request, error) {
+func (client OpenIDConnectProviderClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderCreateContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"opid":              autorest.Encode("path", opid),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -131,8 +132,7 @@ func (client OpenIDConnectProviderClient) CreateOrUpdatePreparer(ctx context.Con
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -224,8 +224,7 @@ func (client OpenIDConnectProviderClient) DeletePreparer(ctx context.Context, re
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -313,8 +312,7 @@ func (client OpenIDConnectProviderClient) GetPreparer(ctx context.Context, resou
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -403,8 +401,7 @@ func (client OpenIDConnectProviderClient) GetEntityTagPreparer(ctx context.Conte
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
@@ -509,8 +506,7 @@ func (client OpenIDConnectProviderClient) ListByServicePreparer(ctx context.Cont
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByServiceResponder handles the response to the ListByService request. The method always
@@ -636,8 +632,7 @@ func (client OpenIDConnectProviderClient) ListSecretsPreparer(ctx context.Contex
 // ListSecretsSender sends the ListSecrets request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) ListSecretsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSecretsResponder handles the response to the ListSecrets request. The method always
@@ -732,8 +727,7 @@ func (client OpenIDConnectProviderClient) UpdatePreparer(ctx context.Context, re
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

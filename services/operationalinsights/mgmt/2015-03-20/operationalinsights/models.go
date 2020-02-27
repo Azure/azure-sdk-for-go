@@ -60,6 +60,31 @@ func PossibleSearchSortEnumValues() []SearchSortEnum {
 	return []SearchSortEnum{Asc, Desc}
 }
 
+// SkuNameEnum enumerates the values for sku name enum.
+type SkuNameEnum string
+
+const (
+	// CapacityReservation ...
+	CapacityReservation SkuNameEnum = "CapacityReservation"
+	// Free ...
+	Free SkuNameEnum = "Free"
+	// PerGB2018 ...
+	PerGB2018 SkuNameEnum = "PerGB2018"
+	// PerNode ...
+	PerNode SkuNameEnum = "PerNode"
+	// Premium ...
+	Premium SkuNameEnum = "Premium"
+	// Standalone ...
+	Standalone SkuNameEnum = "Standalone"
+	// Standard ...
+	Standard SkuNameEnum = "Standard"
+)
+
+// PossibleSkuNameEnumValues returns an array of possible values for the SkuNameEnum const type.
+func PossibleSkuNameEnumValues() []SkuNameEnum {
+	return []SkuNameEnum{CapacityReservation, Free, PerGB2018, PerNode, Premium, Standalone, Standard}
+}
+
 // StorageInsightState enumerates the values for storage insight state.
 type StorageInsightState string
 
@@ -73,6 +98,24 @@ const (
 // PossibleStorageInsightStateValues returns an array of possible values for the StorageInsightState const type.
 func PossibleStorageInsightStateValues() []StorageInsightState {
 	return []StorageInsightState{ERROR, OK}
+}
+
+// AvailableServiceTier service Tier details.
+type AvailableServiceTier struct {
+	// ServiceTier - READ-ONLY; The name of the Service Tier. Possible values include: 'Free', 'Standard', 'Premium', 'PerNode', 'PerGB2018', 'Standalone', 'CapacityReservation'
+	ServiceTier SkuNameEnum `json:"ServiceTier,omitempty"`
+	// Enabled - READ-ONLY; True if the Service Tier is enabled for the workspace.
+	Enabled *bool `json:"Enabled,omitempty"`
+	// MinimumRetention - READ-ONLY; The minimum retention for the Service Tier, in days.
+	MinimumRetention *int64 `json:"MinimumRetention,omitempty"`
+	// MaximumRetention - READ-ONLY; The maximum retention for the Service Tier, in days.
+	MaximumRetention *int64 `json:"MaximumRetention,omitempty"`
+	// DefaultRetention - READ-ONLY; The default retention for the Service Tier, in days.
+	DefaultRetention *int64 `json:"DefaultRetention,omitempty"`
+	// CapacityReservationLevel - READ-ONLY; The capacity reservation level in GB per day. Returned for the Capacity Reservation Service Tier.
+	CapacityReservationLevel *int64 `json:"CapacityReservationLevel,omitempty"`
+	// LastSkuUpdate - READ-ONLY; Time when the sku was last updated for the workspace. Returned for the Capacity Reservation Service Tier.
+	LastSkuUpdate *date.Time `json:"LastSkuUpdate,omitempty"`
 }
 
 // CoreSummary the core summary of a search.
@@ -93,6 +136,12 @@ type LinkTarget struct {
 	WorkspaceName *string `json:"workspaceName,omitempty"`
 	// Location - The location of the workspace.
 	Location *string `json:"location,omitempty"`
+}
+
+// ListAvailableServiceTier ...
+type ListAvailableServiceTier struct {
+	autorest.Response `json:"-"`
+	Value             *[]AvailableServiceTier `json:"value,omitempty"`
 }
 
 // ListLinkTarget ...

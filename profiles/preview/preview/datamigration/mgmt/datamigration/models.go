@@ -314,6 +314,17 @@ const (
 	ProjectTargetPlatformUnknown              ProjectTargetPlatform = original.ProjectTargetPlatformUnknown
 )
 
+type ReplicateMigrationState = original.ReplicateMigrationState
+
+const (
+	ReplicateMigrationStateACTIONREQUIRED ReplicateMigrationState = original.ReplicateMigrationStateACTIONREQUIRED
+	ReplicateMigrationStateCOMPLETE       ReplicateMigrationState = original.ReplicateMigrationStateCOMPLETE
+	ReplicateMigrationStateFAILED         ReplicateMigrationState = original.ReplicateMigrationStateFAILED
+	ReplicateMigrationStatePENDING        ReplicateMigrationState = original.ReplicateMigrationStatePENDING
+	ReplicateMigrationStateUNDEFINED      ReplicateMigrationState = original.ReplicateMigrationStateUNDEFINED
+	ReplicateMigrationStateVALIDATING     ReplicateMigrationState = original.ReplicateMigrationStateVALIDATING
+)
+
 type ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleType
 
 const (
@@ -349,9 +360,9 @@ const (
 type ResultType = original.ResultType
 
 const (
-	ResultTypeCollection ResultType = original.ResultTypeCollection
-	ResultTypeDatabase   ResultType = original.ResultTypeDatabase
-	ResultTypeMigration  ResultType = original.ResultTypeMigration
+	ResultTypeMigrateSsisTaskOutput  ResultType = original.ResultTypeMigrateSsisTaskOutput
+	ResultTypeMigrationLevelOutput   ResultType = original.ResultTypeMigrationLevelOutput
+	ResultTypeSsisProjectLevelOutput ResultType = original.ResultTypeSsisProjectLevelOutput
 )
 
 type ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutput
@@ -448,18 +459,47 @@ const (
 	ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeSchemaErrorOutput                     ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeSchemaErrorOutput
 )
 
-type ResultTypeBasicMigrateSsisTaskOutput = original.ResultTypeBasicMigrateSsisTaskOutput
+type ResultTypeBasicMongoDbProgress = original.ResultTypeBasicMongoDbProgress
 
 const (
-	ResultTypeMigrateSsisTaskOutput  ResultTypeBasicMigrateSsisTaskOutput = original.ResultTypeMigrateSsisTaskOutput
-	ResultTypeMigrationLevelOutput   ResultTypeBasicMigrateSsisTaskOutput = original.ResultTypeMigrationLevelOutput
-	ResultTypeSsisProjectLevelOutput ResultTypeBasicMigrateSsisTaskOutput = original.ResultTypeSsisProjectLevelOutput
+	ResultTypeCollection      ResultTypeBasicMongoDbProgress = original.ResultTypeCollection
+	ResultTypeDatabase        ResultTypeBasicMongoDbProgress = original.ResultTypeDatabase
+	ResultTypeMigration       ResultTypeBasicMongoDbProgress = original.ResultTypeMigration
+	ResultTypeMongoDbProgress ResultTypeBasicMongoDbProgress = original.ResultTypeMongoDbProgress
 )
 
 type SQLSourcePlatform = original.SQLSourcePlatform
 
 const (
 	SQLOnPrem SQLSourcePlatform = original.SQLOnPrem
+)
+
+type ScenarioSource = original.ScenarioSource
+
+const (
+	Access        ScenarioSource = original.Access
+	DB2           ScenarioSource = original.DB2
+	MongoDB       ScenarioSource = original.MongoDB
+	MySQL         ScenarioSource = original.MySQL
+	MySQLRDS      ScenarioSource = original.MySQLRDS
+	Oracle        ScenarioSource = original.Oracle
+	PostgreSQL    ScenarioSource = original.PostgreSQL
+	PostgreSQLRDS ScenarioSource = original.PostgreSQLRDS
+	SQL           ScenarioSource = original.SQL
+	SQLRDS        ScenarioSource = original.SQLRDS
+	Sybase        ScenarioSource = original.Sybase
+)
+
+type ScenarioTarget = original.ScenarioTarget
+
+const (
+	ScenarioTargetAzureDBForMySQL       ScenarioTarget = original.ScenarioTargetAzureDBForMySQL
+	ScenarioTargetAzureDBForPostgresSQL ScenarioTarget = original.ScenarioTargetAzureDBForPostgresSQL
+	ScenarioTargetMongoDB               ScenarioTarget = original.ScenarioTargetMongoDB
+	ScenarioTargetSQLDB                 ScenarioTarget = original.ScenarioTargetSQLDB
+	ScenarioTargetSQLDW                 ScenarioTarget = original.ScenarioTargetSQLDW
+	ScenarioTargetSQLMI                 ScenarioTarget = original.ScenarioTargetSQLMI
+	ScenarioTargetSQLServer             ScenarioTarget = original.ScenarioTargetSQLServer
 )
 
 type SchemaMigrationOption = original.SchemaMigrationOption
@@ -550,17 +590,24 @@ const (
 type SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingState
 
 const (
-	SyncDatabaseMigrationReportingStateCANCELLED       SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCANCELLED
-	SyncDatabaseMigrationReportingStateCANCELLING      SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCANCELLING
-	SyncDatabaseMigrationReportingStateCOMPLETE        SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCOMPLETE
-	SyncDatabaseMigrationReportingStateCOMPLETING      SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCOMPLETING
-	SyncDatabaseMigrationReportingStateCONFIGURING     SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCONFIGURING
-	SyncDatabaseMigrationReportingStateFAILED          SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateFAILED
-	SyncDatabaseMigrationReportingStateINITIALIAZING   SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateINITIALIAZING
-	SyncDatabaseMigrationReportingStateREADYTOCOMPLETE SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateREADYTOCOMPLETE
-	SyncDatabaseMigrationReportingStateRUNNING         SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateRUNNING
-	SyncDatabaseMigrationReportingStateSTARTING        SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateSTARTING
-	SyncDatabaseMigrationReportingStateUNDEFINED       SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateUNDEFINED
+	SyncDatabaseMigrationReportingStateBACKUPCOMPLETED    SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateBACKUPCOMPLETED
+	SyncDatabaseMigrationReportingStateBACKUPINPROGRESS   SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateBACKUPINPROGRESS
+	SyncDatabaseMigrationReportingStateCANCELLED          SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCANCELLED
+	SyncDatabaseMigrationReportingStateCANCELLING         SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCANCELLING
+	SyncDatabaseMigrationReportingStateCOMPLETE           SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCOMPLETE
+	SyncDatabaseMigrationReportingStateCOMPLETING         SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCOMPLETING
+	SyncDatabaseMigrationReportingStateCONFIGURING        SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCONFIGURING
+	SyncDatabaseMigrationReportingStateFAILED             SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateFAILED
+	SyncDatabaseMigrationReportingStateINITIALIAZING      SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateINITIALIAZING
+	SyncDatabaseMigrationReportingStateREADYTOCOMPLETE    SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateREADYTOCOMPLETE
+	SyncDatabaseMigrationReportingStateRESTORECOMPLETED   SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateRESTORECOMPLETED
+	SyncDatabaseMigrationReportingStateRESTOREINPROGRESS  SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateRESTOREINPROGRESS
+	SyncDatabaseMigrationReportingStateRUNNING            SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateRUNNING
+	SyncDatabaseMigrationReportingStateSTARTING           SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateSTARTING
+	SyncDatabaseMigrationReportingStateUNDEFINED          SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateUNDEFINED
+	SyncDatabaseMigrationReportingStateVALIDATING         SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateVALIDATING
+	SyncDatabaseMigrationReportingStateVALIDATIONCOMPLETE SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateVALIDATIONCOMPLETE
+	SyncDatabaseMigrationReportingStateVALIDATIONFAILED   SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateVALIDATIONFAILED
 )
 
 type SyncTableMigrationState = original.SyncTableMigrationState
@@ -611,7 +658,7 @@ const (
 	TaskTypeMigrateMongoDb                                     TaskType = original.TaskTypeMigrateMongoDb
 	TaskTypeMigrateMySQLAzureDbForMySQLSync                    TaskType = original.TaskTypeMigrateMySQLAzureDbForMySQLSync
 	TaskTypeMigrateOracleAzureDbForPostgreSQLSync              TaskType = original.TaskTypeMigrateOracleAzureDbForPostgreSQLSync
-	TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync          TaskType = original.TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync
+	TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2        TaskType = original.TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2
 	TaskTypeMigrateSchemaSQLServerSQLDb                        TaskType = original.TaskTypeMigrateSchemaSQLServerSQLDb
 	TaskTypeMigrateSQLServerAzureSQLDbMI                       TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbMI
 	TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS                TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS
@@ -682,6 +729,7 @@ type BasicMigrateSQLServerSQLMISyncTaskOutput = original.BasicMigrateSQLServerSQ
 type BasicMigrateSQLServerSQLMITaskOutput = original.BasicMigrateSQLServerSQLMITaskOutput
 type BasicMigrateSchemaSQLServerSQLDbTaskOutput = original.BasicMigrateSchemaSQLServerSQLDbTaskOutput
 type BasicMigrateSsisTaskOutput = original.BasicMigrateSsisTaskOutput
+type BasicMongoDbProgress = original.BasicMongoDbProgress
 type BasicProjectTaskProperties = original.BasicProjectTaskProperties
 type BlobShare = original.BlobShare
 type CheckOCIDriverTaskInput = original.CheckOCIDriverTaskInput
@@ -1158,6 +1206,9 @@ func PossibleProjectSourcePlatformValues() []ProjectSourcePlatform {
 func PossibleProjectTargetPlatformValues() []ProjectTargetPlatform {
 	return original.PossibleProjectTargetPlatformValues()
 }
+func PossibleReplicateMigrationStateValues() []ReplicateMigrationState {
+	return original.PossibleReplicateMigrationStateValues()
+}
 func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
 	return original.PossibleResourceSkuCapacityScaleTypeValues()
 }
@@ -1197,14 +1248,20 @@ func PossibleResultTypeBasicMigrateSQLServerSQLMITaskOutputValues() []ResultType
 func PossibleResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputValues() []ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput {
 	return original.PossibleResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputValues()
 }
-func PossibleResultTypeBasicMigrateSsisTaskOutputValues() []ResultTypeBasicMigrateSsisTaskOutput {
-	return original.PossibleResultTypeBasicMigrateSsisTaskOutputValues()
+func PossibleResultTypeBasicMongoDbProgressValues() []ResultTypeBasicMongoDbProgress {
+	return original.PossibleResultTypeBasicMongoDbProgressValues()
 }
 func PossibleResultTypeValues() []ResultType {
 	return original.PossibleResultTypeValues()
 }
 func PossibleSQLSourcePlatformValues() []SQLSourcePlatform {
 	return original.PossibleSQLSourcePlatformValues()
+}
+func PossibleScenarioSourceValues() []ScenarioSource {
+	return original.PossibleScenarioSourceValues()
+}
+func PossibleScenarioTargetValues() []ScenarioTarget {
+	return original.PossibleScenarioTargetValues()
 }
 func PossibleSchemaMigrationOptionValues() []SchemaMigrationOption {
 	return original.PossibleSchemaMigrationOptionValues()

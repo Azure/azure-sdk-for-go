@@ -1,5 +1,61 @@
 # CHANGELOG
 
+## `v40.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| logic | 2019-05-01 |
+| maps | 2020-02-01-preview |
+| peering | 2020-01-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2019-01-01 |
+| devspaces | 2019-04-01 |
+| machinelearningservices | 2020-01-01 |
+| msi | 2015-08-31-preview |
+| operationalinsights | 2015-03-20<br/>2015-11-01-preview |
+| policyinsights | 2019-10-01 |
+| security | v1.0<br/>v2.0 |
+| sql | 2015-05-01-preview<br/>2017-03-01-preview<br/>2018-06-01-preview |
+| subscriptions | 2018-06-01<br/>2019-06-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2019-12-01-preview |
+| backup | 2017-07-01 |
+| containerregistry | 2019-05-01-preview<br/>2019-06-01-preview<br/>2019-12-01-preview |
+| datafactory | 2018-06-01 |
+| datamigration | 2018-07-15-preview |
+| documentdb | 2019-12-12 |
+| features | 2019-07-01 |
+| frontdoor | 2020-01-01 |
+| graphrbac | 1.6 |
+| hanaonazure | 2017-11-03-preview |
+| msi | 2018-11-30 |
+| mysql | 2017-12-01 |
+| postgresql | 2017-12-01 |
+| prediction | customvision |
+| resources | 2015-11-01<br/>2016-02-01<br/>2016-07-01<br/>2016-09-01<br/>2017-05-10<br/>2018-02-01<br/>2018-05-01<br/>2019-03-01<br/>2019-05-01 |
+| security | v3.0 |
+| securityinsight | 2017-08-01-preview |
+| sql | v3.0 |
+| storage | 2019-06-01 |
+
+### Removed Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| logic | 2019-05-01 |
+
+**NOTE:** `services/preview/logic/mgmt/2019-05-01/logic` was moved to `services/logic/mgmt/2019-05-01/logic`, since it is a stable package and was placed in `preview` directory by mistake.
+
 ## `v39.3.0`
 
 ### New Packages

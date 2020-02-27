@@ -25,29 +25,28 @@ import (
 	"net/http"
 )
 
-// StatusClient is the open API 2.0 Specs for Azure RecoveryServices Backup service
-type StatusClient struct {
+// AadPropertiesClient is the open API 2.0 Specs for Azure RecoveryServices Backup service
+type AadPropertiesClient struct {
 	BaseClient
 }
 
-// NewStatusClient creates an instance of the StatusClient client.
-func NewStatusClient(subscriptionID string) StatusClient {
-	return NewStatusClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewAadPropertiesClient creates an instance of the AadPropertiesClient client.
+func NewAadPropertiesClient(subscriptionID string) AadPropertiesClient {
+	return NewAadPropertiesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewStatusClientWithBaseURI creates an instance of the StatusClient client using a custom endpoint.  Use this when
-// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewStatusClientWithBaseURI(baseURI string, subscriptionID string) StatusClient {
-	return StatusClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewAadPropertiesClientWithBaseURI creates an instance of the AadPropertiesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewAadPropertiesClientWithBaseURI(baseURI string, subscriptionID string) AadPropertiesClient {
+	return AadPropertiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get sends the get request.
 // Parameters:
 // azureRegion - azure region to hit Api
-// parameters - container Backup Status Request
-func (client StatusClient) Get(ctx context.Context, azureRegion string, parameters StatusRequest) (result StatusResponse, err error) {
+func (client AadPropertiesClient) Get(ctx context.Context, azureRegion string) (result AADPropertiesResource, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/StatusClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AadPropertiesClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -56,58 +55,56 @@ func (client StatusClient) Get(ctx context.Context, azureRegion string, paramete
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, azureRegion, parameters)
+	req, err := client.GetPreparer(ctx, azureRegion)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.StatusClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "backup.AadPropertiesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "backup.StatusClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "backup.AadPropertiesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.StatusClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "backup.AadPropertiesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client StatusClient) GetPreparer(ctx context.Context, azureRegion string, parameters StatusRequest) (*http.Request, error) {
+func (client AadPropertiesClient) GetPreparer(ctx context.Context, azureRegion string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"azureRegion":    autorest.Encode("path", azureRegion),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-07-01"
+	const APIVersion = "2018-12-20"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupStatus", pathParameters),
-		autorest.WithJSON(parameters),
+		autorest.WithPathParameters("/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupAadProperties/default", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client StatusClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client AadPropertiesClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client StatusClient) GetResponder(resp *http.Response) (result StatusResponse, err error) {
+func (client AadPropertiesClient) GetResponder(resp *http.Response) (result AADPropertiesResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

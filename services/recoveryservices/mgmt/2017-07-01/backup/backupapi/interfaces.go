@@ -23,6 +23,72 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// AadPropertiesClientAPI contains the set of methods on the AadPropertiesClient type.
+type AadPropertiesClientAPI interface {
+	Get(ctx context.Context, azureRegion string) (result backup.AADPropertiesResource, err error)
+}
+
+var _ AadPropertiesClientAPI = (*backup.AadPropertiesClient)(nil)
+
+// CrossRegionRestoreClientAPI contains the set of methods on the CrossRegionRestoreClient type.
+type CrossRegionRestoreClientAPI interface {
+	Trigger(ctx context.Context, azureRegion string, parameters backup.CrossRegionRestoreRequestResource) (result backup.CrossRegionRestoreTriggerFuture, err error)
+}
+
+var _ CrossRegionRestoreClientAPI = (*backup.CrossRegionRestoreClient)(nil)
+
+// CrrJobDetailsClientAPI contains the set of methods on the CrrJobDetailsClient type.
+type CrrJobDetailsClientAPI interface {
+	Get(ctx context.Context, azureRegion string) (result backup.JobResource, err error)
+}
+
+var _ CrrJobDetailsClientAPI = (*backup.CrrJobDetailsClient)(nil)
+
+// CrrJobsClientAPI contains the set of methods on the CrrJobsClient type.
+type CrrJobsClientAPI interface {
+	List(ctx context.Context, azureRegion string) (result backup.JobResourceListPage, err error)
+	ListComplete(ctx context.Context, azureRegion string) (result backup.JobResourceListIterator, err error)
+}
+
+var _ CrrJobsClientAPI = (*backup.CrrJobsClient)(nil)
+
+// CrrOperationResultsClientAPI contains the set of methods on the CrrOperationResultsClient type.
+type CrrOperationResultsClientAPI interface {
+	Get(ctx context.Context, azureRegion string, operationID string) (result backup.CrrOperationResultsGetFuture, err error)
+}
+
+var _ CrrOperationResultsClientAPI = (*backup.CrrOperationResultsClient)(nil)
+
+// CrrOperationStatusClientAPI contains the set of methods on the CrrOperationStatusClient type.
+type CrrOperationStatusClientAPI interface {
+	Get(ctx context.Context, azureRegion string, operationID string) (result backup.OperationStatus, err error)
+}
+
+var _ CrrOperationStatusClientAPI = (*backup.CrrOperationStatusClient)(nil)
+
+// RecoveryPointsClientAPI contains the set of methods on the RecoveryPointsClient type.
+type RecoveryPointsClientAPI interface {
+	GetAccessToken(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string) (result backup.CrrAccessTokenResource, err error)
+}
+
+var _ RecoveryPointsClientAPI = (*backup.RecoveryPointsClient)(nil)
+
+// RecoveryPointsCrrClientAPI contains the set of methods on the RecoveryPointsCrrClient type.
+type RecoveryPointsCrrClientAPI interface {
+	List(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.RecoveryPointResourceListPage, err error)
+	ListComplete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.RecoveryPointResourceListIterator, err error)
+}
+
+var _ RecoveryPointsCrrClientAPI = (*backup.RecoveryPointsCrrClient)(nil)
+
+// ProtectedItemsCrrClientAPI contains the set of methods on the ProtectedItemsCrrClient type.
+type ProtectedItemsCrrClientAPI interface {
+	List(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.ProtectedItemResourceListPage, err error)
+	ListComplete(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.ProtectedItemResourceListIterator, err error)
+}
+
+var _ ProtectedItemsCrrClientAPI = (*backup.ProtectedItemsCrrClient)(nil)
+
 // ProtectionIntentClientAPI contains the set of methods on the ProtectionIntentClient type.
 type ProtectionIntentClientAPI interface {
 	CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, intentObjectName string, parameters backup.ProtectionIntentResource) (result backup.ProtectionIntentResource, err error)

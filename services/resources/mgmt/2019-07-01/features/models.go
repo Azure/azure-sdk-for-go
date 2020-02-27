@@ -1055,6 +1055,68 @@ func (gr GenericResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// GenericResourceExpanded resource information.
+type GenericResourceExpanded struct {
+	// CreatedTime - READ-ONLY; The created time of the resource. This is only present if requested via the $expand query parameter.
+	CreatedTime *date.Time `json:"createdTime,omitempty"`
+	// ChangedTime - READ-ONLY; The changed time of the resource. This is only present if requested via the $expand query parameter.
+	ChangedTime *date.Time `json:"changedTime,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state of the resource. This is only present if requested via the $expand query parameter.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// Plan - The plan of the resource.
+	Plan *Plan `json:"plan,omitempty"`
+	// Properties - The resource properties.
+	Properties interface{} `json:"properties,omitempty"`
+	// Kind - The kind of the resource.
+	Kind *string `json:"kind,omitempty"`
+	// ManagedBy - ID of the resource that manages this resource.
+	ManagedBy *string `json:"managedBy,omitempty"`
+	// Sku - The SKU of the resource.
+	Sku *Sku `json:"sku,omitempty"`
+	// Identity - The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
+	// ID - READ-ONLY; Resource ID
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for GenericResourceExpanded.
+func (gre GenericResourceExpanded) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gre.Plan != nil {
+		objectMap["plan"] = gre.Plan
+	}
+	if gre.Properties != nil {
+		objectMap["properties"] = gre.Properties
+	}
+	if gre.Kind != nil {
+		objectMap["kind"] = gre.Kind
+	}
+	if gre.ManagedBy != nil {
+		objectMap["managedBy"] = gre.ManagedBy
+	}
+	if gre.Sku != nil {
+		objectMap["sku"] = gre.Sku
+	}
+	if gre.Identity != nil {
+		objectMap["identity"] = gre.Identity
+	}
+	if gre.Location != nil {
+		objectMap["location"] = gre.Location
+	}
+	if gre.Tags != nil {
+		objectMap["tags"] = gre.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // GenericResourceFilter resource filter.
 type GenericResourceFilter struct {
 	// ResourceType - The resource type.
@@ -1800,12 +1862,12 @@ func (future *ResourceGroupsDeleteFuture) Result(client ResourceGroupsClient) (a
 type ResourceListResult struct {
 	autorest.Response `json:"-"`
 	// Value - An array of resources.
-	Value *[]GenericResource `json:"value,omitempty"`
+	Value *[]GenericResourceExpanded `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ResourceListResultIterator provides access to a complete listing of GenericResource values.
+// ResourceListResultIterator provides access to a complete listing of GenericResourceExpanded values.
 type ResourceListResultIterator struct {
 	i    int
 	page ResourceListResultPage
@@ -1856,9 +1918,9 @@ func (iter ResourceListResultIterator) Response() ResourceListResult {
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter ResourceListResultIterator) Value() GenericResource {
+func (iter ResourceListResultIterator) Value() GenericResourceExpanded {
 	if !iter.page.NotDone() {
-		return GenericResource{}
+		return GenericResourceExpanded{}
 	}
 	return iter.page.Values()[iter.i]
 }
@@ -1885,7 +1947,7 @@ func (rlr ResourceListResult) resourceListResultPreparer(ctx context.Context) (*
 		autorest.WithBaseURL(to.String(rlr.NextLink)))
 }
 
-// ResourceListResultPage contains a page of GenericResource values.
+// ResourceListResultPage contains a page of GenericResourceExpanded values.
 type ResourceListResultPage struct {
 	fn  func(context.Context, ResourceListResult) (ResourceListResult, error)
 	rlr ResourceListResult
@@ -1930,7 +1992,7 @@ func (page ResourceListResultPage) Response() ResourceListResult {
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page ResourceListResultPage) Values() []GenericResource {
+func (page ResourceListResultPage) Values() []GenericResourceExpanded {
 	if page.rlr.IsEmpty() {
 		return nil
 	}

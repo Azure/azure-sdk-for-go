@@ -102,13 +102,91 @@ func (client ResourceVaultConfigsClient) GetPreparer(ctx context.Context, vaultN
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ResourceVaultConfigsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client ResourceVaultConfigsClient) GetResponder(resp *http.Response) (result ResourceVaultConfigResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Put updates vault security config.
+// Parameters:
+// vaultName - the name of the recovery services vault.
+// resourceGroupName - the name of the resource group where the recovery services vault is present.
+// parameters - resource config request
+func (client ResourceVaultConfigsClient) Put(ctx context.Context, vaultName string, resourceGroupName string, parameters ResourceVaultConfigResource) (result ResourceVaultConfigResource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceVaultConfigsClient.Put")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.PutPreparer(ctx, vaultName, resourceGroupName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "backup.ResourceVaultConfigsClient", "Put", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.PutSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "backup.ResourceVaultConfigsClient", "Put", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.PutResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "backup.ResourceVaultConfigsClient", "Put", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// PutPreparer prepares the Put request.
+func (client ResourceVaultConfigsClient) PutPreparer(ctx context.Context, vaultName string, resourceGroupName string, parameters ResourceVaultConfigResource) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vaultName":         autorest.Encode("path", vaultName),
+	}
+
+	const APIVersion = "2019-06-15"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupconfig/vaultconfig", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PutSender sends the Put request. The method will close the
+// http.Response Body if it receives an error.
+func (client ResourceVaultConfigsClient) PutSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// PutResponder handles the response to the Put request. The method always
+// closes the http.Response Body.
+func (client ResourceVaultConfigsClient) PutResponder(resp *http.Response) (result ResourceVaultConfigResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -182,8 +260,7 @@ func (client ResourceVaultConfigsClient) UpdatePreparer(ctx context.Context, vau
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client ResourceVaultConfigsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

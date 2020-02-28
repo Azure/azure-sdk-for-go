@@ -20,19 +20,19 @@ const (
 	expiresOnIntResp           = `{"access_token": "new_token", "refresh_token": "", "expires_in": "", "expires_on": "1560974028", "not_before": "1560970130", "resource": "https://vault.azure.net", "token_type": "Bearer"}`
 )
 
-// func TestManagedIdentityCredential_GetTokenInCloudShellLive(t *testing.T) {
-// 	if len(os.Getenv("MSI_ENDPOINT")) == 0 {
-// 		t.Skip()
-// 	}
-// 	msiCred, err := NewManagedIdentityCredential(clientID, nil)
-// 	if err != nil {
-// 		t.Fatalf("unexpected error: %v", err)
-// 	}
-// 	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
-// 	if err != nil {
-// 		t.Fatalf("Received an error when attempting to retrieve a token")
-// 	}
-// }
+func TestManagedIdentityCredential_GetTokenInCloudShellLive(t *testing.T) {
+	if len(os.Getenv("MSI_ENDPOINT")) == 0 {
+		t.Skip()
+	}
+	msiCred, err := NewManagedIdentityCredential(clientID, nil)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	if err != nil {
+		t.Fatalf("Received an error when attempting to retrieve a token")
+	}
+}
 
 func TestManagedIdentityCredential_GetTokenInCloudShellMock(t *testing.T) {
 	err := resetEnvironmentVarsForTest()

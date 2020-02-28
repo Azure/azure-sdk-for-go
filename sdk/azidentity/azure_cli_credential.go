@@ -25,7 +25,7 @@ func NewAzureCLICredential() *AzureCLICredential {
 // scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service Client calls.
 func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return c.client.authenticate(ctx, opts.Scopes, c.client.azAccessTokenProvider)
+	return c.client.authenticate(ctx, opts.Scopes)
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.

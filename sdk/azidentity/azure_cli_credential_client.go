@@ -33,12 +33,12 @@ type authResults struct {
 	errOut string
 }
 
-// azureCLIAccessTokenProvider that helps mock run Azure CLI command and getting the result from standard output and error streams.
+// azureCLIAccessTokenProvider provides an AccessToken, either by Azure CLI or by mocking.
 type azureCLIAccessTokenProvider interface {
 	getAzureCLIAuthResults(resource string) (*authResults, error)
 }
 
-// azureCLIAccessTokenProviderStruct implements the interface azureCLIAccessTokenProvider.
+// azureCLIAccessTokenProviderStruct implements the interface azureCLIAccessTokenProvider, to run Azure CLI command.
 type azureCLIAccessTokenProviderStruct struct {
 }
 
@@ -48,7 +48,6 @@ type azureCLICredentialClient struct {
 }
 
 // newAzureCLICredentialClient creates a new instance of the azureCLICredentialClient.
-// azureCLIAccessTokenProvider:
 func newAzureCLICredentialClient(azAccessTokenProvider azureCLIAccessTokenProvider) *azureCLICredentialClient {
 	if azAccessTokenProvider == nil {
 		azAccessTokenProvider = &azureCLIAccessTokenProviderStruct{}
@@ -61,11 +60,11 @@ func newAzureCLICredentialClient(azAccessTokenProvider azureCLIAccessTokenProvid
 // an error in case of authentication failure.
 // ctx: The current request context
 // scopes: The scopes required for the token
-func (c *azureCLICredentialClient) authenticate(ctx context.Context, scopes []string, azAccessTokenProvider azureCLIAccessTokenProvider) (*azcore.AccessToken, error) {
+func (c *azureCLICredentialClient) authenticate(ctx context.Context, scopes []string) (*azcore.AccessToken, error) {
 	// convert the scopes to a resource string
 	resource := c.scopeToResource(scopes)
 
-	// Validate the resource to make sure it doesn't include shell-meta characters since it gets sent as a command line argument to Azure CLI
+	// Validate the resource to make sure it doesn't include shell-meta characters.
 	isResourceMatch, error := regexp.MatchString("^[0-9a-zA-Z-.:/]+$", resource)
 	if error != nil {
 		return nil, error
@@ -74,8 +73,7 @@ func (c *azureCLICredentialClient) authenticate(ctx context.Context, scopes []st
 		return nil, fmt.Errorf(invalidResourceError)
 	}
 
-	// Execute Azure CLI command 'az account get-access-token --output json --resource' to return results.
-	authResults, err := azAccessTokenProvider.getAzureCLIAuthResults(resource)
+	authResults, err := c.azAccessTokenProvider.getAzureCLIAuthResults(resource)
 	if err != nil {
 		return nil, &CredentialUnavailableError{Message: authResults.errOut}
 	}
@@ -84,6 +82,7 @@ func (c *azureCLICredentialClient) authenticate(ctx context.Context, scopes []st
 }
 
 // getAzureCLIAuthResults implements the azureCLIAccessTokenProvider interface on azureCLIAccessTokenProviderStruct.
+// Execute Azure CLI command 'az account get-access-token --output json --resource' to return results.
 func (c *azureCLIAccessTokenProviderStruct) getAzureCLIAuthResults(resource string) (*authResults, error) {
 	// Developer can set the path what the install path for Azure CLI is.
 	azureCLIPath := "AzureCLIPath"
@@ -135,9 +134,10 @@ func (c *azureCLICredentialClient) createAccessToken(output []byte) (*azcore.Acc
 		return nil, err
 	}
 
-	// Parse expiresOn string to date as required time format
 	dateString := value.ExpiresOn
 	timeformat := "2006-01-02 15:04:05.999999"
+
+	// The expiresOnValue return from  the Azure CLI is local time. So, get local time first, then parse to UTC.
 	expiresOnValue, err := time.ParseInLocation(timeformat, dateString, time.Local)
 	if err != nil {
 		return nil, err
@@ -150,13 +150,12 @@ func (c *azureCLICredentialClient) createAccessToken(output []byte) (*azcore.Acc
 }
 
 func (c *azureCLICredentialClient) scopeToResource(scopes []string) string {
-	// Return the 0th scope directly if it doesn't end with suffix
+	// Return the first scope directly if it doesn't end with suffix
 	if !strings.HasSuffix(scopes[0], suffix) {
 		return scopes[0]
 	}
 
-	// The following code will remove the suffix from any scopes passed into the method
-	// since AzureCLICredential expect a resource string instead of a scope string
+	// Remove suffix from first scope since Azure CLI command parameter "--resource" don't need suffix.
 	scope := scopes[0][0:strings.Index(scopes[0], suffix)]
 
 	return scope

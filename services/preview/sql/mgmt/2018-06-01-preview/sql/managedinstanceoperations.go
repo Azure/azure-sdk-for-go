@@ -106,8 +106,7 @@ func (client ManagedInstanceOperationsClient) ListByManagedInstancePreparer(ctx 
 // ListByManagedInstanceSender sends the ListByManagedInstance request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedInstanceOperationsClient) ListByManagedInstanceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByManagedInstanceResponder handles the response to the ListByManagedInstance request. The method always

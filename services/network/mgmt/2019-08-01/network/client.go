@@ -116,8 +116,7 @@ func (client BaseClient) CheckDNSNameAvailabilityPreparer(ctx context.Context, l
 // CheckDNSNameAvailabilitySender sends the CheckDNSNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CheckDNSNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CheckDNSNameAvailabilityResponder handles the response to the CheckDNSNameAvailability request. The method always
@@ -191,9 +190,8 @@ func (client BaseClient) GeneratevirtualwanvpnserverconfigurationvpnprofilePrepa
 // GeneratevirtualwanvpnserverconfigurationvpnprofileSender sends the Generatevirtualwanvpnserverconfigurationvpnprofile request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GeneratevirtualwanvpnserverconfigurationvpnprofileSender(req *http.Request) (future GeneratevirtualwanvpnserverconfigurationvpnprofileFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -274,8 +272,7 @@ func (client BaseClient) SupportedSecurityProvidersPreparer(ctx context.Context,
 // SupportedSecurityProvidersSender sends the SupportedSecurityProviders request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) SupportedSecurityProvidersSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // SupportedSecurityProvidersResponder handles the response to the SupportedSecurityProviders request. The method always

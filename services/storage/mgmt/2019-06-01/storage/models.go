@@ -178,6 +178,36 @@ func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
 	return []DirectoryServiceOptions{DirectoryServiceOptionsAADDS, DirectoryServiceOptionsAD, DirectoryServiceOptionsNone}
 }
 
+// EncryptionScopeSource enumerates the values for encryption scope source.
+type EncryptionScopeSource string
+
+const (
+	// MicrosoftKeyVault ...
+	MicrosoftKeyVault EncryptionScopeSource = "Microsoft.KeyVault"
+	// MicrosoftStorage ...
+	MicrosoftStorage EncryptionScopeSource = "Microsoft.Storage"
+)
+
+// PossibleEncryptionScopeSourceValues returns an array of possible values for the EncryptionScopeSource const type.
+func PossibleEncryptionScopeSourceValues() []EncryptionScopeSource {
+	return []EncryptionScopeSource{MicrosoftKeyVault, MicrosoftStorage}
+}
+
+// EncryptionScopeState enumerates the values for encryption scope state.
+type EncryptionScopeState string
+
+const (
+	// Disabled ...
+	Disabled EncryptionScopeState = "Disabled"
+	// Enabled ...
+	Enabled EncryptionScopeState = "Enabled"
+)
+
+// PossibleEncryptionScopeStateValues returns an array of possible values for the EncryptionScopeState const type.
+func PossibleEncryptionScopeStateValues() []EncryptionScopeState {
+	return []EncryptionScopeState{Disabled, Enabled}
+}
+
 // GeoReplicationStatus enumerates the values for geo replication status.
 type GeoReplicationStatus string
 
@@ -261,15 +291,15 @@ func PossibleKeyPermissionValues() []KeyPermission {
 type KeySource string
 
 const (
-	// MicrosoftKeyvault ...
-	MicrosoftKeyvault KeySource = "Microsoft.Keyvault"
-	// MicrosoftStorage ...
-	MicrosoftStorage KeySource = "Microsoft.Storage"
+	// KeySourceMicrosoftKeyvault ...
+	KeySourceMicrosoftKeyvault KeySource = "Microsoft.Keyvault"
+	// KeySourceMicrosoftStorage ...
+	KeySourceMicrosoftStorage KeySource = "Microsoft.Storage"
 )
 
 // PossibleKeySourceValues returns an array of possible values for the KeySource const type.
 func PossibleKeySourceValues() []KeySource {
-	return []KeySource{MicrosoftKeyvault, MicrosoftStorage}
+	return []KeySource{KeySourceMicrosoftKeyvault, KeySourceMicrosoftStorage}
 }
 
 // KeyType enumerates the values for key type.
@@ -312,15 +342,15 @@ func PossibleKindValues() []Kind {
 type LargeFileSharesState string
 
 const (
-	// Disabled ...
-	Disabled LargeFileSharesState = "Disabled"
-	// Enabled ...
-	Enabled LargeFileSharesState = "Enabled"
+	// LargeFileSharesStateDisabled ...
+	LargeFileSharesStateDisabled LargeFileSharesState = "Disabled"
+	// LargeFileSharesStateEnabled ...
+	LargeFileSharesStateEnabled LargeFileSharesState = "Enabled"
 )
 
 // PossibleLargeFileSharesStateValues returns an array of possible values for the LargeFileSharesState const type.
 func PossibleLargeFileSharesStateValues() []LargeFileSharesState {
-	return []LargeFileSharesState{Disabled, Enabled}
+	return []LargeFileSharesState{LargeFileSharesStateDisabled, LargeFileSharesStateEnabled}
 }
 
 // LeaseDuration enumerates the values for lease duration.
@@ -1157,7 +1187,7 @@ type AccountProperties struct {
 	GeoReplicationStats *GeoReplicationStats `json:"geoReplicationStats,omitempty"`
 	// FailoverInProgress - READ-ONLY; If the failover is in progress, the value will be true, otherwise, it will be null.
 	FailoverInProgress *bool `json:"failoverInProgress,omitempty"`
-	// LargeFileSharesState - Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'
+	// LargeFileSharesState - Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'LargeFileSharesStateDisabled', 'LargeFileSharesStateEnabled'
 	LargeFileSharesState LargeFileSharesState `json:"largeFileSharesState,omitempty"`
 	// PrivateEndpointConnections - READ-ONLY; List of private endpoint connection associated with the specified storage account
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
@@ -1183,7 +1213,7 @@ type AccountPropertiesCreateParameters struct {
 	EnableHTTPSTrafficOnly *bool `json:"supportsHttpsTrafficOnly,omitempty"`
 	// IsHnsEnabled - Account HierarchicalNamespace enabled if sets to true.
 	IsHnsEnabled *bool `json:"isHnsEnabled,omitempty"`
-	// LargeFileSharesState - Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'
+	// LargeFileSharesState - Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'LargeFileSharesStateDisabled', 'LargeFileSharesStateEnabled'
 	LargeFileSharesState LargeFileSharesState `json:"largeFileSharesState,omitempty"`
 	// RoutingPreference - Maintains information about the network routing choice opted by the user for data transfer
 	RoutingPreference *RoutingPreference `json:"routingPreference,omitempty"`
@@ -1203,7 +1233,7 @@ type AccountPropertiesUpdateParameters struct {
 	EnableHTTPSTrafficOnly *bool `json:"supportsHttpsTrafficOnly,omitempty"`
 	// NetworkRuleSet - Network rule set
 	NetworkRuleSet *NetworkRuleSet `json:"networkAcls,omitempty"`
-	// LargeFileSharesState - Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'
+	// LargeFileSharesState - Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'LargeFileSharesStateDisabled', 'LargeFileSharesStateEnabled'
 	LargeFileSharesState LargeFileSharesState `json:"largeFileSharesState,omitempty"`
 	// RoutingPreference - Maintains information about the network routing choice opted by the user for data transfer
 	RoutingPreference *RoutingPreference `json:"routingPreference,omitempty"`
@@ -1660,7 +1690,9 @@ type BlobServicePropertiesProperties struct {
 	DefaultServiceVersion *string `json:"defaultServiceVersion,omitempty"`
 	// DeleteRetentionPolicy - The blob service properties for blob soft delete.
 	DeleteRetentionPolicy *DeleteRetentionPolicy `json:"deleteRetentionPolicy,omitempty"`
-	// AutomaticSnapshotPolicyEnabled - Automatic Snapshot is enabled if set to true.
+	// IsVersioningEnabled - Versioning is enabled if set to true.
+	IsVersioningEnabled *bool `json:"isVersioningEnabled,omitempty"`
+	// AutomaticSnapshotPolicyEnabled - Deprecated in favor of isVersioningEnabled property.
 	AutomaticSnapshotPolicyEnabled *bool `json:"automaticSnapshotPolicyEnabled,omitempty"`
 	// ChangeFeed - The blob service properties for change feed events.
 	ChangeFeed *ChangeFeed `json:"changeFeed,omitempty"`
@@ -1798,10 +1830,251 @@ type Dimension struct {
 type Encryption struct {
 	// Services - List of services which support encryption.
 	Services *EncryptionServices `json:"services,omitempty"`
-	// KeySource - The encryption keySource (provider). Possible values (case-insensitive):  Microsoft.Storage, Microsoft.Keyvault. Possible values include: 'MicrosoftStorage', 'MicrosoftKeyvault'
+	// KeySource - The encryption keySource (provider). Possible values (case-insensitive):  Microsoft.Storage, Microsoft.Keyvault. Possible values include: 'KeySourceMicrosoftStorage', 'KeySourceMicrosoftKeyvault'
 	KeySource KeySource `json:"keySource,omitempty"`
 	// KeyVaultProperties - Properties provided by key vault.
 	KeyVaultProperties *KeyVaultProperties `json:"keyvaultproperties,omitempty"`
+}
+
+// EncryptionScope the Encryption Scope resource.
+type EncryptionScope struct {
+	autorest.Response `json:"-"`
+	// EncryptionScopeProperties - Properties of the encryption scope.
+	*EncryptionScopeProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EncryptionScope.
+func (es EncryptionScope) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if es.EncryptionScopeProperties != nil {
+		objectMap["properties"] = es.EncryptionScopeProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for EncryptionScope struct.
+func (es *EncryptionScope) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var encryptionScopeProperties EncryptionScopeProperties
+				err = json.Unmarshal(*v, &encryptionScopeProperties)
+				if err != nil {
+					return err
+				}
+				es.EncryptionScopeProperties = &encryptionScopeProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				es.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				es.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				es.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// EncryptionScopeKeyVaultProperties the key vault properties for the encryption scope. This is a required
+// field if encryption scope 'source' attribute is set to 'Microsoft.KeyVault'.
+type EncryptionScopeKeyVaultProperties struct {
+	// KeyURI - The object identifier for a key vault key object. When applied, the encryption scope will use the key referenced by the identifier to enable customer-managed key support on this encryption scope.
+	KeyURI *string `json:"keyUri,omitempty"`
+}
+
+// EncryptionScopeListResult list of encryption scopes requested, and if paging is required, a URL to the
+// next page of encryption scopes.
+type EncryptionScopeListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of encryption scopes requested.
+	Value *[]EncryptionScope `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Request URL that can be used to query next page of encryption scopes. Returned when total number of requested encryption scopes exceeds the maximum page size.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// EncryptionScopeListResultIterator provides access to a complete listing of EncryptionScope values.
+type EncryptionScopeListResultIterator struct {
+	i    int
+	page EncryptionScopeListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *EncryptionScopeListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EncryptionScopeListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *EncryptionScopeListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter EncryptionScopeListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter EncryptionScopeListResultIterator) Response() EncryptionScopeListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter EncryptionScopeListResultIterator) Value() EncryptionScope {
+	if !iter.page.NotDone() {
+		return EncryptionScope{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the EncryptionScopeListResultIterator type.
+func NewEncryptionScopeListResultIterator(page EncryptionScopeListResultPage) EncryptionScopeListResultIterator {
+	return EncryptionScopeListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (eslr EncryptionScopeListResult) IsEmpty() bool {
+	return eslr.Value == nil || len(*eslr.Value) == 0
+}
+
+// encryptionScopeListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (eslr EncryptionScopeListResult) encryptionScopeListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if eslr.NextLink == nil || len(to.String(eslr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(eslr.NextLink)))
+}
+
+// EncryptionScopeListResultPage contains a page of EncryptionScope values.
+type EncryptionScopeListResultPage struct {
+	fn   func(context.Context, EncryptionScopeListResult) (EncryptionScopeListResult, error)
+	eslr EncryptionScopeListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *EncryptionScopeListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EncryptionScopeListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.eslr)
+	if err != nil {
+		return err
+	}
+	page.eslr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *EncryptionScopeListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page EncryptionScopeListResultPage) NotDone() bool {
+	return !page.eslr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page EncryptionScopeListResultPage) Response() EncryptionScopeListResult {
+	return page.eslr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page EncryptionScopeListResultPage) Values() []EncryptionScope {
+	if page.eslr.IsEmpty() {
+		return nil
+	}
+	return *page.eslr.Value
+}
+
+// Creates a new instance of the EncryptionScopeListResultPage type.
+func NewEncryptionScopeListResultPage(getNextPage func(context.Context, EncryptionScopeListResult) (EncryptionScopeListResult, error)) EncryptionScopeListResultPage {
+	return EncryptionScopeListResultPage{fn: getNextPage}
+}
+
+// EncryptionScopeProperties properties of the encryption scope.
+type EncryptionScopeProperties struct {
+	// Source - The provider for the encryption scope. Possible values (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault. Possible values include: 'MicrosoftStorage', 'MicrosoftKeyVault'
+	Source EncryptionScopeSource `json:"source,omitempty"`
+	// State - The state of the encryption scope. Possible values (case-insensitive):  Enabled, Disabled. Possible values include: 'Enabled', 'Disabled'
+	State EncryptionScopeState `json:"state,omitempty"`
+	// CreationTime - READ-ONLY; Gets the creation date and time of the encryption scope in UTC.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// LastModifiedTime - READ-ONLY; Gets the last modification date and time of the encryption scope in UTC.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// KeyVaultProperties - The key vault properties for the encryption scope. This is a required field if encryption scope 'source' attribute is set to 'Microsoft.KeyVault'.
+	KeyVaultProperties *EncryptionScopeKeyVaultProperties `json:"keyVaultProperties,omitempty"`
 }
 
 // EncryptionService a service that allows server-side encryption to be used.

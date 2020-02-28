@@ -164,8 +164,7 @@ func (client PersonGroupPersonClient) AddFaceFromStreamPreparer(ctx context.Cont
 // AddFaceFromStreamSender sends the AddFaceFromStream request. The method will close the
 // http.Response Body if it receives an error.
 func (client PersonGroupPersonClient) AddFaceFromStreamSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddFaceFromStreamResponder handles the response to the AddFaceFromStream request. The method always
@@ -309,8 +308,7 @@ func (client PersonGroupPersonClient) AddFaceFromURLPreparer(ctx context.Context
 // AddFaceFromURLSender sends the AddFaceFromURL request. The method will close the
 // http.Response Body if it receives an error.
 func (client PersonGroupPersonClient) AddFaceFromURLSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddFaceFromURLResponder handles the response to the AddFaceFromURL request. The method always
@@ -396,8 +394,7 @@ func (client PersonGroupPersonClient) CreatePreparer(ctx context.Context, person
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client PersonGroupPersonClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -478,8 +475,7 @@ func (client PersonGroupPersonClient) DeletePreparer(ctx context.Context, person
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client PersonGroupPersonClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -562,8 +558,7 @@ func (client PersonGroupPersonClient) DeleteFacePreparer(ctx context.Context, pe
 // DeleteFaceSender sends the DeleteFace request. The method will close the
 // http.Response Body if it receives an error.
 func (client PersonGroupPersonClient) DeleteFaceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteFaceResponder handles the response to the DeleteFace request. The method always
@@ -642,8 +637,7 @@ func (client PersonGroupPersonClient) GetPreparer(ctx context.Context, personGro
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PersonGroupPersonClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -726,8 +720,7 @@ func (client PersonGroupPersonClient) GetFacePreparer(ctx context.Context, perso
 // GetFaceSender sends the GetFace request. The method will close the
 // http.Response Body if it receives an error.
 func (client PersonGroupPersonClient) GetFaceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetFaceResponder handles the response to the GetFace request. The method always
@@ -822,8 +815,7 @@ func (client PersonGroupPersonClient) ListPreparer(ctx context.Context, personGr
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client PersonGroupPersonClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -906,8 +898,7 @@ func (client PersonGroupPersonClient) UpdatePreparer(ctx context.Context, person
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client PersonGroupPersonClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
@@ -1010,8 +1001,7 @@ func (client PersonGroupPersonClient) UpdateFacePreparer(ctx context.Context, pe
 // UpdateFaceSender sends the UpdateFace request. The method will close the
 // http.Response Body if it receives an error.
 func (client PersonGroupPersonClient) UpdateFaceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateFaceResponder handles the response to the UpdateFace request. The method always

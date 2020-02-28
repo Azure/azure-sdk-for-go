@@ -106,8 +106,7 @@ func (client ReplicaClient) GetPreparer(ctx context.Context, resourceGroupName s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicaClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -187,8 +186,7 @@ func (client ReplicaClient) ListByServiceNamePreparer(ctx context.Context, resou
 // ListByServiceNameSender sends the ListByServiceName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicaClient) ListByServiceNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByServiceNameResponder handles the response to the ListByServiceName request. The method always

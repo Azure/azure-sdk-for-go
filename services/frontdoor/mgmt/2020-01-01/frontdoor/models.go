@@ -596,6 +596,27 @@ func PossiblePolicyResourceStateValues() []PolicyResourceState {
 	return []PolicyResourceState{PolicyResourceStateCreating, PolicyResourceStateDeleting, PolicyResourceStateDisabled, PolicyResourceStateDisabling, PolicyResourceStateEnabled, PolicyResourceStateEnabling}
 }
 
+// PrivateEndpointStatus enumerates the values for private endpoint status.
+type PrivateEndpointStatus string
+
+const (
+	// Approved ...
+	Approved PrivateEndpointStatus = "Approved"
+	// Disconnected ...
+	Disconnected PrivateEndpointStatus = "Disconnected"
+	// Pending ...
+	Pending PrivateEndpointStatus = "Pending"
+	// Rejected ...
+	Rejected PrivateEndpointStatus = "Rejected"
+	// Timeout ...
+	Timeout PrivateEndpointStatus = "Timeout"
+)
+
+// PossiblePrivateEndpointStatusValues returns an array of possible values for the PrivateEndpointStatus const type.
+func PossiblePrivateEndpointStatusValues() []PrivateEndpointStatus {
+	return []PrivateEndpointStatus{Approved, Disconnected, Pending, Rejected, Timeout}
+}
+
 // Protocol enumerates the values for protocol.
 type Protocol string
 
@@ -924,10 +945,12 @@ type AzureAsyncOperationResult struct {
 type Backend struct {
 	// Address - Location of the backend (IP address or FQDN)
 	Address *string `json:"address,omitempty"`
-	// PrivateLinkID - If this backend is private, provide the private link resource Id. Populating this optional field indicates that this backend is 'Private'
-	PrivateLinkID *string `json:"privateLinkId,omitempty"`
-	// Location - Region of the backend if it is in Azure. Mandatory field if backend is 'Private'
-	Location *string `json:"location,omitempty"`
+	// PrivateLinkResourceID - If this backend is private, provide the Private Link resource Id. Populating this optional field indicates that this backend is 'Private'
+	PrivateLinkResourceID *string `json:"privateLinkResourceId,omitempty"`
+	// PrivateEndpointStatus - READ-ONLY; The Approval status for the connection to the Private Link. Possible values include: 'Pending', 'Approved', 'Rejected', 'Disconnected', 'Timeout'
+	PrivateEndpointStatus PrivateEndpointStatus `json:"privateEndpointStatus,omitempty"`
+	// PrivateLinkApprovalMessage - A custom message to be included in the approval request to connect to the Private Link
+	PrivateLinkApprovalMessage *string `json:"privateLinkApprovalMessage,omitempty"`
 	// HTTPPort - The HTTP TCP port number. Must be between 1 and 65535.
 	HTTPPort *int32 `json:"httpPort,omitempty"`
 	// HTTPSPort - The HTTPS TCP port number. Must be between 1 and 65535.

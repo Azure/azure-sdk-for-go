@@ -103,8 +103,7 @@ func (client ProductsClient) GetPreparer(ctx context.Context, resourceGroup stri
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -190,8 +189,7 @@ func (client ProductsClient) GetProductPreparer(ctx context.Context, resourceGro
 // GetProductSender sends the GetProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductsClient) GetProductSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetProductResponder handles the response to the GetProduct request. The method always
@@ -275,8 +273,7 @@ func (client ProductsClient) GetProductsPreparer(ctx context.Context, resourceGr
 // GetProductsSender sends the GetProducts request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductsClient) GetProductsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetProductsResponder handles the response to the GetProducts request. The method always
@@ -353,8 +350,7 @@ func (client ProductsClient) ListPreparer(ctx context.Context, resourceGroup str
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -469,8 +465,7 @@ func (client ProductsClient) ListDetailsPreparer(ctx context.Context, resourceGr
 // ListDetailsSender sends the ListDetails request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductsClient) ListDetailsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListDetailsResponder handles the response to the ListDetails request. The method always
@@ -558,8 +553,7 @@ func (client ProductsClient) UploadLogPreparer(ctx context.Context, resourceGrou
 // UploadLogSender sends the UploadLog request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductsClient) UploadLogSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UploadLogResponder handles the response to the UploadLog request. The method always

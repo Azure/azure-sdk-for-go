@@ -144,6 +144,13 @@ func (req *Request) SkipBodyDownload() {
 	req.SetOperationValue(bodyDownloadPolicyOpValues{skip: true})
 }
 
+// returns true if auto-body download policy is enabled
+func (req *Request) bodyDownloadEnabled() bool {
+	var opValues bodyDownloadPolicyOpValues
+	req.OperationValue(&opValues)
+	return !opValues.skip
+}
+
 // RewindBody seeks the request's Body stream back to the beginning so it can be resent when retrying an operation.
 func (req *Request) RewindBody() error {
 	if req.Body != nil {

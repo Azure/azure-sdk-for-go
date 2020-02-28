@@ -98,8 +98,7 @@ func (client PermissionsClient) ListByBillingAccountPreparer(ctx context.Context
 // ListByBillingAccountSender sends the ListByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client PermissionsClient) ListByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingAccountResponder handles the response to the ListByBillingAccount request. The method always
@@ -174,8 +173,7 @@ func (client PermissionsClient) ListByBillingProfilePreparer(ctx context.Context
 // ListByBillingProfileSender sends the ListByBillingProfile request. The method will close the
 // http.Response Body if it receives an error.
 func (client PermissionsClient) ListByBillingProfileSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingProfileResponder handles the response to the ListByBillingProfile request. The method always
@@ -250,8 +248,7 @@ func (client PermissionsClient) ListByCustomersPreparer(ctx context.Context, bil
 // ListByCustomersSender sends the ListByCustomers request. The method will close the
 // http.Response Body if it receives an error.
 func (client PermissionsClient) ListByCustomersSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByCustomersResponder handles the response to the ListByCustomers request. The method always
@@ -326,8 +323,7 @@ func (client PermissionsClient) ListByInvoiceSectionsPreparer(ctx context.Contex
 // ListByInvoiceSectionsSender sends the ListByInvoiceSections request. The method will close the
 // http.Response Body if it receives an error.
 func (client PermissionsClient) ListByInvoiceSectionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByInvoiceSectionsResponder handles the response to the ListByInvoiceSections request. The method always

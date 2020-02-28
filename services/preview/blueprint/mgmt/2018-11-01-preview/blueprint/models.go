@@ -1416,7 +1416,7 @@ type ParameterDefinitionMetadata struct {
 
 // ParameterValue value for the specified parameter. Can be either 'value' or 'reference' but not both.
 type ParameterValue struct {
-	// Value - Parameter value as value type.
+	// Value - Parameter value. Any valid JSON value is allowed including objects, arrays, strings, numbers and booleans.
 	Value interface{} `json:"value,omitempty"`
 	// Reference - Parameter value as reference type.
 	Reference *SecretValueReference `json:"reference,omitempty"`

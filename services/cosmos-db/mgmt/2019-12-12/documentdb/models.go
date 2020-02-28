@@ -355,6 +355,22 @@ func (arp ARMResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AutopilotSettingsResource cosmos DB autopilot settings object
+type AutopilotSettingsResource struct {
+	// MaxThroughput - Represents max throughput an autopilot container can operate at.
+	MaxThroughput *int32 `json:"maxThroughput,omitempty"`
+	// AutoUpgradePolicy - Cosmos DB resource auto-upgrade policy
+	AutoUpgradePolicy *AutoUpgradePolicyResource `json:"autoUpgradePolicy,omitempty"`
+	// TargetMaxThroughput - READ-ONLY; Represents target max throughput an autopilot container should operate at once offer is no longer in pending state.
+	TargetMaxThroughput *int32 `json:"targetMaxThroughput,omitempty"`
+}
+
+// AutoUpgradePolicyResource cosmos DB resource auto-upgrade policy
+type AutoUpgradePolicyResource struct {
+	// ThroughputPolicy - Represents throughput policy which service must adhere to for auto-upgrade
+	ThroughputPolicy *ThroughputPolicyResource `json:"throughputPolicy,omitempty"`
+}
+
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
@@ -478,19 +494,7 @@ type CassandraKeyspaceCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a Cassandra keyspace
 	Resource *CassandraKeyspaceResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options map[string]*string `json:"options"`
-}
-
-// MarshalJSON is the custom marshaler for CassandraKeyspaceCreateUpdateProperties.
-func (ckcup CassandraKeyspaceCreateUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ckcup.Resource != nil {
-		objectMap["resource"] = ckcup.Resource
-	}
-	if ckcup.Options != nil {
-		objectMap["options"] = ckcup.Options
-	}
-	return json.Marshal(objectMap)
+	Options *CreateUpdateOptions `json:"options,omitempty"`
 }
 
 // CassandraKeyspaceGetProperties the properties of an Azure Cosmos DB Cassandra keyspace
@@ -906,19 +910,7 @@ type CassandraTableCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a Cassandra table
 	Resource *CassandraTableResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options map[string]*string `json:"options"`
-}
-
-// MarshalJSON is the custom marshaler for CassandraTableCreateUpdateProperties.
-func (ctcup CassandraTableCreateUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ctcup.Resource != nil {
-		objectMap["resource"] = ctcup.Resource
-	}
-	if ctcup.Options != nil {
-		objectMap["options"] = ctcup.Options
-	}
-	return json.Marshal(objectMap)
+	Options *CreateUpdateOptions `json:"options,omitempty"`
 }
 
 // CassandraTableGetProperties the properties of an Azure Cosmos DB Cassandra table
@@ -1113,6 +1105,63 @@ type ContainerPartitionKey struct {
 	Kind PartitionKind `json:"kind,omitempty"`
 	// Version - Indicates the version of the partition key definition
 	Version *int32 `json:"version,omitempty"`
+}
+
+// CreateUpdateOptions createUpdateOptions are a list of key-value pairs that describe the resource.
+// Supported keys are "If-Match", "If-None-Match", "Session-Token" and "Throughput"
+type CreateUpdateOptions struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]*string `json:""`
+	// Throughput - Request Units per second. For example, "throughput": "10000".
+	Throughput *string `json:"throughput,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CreateUpdateOptions.
+func (cuo CreateUpdateOptions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cuo.Throughput != nil {
+		objectMap["throughput"] = cuo.Throughput
+	}
+	for k, v := range cuo.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CreateUpdateOptions struct.
+func (cuo *CreateUpdateOptions) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties string
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if cuo.AdditionalProperties == nil {
+					cuo.AdditionalProperties = make(map[string]*string)
+				}
+				cuo.AdditionalProperties[k] = &additionalProperties
+			}
+		case "throughput":
+			if v != nil {
+				var throughput string
+				err = json.Unmarshal(*v, &throughput)
+				if err != nil {
+					return err
+				}
+				cuo.Throughput = &throughput
+			}
+		}
+	}
+
+	return nil
 }
 
 // DatabaseAccountConnectionString connection string for the Cosmos DB account
@@ -1871,19 +1920,7 @@ type GremlinDatabaseCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a Gremlin database
 	Resource *GremlinDatabaseResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options map[string]*string `json:"options"`
-}
-
-// MarshalJSON is the custom marshaler for GremlinDatabaseCreateUpdateProperties.
-func (gdcup GremlinDatabaseCreateUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if gdcup.Resource != nil {
-		objectMap["resource"] = gdcup.Resource
-	}
-	if gdcup.Options != nil {
-		objectMap["options"] = gdcup.Options
-	}
-	return json.Marshal(objectMap)
+	Options *CreateUpdateOptions `json:"options,omitempty"`
 }
 
 // GremlinDatabaseGetProperties the properties of an Azure Cosmos DB SQL database
@@ -2121,19 +2158,7 @@ type GremlinGraphCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a Gremlin graph
 	Resource *GremlinGraphResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options map[string]*string `json:"options"`
-}
-
-// MarshalJSON is the custom marshaler for GremlinGraphCreateUpdateProperties.
-func (ggcup GremlinGraphCreateUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ggcup.Resource != nil {
-		objectMap["resource"] = ggcup.Resource
-	}
-	if ggcup.Options != nil {
-		objectMap["options"] = ggcup.Options
-	}
-	return json.Marshal(objectMap)
+	Options *CreateUpdateOptions `json:"options,omitempty"`
 }
 
 // GremlinGraphGetProperties the properties of an Azure Cosmos DB Gremlin graph
@@ -2678,19 +2703,7 @@ type MongoDBCollectionCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a MongoDB collection
 	Resource *MongoDBCollectionResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options map[string]*string `json:"options"`
-}
-
-// MarshalJSON is the custom marshaler for MongoDBCollectionCreateUpdateProperties.
-func (mdccup MongoDBCollectionCreateUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mdccup.Resource != nil {
-		objectMap["resource"] = mdccup.Resource
-	}
-	if mdccup.Options != nil {
-		objectMap["options"] = mdccup.Options
-	}
-	return json.Marshal(objectMap)
+	Options *CreateUpdateOptions `json:"options,omitempty"`
 }
 
 // MongoDBCollectionGetProperties the properties of an Azure Cosmos DB MongoDB collection
@@ -2966,19 +2979,7 @@ type MongoDBDatabaseCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a MongoDB database
 	Resource *MongoDBDatabaseResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options map[string]*string `json:"options"`
-}
-
-// MarshalJSON is the custom marshaler for MongoDBDatabaseCreateUpdateProperties.
-func (mddcup MongoDBDatabaseCreateUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mddcup.Resource != nil {
-		objectMap["resource"] = mddcup.Resource
-	}
-	if mddcup.Options != nil {
-		objectMap["options"] = mddcup.Options
-	}
-	return json.Marshal(objectMap)
+	Options *CreateUpdateOptions `json:"options,omitempty"`
 }
 
 // MongoDBDatabaseGetProperties the properties of an Azure Cosmos DB MongoDB database
@@ -3951,19 +3952,7 @@ type SQLContainerCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a container
 	Resource *SQLContainerResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options map[string]*string `json:"options"`
-}
-
-// MarshalJSON is the custom marshaler for SQLContainerCreateUpdateProperties.
-func (sccup SQLContainerCreateUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sccup.Resource != nil {
-		objectMap["resource"] = sccup.Resource
-	}
-	if sccup.Options != nil {
-		objectMap["options"] = sccup.Options
-	}
-	return json.Marshal(objectMap)
+	Options *CreateUpdateOptions `json:"options,omitempty"`
 }
 
 // SQLContainerGetProperties the properties of an Azure Cosmos DB container
@@ -4220,19 +4209,7 @@ type SQLDatabaseCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a SQL database
 	Resource *SQLDatabaseResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options map[string]*string `json:"options"`
-}
-
-// MarshalJSON is the custom marshaler for SQLDatabaseCreateUpdateProperties.
-func (sdcup SQLDatabaseCreateUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sdcup.Resource != nil {
-		objectMap["resource"] = sdcup.Resource
-	}
-	if sdcup.Options != nil {
-		objectMap["options"] = sdcup.Options
-	}
-	return json.Marshal(objectMap)
+	Options *CreateUpdateOptions `json:"options,omitempty"`
 }
 
 // SQLDatabaseGetProperties the properties of an Azure Cosmos DB SQL database
@@ -4792,19 +4769,7 @@ type SQLStoredProcedureCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a storedProcedure
 	Resource *SQLStoredProcedureResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options map[string]*string `json:"options"`
-}
-
-// MarshalJSON is the custom marshaler for SQLStoredProcedureCreateUpdateProperties.
-func (sspcup SQLStoredProcedureCreateUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sspcup.Resource != nil {
-		objectMap["resource"] = sspcup.Resource
-	}
-	if sspcup.Options != nil {
-		objectMap["options"] = sspcup.Options
-	}
-	return json.Marshal(objectMap)
+	Options *CreateUpdateOptions `json:"options,omitempty"`
 }
 
 // SQLStoredProcedureGetProperties the properties of an Azure Cosmos DB StoredProcedure
@@ -5046,19 +5011,7 @@ type SQLTriggerCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a trigger
 	Resource *SQLTriggerResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options map[string]*string `json:"options"`
-}
-
-// MarshalJSON is the custom marshaler for SQLTriggerCreateUpdateProperties.
-func (stcup SQLTriggerCreateUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if stcup.Resource != nil {
-		objectMap["resource"] = stcup.Resource
-	}
-	if stcup.Options != nil {
-		objectMap["options"] = stcup.Options
-	}
-	return json.Marshal(objectMap)
+	Options *CreateUpdateOptions `json:"options,omitempty"`
 }
 
 // SQLTriggerGetProperties the properties of an Azure Cosmos DB trigger
@@ -5309,19 +5262,7 @@ type SQLUserDefinedFunctionCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a userDefinedFunction
 	Resource *SQLUserDefinedFunctionResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options map[string]*string `json:"options"`
-}
-
-// MarshalJSON is the custom marshaler for SQLUserDefinedFunctionCreateUpdateProperties.
-func (sudfcup SQLUserDefinedFunctionCreateUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sudfcup.Resource != nil {
-		objectMap["resource"] = sudfcup.Resource
-	}
-	if sudfcup.Options != nil {
-		objectMap["options"] = sudfcup.Options
-	}
-	return json.Marshal(objectMap)
+	Options *CreateUpdateOptions `json:"options,omitempty"`
 }
 
 // SQLUserDefinedFunctionGetProperties the properties of an Azure Cosmos DB userDefinedFunction
@@ -5563,19 +5504,7 @@ type TableCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a Table
 	Resource *TableResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options map[string]*string `json:"options"`
-}
-
-// MarshalJSON is the custom marshaler for TableCreateUpdateProperties.
-func (tcup TableCreateUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if tcup.Resource != nil {
-		objectMap["resource"] = tcup.Resource
-	}
-	if tcup.Options != nil {
-		objectMap["options"] = tcup.Options
-	}
-	return json.Marshal(objectMap)
+	Options *CreateUpdateOptions `json:"options,omitempty"`
 }
 
 // TableGetProperties the properties of an Azure Cosmos Table
@@ -5789,6 +5718,14 @@ func (future *TableResourcesUpdateTableThroughputFuture) Result(client TableReso
 	return
 }
 
+// ThroughputPolicyResource cosmos DB resource throughput policy
+type ThroughputPolicyResource struct {
+	// IsEnabled - Determines whether the ThroughputPolicy is active or not
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// IncrementPercent - Represents the percentage by which throughput can increase every time throughput policy kicks in.
+	IncrementPercent *int32 `json:"incrementPercent,omitempty"`
+}
+
 // ThroughputSettingsGetProperties the properties of an Azure Cosmos DB resource throughput
 type ThroughputSettingsGetProperties struct {
 	Resource *ThroughputSettingsGetPropertiesResource `json:"resource,omitempty"`
@@ -5796,8 +5733,10 @@ type ThroughputSettingsGetProperties struct {
 
 // ThroughputSettingsGetPropertiesResource ...
 type ThroughputSettingsGetPropertiesResource struct {
-	// Throughput - Value of the Cosmos DB resource throughput
+	// Throughput - Value of the Cosmos DB resource throughput. Either throughput is required or autopilotSettings is required, but not both.
 	Throughput *int32 `json:"throughput,omitempty"`
+	// AutopilotSettings - Cosmos DB resource for Autopilot settings. Either throughput is required or autopilotSettings is required, but not both.
+	AutopilotSettings *AutopilotSettingsResource `json:"autopilotSettings,omitempty"`
 	// MinimumThroughput - READ-ONLY; The minimum throughput of the resource
 	MinimumThroughput *string `json:"minimumThroughput,omitempty"`
 	// OfferReplacePending - READ-ONLY; The throughput replace is pending
@@ -5910,10 +5849,13 @@ func (tsgr *ThroughputSettingsGetResults) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ThroughputSettingsResource cosmos DB resource throughput object
+// ThroughputSettingsResource cosmos DB resource throughput object. Either throughput is required or
+// autopilotSettings is required, but not both.
 type ThroughputSettingsResource struct {
-	// Throughput - Value of the Cosmos DB resource throughput
+	// Throughput - Value of the Cosmos DB resource throughput. Either throughput is required or autopilotSettings is required, but not both.
 	Throughput *int32 `json:"throughput,omitempty"`
+	// AutopilotSettings - Cosmos DB resource for Autopilot settings. Either throughput is required or autopilotSettings is required, but not both.
+	AutopilotSettings *AutopilotSettingsResource `json:"autopilotSettings,omitempty"`
 	// MinimumThroughput - READ-ONLY; The minimum throughput of the resource
 	MinimumThroughput *string `json:"minimumThroughput,omitempty"`
 	// OfferReplacePending - READ-ONLY; The throughput replace is pending

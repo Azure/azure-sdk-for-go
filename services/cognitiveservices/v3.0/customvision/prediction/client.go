@@ -34,20 +34,18 @@ import (
 // BaseClient is the base client for Prediction.
 type BaseClient struct {
 	autorest.Client
-	APIKey   string
 	Endpoint string
 }
 
 // New creates an instance of the BaseClient client.
-func New(aPIKey string, endpoint string) BaseClient {
-	return NewWithoutDefaults(aPIKey, endpoint)
+func New(endpoint string) BaseClient {
+	return NewWithoutDefaults(endpoint)
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
-func NewWithoutDefaults(aPIKey string, endpoint string) BaseClient {
+func NewWithoutDefaults(endpoint string) BaseClient {
 	return BaseClient{
 		Client:   autorest.NewClientWithUserAgent(UserAgent()),
-		APIKey:   aPIKey,
 		Endpoint: endpoint,
 	}
 }
@@ -115,16 +113,14 @@ func (client BaseClient) ClassifyImagePreparer(ctx context.Context, projectID uu
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/classify/iterations/{publishedName}/image", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
-		autorest.WithMultiPartFormData(formDataParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithMultiPartFormData(formDataParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ClassifyImageSender sends the ClassifyImage request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) ClassifyImageSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ClassifyImageResponder handles the response to the ClassifyImage request. The method always
@@ -206,16 +202,14 @@ func (client BaseClient) ClassifyImageURLPreparer(ctx context.Context, projectID
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/classify/iterations/{publishedName}/url", pathParameters),
 		autorest.WithJSON(imageURL),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ClassifyImageURLSender sends the ClassifyImageURL request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) ClassifyImageURLSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ClassifyImageURLResponder handles the response to the ClassifyImageURL request. The method always
@@ -297,16 +291,14 @@ func (client BaseClient) ClassifyImageURLWithNoStorePreparer(ctx context.Context
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/classify/iterations/{publishedName}/url/nostore", pathParameters),
 		autorest.WithJSON(imageURL),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ClassifyImageURLWithNoStoreSender sends the ClassifyImageURLWithNoStore request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) ClassifyImageURLWithNoStoreSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ClassifyImageURLWithNoStoreResponder handles the response to the ClassifyImageURLWithNoStore request. The method always
@@ -385,16 +377,14 @@ func (client BaseClient) ClassifyImageWithNoStorePreparer(ctx context.Context, p
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/classify/iterations/{publishedName}/image/nostore", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
-		autorest.WithMultiPartFormData(formDataParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithMultiPartFormData(formDataParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ClassifyImageWithNoStoreSender sends the ClassifyImageWithNoStore request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) ClassifyImageWithNoStoreSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ClassifyImageWithNoStoreResponder handles the response to the ClassifyImageWithNoStore request. The method always
@@ -473,16 +463,14 @@ func (client BaseClient) DetectImagePreparer(ctx context.Context, projectID uuid
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/detect/iterations/{publishedName}/image", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
-		autorest.WithMultiPartFormData(formDataParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithMultiPartFormData(formDataParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DetectImageSender sends the DetectImage request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DetectImageSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DetectImageResponder handles the response to the DetectImage request. The method always
@@ -564,16 +552,14 @@ func (client BaseClient) DetectImageURLPreparer(ctx context.Context, projectID u
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/detect/iterations/{publishedName}/url", pathParameters),
 		autorest.WithJSON(imageURL),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DetectImageURLSender sends the DetectImageURL request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DetectImageURLSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DetectImageURLResponder handles the response to the DetectImageURL request. The method always
@@ -655,16 +641,14 @@ func (client BaseClient) DetectImageURLWithNoStorePreparer(ctx context.Context, 
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/detect/iterations/{publishedName}/url/nostore", pathParameters),
 		autorest.WithJSON(imageURL),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DetectImageURLWithNoStoreSender sends the DetectImageURLWithNoStore request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DetectImageURLWithNoStoreSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DetectImageURLWithNoStoreResponder handles the response to the DetectImageURLWithNoStore request. The method always
@@ -743,16 +727,14 @@ func (client BaseClient) DetectImageWithNoStorePreparer(ctx context.Context, pro
 		autorest.WithCustomBaseURL("{Endpoint}/customvision/v3.0/prediction", urlParameters),
 		autorest.WithPathParameters("/{projectId}/detect/iterations/{publishedName}/image/nostore", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
-		autorest.WithMultiPartFormData(formDataParameters),
-		autorest.WithHeader("Prediction-Key", client.APIKey))
+		autorest.WithMultiPartFormData(formDataParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DetectImageWithNoStoreSender sends the DetectImageWithNoStore request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DetectImageWithNoStoreSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DetectImageWithNoStoreResponder handles the response to the DetectImageWithNoStore request. The method always

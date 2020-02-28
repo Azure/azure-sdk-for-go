@@ -108,8 +108,7 @@ func (client AzureAccountsClient) AssignToAppPreparer(ctx context.Context, appID
 // AssignToAppSender sends the AssignToApp request. The method will close the
 // http.Response Body if it receives an error.
 func (client AzureAccountsClient) AssignToAppSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AssignToAppResponder handles the response to the AssignToApp request. The method always
@@ -180,8 +179,7 @@ func (client AzureAccountsClient) GetAssignedPreparer(ctx context.Context, appID
 // GetAssignedSender sends the GetAssigned request. The method will close the
 // http.Response Body if it receives an error.
 func (client AzureAccountsClient) GetAssignedSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAssignedResponder handles the response to the GetAssigned request. The method always
@@ -246,8 +244,7 @@ func (client AzureAccountsClient) ListUserLUISAccountsPreparer(ctx context.Conte
 // ListUserLUISAccountsSender sends the ListUserLUISAccounts request. The method will close the
 // http.Response Body if it receives an error.
 func (client AzureAccountsClient) ListUserLUISAccountsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListUserLUISAccountsResponder handles the response to the ListUserLUISAccounts request. The method always
@@ -334,8 +331,7 @@ func (client AzureAccountsClient) RemoveFromAppPreparer(ctx context.Context, app
 // RemoveFromAppSender sends the RemoveFromApp request. The method will close the
 // http.Response Body if it receives an error.
 func (client AzureAccountsClient) RemoveFromAppSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RemoveFromAppResponder handles the response to the RemoveFromApp request. The method always

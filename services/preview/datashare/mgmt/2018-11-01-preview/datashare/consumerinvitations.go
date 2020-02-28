@@ -102,8 +102,7 @@ func (client ConsumerInvitationsClient) GetPreparer(ctx context.Context, locatio
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConsumerInvitationsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -176,8 +175,7 @@ func (client ConsumerInvitationsClient) ListInvitationsPreparer(ctx context.Cont
 // ListInvitationsSender sends the ListInvitations request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConsumerInvitationsClient) ListInvitationsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListInvitationsResponder handles the response to the ListInvitations request. The method always
@@ -297,8 +295,7 @@ func (client ConsumerInvitationsClient) RejectInvitationPreparer(ctx context.Con
 // RejectInvitationSender sends the RejectInvitation request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConsumerInvitationsClient) RejectInvitationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RejectInvitationResponder handles the response to the RejectInvitation request. The method always

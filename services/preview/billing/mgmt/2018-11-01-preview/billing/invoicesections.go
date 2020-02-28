@@ -95,9 +95,8 @@ func (client InvoiceSectionsClient) CreatePreparer(ctx context.Context, billingA
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client InvoiceSectionsClient) CreateSender(req *http.Request) (future InvoiceSectionsCreateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
 	}
@@ -171,8 +170,7 @@ func (client InvoiceSectionsClient) ElevateToBillingProfilePreparer(ctx context.
 // ElevateToBillingProfileSender sends the ElevateToBillingProfile request. The method will close the
 // http.Response Body if it receives an error.
 func (client InvoiceSectionsClient) ElevateToBillingProfileSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ElevateToBillingProfileResponder handles the response to the ElevateToBillingProfile request. The method always
@@ -250,8 +248,7 @@ func (client InvoiceSectionsClient) GetPreparer(ctx context.Context, billingAcco
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client InvoiceSectionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -328,8 +325,7 @@ func (client InvoiceSectionsClient) ListByBillingAccountNamePreparer(ctx context
 // ListByBillingAccountNameSender sends the ListByBillingAccountName request. The method will close the
 // http.Response Body if it receives an error.
 func (client InvoiceSectionsClient) ListByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingAccountNameResponder handles the response to the ListByBillingAccountName request. The method always
@@ -405,8 +401,7 @@ func (client InvoiceSectionsClient) ListByBillingProfileNamePreparer(ctx context
 // ListByBillingProfileNameSender sends the ListByBillingProfileName request. The method will close the
 // http.Response Body if it receives an error.
 func (client InvoiceSectionsClient) ListByBillingProfileNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingProfileNameResponder handles the response to the ListByBillingProfileName request. The method always
@@ -521,8 +516,7 @@ func (client InvoiceSectionsClient) ListByCreateSubscriptionPermissionPreparer(c
 // ListByCreateSubscriptionPermissionSender sends the ListByCreateSubscriptionPermission request. The method will close the
 // http.Response Body if it receives an error.
 func (client InvoiceSectionsClient) ListByCreateSubscriptionPermissionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByCreateSubscriptionPermissionResponder handles the response to the ListByCreateSubscriptionPermission request. The method always
@@ -631,9 +625,8 @@ func (client InvoiceSectionsClient) UpdatePreparer(ctx context.Context, billingA
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client InvoiceSectionsClient) UpdateSender(req *http.Request) (future InvoiceSectionsUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
 	}

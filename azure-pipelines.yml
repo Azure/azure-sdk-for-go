@@ -41,6 +41,7 @@ jobs:
         mkdir -p '$(sdkPath)'
         shopt -s dotglob extglob
         mv !(work) '$(sdkPath)'
+        mkdir -p $(GOROOT)/bin 
         echo '##vso[task.prependpath]$(GOROOT)/bin'
         echo '##vso[task.prependpath]$(GOPATH)/bin'
       displayName: 'Create Go Workspace'

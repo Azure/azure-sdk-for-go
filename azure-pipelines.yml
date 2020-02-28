@@ -46,8 +46,8 @@ jobs:
       displayName: 'Create Go Workspace'
     - script: |
         set -e
-        go version
         curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+        go version
         dep ensure -v
         go get -u golang.org/x/lint/golint
       workingDirectory: '$(sdkPath)'

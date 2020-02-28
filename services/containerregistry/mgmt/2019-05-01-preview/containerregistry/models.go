@@ -274,6 +274,15 @@ func PossibleWebhookStatusValues() []WebhookStatus {
 	return []WebhookStatus{WebhookStatusDisabled, WebhookStatusEnabled}
 }
 
+// ActiveDirectoryObject the Active Directory Object that will be used for authenticating the token of a
+// container registry.
+type ActiveDirectoryObject struct {
+	// ObjectID - The user/group/application object ID for Active Directory Object that will be used for authenticating the token of a container registry.
+	ObjectID *string `json:"objectId,omitempty"`
+	// TenantID - The tenant ID of user/group/application object Active Directory Object that will be used for authenticating the token of a container registry.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
 // Actor the agent that initiated the event. For most situations, this could be from the authorization
 // context of the request.
 type Actor struct {
@@ -2398,8 +2407,9 @@ type TokenCertificate struct {
 // TokenCredentialsProperties the properties of the credentials that can be used for authenticating the
 // token.
 type TokenCredentialsProperties struct {
-	Certificates *[]TokenCertificate `json:"certificates,omitempty"`
-	Passwords    *[]TokenPassword    `json:"passwords,omitempty"`
+	ActiveDirectoryObject *ActiveDirectoryObject `json:"activeDirectoryObject,omitempty"`
+	Certificates          *[]TokenCertificate    `json:"certificates,omitempty"`
+	Passwords             *[]TokenPassword       `json:"passwords,omitempty"`
 }
 
 // TokenListResult the result of a request to list tokens for a container registry.
@@ -2568,8 +2578,6 @@ type TokenProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ScopeMapID - The resource ID of the scope map to which the token will be associated with.
 	ScopeMapID *string `json:"scopeMapId,omitempty"`
-	// ObjectID - The user/group/application object ID for which the token has to be created.
-	ObjectID *string `json:"objectId,omitempty"`
 	// Credentials - The credentials that can be used for authenticating the token.
 	Credentials *TokenCredentialsProperties `json:"credentials,omitempty"`
 	// Status - The status of the token example enabled or disabled. Possible values include: 'TokenStatusEnabled', 'TokenStatusDisabled'

@@ -48,22 +48,32 @@ func TestCLICredential_CredentialUnavailableMock(t *testing.T) {
 	}
 }
 
-// execManageGetTokenMock mock func getAzureCLIAccessToken return access token.
+// execManageGetTokenMock mock func getAzureCLIAuthResults return access token.
 type execManageGetTokenMock struct {
 }
 
-func (c *execManageGetTokenMock) getAzureCLIAccessToken(command string) ([]byte, string, error) {
-	return []byte(" {\"accessToken\":\"mocktoken\" , " +
+func (c *execManageGetTokenMock) getAzureCLIAuthResults(command string) (*authResults, error) {
+	out := []byte(" {\"accessToken\":\"mocktoken\" , " +
 		"\"expiresOn\": \"2007-01-01 01:01:01.079627\"," +
 		"\"subscription\": \"mocksub\"," +
 		"\"tenant\": \"mocktenant\"," +
-		"\"tokenType\": \"mocktype\"}"), "", nil
+		"\"tokenType\": \"mocktype\"}")
+
+	results := &authResults{}
+	results.out = out
+	results.errOut = ""
+
+	return results, nil
 }
 
-// execManageCredentialUnavailableMock mock func getAzureCLIAccessToken return error.
+// execManageCredentialUnavailableMock mock func getAzureCLIAuthResults return error.
 type execManageCredentialUnavailableMock struct {
 }
 
-func (c *execManageCredentialUnavailableMock) getAzureCLIAccessToken(command string) ([]byte, string, error) {
-	return nil, "Error: some error", errors.New("mockError")
+func (c *execManageCredentialUnavailableMock) getAzureCLIAuthResults(command string) (*authResults, error) {
+	results := &authResults{}
+	results.out = nil
+	results.errOut = "some error"
+
+	return results, errors.New("Errors")
 }

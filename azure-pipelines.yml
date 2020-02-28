@@ -15,15 +15,12 @@ jobs:
         Linux_Go112:
           vm.image: 'ubuntu-18.04'
           go.version: '1.12'
-          GOROOT: '/usr/local/go$(go.version)'
         Linux_Go113:
           vm.image: 'ubuntu-18.04'
           go.version: '1.13'
-          GOROOT: '/usr/local/go$(go.version)'
         Linux_Go114:
           vm.image: 'ubuntu-18.04'
           go.version: '1.14'
-          GOROOT: '/usr/local/go$(go.version)'
 
     pool:
       vmImage: $(vm.image)
@@ -35,20 +32,24 @@ jobs:
       go.list.filter: '| grep -v vendor'
 
     steps:
+    - task: GoTool@0
+      inputs:
+        version: '$(go.version)'
+      displayName: "Select Go Version"
+
     - script: |
         set -e
         mkdir -p '$(GOPATH)/bin'
         mkdir -p '$(sdkPath)'
         shopt -s dotglob extglob
         mv !(work) '$(sdkPath)'
-        sudo mkdir -p $(GOROOT)/bin 
         echo '##vso[task.prependpath]$(GOROOT)/bin'
         echo '##vso[task.prependpath]$(GOPATH)/bin'
       displayName: 'Create Go Workspace'
     - script: |
         set -e
-        curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
         go version
+        curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
         dep ensure -v
         go get -u golang.org/x/lint/golint
       workingDirectory: '$(sdkPath)'

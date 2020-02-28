@@ -71,6 +71,14 @@ type SettingsClientAPI interface {
 
 var _ SettingsClientAPI = (*security.SettingsClient)(nil)
 
+// AdvancedThreatProtectionClientAPI contains the set of methods on the AdvancedThreatProtectionClient type.
+type AdvancedThreatProtectionClientAPI interface {
+	Create(ctx context.Context, resourceID string, advancedThreatProtectionSetting security.AdvancedThreatProtectionSetting) (result security.AdvancedThreatProtectionSetting, err error)
+	Get(ctx context.Context, resourceID string) (result security.AdvancedThreatProtectionSetting, err error)
+}
+
+var _ AdvancedThreatProtectionClientAPI = (*security.AdvancedThreatProtectionClient)(nil)
+
 // DeviceSecurityGroupsClientAPI contains the set of methods on the DeviceSecurityGroupsClient type.
 type DeviceSecurityGroupsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceID string, deviceSecurityGroupName string, deviceSecurityGroup security.DeviceSecurityGroup) (result security.DeviceSecurityGroup, err error)
@@ -176,6 +184,7 @@ var _ JitNetworkAccessPoliciesClientAPI = (*security.JitNetworkAccessPoliciesCli
 
 // AdaptiveApplicationControlsClientAPI contains the set of methods on the AdaptiveApplicationControlsClient type.
 type AdaptiveApplicationControlsClientAPI interface {
+	Delete(ctx context.Context, groupName string) (result autorest.Response, err error)
 	Get(ctx context.Context, groupName string) (result security.AppWhitelistingGroup, err error)
 	List(ctx context.Context, includePathRecommendations *bool, summary *bool) (result security.AppWhitelistingGroups, err error)
 	Put(ctx context.Context, groupName string, body security.AppWhitelistingPutGroupData) (result security.AppWhitelistingGroup, err error)
@@ -226,14 +235,6 @@ type TopologyClientAPI interface {
 }
 
 var _ TopologyClientAPI = (*security.TopologyClient)(nil)
-
-// AdvancedThreatProtectionClientAPI contains the set of methods on the AdvancedThreatProtectionClient type.
-type AdvancedThreatProtectionClientAPI interface {
-	Create(ctx context.Context, resourceID string, advancedThreatProtectionSetting security.AdvancedThreatProtectionSetting) (result security.AdvancedThreatProtectionSetting, err error)
-	Get(ctx context.Context, resourceID string) (result security.AdvancedThreatProtectionSetting, err error)
-}
-
-var _ AdvancedThreatProtectionClientAPI = (*security.AdvancedThreatProtectionClient)(nil)
 
 // AutoProvisioningSettingsClientAPI contains the set of methods on the AutoProvisioningSettingsClient type.
 type AutoProvisioningSettingsClientAPI interface {
@@ -352,23 +353,17 @@ var _ AutomationsClientAPI = (*security.AutomationsClient)(nil)
 
 // AssessmentsMetadataClientAPI contains the set of methods on the AssessmentsMetadataClient type.
 type AssessmentsMetadataClientAPI interface {
+	CreateInSubscription(ctx context.Context, assessmentMetadataName string, assessmentMetadata security.AssessmentMetadata) (result security.AssessmentMetadata, err error)
+	DeleteInSubscription(ctx context.Context, assessmentMetadataName string) (result autorest.Response, err error)
 	Get(ctx context.Context, assessmentMetadataName string) (result security.AssessmentMetadata, err error)
+	GetInSubscription(ctx context.Context, assessmentMetadataName string) (result security.AssessmentMetadata, err error)
 	List(ctx context.Context) (result security.AssessmentMetadataListPage, err error)
 	ListComplete(ctx context.Context) (result security.AssessmentMetadataListIterator, err error)
+	ListBySubscription(ctx context.Context) (result security.AssessmentMetadataListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result security.AssessmentMetadataListIterator, err error)
 }
 
 var _ AssessmentsMetadataClientAPI = (*security.AssessmentsMetadataClient)(nil)
-
-// AssessmentsMetadataSubscriptionClientAPI contains the set of methods on the AssessmentsMetadataSubscriptionClient type.
-type AssessmentsMetadataSubscriptionClientAPI interface {
-	Create(ctx context.Context, assessmentMetadataName string, assessmentMetadata security.AssessmentMetadata) (result security.AssessmentMetadata, err error)
-	Delete(ctx context.Context, assessmentMetadataName string) (result autorest.Response, err error)
-	Get(ctx context.Context, assessmentMetadataName string) (result security.AssessmentMetadata, err error)
-	List(ctx context.Context) (result security.AssessmentMetadataListPage, err error)
-	ListComplete(ctx context.Context) (result security.AssessmentMetadataListIterator, err error)
-}
-
-var _ AssessmentsMetadataSubscriptionClientAPI = (*security.AssessmentsMetadataSubscriptionClient)(nil)
 
 // AssessmentsClientAPI contains the set of methods on the AssessmentsClient type.
 type AssessmentsClientAPI interface {

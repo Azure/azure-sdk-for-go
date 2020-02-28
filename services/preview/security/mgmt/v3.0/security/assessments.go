@@ -64,6 +64,17 @@ func (client AssessmentsClient) CreateOrUpdate(ctx context.Context, resourceID s
 			Constraints: []validation.Constraint{{Target: "assessment.AssessmentProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "assessment.AssessmentProperties.ResourceDetails", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "assessment.AssessmentProperties.Status", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "assessment.AssessmentProperties.Metadata", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "assessment.AssessmentProperties.Metadata.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "assessment.AssessmentProperties.Metadata.PartnerData", Name: validation.Null, Rule: false,
+								Chain: []validation.Constraint{{Target: "assessment.AssessmentProperties.Metadata.PartnerData.PartnerName", Name: validation.Null, Rule: true, Chain: nil},
+									{Target: "assessment.AssessmentProperties.Metadata.PartnerData.Secret", Name: validation.Null, Rule: true, Chain: nil},
+								}},
+						}},
+					{Target: "assessment.AssessmentProperties.PartnersData", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "assessment.AssessmentProperties.PartnersData.PartnerName", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "assessment.AssessmentProperties.PartnersData.Secret", Name: validation.Null, Rule: true, Chain: nil},
+						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("security.AssessmentsClient", "CreateOrUpdate", err.Error())
 	}
@@ -96,7 +107,7 @@ func (client AssessmentsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 		"resourceId":     autorest.Encode("path", resourceID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -114,8 +125,7 @@ func (client AssessmentsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssessmentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -175,7 +185,7 @@ func (client AssessmentsClient) DeletePreparer(ctx context.Context, resourceID s
 		"resourceId":     autorest.Encode("path", resourceID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -191,8 +201,7 @@ func (client AssessmentsClient) DeletePreparer(ctx context.Context, resourceID s
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssessmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -251,7 +260,7 @@ func (client AssessmentsClient) GetPreparer(ctx context.Context, resourceID stri
 		"resourceId":     autorest.Encode("path", resourceID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -270,8 +279,7 @@ func (client AssessmentsClient) GetPreparer(ctx context.Context, resourceID stri
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssessmentsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -330,7 +338,7 @@ func (client AssessmentsClient) ListPreparer(ctx context.Context, scope string) 
 		"scope": autorest.Encode("path", scope),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -346,8 +354,7 @@ func (client AssessmentsClient) ListPreparer(ctx context.Context, scope string) 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssessmentsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

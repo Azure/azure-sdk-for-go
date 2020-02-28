@@ -20,6 +20,10 @@ jobs:
           vm.image: 'ubuntu-18.04'
           go.version: '1.13'
           GOROOT: '/usr/local/go$(go.version)'
+        Linux_Go114:
+          vm.image: 'ubuntu-18.04'
+          go.version: '1.14'
+          GOROOT: '/usr/local/go$(go.version)'
 
     pool:
       vmImage: $(vm.image)

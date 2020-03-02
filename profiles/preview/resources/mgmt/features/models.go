@@ -122,6 +122,7 @@ type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorResponse = original.ErrorResponse
 type ExportTemplateRequest = original.ExportTemplateRequest
 type GenericResource = original.GenericResource
+type GenericResourceExpanded = original.GenericResourceExpanded
 type GenericResourceFilter = original.GenericResourceFilter
 type HTTPMessage = original.HTTPMessage
 type Identity = original.Identity

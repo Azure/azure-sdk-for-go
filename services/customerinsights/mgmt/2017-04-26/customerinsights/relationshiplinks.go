@@ -119,9 +119,8 @@ func (client RelationshipLinksClient) CreateOrUpdatePreparer(ctx context.Context
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client RelationshipLinksClient) CreateOrUpdateSender(req *http.Request) (future RelationshipLinksCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -198,9 +197,8 @@ func (client RelationshipLinksClient) DeletePreparer(ctx context.Context, resour
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client RelationshipLinksClient) DeleteSender(req *http.Request) (future RelationshipLinksDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -282,8 +280,7 @@ func (client RelationshipLinksClient) GetPreparer(ctx context.Context, resourceG
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client RelationshipLinksClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -360,8 +357,7 @@ func (client RelationshipLinksClient) ListByHubPreparer(ctx context.Context, res
 // ListByHubSender sends the ListByHub request. The method will close the
 // http.Response Body if it receives an error.
 func (client RelationshipLinksClient) ListByHubSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByHubResponder handles the response to the ListByHub request. The method always

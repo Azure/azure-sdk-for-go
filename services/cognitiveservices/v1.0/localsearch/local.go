@@ -260,8 +260,7 @@ func (client LocalClient) SearchPreparer(ctx context.Context, query string, acce
 // SearchSender sends the Search request. The method will close the
 // http.Response Body if it receives an error.
 func (client LocalClient) SearchSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SearchResponder handles the response to the Search request. The method always

@@ -23,6 +23,13 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// SystemAssignedIdentitiesClientAPI contains the set of methods on the SystemAssignedIdentitiesClient type.
+type SystemAssignedIdentitiesClientAPI interface {
+	GetByScope(ctx context.Context, scope string) (result msi.SystemAssignedIdentity, err error)
+}
+
+var _ SystemAssignedIdentitiesClientAPI = (*msi.SystemAssignedIdentitiesClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result msi.OperationListResultPage, err error)

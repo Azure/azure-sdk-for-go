@@ -84,8 +84,7 @@ func (client EndpointSettingsClient) GetSettingsPreparer(ctx context.Context) (*
 // GetSettingsSender sends the GetSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointSettingsClient) GetSettingsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetSettingsResponder handles the response to the GetSettings request. The method always
@@ -154,8 +153,7 @@ func (client EndpointSettingsClient) UpdateSettingsPreparer(ctx context.Context,
 // UpdateSettingsSender sends the UpdateSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointSettingsClient) UpdateSettingsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateSettingsResponder handles the response to the UpdateSettings request. The method always

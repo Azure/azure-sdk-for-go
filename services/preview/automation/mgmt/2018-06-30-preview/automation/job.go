@@ -122,8 +122,7 @@ func (client JobClient) CreatePreparer(ctx context.Context, resourceGroupName st
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -214,8 +213,7 @@ func (client JobClient) GetPreparer(ctx context.Context, resourceGroupName strin
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -306,8 +304,7 @@ func (client JobClient) GetOutputPreparer(ctx context.Context, resourceGroupName
 // GetOutputSender sends the GetOutput request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) GetOutputSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetOutputResponder handles the response to the GetOutput request. The method always
@@ -397,8 +394,7 @@ func (client JobClient) GetRunbookContentPreparer(ctx context.Context, resourceG
 // GetRunbookContentSender sends the GetRunbookContent request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) GetRunbookContentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetRunbookContentResponder handles the response to the GetRunbookContent request. The method always
@@ -491,8 +487,7 @@ func (client JobClient) ListByAutomationAccountPreparer(ctx context.Context, res
 // ListByAutomationAccountSender sends the ListByAutomationAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) ListByAutomationAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByAutomationAccountResponder handles the response to the ListByAutomationAccount request. The method always
@@ -620,8 +615,7 @@ func (client JobClient) ResumePreparer(ctx context.Context, resourceGroupName st
 // ResumeSender sends the Resume request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) ResumeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ResumeResponder handles the response to the Resume request. The method always
@@ -711,8 +705,7 @@ func (client JobClient) StopPreparer(ctx context.Context, resourceGroupName stri
 // StopSender sends the Stop request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) StopSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // StopResponder handles the response to the Stop request. The method always
@@ -802,8 +795,7 @@ func (client JobClient) SuspendPreparer(ctx context.Context, resourceGroupName s
 // SuspendSender sends the Suspend request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) SuspendSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // SuspendResponder handles the response to the Suspend request. The method always

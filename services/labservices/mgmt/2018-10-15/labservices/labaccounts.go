@@ -121,8 +121,7 @@ func (client LabAccountsClient) CreateLabPreparer(ctx context.Context, resourceG
 // CreateLabSender sends the CreateLab request. The method will close the
 // http.Response Body if it receives an error.
 func (client LabAccountsClient) CreateLabSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateLabResponder handles the response to the CreateLab request. The method always
@@ -200,8 +199,7 @@ func (client LabAccountsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client LabAccountsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -271,9 +269,8 @@ func (client LabAccountsClient) DeletePreparer(ctx context.Context, resourceGrou
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client LabAccountsClient) DeleteSender(req *http.Request) (future LabAccountsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -357,8 +354,7 @@ func (client LabAccountsClient) GetPreparer(ctx context.Context, resourceGroupNa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client LabAccountsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -434,8 +430,7 @@ func (client LabAccountsClient) GetRegionalAvailabilityPreparer(ctx context.Cont
 // GetRegionalAvailabilitySender sends the GetRegionalAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client LabAccountsClient) GetRegionalAvailabilitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetRegionalAvailabilityResponder handles the response to the GetRegionalAvailability request. The method always
@@ -526,8 +521,7 @@ func (client LabAccountsClient) ListByResourceGroupPreparer(ctx context.Context,
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client LabAccountsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -653,8 +647,7 @@ func (client LabAccountsClient) ListBySubscriptionPreparer(ctx context.Context, 
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client LabAccountsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
@@ -770,8 +763,7 @@ func (client LabAccountsClient) UpdatePreparer(ctx context.Context, resourceGrou
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client LabAccountsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

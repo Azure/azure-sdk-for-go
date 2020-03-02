@@ -105,8 +105,7 @@ func (client PolicySetClient) EvaluatePoliciesPreparer(ctx context.Context, reso
 // EvaluatePoliciesSender sends the EvaluatePolicies request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicySetClient) EvaluatePoliciesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // EvaluatePoliciesResponder handles the response to the EvaluatePolicies request. The method always

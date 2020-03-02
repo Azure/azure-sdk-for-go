@@ -137,8 +137,7 @@ func (client ComputeNodeClient) AddUserPreparer(ctx context.Context, poolID stri
 // AddUserSender sends the AddUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) AddUserSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddUserResponder handles the response to the AddUser request. The method always
@@ -245,8 +244,7 @@ func (client ComputeNodeClient) DeleteUserPreparer(ctx context.Context, poolID s
 // DeleteUserSender sends the DeleteUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) DeleteUserSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteUserResponder handles the response to the DeleteUser request. The method always
@@ -357,8 +355,7 @@ func (client ComputeNodeClient) DisableSchedulingPreparer(ctx context.Context, p
 // DisableSchedulingSender sends the DisableScheduling request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) DisableSchedulingSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DisableSchedulingResponder handles the response to the DisableScheduling request. The method always
@@ -463,8 +460,7 @@ func (client ComputeNodeClient) EnableSchedulingPreparer(ctx context.Context, po
 // EnableSchedulingSender sends the EnableScheduling request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) EnableSchedulingSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // EnableSchedulingResponder handles the response to the EnableScheduling request. The method always
@@ -573,8 +569,7 @@ func (client ComputeNodeClient) GetPreparer(ctx context.Context, poolID string, 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -682,8 +677,7 @@ func (client ComputeNodeClient) GetRemoteDesktopPreparer(ctx context.Context, po
 // GetRemoteDesktopSender sends the GetRemoteDesktop request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) GetRemoteDesktopSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetRemoteDesktopResponder handles the response to the GetRemoteDesktop request. The method always
@@ -790,8 +784,7 @@ func (client ComputeNodeClient) GetRemoteLoginSettingsPreparer(ctx context.Conte
 // GetRemoteLoginSettingsSender sends the GetRemoteLoginSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) GetRemoteLoginSettingsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetRemoteLoginSettingsResponder handles the response to the GetRemoteLoginSettings request. The method always
@@ -921,8 +914,7 @@ func (client ComputeNodeClient) ListPreparer(ctx context.Context, poolID string,
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -1071,8 +1063,7 @@ func (client ComputeNodeClient) RebootPreparer(ctx context.Context, poolID strin
 // RebootSender sends the Reboot request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) RebootSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RebootResponder handles the response to the Reboot request. The method always
@@ -1184,8 +1175,7 @@ func (client ComputeNodeClient) ReimagePreparer(ctx context.Context, poolID stri
 // ReimageSender sends the Reimage request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) ReimageSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ReimageResponder handles the response to the Reimage request. The method always
@@ -1297,8 +1287,7 @@ func (client ComputeNodeClient) UpdateUserPreparer(ctx context.Context, poolID s
 // UpdateUserSender sends the UpdateUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) UpdateUserSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateUserResponder handles the response to the UpdateUser request. The method always
@@ -1415,8 +1404,7 @@ func (client ComputeNodeClient) UploadBatchServiceLogsPreparer(ctx context.Conte
 // UploadBatchServiceLogsSender sends the UploadBatchServiceLogs request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) UploadBatchServiceLogsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UploadBatchServiceLogsResponder handles the response to the UploadBatchServiceLogs request. The method always

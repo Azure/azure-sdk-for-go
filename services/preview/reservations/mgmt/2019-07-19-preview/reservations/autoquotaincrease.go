@@ -105,8 +105,7 @@ func (client AutoQuotaIncreaseClient) CreatePreparer(ctx context.Context, subscr
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client AutoQuotaIncreaseClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -179,8 +178,7 @@ func (client AutoQuotaIncreaseClient) GetPropertiesPreparer(ctx context.Context,
 // GetPropertiesSender sends the GetProperties request. The method will close the
 // http.Response Body if it receives an error.
 func (client AutoQuotaIncreaseClient) GetPropertiesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetPropertiesResponder handles the response to the GetProperties request. The method always

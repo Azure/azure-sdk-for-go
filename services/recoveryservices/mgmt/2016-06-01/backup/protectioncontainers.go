@@ -106,8 +106,7 @@ func (client ProtectionContainersClient) GetPreparer(ctx context.Context, vaultN
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProtectionContainersClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -190,8 +189,7 @@ func (client ProtectionContainersClient) ListPreparer(ctx context.Context, vault
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProtectionContainersClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -270,8 +268,7 @@ func (client ProtectionContainersClient) RefreshPreparer(ctx context.Context, va
 // RefreshSender sends the Refresh request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProtectionContainersClient) RefreshSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RefreshResponder handles the response to the Refresh request. The method always
@@ -348,8 +345,7 @@ func (client ProtectionContainersClient) UnregisterPreparer(ctx context.Context,
 // UnregisterSender sends the Unregister request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProtectionContainersClient) UnregisterSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UnregisterResponder handles the response to the Unregister request. The method always

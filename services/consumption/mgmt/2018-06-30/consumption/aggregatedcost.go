@@ -100,8 +100,7 @@ func (client AggregatedCostClient) GetByManagementGroupPreparer(ctx context.Cont
 // GetByManagementGroupSender sends the GetByManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AggregatedCostClient) GetByManagementGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByManagementGroupResponder handles the response to the GetByManagementGroup request. The method always
@@ -177,8 +176,7 @@ func (client AggregatedCostClient) GetForBillingPeriodByManagementGroupPreparer(
 // GetForBillingPeriodByManagementGroupSender sends the GetForBillingPeriodByManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AggregatedCostClient) GetForBillingPeriodByManagementGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetForBillingPeriodByManagementGroupResponder handles the response to the GetForBillingPeriodByManagementGroup request. The method always

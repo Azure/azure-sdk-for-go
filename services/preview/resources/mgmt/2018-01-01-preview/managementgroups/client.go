@@ -115,8 +115,7 @@ func (client BaseClient) CheckNameAvailabilityPreparer(ctx context.Context, chec
 // CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always

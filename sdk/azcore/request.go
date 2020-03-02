@@ -27,7 +27,6 @@ const (
 type Request struct {
 	*http.Request
 	policies []Policy
-	qp       url.Values
 	values   opValues
 }
 
@@ -79,11 +78,6 @@ func (req *Request) Next(ctx context.Context) (*Response, error) {
 	nextPolicy := req.policies[0]
 	nextReq := *req
 	nextReq.policies = nextReq.policies[1:]
-	// encode any pending query params
-	if nextReq.qp != nil {
-		nextReq.Request.URL.RawQuery = nextReq.qp.Encode()
-		nextReq.qp = nil
-	}
 	return nextPolicy.Do(ctx, &nextReq)
 }
 
@@ -125,14 +119,6 @@ func (req *Request) OperationValue(value interface{}) bool {
 	return req.values.get(value)
 }
 
-// SetQueryParam sets the key to value.
-func (req *Request) SetQueryParam(key, value string) {
-	if req.qp == nil {
-		req.qp = req.Request.URL.Query()
-	}
-	req.qp.Set(key, value)
-}
-
 // SetBody sets the specified ReadSeekCloser as the HTTP request body.
 func (req *Request) SetBody(body ReadSeekCloser) error {
 	// Set the body and content length.
@@ -156,6 +142,13 @@ func (req *Request) SetBody(body ReadSeekCloser) error {
 // SkipBodyDownload will disable automatic downloading of the response body.
 func (req *Request) SkipBodyDownload() {
 	req.SetOperationValue(bodyDownloadPolicyOpValues{skip: true})
+}
+
+// returns true if auto-body download policy is enabled
+func (req *Request) bodyDownloadEnabled() bool {
+	var opValues bodyDownloadPolicyOpValues
+	req.OperationValue(&opValues)
+	return !opValues.skip
 }
 
 // RewindBody seeks the request's Body stream back to the beginning so it can be resent when retrying an operation.

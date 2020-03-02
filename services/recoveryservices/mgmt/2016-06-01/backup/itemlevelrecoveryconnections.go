@@ -116,8 +116,7 @@ func (client ItemLevelRecoveryConnectionsClient) ProvisionPreparer(ctx context.C
 // ProvisionSender sends the Provision request. The method will close the
 // http.Response Body if it receives an error.
 func (client ItemLevelRecoveryConnectionsClient) ProvisionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ProvisionResponder handles the response to the Provision request. The method always
@@ -202,8 +201,7 @@ func (client ItemLevelRecoveryConnectionsClient) RevokePreparer(ctx context.Cont
 // RevokeSender sends the Revoke request. The method will close the
 // http.Response Body if it receives an error.
 func (client ItemLevelRecoveryConnectionsClient) RevokeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RevokeResponder handles the response to the Revoke request. The method always

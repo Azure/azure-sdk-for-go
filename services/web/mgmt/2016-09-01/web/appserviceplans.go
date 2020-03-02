@@ -110,9 +110,8 @@ func (client AppServicePlansClient) CreateOrUpdatePreparer(ctx context.Context, 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) CreateOrUpdateSender(req *http.Request) (future AppServicePlansCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -208,8 +207,7 @@ func (client AppServicePlansClient) CreateOrUpdateVnetRoutePreparer(ctx context.
 // CreateOrUpdateVnetRouteSender sends the CreateOrUpdateVnetRoute request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) CreateOrUpdateVnetRouteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateVnetRouteResponder handles the response to the CreateOrUpdateVnetRoute request. The method always
@@ -293,8 +291,7 @@ func (client AppServicePlansClient) DeletePreparer(ctx context.Context, resource
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -381,8 +378,7 @@ func (client AppServicePlansClient) DeleteHybridConnectionPreparer(ctx context.C
 // DeleteHybridConnectionSender sends the DeleteHybridConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) DeleteHybridConnectionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteHybridConnectionResponder handles the response to the DeleteHybridConnection request. The method always
@@ -469,8 +465,7 @@ func (client AppServicePlansClient) DeleteVnetRoutePreparer(ctx context.Context,
 // DeleteVnetRouteSender sends the DeleteVnetRoute request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) DeleteVnetRouteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteVnetRouteResponder handles the response to the DeleteVnetRoute request. The method always
@@ -553,8 +548,7 @@ func (client AppServicePlansClient) GetPreparer(ctx context.Context, resourceGro
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -642,8 +636,7 @@ func (client AppServicePlansClient) GetHybridConnectionPreparer(ctx context.Cont
 // GetHybridConnectionSender sends the GetHybridConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) GetHybridConnectionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHybridConnectionResponder handles the response to the GetHybridConnection request. The method always
@@ -727,8 +720,7 @@ func (client AppServicePlansClient) GetHybridConnectionPlanLimitPreparer(ctx con
 // GetHybridConnectionPlanLimitSender sends the GetHybridConnectionPlanLimit request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) GetHybridConnectionPlanLimitSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHybridConnectionPlanLimitResponder handles the response to the GetHybridConnectionPlanLimit request. The method always
@@ -816,8 +808,7 @@ func (client AppServicePlansClient) GetRouteForVnetPreparer(ctx context.Context,
 // GetRouteForVnetSender sends the GetRouteForVnet request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) GetRouteForVnetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetRouteForVnetResponder handles the response to the GetRouteForVnet request. The method always
@@ -901,8 +892,7 @@ func (client AppServicePlansClient) GetServerFarmSkusPreparer(ctx context.Contex
 // GetServerFarmSkusSender sends the GetServerFarmSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) GetServerFarmSkusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetServerFarmSkusResponder handles the response to the GetServerFarmSkus request. The method always
@@ -988,8 +978,7 @@ func (client AppServicePlansClient) GetVnetFromServerFarmPreparer(ctx context.Co
 // GetVnetFromServerFarmSender sends the GetVnetFromServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) GetVnetFromServerFarmSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetVnetFromServerFarmResponder handles the response to the GetVnetFromServerFarm request. The method always
@@ -1077,8 +1066,7 @@ func (client AppServicePlansClient) GetVnetGatewayPreparer(ctx context.Context, 
 // GetVnetGatewaySender sends the GetVnetGateway request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) GetVnetGatewaySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetVnetGatewayResponder handles the response to the GetVnetGateway request. The method always
@@ -1157,8 +1145,7 @@ func (client AppServicePlansClient) ListPreparer(ctx context.Context, detailed *
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -1278,8 +1265,7 @@ func (client AppServicePlansClient) ListByResourceGroupPreparer(ctx context.Cont
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -1400,8 +1386,7 @@ func (client AppServicePlansClient) ListCapabilitiesPreparer(ctx context.Context
 // ListCapabilitiesSender sends the ListCapabilities request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListCapabilitiesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListCapabilitiesResponder handles the response to the ListCapabilities request. The method always
@@ -1489,8 +1474,7 @@ func (client AppServicePlansClient) ListHybridConnectionKeysPreparer(ctx context
 // ListHybridConnectionKeysSender sends the ListHybridConnectionKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListHybridConnectionKeysSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListHybridConnectionKeysResponder handles the response to the ListHybridConnectionKeys request. The method always
@@ -1575,8 +1559,7 @@ func (client AppServicePlansClient) ListHybridConnectionsPreparer(ctx context.Co
 // ListHybridConnectionsSender sends the ListHybridConnections request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListHybridConnectionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListHybridConnectionsResponder handles the response to the ListHybridConnections request. The method always
@@ -1698,8 +1681,7 @@ func (client AppServicePlansClient) ListMetricDefintionsPreparer(ctx context.Con
 // ListMetricDefintionsSender sends the ListMetricDefintions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListMetricDefintionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricDefintionsResponder handles the response to the ListMetricDefintions request. The method always
@@ -1831,8 +1813,7 @@ func (client AppServicePlansClient) ListMetricsPreparer(ctx context.Context, res
 // ListMetricsSender sends the ListMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListMetricsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricsResponder handles the response to the ListMetrics request. The method always
@@ -1955,8 +1936,7 @@ func (client AppServicePlansClient) ListRoutesForVnetPreparer(ctx context.Contex
 // ListRoutesForVnetSender sends the ListRoutesForVnet request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListRoutesForVnetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListRoutesForVnetResponder handles the response to the ListRoutesForVnet request. The method always
@@ -2046,8 +2026,7 @@ func (client AppServicePlansClient) ListUsagesPreparer(ctx context.Context, reso
 // ListUsagesSender sends the ListUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListUsagesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListUsagesResponder handles the response to the ListUsages request. The method always
@@ -2168,8 +2147,7 @@ func (client AppServicePlansClient) ListVnetsPreparer(ctx context.Context, resou
 // ListVnetsSender sends the ListVnets request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListVnetsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListVnetsResponder handles the response to the ListVnets request. The method always
@@ -2268,8 +2246,7 @@ func (client AppServicePlansClient) ListWebAppsPreparer(ctx context.Context, res
 // ListWebAppsSender sends the ListWebApps request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListWebAppsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListWebAppsResponder handles the response to the ListWebApps request. The method always
@@ -2395,8 +2372,7 @@ func (client AppServicePlansClient) ListWebAppsByHybridConnectionPreparer(ctx co
 // ListWebAppsByHybridConnectionSender sends the ListWebAppsByHybridConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListWebAppsByHybridConnectionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListWebAppsByHybridConnectionResponder handles the response to the ListWebAppsByHybridConnection request. The method always
@@ -2519,8 +2495,7 @@ func (client AppServicePlansClient) RebootWorkerPreparer(ctx context.Context, re
 // RebootWorkerSender sends the RebootWorker request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) RebootWorkerSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RebootWorkerResponder handles the response to the RebootWorker request. The method always
@@ -2609,8 +2584,7 @@ func (client AppServicePlansClient) RestartWebAppsPreparer(ctx context.Context, 
 // RestartWebAppsSender sends the RestartWebApps request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) RestartWebAppsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RestartWebAppsResponder handles the response to the RestartWebApps request. The method always
@@ -2696,8 +2670,7 @@ func (client AppServicePlansClient) UpdatePreparer(ctx context.Context, resource
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
@@ -2791,8 +2764,7 @@ func (client AppServicePlansClient) UpdateVnetGatewayPreparer(ctx context.Contex
 // UpdateVnetGatewaySender sends the UpdateVnetGateway request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) UpdateVnetGatewaySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateVnetGatewayResponder handles the response to the UpdateVnetGateway request. The method always
@@ -2883,8 +2855,7 @@ func (client AppServicePlansClient) UpdateVnetRoutePreparer(ctx context.Context,
 // UpdateVnetRouteSender sends the UpdateVnetRoute request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) UpdateVnetRouteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateVnetRouteResponder handles the response to the UpdateVnetRoute request. The method always

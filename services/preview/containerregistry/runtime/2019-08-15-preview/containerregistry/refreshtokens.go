@@ -105,8 +105,7 @@ func (client RefreshTokensClient) GetFromExchangePreparer(ctx context.Context, g
 // GetFromExchangeSender sends the GetFromExchange request. The method will close the
 // http.Response Body if it receives an error.
 func (client RefreshTokensClient) GetFromExchangeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetFromExchangeResponder handles the response to the GetFromExchange request. The method always

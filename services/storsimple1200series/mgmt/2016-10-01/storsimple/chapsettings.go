@@ -115,9 +115,8 @@ func (client ChapSettingsClient) CreateOrUpdatePreparer(ctx context.Context, dev
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ChapSettingsClient) CreateOrUpdateSender(req *http.Request) (future ChapSettingsCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -203,9 +202,8 @@ func (client ChapSettingsClient) DeletePreparer(ctx context.Context, deviceName 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ChapSettingsClient) DeleteSender(req *http.Request) (future ChapSettingsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -296,8 +294,7 @@ func (client ChapSettingsClient) GetPreparer(ctx context.Context, deviceName str
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ChapSettingsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -382,8 +379,7 @@ func (client ChapSettingsClient) ListByDevicePreparer(ctx context.Context, devic
 // ListByDeviceSender sends the ListByDevice request. The method will close the
 // http.Response Body if it receives an error.
 func (client ChapSettingsClient) ListByDeviceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDeviceResponder handles the response to the ListByDevice request. The method always

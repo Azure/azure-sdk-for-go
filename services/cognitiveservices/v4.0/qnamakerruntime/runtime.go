@@ -93,8 +93,7 @@ func (client RuntimeClient) GenerateAnswerPreparer(ctx context.Context, kbID str
 // GenerateAnswerSender sends the GenerateAnswer request. The method will close the
 // http.Response Body if it receives an error.
 func (client RuntimeClient) GenerateAnswerSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GenerateAnswerResponder handles the response to the GenerateAnswer request. The method always
@@ -168,8 +167,7 @@ func (client RuntimeClient) TrainPreparer(ctx context.Context, kbID string, trai
 // TrainSender sends the Train request. The method will close the
 // http.Response Body if it receives an error.
 func (client RuntimeClient) TrainSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // TrainResponder handles the response to the Train request. The method always

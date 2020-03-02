@@ -102,8 +102,7 @@ func (client DiagnosticSettingsClient) CreateOrUpdatePreparer(ctx context.Contex
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DiagnosticSettingsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -176,8 +175,7 @@ func (client DiagnosticSettingsClient) DeletePreparer(ctx context.Context, name 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client DiagnosticSettingsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -249,8 +247,7 @@ func (client DiagnosticSettingsClient) GetPreparer(ctx context.Context, name str
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DiagnosticSettingsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -317,8 +314,7 @@ func (client DiagnosticSettingsClient) ListPreparer(ctx context.Context) (*http.
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client DiagnosticSettingsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

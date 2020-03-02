@@ -103,8 +103,7 @@ func (client EventsClient) DeleteEventPreparer(ctx context.Context, resourceGrou
 // DeleteEventSender sends the DeleteEvent request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventsClient) DeleteEventSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteEventResponder handles the response to the DeleteEvent request. The method always
@@ -192,8 +191,7 @@ func (client EventsClient) EnumerateEventsPreparer(ctx context.Context, resource
 // EnumerateEventsSender sends the EnumerateEvents request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventsClient) EnumerateEventsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // EnumerateEventsResponder handles the response to the EnumerateEvents request. The method always
@@ -271,8 +269,7 @@ func (client EventsClient) GetEventPreparer(ctx context.Context, resourceGroupNa
 // GetEventSender sends the GetEvent request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventsClient) GetEventSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetEventResponder handles the response to the GetEvent request. The method always

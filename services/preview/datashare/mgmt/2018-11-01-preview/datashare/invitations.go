@@ -108,8 +108,7 @@ func (client InvitationsClient) CreatePreparer(ctx context.Context, resourceGrou
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client InvitationsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -189,8 +188,7 @@ func (client InvitationsClient) DeletePreparer(ctx context.Context, resourceGrou
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client InvitationsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -269,8 +267,7 @@ func (client InvitationsClient) GetPreparer(ctx context.Context, resourceGroupNa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client InvitationsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -353,8 +350,7 @@ func (client InvitationsClient) ListBySharePreparer(ctx context.Context, resourc
 // ListByShareSender sends the ListByShare request. The method will close the
 // http.Response Body if it receives an error.
 func (client InvitationsClient) ListByShareSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByShareResponder handles the response to the ListByShare request. The method always

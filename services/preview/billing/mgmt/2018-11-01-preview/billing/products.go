@@ -102,8 +102,7 @@ func (client ProductsClient) GetPreparer(ctx context.Context, billingAccountName
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -183,8 +182,7 @@ func (client ProductsClient) ListByBillingAccountNamePreparer(ctx context.Contex
 // ListByBillingAccountNameSender sends the ListByBillingAccountName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductsClient) ListByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingAccountNameResponder handles the response to the ListByBillingAccountName request. The method always
@@ -303,8 +301,7 @@ func (client ProductsClient) ListByInvoiceSectionNamePreparer(ctx context.Contex
 // ListByInvoiceSectionNameSender sends the ListByInvoiceSectionName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductsClient) ListByInvoiceSectionNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByInvoiceSectionNameResponder handles the response to the ListByInvoiceSectionName request. The method always
@@ -421,8 +418,7 @@ func (client ProductsClient) TransferPreparer(ctx context.Context, billingAccoun
 // TransferSender sends the Transfer request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductsClient) TransferSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // TransferResponder handles the response to the Transfer request. The method always
@@ -500,8 +496,7 @@ func (client ProductsClient) UpdateAutoRenewByBillingAccountNamePreparer(ctx con
 // UpdateAutoRenewByBillingAccountNameSender sends the UpdateAutoRenewByBillingAccountName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductsClient) UpdateAutoRenewByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateAutoRenewByBillingAccountNameResponder handles the response to the UpdateAutoRenewByBillingAccountName request. The method always
@@ -581,8 +576,7 @@ func (client ProductsClient) UpdateAutoRenewByInvoiceSectionNamePreparer(ctx con
 // UpdateAutoRenewByInvoiceSectionNameSender sends the UpdateAutoRenewByInvoiceSectionName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductsClient) UpdateAutoRenewByInvoiceSectionNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateAutoRenewByInvoiceSectionNameResponder handles the response to the UpdateAutoRenewByInvoiceSectionName request. The method always
@@ -656,8 +650,7 @@ func (client ProductsClient) ValidateTransferPreparer(ctx context.Context, billi
 // ValidateTransferSender sends the ValidateTransfer request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductsClient) ValidateTransferSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ValidateTransferResponder handles the response to the ValidateTransfer request. The method always

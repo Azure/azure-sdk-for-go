@@ -106,8 +106,7 @@ func (client RestorePointsClient) ListByDatabasePreparer(ctx context.Context, re
 // ListByDatabaseSender sends the ListByDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client RestorePointsClient) ListByDatabaseSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDatabaseResponder handles the response to the ListByDatabase request. The method always

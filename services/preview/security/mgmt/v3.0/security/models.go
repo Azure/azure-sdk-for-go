@@ -162,11 +162,13 @@ const (
 	// CustomPolicy User defined policies that are automatically ingested from Azure Policy to Azure Security
 	// Center
 	CustomPolicy AssessmentType = "CustomPolicy"
+	// VerifiedPartner An assessment that was created by a verified 3rd party if the user connected it to ASC
+	VerifiedPartner AssessmentType = "VerifiedPartner"
 )
 
 // PossibleAssessmentTypeValues returns an array of possible values for the AssessmentType const type.
 func PossibleAssessmentTypeValues() []AssessmentType {
-	return []AssessmentType{BuiltIn, CustomerManaged, CustomPolicy}
+	return []AssessmentType{BuiltIn, CustomerManaged, CustomPolicy, VerifiedPartner}
 }
 
 // AutoProvision enumerates the values for auto provision.
@@ -328,6 +330,23 @@ const (
 // PossibleEnforcementMode1Values returns an array of possible values for the EnforcementMode1 const type.
 func PossibleEnforcementMode1Values() []EnforcementMode1 {
 	return []EnforcementMode1{EnforcementMode1Audit, EnforcementMode1Enforce, EnforcementMode1None}
+}
+
+// EnforcementSupport enumerates the values for enforcement support.
+type EnforcementSupport string
+
+const (
+	// NotSupported ...
+	NotSupported EnforcementSupport = "NotSupported"
+	// Supported ...
+	Supported EnforcementSupport = "Supported"
+	// Unknown ...
+	Unknown EnforcementSupport = "Unknown"
+)
+
+// PossibleEnforcementSupportValues returns an array of possible values for the EnforcementSupport const type.
+func PossibleEnforcementSupportValues() []EnforcementSupport {
+	return []EnforcementSupport{NotSupported, Supported, Unknown}
 }
 
 // EventSource enumerates the values for event source.
@@ -2634,6 +2653,16 @@ func NewAssessmentMetadataListPage(getNextPage func(context.Context, AssessmentM
 	return AssessmentMetadataListPage{fn: getNextPage}
 }
 
+// AssessmentMetadataPartnerData describes the partner that created the assessment
+type AssessmentMetadataPartnerData struct {
+	// PartnerName - Name of the company of the partner
+	PartnerName *string `json:"partnerName,omitempty"`
+	// ProductName - Name of the product of the partner that created the assessment
+	ProductName *string `json:"productName,omitempty"`
+	// Secret - Secret to authenticate the partner and verify it created the assessment - write only
+	Secret *string `json:"secret,omitempty"`
+}
+
 // AssessmentMetadataProperties describes properties of an assessment metadata.
 type AssessmentMetadataProperties struct {
 	// DisplayName - User friendly display name of the assessment
@@ -2654,8 +2683,17 @@ type AssessmentMetadataProperties struct {
 	Threats              *[]Threats           `json:"threats,omitempty"`
 	// Preview - True if this assessment is in preview release status
 	Preview *bool `json:"preview,omitempty"`
-	// AssessmentType - BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition. Possible values include: 'BuiltIn', 'CustomPolicy', 'CustomerManaged'
-	AssessmentType AssessmentType `json:"assessmentType,omitempty"`
+	// AssessmentType - BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition. Possible values include: 'BuiltIn', 'CustomPolicy', 'CustomerManaged', 'VerifiedPartner'
+	AssessmentType AssessmentType                 `json:"assessmentType,omitempty"`
+	PartnerData    *AssessmentMetadataPartnerData `json:"partnerData,omitempty"`
+}
+
+// AssessmentPartnerData data regarding 3rd party partner integration
+type AssessmentPartnerData struct {
+	// PartnerName - Name of the company of the partner
+	PartnerName *string `json:"partnerName,omitempty"`
+	// Secret - secret to authenticate the partner - write only
+	Secret *string `json:"secret,omitempty"`
 }
 
 // AssessmentProperties describes properties of an assessment.
@@ -2665,8 +2703,10 @@ type AssessmentProperties struct {
 	DisplayName *string           `json:"displayName,omitempty"`
 	Status      *AssessmentStatus `json:"status,omitempty"`
 	// AdditionalData - Additional data regarding the assessment
-	AdditionalData map[string]*string `json:"additionalData"`
-	Links          *AssessmentLinks   `json:"links,omitempty"`
+	AdditionalData map[string]*string            `json:"additionalData"`
+	Links          *AssessmentLinks              `json:"links,omitempty"`
+	Metadata       *AssessmentMetadataProperties `json:"metadata,omitempty"`
+	PartnersData   *AssessmentPartnerData        `json:"partnersData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AssessmentProperties.
@@ -2681,6 +2721,12 @@ func (ap AssessmentProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ap.Links != nil {
 		objectMap["links"] = ap.Links
+	}
+	if ap.Metadata != nil {
+		objectMap["metadata"] = ap.Metadata
+	}
+	if ap.PartnersData != nil {
+		objectMap["partnersData"] = ap.PartnersData
 	}
 	return json.Marshal(objectMap)
 }
@@ -2737,6 +2783,24 @@ func (ap *AssessmentProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ap.Links = &links
+			}
+		case "metadata":
+			if v != nil {
+				var metadata AssessmentMetadataProperties
+				err = json.Unmarshal(*v, &metadata)
+				if err != nil {
+					return err
+				}
+				ap.Metadata = &metadata
+			}
+		case "partnersData":
+			if v != nil {
+				var partnersData AssessmentPartnerData
+				err = json.Unmarshal(*v, &partnersData)
+				if err != nil {
+					return err
+				}
+				ap.PartnersData = &partnersData
 			}
 		}
 	}
@@ -10020,6 +10084,8 @@ type VMRecommendation struct {
 	// RecommendationAction - Possible values include: 'RecommendationActionRecommended', 'RecommendationActionAdd', 'RecommendationActionRemove'
 	RecommendationAction RecommendationAction `json:"recommendationAction,omitempty"`
 	ResourceID           *string              `json:"resourceId,omitempty"`
+	// EnforcementSupport - Possible values include: 'Supported', 'NotSupported', 'Unknown'
+	EnforcementSupport EnforcementSupport `json:"enforcementSupport,omitempty"`
 }
 
 // WorkspaceSetting configures where to store the OMS agent data for workspaces under a scope

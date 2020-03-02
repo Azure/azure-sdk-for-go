@@ -108,6 +108,8 @@ type PolicyStatesClientAPI interface {
 	SummarizeForResourceGroupLevelPolicyAssignment(ctx context.Context, subscriptionID string, resourceGroupName string, policyAssignmentName string, top *int32, from *date.Time, toParameter *date.Time, filter string) (result policyinsights.SummarizeResults, err error)
 	SummarizeForSubscription(ctx context.Context, subscriptionID string, top *int32, from *date.Time, toParameter *date.Time, filter string) (result policyinsights.SummarizeResults, err error)
 	SummarizeForSubscriptionLevelPolicyAssignment(ctx context.Context, subscriptionID string, policyAssignmentName string, top *int32, from *date.Time, toParameter *date.Time, filter string) (result policyinsights.SummarizeResults, err error)
+	TriggerResourceGroupEvaluation(ctx context.Context, subscriptionID string, resourceGroupName string) (result policyinsights.PolicyStatesTriggerResourceGroupEvaluationFuture, err error)
+	TriggerSubscriptionEvaluation(ctx context.Context, subscriptionID string) (result policyinsights.PolicyStatesTriggerSubscriptionEvaluationFuture, err error)
 }
 
 var _ PolicyStatesClientAPI = (*policyinsights.PolicyStatesClient)(nil)

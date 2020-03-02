@@ -99,9 +99,8 @@ func (client FormulaClient) CreateOrUpdateResourcePreparer(ctx context.Context, 
 // CreateOrUpdateResourceSender sends the CreateOrUpdateResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client FormulaClient) CreateOrUpdateResourceSender(req *http.Request) (future FormulaCreateOrUpdateResourceFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -184,8 +183,7 @@ func (client FormulaClient) DeleteResourcePreparer(ctx context.Context, resource
 // DeleteResourceSender sends the DeleteResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client FormulaClient) DeleteResourceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResourceResponder handles the response to the DeleteResource request. The method always
@@ -262,8 +260,7 @@ func (client FormulaClient) GetResourcePreparer(ctx context.Context, resourceGro
 // GetResourceSender sends the GetResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client FormulaClient) GetResourceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResourceResponder handles the response to the GetResource request. The method always
@@ -350,8 +347,7 @@ func (client FormulaClient) ListPreparer(ctx context.Context, resourceGroupName 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client FormulaClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always

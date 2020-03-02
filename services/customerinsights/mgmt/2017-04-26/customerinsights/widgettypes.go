@@ -105,8 +105,7 @@ func (client WidgetTypesClient) GetPreparer(ctx context.Context, resourceGroupNa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client WidgetTypesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -183,8 +182,7 @@ func (client WidgetTypesClient) ListByHubPreparer(ctx context.Context, resourceG
 // ListByHubSender sends the ListByHub request. The method will close the
 // http.Response Body if it receives an error.
 func (client WidgetTypesClient) ListByHubSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByHubResponder handles the response to the ListByHub request. The method always

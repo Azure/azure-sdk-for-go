@@ -9,6 +9,7 @@ import (
 	"context"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -101,5 +102,33 @@ func TestResponseUnmarshalXMLNoBody(t *testing.T) {
 	}
 	if err := resp.UnmarshalAsXML(nil); err != nil {
 		t.Fatalf("unexpected error unmarshalling: %v", err)
+	}
+}
+
+func TestRetryAfter(t *testing.T) {
+	raw := &http.Response{
+		Header: http.Header{},
+	}
+	resp := Response{raw}
+	if d, ok := resp.RetryAfter(); ok {
+		t.Fatalf("unexpected retry-after value %d", d)
+	}
+	raw.Header.Set(HeaderRetryAfter, "300")
+	d, ok := resp.RetryAfter()
+	if !ok {
+		t.Fatal("expected retry-after value from seconds")
+	}
+	if d != 300*time.Second {
+		t.Fatalf("expected 300 seconds, got %d", d/time.Second)
+	}
+	atDate := time.Now().Add(600 * time.Second)
+	raw.Header.Set(HeaderRetryAfter, atDate.Format(time.RFC1123))
+	d, ok = resp.RetryAfter()
+	if !ok {
+		t.Fatal("expected retry-after value from date")
+	}
+	// d will not be exactly 600 seconds but it will be close
+	if d/time.Second != 599 {
+		t.Fatalf("expected ~600 seconds, got %d", d/time.Second)
 	}
 }

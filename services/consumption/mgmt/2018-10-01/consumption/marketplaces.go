@@ -126,8 +126,7 @@ func (client MarketplacesClient) ListPreparer(ctx context.Context, filter string
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplacesClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -264,8 +263,7 @@ func (client MarketplacesClient) ListByBillingAccountPreparer(ctx context.Contex
 // ListByBillingAccountSender sends the ListByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplacesClient) ListByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingAccountResponder handles the response to the ListByBillingAccount request. The method always
@@ -403,8 +401,7 @@ func (client MarketplacesClient) ListByBillingPeriodPreparer(ctx context.Context
 // ListByBillingPeriodSender sends the ListByBillingPeriod request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplacesClient) ListByBillingPeriodSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByBillingPeriodResponder handles the response to the ListByBillingPeriod request. The method always
@@ -541,8 +538,7 @@ func (client MarketplacesClient) ListByDepartmentPreparer(ctx context.Context, d
 // ListByDepartmentSender sends the ListByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplacesClient) ListByDepartmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByDepartmentResponder handles the response to the ListByDepartment request. The method always
@@ -679,8 +675,7 @@ func (client MarketplacesClient) ListByEnrollmentAccountPreparer(ctx context.Con
 // ListByEnrollmentAccountSender sends the ListByEnrollmentAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplacesClient) ListByEnrollmentAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByEnrollmentAccountResponder handles the response to the ListByEnrollmentAccount request. The method always
@@ -817,8 +812,7 @@ func (client MarketplacesClient) ListByManagementGroupPreparer(ctx context.Conte
 // ListByManagementGroupSender sends the ListByManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplacesClient) ListByManagementGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByManagementGroupResponder handles the response to the ListByManagementGroup request. The method always
@@ -957,8 +951,7 @@ func (client MarketplacesClient) ListForBillingPeriodByBillingAccountPreparer(ct
 // ListForBillingPeriodByBillingAccountSender sends the ListForBillingPeriodByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplacesClient) ListForBillingPeriodByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListForBillingPeriodByBillingAccountResponder handles the response to the ListForBillingPeriodByBillingAccount request. The method always
@@ -1097,8 +1090,7 @@ func (client MarketplacesClient) ListForBillingPeriodByDepartmentPreparer(ctx co
 // ListForBillingPeriodByDepartmentSender sends the ListForBillingPeriodByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplacesClient) ListForBillingPeriodByDepartmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListForBillingPeriodByDepartmentResponder handles the response to the ListForBillingPeriodByDepartment request. The method always
@@ -1237,8 +1229,7 @@ func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountPreparer
 // ListForBillingPeriodByEnrollmentAccountSender sends the ListForBillingPeriodByEnrollmentAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListForBillingPeriodByEnrollmentAccountResponder handles the response to the ListForBillingPeriodByEnrollmentAccount request. The method always
@@ -1377,8 +1368,7 @@ func (client MarketplacesClient) ListForBillingPeriodByManagementGroupPreparer(c
 // ListForBillingPeriodByManagementGroupSender sends the ListForBillingPeriodByManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplacesClient) ListForBillingPeriodByManagementGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListForBillingPeriodByManagementGroupResponder handles the response to the ListForBillingPeriodByManagementGroup request. The method always

@@ -57,8 +57,8 @@ type GroupsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string) (result resources.Group, err error)
 	List(ctx context.Context, filter string, top *int32) (result resources.GroupListResultPage, err error)
 	ListComplete(ctx context.Context, filter string, top *int32) (result resources.GroupListResultIterator, err error)
-	ListResources(ctx context.Context, resourceGroupName string, filter string, top *int32) (result resources.ListResultPage, err error)
-	ListResourcesComplete(ctx context.Context, resourceGroupName string, filter string, top *int32) (result resources.ListResultIterator, err error)
+	ListResources(ctx context.Context, resourceGroupName string, filter string, expand string, top *int32) (result resources.ListResultPage, err error)
+	ListResourcesComplete(ctx context.Context, resourceGroupName string, filter string, expand string, top *int32) (result resources.ListResultIterator, err error)
 	Patch(ctx context.Context, resourceGroupName string, parameters resources.Group) (result resources.Group, err error)
 }
 
@@ -70,8 +70,8 @@ type ClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, APIVersion string, parameters resources.GenericResource) (result resources.GenericResource, err error)
 	Delete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, APIVersion string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, APIVersion string) (result resources.GenericResource, err error)
-	List(ctx context.Context, filter string, top *int32) (result resources.ListResultPage, err error)
-	ListComplete(ctx context.Context, filter string, top *int32) (result resources.ListResultIterator, err error)
+	List(ctx context.Context, filter string, expand string, top *int32) (result resources.ListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, expand string, top *int32) (result resources.ListResultIterator, err error)
 	MoveResources(ctx context.Context, sourceResourceGroupName string, parameters resources.MoveInfo) (result resources.MoveResourcesFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, APIVersion string, parameters resources.GenericResource) (result resources.UpdateFuture, err error)
 }

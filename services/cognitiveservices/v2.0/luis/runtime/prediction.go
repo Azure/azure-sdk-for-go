@@ -129,8 +129,7 @@ func (client PredictionClient) ResolvePreparer(ctx context.Context, appID uuid.U
 // ResolveSender sends the Resolve request. The method will close the
 // http.Response Body if it receives an error.
 func (client PredictionClient) ResolveSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ResolveResponder handles the response to the Resolve request. The method always

@@ -106,8 +106,7 @@ func (client QuotaRequestsClient) GetStatusPreparer(ctx context.Context, subscri
 // GetStatusSender sends the GetStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client QuotaRequestsClient) GetStatusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetStatusResponder handles the response to the GetStatus request. The method always
@@ -210,8 +209,7 @@ func (client QuotaRequestsClient) ListStatusPreparer(ctx context.Context, subscr
 // ListStatusSender sends the ListStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client QuotaRequestsClient) ListStatusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListStatusResponder handles the response to the ListStatus request. The method always

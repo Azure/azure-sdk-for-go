@@ -97,8 +97,7 @@ func (client AccessTokensClient) GetPreparer(ctx context.Context, service string
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AccessTokensClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -173,8 +172,7 @@ func (client AccessTokensClient) GetFromLoginPreparer(ctx context.Context, servi
 // GetFromLoginSender sends the GetFromLogin request. The method will close the
 // http.Response Body if it receives an error.
 func (client AccessTokensClient) GetFromLoginSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetFromLoginResponder handles the response to the GetFromLogin request. The method always

@@ -22,7 +22,7 @@ package peering
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-09-01-preview/peering"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2020-01-01-preview/peering"
 )
 
 const (
@@ -48,6 +48,8 @@ const (
 	Cdn      DirectPeeringType = original.Cdn
 	Edge     DirectPeeringType = original.Edge
 	Internal DirectPeeringType = original.Internal
+	Ix       DirectPeeringType = original.Ix
+	IxRs     DirectPeeringType = original.IxRs
 	Transit  DirectPeeringType = original.Transit
 )
 
@@ -73,17 +75,6 @@ const (
 	LearnedTypeViaSession         LearnedType = original.LearnedTypeViaSession
 )
 
-type Name = original.Name
-
-const (
-	BasicDirectFree        Name = original.BasicDirectFree
-	BasicExchangeFree      Name = original.BasicExchangeFree
-	PremiumDirectFree      Name = original.PremiumDirectFree
-	PremiumDirectMetered   Name = original.PremiumDirectMetered
-	PremiumDirectUnlimited Name = original.PremiumDirectUnlimited
-	PremiumExchangeMetered Name = original.PremiumExchangeMetered
-)
-
 type PrefixValidationState = original.PrefixValidationState
 
 const (
@@ -103,6 +94,16 @@ const (
 	Failed    ProvisioningState = original.Failed
 	Succeeded ProvisioningState = original.Succeeded
 	Updating  ProvisioningState = original.Updating
+)
+
+type Role = original.Role
+
+const (
+	RoleNoc       Role = original.RoleNoc
+	RoleOther     Role = original.RoleOther
+	RolePolicy    Role = original.RolePolicy
+	RoleService   Role = original.RoleService
+	RoleTechnical Role = original.RoleTechnical
 )
 
 type SessionAddressProvider = original.SessionAddressProvider
@@ -172,7 +173,7 @@ type BandwidthOffer = original.BandwidthOffer
 type BaseClient = original.BaseClient
 type BgpSession = original.BgpSession
 type CheckServiceProviderAvailabilityInput = original.CheckServiceProviderAvailabilityInput
-type ContactInfo = original.ContactInfo
+type ContactDetail = original.ContactDetail
 type DirectConnection = original.DirectConnection
 type DirectPeeringFacility = original.DirectPeeringFacility
 type ErrorResponse = original.ErrorResponse
@@ -208,9 +209,26 @@ type PrefixesClient = original.PrefixesClient
 type Properties = original.Properties
 type PropertiesDirect = original.PropertiesDirect
 type PropertiesExchange = original.PropertiesExchange
+type RegisteredAsn = original.RegisteredAsn
+type RegisteredAsnListResult = original.RegisteredAsnListResult
+type RegisteredAsnListResultIterator = original.RegisteredAsnListResultIterator
+type RegisteredAsnListResultPage = original.RegisteredAsnListResultPage
+type RegisteredAsnProperties = original.RegisteredAsnProperties
+type RegisteredAsnsClient = original.RegisteredAsnsClient
+type RegisteredPrefix = original.RegisteredPrefix
+type RegisteredPrefixListResult = original.RegisteredPrefixListResult
+type RegisteredPrefixListResultIterator = original.RegisteredPrefixListResultIterator
+type RegisteredPrefixListResultPage = original.RegisteredPrefixListResultPage
+type RegisteredPrefixProperties = original.RegisteredPrefixProperties
+type RegisteredPrefixesClient = original.RegisteredPrefixesClient
 type Resource = original.Resource
 type ResourceTags = original.ResourceTags
 type Service = original.Service
+type ServiceCountriesClient = original.ServiceCountriesClient
+type ServiceCountry = original.ServiceCountry
+type ServiceCountryListResult = original.ServiceCountryListResult
+type ServiceCountryListResultIterator = original.ServiceCountryListResultIterator
+type ServiceCountryListResultPage = original.ServiceCountryListResultPage
 type ServiceListResult = original.ServiceListResult
 type ServiceListResultIterator = original.ServiceListResultIterator
 type ServiceListResultPage = original.ServiceListResultPage
@@ -233,6 +251,7 @@ type ServiceProviderListResultIterator = original.ServiceProviderListResultItera
 type ServiceProviderListResultPage = original.ServiceProviderListResultPage
 type ServiceProviderProperties = original.ServiceProviderProperties
 type ServiceProvidersClient = original.ServiceProvidersClient
+type ServiceSku = original.ServiceSku
 type ServicesClient = original.ServicesClient
 type Sku = original.Sku
 type String = original.String
@@ -301,6 +320,42 @@ func NewPrefixesClient(subscriptionID string) PrefixesClient {
 func NewPrefixesClientWithBaseURI(baseURI string, subscriptionID string) PrefixesClient {
 	return original.NewPrefixesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewRegisteredAsnListResultIterator(page RegisteredAsnListResultPage) RegisteredAsnListResultIterator {
+	return original.NewRegisteredAsnListResultIterator(page)
+}
+func NewRegisteredAsnListResultPage(getNextPage func(context.Context, RegisteredAsnListResult) (RegisteredAsnListResult, error)) RegisteredAsnListResultPage {
+	return original.NewRegisteredAsnListResultPage(getNextPage)
+}
+func NewRegisteredAsnsClient(subscriptionID string) RegisteredAsnsClient {
+	return original.NewRegisteredAsnsClient(subscriptionID)
+}
+func NewRegisteredAsnsClientWithBaseURI(baseURI string, subscriptionID string) RegisteredAsnsClient {
+	return original.NewRegisteredAsnsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRegisteredPrefixListResultIterator(page RegisteredPrefixListResultPage) RegisteredPrefixListResultIterator {
+	return original.NewRegisteredPrefixListResultIterator(page)
+}
+func NewRegisteredPrefixListResultPage(getNextPage func(context.Context, RegisteredPrefixListResult) (RegisteredPrefixListResult, error)) RegisteredPrefixListResultPage {
+	return original.NewRegisteredPrefixListResultPage(getNextPage)
+}
+func NewRegisteredPrefixesClient(subscriptionID string) RegisteredPrefixesClient {
+	return original.NewRegisteredPrefixesClient(subscriptionID)
+}
+func NewRegisteredPrefixesClientWithBaseURI(baseURI string, subscriptionID string) RegisteredPrefixesClient {
+	return original.NewRegisteredPrefixesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceCountriesClient(subscriptionID string) ServiceCountriesClient {
+	return original.NewServiceCountriesClient(subscriptionID)
+}
+func NewServiceCountriesClientWithBaseURI(baseURI string, subscriptionID string) ServiceCountriesClient {
+	return original.NewServiceCountriesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceCountryListResultIterator(page ServiceCountryListResultPage) ServiceCountryListResultIterator {
+	return original.NewServiceCountryListResultIterator(page)
+}
+func NewServiceCountryListResultPage(getNextPage func(context.Context, ServiceCountryListResult) (ServiceCountryListResult, error)) ServiceCountryListResultPage {
+	return original.NewServiceCountryListResultPage(getNextPage)
+}
 func NewServiceListResultIterator(page ServiceListResultPage) ServiceListResultIterator {
 	return original.NewServiceListResultIterator(page)
 }
@@ -361,14 +416,14 @@ func PossibleKindValues() []Kind {
 func PossibleLearnedTypeValues() []LearnedType {
 	return original.PossibleLearnedTypeValues()
 }
-func PossibleNameValues() []Name {
-	return original.PossibleNameValues()
-}
 func PossiblePrefixValidationStateValues() []PrefixValidationState {
 	return original.PossiblePrefixValidationStateValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossibleRoleValues() []Role {
+	return original.PossibleRoleValues()
 }
 func PossibleSessionAddressProviderValues() []SessionAddressProvider {
 	return original.PossibleSessionAddressProviderValues()

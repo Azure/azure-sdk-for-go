@@ -36,6 +36,14 @@ const (
 	Principal     ConsentType = original.Principal
 )
 
+type GroupMembershipClaimTypes = original.GroupMembershipClaimTypes
+
+const (
+	All           GroupMembershipClaimTypes = original.All
+	None          GroupMembershipClaimTypes = original.None
+	SecurityGroup GroupMembershipClaimTypes = original.SecurityGroup
+)
+
 type ObjectType = original.ObjectType
 
 const (
@@ -230,6 +238,9 @@ func NewWithBaseURI(baseURI string, tenantID string) BaseClient {
 }
 func PossibleConsentTypeValues() []ConsentType {
 	return original.PossibleConsentTypeValues()
+}
+func PossibleGroupMembershipClaimTypesValues() []GroupMembershipClaimTypes {
+	return original.PossibleGroupMembershipClaimTypesValues()
 }
 func PossibleObjectTypeValues() []ObjectType {
 	return original.PossibleObjectTypeValues()

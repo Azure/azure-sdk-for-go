@@ -15,30 +15,26 @@ import (
 )
 
 const (
-	defaultMaxTries = 4
+	defaultMaxRetries = 3
 )
 
 // RetryOptions configures the retry policy's behavior.
 type RetryOptions struct {
-	// MaxTries specifies the maximum number of attempts an operation will be tried before producing an error (0=default).
-	// A value of zero means that you accept our default policy. A value of 1 means 1 try and no retries.
-	MaxTries int32
+	// MaxRetries specifies the maximum number of attempts a failed operation will be retried
+	// before producing an error.  A value of zero means one try and no retries.
+	MaxRetries int32
 
 	// TryTimeout indicates the maximum time allowed for any single try of an HTTP request.
-	// A value of zero means that you accept our default timeout. NOTE: When transferring large amounts
-	// of data, the default TryTimeout will probably not be sufficient. You should override this value
-	// based on the bandwidth available to the host machine and proximity to the service. A good
-	// starting point may be something like (60 seconds per MB of anticipated-payload-size).
 	TryTimeout time.Duration
 
-	// RetryDelay specifies the amount of delay to use before retrying an operation (0=default).
+	// RetryDelay specifies the amount of delay to use before retrying an operation.
 	// The delay increases exponentially with each retry up to a maximum specified by MaxRetryDelay.
 	// If you specify 0, then you must also specify 0 for MaxRetryDelay.
 	// If you specify RetryDelay, then you must also specify MaxRetryDelay, and MaxRetryDelay should be
 	// equal to or greater than RetryDelay.
 	RetryDelay time.Duration
 
-	// MaxRetryDelay specifies the maximum delay allowed before retrying an operation (0=default).
+	// MaxRetryDelay specifies the maximum delay allowed before retrying an operation.
 	// If you specify 0, then you must also specify 0 for RetryDelay.
 	MaxRetryDelay time.Duration
 
@@ -49,9 +45,9 @@ type RetryOptions struct {
 
 var (
 	// StatusCodesForRetry is the default set of HTTP status code for which the policy will retry.
-	StatusCodesForRetry = [6]int{
+	// Changing its value will affect future created clients that use the default values.
+	StatusCodesForRetry = []int{
 		http.StatusRequestTimeout,      // 408
-		http.StatusTooManyRequests,     // 429
 		http.StatusInternalServerError, // 500
 		http.StatusBadGateway,          // 502
 		http.StatusServiceUnavailable,  // 503
@@ -62,12 +58,21 @@ var (
 // DefaultRetryOptions returns an instance of RetryOptions initialized with default values.
 func DefaultRetryOptions() RetryOptions {
 	return RetryOptions{
-		StatusCodes:   StatusCodesForRetry[:],
-		MaxTries:      defaultMaxTries,
+		StatusCodes:   StatusCodesForRetry,
+		MaxRetries:    defaultMaxRetries,
 		TryTimeout:    1 * time.Minute,
 		RetryDelay:    4 * time.Second,
 		MaxRetryDelay: 120 * time.Second,
 	}
+}
+
+// used as a context key for adding/retrieving RetryOptions
+type ctxWithRetryOptionsKey struct{}
+
+// WithRetryOptions adds the specified RetryOptions to the parent context.
+// Use this to specify custom RetryOptions at the API-call level.
+func WithRetryOptions(parent context.Context, options RetryOptions) context.Context {
+	return context.WithValue(parent, ctxWithRetryOptionsKey{}, options)
 }
 
 func (o RetryOptions) calcDelay(try int32) time.Duration { // try is >=1; never 0
@@ -105,6 +110,11 @@ type retryPolicy struct {
 }
 
 func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err error) {
+	options := p.options
+	// check if the retry options have been overridden for this call
+	if override := ctx.Value(ctxWithRetryOptionsKey{}); override != nil {
+		options = override.(RetryOptions)
+	}
 	// Exponential retry algorithm: ((2 ^ attempt) - 1) * delay * random(0.8, 1.2)
 	// When to retry: connection failure or temporary/timeout.
 	if req.Body != nil {
@@ -133,15 +143,23 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 			return
 		}
 
-		// Set the time for this particular retry operation and then Do the operation.
-		tryCtx, tryCancel := context.WithTimeout(ctx, p.options.TryTimeout)
+		// Set the per-try time for this particular retry operation and then Do the operation.
+		tryCtx, tryCancel := context.WithTimeout(ctx, options.TryTimeout)
 		resp, err = req.Next(tryCtx) // Make the request
-		tryCancel()
+		if req.bodyDownloadEnabled() {
+			// if auto-downloading of the response body is enabled then
+			// it's been read and closed by this point so cancel the timeout
+			tryCancel()
+		} else {
+			// wrap the response body in a responseBodyReader.
+			// closing the responseBodyReader will cancel the timeout.
+			resp.Body = &responseBodyReader{rb: resp.Body, cancelFunc: tryCancel}
+		}
 		if shouldLog {
 			Log().Write(LogRetryPolicy, fmt.Sprintf("Err=%v, response=%v\n", err, resp))
 		}
 
-		if err == nil && !resp.HasStatusCode(p.options.StatusCodes...) {
+		if err == nil && !resp.HasStatusCode(options.StatusCodes...) {
 			// if there is no error and the response code isn't in the list of retry codes then we're done.
 			return
 		} else if ctx.Err() != nil {
@@ -155,7 +173,7 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		// drain before retrying so nothing is leaked
 		resp.Drain()
 
-		if try == p.options.MaxTries {
+		if try == options.MaxRetries+1 {
 			// max number of tries has been reached, don't sleep again
 			return
 		}
@@ -163,7 +181,7 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		// use the delay from retry-after if available
 		delay, ok := resp.RetryAfter()
 		if !ok {
-			delay = p.options.calcDelay(try)
+			delay = options.calcDelay(try)
 		}
 		if shouldLog {
 			Log().Write(LogRetryPolicy, fmt.Sprintf("Try=%d, Delay=%v\n", try, delay))
@@ -205,4 +223,19 @@ func (b *retryableRequestBody) realClose() error {
 		return c.Close()
 	}
 	return nil
+}
+
+// used when returning the response body to the caller for reading/closing
+type responseBodyReader struct {
+	rb         io.ReadCloser
+	cancelFunc context.CancelFunc
+}
+
+func (r *responseBodyReader) Read(p []byte) (int, error) {
+	return r.rb.Read(p)
+}
+
+func (r *responseBodyReader) Close() error {
+	r.cancelFunc()
+	return r.rb.Close()
 }

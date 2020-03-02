@@ -118,8 +118,7 @@ func (client PredictionClient) GetSlotPredictionPreparer(ctx context.Context, ap
 // GetSlotPredictionSender sends the GetSlotPrediction request. The method will close the
 // http.Response Body if it receives an error.
 func (client PredictionClient) GetSlotPredictionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetSlotPredictionResponder handles the response to the GetSlotPrediction request. The method always
@@ -216,8 +215,7 @@ func (client PredictionClient) GetVersionPredictionPreparer(ctx context.Context,
 // GetVersionPredictionSender sends the GetVersionPrediction request. The method will close the
 // http.Response Body if it receives an error.
 func (client PredictionClient) GetVersionPredictionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetVersionPredictionResponder handles the response to the GetVersionPrediction request. The method always

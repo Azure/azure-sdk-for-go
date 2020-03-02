@@ -114,8 +114,7 @@ func (client WorkflowsClient) AbortPreparer(ctx context.Context, resourceGroupNa
 // AbortSender sends the Abort request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowsClient) AbortSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // AbortResponder handles the response to the Abort request. The method always
@@ -202,8 +201,7 @@ func (client WorkflowsClient) GetPreparer(ctx context.Context, resourceGroupName
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -289,8 +287,7 @@ func (client WorkflowsClient) ListByStorageSyncServicePreparer(ctx context.Conte
 // ListByStorageSyncServiceSender sends the ListByStorageSyncService request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowsClient) ListByStorageSyncServiceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByStorageSyncServiceResponder handles the response to the ListByStorageSyncService request. The method always

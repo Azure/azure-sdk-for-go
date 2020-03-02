@@ -113,9 +113,8 @@ func (client DataStoresClient) CreateOrUpdatePreparer(ctx context.Context, dataS
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataStoresClient) CreateOrUpdateSender(req *http.Request) (future DataStoresCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -201,9 +200,8 @@ func (client DataStoresClient) DeletePreparer(ctx context.Context, dataStoreName
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataStoresClient) DeleteSender(req *http.Request) (future DataStoresDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -294,8 +292,7 @@ func (client DataStoresClient) GetPreparer(ctx context.Context, dataStoreName st
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataStoresClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -385,8 +382,7 @@ func (client DataStoresClient) ListByDataManagerPreparer(ctx context.Context, re
 // ListByDataManagerSender sends the ListByDataManager request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataStoresClient) ListByDataManagerSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDataManagerResponder handles the response to the ListByDataManager request. The method always

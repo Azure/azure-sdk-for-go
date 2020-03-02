@@ -96,9 +96,8 @@ func (client SupportPlanTypesClient) CreateOrUpdatePreparer(ctx context.Context,
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) CreateOrUpdateSender(req *http.Request) (future SupportPlanTypesCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -173,9 +172,8 @@ func (client SupportPlanTypesClient) DeletePreparer(ctx context.Context, provide
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) DeleteSender(req *http.Request) (future SupportPlanTypesDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -256,8 +254,7 @@ func (client SupportPlanTypesClient) GetPreparer(ctx context.Context, providerNa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always

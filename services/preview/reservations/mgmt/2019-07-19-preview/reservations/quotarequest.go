@@ -113,9 +113,8 @@ func (client QuotaRequestClient) CreatePreparer(ctx context.Context, subscriptio
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client QuotaRequestClient) CreateSender(req *http.Request) (future QuotaRequestCreateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -208,9 +207,8 @@ func (client QuotaRequestClient) UpdatePreparer(ctx context.Context, subscriptio
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client QuotaRequestClient) UpdateSender(req *http.Request) (future QuotaRequestUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

@@ -114,8 +114,7 @@ func (client MeshSecretValueClient) AddValuePreparer(ctx context.Context, secret
 // AddValueSender sends the AddValue request. The method will close the
 // http.Response Body if it receives an error.
 func (client MeshSecretValueClient) AddValueSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddValueResponder handles the response to the AddValue request. The method always
@@ -192,8 +191,7 @@ func (client MeshSecretValueClient) DeletePreparer(ctx context.Context, secretRe
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client MeshSecretValueClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -269,8 +267,7 @@ func (client MeshSecretValueClient) GetPreparer(ctx context.Context, secretResou
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client MeshSecretValueClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -344,8 +341,7 @@ func (client MeshSecretValueClient) ListPreparer(ctx context.Context, secretReso
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client MeshSecretValueClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -421,8 +417,7 @@ func (client MeshSecretValueClient) ShowPreparer(ctx context.Context, secretReso
 // ShowSender sends the Show request. The method will close the
 // http.Response Body if it receives an error.
 func (client MeshSecretValueClient) ShowSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ShowResponder handles the response to the Show request. The method always

@@ -113,8 +113,7 @@ func (client GlobalUsersClient) GetEnvironmentPreparer(ctx context.Context, user
 // GetEnvironmentSender sends the GetEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalUsersClient) GetEnvironmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetEnvironmentResponder handles the response to the GetEnvironment request. The method always
@@ -196,8 +195,7 @@ func (client GlobalUsersClient) GetOperationBatchStatusPreparer(ctx context.Cont
 // GetOperationBatchStatusSender sends the GetOperationBatchStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalUsersClient) GetOperationBatchStatusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetOperationBatchStatusResponder handles the response to the GetOperationBatchStatus request. The method always
@@ -279,8 +277,7 @@ func (client GlobalUsersClient) GetOperationStatusPreparer(ctx context.Context, 
 // GetOperationStatusSender sends the GetOperationStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalUsersClient) GetOperationStatusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetOperationStatusResponder handles the response to the GetOperationStatus request. The method always
@@ -357,8 +354,7 @@ func (client GlobalUsersClient) GetPersonalPreferencesPreparer(ctx context.Conte
 // GetPersonalPreferencesSender sends the GetPersonalPreferences request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalUsersClient) GetPersonalPreferencesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetPersonalPreferencesResponder handles the response to the GetPersonalPreferences request. The method always
@@ -434,8 +430,7 @@ func (client GlobalUsersClient) ListEnvironmentsPreparer(ctx context.Context, us
 // ListEnvironmentsSender sends the ListEnvironments request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalUsersClient) ListEnvironmentsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListEnvironmentsResponder handles the response to the ListEnvironments request. The method always
@@ -508,8 +503,7 @@ func (client GlobalUsersClient) ListLabsPreparer(ctx context.Context, userName s
 // ListLabsSender sends the ListLabs request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalUsersClient) ListLabsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListLabsResponder handles the response to the ListLabs request. The method always
@@ -585,8 +579,7 @@ func (client GlobalUsersClient) RegisterPreparer(ctx context.Context, userName s
 // RegisterSender sends the Register request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalUsersClient) RegisterSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RegisterResponder handles the response to the Register request. The method always
@@ -661,9 +654,8 @@ func (client GlobalUsersClient) ResetPasswordPreparer(ctx context.Context, userN
 // ResetPasswordSender sends the ResetPassword request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalUsersClient) ResetPasswordSender(req *http.Request) (future GlobalUsersResetPasswordFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
 	}
@@ -745,9 +737,8 @@ func (client GlobalUsersClient) StartEnvironmentPreparer(ctx context.Context, us
 // StartEnvironmentSender sends the StartEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalUsersClient) StartEnvironmentSender(req *http.Request) (future GlobalUsersStartEnvironmentFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
 	}
@@ -829,9 +820,8 @@ func (client GlobalUsersClient) StopEnvironmentPreparer(ctx context.Context, use
 // StopEnvironmentSender sends the StopEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalUsersClient) StopEnvironmentSender(req *http.Request) (future GlobalUsersStopEnvironmentFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
 	}

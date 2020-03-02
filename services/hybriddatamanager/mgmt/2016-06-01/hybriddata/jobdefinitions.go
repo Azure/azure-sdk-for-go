@@ -117,9 +117,8 @@ func (client JobDefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, d
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobDefinitionsClient) CreateOrUpdateSender(req *http.Request) (future JobDefinitionsCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -207,9 +206,8 @@ func (client JobDefinitionsClient) DeletePreparer(ctx context.Context, dataServi
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobDefinitionsClient) DeleteSender(req *http.Request) (future JobDefinitionsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -302,8 +300,7 @@ func (client JobDefinitionsClient) GetPreparer(ctx context.Context, dataServiceN
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobDefinitionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -393,8 +390,7 @@ func (client JobDefinitionsClient) ListByDataManagerPreparer(ctx context.Context
 // ListByDataManagerSender sends the ListByDataManager request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobDefinitionsClient) ListByDataManagerSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDataManagerResponder handles the response to the ListByDataManager request. The method always
@@ -523,8 +519,7 @@ func (client JobDefinitionsClient) ListByDataServicePreparer(ctx context.Context
 // ListByDataServiceSender sends the ListByDataService request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobDefinitionsClient) ListByDataServiceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDataServiceResponder handles the response to the ListByDataService request. The method always
@@ -647,9 +642,8 @@ func (client JobDefinitionsClient) RunPreparer(ctx context.Context, dataServiceN
 // RunSender sends the Run request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobDefinitionsClient) RunSender(req *http.Request) (future JobDefinitionsRunFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

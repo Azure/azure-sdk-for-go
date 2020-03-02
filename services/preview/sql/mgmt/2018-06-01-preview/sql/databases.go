@@ -104,9 +104,8 @@ func (client DatabasesClient) FailoverPreparer(ctx context.Context, resourceGrou
 // FailoverSender sends the Failover request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) FailoverSender(req *http.Request) (future DatabasesFailoverFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

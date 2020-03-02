@@ -90,6 +90,17 @@ type PrivateLinkResourcesClientAPI interface {
 
 var _ PrivateLinkResourcesClientAPI = (*storage.PrivateLinkResourcesClient)(nil)
 
+// EncryptionScopesClientAPI contains the set of methods on the EncryptionScopesClient type.
+type EncryptionScopesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string) (result storage.EncryptionScope, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.EncryptionScopeListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string) (result storage.EncryptionScopeListResultIterator, err error)
+	Patch(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope storage.EncryptionScope) (result storage.EncryptionScope, err error)
+	Put(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope storage.EncryptionScope) (result storage.EncryptionScope, err error)
+}
+
+var _ EncryptionScopesClientAPI = (*storage.EncryptionScopesClient)(nil)
+
 // BlobServicesClientAPI contains the set of methods on the BlobServicesClient type.
 type BlobServicesClientAPI interface {
 	GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (result storage.BlobServiceProperties, err error)

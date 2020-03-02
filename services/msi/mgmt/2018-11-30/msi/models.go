@@ -64,31 +64,28 @@ type CloudErrorBody struct {
 // Identity describes an identity resource.
 type Identity struct {
 	autorest.Response `json:"-"`
-	// ID - READ-ONLY; The id of the created identity.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the created identity.
-	Name *string `json:"name,omitempty"`
-	// Location - The Azure region where the identity lives.
-	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// IdentityProperties - The properties associated with the identity.
-	*IdentityProperties `json:"properties,omitempty"`
+	// UserAssignedIdentityProperties - READ-ONLY; The properties associated with the identity.
+	*UserAssignedIdentityProperties `json:"properties,omitempty"`
 	// Type - READ-ONLY; The type of resource i.e. Microsoft.ManagedIdentity/userAssignedIdentities. Possible values include: 'MicrosoftManagedIdentityuserAssignedIdentities'
 	Type UserAssignedIdentities `json:"type,omitempty"`
+	// ID - READ-ONLY; The id of the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Location - The Azure region where the resource lives.
+	Location *string `json:"location,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Identity.
 func (i Identity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if i.Location != nil {
-		objectMap["location"] = i.Location
-	}
 	if i.Tags != nil {
 		objectMap["tags"] = i.Tags
 	}
-	if i.IdentityProperties != nil {
-		objectMap["properties"] = i.IdentityProperties
+	if i.Location != nil {
+		objectMap["location"] = i.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -102,6 +99,33 @@ func (i *Identity) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				i.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var userAssignedIdentityProperties UserAssignedIdentityProperties
+				err = json.Unmarshal(*v, &userAssignedIdentityProperties)
+				if err != nil {
+					return err
+				}
+				i.UserAssignedIdentityProperties = &userAssignedIdentityProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar UserAssignedIdentities
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				i.Type = typeVar
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -129,6 +153,49 @@ func (i *Identity) UnmarshalJSON(body []byte) error {
 				}
 				i.Location = &location
 			}
+		}
+	}
+
+	return nil
+}
+
+// IdentityPatch describes an identity resource.
+type IdentityPatch struct {
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	// UserAssignedIdentityProperties - READ-ONLY; The properties associated with the identity.
+	*UserAssignedIdentityProperties `json:"properties,omitempty"`
+	// Type - READ-ONLY; The type of resource i.e. Microsoft.ManagedIdentity/userAssignedIdentities. Possible values include: 'MicrosoftManagedIdentityuserAssignedIdentities'
+	Type UserAssignedIdentities `json:"type,omitempty"`
+	// ID - READ-ONLY; The id of the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Location - The Azure region where the resource lives.
+	Location *string `json:"location,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IdentityPatch.
+func (IP IdentityPatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if IP.Tags != nil {
+		objectMap["tags"] = IP.Tags
+	}
+	if IP.Location != nil {
+		objectMap["location"] = IP.Location
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IdentityPatch struct.
+func (IP *IdentityPatch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
 		case "tags":
 			if v != nil {
 				var tags map[string]*string
@@ -136,16 +203,16 @@ func (i *Identity) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				i.Tags = tags
+				IP.Tags = tags
 			}
 		case "properties":
 			if v != nil {
-				var identityProperties IdentityProperties
-				err = json.Unmarshal(*v, &identityProperties)
+				var userAssignedIdentityProperties UserAssignedIdentityProperties
+				err = json.Unmarshal(*v, &userAssignedIdentityProperties)
 				if err != nil {
 					return err
 				}
-				i.IdentityProperties = &identityProperties
+				IP.UserAssignedIdentityProperties = &userAssignedIdentityProperties
 			}
 		case "type":
 			if v != nil {
@@ -154,24 +221,39 @@ func (i *Identity) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				i.Type = typeVar
+				IP.Type = typeVar
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				IP.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				IP.Name = &name
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				IP.Location = &location
 			}
 		}
 	}
 
 	return nil
-}
-
-// IdentityProperties the properties associated with the identity.
-type IdentityProperties struct {
-	// TenantID - READ-ONLY; The id of the tenant which the identity belongs to.
-	TenantID *uuid.UUID `json:"tenantId,omitempty"`
-	// PrincipalID - READ-ONLY; The id of the service principal object associated with the created identity.
-	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
-	// ClientID - READ-ONLY; The id of the app associated with the identity. This is a random generated UUID by MSI.
-	ClientID *uuid.UUID `json:"clientId,omitempty"`
-	// ClientSecretURL - READ-ONLY;  The ManagedServiceIdentity DataPlane URL that can be queried to obtain the identity credentials. If identity is user assigned, then the clientSecretUrl will not be present in the response, otherwise it will be present.
-	ClientSecretURL *string `json:"clientSecretUrl,omitempty"`
 }
 
 // Operation operation supported by the Microsoft.ManagedIdentity REST API.
@@ -340,6 +422,112 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 	return OperationListResultPage{fn: getNextPage}
 }
 
+// Resource describes common properties of a resource.
+type Resource struct {
+	// ID - READ-ONLY; The id of the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Location - The Azure region where the resource lives.
+	Location *string `json:"location,omitempty"`
+}
+
+// SystemAssignedIdentity describes a system assigned identity resource.
+type SystemAssignedIdentity struct {
+	autorest.Response `json:"-"`
+	// SystemAssignedIdentityProperties - READ-ONLY; The properties associated with the identity.
+	*SystemAssignedIdentityProperties `json:"properties,omitempty"`
+	// Type - READ-ONLY; The type of resource i.e. Microsoft.Compute/virtualMachineScaleSets
+	Type *string `json:"type,omitempty"`
+	// ID - READ-ONLY; The id of the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Location - The Azure region where the resource lives.
+	Location *string `json:"location,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SystemAssignedIdentity.
+func (sai SystemAssignedIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sai.Location != nil {
+		objectMap["location"] = sai.Location
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SystemAssignedIdentity struct.
+func (sai *SystemAssignedIdentity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var systemAssignedIdentityProperties SystemAssignedIdentityProperties
+				err = json.Unmarshal(*v, &systemAssignedIdentityProperties)
+				if err != nil {
+					return err
+				}
+				sai.SystemAssignedIdentityProperties = &systemAssignedIdentityProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sai.Type = &typeVar
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sai.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sai.Name = &name
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				sai.Location = &location
+			}
+		}
+	}
+
+	return nil
+}
+
+// SystemAssignedIdentityProperties the properties associated with the system assigned identity.
+type SystemAssignedIdentityProperties struct {
+	// TenantID - READ-ONLY; The id of the tenant which the identity belongs to.
+	TenantID *uuid.UUID `json:"tenantId,omitempty"`
+	// PrincipalID - READ-ONLY; The id of the service principal object associated with the created identity.
+	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
+	// ClientID - READ-ONLY; The id of the app associated with the identity. This is a random generated UUID by MSI.
+	ClientID *uuid.UUID `json:"clientId,omitempty"`
+	// ClientSecretURL - READ-ONLY;  The ManagedServiceIdentity DataPlane URL that can be queried to obtain the identity credentials.
+	ClientSecretURL *string `json:"clientSecretUrl,omitempty"`
+}
+
 // UserAssignedIdentitiesListResult values returned by the List operation.
 type UserAssignedIdentitiesListResult struct {
 	autorest.Response `json:"-"`
@@ -484,4 +672,14 @@ func (page UserAssignedIdentitiesListResultPage) Values() []Identity {
 // Creates a new instance of the UserAssignedIdentitiesListResultPage type.
 func NewUserAssignedIdentitiesListResultPage(getNextPage func(context.Context, UserAssignedIdentitiesListResult) (UserAssignedIdentitiesListResult, error)) UserAssignedIdentitiesListResultPage {
 	return UserAssignedIdentitiesListResultPage{fn: getNextPage}
+}
+
+// UserAssignedIdentityProperties the properties associated with the user assigned identity.
+type UserAssignedIdentityProperties struct {
+	// TenantID - READ-ONLY; The id of the tenant which the identity belongs to.
+	TenantID *uuid.UUID `json:"tenantId,omitempty"`
+	// PrincipalID - READ-ONLY; The id of the service principal object associated with the created identity.
+	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
+	// ClientID - READ-ONLY; The id of the app associated with the identity. This is a random generated UUID by MSI.
+	ClientID *uuid.UUID `json:"clientId,omitempty"`
 }

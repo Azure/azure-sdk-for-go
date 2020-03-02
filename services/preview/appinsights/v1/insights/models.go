@@ -59,6 +59,31 @@ func PossibleEventTypeValues() []EventType {
 	return []EventType{All, AvailabilityResults, BrowserTimings, CustomEvents, CustomMetrics, Dependencies, Exceptions, PageViews, PerformanceCounters, Requests, Traces}
 }
 
+// MetadataColumnDataType enumerates the values for metadata column data type.
+type MetadataColumnDataType string
+
+const (
+	// Bool ...
+	Bool MetadataColumnDataType = "bool"
+	// Datetime ...
+	Datetime MetadataColumnDataType = "datetime"
+	// Dynamic ...
+	Dynamic MetadataColumnDataType = "dynamic"
+	// Int ...
+	Int MetadataColumnDataType = "int"
+	// Long ...
+	Long MetadataColumnDataType = "long"
+	// Real ...
+	Real MetadataColumnDataType = "real"
+	// String ...
+	String MetadataColumnDataType = "string"
+)
+
+// PossibleMetadataColumnDataTypeValues returns an array of possible values for the MetadataColumnDataType const type.
+func PossibleMetadataColumnDataTypeValues() []MetadataColumnDataType {
+	return []MetadataColumnDataType{Bool, Datetime, Dynamic, Int, Long, Real, String}
+}
+
 // MetricID enumerates the values for metric id.
 type MetricID string
 
@@ -2298,6 +2323,101 @@ type EventsUserInfo struct {
 type ListMetricsResultsItem struct {
 	autorest.Response `json:"-"`
 	Value             *[]MetricsResultsItem `json:"value,omitempty"`
+}
+
+// MetadataApplication application Insights apps that were part of the metadata request and that the user
+// has access to.
+type MetadataApplication struct {
+	// ID - The ID of the Application Insights app.
+	ID *string `json:"id,omitempty"`
+	// ResourceID - The ARM resource ID of the Application Insights app.
+	ResourceID *string `json:"resourceId,omitempty"`
+	// Name - The name of the Application Insights app.
+	Name *string `json:"name,omitempty"`
+	// Region - The Azure region of the Application Insights app.
+	Region *string `json:"region,omitempty"`
+	// Tables - The list of custom tables for the Application Insights app.
+	Tables *[]string `json:"tables,omitempty"`
+	// Functions - The list of stored functions on the Application Insights app
+	Functions *[]string `json:"functions,omitempty"`
+	// TableGroups - The list of table groups on the Application Insights app
+	TableGroups *[]string `json:"tableGroups,omitempty"`
+}
+
+// MetadataFunction functions are stored Kusto queries that can be specified as part of queries by using
+// their name.
+type MetadataFunction struct {
+	// ID - The ID of the function.
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the function, to be used in queries.
+	Name *string `json:"name,omitempty"`
+	// Parameters - The parameters/arguments of the function, if any.
+	Parameters *string `json:"parameters,omitempty"`
+	// DisplayName - The display name of the function.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the function.
+	Description *string `json:"description,omitempty"`
+	// Body - The KQL body of the function.
+	Body *string `json:"body,omitempty"`
+}
+
+// MetadataResults the metadata result for the app, including available tables, etc.
+type MetadataResults struct {
+	autorest.Response `json:"-"`
+	// TableGroups - The list of groups of tables on the app.
+	TableGroups *[]MetadataTableGroup `json:"tableGroups,omitempty"`
+	// Tables - The list of tables and columns that comprise the schema of the app.
+	Tables *[]MetadataTable `json:"tables,omitempty"`
+	// Functions - The list of functions stored on the app.
+	Functions *[]MetadataFunction `json:"functions,omitempty"`
+	// Applications - The list of Application Insights apps that were referenced in the metadata request.
+	Applications *[]MetadataApplication `json:"applications,omitempty"`
+}
+
+// MetadataTable tables are part of the app schema, and contain a list of columns and a reference to other
+// relevant metadata items.
+type MetadataTable struct {
+	// ID - The ID of the table
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the table
+	Name *string `json:"name,omitempty"`
+	// Description - The description of the table
+	Description *string `json:"description,omitempty"`
+	// TimespanColumn - The column associated with the timespan query parameter for the table
+	TimespanColumn *string `json:"timespanColumn,omitempty"`
+	// Columns - The list of columns defined on the table
+	Columns *[]MetadataTableColumnsItem `json:"columns,omitempty"`
+}
+
+// MetadataTableColumnsItem ...
+type MetadataTableColumnsItem struct {
+	// Name - The name of the column
+	Name *string `json:"name,omitempty"`
+	// Description - The description of the column
+	Description *string `json:"description,omitempty"`
+	// Type - The data type of the column. Possible values include: 'Bool', 'Datetime', 'Dynamic', 'Int', 'Long', 'Real', 'String'
+	Type MetadataColumnDataType `json:"type,omitempty"`
+	// IsPreferredFacet - A flag indicating this column is a preferred facet
+	IsPreferredFacet *bool `json:"isPreferredFacet,omitempty"`
+	// Source - an indication of the source of the column, used only when multiple apps have conflicting definition for the column
+	Source interface{} `json:"source,omitempty"`
+}
+
+// MetadataTableGroup the table grouping can be either an Application Insights schema or a Log Analytics
+// solution.
+type MetadataTableGroup struct {
+	// ID - The ID of the table group
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the table group
+	Name *string `json:"name,omitempty"`
+	// Source - The source of the table group, can be either AI or OMS for Log Analytics workspaces
+	Source *string `json:"source,omitempty"`
+	// DisplayName - The display name of the table group
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the table group
+	Description *string `json:"description,omitempty"`
+	// Tables - The list of tables contained in the table group
+	Tables *[]string `json:"tables,omitempty"`
 }
 
 // MetricsPostBodySchema a metric request

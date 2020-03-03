@@ -11,13 +11,13 @@ import (
 
 // AzureCLICredential enables authentication to Azure Active Directory using Azure CLI to generated an access token.
 type AzureCLICredential struct {
-	client *azureCLICredentialClient
+	Client *azureCLICredentialClient
 }
 
 // NewAzureCLICredential creates an instance of AzureCLICredential to authenticate against Azure Active Directory with Azure CLI Credential's token.
 func NewAzureCLICredential() *AzureCLICredential {
 	var client = newAzureCLICredentialClient(nil)
-	return &AzureCLICredential{client: client}
+	return &AzureCLICredential{Client: client}
 }
 
 // GetToken obtains a token from Azure CLI for development scenarios.
@@ -25,7 +25,7 @@ func NewAzureCLICredential() *AzureCLICredential {
 // scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service Client calls.
 func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return c.client.authenticate(ctx, opts.Scopes)
+	return c.Client.authenticate(ctx, opts.Scopes)
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.

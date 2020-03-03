@@ -1698,6 +1698,8 @@ type BlobServicePropertiesProperties struct {
 	ChangeFeed *ChangeFeed `json:"changeFeed,omitempty"`
 	// RestorePolicy - The blob service properties for blob restore policy.
 	RestorePolicy *RestorePolicyProperties `json:"restorePolicy,omitempty"`
+	// ContainerDeleteRetentionPolicy - The blob service properties for container soft delete.
+	ContainerDeleteRetentionPolicy *DeleteRetentionPolicy `json:"containerDeleteRetentionPolicy,omitempty"`
 }
 
 // ChangeFeed the blob service properties for change feed events.
@@ -2736,6 +2738,8 @@ type ImmutabilityPolicyProperty struct {
 	ImmutabilityPeriodSinceCreationInDays *int32 `json:"immutabilityPeriodSinceCreationInDays,omitempty"`
 	// State - READ-ONLY; The ImmutabilityPolicy state of a blob container, possible values include: Locked and Unlocked. Possible values include: 'Locked', 'Unlocked'
 	State ImmutabilityPolicyState `json:"state,omitempty"`
+	// AllowProtectedAppendWrites - This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API
+	AllowProtectedAppendWrites *bool `json:"allowProtectedAppendWrites,omitempty"`
 }
 
 // IPRule IP rule with specific IP or IP range in CIDR format.

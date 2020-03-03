@@ -150,8 +150,7 @@ func (client MetricsClient) GetPreparer(ctx context.Context, appID string, metri
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client MetricsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -219,8 +218,7 @@ func (client MetricsClient) GetMetadataPreparer(ctx context.Context, appID strin
 // GetMetadataSender sends the GetMetadata request. The method will close the
 // http.Response Body if it receives an error.
 func (client MetricsClient) GetMetadataSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetMetadataResponder handles the response to the GetMetadata request. The method always
@@ -297,8 +295,7 @@ func (client MetricsClient) GetMultiplePreparer(ctx context.Context, appID strin
 // GetMultipleSender sends the GetMultiple request. The method will close the
 // http.Response Body if it receives an error.
 func (client MetricsClient) GetMultipleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetMultipleResponder handles the response to the GetMultiple request. The method always

@@ -105,9 +105,8 @@ func (client TransactionNodesClient) CreatePreparer(ctx context.Context, blockch
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client TransactionNodesClient) CreateSender(req *http.Request) (future TransactionNodesCreateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -185,9 +184,8 @@ func (client TransactionNodesClient) DeletePreparer(ctx context.Context, blockch
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client TransactionNodesClient) DeleteSender(req *http.Request) (future TransactionNodesDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -270,8 +268,7 @@ func (client TransactionNodesClient) GetPreparer(ctx context.Context, blockchain
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TransactionNodesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -349,8 +346,7 @@ func (client TransactionNodesClient) ListPreparer(ctx context.Context, blockchai
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client TransactionNodesClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -466,8 +462,7 @@ func (client TransactionNodesClient) ListAPIKeysPreparer(ctx context.Context, bl
 // ListAPIKeysSender sends the ListAPIKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client TransactionNodesClient) ListAPIKeysSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAPIKeysResponder handles the response to the ListAPIKeys request. The method always
@@ -552,8 +547,7 @@ func (client TransactionNodesClient) ListRegenerateAPIKeysPreparer(ctx context.C
 // ListRegenerateAPIKeysSender sends the ListRegenerateAPIKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client TransactionNodesClient) ListRegenerateAPIKeysSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListRegenerateAPIKeysResponder handles the response to the ListRegenerateAPIKeys request. The method always
@@ -638,8 +632,7 @@ func (client TransactionNodesClient) UpdatePreparer(ctx context.Context, blockch
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client TransactionNodesClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

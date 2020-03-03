@@ -117,8 +117,7 @@ func (client SyncGroupsClient) CreatePreparer(ctx context.Context, resourceGroup
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client SyncGroupsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -206,8 +205,7 @@ func (client SyncGroupsClient) DeletePreparer(ctx context.Context, resourceGroup
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SyncGroupsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -294,8 +292,7 @@ func (client SyncGroupsClient) GetPreparer(ctx context.Context, resourceGroupNam
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SyncGroupsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -381,8 +378,7 @@ func (client SyncGroupsClient) ListByStorageSyncServicePreparer(ctx context.Cont
 // ListByStorageSyncServiceSender sends the ListByStorageSyncService request. The method will close the
 // http.Response Body if it receives an error.
 func (client SyncGroupsClient) ListByStorageSyncServiceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByStorageSyncServiceResponder handles the response to the ListByStorageSyncService request. The method always

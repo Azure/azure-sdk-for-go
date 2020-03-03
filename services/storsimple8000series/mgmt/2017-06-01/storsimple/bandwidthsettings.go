@@ -112,9 +112,8 @@ func (client BandwidthSettingsClient) CreateOrUpdatePreparer(ctx context.Context
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client BandwidthSettingsClient) CreateOrUpdateSender(req *http.Request) (future BandwidthSettingsCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -198,9 +197,8 @@ func (client BandwidthSettingsClient) DeletePreparer(ctx context.Context, bandwi
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client BandwidthSettingsClient) DeleteSender(req *http.Request) (future BandwidthSettingsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -289,8 +287,7 @@ func (client BandwidthSettingsClient) GetPreparer(ctx context.Context, bandwidth
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client BandwidthSettingsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -373,8 +370,7 @@ func (client BandwidthSettingsClient) ListByManagerPreparer(ctx context.Context,
 // ListByManagerSender sends the ListByManager request. The method will close the
 // http.Response Body if it receives an error.
 func (client BandwidthSettingsClient) ListByManagerSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByManagerResponder handles the response to the ListByManager request. The method always

@@ -109,8 +109,7 @@ func (client ListManagementImageClient) AddImagePreparer(ctx context.Context, li
 // AddImageSender sends the AddImage request. The method will close the
 // http.Response Body if it receives an error.
 func (client ListManagementImageClient) AddImageSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddImageResponder handles the response to the AddImage request. The method always
@@ -195,8 +194,7 @@ func (client ListManagementImageClient) AddImageFileInputPreparer(ctx context.Co
 // AddImageFileInputSender sends the AddImageFileInput request. The method will close the
 // http.Response Body if it receives an error.
 func (client ListManagementImageClient) AddImageFileInputSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddImageFileInputResponder handles the response to the AddImageFileInput request. The method always
@@ -283,8 +281,7 @@ func (client ListManagementImageClient) AddImageURLInputPreparer(ctx context.Con
 // AddImageURLInputSender sends the AddImageURLInput request. The method will close the
 // http.Response Body if it receives an error.
 func (client ListManagementImageClient) AddImageURLInputSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddImageURLInputResponder handles the response to the AddImageURLInput request. The method always
@@ -355,8 +352,7 @@ func (client ListManagementImageClient) DeleteAllImagesPreparer(ctx context.Cont
 // DeleteAllImagesSender sends the DeleteAllImages request. The method will close the
 // http.Response Body if it receives an error.
 func (client ListManagementImageClient) DeleteAllImagesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteAllImagesResponder handles the response to the DeleteAllImages request. The method always
@@ -429,8 +425,7 @@ func (client ListManagementImageClient) DeleteImagePreparer(ctx context.Context,
 // DeleteImageSender sends the DeleteImage request. The method will close the
 // http.Response Body if it receives an error.
 func (client ListManagementImageClient) DeleteImageSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteImageResponder handles the response to the DeleteImage request. The method always
@@ -501,8 +496,7 @@ func (client ListManagementImageClient) GetAllImageIdsPreparer(ctx context.Conte
 // GetAllImageIdsSender sends the GetAllImageIds request. The method will close the
 // http.Response Body if it receives an error.
 func (client ListManagementImageClient) GetAllImageIdsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAllImageIdsResponder handles the response to the GetAllImageIds request. The method always

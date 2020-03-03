@@ -114,8 +114,7 @@ func (client SetDefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, p
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SetDefinitionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -203,8 +202,7 @@ func (client SetDefinitionsClient) CreateOrUpdateAtManagementGroupPreparer(ctx c
 // CreateOrUpdateAtManagementGroupSender sends the CreateOrUpdateAtManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client SetDefinitionsClient) CreateOrUpdateAtManagementGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateOrUpdateAtManagementGroupResponder handles the response to the CreateOrUpdateAtManagementGroup request. The method always
@@ -278,8 +276,7 @@ func (client SetDefinitionsClient) DeletePreparer(ctx context.Context, policySet
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SetDefinitionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -353,8 +350,7 @@ func (client SetDefinitionsClient) DeleteAtManagementGroupPreparer(ctx context.C
 // DeleteAtManagementGroupSender sends the DeleteAtManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client SetDefinitionsClient) DeleteAtManagementGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteAtManagementGroupResponder handles the response to the DeleteAtManagementGroup request. The method always
@@ -427,8 +423,7 @@ func (client SetDefinitionsClient) GetPreparer(ctx context.Context, policySetDef
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SetDefinitionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -503,8 +498,7 @@ func (client SetDefinitionsClient) GetAtManagementGroupPreparer(ctx context.Cont
 // GetAtManagementGroupSender sends the GetAtManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client SetDefinitionsClient) GetAtManagementGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAtManagementGroupResponder handles the response to the GetAtManagementGroup request. The method always
@@ -577,8 +571,7 @@ func (client SetDefinitionsClient) GetBuiltInPreparer(ctx context.Context, polic
 // GetBuiltInSender sends the GetBuiltIn request. The method will close the
 // http.Response Body if it receives an error.
 func (client SetDefinitionsClient) GetBuiltInSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetBuiltInResponder handles the response to the GetBuiltIn request. The method always
@@ -650,8 +643,7 @@ func (client SetDefinitionsClient) ListPreparer(ctx context.Context) (*http.Requ
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client SetDefinitionsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -756,8 +748,7 @@ func (client SetDefinitionsClient) ListBuiltInPreparer(ctx context.Context) (*ht
 // ListBuiltInSender sends the ListBuiltIn request. The method will close the
 // http.Response Body if it receives an error.
 func (client SetDefinitionsClient) ListBuiltInSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListBuiltInResponder handles the response to the ListBuiltIn request. The method always
@@ -868,8 +859,7 @@ func (client SetDefinitionsClient) ListByManagementGroupPreparer(ctx context.Con
 // ListByManagementGroupSender sends the ListByManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client SetDefinitionsClient) ListByManagementGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByManagementGroupResponder handles the response to the ListByManagementGroup request. The method always

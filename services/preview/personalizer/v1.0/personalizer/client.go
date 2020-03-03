@@ -114,8 +114,7 @@ func (client BaseClient) RankPreparer(ctx context.Context, rankRequest RankReque
 // RankSender sends the Rank request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) RankSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RankResponder handles the response to the Rank request. The method always

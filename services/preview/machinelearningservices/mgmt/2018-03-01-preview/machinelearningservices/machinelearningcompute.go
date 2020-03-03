@@ -103,9 +103,8 @@ func (client MachineLearningComputeClient) CreateOrUpdatePreparer(ctx context.Co
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) CreateOrUpdateSender(req *http.Request) (future MachineLearningComputeCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -182,9 +181,8 @@ func (client MachineLearningComputeClient) DeletePreparer(ctx context.Context, r
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) DeleteSender(req *http.Request) (future MachineLearningComputeDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -267,8 +265,7 @@ func (client MachineLearningComputeClient) GetPreparer(ctx context.Context, reso
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -349,8 +346,7 @@ func (client MachineLearningComputeClient) ListByWorkspacePreparer(ctx context.C
 // ListByWorkspaceSender sends the ListByWorkspace request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) ListByWorkspaceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByWorkspaceResponder handles the response to the ListByWorkspace request. The method always
@@ -465,8 +461,7 @@ func (client MachineLearningComputeClient) ListKeysPreparer(ctx context.Context,
 // ListKeysSender sends the ListKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) ListKeysSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListKeysResponder handles the response to the ListKeys request. The method always
@@ -538,9 +533,8 @@ func (client MachineLearningComputeClient) SystemUpdatePreparer(ctx context.Cont
 // SystemUpdateSender sends the SystemUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) SystemUpdateSender(req *http.Request) (future MachineLearningComputeSystemUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

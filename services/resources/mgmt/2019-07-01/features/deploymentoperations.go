@@ -117,8 +117,7 @@ func (client DeploymentOperationsClient) GetPreparer(ctx context.Context, resour
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentOperationsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -206,8 +205,7 @@ func (client DeploymentOperationsClient) GetAtManagementGroupScopePreparer(ctx c
 // GetAtManagementGroupScopeSender sends the GetAtManagementGroupScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentOperationsClient) GetAtManagementGroupScopeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAtManagementGroupScopeResponder handles the response to the GetAtManagementGroupScope request. The method always
@@ -292,8 +290,7 @@ func (client DeploymentOperationsClient) GetAtScopePreparer(ctx context.Context,
 // GetAtScopeSender sends the GetAtScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentOperationsClient) GetAtScopeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAtScopeResponder handles the response to the GetAtScope request. The method always
@@ -377,8 +374,7 @@ func (client DeploymentOperationsClient) GetAtSubscriptionScopePreparer(ctx cont
 // GetAtSubscriptionScopeSender sends the GetAtSubscriptionScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentOperationsClient) GetAtSubscriptionScopeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetAtSubscriptionScopeResponder handles the response to the GetAtSubscriptionScope request. The method always
@@ -461,8 +457,7 @@ func (client DeploymentOperationsClient) GetAtTenantScopePreparer(ctx context.Co
 // GetAtTenantScopeSender sends the GetAtTenantScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentOperationsClient) GetAtTenantScopeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAtTenantScopeResponder handles the response to the GetAtTenantScope request. The method always
@@ -555,8 +550,7 @@ func (client DeploymentOperationsClient) ListPreparer(ctx context.Context, resou
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentOperationsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -684,8 +678,7 @@ func (client DeploymentOperationsClient) ListAtManagementGroupScopePreparer(ctx 
 // ListAtManagementGroupScopeSender sends the ListAtManagementGroupScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentOperationsClient) ListAtManagementGroupScopeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListAtManagementGroupScopeResponder handles the response to the ListAtManagementGroupScope request. The method always
@@ -810,8 +803,7 @@ func (client DeploymentOperationsClient) ListAtScopePreparer(ctx context.Context
 // ListAtScopeSender sends the ListAtScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentOperationsClient) ListAtScopeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListAtScopeResponder handles the response to the ListAtScope request. The method always
@@ -935,8 +927,7 @@ func (client DeploymentOperationsClient) ListAtSubscriptionScopePreparer(ctx con
 // ListAtSubscriptionScopeSender sends the ListAtSubscriptionScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentOperationsClient) ListAtSubscriptionScopeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAtSubscriptionScopeResponder handles the response to the ListAtSubscriptionScope request. The method always
@@ -1059,8 +1050,7 @@ func (client DeploymentOperationsClient) ListAtTenantScopePreparer(ctx context.C
 // ListAtTenantScopeSender sends the ListAtTenantScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentOperationsClient) ListAtTenantScopeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListAtTenantScopeResponder handles the response to the ListAtTenantScope request. The method always

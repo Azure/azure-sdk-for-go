@@ -106,8 +106,7 @@ func (client KnowledgebaseClient) CreatePreparer(ctx context.Context, createKbPa
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client KnowledgebaseClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -178,8 +177,7 @@ func (client KnowledgebaseClient) DeletePreparer(ctx context.Context, kbID strin
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client KnowledgebaseClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -251,8 +249,7 @@ func (client KnowledgebaseClient) DownloadPreparer(ctx context.Context, kbID str
 // DownloadSender sends the Download request. The method will close the
 // http.Response Body if it receives an error.
 func (client KnowledgebaseClient) DownloadSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DownloadResponder handles the response to the Download request. The method always
@@ -323,8 +320,7 @@ func (client KnowledgebaseClient) GetDetailsPreparer(ctx context.Context, kbID s
 // GetDetailsSender sends the GetDetails request. The method will close the
 // http.Response Body if it receives an error.
 func (client KnowledgebaseClient) GetDetailsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailsResponder handles the response to the GetDetails request. The method always
@@ -389,8 +385,7 @@ func (client KnowledgebaseClient) ListAllPreparer(ctx context.Context) (*http.Re
 // ListAllSender sends the ListAll request. The method will close the
 // http.Response Body if it receives an error.
 func (client KnowledgebaseClient) ListAllSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListAllResponder handles the response to the ListAll request. The method always
@@ -461,8 +456,7 @@ func (client KnowledgebaseClient) PublishPreparer(ctx context.Context, kbID stri
 // PublishSender sends the Publish request. The method will close the
 // http.Response Body if it receives an error.
 func (client KnowledgebaseClient) PublishSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // PublishResponder handles the response to the Publish request. The method always
@@ -541,8 +535,7 @@ func (client KnowledgebaseClient) ReplacePreparer(ctx context.Context, kbID stri
 // ReplaceSender sends the Replace request. The method will close the
 // http.Response Body if it receives an error.
 func (client KnowledgebaseClient) ReplaceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ReplaceResponder handles the response to the Replace request. The method always
@@ -615,8 +608,7 @@ func (client KnowledgebaseClient) UpdatePreparer(ctx context.Context, kbID strin
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client KnowledgebaseClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

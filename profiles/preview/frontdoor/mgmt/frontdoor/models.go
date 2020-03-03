@@ -295,6 +295,16 @@ const (
 	PolicyResourceStateEnabling  PolicyResourceState = original.PolicyResourceStateEnabling
 )
 
+type PrivateEndpointStatus = original.PrivateEndpointStatus
+
+const (
+	Approved     PrivateEndpointStatus = original.Approved
+	Disconnected PrivateEndpointStatus = original.Disconnected
+	Pending      PrivateEndpointStatus = original.Pending
+	Rejected     PrivateEndpointStatus = original.Rejected
+	Timeout      PrivateEndpointStatus = original.Timeout
+)
+
 type Protocol = original.Protocol
 
 const (
@@ -786,6 +796,9 @@ func PossiblePolicyModeValues() []PolicyMode {
 }
 func PossiblePolicyResourceStateValues() []PolicyResourceState {
 	return original.PossiblePolicyResourceStateValues()
+}
+func PossiblePrivateEndpointStatusValues() []PrivateEndpointStatus {
+	return original.PossiblePrivateEndpointStatusValues()
 }
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()

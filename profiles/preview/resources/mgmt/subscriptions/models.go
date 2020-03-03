@@ -47,6 +47,14 @@ const (
 	Warned   State = original.Warned
 )
 
+type TenantCategory = original.TenantCategory
+
+const (
+	Home        TenantCategory = original.Home
+	ManagedBy   TenantCategory = original.ManagedBy
+	ProjectedBy TenantCategory = original.ProjectedBy
+)
+
 type BaseClient = original.BaseClient
 type Client = original.Client
 type ListResult = original.ListResult
@@ -116,6 +124,9 @@ func PossibleSpendingLimitValues() []SpendingLimit {
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()
+}
+func PossibleTenantCategoryValues() []TenantCategory {
+	return original.PossibleTenantCategoryValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

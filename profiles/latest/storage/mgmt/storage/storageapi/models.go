@@ -24,6 +24,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2019-06
 type AccountsClientAPI = original.AccountsClientAPI
 type BlobContainersClientAPI = original.BlobContainersClientAPI
 type BlobServicesClientAPI = original.BlobServicesClientAPI
+type EncryptionScopesClientAPI = original.EncryptionScopesClientAPI
 type FileServicesClientAPI = original.FileServicesClientAPI
 type FileSharesClientAPI = original.FileSharesClientAPI
 type ManagementPoliciesClientAPI = original.ManagementPoliciesClientAPI

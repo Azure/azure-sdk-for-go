@@ -145,11 +145,11 @@ type ImagePrediction = original.ImagePrediction
 type ImageURL = original.ImageURL
 type Model = original.Model
 
-func New(aPIKey string, endpoint string) BaseClient {
-	return original.New(aPIKey, endpoint)
+func New(endpoint string) BaseClient {
+	return original.New(endpoint)
 }
-func NewWithoutDefaults(aPIKey string, endpoint string) BaseClient {
-	return original.NewWithoutDefaults(aPIKey, endpoint)
+func NewWithoutDefaults(endpoint string) BaseClient {
+	return original.NewWithoutDefaults(endpoint)
 }
 func PossibleCustomVisionErrorCodesValues() []CustomVisionErrorCodes {
 	return original.PossibleCustomVisionErrorCodesValues()

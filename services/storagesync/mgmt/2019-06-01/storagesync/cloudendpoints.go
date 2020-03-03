@@ -113,9 +113,8 @@ func (client CloudEndpointsClient) CreatePreparer(ctx context.Context, resourceG
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client CloudEndpointsClient) CreateSender(req *http.Request) (future CloudEndpointsCreateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -204,9 +203,8 @@ func (client CloudEndpointsClient) DeletePreparer(ctx context.Context, resourceG
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client CloudEndpointsClient) DeleteSender(req *http.Request) (future CloudEndpointsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -300,8 +298,7 @@ func (client CloudEndpointsClient) GetPreparer(ctx context.Context, resourceGrou
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client CloudEndpointsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -389,8 +386,7 @@ func (client CloudEndpointsClient) ListBySyncGroupPreparer(ctx context.Context, 
 // ListBySyncGroupSender sends the ListBySyncGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client CloudEndpointsClient) ListBySyncGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySyncGroupResponder handles the response to the ListBySyncGroup request. The method always
@@ -477,9 +473,8 @@ func (client CloudEndpointsClient) PostBackupPreparer(ctx context.Context, resou
 // PostBackupSender sends the PostBackup request. The method will close the
 // http.Response Body if it receives an error.
 func (client CloudEndpointsClient) PostBackupSender(req *http.Request) (future CloudEndpointsPostBackupFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -571,9 +566,8 @@ func (client CloudEndpointsClient) PostRestorePreparer(ctx context.Context, reso
 // PostRestoreSender sends the PostRestore request. The method will close the
 // http.Response Body if it receives an error.
 func (client CloudEndpointsClient) PostRestoreSender(req *http.Request) (future CloudEndpointsPostRestoreFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -664,9 +658,8 @@ func (client CloudEndpointsClient) PreBackupPreparer(ctx context.Context, resour
 // PreBackupSender sends the PreBackup request. The method will close the
 // http.Response Body if it receives an error.
 func (client CloudEndpointsClient) PreBackupSender(req *http.Request) (future CloudEndpointsPreBackupFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -757,9 +750,8 @@ func (client CloudEndpointsClient) PreRestorePreparer(ctx context.Context, resou
 // PreRestoreSender sends the PreRestore request. The method will close the
 // http.Response Body if it receives an error.
 func (client CloudEndpointsClient) PreRestoreSender(req *http.Request) (future CloudEndpointsPreRestoreFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -853,8 +845,7 @@ func (client CloudEndpointsClient) RestoreheartbeatPreparer(ctx context.Context,
 // RestoreheartbeatSender sends the Restoreheartbeat request. The method will close the
 // http.Response Body if it receives an error.
 func (client CloudEndpointsClient) RestoreheartbeatSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RestoreheartbeatResponder handles the response to the Restoreheartbeat request. The method always
@@ -941,9 +932,8 @@ func (client CloudEndpointsClient) TriggerChangeDetectionPreparer(ctx context.Co
 // TriggerChangeDetectionSender sends the TriggerChangeDetection request. The method will close the
 // http.Response Body if it receives an error.
 func (client CloudEndpointsClient) TriggerChangeDetectionSender(req *http.Request) (future CloudEndpointsTriggerChangeDetectionFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

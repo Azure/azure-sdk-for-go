@@ -130,8 +130,7 @@ func (client ProcessesClient) GetPreparer(ctx context.Context, resourceGroupName
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProcessesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -239,8 +238,7 @@ func (client ProcessesClient) GetLivenessPreparer(ctx context.Context, resourceG
 // GetLivenessSender sends the GetLiveness request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProcessesClient) GetLivenessSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetLivenessResponder handles the response to the GetLiveness request. The method always
@@ -349,8 +347,7 @@ func (client ProcessesClient) ListAcceptingPortsPreparer(ctx context.Context, re
 // ListAcceptingPortsSender sends the ListAcceptingPorts request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProcessesClient) ListAcceptingPortsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAcceptingPortsResponder handles the response to the ListAcceptingPorts request. The method always
@@ -496,8 +493,7 @@ func (client ProcessesClient) ListConnectionsPreparer(ctx context.Context, resou
 // ListConnectionsSender sends the ListConnections request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProcessesClient) ListConnectionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListConnectionsResponder handles the response to the ListConnections request. The method always

@@ -110,8 +110,7 @@ func (client MachinesClient) EnumerateMachinesPreparer(ctx context.Context, reso
 // EnumerateMachinesSender sends the EnumerateMachines request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachinesClient) EnumerateMachinesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // EnumerateMachinesResponder handles the response to the EnumerateMachines request. The method always
@@ -189,8 +188,7 @@ func (client MachinesClient) GetMachinePreparer(ctx context.Context, resourceGro
 // GetMachineSender sends the GetMachine request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachinesClient) GetMachineSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMachineResponder handles the response to the GetMachine request. The method always

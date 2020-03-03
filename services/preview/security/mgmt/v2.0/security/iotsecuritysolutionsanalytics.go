@@ -114,8 +114,7 @@ func (client IoTSecuritySolutionsAnalyticsClient) GetAllPreparer(ctx context.Con
 // GetAllSender sends the GetAll request. The method will close the
 // http.Response Body if it receives an error.
 func (client IoTSecuritySolutionsAnalyticsClient) GetAllSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetAllResponder handles the response to the GetAll request. The method always
@@ -202,8 +201,7 @@ func (client IoTSecuritySolutionsAnalyticsClient) GetDefaultPreparer(ctx context
 // GetDefaultSender sends the GetDefault request. The method will close the
 // http.Response Body if it receives an error.
 func (client IoTSecuritySolutionsAnalyticsClient) GetDefaultSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDefaultResponder handles the response to the GetDefault request. The method always

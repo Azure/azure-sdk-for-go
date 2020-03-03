@@ -116,8 +116,7 @@ func (client BaseClient) CheckServiceProviderAvailabilityPreparer(ctx context.Co
 // CheckServiceProviderAvailabilitySender sends the CheckServiceProviderAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CheckServiceProviderAvailabilitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CheckServiceProviderAvailabilityResponder handles the response to the CheckServiceProviderAvailability request. The method always

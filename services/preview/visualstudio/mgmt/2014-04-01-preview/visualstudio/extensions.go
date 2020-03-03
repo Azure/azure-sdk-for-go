@@ -109,8 +109,7 @@ func (client ExtensionsClient) CreatePreparer(ctx context.Context, resourceGroup
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExtensionsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -188,8 +187,7 @@ func (client ExtensionsClient) DeletePreparer(ctx context.Context, resourceGroup
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExtensionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -266,8 +264,7 @@ func (client ExtensionsClient) GetPreparer(ctx context.Context, resourceGroupNam
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExtensionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -343,8 +340,7 @@ func (client ExtensionsClient) ListByAccountPreparer(ctx context.Context, resour
 // ListByAccountSender sends the ListByAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExtensionsClient) ListByAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByAccountResponder handles the response to the ListByAccount request. The method always
@@ -425,8 +421,7 @@ func (client ExtensionsClient) UpdatePreparer(ctx context.Context, resourceGroup
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExtensionsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

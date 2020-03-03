@@ -14,7 +14,8 @@
       "sdkrel:go-sdk-folder": ".",
       "multiapi": "",
       "use-onever": "",
-      "preview-chk": ""
+      "preview-chk": "",
+      "version": "previous"
     },
     "repotag": "azure-sdk-for-go",
     "envs": {

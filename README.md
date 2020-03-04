@@ -72,7 +72,9 @@ If a package you need isn't available please open an issue and let us know.
 $ go get -u github.com/Azure/azure-sdk-for-go/...
 ```
 
-or if you use dep, within your repo run:
+and you should also make sure to include the minimum version of [`go-autorest`](https://github.com/Azure/go-autorest) that is specified in `Gopkg.toml` file.
+
+Or if you use dep, within your repo run:
 
 ```sh
 $ dep ensure -add github.com/Azure/azure-sdk-for-go

@@ -44,39 +44,26 @@ func TestCLICredential_CredentialUnavailableMock(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-
-	var authFailed *CredentialUnavailableError
-	if !errors.As(err, &authFailed) {
-		t.Fatalf("Expected: CredentialUnavailableError, Received: %T", err)
-	}
 }
 
 // azureCLIAccessTokenProviderGetTokenMock mock func getAzureCLIAuthResults return access token.
 type azureCLIAccessTokenProviderGetTokenMock struct {
 }
 
-func (c *azureCLIAccessTokenProviderGetTokenMock) getAzureCLIAuthResults(command string) (*authResults, error) {
+func (c *azureCLIAccessTokenProviderGetTokenMock) getAzureCLIAuthResults(ctx context.Context, command string) ([]byte, error) {
 	out := []byte(" {\"accessToken\":\"mocktoken\" , " +
 		"\"expiresOn\": \"2007-01-01 01:01:01.079627\"," +
 		"\"subscription\": \"mocksub\"," +
 		"\"tenant\": \"mocktenant\"," +
 		"\"tokenType\": \"mocktype\"}")
 
-	results := &authResults{}
-	results.out = out
-	results.errOut = ""
-
-	return results, nil
+	return out, nil
 }
 
 // azureCLIAccessTokenProviderCredentialUnavailableMock mock func getAzureCLIAuthResults return error.
 type azureCLIAccessTokenProviderCredentialUnavailableMock struct {
 }
 
-func (c *azureCLIAccessTokenProviderCredentialUnavailableMock) getAzureCLIAuthResults(command string) (*authResults, error) {
-	results := &authResults{}
-	results.out = nil
-	results.errOut = "some error"
-
-	return results, errors.New("Errors")
+func (c *azureCLIAccessTokenProviderCredentialUnavailableMock) getAzureCLIAuthResults(ctx context.Context, command string) ([]byte, error) {
+	return nil, errors.New("Errors")
 }

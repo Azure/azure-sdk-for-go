@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -23,19 +24,16 @@ const (
 	cmd                  = "cmd.exe"
 	bash                 = "/bin/sh"
 	windir               = "windir"
+	timeOut              = 10000
 	getTokenCommand      = "az account get-access-token -o json"
 	resourceArgumentName = "--resource"
 	invalidResourceError = "Resource is not in expected format. Only alphanumeric characters, '.', ':', '-', and '/' are allowed"
+	azureCLITimeoutError = "Azure CLI authentication timed out"
 )
-
-type authResults struct {
-	out    []byte
-	errOut string
-}
 
 // azureCLIAccessTokenProvider provides an AccessToken, either by Azure CLI or by mocking.
 type azureCLIAccessTokenProvider interface {
-	getAzureCLIAuthResults(resource string) (*authResults, error)
+	getAzureCLIAuthResults(ctx context.Context, resource string) ([]byte, error)
 }
 
 // azureCLIAccessTokenProviderStruct implements the interface azureCLIAccessTokenProvider, to run Azure CLI command.
@@ -65,45 +63,47 @@ func (c *azureCLICredentialClient) authenticate(ctx context.Context, scopes []st
 	resource := c.scopeToResource(scopes)
 
 	// Validate the resource to make sure it doesn't include shell-meta characters.
-	isResourceMatch, error := regexp.MatchString("^[0-9a-zA-Z-.:/]+$", resource)
-	if error != nil {
-		return nil, error
+	isResourceMatch, err := regexp.MatchString("^[0-9a-zA-Z-.:/]+$", resource)
+	if err != nil {
+		return nil, err
 	}
 	if !isResourceMatch {
 		return nil, fmt.Errorf(invalidResourceError)
 	}
 
-	authResults, err := c.azAccessTokenProvider.getAzureCLIAuthResults(resource)
+	authResults, err := c.azAccessTokenProvider.getAzureCLIAuthResults(ctx, resource)
 	if err != nil {
-		return nil, &CredentialUnavailableError{Message: authResults.errOut}
+		return nil, err
 	}
 
-	return c.createAccessToken(authResults.out)
+	return c.createAccessToken(authResults)
 }
 
 // getAzureCLIAuthResults implements the azureCLIAccessTokenProvider interface on azureCLIAccessTokenProviderStruct.
 // Execute Azure CLI command 'az account get-access-token --output json --resource' to return results.
-func (c *azureCLIAccessTokenProviderStruct) getAzureCLIAuthResults(resource string) (*authResults, error) {
+func (c *azureCLIAccessTokenProviderStruct) getAzureCLIAuthResults(ctx context.Context, resource string) ([]byte, error) {
 	// Developer can set the path what the install path for Azure CLI is.
 	azureCLIPath := "AzureCLIPath"
 
-	// The default install path are used to find Azure CLI for windows. This is for security, so that any path in the calling program's Path environment is not used to execute Azure CLI.
+	// The default install path is used to find Azure CLI for windows. This is for security, so that any path in the calling program's Path environment is not used to execute Azure CLI.
 	azureCLIDefaultPathWindows := fmt.Sprintf("%s\\Microsoft SDKs\\Azure\\CLI2\\wbin; %s\\Microsoft SDKs\\Azure\\CLI2\\wbin", os.Getenv("ProgramFiles(x86)"), os.Getenv("ProgramFiles"))
 
 	// Default path for non-Windows.
 	azureCLIDefaultPath := "/bin:/sbin:/usr/bin:/usr/local/bin"
 
-	results := &authResults{}
 	var stderr bytes.Buffer
 	var cmd *exec.Cmd
 
+	ctx, cancel := context.WithTimeout(ctx, timeOut*time.Second)
+	defer cancel()
+
 	if runtime.GOOS == "windows" {
-		cmd = exec.Command(fmt.Sprintf("%s\\system32\\cmd.exe", os.Getenv(windir)))
+		cmd = exec.CommandContext(ctx, fmt.Sprintf("%s\\system32\\cmd.exe", os.Getenv(windir)))
 		cmd.Env = os.Environ()
 		cmd.Env = append(cmd.Env, fmt.Sprintf("PATH=%s;%s", os.Getenv(azureCLIPath), azureCLIDefaultPathWindows))
 		cmd.Args = append(cmd.Args, "/c")
 	} else {
-		cmd = exec.Command(bash)
+		cmd = exec.CommandContext(ctx, bash)
 		cmd.Env = os.Environ()
 		cmd.Env = append(cmd.Env, fmt.Sprintf("PATH=%s:%s", os.Getenv(azureCLIPath), azureCLIDefaultPath))
 		cmd.Args = append(cmd.Args, "-c")
@@ -111,12 +111,18 @@ func (c *azureCLIAccessTokenProviderStruct) getAzureCLIAuthResults(resource stri
 
 	cmd.Args = append(cmd.Args, getTokenCommand, resourceArgumentName, resource)
 	cmd.Stderr = &stderr
+
 	output, err := cmd.Output()
 
-	results.out = output
-	results.errOut = stderr.String()
+	if ctx.Err() == context.DeadlineExceeded {
+		return nil, &AuthenticationFailedError{inner: errors.New(azureCLITimeoutError)}
+	}
 
-	return results, err
+	if err != nil {
+		return nil, &CredentialUnavailableError{CredentialType: "Azure CLI Credential", Message: stderr.String()}
+	}
+
+	return output, err
 }
 
 func (c *azureCLICredentialClient) createAccessToken(output []byte) (*azcore.AccessToken, error) {
@@ -131,7 +137,7 @@ func (c *azureCLICredentialClient) createAccessToken(output []byte) (*azcore.Acc
 	accessToken := &azcore.AccessToken{}
 	err := json.Unmarshal(output, &value)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("internal AccessToken: %w", err)
 	}
 
 	dateString := value.ExpiresOn

@@ -255,7 +255,7 @@ type PartnerProperties struct {
 	// ObjectID - This is the object id.
 	ObjectID *string `json:"objectId,omitempty"`
 	// Version - This is the version.
-	Version *string `json:"version,omitempty"`
+	Version *int32 `json:"version,omitempty"`
 	// UpdatedTime - This is the DateTime when the partner was updated.
 	UpdatedTime *date.Time `json:"updatedTime,omitempty"`
 	// CreatedTime - This is the DateTime when the partner was created.

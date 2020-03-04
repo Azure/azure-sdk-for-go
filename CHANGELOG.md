@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## `v40.1.0`
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| managementpartner | 2018-02-01 |
+
+**NOTE:** `services/preview/managementpartner/mgmt/2018-02-01/managementpartner` is a preview package.
+
 ## `v40.0.0`
 
 ### New Packages

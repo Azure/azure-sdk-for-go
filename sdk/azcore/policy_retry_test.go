@@ -241,6 +241,60 @@ func TestWithRetryOptions(t *testing.T) {
 	}
 }
 
+func TestRetryPolicyFailOnErrorNoDownload(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	fakeErr := errors.New("bogus error")
+	srv.SetError(fakeErr)
+	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	req := NewRequest(http.MethodPost, srv.URL())
+	req.SkipBodyDownload()
+	resp, err := pl.Do(context.Background(), req)
+	if !errors.Is(err, fakeErr) {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp != nil {
+		t.Fatal("unexpected response")
+	}
+	if r := srv.Requests(); r != defaultMaxRetries+1 {
+		t.Fatalf("wrong request count, got %d expected %d", r, defaultMaxRetries+1)
+	}
+}
+
+func TestRetryPolicySuccessNoDownload(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("response body")))
+	pl := NewPipeline(srv, NewRetryPolicy(nil))
+	req := NewRequest(http.MethodGet, srv.URL())
+	req.SkipBodyDownload()
+	resp, err := pl.Do(context.Background(), req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	resp.Body.Close()
+}
+
+func TestRetryPolicySuccessNoDownloadNoBody(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
+	pl := NewPipeline(srv, NewRetryPolicy(nil))
+	req := NewRequest(http.MethodGet, srv.URL())
+	req.SkipBodyDownload()
+	resp, err := pl.Do(context.Background(), req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	resp.Body.Close()
+}
+
 // TODO: add test for retry failing to read response body
 
 // TODO: add test for per-retry timeout failed but e2e succeeded

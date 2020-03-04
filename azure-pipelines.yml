@@ -12,14 +12,12 @@ jobs:
   - job: Build_Test
     strategy:
       matrix:
-        Linux_Go112:
-          vm.image: 'ubuntu-18.04'
-          go.version: '1.12'
-          GOROOT: '/usr/local/go$(go.version)'
         Linux_Go113:
           vm.image: 'ubuntu-18.04'
           go.version: '1.13'
-          GOROOT: '/usr/local/go$(go.version)'
+        Linux_Go114:
+          vm.image: 'ubuntu-18.04'
+          go.version: '1.14'
 
     pool:
       vmImage: $(vm.image)
@@ -31,6 +29,11 @@ jobs:
       go.list.filter: '| grep -v vendor'
 
     steps:
+    - task: GoTool@0
+      inputs:
+        version: '$(go.version)'
+      displayName: "Select Go Version"
+
     - script: |
         set -e
         mkdir -p '$(GOPATH)/bin'

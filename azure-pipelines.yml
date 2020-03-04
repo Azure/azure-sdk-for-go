@@ -12,9 +12,6 @@ jobs:
   - job: Build_Test
     strategy:
       matrix:
-        Linux_Go112:
-          vm.image: 'ubuntu-18.04'
-          go.version: '1.12'
         Linux_Go113:
           vm.image: 'ubuntu-18.04'
           go.version: '1.13'

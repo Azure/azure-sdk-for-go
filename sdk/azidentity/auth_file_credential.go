@@ -30,22 +30,26 @@ type authFileAccesstoken struct {
 type AuthFileCredential struct {
 	filePath        string
 	credential      azcore.TokenCredential
-	authfileoptions *TokenCredentialOptions
+	authfileoptions TokenCredentialOptions
 }
 
 // NewAuthFileCredential creates an instance of the AuthFileCredential class based on information in given SDK Auth file.
 func NewAuthFileCredential(filePath string, options *TokenCredentialOptions) (*AuthFileCredential, error) {
-	return &AuthFileCredential{filePath: filePath, authfileoptions: options}, nil
+	options, err := options.setDefaultValues()
+	if err != nil {
+		return nil, err
+	}
+	return &AuthFileCredential{filePath: filePath, authfileoptions: *options}, nil
 }
 
 // GetToken Obtains a token from the Azure Active Directory service, using the specified client detailed specified in the SDK Auth file.
 func (c *AuthFileCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	cred, err := c.ensureCredential()
+	err := c.ensureCredential()
 	if err != nil {
 		return nil, &AuthenticationFailedError{msg: "Error parsing SDK Auth File", inner: err}
 	}
 
-	return cred.GetToken(ctx, opts)
+	return c.credential.GetToken(ctx, opts)
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on AuthFileCredential.
@@ -54,23 +58,22 @@ func (c *AuthFileCredential) AuthenticationPolicy(options azcore.AuthenticationP
 }
 
 // ensureCredential ensures that credential information is loaded from the SDK Auth file.
-func (c *AuthFileCredential) ensureCredential() (azcore.TokenCredential, error) {
+func (c *AuthFileCredential) ensureCredential() error {
 	if c.credential != nil {
-		return c.credential, nil
+		return nil
 	}
 
 	authData, err := ioutil.ReadFile(c.filePath)
 	if err != nil {
-		return nil, err
+		return err
 	}
-
 
 	c.credential, err = c.buildCredentialForCredentialsFile(authData)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return c.credential, nil
+	return nil
 }
 
 // buildCredentialForCredentialsFile use the SDK auth file info to build a ClientSecretCredential
@@ -94,5 +97,5 @@ func (c *AuthFileCredential) buildCredentialForCredentialsFile(authData []byte) 
 	}
 	c.authfileoptions.AuthorityHost = AuthorityHost
 
-	return NewClientSecretCredential(tenantId, clientId, clientSecret, c.authfileoptions)
+	return NewClientSecretCredential(tenantId, clientId, clientSecret, &c.authfileoptions)
 }

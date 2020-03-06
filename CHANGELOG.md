@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v40.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| compute | 2019-12-01 |
+
 ## `v40.1.0`
 
 ### BreakingChanges

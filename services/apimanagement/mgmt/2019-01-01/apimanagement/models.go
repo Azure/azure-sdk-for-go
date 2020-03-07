@@ -236,6 +236,9 @@ type ExportFormat string
 const (
 	// ExportFormatOpenapi Export the Api Definition in OpenApi Specification 3.0 to Storage Blob.
 	ExportFormatOpenapi ExportFormat = "openapi-link"
+	// ExportFormatOpenapiJSON Export the Api Definition in OpenApi Specification 3.0 as JSON document to
+	// Storage Blob.
+	ExportFormatOpenapiJSON ExportFormat = "openapi+json-link"
 	// ExportFormatSwagger Export the Api Definition in OpenApi Specification 2.0 format to the Storage Blob.
 	ExportFormatSwagger ExportFormat = "swagger-link"
 	// ExportFormatWadl Export the Api Definition in WADL Schema to Storage Blob.
@@ -247,7 +250,7 @@ const (
 
 // PossibleExportFormatValues returns an array of possible values for the ExportFormat const type.
 func PossibleExportFormatValues() []ExportFormat {
-	return []ExportFormat{ExportFormatOpenapi, ExportFormatSwagger, ExportFormatWadl, ExportFormatWsdl}
+	return []ExportFormat{ExportFormatOpenapi, ExportFormatOpenapiJSON, ExportFormatSwagger, ExportFormatWadl, ExportFormatWsdl}
 }
 
 // ExportResultFormat enumerates the values for export result format.
@@ -3903,6 +3906,8 @@ type DiagnosticContractProperties struct {
 	Frontend *PipelineDiagnosticSettings `json:"frontend,omitempty"`
 	// Backend - Diagnostic settings for incoming/outgoing HTTP messages to the Backend
 	Backend *PipelineDiagnosticSettings `json:"backend,omitempty"`
+	// EnableHTTPCorrelationHeaders - Whether to process Correlation Headers coming to Api Management Service. Only applicable to Application Insights diagnostics. Default is true.
+	EnableHTTPCorrelationHeaders *bool `json:"enableHttpCorrelationHeaders,omitempty"`
 	// HTTPCorrelationProtocol - Sets correlation protocol to use for Application Insights diagnostics. Possible values include: 'None', 'Legacy', 'W3C'
 	HTTPCorrelationProtocol HTTPCorrelationProtocol `json:"httpCorrelationProtocol,omitempty"`
 	// Verbosity - The verbosity level applied to traces emitted by trace policies. Possible values include: 'Verbose', 'Information', 'Error'
@@ -9542,6 +9547,8 @@ type ServiceBaseProperties struct {
 	PortalURL *string `json:"portalUrl,omitempty"`
 	// ManagementAPIURL - READ-ONLY; Management API endpoint URL of the API Management service.
 	ManagementAPIURL *string `json:"managementApiUrl,omitempty"`
+	// DeveloperPortalURL - READ-ONLY; Developer Portal endpoint URL of the API Management service.
+	DeveloperPortalURL *string `json:"developerPortalUrl,omitempty"`
 	// ScmURL - READ-ONLY; SCM endpoint URL of the API Management service.
 	ScmURL *string `json:"scmUrl,omitempty"`
 	// HostnameConfigurations - Custom hostname configuration of the API Management service.
@@ -9854,6 +9861,8 @@ type ServiceProperties struct {
 	PortalURL *string `json:"portalUrl,omitempty"`
 	// ManagementAPIURL - READ-ONLY; Management API endpoint URL of the API Management service.
 	ManagementAPIURL *string `json:"managementApiUrl,omitempty"`
+	// DeveloperPortalURL - READ-ONLY; Developer Portal endpoint URL of the API Management service.
+	DeveloperPortalURL *string `json:"developerPortalUrl,omitempty"`
 	// ScmURL - READ-ONLY; SCM endpoint URL of the API Management service.
 	ScmURL *string `json:"scmUrl,omitempty"`
 	// HostnameConfigurations - Custom hostname configuration of the API Management service.
@@ -10265,6 +10274,8 @@ type ServiceUpdateProperties struct {
 	PortalURL *string `json:"portalUrl,omitempty"`
 	// ManagementAPIURL - READ-ONLY; Management API endpoint URL of the API Management service.
 	ManagementAPIURL *string `json:"managementApiUrl,omitempty"`
+	// DeveloperPortalURL - READ-ONLY; Developer Portal endpoint URL of the API Management service.
+	DeveloperPortalURL *string `json:"developerPortalUrl,omitempty"`
 	// ScmURL - READ-ONLY; SCM endpoint URL of the API Management service.
 	ScmURL *string `json:"scmUrl,omitempty"`
 	// HostnameConfigurations - Custom hostname configuration of the API Management service.

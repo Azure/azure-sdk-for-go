@@ -368,7 +368,7 @@ var _ GroupUserClientAPI = (*apimanagement.GroupUserClient)(nil)
 
 // IdentityProviderClientAPI contains the set of methods on the IdentityProviderClient type.
 type IdentityProviderClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName apimanagement.IdentityProviderType, parameters apimanagement.IdentityProviderContract, ifMatch string) (result apimanagement.IdentityProviderContract, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName apimanagement.IdentityProviderType, parameters apimanagement.IdentityProviderCreateContract, ifMatch string) (result apimanagement.IdentityProviderContract, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName apimanagement.IdentityProviderType, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName apimanagement.IdentityProviderType) (result apimanagement.IdentityProviderContract, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName apimanagement.IdentityProviderType) (result autorest.Response, err error)
@@ -497,6 +497,7 @@ type DelegationSettingsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters apimanagement.PortalDelegationSettings, ifMatch string) (result apimanagement.PortalDelegationSettings, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string) (result apimanagement.PortalDelegationSettings, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string) (result autorest.Response, err error)
+	ListSecrets(ctx context.Context, resourceGroupName string, serviceName string) (result apimanagement.PortalSettingValidationKeyContract, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, parameters apimanagement.PortalDelegationSettings, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -560,12 +561,13 @@ var _ ProductPolicyClientAPI = (*apimanagement.ProductPolicyClient)(nil)
 
 // NamedValueClientAPI contains the set of methods on the NamedValueClient type.
 type NamedValueClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, parameters apimanagement.NamedValueContract, ifMatch string) (result apimanagement.NamedValueCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, parameters apimanagement.NamedValueCreateContract, ifMatch string) (result apimanagement.NamedValueCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string) (result apimanagement.NamedValueContract, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string) (result autorest.Response, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.NamedValueCollectionPage, err error)
 	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.NamedValueCollectionIterator, err error)
+	ListValue(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string) (result apimanagement.PropertyValueContract, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, parameters apimanagement.NamedValueUpdateParameters, ifMatch string) (result apimanagement.NamedValueUpdateFuture, err error)
 }
 

@@ -20,6 +20,7 @@ package eventgridapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-04-01-preview/eventgrid"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // DomainsClientAPI contains the set of methods on the DomainsClient type.
@@ -48,6 +49,17 @@ type DomainTopicsClientAPI interface {
 }
 
 var _ DomainTopicsClientAPI = (*eventgrid.DomainTopicsClient)(nil)
+
+// EventChannelsClientAPI contains the set of methods on the EventChannelsClient type.
+type EventChannelsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, partnerNamespaceName string, eventChannelName string, eventChannelInfo eventgrid.EventChannel) (result eventgrid.EventChannel, err error)
+	Delete(ctx context.Context, resourceGroupName string, partnerNamespaceName string, eventChannelName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, partnerNamespaceName string, eventChannelName string) (result eventgrid.EventChannel, err error)
+	ListByPartnerNamespace(ctx context.Context, resourceGroupName string, partnerNamespaceName string, filter string, top *int32) (result eventgrid.EventChannelsListResultPage, err error)
+	ListByPartnerNamespaceComplete(ctx context.Context, resourceGroupName string, partnerNamespaceName string, filter string, top *int32) (result eventgrid.EventChannelsListResultIterator, err error)
+}
+
+var _ EventChannelsClientAPI = (*eventgrid.EventChannelsClient)(nil)
 
 // EventSubscriptionsClientAPI contains the set of methods on the EventSubscriptionsClient type.
 type EventSubscriptionsClientAPI interface {
@@ -80,12 +92,116 @@ type EventSubscriptionsClientAPI interface {
 
 var _ EventSubscriptionsClientAPI = (*eventgrid.EventSubscriptionsClient)(nil)
 
+// SystemTopicEventSubscriptionsClientAPI contains the set of methods on the SystemTopicEventSubscriptionsClient type.
+type SystemTopicEventSubscriptionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string, eventSubscriptionInfo eventgrid.EventSubscription) (result eventgrid.SystemTopicEventSubscriptionsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string) (result eventgrid.SystemTopicEventSubscriptionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string) (result eventgrid.EventSubscription, err error)
+	GetFullURL(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string) (result eventgrid.EventSubscriptionFullURL, err error)
+	ListBySystemTopic(ctx context.Context, resourceGroupName string, systemTopicName string) (result eventgrid.EventSubscriptionsListResult, err error)
+	Update(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters eventgrid.EventSubscriptionUpdateParameters) (result eventgrid.SystemTopicEventSubscriptionsUpdateFuture, err error)
+}
+
+var _ SystemTopicEventSubscriptionsClientAPI = (*eventgrid.SystemTopicEventSubscriptionsClient)(nil)
+
+// PartnerTopicEventSubscriptionsClientAPI contains the set of methods on the PartnerTopicEventSubscriptionsClient type.
+type PartnerTopicEventSubscriptionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, partnerTopicName string, eventSubscriptionName string, eventSubscriptionInfo eventgrid.EventSubscription) (result eventgrid.PartnerTopicEventSubscriptionsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, partnerTopicName string, eventSubscriptionName string) (result eventgrid.PartnerTopicEventSubscriptionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, partnerTopicName string, eventSubscriptionName string) (result eventgrid.EventSubscription, err error)
+	GetFullURL(ctx context.Context, resourceGroupName string, partnerTopicName string, eventSubscriptionName string) (result eventgrid.EventSubscriptionFullURL, err error)
+	ListByPartnerTopic(ctx context.Context, resourceGroupName string, partnerTopicName string) (result eventgrid.EventSubscriptionsListResult, err error)
+	Update(ctx context.Context, resourceGroupName string, partnerTopicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters eventgrid.EventSubscriptionUpdateParameters) (result eventgrid.PartnerTopicEventSubscriptionsUpdateFuture, err error)
+}
+
+var _ PartnerTopicEventSubscriptionsClientAPI = (*eventgrid.PartnerTopicEventSubscriptionsClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result eventgrid.OperationsListResult, err error)
 }
 
 var _ OperationsClientAPI = (*eventgrid.OperationsClient)(nil)
+
+// PartnerNamespacesClientAPI contains the set of methods on the PartnerNamespacesClient type.
+type PartnerNamespacesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceInfo eventgrid.PartnerNamespace) (result eventgrid.PartnerNamespacesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, partnerNamespaceName string) (result eventgrid.PartnerNamespacesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, partnerNamespaceName string) (result eventgrid.PartnerNamespace, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32) (result eventgrid.PartnerNamespacesListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32) (result eventgrid.PartnerNamespacesListResultIterator, err error)
+	ListBySubscription(ctx context.Context, filter string, top *int32) (result eventgrid.PartnerNamespacesListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, filter string, top *int32) (result eventgrid.PartnerNamespacesListResultIterator, err error)
+	ListSharedAccessKeys(ctx context.Context, resourceGroupName string, partnerNamespaceName string) (result eventgrid.PartnerNamespaceSharedAccessKeys, err error)
+	RegenerateKey(ctx context.Context, resourceGroupName string, partnerNamespaceName string, regenerateKeyRequest eventgrid.PartnerNamespaceRegenerateKeyRequest) (result eventgrid.PartnerNamespaceSharedAccessKeys, err error)
+	Update(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceUpdateParameters eventgrid.PartnerNamespaceUpdateParameters) (result eventgrid.PartnerNamespacesUpdateFuture, err error)
+}
+
+var _ PartnerNamespacesClientAPI = (*eventgrid.PartnerNamespacesClient)(nil)
+
+// PartnerRegistrationsClientAPI contains the set of methods on the PartnerRegistrationsClient type.
+type PartnerRegistrationsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationInfo eventgrid.PartnerRegistration) (result eventgrid.PartnerRegistration, err error)
+	Delete(ctx context.Context, resourceGroupName string, partnerRegistrationName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, partnerRegistrationName string) (result eventgrid.PartnerRegistration, err error)
+	List(ctx context.Context) (result eventgrid.PartnerRegistrationsListResult, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32) (result eventgrid.PartnerRegistrationsListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32) (result eventgrid.PartnerRegistrationsListResultIterator, err error)
+	ListBySubscription(ctx context.Context, filter string, top *int32) (result eventgrid.PartnerRegistrationsListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, filter string, top *int32) (result eventgrid.PartnerRegistrationsListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationUpdateParameters eventgrid.PartnerRegistrationUpdateParameters) (result eventgrid.PartnerRegistration, err error)
+}
+
+var _ PartnerRegistrationsClientAPI = (*eventgrid.PartnerRegistrationsClient)(nil)
+
+// PartnerTopicsClientAPI contains the set of methods on the PartnerTopicsClient type.
+type PartnerTopicsClientAPI interface {
+	Activate(ctx context.Context, resourceGroupName string, partnerTopicName string) (result eventgrid.PartnerTopic, err error)
+	Deactivate(ctx context.Context, resourceGroupName string, partnerTopicName string) (result eventgrid.PartnerTopic, err error)
+	Delete(ctx context.Context, resourceGroupName string, partnerTopicName string) (result eventgrid.PartnerTopicsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, partnerTopicName string) (result eventgrid.PartnerTopic, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32) (result eventgrid.PartnerTopicsListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32) (result eventgrid.PartnerTopicsListResultIterator, err error)
+	ListBySubscription(ctx context.Context, filter string, top *int32) (result eventgrid.PartnerTopicsListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, filter string, top *int32) (result eventgrid.PartnerTopicsListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, partnerTopicName string, partnerTopicUpdateParameters eventgrid.PartnerTopicUpdateParameters) (result eventgrid.PartnerTopic, err error)
+}
+
+var _ PartnerTopicsClientAPI = (*eventgrid.PartnerTopicsClient)(nil)
+
+// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
+type PrivateEndpointConnectionsClientAPI interface {
+	Delete(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string) (result eventgrid.PrivateEndpointConnectionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string) (result eventgrid.PrivateEndpointConnection, err error)
+	ListByResource(ctx context.Context, resourceGroupName string, parentType string, parentName string, filter string, top *int32) (result eventgrid.PrivateEndpointConnectionListResultPage, err error)
+	ListByResourceComplete(ctx context.Context, resourceGroupName string, parentType string, parentName string, filter string, top *int32) (result eventgrid.PrivateEndpointConnectionListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string) (result eventgrid.PrivateEndpointConnectionsUpdateFuture, err error)
+}
+
+var _ PrivateEndpointConnectionsClientAPI = (*eventgrid.PrivateEndpointConnectionsClient)(nil)
+
+// PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
+type PrivateLinkResourcesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateLinkResourceName string) (result eventgrid.PrivateLinkResource, err error)
+	ListByResource(ctx context.Context, resourceGroupName string, parentType string, parentName string, filter string, top *int32) (result eventgrid.PrivateLinkResourcesListResultPage, err error)
+	ListByResourceComplete(ctx context.Context, resourceGroupName string, parentType string, parentName string, filter string, top *int32) (result eventgrid.PrivateLinkResourcesListResultIterator, err error)
+}
+
+var _ PrivateLinkResourcesClientAPI = (*eventgrid.PrivateLinkResourcesClient)(nil)
+
+// SystemTopicsClientAPI contains the set of methods on the SystemTopicsClient type.
+type SystemTopicsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicInfo eventgrid.SystemTopic) (result eventgrid.SystemTopicsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, systemTopicName string) (result eventgrid.SystemTopicsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, systemTopicName string) (result eventgrid.SystemTopic, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32) (result eventgrid.SystemTopicsListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32) (result eventgrid.SystemTopicsListResultIterator, err error)
+	ListBySubscription(ctx context.Context, filter string, top *int32) (result eventgrid.SystemTopicsListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, filter string, top *int32) (result eventgrid.SystemTopicsListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicUpdateParameters eventgrid.SystemTopicUpdateParameters) (result eventgrid.SystemTopicsUpdateFuture, err error)
+}
+
+var _ SystemTopicsClientAPI = (*eventgrid.SystemTopicsClient)(nil)
 
 // TopicsClientAPI contains the set of methods on the TopicsClient type.
 type TopicsClientAPI interface {
@@ -103,6 +219,13 @@ type TopicsClientAPI interface {
 }
 
 var _ TopicsClientAPI = (*eventgrid.TopicsClient)(nil)
+
+// ExtensionTopicsClientAPI contains the set of methods on the ExtensionTopicsClient type.
+type ExtensionTopicsClientAPI interface {
+	Get(ctx context.Context, scope string) (result eventgrid.ExtensionTopic, err error)
+}
+
+var _ ExtensionTopicsClientAPI = (*eventgrid.ExtensionTopicsClient)(nil)
 
 // TopicTypesClientAPI contains the set of methods on the TopicTypesClient type.
 type TopicTypesClientAPI interface {

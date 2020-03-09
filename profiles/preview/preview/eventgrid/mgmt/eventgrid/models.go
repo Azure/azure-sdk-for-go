@@ -71,12 +71,30 @@ const (
 	EndpointTypeStorageBlob           EndpointTypeBasicDeadLetterDestination = original.EndpointTypeStorageBlob
 )
 
+type EventChannelProvisioningState = original.EventChannelProvisioningState
+
+const (
+	EventChannelProvisioningStateCanceled  EventChannelProvisioningState = original.EventChannelProvisioningStateCanceled
+	EventChannelProvisioningStateCreating  EventChannelProvisioningState = original.EventChannelProvisioningStateCreating
+	EventChannelProvisioningStateDeleting  EventChannelProvisioningState = original.EventChannelProvisioningStateDeleting
+	EventChannelProvisioningStateFailed    EventChannelProvisioningState = original.EventChannelProvisioningStateFailed
+	EventChannelProvisioningStateSucceeded EventChannelProvisioningState = original.EventChannelProvisioningStateSucceeded
+	EventChannelProvisioningStateUpdating  EventChannelProvisioningState = original.EventChannelProvisioningStateUpdating
+)
+
 type EventDeliverySchema = original.EventDeliverySchema
 
 const (
 	CloudEventSchemaV10 EventDeliverySchema = original.CloudEventSchemaV10
 	CustomInputSchema   EventDeliverySchema = original.CustomInputSchema
 	EventGridSchema     EventDeliverySchema = original.EventGridSchema
+)
+
+type EventSubscriptionIdentityType = original.EventSubscriptionIdentityType
+
+const (
+	SystemAssigned EventSubscriptionIdentityType = original.SystemAssigned
+	UserAssigned   EventSubscriptionIdentityType = original.UserAssigned
 )
 
 type EventSubscriptionProvisioningState = original.EventSubscriptionProvisioningState
@@ -95,6 +113,15 @@ type IPActionType = original.IPActionType
 
 const (
 	Allow IPActionType = original.Allow
+)
+
+type IdentityType = original.IdentityType
+
+const (
+	IdentityTypeNone                       IdentityType = original.IdentityTypeNone
+	IdentityTypeSystemAssigned             IdentityType = original.IdentityTypeSystemAssigned
+	IdentityTypeSystemAssignedUserAssigned IdentityType = original.IdentityTypeSystemAssignedUserAssigned
+	IdentityTypeUserAssigned               IdentityType = original.IdentityTypeUserAssigned
 )
 
 type InputSchema = original.InputSchema
@@ -130,11 +157,102 @@ const (
 	OperatorTypeStringNotIn               OperatorType = original.OperatorTypeStringNotIn
 )
 
+type PartnerNamespaceProvisioningState = original.PartnerNamespaceProvisioningState
+
+const (
+	PartnerNamespaceProvisioningStateCanceled  PartnerNamespaceProvisioningState = original.PartnerNamespaceProvisioningStateCanceled
+	PartnerNamespaceProvisioningStateCreating  PartnerNamespaceProvisioningState = original.PartnerNamespaceProvisioningStateCreating
+	PartnerNamespaceProvisioningStateDeleting  PartnerNamespaceProvisioningState = original.PartnerNamespaceProvisioningStateDeleting
+	PartnerNamespaceProvisioningStateFailed    PartnerNamespaceProvisioningState = original.PartnerNamespaceProvisioningStateFailed
+	PartnerNamespaceProvisioningStateSucceeded PartnerNamespaceProvisioningState = original.PartnerNamespaceProvisioningStateSucceeded
+	PartnerNamespaceProvisioningStateUpdating  PartnerNamespaceProvisioningState = original.PartnerNamespaceProvisioningStateUpdating
+)
+
+type PartnerRegistrationProvisioningState = original.PartnerRegistrationProvisioningState
+
+const (
+	PartnerRegistrationProvisioningStateCanceled  PartnerRegistrationProvisioningState = original.PartnerRegistrationProvisioningStateCanceled
+	PartnerRegistrationProvisioningStateCreating  PartnerRegistrationProvisioningState = original.PartnerRegistrationProvisioningStateCreating
+	PartnerRegistrationProvisioningStateDeleting  PartnerRegistrationProvisioningState = original.PartnerRegistrationProvisioningStateDeleting
+	PartnerRegistrationProvisioningStateFailed    PartnerRegistrationProvisioningState = original.PartnerRegistrationProvisioningStateFailed
+	PartnerRegistrationProvisioningStateSucceeded PartnerRegistrationProvisioningState = original.PartnerRegistrationProvisioningStateSucceeded
+	PartnerRegistrationProvisioningStateUpdating  PartnerRegistrationProvisioningState = original.PartnerRegistrationProvisioningStateUpdating
+)
+
+type PartnerRegistrationVisibilityState = original.PartnerRegistrationVisibilityState
+
+const (
+	GenerallyAvailable PartnerRegistrationVisibilityState = original.GenerallyAvailable
+	Hidden             PartnerRegistrationVisibilityState = original.Hidden
+	PublicPreview      PartnerRegistrationVisibilityState = original.PublicPreview
+)
+
+type PartnerTopicActivationState = original.PartnerTopicActivationState
+
+const (
+	Activated      PartnerTopicActivationState = original.Activated
+	Deactivated    PartnerTopicActivationState = original.Deactivated
+	NeverActivated PartnerTopicActivationState = original.NeverActivated
+)
+
+type PartnerTopicProvisioningState = original.PartnerTopicProvisioningState
+
+const (
+	PartnerTopicProvisioningStateCanceled  PartnerTopicProvisioningState = original.PartnerTopicProvisioningStateCanceled
+	PartnerTopicProvisioningStateCreating  PartnerTopicProvisioningState = original.PartnerTopicProvisioningStateCreating
+	PartnerTopicProvisioningStateDeleting  PartnerTopicProvisioningState = original.PartnerTopicProvisioningStateDeleting
+	PartnerTopicProvisioningStateFailed    PartnerTopicProvisioningState = original.PartnerTopicProvisioningStateFailed
+	PartnerTopicProvisioningStateSucceeded PartnerTopicProvisioningState = original.PartnerTopicProvisioningStateSucceeded
+	PartnerTopicProvisioningStateUpdating  PartnerTopicProvisioningState = original.PartnerTopicProvisioningStateUpdating
+)
+
+type PartnerTopicTypeAuthorizationState = original.PartnerTopicTypeAuthorizationState
+
+const (
+	Authorized    PartnerTopicTypeAuthorizationState = original.Authorized
+	NotApplicable PartnerTopicTypeAuthorizationState = original.NotApplicable
+	NotAuthorized PartnerTopicTypeAuthorizationState = original.NotAuthorized
+)
+
+type PersistedConnectionStatus = original.PersistedConnectionStatus
+
+const (
+	Approved     PersistedConnectionStatus = original.Approved
+	Disconnected PersistedConnectionStatus = original.Disconnected
+	Pending      PersistedConnectionStatus = original.Pending
+	Rejected     PersistedConnectionStatus = original.Rejected
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	Disabled PublicNetworkAccess = original.Disabled
+	Enabled  PublicNetworkAccess = original.Enabled
+)
+
+type ResourceProvisioningState = original.ResourceProvisioningState
+
+const (
+	ResourceProvisioningStateCanceled  ResourceProvisioningState = original.ResourceProvisioningStateCanceled
+	ResourceProvisioningStateCreating  ResourceProvisioningState = original.ResourceProvisioningStateCreating
+	ResourceProvisioningStateDeleting  ResourceProvisioningState = original.ResourceProvisioningStateDeleting
+	ResourceProvisioningStateFailed    ResourceProvisioningState = original.ResourceProvisioningStateFailed
+	ResourceProvisioningStateSucceeded ResourceProvisioningState = original.ResourceProvisioningStateSucceeded
+	ResourceProvisioningStateUpdating  ResourceProvisioningState = original.ResourceProvisioningStateUpdating
+)
+
 type ResourceRegionType = original.ResourceRegionType
 
 const (
 	GlobalResource   ResourceRegionType = original.GlobalResource
 	RegionalResource ResourceRegionType = original.RegionalResource
+)
+
+type Sku = original.Sku
+
+const (
+	Basic   Sku = original.Basic
+	Premium Sku = original.Premium
 )
 
 type TopicProvisioningState = original.TopicProvisioningState
@@ -168,7 +286,10 @@ type BasicDeadLetterDestination = original.BasicDeadLetterDestination
 type BasicEventSubscriptionDestination = original.BasicEventSubscriptionDestination
 type BasicInputSchemaMapping = original.BasicInputSchemaMapping
 type BoolEqualsAdvancedFilter = original.BoolEqualsAdvancedFilter
+type ConnectionState = original.ConnectionState
 type DeadLetterDestination = original.DeadLetterDestination
+type DeadLetterWithResourceIdentity = original.DeadLetterWithResourceIdentity
+type DeliveryWithResourceIdentity = original.DeliveryWithResourceIdentity
 type Domain = original.Domain
 type DomainProperties = original.DomainProperties
 type DomainRegenerateKeyRequest = original.DomainRegenerateKeyRequest
@@ -181,6 +302,7 @@ type DomainTopicsDeleteFuture = original.DomainTopicsDeleteFuture
 type DomainTopicsListResult = original.DomainTopicsListResult
 type DomainTopicsListResultIterator = original.DomainTopicsListResultIterator
 type DomainTopicsListResultPage = original.DomainTopicsListResultPage
+type DomainUpdateParameterProperties = original.DomainUpdateParameterProperties
 type DomainUpdateParameters = original.DomainUpdateParameters
 type DomainsClient = original.DomainsClient
 type DomainsCreateOrUpdateFuture = original.DomainsCreateOrUpdateFuture
@@ -189,12 +311,21 @@ type DomainsListResult = original.DomainsListResult
 type DomainsListResultIterator = original.DomainsListResultIterator
 type DomainsListResultPage = original.DomainsListResultPage
 type DomainsUpdateFuture = original.DomainsUpdateFuture
+type EventChannel = original.EventChannel
+type EventChannelDestination = original.EventChannelDestination
+type EventChannelProperties = original.EventChannelProperties
+type EventChannelSource = original.EventChannelSource
+type EventChannelsClient = original.EventChannelsClient
+type EventChannelsListResult = original.EventChannelsListResult
+type EventChannelsListResultIterator = original.EventChannelsListResultIterator
+type EventChannelsListResultPage = original.EventChannelsListResultPage
 type EventHubEventSubscriptionDestination = original.EventHubEventSubscriptionDestination
 type EventHubEventSubscriptionDestinationProperties = original.EventHubEventSubscriptionDestinationProperties
 type EventSubscription = original.EventSubscription
 type EventSubscriptionDestination = original.EventSubscriptionDestination
 type EventSubscriptionFilter = original.EventSubscriptionFilter
 type EventSubscriptionFullURL = original.EventSubscriptionFullURL
+type EventSubscriptionIdentity = original.EventSubscriptionIdentity
 type EventSubscriptionProperties = original.EventSubscriptionProperties
 type EventSubscriptionUpdateParameters = original.EventSubscriptionUpdateParameters
 type EventSubscriptionsClient = original.EventSubscriptionsClient
@@ -207,8 +338,12 @@ type EventSubscriptionsUpdateFuture = original.EventSubscriptionsUpdateFuture
 type EventType = original.EventType
 type EventTypeProperties = original.EventTypeProperties
 type EventTypesListResult = original.EventTypesListResult
+type ExtensionTopic = original.ExtensionTopic
+type ExtensionTopicProperties = original.ExtensionTopicProperties
+type ExtensionTopicsClient = original.ExtensionTopicsClient
 type HybridConnectionEventSubscriptionDestination = original.HybridConnectionEventSubscriptionDestination
 type HybridConnectionEventSubscriptionDestinationProperties = original.HybridConnectionEventSubscriptionDestinationProperties
+type IdentityInfo = original.IdentityInfo
 type InboundIPRule = original.InboundIPRule
 type InputSchemaMapping = original.InputSchemaMapping
 type JSONField = original.JSONField
@@ -225,12 +360,65 @@ type Operation = original.Operation
 type OperationInfo = original.OperationInfo
 type OperationsClient = original.OperationsClient
 type OperationsListResult = original.OperationsListResult
+type PartnerNamespace = original.PartnerNamespace
+type PartnerNamespaceProperties = original.PartnerNamespaceProperties
+type PartnerNamespaceRegenerateKeyRequest = original.PartnerNamespaceRegenerateKeyRequest
+type PartnerNamespaceSharedAccessKeys = original.PartnerNamespaceSharedAccessKeys
+type PartnerNamespaceUpdateParameters = original.PartnerNamespaceUpdateParameters
+type PartnerNamespacesClient = original.PartnerNamespacesClient
+type PartnerNamespacesCreateOrUpdateFuture = original.PartnerNamespacesCreateOrUpdateFuture
+type PartnerNamespacesDeleteFuture = original.PartnerNamespacesDeleteFuture
+type PartnerNamespacesListResult = original.PartnerNamespacesListResult
+type PartnerNamespacesListResultIterator = original.PartnerNamespacesListResultIterator
+type PartnerNamespacesListResultPage = original.PartnerNamespacesListResultPage
+type PartnerNamespacesUpdateFuture = original.PartnerNamespacesUpdateFuture
+type PartnerRegistration = original.PartnerRegistration
+type PartnerRegistrationEventTypesListResult = original.PartnerRegistrationEventTypesListResult
+type PartnerRegistrationProperties = original.PartnerRegistrationProperties
+type PartnerRegistrationUpdateParameters = original.PartnerRegistrationUpdateParameters
+type PartnerRegistrationsClient = original.PartnerRegistrationsClient
+type PartnerRegistrationsListResult = original.PartnerRegistrationsListResult
+type PartnerRegistrationsListResultIterator = original.PartnerRegistrationsListResultIterator
+type PartnerRegistrationsListResultPage = original.PartnerRegistrationsListResultPage
+type PartnerTopic = original.PartnerTopic
+type PartnerTopicEventSubscriptionsClient = original.PartnerTopicEventSubscriptionsClient
+type PartnerTopicEventSubscriptionsCreateOrUpdateFuture = original.PartnerTopicEventSubscriptionsCreateOrUpdateFuture
+type PartnerTopicEventSubscriptionsDeleteFuture = original.PartnerTopicEventSubscriptionsDeleteFuture
+type PartnerTopicEventSubscriptionsUpdateFuture = original.PartnerTopicEventSubscriptionsUpdateFuture
+type PartnerTopicProperties = original.PartnerTopicProperties
+type PartnerTopicType = original.PartnerTopicType
+type PartnerTopicTypeProperties = original.PartnerTopicTypeProperties
+type PartnerTopicTypesListResult = original.PartnerTopicTypesListResult
+type PartnerTopicUpdateParameters = original.PartnerTopicUpdateParameters
+type PartnerTopicsClient = original.PartnerTopicsClient
+type PartnerTopicsDeleteFuture = original.PartnerTopicsDeleteFuture
+type PartnerTopicsListResult = original.PartnerTopicsListResult
+type PartnerTopicsListResultIterator = original.PartnerTopicsListResultIterator
+type PartnerTopicsListResultPage = original.PartnerTopicsListResultPage
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
+type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateEndpointConnectionsUpdateFuture = original.PrivateEndpointConnectionsUpdateFuture
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkResourcesListResult = original.PrivateLinkResourcesListResult
+type PrivateLinkResourcesListResultIterator = original.PrivateLinkResourcesListResultIterator
+type PrivateLinkResourcesListResultPage = original.PrivateLinkResourcesListResultPage
 type Resource = original.Resource
+type ResourceSku = original.ResourceSku
 type RetryPolicy = original.RetryPolicy
 type ServiceBusQueueEventSubscriptionDestination = original.ServiceBusQueueEventSubscriptionDestination
 type ServiceBusQueueEventSubscriptionDestinationProperties = original.ServiceBusQueueEventSubscriptionDestinationProperties
 type ServiceBusTopicEventSubscriptionDestination = original.ServiceBusTopicEventSubscriptionDestination
 type ServiceBusTopicEventSubscriptionDestinationProperties = original.ServiceBusTopicEventSubscriptionDestinationProperties
+type SkuDefinitionsForResourceType = original.SkuDefinitionsForResourceType
+type SkuDefinitionsForResourceTypeListResult = original.SkuDefinitionsForResourceTypeListResult
 type StorageBlobDeadLetterDestination = original.StorageBlobDeadLetterDestination
 type StorageBlobDeadLetterDestinationProperties = original.StorageBlobDeadLetterDestinationProperties
 type StorageQueueEventSubscriptionDestination = original.StorageQueueEventSubscriptionDestination
@@ -240,6 +428,20 @@ type StringContainsAdvancedFilter = original.StringContainsAdvancedFilter
 type StringEndsWithAdvancedFilter = original.StringEndsWithAdvancedFilter
 type StringInAdvancedFilter = original.StringInAdvancedFilter
 type StringNotInAdvancedFilter = original.StringNotInAdvancedFilter
+type SystemTopic = original.SystemTopic
+type SystemTopicEventSubscriptionsClient = original.SystemTopicEventSubscriptionsClient
+type SystemTopicEventSubscriptionsCreateOrUpdateFuture = original.SystemTopicEventSubscriptionsCreateOrUpdateFuture
+type SystemTopicEventSubscriptionsDeleteFuture = original.SystemTopicEventSubscriptionsDeleteFuture
+type SystemTopicEventSubscriptionsUpdateFuture = original.SystemTopicEventSubscriptionsUpdateFuture
+type SystemTopicProperties = original.SystemTopicProperties
+type SystemTopicUpdateParameters = original.SystemTopicUpdateParameters
+type SystemTopicsClient = original.SystemTopicsClient
+type SystemTopicsCreateOrUpdateFuture = original.SystemTopicsCreateOrUpdateFuture
+type SystemTopicsDeleteFuture = original.SystemTopicsDeleteFuture
+type SystemTopicsListResult = original.SystemTopicsListResult
+type SystemTopicsListResultIterator = original.SystemTopicsListResultIterator
+type SystemTopicsListResultPage = original.SystemTopicsListResultPage
+type SystemTopicsUpdateFuture = original.SystemTopicsUpdateFuture
 type Topic = original.Topic
 type TopicProperties = original.TopicProperties
 type TopicRegenerateKeyRequest = original.TopicRegenerateKeyRequest
@@ -248,6 +450,7 @@ type TopicTypeInfo = original.TopicTypeInfo
 type TopicTypeProperties = original.TopicTypeProperties
 type TopicTypesClient = original.TopicTypesClient
 type TopicTypesListResult = original.TopicTypesListResult
+type TopicUpdateParameterProperties = original.TopicUpdateParameterProperties
 type TopicUpdateParameters = original.TopicUpdateParameters
 type TopicsClient = original.TopicsClient
 type TopicsCreateOrUpdateFuture = original.TopicsCreateOrUpdateFuture
@@ -257,6 +460,7 @@ type TopicsListResultIterator = original.TopicsListResultIterator
 type TopicsListResultPage = original.TopicsListResultPage
 type TopicsUpdateFuture = original.TopicsUpdateFuture
 type TrackedResource = original.TrackedResource
+type UserIdentityProperties = original.UserIdentityProperties
 type WebHookEventSubscriptionDestination = original.WebHookEventSubscriptionDestination
 type WebHookEventSubscriptionDestinationProperties = original.WebHookEventSubscriptionDestinationProperties
 
@@ -287,6 +491,18 @@ func NewDomainsListResultIterator(page DomainsListResultPage) DomainsListResultI
 func NewDomainsListResultPage(getNextPage func(context.Context, DomainsListResult) (DomainsListResult, error)) DomainsListResultPage {
 	return original.NewDomainsListResultPage(getNextPage)
 }
+func NewEventChannelsClient(subscriptionID string) EventChannelsClient {
+	return original.NewEventChannelsClient(subscriptionID)
+}
+func NewEventChannelsClientWithBaseURI(baseURI string, subscriptionID string) EventChannelsClient {
+	return original.NewEventChannelsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewEventChannelsListResultIterator(page EventChannelsListResultPage) EventChannelsListResultIterator {
+	return original.NewEventChannelsListResultIterator(page)
+}
+func NewEventChannelsListResultPage(getNextPage func(context.Context, EventChannelsListResult) (EventChannelsListResult, error)) EventChannelsListResultPage {
+	return original.NewEventChannelsListResultPage(getNextPage)
+}
 func NewEventSubscriptionsClient(subscriptionID string) EventSubscriptionsClient {
 	return original.NewEventSubscriptionsClient(subscriptionID)
 }
@@ -299,11 +515,101 @@ func NewEventSubscriptionsListResultIterator(page EventSubscriptionsListResultPa
 func NewEventSubscriptionsListResultPage(getNextPage func(context.Context, EventSubscriptionsListResult) (EventSubscriptionsListResult, error)) EventSubscriptionsListResultPage {
 	return original.NewEventSubscriptionsListResultPage(getNextPage)
 }
+func NewExtensionTopicsClient(subscriptionID string) ExtensionTopicsClient {
+	return original.NewExtensionTopicsClient(subscriptionID)
+}
+func NewExtensionTopicsClientWithBaseURI(baseURI string, subscriptionID string) ExtensionTopicsClient {
+	return original.NewExtensionTopicsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPartnerNamespacesClient(subscriptionID string) PartnerNamespacesClient {
+	return original.NewPartnerNamespacesClient(subscriptionID)
+}
+func NewPartnerNamespacesClientWithBaseURI(baseURI string, subscriptionID string) PartnerNamespacesClient {
+	return original.NewPartnerNamespacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPartnerNamespacesListResultIterator(page PartnerNamespacesListResultPage) PartnerNamespacesListResultIterator {
+	return original.NewPartnerNamespacesListResultIterator(page)
+}
+func NewPartnerNamespacesListResultPage(getNextPage func(context.Context, PartnerNamespacesListResult) (PartnerNamespacesListResult, error)) PartnerNamespacesListResultPage {
+	return original.NewPartnerNamespacesListResultPage(getNextPage)
+}
+func NewPartnerRegistrationsClient(subscriptionID string) PartnerRegistrationsClient {
+	return original.NewPartnerRegistrationsClient(subscriptionID)
+}
+func NewPartnerRegistrationsClientWithBaseURI(baseURI string, subscriptionID string) PartnerRegistrationsClient {
+	return original.NewPartnerRegistrationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPartnerRegistrationsListResultIterator(page PartnerRegistrationsListResultPage) PartnerRegistrationsListResultIterator {
+	return original.NewPartnerRegistrationsListResultIterator(page)
+}
+func NewPartnerRegistrationsListResultPage(getNextPage func(context.Context, PartnerRegistrationsListResult) (PartnerRegistrationsListResult, error)) PartnerRegistrationsListResultPage {
+	return original.NewPartnerRegistrationsListResultPage(getNextPage)
+}
+func NewPartnerTopicEventSubscriptionsClient(subscriptionID string) PartnerTopicEventSubscriptionsClient {
+	return original.NewPartnerTopicEventSubscriptionsClient(subscriptionID)
+}
+func NewPartnerTopicEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) PartnerTopicEventSubscriptionsClient {
+	return original.NewPartnerTopicEventSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPartnerTopicsClient(subscriptionID string) PartnerTopicsClient {
+	return original.NewPartnerTopicsClient(subscriptionID)
+}
+func NewPartnerTopicsClientWithBaseURI(baseURI string, subscriptionID string) PartnerTopicsClient {
+	return original.NewPartnerTopicsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPartnerTopicsListResultIterator(page PartnerTopicsListResultPage) PartnerTopicsListResultIterator {
+	return original.NewPartnerTopicsListResultIterator(page)
+}
+func NewPartnerTopicsListResultPage(getNextPage func(context.Context, PartnerTopicsListResult) (PartnerTopicsListResult, error)) PartnerTopicsListResultPage {
+	return original.NewPartnerTopicsListResultPage(getNextPage)
+}
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return original.NewPrivateEndpointConnectionListResultIterator(page)
+}
+func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(getNextPage)
+}
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesListResultIterator(page PrivateLinkResourcesListResultPage) PrivateLinkResourcesListResultIterator {
+	return original.NewPrivateLinkResourcesListResultIterator(page)
+}
+func NewPrivateLinkResourcesListResultPage(getNextPage func(context.Context, PrivateLinkResourcesListResult) (PrivateLinkResourcesListResult, error)) PrivateLinkResourcesListResultPage {
+	return original.NewPrivateLinkResourcesListResultPage(getNextPage)
+}
+func NewSystemTopicEventSubscriptionsClient(subscriptionID string) SystemTopicEventSubscriptionsClient {
+	return original.NewSystemTopicEventSubscriptionsClient(subscriptionID)
+}
+func NewSystemTopicEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SystemTopicEventSubscriptionsClient {
+	return original.NewSystemTopicEventSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSystemTopicsClient(subscriptionID string) SystemTopicsClient {
+	return original.NewSystemTopicsClient(subscriptionID)
+}
+func NewSystemTopicsClientWithBaseURI(baseURI string, subscriptionID string) SystemTopicsClient {
+	return original.NewSystemTopicsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSystemTopicsListResultIterator(page SystemTopicsListResultPage) SystemTopicsListResultIterator {
+	return original.NewSystemTopicsListResultIterator(page)
+}
+func NewSystemTopicsListResultPage(getNextPage func(context.Context, SystemTopicsListResult) (SystemTopicsListResult, error)) SystemTopicsListResultPage {
+	return original.NewSystemTopicsListResultPage(getNextPage)
 }
 func NewTopicTypesClient(subscriptionID string) TopicTypesClient {
 	return original.NewTopicTypesClient(subscriptionID)
@@ -338,14 +644,23 @@ func PossibleEndpointTypeBasicDeadLetterDestinationValues() []EndpointTypeBasicD
 func PossibleEndpointTypeValues() []EndpointType {
 	return original.PossibleEndpointTypeValues()
 }
+func PossibleEventChannelProvisioningStateValues() []EventChannelProvisioningState {
+	return original.PossibleEventChannelProvisioningStateValues()
+}
 func PossibleEventDeliverySchemaValues() []EventDeliverySchema {
 	return original.PossibleEventDeliverySchemaValues()
+}
+func PossibleEventSubscriptionIdentityTypeValues() []EventSubscriptionIdentityType {
+	return original.PossibleEventSubscriptionIdentityTypeValues()
 }
 func PossibleEventSubscriptionProvisioningStateValues() []EventSubscriptionProvisioningState {
 	return original.PossibleEventSubscriptionProvisioningStateValues()
 }
 func PossibleIPActionTypeValues() []IPActionType {
 	return original.PossibleIPActionTypeValues()
+}
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
 }
 func PossibleInputSchemaMappingTypeValues() []InputSchemaMappingType {
 	return original.PossibleInputSchemaMappingTypeValues()
@@ -356,8 +671,38 @@ func PossibleInputSchemaValues() []InputSchema {
 func PossibleOperatorTypeValues() []OperatorType {
 	return original.PossibleOperatorTypeValues()
 }
+func PossiblePartnerNamespaceProvisioningStateValues() []PartnerNamespaceProvisioningState {
+	return original.PossiblePartnerNamespaceProvisioningStateValues()
+}
+func PossiblePartnerRegistrationProvisioningStateValues() []PartnerRegistrationProvisioningState {
+	return original.PossiblePartnerRegistrationProvisioningStateValues()
+}
+func PossiblePartnerRegistrationVisibilityStateValues() []PartnerRegistrationVisibilityState {
+	return original.PossiblePartnerRegistrationVisibilityStateValues()
+}
+func PossiblePartnerTopicActivationStateValues() []PartnerTopicActivationState {
+	return original.PossiblePartnerTopicActivationStateValues()
+}
+func PossiblePartnerTopicProvisioningStateValues() []PartnerTopicProvisioningState {
+	return original.PossiblePartnerTopicProvisioningStateValues()
+}
+func PossiblePartnerTopicTypeAuthorizationStateValues() []PartnerTopicTypeAuthorizationState {
+	return original.PossiblePartnerTopicTypeAuthorizationStateValues()
+}
+func PossiblePersistedConnectionStatusValues() []PersistedConnectionStatus {
+	return original.PossiblePersistedConnectionStatusValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
+}
+func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
+	return original.PossibleResourceProvisioningStateValues()
+}
 func PossibleResourceRegionTypeValues() []ResourceRegionType {
 	return original.PossibleResourceRegionTypeValues()
+}
+func PossibleSkuValues() []Sku {
+	return original.PossibleSkuValues()
 }
 func PossibleTopicProvisioningStateValues() []TopicProvisioningState {
 	return original.PossibleTopicProvisioningStateValues()

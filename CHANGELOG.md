@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v40.3.0`
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| eventgrid | 2020-04-01-preview |
+
 ## `v40.2.0`
 
 ### New Packages

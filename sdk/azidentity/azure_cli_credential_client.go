@@ -21,7 +21,7 @@ import (
 
 const (
 	suffix               = "/.default"
-	cmd                  = "cmd.exe"
+	cmdExe               = "cmd.exe"
 	bash                 = "/bin/sh"
 	windir               = "windir"
 	timeOut              = 10000
@@ -98,7 +98,7 @@ func (c *azureCLIAccessTokenProviderStruct) getAzureCLIAuthResults(ctx context.C
 	defer cancel()
 
 	if runtime.GOOS == "windows" {
-		cmd = exec.CommandContext(ctx, fmt.Sprintf("%s\\system32\\cmd.exe", os.Getenv(windir)))
+		cmd = exec.CommandContext(ctx, fmt.Sprintf("%s\\system32\\%s", os.Getenv(windir), cmdExe))
 		cmd.Env = os.Environ()
 		cmd.Env = append(cmd.Env, fmt.Sprintf("PATH=%s;%s", os.Getenv(azureCLIPath), azureCLIDefaultPathWindows))
 		cmd.Args = append(cmd.Args, "/c")

@@ -355,16 +355,6 @@ func (arp ARMResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AutopilotSettingsResource cosmos DB autopilot settings object
-type AutopilotSettingsResource struct {
-	// MaxThroughput - Represents max throughput an autopilot container can operate at.
-	MaxThroughput *int32 `json:"maxThroughput,omitempty"`
-	// AutoUpgradePolicy - Cosmos DB resource auto-upgrade policy
-	AutoUpgradePolicy *AutoUpgradePolicyResource `json:"autoUpgradePolicy,omitempty"`
-	// TargetMaxThroughput - READ-ONLY; Represents target max throughput an autopilot container should operate at once offer is no longer in pending state.
-	TargetMaxThroughput *int32 `json:"targetMaxThroughput,omitempty"`
-}
-
 // AutoUpgradePolicyResource cosmos DB resource auto-upgrade policy
 type AutoUpgradePolicyResource struct {
 	// ThroughputPolicy - Represents throughput policy which service must adhere to for auto-upgrade
@@ -3813,6 +3803,16 @@ type PrivateLinkServiceConnectionStateProperty struct {
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
 }
 
+// ProvisionedThroughputSettingsResource cosmos DB provisioned throughput settings object
+type ProvisionedThroughputSettingsResource struct {
+	// MaxThroughput - Represents maximum throughput container can scale up to.
+	MaxThroughput *int32 `json:"maxThroughput,omitempty"`
+	// AutoUpgradePolicy - Cosmos DB resource auto-upgrade policy
+	AutoUpgradePolicy *AutoUpgradePolicyResource `json:"autoUpgradePolicy,omitempty"`
+	// TargetMaxThroughput - READ-ONLY; Represents target maximum throughput container can scale up to once offer is no longer in pending state.
+	TargetMaxThroughput *int32 `json:"targetMaxThroughput,omitempty"`
+}
+
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
 // required location and tags
 type ProxyResource struct {
@@ -5733,10 +5733,10 @@ type ThroughputSettingsGetProperties struct {
 
 // ThroughputSettingsGetPropertiesResource ...
 type ThroughputSettingsGetPropertiesResource struct {
-	// Throughput - Value of the Cosmos DB resource throughput. Either throughput is required or autopilotSettings is required, but not both.
+	// Throughput - Value of the Cosmos DB resource throughput. Either throughput is required or provisionedThroughputSettings is required, but not both.
 	Throughput *int32 `json:"throughput,omitempty"`
-	// AutopilotSettings - Cosmos DB resource for Autopilot settings. Either throughput is required or autopilotSettings is required, but not both.
-	AutopilotSettings *AutopilotSettingsResource `json:"autopilotSettings,omitempty"`
+	// ProvisionedThroughputSettings - Cosmos DB resource for provisioned throughput settings. Either throughput is required or provisionedThroughputSettings is required, but not both.
+	ProvisionedThroughputSettings *ProvisionedThroughputSettingsResource `json:"provisionedThroughputSettings,omitempty"`
 	// MinimumThroughput - READ-ONLY; The minimum throughput of the resource
 	MinimumThroughput *string `json:"minimumThroughput,omitempty"`
 	// OfferReplacePending - READ-ONLY; The throughput replace is pending
@@ -5850,12 +5850,12 @@ func (tsgr *ThroughputSettingsGetResults) UnmarshalJSON(body []byte) error {
 }
 
 // ThroughputSettingsResource cosmos DB resource throughput object. Either throughput is required or
-// autopilotSettings is required, but not both.
+// provisionedThroughputSettings is required, but not both.
 type ThroughputSettingsResource struct {
-	// Throughput - Value of the Cosmos DB resource throughput. Either throughput is required or autopilotSettings is required, but not both.
+	// Throughput - Value of the Cosmos DB resource throughput. Either throughput is required or provisionedThroughputSettings is required, but not both.
 	Throughput *int32 `json:"throughput,omitempty"`
-	// AutopilotSettings - Cosmos DB resource for Autopilot settings. Either throughput is required or autopilotSettings is required, but not both.
-	AutopilotSettings *AutopilotSettingsResource `json:"autopilotSettings,omitempty"`
+	// ProvisionedThroughputSettings - Cosmos DB resource for provisioned throughput settings. Either throughput is required or provisionedThroughputSettings is required, but not both.
+	ProvisionedThroughputSettings *ProvisionedThroughputSettingsResource `json:"provisionedThroughputSettings,omitempty"`
 	// MinimumThroughput - READ-ONLY; The minimum throughput of the resource
 	MinimumThroughput *string `json:"minimumThroughput,omitempty"`
 	// OfferReplacePending - READ-ONLY; The throughput replace is pending

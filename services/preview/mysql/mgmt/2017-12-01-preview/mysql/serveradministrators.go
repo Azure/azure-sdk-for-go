@@ -203,14 +203,13 @@ func (client ServerAdministratorsClient) DeleteSender(req *http.Request) (future
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ServerAdministratorsClient) DeleteResponder(resp *http.Response) (result ServerAdministratorResource, err error) {
+func (client ServerAdministratorsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -291,14 +290,14 @@ func (client ServerAdministratorsClient) GetResponder(resp *http.Response) (resu
 	return
 }
 
-// ListByServer returns a list of server Administrators.
+// List returns a list of server Administrators.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
-func (client ServerAdministratorsClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result ServerAdministratorResourceListResult, err error) {
+func (client ServerAdministratorsClient) List(ctx context.Context, resourceGroupName string, serverName string) (result ServerAdministratorResourceListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServerAdministratorsClient.ListByServer")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerAdministratorsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -307,29 +306,29 @@ func (client ServerAdministratorsClient) ListByServer(ctx context.Context, resou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListByServerPreparer(ctx, resourceGroupName, serverName)
+	req, err := client.ListPreparer(ctx, resourceGroupName, serverName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysql.ServerAdministratorsClient", "ListByServer", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mysql.ServerAdministratorsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListByServerSender(req)
+	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "mysql.ServerAdministratorsClient", "ListByServer", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mysql.ServerAdministratorsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByServerResponder(resp)
+	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysql.ServerAdministratorsClient", "ListByServer", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "mysql.ServerAdministratorsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListByServerPreparer prepares the ListByServer request.
-func (client ServerAdministratorsClient) ListByServerPreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client ServerAdministratorsClient) ListPreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serverName":        autorest.Encode("path", serverName),
@@ -349,15 +348,15 @@ func (client ServerAdministratorsClient) ListByServerPreparer(ctx context.Contex
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListByServerSender sends the ListByServer request. The method will close the
+// ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServerAdministratorsClient) ListByServerSender(req *http.Request) (*http.Response, error) {
+func (client ServerAdministratorsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListByServerResponder handles the response to the ListByServer request. The method always
+// ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ServerAdministratorsClient) ListByServerResponder(resp *http.Response) (result ServerAdministratorResourceListResult, err error) {
+func (client ServerAdministratorsClient) ListResponder(resp *http.Response) (result ServerAdministratorResourceListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

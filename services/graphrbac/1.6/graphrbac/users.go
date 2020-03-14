@@ -276,6 +276,79 @@ func (client UsersClient) GetResponder(resp *http.Response) (result User, err er
 	return
 }
 
+// GetManager gets user's manager information from the directory.
+// Parameters:
+// upnOrObjectID - the object ID or principal name of the user for which to get information.
+func (client UsersClient) GetManager(ctx context.Context, upnOrObjectID string) (result User, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/UsersClient.GetManager")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetManagerPreparer(ctx, upnOrObjectID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "GetManagerPreparer", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetManagerSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "GetManager", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetManagerResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "GetManager", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetManagerPreparer prepares the GetManager request.
+func (client UsersClient) GetManagerPreparer(ctx context.Context, upnOrObjectID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"tenantID":      autorest.Encode("path", client.TenantID),
+		"upnOrObjectId": autorest.Encode("path", upnOrObjectID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/users/{upnOrObjectId}/manager", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetManagerSender sends the GetManager request. The method will close the
+// http.Response Body if it receives an error.
+func (client UsersClient) GetManagerSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// closes the http.Response Body.
+func (client UsersClient) GetManagerResponder(resp *http.Response) (result User, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetMemberGroups gets a collection that contains the object IDs of the groups of which the user is a member.
 // Parameters:
 // objectID - the object ID of the user for which to get group membership.

@@ -113,6 +113,7 @@ type UsersClientAPI interface {
 	Create(ctx context.Context, parameters graphrbac.UserCreateParameters) (result graphrbac.User, err error)
 	Delete(ctx context.Context, upnOrObjectID string) (result autorest.Response, err error)
 	Get(ctx context.Context, upnOrObjectID string) (result graphrbac.User, err error)
+	GetManager(ctx context.Context, upnOrObjectID string) (result graphrbac.User, err error)
 	GetMemberGroups(ctx context.Context, objectID string, parameters graphrbac.UserGetMemberGroupsParameters) (result graphrbac.UserGetMemberGroupsResult, err error)
 	List(ctx context.Context, filter string) (result graphrbac.UserListResultPage, err error)
 	ListComplete(ctx context.Context, filter string) (result graphrbac.UserListResultIterator, err error)

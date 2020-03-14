@@ -114,8 +114,8 @@ type UsersClientAPI interface {
 	Delete(ctx context.Context, upnOrObjectID string) (result autorest.Response, err error)
 	Get(ctx context.Context, upnOrObjectID string) (result graphrbac.User, err error)
 	GetMemberGroups(ctx context.Context, objectID string, parameters graphrbac.UserGetMemberGroupsParameters) (result graphrbac.UserGetMemberGroupsResult, err error)
-	List(ctx context.Context, filter string) (result graphrbac.UserListResultPage, err error)
-	ListComplete(ctx context.Context, filter string) (result graphrbac.UserListResultIterator, err error)
+	List(ctx context.Context, filter, expand string) (result graphrbac.UserListResultPage, err error)
+	ListComplete(ctx context.Context, filter, expand string) (result graphrbac.UserListResultIterator, err error)
 	ListNext(ctx context.Context, nextLink string) (result graphrbac.UserListResult, err error)
 	Update(ctx context.Context, upnOrObjectID string, parameters graphrbac.UserUpdateParameters) (result autorest.Response, err error)
 }

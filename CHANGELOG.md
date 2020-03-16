@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v40.4.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| advisor | 2020-01-01 |
+
 ## `v40.3.0`
 
 ### BreakingChanges

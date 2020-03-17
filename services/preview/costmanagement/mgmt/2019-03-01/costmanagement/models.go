@@ -215,6 +215,69 @@ func PossibleTimeframeTypeValues() []TimeframeType {
 	return []TimeframeType{Custom, MonthToDate, WeekToDate, YearToDate}
 }
 
+// CheckEligibilityDefinition the check eligibility Connector credentials definition
+type CheckEligibilityDefinition struct {
+	// Kind - Connector kind (eg aws)
+	Kind *string `json:"kind,omitempty"`
+	// CheckEligibilityProperties - Connector credentials properties
+	*CheckEligibilityProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckEligibilityDefinition.
+func (ced CheckEligibilityDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ced.Kind != nil {
+		objectMap["kind"] = ced.Kind
+	}
+	if ced.CheckEligibilityProperties != nil {
+		objectMap["properties"] = ced.CheckEligibilityProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CheckEligibilityDefinition struct.
+func (ced *CheckEligibilityDefinition) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ced.Kind = &kind
+			}
+		case "properties":
+			if v != nil {
+				var checkEligibilityProperties CheckEligibilityProperties
+				err = json.Unmarshal(*v, &checkEligibilityProperties)
+				if err != nil {
+					return err
+				}
+				ced.CheckEligibilityProperties = &checkEligibilityProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// CheckEligibilityProperties the check eligibility credential properties of a Connector
+type CheckEligibilityProperties struct {
+	// CredentialsKey - Credentials authentication key (eg AWS ARN)
+	CredentialsKey *string `json:"credentialsKey,omitempty"`
+	// CredentialsSecret - Credentials secret (eg AWS ExternalId)
+	CredentialsSecret *string `json:"credentialsSecret,omitempty"`
+	// ReportID - Identifying source report. (For AWS this is a CUR report name, defined with Daily and with Resources)
+	ReportID *string `json:"reportId,omitempty"`
+}
+
 // ConnectorCollectionErrorInfo details of any error encountered on last collection attempt
 type ConnectorCollectionErrorInfo struct {
 	// ErrorMessage - READ-ONLY; Detailed error message

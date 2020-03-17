@@ -19,7 +19,7 @@
 
 package advisorapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2017-04-19/advisor/advisorapi"
+import original "github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2020-01-01/advisor/advisorapi"
 
 type ConfigurationsClientAPI = original.ConfigurationsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

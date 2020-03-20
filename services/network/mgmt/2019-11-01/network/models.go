@@ -3668,8 +3668,8 @@ type ApplicationGatewayHTTPListenerPropertiesFormat struct {
 	CustomErrorConfigurations *[]ApplicationGatewayCustomError `json:"customErrorConfigurations,omitempty"`
 	// FirewallPolicy - Reference to the FirewallPolicy resource.
 	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
-	// Hostnames - List of Host names for HTTP Listener that allows special wildcard characters as well.
-	Hostnames *[]string `json:"hostnames,omitempty"`
+	// HostNames - List of Host names for HTTP Listener that allows special wildcard characters as well.
+	HostNames *[]string `json:"hostNames,omitempty"`
 }
 
 // ApplicationGatewayIPConfiguration IP configuration of an application gateway. Currently 1 public and 1

@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## v40.5.0
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| kusto | 2020-02-15 |
+| subscriptions | 2019-11-01 |
+| support | 2020-04-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| policyinsights | 2019-10-01 |
+
 ## `v40.4.0`
 
 ### New Packages

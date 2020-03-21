@@ -22,7 +22,7 @@ package kusto
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-11-09/kusto"
+	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2020-02-15/kusto"
 )
 
 const (
@@ -41,6 +41,7 @@ type AzureSkuName = original.AzureSkuName
 
 const (
 	DevNoSLAStandardD11V2 AzureSkuName = original.DevNoSLAStandardD11V2
+	DevNoSLAStandardE2aV4 AzureSkuName = original.DevNoSLAStandardE2aV4
 	StandardD11V2         AzureSkuName = original.StandardD11V2
 	StandardD12V2         AzureSkuName = original.StandardD12V2
 	StandardD13V2         AzureSkuName = original.StandardD13V2
@@ -49,6 +50,14 @@ const (
 	StandardDS13V22TBPS   AzureSkuName = original.StandardDS13V22TBPS
 	StandardDS14V23TBPS   AzureSkuName = original.StandardDS14V23TBPS
 	StandardDS14V24TBPS   AzureSkuName = original.StandardDS14V24TBPS
+	StandardE16asV43TBPS  AzureSkuName = original.StandardE16asV43TBPS
+	StandardE16asV44TBPS  AzureSkuName = original.StandardE16asV44TBPS
+	StandardE16aV4        AzureSkuName = original.StandardE16aV4
+	StandardE2aV4         AzureSkuName = original.StandardE2aV4
+	StandardE4aV4         AzureSkuName = original.StandardE4aV4
+	StandardE8asV41TBPS   AzureSkuName = original.StandardE8asV41TBPS
+	StandardE8asV42TBPS   AzureSkuName = original.StandardE8asV42TBPS
+	StandardE8aV4         AzureSkuName = original.StandardE8aV4
 	StandardL16s          AzureSkuName = original.StandardL16s
 	StandardL4s           AzureSkuName = original.StandardL4s
 	StandardL8s           AzureSkuName = original.StandardL8s
@@ -183,6 +192,13 @@ const (
 	KindIotHub         KindBasicDataConnection = original.KindIotHub
 )
 
+type LanguageExtensionName = original.LanguageExtensionName
+
+const (
+	PYTHON LanguageExtensionName = original.PYTHON
+	R      LanguageExtensionName = original.R
+)
+
 type PrincipalType = original.PrincipalType
 
 const (
@@ -267,11 +283,13 @@ type ClusterPrincipalAssignmentsDeleteFuture = original.ClusterPrincipalAssignme
 type ClusterPrincipalProperties = original.ClusterPrincipalProperties
 type ClusterProperties = original.ClusterProperties
 type ClusterUpdate = original.ClusterUpdate
+type ClustersAddLanguageExtensionsFuture = original.ClustersAddLanguageExtensionsFuture
 type ClustersClient = original.ClustersClient
 type ClustersCreateOrUpdateFuture = original.ClustersCreateOrUpdateFuture
 type ClustersDeleteFuture = original.ClustersDeleteFuture
 type ClustersDetachFollowerDatabasesFuture = original.ClustersDetachFollowerDatabasesFuture
 type ClustersDiagnoseVirtualNetworkFuture = original.ClustersDiagnoseVirtualNetworkFuture
+type ClustersRemoveLanguageExtensionsFuture = original.ClustersRemoveLanguageExtensionsFuture
 type ClustersStartFuture = original.ClustersStartFuture
 type ClustersStopFuture = original.ClustersStopFuture
 type ClustersUpdateFuture = original.ClustersUpdateFuture
@@ -316,6 +334,8 @@ type IdentityUserAssignedIdentitiesValue = original.IdentityUserAssignedIdentiti
 type IotHubConnectionProperties = original.IotHubConnectionProperties
 type IotHubDataConnection = original.IotHubDataConnection
 type KeyVaultProperties = original.KeyVaultProperties
+type LanguageExtension = original.LanguageExtension
+type LanguageExtensionsList = original.LanguageExtensionsList
 type ListResourceSkusResult = original.ListResourceSkusResult
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -432,6 +452,9 @@ func PossibleKindBasicDataConnectionValues() []KindBasicDataConnection {
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
+}
+func PossibleLanguageExtensionNameValues() []LanguageExtensionName {
+	return original.PossibleLanguageExtensionNameValues()
 }
 func PossiblePrincipalTypeValues() []PrincipalType {
 	return original.PossiblePrincipalTypeValues()

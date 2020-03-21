@@ -434,14 +434,13 @@ func (c *Client) AddToUserAgent(extension string) error {
 }
 
 // AddAdditionalHeaders adds additional standard headers
-func (c *Client) AddAdditionalHeaders(headers map[string]string) error {
+func (c *Client) AddAdditionalHeaders(headers map[string]string) {
 	if headers != nil {
 		c.additionalHeaders = map[string]string{}
 		for k, v := range headers {
 			c.additionalHeaders[k] = v
 		}
 	}
-	return nil
 }
 
 // protectUserAgent is used in funcs that include extraheaders as a parameter.

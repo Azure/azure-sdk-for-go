@@ -7,7 +7,6 @@ package azcore
 
 import (
 	"context"
-	"errors"
 	"io"
 	"net/http"
 )
@@ -36,12 +35,12 @@ type Transport interface {
 	Do(ctx context.Context, req *http.Request) (*http.Response, error)
 }
 
-// transportFunc is a type that implements the Transport interface.
+// TransportFunc is a type that implements the Transport interface.
 // Use this type when implementing a stateless transport as a first-class function.
-type transportFunc func(context.Context, *http.Request) (*http.Response, error)
+type TransportFunc func(context.Context, *http.Request) (*http.Response, error)
 
-// Do implements the Transport interface on transportFunc.
-func (tf transportFunc) Do(ctx context.Context, req *http.Request) (*http.Response, error) {
+// Do implements the Transport interface on TransportFunc.
+func (tf TransportFunc) Do(ctx context.Context, req *http.Request) (*http.Response, error) {
 	return tf(ctx, req)
 }
 
@@ -103,9 +102,6 @@ func (n nopCloser) Close() error {
 func NopCloser(rs io.ReadSeeker) ReadSeekCloser {
 	return nopCloser{rs}
 }
-
-// IterationDone is returned by an iterator's Next method when iteration is complete.
-var IterationDone = errors.New("no more items in iterator")
 
 // Retrier provides methods describing if an error should be considered as transient.
 type Retrier interface {

@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v40.6.0
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2019-12-01 |
+| network | 2019-12-01 |
+
 ## v40.5.0
 
 ### New Packages

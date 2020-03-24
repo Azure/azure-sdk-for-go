@@ -59,6 +59,57 @@ func PossibleActionsRequiredValues() []ActionsRequired {
 	return []ActionsRequired{None, Recreate}
 }
 
+// Architecture enumerates the values for architecture.
+type Architecture string
+
+const (
+	// Amd64 ...
+	Amd64 Architecture = "amd64"
+	// Arm ...
+	Arm Architecture = "arm"
+	// Arm64 ...
+	Arm64 Architecture = "arm64"
+	// ThreeEightSix ...
+	ThreeEightSix Architecture = "386"
+	// X86 ...
+	X86 Architecture = "x86"
+)
+
+// PossibleArchitectureValues returns an array of possible values for the Architecture const type.
+func PossibleArchitectureValues() []Architecture {
+	return []Architecture{Amd64, Arm, Arm64, ThreeEightSix, X86}
+}
+
+// BaseImageDependencyType enumerates the values for base image dependency type.
+type BaseImageDependencyType string
+
+const (
+	// BuildTime ...
+	BuildTime BaseImageDependencyType = "BuildTime"
+	// RunTime ...
+	RunTime BaseImageDependencyType = "RunTime"
+)
+
+// PossibleBaseImageDependencyTypeValues returns an array of possible values for the BaseImageDependencyType const type.
+func PossibleBaseImageDependencyTypeValues() []BaseImageDependencyType {
+	return []BaseImageDependencyType{BuildTime, RunTime}
+}
+
+// BaseImageTriggerType enumerates the values for base image trigger type.
+type BaseImageTriggerType string
+
+const (
+	// All ...
+	All BaseImageTriggerType = "All"
+	// Runtime ...
+	Runtime BaseImageTriggerType = "Runtime"
+)
+
+// PossibleBaseImageTriggerTypeValues returns an array of possible values for the BaseImageTriggerType const type.
+func PossibleBaseImageTriggerTypeValues() []BaseImageTriggerType {
+	return []BaseImageTriggerType{All, Runtime}
+}
+
 // DefaultAction enumerates the values for default action.
 type DefaultAction string
 
@@ -102,6 +153,21 @@ const (
 // PossibleImportModeValues returns an array of possible values for the ImportMode const type.
 func PossibleImportModeValues() []ImportMode {
 	return []ImportMode{Force, NoForce}
+}
+
+// OS enumerates the values for os.
+type OS string
+
+const (
+	// Linux ...
+	Linux OS = "Linux"
+	// Windows ...
+	Windows OS = "Windows"
+)
+
+// PossibleOSValues returns an array of possible values for the OS const type.
+func PossibleOSValues() []OS {
+	return []OS{Linux, Windows}
 }
 
 // PasswordName enumerates the values for password name.
@@ -191,6 +257,67 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return []ResourceIdentityType{ResourceIdentityTypeNone, ResourceIdentityTypeSystemAssigned, ResourceIdentityTypeSystemAssignedUserAssigned, ResourceIdentityTypeUserAssigned}
 }
 
+// RunStatus enumerates the values for run status.
+type RunStatus string
+
+const (
+	// RunStatusCanceled ...
+	RunStatusCanceled RunStatus = "Canceled"
+	// RunStatusError ...
+	RunStatusError RunStatus = "Error"
+	// RunStatusFailed ...
+	RunStatusFailed RunStatus = "Failed"
+	// RunStatusQueued ...
+	RunStatusQueued RunStatus = "Queued"
+	// RunStatusRunning ...
+	RunStatusRunning RunStatus = "Running"
+	// RunStatusStarted ...
+	RunStatusStarted RunStatus = "Started"
+	// RunStatusSucceeded ...
+	RunStatusSucceeded RunStatus = "Succeeded"
+	// RunStatusTimeout ...
+	RunStatusTimeout RunStatus = "Timeout"
+)
+
+// PossibleRunStatusValues returns an array of possible values for the RunStatus const type.
+func PossibleRunStatusValues() []RunStatus {
+	return []RunStatus{RunStatusCanceled, RunStatusError, RunStatusFailed, RunStatusQueued, RunStatusRunning, RunStatusStarted, RunStatusSucceeded, RunStatusTimeout}
+}
+
+// RunType enumerates the values for run type.
+type RunType string
+
+const (
+	// AutoBuild ...
+	AutoBuild RunType = "AutoBuild"
+	// AutoRun ...
+	AutoRun RunType = "AutoRun"
+	// QuickBuild ...
+	QuickBuild RunType = "QuickBuild"
+	// QuickRun ...
+	QuickRun RunType = "QuickRun"
+)
+
+// PossibleRunTypeValues returns an array of possible values for the RunType const type.
+func PossibleRunTypeValues() []RunType {
+	return []RunType{AutoBuild, AutoRun, QuickBuild, QuickRun}
+}
+
+// SecretObjectType enumerates the values for secret object type.
+type SecretObjectType string
+
+const (
+	// Opaque ...
+	Opaque SecretObjectType = "Opaque"
+	// Vaultsecret ...
+	Vaultsecret SecretObjectType = "Vaultsecret"
+)
+
+// PossibleSecretObjectTypeValues returns an array of possible values for the SecretObjectType const type.
+func PossibleSecretObjectTypeValues() []SecretObjectType {
+	return []SecretObjectType{Opaque, Vaultsecret}
+}
+
 // SkuName enumerates the values for sku name.
 type SkuName string
 
@@ -229,6 +356,51 @@ func PossibleSkuTierValues() []SkuTier {
 	return []SkuTier{SkuTierBasic, SkuTierClassic, SkuTierPremium, SkuTierStandard}
 }
 
+// SourceControlType enumerates the values for source control type.
+type SourceControlType string
+
+const (
+	// Github ...
+	Github SourceControlType = "Github"
+	// VisualStudioTeamService ...
+	VisualStudioTeamService SourceControlType = "VisualStudioTeamService"
+)
+
+// PossibleSourceControlTypeValues returns an array of possible values for the SourceControlType const type.
+func PossibleSourceControlTypeValues() []SourceControlType {
+	return []SourceControlType{Github, VisualStudioTeamService}
+}
+
+// SourceRegistryLoginMode enumerates the values for source registry login mode.
+type SourceRegistryLoginMode string
+
+const (
+	// SourceRegistryLoginModeDefault ...
+	SourceRegistryLoginModeDefault SourceRegistryLoginMode = "Default"
+	// SourceRegistryLoginModeNone ...
+	SourceRegistryLoginModeNone SourceRegistryLoginMode = "None"
+)
+
+// PossibleSourceRegistryLoginModeValues returns an array of possible values for the SourceRegistryLoginMode const type.
+func PossibleSourceRegistryLoginModeValues() []SourceRegistryLoginMode {
+	return []SourceRegistryLoginMode{SourceRegistryLoginModeDefault, SourceRegistryLoginModeNone}
+}
+
+// SourceTriggerEvent enumerates the values for source trigger event.
+type SourceTriggerEvent string
+
+const (
+	// Commit ...
+	Commit SourceTriggerEvent = "commit"
+	// Pullrequest ...
+	Pullrequest SourceTriggerEvent = "pullrequest"
+)
+
+// PossibleSourceTriggerEventValues returns an array of possible values for the SourceTriggerEvent const type.
+func PossibleSourceTriggerEventValues() []SourceTriggerEvent {
+	return []SourceTriggerEvent{Commit, Pullrequest}
+}
+
 // Status enumerates the values for status.
 type Status string
 
@@ -248,6 +420,96 @@ func PossibleStatusValues() []Status {
 	return []Status{Approved, Disconnected, Pending, Rejected}
 }
 
+// TaskStatus enumerates the values for task status.
+type TaskStatus string
+
+const (
+	// TaskStatusDisabled ...
+	TaskStatusDisabled TaskStatus = "Disabled"
+	// TaskStatusEnabled ...
+	TaskStatusEnabled TaskStatus = "Enabled"
+)
+
+// PossibleTaskStatusValues returns an array of possible values for the TaskStatus const type.
+func PossibleTaskStatusValues() []TaskStatus {
+	return []TaskStatus{TaskStatusDisabled, TaskStatusEnabled}
+}
+
+// TokenCertificateName enumerates the values for token certificate name.
+type TokenCertificateName string
+
+const (
+	// Certificate1 ...
+	Certificate1 TokenCertificateName = "certificate1"
+	// Certificate2 ...
+	Certificate2 TokenCertificateName = "certificate2"
+)
+
+// PossibleTokenCertificateNameValues returns an array of possible values for the TokenCertificateName const type.
+func PossibleTokenCertificateNameValues() []TokenCertificateName {
+	return []TokenCertificateName{Certificate1, Certificate2}
+}
+
+// TokenPasswordName enumerates the values for token password name.
+type TokenPasswordName string
+
+const (
+	// TokenPasswordNamePassword1 ...
+	TokenPasswordNamePassword1 TokenPasswordName = "password1"
+	// TokenPasswordNamePassword2 ...
+	TokenPasswordNamePassword2 TokenPasswordName = "password2"
+)
+
+// PossibleTokenPasswordNameValues returns an array of possible values for the TokenPasswordName const type.
+func PossibleTokenPasswordNameValues() []TokenPasswordName {
+	return []TokenPasswordName{TokenPasswordNamePassword1, TokenPasswordNamePassword2}
+}
+
+// TokenStatus enumerates the values for token status.
+type TokenStatus string
+
+const (
+	// TokenStatusDisabled ...
+	TokenStatusDisabled TokenStatus = "disabled"
+	// TokenStatusEnabled ...
+	TokenStatusEnabled TokenStatus = "enabled"
+)
+
+// PossibleTokenStatusValues returns an array of possible values for the TokenStatus const type.
+func PossibleTokenStatusValues() []TokenStatus {
+	return []TokenStatus{TokenStatusDisabled, TokenStatusEnabled}
+}
+
+// TokenType enumerates the values for token type.
+type TokenType string
+
+const (
+	// OAuth ...
+	OAuth TokenType = "OAuth"
+	// PAT ...
+	PAT TokenType = "PAT"
+)
+
+// PossibleTokenTypeValues returns an array of possible values for the TokenType const type.
+func PossibleTokenTypeValues() []TokenType {
+	return []TokenType{OAuth, PAT}
+}
+
+// TriggerStatus enumerates the values for trigger status.
+type TriggerStatus string
+
+const (
+	// TriggerStatusDisabled ...
+	TriggerStatusDisabled TriggerStatus = "Disabled"
+	// TriggerStatusEnabled ...
+	TriggerStatusEnabled TriggerStatus = "Enabled"
+)
+
+// PossibleTriggerStatusValues returns an array of possible values for the TriggerStatus const type.
+func PossibleTriggerStatusValues() []TriggerStatus {
+	return []TriggerStatus{TriggerStatusDisabled, TriggerStatusEnabled}
+}
+
 // TrustPolicyType enumerates the values for trust policy type.
 type TrustPolicyType string
 
@@ -259,6 +521,97 @@ const (
 // PossibleTrustPolicyTypeValues returns an array of possible values for the TrustPolicyType const type.
 func PossibleTrustPolicyTypeValues() []TrustPolicyType {
 	return []TrustPolicyType{Notary}
+}
+
+// Type enumerates the values for type.
+type Type string
+
+const (
+	// TypeDockerBuildRequest ...
+	TypeDockerBuildRequest Type = "DockerBuildRequest"
+	// TypeEncodedTaskRunRequest ...
+	TypeEncodedTaskRunRequest Type = "EncodedTaskRunRequest"
+	// TypeFileTaskRunRequest ...
+	TypeFileTaskRunRequest Type = "FileTaskRunRequest"
+	// TypeRunRequest ...
+	TypeRunRequest Type = "RunRequest"
+	// TypeTaskRunRequest ...
+	TypeTaskRunRequest Type = "TaskRunRequest"
+)
+
+// PossibleTypeValues returns an array of possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{TypeDockerBuildRequest, TypeEncodedTaskRunRequest, TypeFileTaskRunRequest, TypeRunRequest, TypeTaskRunRequest}
+}
+
+// TypeBasicTaskStepProperties enumerates the values for type basic task step properties.
+type TypeBasicTaskStepProperties string
+
+const (
+	// TypeDocker ...
+	TypeDocker TypeBasicTaskStepProperties = "Docker"
+	// TypeEncodedTask ...
+	TypeEncodedTask TypeBasicTaskStepProperties = "EncodedTask"
+	// TypeFileTask ...
+	TypeFileTask TypeBasicTaskStepProperties = "FileTask"
+	// TypeTaskStepProperties ...
+	TypeTaskStepProperties TypeBasicTaskStepProperties = "TaskStepProperties"
+)
+
+// PossibleTypeBasicTaskStepPropertiesValues returns an array of possible values for the TypeBasicTaskStepProperties const type.
+func PossibleTypeBasicTaskStepPropertiesValues() []TypeBasicTaskStepProperties {
+	return []TypeBasicTaskStepProperties{TypeDocker, TypeEncodedTask, TypeFileTask, TypeTaskStepProperties}
+}
+
+// TypeBasicTaskStepUpdateParameters enumerates the values for type basic task step update parameters.
+type TypeBasicTaskStepUpdateParameters string
+
+const (
+	// TypeBasicTaskStepUpdateParametersTypeDocker ...
+	TypeBasicTaskStepUpdateParametersTypeDocker TypeBasicTaskStepUpdateParameters = "Docker"
+	// TypeBasicTaskStepUpdateParametersTypeEncodedTask ...
+	TypeBasicTaskStepUpdateParametersTypeEncodedTask TypeBasicTaskStepUpdateParameters = "EncodedTask"
+	// TypeBasicTaskStepUpdateParametersTypeFileTask ...
+	TypeBasicTaskStepUpdateParametersTypeFileTask TypeBasicTaskStepUpdateParameters = "FileTask"
+	// TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters ...
+	TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters TypeBasicTaskStepUpdateParameters = "TaskStepUpdateParameters"
+)
+
+// PossibleTypeBasicTaskStepUpdateParametersValues returns an array of possible values for the TypeBasicTaskStepUpdateParameters const type.
+func PossibleTypeBasicTaskStepUpdateParametersValues() []TypeBasicTaskStepUpdateParameters {
+	return []TypeBasicTaskStepUpdateParameters{TypeBasicTaskStepUpdateParametersTypeDocker, TypeBasicTaskStepUpdateParametersTypeEncodedTask, TypeBasicTaskStepUpdateParametersTypeFileTask, TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters}
+}
+
+// UpdateTriggerPayloadType enumerates the values for update trigger payload type.
+type UpdateTriggerPayloadType string
+
+const (
+	// UpdateTriggerPayloadTypeDefault ...
+	UpdateTriggerPayloadTypeDefault UpdateTriggerPayloadType = "Default"
+	// UpdateTriggerPayloadTypeToken ...
+	UpdateTriggerPayloadTypeToken UpdateTriggerPayloadType = "Token"
+)
+
+// PossibleUpdateTriggerPayloadTypeValues returns an array of possible values for the UpdateTriggerPayloadType const type.
+func PossibleUpdateTriggerPayloadTypeValues() []UpdateTriggerPayloadType {
+	return []UpdateTriggerPayloadType{UpdateTriggerPayloadTypeDefault, UpdateTriggerPayloadTypeToken}
+}
+
+// Variant enumerates the values for variant.
+type Variant string
+
+const (
+	// V6 ...
+	V6 Variant = "v6"
+	// V7 ...
+	V7 Variant = "v7"
+	// V8 ...
+	V8 Variant = "v8"
+)
+
+// PossibleVariantValues returns an array of possible values for the Variant const type.
+func PossibleVariantValues() []Variant {
+	return []Variant{V6, V7, V8}
 }
 
 // WebhookAction enumerates the values for webhook action.
@@ -297,10 +650,514 @@ func PossibleWebhookStatusValues() []WebhookStatus {
 	return []WebhookStatus{WebhookStatusDisabled, WebhookStatusEnabled}
 }
 
+// ActiveDirectoryObject the Active Directory Object that will be used for authenticating the token of a
+// container registry.
+type ActiveDirectoryObject struct {
+	// ObjectID - The user/group/application object ID for Active Directory Object that will be used for authenticating the token of a container registry.
+	ObjectID *string `json:"objectId,omitempty"`
+	// TenantID - The tenant ID of user/group/application object Active Directory Object that will be used for authenticating the token of a container registry.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
 // Actor the agent that initiated the event. For most situations, this could be from the authorization
 // context of the request.
 type Actor struct {
 	// Name - The subject or username associated with the request context that generated the event.
+	Name *string `json:"name,omitempty"`
+}
+
+// AgentPool the agentpool that has the ARM resource and properties.
+// The agentpool will have all information to create an agent pool.
+type AgentPool struct {
+	autorest.Response `json:"-"`
+	// AgentPoolProperties - The properties associated with the agent pool
+	*AgentPoolProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+	// Location - The location of the resource. This cannot be changed after the resource is created.
+	Location *string `json:"location,omitempty"`
+	// Tags - The tags of the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for AgentPool.
+func (ap AgentPool) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.AgentPoolProperties != nil {
+		objectMap["properties"] = ap.AgentPoolProperties
+	}
+	if ap.Location != nil {
+		objectMap["location"] = ap.Location
+	}
+	if ap.Tags != nil {
+		objectMap["tags"] = ap.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AgentPool struct.
+func (ap *AgentPool) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var agentPoolProperties AgentPoolProperties
+				err = json.Unmarshal(*v, &agentPoolProperties)
+				if err != nil {
+					return err
+				}
+				ap.AgentPoolProperties = &agentPoolProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ap.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ap.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ap.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ap.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ap.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// AgentPoolListResult the collection of agent pools.
+type AgentPoolListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The collection value.
+	Value *[]AgentPool `json:"value,omitempty"`
+	// NextLink - The URI that can be used to request the next set of paged results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AgentPoolListResultIterator provides access to a complete listing of AgentPool values.
+type AgentPoolListResultIterator struct {
+	i    int
+	page AgentPoolListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AgentPoolListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AgentPoolListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AgentPoolListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AgentPoolListResultIterator) Response() AgentPoolListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AgentPoolListResultIterator) Value() AgentPool {
+	if !iter.page.NotDone() {
+		return AgentPool{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AgentPoolListResultIterator type.
+func NewAgentPoolListResultIterator(page AgentPoolListResultPage) AgentPoolListResultIterator {
+	return AgentPoolListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (aplr AgentPoolListResult) IsEmpty() bool {
+	return aplr.Value == nil || len(*aplr.Value) == 0
+}
+
+// agentPoolListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (aplr AgentPoolListResult) agentPoolListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if aplr.NextLink == nil || len(to.String(aplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(aplr.NextLink)))
+}
+
+// AgentPoolListResultPage contains a page of AgentPool values.
+type AgentPoolListResultPage struct {
+	fn   func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)
+	aplr AgentPoolListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AgentPoolListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.aplr)
+	if err != nil {
+		return err
+	}
+	page.aplr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AgentPoolListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AgentPoolListResultPage) NotDone() bool {
+	return !page.aplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AgentPoolListResultPage) Response() AgentPoolListResult {
+	return page.aplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AgentPoolListResultPage) Values() []AgentPool {
+	if page.aplr.IsEmpty() {
+		return nil
+	}
+	return *page.aplr.Value
+}
+
+// Creates a new instance of the AgentPoolListResultPage type.
+func NewAgentPoolListResultPage(getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
+	return AgentPoolListResultPage{fn: getNextPage}
+}
+
+// AgentPoolProperties the properties of agent pool.
+type AgentPoolProperties struct {
+	// Count - The count of agent machine
+	Count *int32 `json:"count,omitempty"`
+	// Tier - The Tier of agent machine
+	Tier *string `json:"tier,omitempty"`
+	// Os - The OS of agent machine. Possible values include: 'Windows', 'Linux'
+	Os OS `json:"os,omitempty"`
+	// VirtualNetworkSubnetResourceID - The Virtual Network Subnet Resource Id of the agent machine
+	VirtualNetworkSubnetResourceID *string `json:"virtualNetworkSubnetResourceId,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state of this agent pool. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// AgentPoolPropertiesUpdateParameters ...
+type AgentPoolPropertiesUpdateParameters struct {
+	// Count - The count of agent machine
+	Count *int32 `json:"count,omitempty"`
+}
+
+// AgentPoolQueueStatus the QueueStatus of Agent Pool
+type AgentPoolQueueStatus struct {
+	autorest.Response `json:"-"`
+	// Count - The number of pending runs in the queue
+	Count *int32 `json:"count,omitempty"`
+}
+
+// AgentPoolsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AgentPoolsCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AgentPoolsCreateFuture) Result(client AgentPoolsClient) (ap AgentPool, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.AgentPoolsCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.AgentPoolsCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ap.Response.Response, err = future.GetResult(sender); err == nil && ap.Response.Response.StatusCode != http.StatusNoContent {
+		ap, err = client.CreateResponder(ap.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.AgentPoolsCreateFuture", "Result", ap.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AgentPoolsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AgentPoolsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AgentPoolsDeleteFuture) Result(client AgentPoolsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.AgentPoolsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.AgentPoolsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// AgentPoolsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AgentPoolsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AgentPoolsUpdateFuture) Result(client AgentPoolsClient) (ap AgentPool, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.AgentPoolsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.AgentPoolsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ap.Response.Response, err = future.GetResult(sender); err == nil && ap.Response.Response.StatusCode != http.StatusNoContent {
+		ap, err = client.UpdateResponder(ap.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.AgentPoolsUpdateFuture", "Result", ap.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AgentPoolUpdateParameters the parameters for updating an agent pool.
+type AgentPoolUpdateParameters struct {
+	// AgentPoolPropertiesUpdateParameters - The properties associated with the agent pool
+	*AgentPoolPropertiesUpdateParameters `json:"properties,omitempty"`
+	// Tags - The ARM resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for AgentPoolUpdateParameters.
+func (apup AgentPoolUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if apup.AgentPoolPropertiesUpdateParameters != nil {
+		objectMap["properties"] = apup.AgentPoolPropertiesUpdateParameters
+	}
+	if apup.Tags != nil {
+		objectMap["tags"] = apup.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AgentPoolUpdateParameters struct.
+func (apup *AgentPoolUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var agentPoolPropertiesUpdateParameters AgentPoolPropertiesUpdateParameters
+				err = json.Unmarshal(*v, &agentPoolPropertiesUpdateParameters)
+				if err != nil {
+					return err
+				}
+				apup.AgentPoolPropertiesUpdateParameters = &agentPoolPropertiesUpdateParameters
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				apup.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// AgentProperties the properties that determine the run agent configuration.
+type AgentProperties struct {
+	// CPU - The CPU configuration in terms of number of cores required for the run.
+	CPU *int32 `json:"cpu,omitempty"`
+}
+
+// Argument the properties of a run argument.
+type Argument struct {
+	// Name - The name of the argument.
+	Name *string `json:"name,omitempty"`
+	// Value - The value of the argument.
+	Value *string `json:"value,omitempty"`
+	// IsSecret - Flag to indicate whether the argument represents a secret and want to be removed from build logs.
+	IsSecret *bool `json:"isSecret,omitempty"`
+}
+
+// AuthInfo the authorization properties for accessing the source code repository.
+type AuthInfo struct {
+	// TokenType - The type of Auth token. Possible values include: 'PAT', 'OAuth'
+	TokenType TokenType `json:"tokenType,omitempty"`
+	// Token - The access token used to access the source control provider.
+	Token *string `json:"token,omitempty"`
+	// RefreshToken - The refresh token used to refresh the access token.
+	RefreshToken *string `json:"refreshToken,omitempty"`
+	// Scope - The scope of the access token.
+	Scope *string `json:"scope,omitempty"`
+	// ExpiresIn - Time in seconds that the token remains valid
+	ExpiresIn *int32 `json:"expiresIn,omitempty"`
+}
+
+// AuthInfoUpdateParameters the authorization properties for accessing the source code repository.
+type AuthInfoUpdateParameters struct {
+	// TokenType - The type of Auth token. Possible values include: 'PAT', 'OAuth'
+	TokenType TokenType `json:"tokenType,omitempty"`
+	// Token - The access token used to access the source control provider.
+	Token *string `json:"token,omitempty"`
+	// RefreshToken - The refresh token used to refresh the access token.
+	RefreshToken *string `json:"refreshToken,omitempty"`
+	// Scope - The scope of the access token.
+	Scope *string `json:"scope,omitempty"`
+	// ExpiresIn - Time in seconds that the token remains valid
+	ExpiresIn *int32 `json:"expiresIn,omitempty"`
+}
+
+// BaseImageDependency properties that describe a base image dependency.
+type BaseImageDependency struct {
+	// Type - The type of the base image dependency. Possible values include: 'BuildTime', 'RunTime'
+	Type BaseImageDependencyType `json:"type,omitempty"`
+	// Registry - The registry login server.
+	Registry *string `json:"registry,omitempty"`
+	// Repository - The repository name.
+	Repository *string `json:"repository,omitempty"`
+	// Tag - The tag name.
+	Tag *string `json:"tag,omitempty"`
+	// Digest - The sha256-based digest of the image manifest.
+	Digest *string `json:"digest,omitempty"`
+}
+
+// BaseImageTrigger the trigger based on base image dependency.
+type BaseImageTrigger struct {
+	// BaseImageTriggerType - The type of the auto trigger for base image dependency updates. Possible values include: 'All', 'Runtime'
+	BaseImageTriggerType BaseImageTriggerType `json:"baseImageTriggerType,omitempty"`
+	// UpdateTriggerEndpoint - The endpoint URL for receiving update triggers.
+	UpdateTriggerEndpoint *string `json:"updateTriggerEndpoint,omitempty"`
+	// UpdateTriggerPayloadType - Type of Payload body for Base image update triggers. Possible values include: 'UpdateTriggerPayloadTypeDefault', 'UpdateTriggerPayloadTypeToken'
+	UpdateTriggerPayloadType UpdateTriggerPayloadType `json:"updateTriggerPayloadType,omitempty"`
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	Status TriggerStatus `json:"status,omitempty"`
+	// Name - The name of the trigger.
+	Name *string `json:"name,omitempty"`
+}
+
+// BaseImageTriggerUpdateParameters the properties for updating base image dependency trigger.
+type BaseImageTriggerUpdateParameters struct {
+	// BaseImageTriggerType - The type of the auto trigger for base image dependency updates. Possible values include: 'All', 'Runtime'
+	BaseImageTriggerType BaseImageTriggerType `json:"baseImageTriggerType,omitempty"`
+	// UpdateTriggerEndpoint - The endpoint URL for receiving update triggers.
+	UpdateTriggerEndpoint *string `json:"updateTriggerEndpoint,omitempty"`
+	// UpdateTriggerPayloadType - Type of Payload body for Base image update triggers. Possible values include: 'UpdateTriggerPayloadTypeDefault', 'UpdateTriggerPayloadTypeToken'
+	UpdateTriggerPayloadType UpdateTriggerPayloadType `json:"updateTriggerPayloadType,omitempty"`
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	Status TriggerStatus `json:"status,omitempty"`
+	// Name - The name of the trigger.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -325,12 +1182,571 @@ func (cc CallbackConfig) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Credentials the parameters that describes a set of credentials that will be used when a run is invoked.
+type Credentials struct {
+	// SourceRegistry - Describes the credential parameters for accessing the source registry.
+	SourceRegistry *SourceRegistryCredentials `json:"sourceRegistry,omitempty"`
+	// CustomRegistries - Describes the credential parameters for accessing other custom registries. The key
+	// for the dictionary item will be the registry login server (myregistry.azurecr.io) and
+	// the value of the item will be the registry credentials for accessing the registry.
+	CustomRegistries map[string]*CustomRegistryCredentials `json:"customRegistries"`
+}
+
+// MarshalJSON is the custom marshaler for Credentials.
+func (c Credentials) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.SourceRegistry != nil {
+		objectMap["sourceRegistry"] = c.SourceRegistry
+	}
+	if c.CustomRegistries != nil {
+		objectMap["customRegistries"] = c.CustomRegistries
+	}
+	return json.Marshal(objectMap)
+}
+
+// CustomRegistryCredentials describes the credentials that will be used to access a custom registry during
+// a run.
+type CustomRegistryCredentials struct {
+	// UserName - The username for logging into the custom registry.
+	UserName *SecretObject `json:"userName,omitempty"`
+	// Password - The password for logging into the custom registry. The password is a secret
+	// object that allows multiple ways of providing the value for it.
+	Password *SecretObject `json:"password,omitempty"`
+	// Identity - Indicates the managed identity assigned to the custom credential. If a user-assigned identity
+	// this value is the Client ID. If a system-assigned identity, the value will be `system`. In
+	// the case of a system-assigned identity, the Client ID will be determined by the runner. This
+	// identity may be used to authenticate to key vault to retrieve credentials or it may be the only
+	// source of authentication used for accessing the registry.
+	Identity *string `json:"identity,omitempty"`
+}
+
+// DockerBuildRequest the parameters for a docker quick build.
+type DockerBuildRequest struct {
+	// ImageNames - The fully qualified image names including the repository and tag.
+	ImageNames *[]string `json:"imageNames,omitempty"`
+	// IsPushEnabled - The value of this property indicates whether the image built should be pushed to the registry or not.
+	IsPushEnabled *bool `json:"isPushEnabled,omitempty"`
+	// NoCache - The value of this property indicates whether the image cache is enabled or not.
+	NoCache *bool `json:"noCache,omitempty"`
+	// DockerFilePath - The Docker file path relative to the source location.
+	DockerFilePath *string `json:"dockerFilePath,omitempty"`
+	// Target - The name of the target build stage for the docker build.
+	Target *string `json:"target,omitempty"`
+	// Arguments - The collection of override arguments to be used when executing the run.
+	Arguments *[]Argument `json:"arguments,omitempty"`
+	// Timeout - Run timeout in seconds.
+	Timeout *int32 `json:"timeout,omitempty"`
+	// Platform - The platform properties against which the run has to happen.
+	Platform *PlatformProperties `json:"platform,omitempty"`
+	// AgentConfiguration - The machine configuration of the run agent.
+	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
+	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
+	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
+	SourceLocation *string `json:"sourceLocation,omitempty"`
+	// Credentials - The properties that describes a set of credentials that will be used when this run is invoked.
+	Credentials *Credentials `json:"credentials,omitempty"`
+	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the run.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
+	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DockerBuildRequest.
+func (dbr DockerBuildRequest) MarshalJSON() ([]byte, error) {
+	dbr.Type = TypeDockerBuildRequest
+	objectMap := make(map[string]interface{})
+	if dbr.ImageNames != nil {
+		objectMap["imageNames"] = dbr.ImageNames
+	}
+	if dbr.IsPushEnabled != nil {
+		objectMap["isPushEnabled"] = dbr.IsPushEnabled
+	}
+	if dbr.NoCache != nil {
+		objectMap["noCache"] = dbr.NoCache
+	}
+	if dbr.DockerFilePath != nil {
+		objectMap["dockerFilePath"] = dbr.DockerFilePath
+	}
+	if dbr.Target != nil {
+		objectMap["target"] = dbr.Target
+	}
+	if dbr.Arguments != nil {
+		objectMap["arguments"] = dbr.Arguments
+	}
+	if dbr.Timeout != nil {
+		objectMap["timeout"] = dbr.Timeout
+	}
+	if dbr.Platform != nil {
+		objectMap["platform"] = dbr.Platform
+	}
+	if dbr.AgentConfiguration != nil {
+		objectMap["agentConfiguration"] = dbr.AgentConfiguration
+	}
+	if dbr.SourceLocation != nil {
+		objectMap["sourceLocation"] = dbr.SourceLocation
+	}
+	if dbr.Credentials != nil {
+		objectMap["credentials"] = dbr.Credentials
+	}
+	if dbr.IsArchiveEnabled != nil {
+		objectMap["isArchiveEnabled"] = dbr.IsArchiveEnabled
+	}
+	if dbr.AgentPoolName != nil {
+		objectMap["agentPoolName"] = dbr.AgentPoolName
+	}
+	if dbr.Type != "" {
+		objectMap["type"] = dbr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildRequest is the BasicRunRequest implementation for DockerBuildRequest.
+func (dbr DockerBuildRequest) AsDockerBuildRequest() (*DockerBuildRequest, bool) {
+	return &dbr, true
+}
+
+// AsFileTaskRunRequest is the BasicRunRequest implementation for DockerBuildRequest.
+func (dbr DockerBuildRequest) AsFileTaskRunRequest() (*FileTaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsTaskRunRequest is the BasicRunRequest implementation for DockerBuildRequest.
+func (dbr DockerBuildRequest) AsTaskRunRequest() (*TaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsEncodedTaskRunRequest is the BasicRunRequest implementation for DockerBuildRequest.
+func (dbr DockerBuildRequest) AsEncodedTaskRunRequest() (*EncodedTaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsRunRequest is the BasicRunRequest implementation for DockerBuildRequest.
+func (dbr DockerBuildRequest) AsRunRequest() (*RunRequest, bool) {
+	return nil, false
+}
+
+// AsBasicRunRequest is the BasicRunRequest implementation for DockerBuildRequest.
+func (dbr DockerBuildRequest) AsBasicRunRequest() (BasicRunRequest, bool) {
+	return &dbr, true
+}
+
+// DockerBuildStep the Docker build step.
+type DockerBuildStep struct {
+	// ImageNames - The fully qualified image names including the repository and tag.
+	ImageNames *[]string `json:"imageNames,omitempty"`
+	// IsPushEnabled - The value of this property indicates whether the image built should be pushed to the registry or not.
+	IsPushEnabled *bool `json:"isPushEnabled,omitempty"`
+	// NoCache - The value of this property indicates whether the image cache is enabled or not.
+	NoCache *bool `json:"noCache,omitempty"`
+	// DockerFilePath - The Docker file path relative to the source context.
+	DockerFilePath *string `json:"dockerFilePath,omitempty"`
+	// Target - The name of the target build stage for the docker build.
+	Target *string `json:"target,omitempty"`
+	// Arguments - The collection of override arguments to be used when executing this build step.
+	Arguments *[]Argument `json:"arguments,omitempty"`
+	// BaseImageDependencies - READ-ONLY; List of base image dependencies for a step.
+	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
+	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
+	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
+	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DockerBuildStep.
+func (dbs DockerBuildStep) MarshalJSON() ([]byte, error) {
+	dbs.Type = TypeDocker
+	objectMap := make(map[string]interface{})
+	if dbs.ImageNames != nil {
+		objectMap["imageNames"] = dbs.ImageNames
+	}
+	if dbs.IsPushEnabled != nil {
+		objectMap["isPushEnabled"] = dbs.IsPushEnabled
+	}
+	if dbs.NoCache != nil {
+		objectMap["noCache"] = dbs.NoCache
+	}
+	if dbs.DockerFilePath != nil {
+		objectMap["dockerFilePath"] = dbs.DockerFilePath
+	}
+	if dbs.Target != nil {
+		objectMap["target"] = dbs.Target
+	}
+	if dbs.Arguments != nil {
+		objectMap["arguments"] = dbs.Arguments
+	}
+	if dbs.ContextPath != nil {
+		objectMap["contextPath"] = dbs.ContextPath
+	}
+	if dbs.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = dbs.ContextAccessToken
+	}
+	if dbs.Type != "" {
+		objectMap["type"] = dbs.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildStep is the BasicTaskStepProperties implementation for DockerBuildStep.
+func (dbs DockerBuildStep) AsDockerBuildStep() (*DockerBuildStep, bool) {
+	return &dbs, true
+}
+
+// AsFileTaskStep is the BasicTaskStepProperties implementation for DockerBuildStep.
+func (dbs DockerBuildStep) AsFileTaskStep() (*FileTaskStep, bool) {
+	return nil, false
+}
+
+// AsEncodedTaskStep is the BasicTaskStepProperties implementation for DockerBuildStep.
+func (dbs DockerBuildStep) AsEncodedTaskStep() (*EncodedTaskStep, bool) {
+	return nil, false
+}
+
+// AsTaskStepProperties is the BasicTaskStepProperties implementation for DockerBuildStep.
+func (dbs DockerBuildStep) AsTaskStepProperties() (*TaskStepProperties, bool) {
+	return nil, false
+}
+
+// AsBasicTaskStepProperties is the BasicTaskStepProperties implementation for DockerBuildStep.
+func (dbs DockerBuildStep) AsBasicTaskStepProperties() (BasicTaskStepProperties, bool) {
+	return &dbs, true
+}
+
+// DockerBuildStepUpdateParameters the properties for updating a docker build step.
+type DockerBuildStepUpdateParameters struct {
+	// ImageNames - The fully qualified image names including the repository and tag.
+	ImageNames *[]string `json:"imageNames,omitempty"`
+	// IsPushEnabled - The value of this property indicates whether the image built should be pushed to the registry or not.
+	IsPushEnabled *bool `json:"isPushEnabled,omitempty"`
+	// NoCache - The value of this property indicates whether the image cache is enabled or not.
+	NoCache *bool `json:"noCache,omitempty"`
+	// DockerFilePath - The Docker file path relative to the source context.
+	DockerFilePath *string `json:"dockerFilePath,omitempty"`
+	// Arguments - The collection of override arguments to be used when executing this build step.
+	Arguments *[]Argument `json:"arguments,omitempty"`
+	// Target - The name of the target build stage for the docker build.
+	Target *string `json:"target,omitempty"`
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
+	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
+	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
+	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DockerBuildStepUpdateParameters.
+func (dbsup DockerBuildStepUpdateParameters) MarshalJSON() ([]byte, error) {
+	dbsup.Type = TypeBasicTaskStepUpdateParametersTypeDocker
+	objectMap := make(map[string]interface{})
+	if dbsup.ImageNames != nil {
+		objectMap["imageNames"] = dbsup.ImageNames
+	}
+	if dbsup.IsPushEnabled != nil {
+		objectMap["isPushEnabled"] = dbsup.IsPushEnabled
+	}
+	if dbsup.NoCache != nil {
+		objectMap["noCache"] = dbsup.NoCache
+	}
+	if dbsup.DockerFilePath != nil {
+		objectMap["dockerFilePath"] = dbsup.DockerFilePath
+	}
+	if dbsup.Arguments != nil {
+		objectMap["arguments"] = dbsup.Arguments
+	}
+	if dbsup.Target != nil {
+		objectMap["target"] = dbsup.Target
+	}
+	if dbsup.ContextPath != nil {
+		objectMap["contextPath"] = dbsup.ContextPath
+	}
+	if dbsup.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = dbsup.ContextAccessToken
+	}
+	if dbsup.Type != "" {
+		objectMap["type"] = dbsup.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for DockerBuildStepUpdateParameters.
+func (dbsup DockerBuildStepUpdateParameters) AsDockerBuildStepUpdateParameters() (*DockerBuildStepUpdateParameters, bool) {
+	return &dbsup, true
+}
+
+// AsFileTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for DockerBuildStepUpdateParameters.
+func (dbsup DockerBuildStepUpdateParameters) AsFileTaskStepUpdateParameters() (*FileTaskStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsEncodedTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for DockerBuildStepUpdateParameters.
+func (dbsup DockerBuildStepUpdateParameters) AsEncodedTaskStepUpdateParameters() (*EncodedTaskStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for DockerBuildStepUpdateParameters.
+func (dbsup DockerBuildStepUpdateParameters) AsTaskStepUpdateParameters() (*TaskStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsBasicTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for DockerBuildStepUpdateParameters.
+func (dbsup DockerBuildStepUpdateParameters) AsBasicTaskStepUpdateParameters() (BasicTaskStepUpdateParameters, bool) {
+	return &dbsup, true
+}
+
+// EncodedTaskRunRequest the parameters for a quick task run request.
+type EncodedTaskRunRequest struct {
+	// EncodedTaskContent - Base64 encoded value of the template/definition file content.
+	EncodedTaskContent *string `json:"encodedTaskContent,omitempty"`
+	// EncodedValuesContent - Base64 encoded value of the parameters/values file content.
+	EncodedValuesContent *string `json:"encodedValuesContent,omitempty"`
+	// Values - The collection of overridable values that can be passed when running a task.
+	Values *[]SetValue `json:"values,omitempty"`
+	// Timeout - Run timeout in seconds.
+	Timeout *int32 `json:"timeout,omitempty"`
+	// Platform - The platform properties against which the run has to happen.
+	Platform *PlatformProperties `json:"platform,omitempty"`
+	// AgentConfiguration - The machine configuration of the run agent.
+	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
+	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
+	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
+	SourceLocation *string `json:"sourceLocation,omitempty"`
+	// Credentials - The properties that describes a set of credentials that will be used when this run is invoked.
+	Credentials *Credentials `json:"credentials,omitempty"`
+	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the run.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
+	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EncodedTaskRunRequest.
+func (etrr EncodedTaskRunRequest) MarshalJSON() ([]byte, error) {
+	etrr.Type = TypeEncodedTaskRunRequest
+	objectMap := make(map[string]interface{})
+	if etrr.EncodedTaskContent != nil {
+		objectMap["encodedTaskContent"] = etrr.EncodedTaskContent
+	}
+	if etrr.EncodedValuesContent != nil {
+		objectMap["encodedValuesContent"] = etrr.EncodedValuesContent
+	}
+	if etrr.Values != nil {
+		objectMap["values"] = etrr.Values
+	}
+	if etrr.Timeout != nil {
+		objectMap["timeout"] = etrr.Timeout
+	}
+	if etrr.Platform != nil {
+		objectMap["platform"] = etrr.Platform
+	}
+	if etrr.AgentConfiguration != nil {
+		objectMap["agentConfiguration"] = etrr.AgentConfiguration
+	}
+	if etrr.SourceLocation != nil {
+		objectMap["sourceLocation"] = etrr.SourceLocation
+	}
+	if etrr.Credentials != nil {
+		objectMap["credentials"] = etrr.Credentials
+	}
+	if etrr.IsArchiveEnabled != nil {
+		objectMap["isArchiveEnabled"] = etrr.IsArchiveEnabled
+	}
+	if etrr.AgentPoolName != nil {
+		objectMap["agentPoolName"] = etrr.AgentPoolName
+	}
+	if etrr.Type != "" {
+		objectMap["type"] = etrr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildRequest is the BasicRunRequest implementation for EncodedTaskRunRequest.
+func (etrr EncodedTaskRunRequest) AsDockerBuildRequest() (*DockerBuildRequest, bool) {
+	return nil, false
+}
+
+// AsFileTaskRunRequest is the BasicRunRequest implementation for EncodedTaskRunRequest.
+func (etrr EncodedTaskRunRequest) AsFileTaskRunRequest() (*FileTaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsTaskRunRequest is the BasicRunRequest implementation for EncodedTaskRunRequest.
+func (etrr EncodedTaskRunRequest) AsTaskRunRequest() (*TaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsEncodedTaskRunRequest is the BasicRunRequest implementation for EncodedTaskRunRequest.
+func (etrr EncodedTaskRunRequest) AsEncodedTaskRunRequest() (*EncodedTaskRunRequest, bool) {
+	return &etrr, true
+}
+
+// AsRunRequest is the BasicRunRequest implementation for EncodedTaskRunRequest.
+func (etrr EncodedTaskRunRequest) AsRunRequest() (*RunRequest, bool) {
+	return nil, false
+}
+
+// AsBasicRunRequest is the BasicRunRequest implementation for EncodedTaskRunRequest.
+func (etrr EncodedTaskRunRequest) AsBasicRunRequest() (BasicRunRequest, bool) {
+	return &etrr, true
+}
+
+// EncodedTaskStep the properties of a encoded task step.
+type EncodedTaskStep struct {
+	// EncodedTaskContent - Base64 encoded value of the template/definition file content.
+	EncodedTaskContent *string `json:"encodedTaskContent,omitempty"`
+	// EncodedValuesContent - Base64 encoded value of the parameters/values file content.
+	EncodedValuesContent *string `json:"encodedValuesContent,omitempty"`
+	// Values - The collection of overridable values that can be passed when running a task.
+	Values *[]SetValue `json:"values,omitempty"`
+	// BaseImageDependencies - READ-ONLY; List of base image dependencies for a step.
+	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
+	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
+	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
+	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EncodedTaskStep.
+func (ets EncodedTaskStep) MarshalJSON() ([]byte, error) {
+	ets.Type = TypeEncodedTask
+	objectMap := make(map[string]interface{})
+	if ets.EncodedTaskContent != nil {
+		objectMap["encodedTaskContent"] = ets.EncodedTaskContent
+	}
+	if ets.EncodedValuesContent != nil {
+		objectMap["encodedValuesContent"] = ets.EncodedValuesContent
+	}
+	if ets.Values != nil {
+		objectMap["values"] = ets.Values
+	}
+	if ets.ContextPath != nil {
+		objectMap["contextPath"] = ets.ContextPath
+	}
+	if ets.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = ets.ContextAccessToken
+	}
+	if ets.Type != "" {
+		objectMap["type"] = ets.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildStep is the BasicTaskStepProperties implementation for EncodedTaskStep.
+func (ets EncodedTaskStep) AsDockerBuildStep() (*DockerBuildStep, bool) {
+	return nil, false
+}
+
+// AsFileTaskStep is the BasicTaskStepProperties implementation for EncodedTaskStep.
+func (ets EncodedTaskStep) AsFileTaskStep() (*FileTaskStep, bool) {
+	return nil, false
+}
+
+// AsEncodedTaskStep is the BasicTaskStepProperties implementation for EncodedTaskStep.
+func (ets EncodedTaskStep) AsEncodedTaskStep() (*EncodedTaskStep, bool) {
+	return &ets, true
+}
+
+// AsTaskStepProperties is the BasicTaskStepProperties implementation for EncodedTaskStep.
+func (ets EncodedTaskStep) AsTaskStepProperties() (*TaskStepProperties, bool) {
+	return nil, false
+}
+
+// AsBasicTaskStepProperties is the BasicTaskStepProperties implementation for EncodedTaskStep.
+func (ets EncodedTaskStep) AsBasicTaskStepProperties() (BasicTaskStepProperties, bool) {
+	return &ets, true
+}
+
+// EncodedTaskStepUpdateParameters the properties for updating encoded task step.
+type EncodedTaskStepUpdateParameters struct {
+	// EncodedTaskContent - Base64 encoded value of the template/definition file content.
+	EncodedTaskContent *string `json:"encodedTaskContent,omitempty"`
+	// EncodedValuesContent - Base64 encoded value of the parameters/values file content.
+	EncodedValuesContent *string `json:"encodedValuesContent,omitempty"`
+	// Values - The collection of overridable values that can be passed when running a task.
+	Values *[]SetValue `json:"values,omitempty"`
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
+	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
+	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
+	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EncodedTaskStepUpdateParameters.
+func (etsup EncodedTaskStepUpdateParameters) MarshalJSON() ([]byte, error) {
+	etsup.Type = TypeBasicTaskStepUpdateParametersTypeEncodedTask
+	objectMap := make(map[string]interface{})
+	if etsup.EncodedTaskContent != nil {
+		objectMap["encodedTaskContent"] = etsup.EncodedTaskContent
+	}
+	if etsup.EncodedValuesContent != nil {
+		objectMap["encodedValuesContent"] = etsup.EncodedValuesContent
+	}
+	if etsup.Values != nil {
+		objectMap["values"] = etsup.Values
+	}
+	if etsup.ContextPath != nil {
+		objectMap["contextPath"] = etsup.ContextPath
+	}
+	if etsup.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = etsup.ContextAccessToken
+	}
+	if etsup.Type != "" {
+		objectMap["type"] = etsup.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for EncodedTaskStepUpdateParameters.
+func (etsup EncodedTaskStepUpdateParameters) AsDockerBuildStepUpdateParameters() (*DockerBuildStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsFileTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for EncodedTaskStepUpdateParameters.
+func (etsup EncodedTaskStepUpdateParameters) AsFileTaskStepUpdateParameters() (*FileTaskStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsEncodedTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for EncodedTaskStepUpdateParameters.
+func (etsup EncodedTaskStepUpdateParameters) AsEncodedTaskStepUpdateParameters() (*EncodedTaskStepUpdateParameters, bool) {
+	return &etsup, true
+}
+
+// AsTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for EncodedTaskStepUpdateParameters.
+func (etsup EncodedTaskStepUpdateParameters) AsTaskStepUpdateParameters() (*TaskStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsBasicTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for EncodedTaskStepUpdateParameters.
+func (etsup EncodedTaskStepUpdateParameters) AsBasicTaskStepUpdateParameters() (BasicTaskStepUpdateParameters, bool) {
+	return &etsup, true
+}
+
 // EncryptionProperty ...
 type EncryptionProperty struct {
 	// Status - Indicates whether or not the encryption is enabled for container registry. Possible values include: 'Enabled', 'Disabled'
 	Status EncryptionStatus `json:"status,omitempty"`
 	// KeyVaultProperties - Key vault properties.
 	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+}
+
+// Error an error response from the Azure Container Registry service.
+type Error struct {
+	// Code - error code.
+	Code *string `json:"code,omitempty"`
+	// Message - error message.
+	Message *string `json:"message,omitempty"`
+}
+
+// ErrorSchema an error response from the Azure Container Registry service.
+type ErrorSchema struct {
+	// Error - Azure container registry build API error body.
+	Error *Error `json:"error,omitempty"`
 }
 
 // Event the event for a webhook.
@@ -584,6 +2000,257 @@ func (erm EventResponseMessage) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// FileTaskRunRequest the request parameters for a scheduling run against a task file.
+type FileTaskRunRequest struct {
+	// TaskFilePath - The template/definition file path relative to the source.
+	TaskFilePath *string `json:"taskFilePath,omitempty"`
+	// ValuesFilePath - The values/parameters file path relative to the source.
+	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
+	// Values - The collection of overridable values that can be passed when running a task.
+	Values *[]SetValue `json:"values,omitempty"`
+	// Timeout - Run timeout in seconds.
+	Timeout *int32 `json:"timeout,omitempty"`
+	// Platform - The platform properties against which the run has to happen.
+	Platform *PlatformProperties `json:"platform,omitempty"`
+	// AgentConfiguration - The machine configuration of the run agent.
+	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
+	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
+	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
+	SourceLocation *string `json:"sourceLocation,omitempty"`
+	// Credentials - The properties that describes a set of credentials that will be used when this run is invoked.
+	Credentials *Credentials `json:"credentials,omitempty"`
+	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the run.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
+	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileTaskRunRequest.
+func (ftrr FileTaskRunRequest) MarshalJSON() ([]byte, error) {
+	ftrr.Type = TypeFileTaskRunRequest
+	objectMap := make(map[string]interface{})
+	if ftrr.TaskFilePath != nil {
+		objectMap["taskFilePath"] = ftrr.TaskFilePath
+	}
+	if ftrr.ValuesFilePath != nil {
+		objectMap["valuesFilePath"] = ftrr.ValuesFilePath
+	}
+	if ftrr.Values != nil {
+		objectMap["values"] = ftrr.Values
+	}
+	if ftrr.Timeout != nil {
+		objectMap["timeout"] = ftrr.Timeout
+	}
+	if ftrr.Platform != nil {
+		objectMap["platform"] = ftrr.Platform
+	}
+	if ftrr.AgentConfiguration != nil {
+		objectMap["agentConfiguration"] = ftrr.AgentConfiguration
+	}
+	if ftrr.SourceLocation != nil {
+		objectMap["sourceLocation"] = ftrr.SourceLocation
+	}
+	if ftrr.Credentials != nil {
+		objectMap["credentials"] = ftrr.Credentials
+	}
+	if ftrr.IsArchiveEnabled != nil {
+		objectMap["isArchiveEnabled"] = ftrr.IsArchiveEnabled
+	}
+	if ftrr.AgentPoolName != nil {
+		objectMap["agentPoolName"] = ftrr.AgentPoolName
+	}
+	if ftrr.Type != "" {
+		objectMap["type"] = ftrr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildRequest is the BasicRunRequest implementation for FileTaskRunRequest.
+func (ftrr FileTaskRunRequest) AsDockerBuildRequest() (*DockerBuildRequest, bool) {
+	return nil, false
+}
+
+// AsFileTaskRunRequest is the BasicRunRequest implementation for FileTaskRunRequest.
+func (ftrr FileTaskRunRequest) AsFileTaskRunRequest() (*FileTaskRunRequest, bool) {
+	return &ftrr, true
+}
+
+// AsTaskRunRequest is the BasicRunRequest implementation for FileTaskRunRequest.
+func (ftrr FileTaskRunRequest) AsTaskRunRequest() (*TaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsEncodedTaskRunRequest is the BasicRunRequest implementation for FileTaskRunRequest.
+func (ftrr FileTaskRunRequest) AsEncodedTaskRunRequest() (*EncodedTaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsRunRequest is the BasicRunRequest implementation for FileTaskRunRequest.
+func (ftrr FileTaskRunRequest) AsRunRequest() (*RunRequest, bool) {
+	return nil, false
+}
+
+// AsBasicRunRequest is the BasicRunRequest implementation for FileTaskRunRequest.
+func (ftrr FileTaskRunRequest) AsBasicRunRequest() (BasicRunRequest, bool) {
+	return &ftrr, true
+}
+
+// FileTaskStep the properties of a task step.
+type FileTaskStep struct {
+	// TaskFilePath - The task template/definition file path relative to the source context.
+	TaskFilePath *string `json:"taskFilePath,omitempty"`
+	// ValuesFilePath - The task values/parameters file path relative to the source context.
+	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
+	// Values - The collection of overridable values that can be passed when running a task.
+	Values *[]SetValue `json:"values,omitempty"`
+	// BaseImageDependencies - READ-ONLY; List of base image dependencies for a step.
+	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
+	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
+	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
+	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileTaskStep.
+func (fts FileTaskStep) MarshalJSON() ([]byte, error) {
+	fts.Type = TypeFileTask
+	objectMap := make(map[string]interface{})
+	if fts.TaskFilePath != nil {
+		objectMap["taskFilePath"] = fts.TaskFilePath
+	}
+	if fts.ValuesFilePath != nil {
+		objectMap["valuesFilePath"] = fts.ValuesFilePath
+	}
+	if fts.Values != nil {
+		objectMap["values"] = fts.Values
+	}
+	if fts.ContextPath != nil {
+		objectMap["contextPath"] = fts.ContextPath
+	}
+	if fts.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = fts.ContextAccessToken
+	}
+	if fts.Type != "" {
+		objectMap["type"] = fts.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildStep is the BasicTaskStepProperties implementation for FileTaskStep.
+func (fts FileTaskStep) AsDockerBuildStep() (*DockerBuildStep, bool) {
+	return nil, false
+}
+
+// AsFileTaskStep is the BasicTaskStepProperties implementation for FileTaskStep.
+func (fts FileTaskStep) AsFileTaskStep() (*FileTaskStep, bool) {
+	return &fts, true
+}
+
+// AsEncodedTaskStep is the BasicTaskStepProperties implementation for FileTaskStep.
+func (fts FileTaskStep) AsEncodedTaskStep() (*EncodedTaskStep, bool) {
+	return nil, false
+}
+
+// AsTaskStepProperties is the BasicTaskStepProperties implementation for FileTaskStep.
+func (fts FileTaskStep) AsTaskStepProperties() (*TaskStepProperties, bool) {
+	return nil, false
+}
+
+// AsBasicTaskStepProperties is the BasicTaskStepProperties implementation for FileTaskStep.
+func (fts FileTaskStep) AsBasicTaskStepProperties() (BasicTaskStepProperties, bool) {
+	return &fts, true
+}
+
+// FileTaskStepUpdateParameters the properties of updating a task step.
+type FileTaskStepUpdateParameters struct {
+	// TaskFilePath - The task template/definition file path relative to the source context.
+	TaskFilePath *string `json:"taskFilePath,omitempty"`
+	// ValuesFilePath - The values/parameters file path relative to the source context.
+	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
+	// Values - The collection of overridable values that can be passed when running a task.
+	Values *[]SetValue `json:"values,omitempty"`
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
+	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
+	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
+	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileTaskStepUpdateParameters.
+func (ftsup FileTaskStepUpdateParameters) MarshalJSON() ([]byte, error) {
+	ftsup.Type = TypeBasicTaskStepUpdateParametersTypeFileTask
+	objectMap := make(map[string]interface{})
+	if ftsup.TaskFilePath != nil {
+		objectMap["taskFilePath"] = ftsup.TaskFilePath
+	}
+	if ftsup.ValuesFilePath != nil {
+		objectMap["valuesFilePath"] = ftsup.ValuesFilePath
+	}
+	if ftsup.Values != nil {
+		objectMap["values"] = ftsup.Values
+	}
+	if ftsup.ContextPath != nil {
+		objectMap["contextPath"] = ftsup.ContextPath
+	}
+	if ftsup.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = ftsup.ContextAccessToken
+	}
+	if ftsup.Type != "" {
+		objectMap["type"] = ftsup.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for FileTaskStepUpdateParameters.
+func (ftsup FileTaskStepUpdateParameters) AsDockerBuildStepUpdateParameters() (*DockerBuildStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsFileTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for FileTaskStepUpdateParameters.
+func (ftsup FileTaskStepUpdateParameters) AsFileTaskStepUpdateParameters() (*FileTaskStepUpdateParameters, bool) {
+	return &ftsup, true
+}
+
+// AsEncodedTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for FileTaskStepUpdateParameters.
+func (ftsup FileTaskStepUpdateParameters) AsEncodedTaskStepUpdateParameters() (*EncodedTaskStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for FileTaskStepUpdateParameters.
+func (ftsup FileTaskStepUpdateParameters) AsTaskStepUpdateParameters() (*TaskStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsBasicTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for FileTaskStepUpdateParameters.
+func (ftsup FileTaskStepUpdateParameters) AsBasicTaskStepUpdateParameters() (BasicTaskStepUpdateParameters, bool) {
+	return &ftsup, true
+}
+
+// GenerateCredentialsParameters the parameters used to generate credentials for a specified token or user
+// of a container registry.
+type GenerateCredentialsParameters struct {
+	// TokenID - The resource ID of the token for which credentials have to be generated.
+	TokenID *string `json:"tokenId,omitempty"`
+	// Expiry - The expiry date of the generated credentials after which the credentials become invalid.
+	Expiry *date.Time `json:"expiry,omitempty"`
+	// Name - Specifies name of the password which should be regenerated if any -- password1 or password2. Possible values include: 'TokenPasswordNamePassword1', 'TokenPasswordNamePassword2'
+	Name TokenPasswordName `json:"name,omitempty"`
+}
+
+// GenerateCredentialsResult the response from the GenerateCredentials operation.
+type GenerateCredentialsResult struct {
+	autorest.Response `json:"-"`
+	// Username - The username for a container registry.
+	Username *string `json:"username,omitempty"`
+	// Passwords - The list of passwords for a container registry.
+	Passwords *[]TokenPassword `json:"passwords,omitempty"`
+}
+
 // IdentityProperties managed identity for the resource.
 type IdentityProperties struct {
 	// PrincipalID - The principal ID of resource identity.
@@ -615,6 +2282,28 @@ func (IP IdentityProperties) MarshalJSON() ([]byte, error) {
 		objectMap["userAssignedIdentities"] = IP.UserAssignedIdentities
 	}
 	return json.Marshal(objectMap)
+}
+
+// ImageDescriptor properties for a registry image.
+type ImageDescriptor struct {
+	// Registry - The registry login server.
+	Registry *string `json:"registry,omitempty"`
+	// Repository - The repository name.
+	Repository *string `json:"repository,omitempty"`
+	// Tag - The tag name.
+	Tag *string `json:"tag,omitempty"`
+	// Digest - The sha256-based digest of the image manifest.
+	Digest *string `json:"digest,omitempty"`
+}
+
+// ImageUpdateTrigger the image update trigger that caused a build.
+type ImageUpdateTrigger struct {
+	// ID - The unique ID of the trigger.
+	ID *string `json:"id,omitempty"`
+	// Timestamp - The timestamp when the image update happened.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Images - The list of image updates that caused the build.
+	Images *[]ImageDescriptor `json:"images,omitempty"`
 }
 
 // ImportImageParameters ...
@@ -947,6 +2636,43 @@ type OperationServiceSpecificationDefinition struct {
 	MetricSpecifications *[]OperationMetricSpecificationDefinition `json:"metricSpecifications,omitempty"`
 }
 
+// OverrideTaskStepProperties ...
+type OverrideTaskStepProperties struct {
+	// ContextPath - The source context against which run has to be queued.
+	ContextPath *string `json:"contextPath,omitempty"`
+	// File - The file against which run has to be queued.
+	File *string `json:"file,omitempty"`
+	// Arguments - Gets or sets the collection of override arguments to be used when
+	// executing a build step.
+	Arguments *[]Argument `json:"arguments,omitempty"`
+	// Target - The name of the target build stage for the docker build.
+	Target *string `json:"target,omitempty"`
+	// Values - The collection of overridable values that can be passed when running a Task.
+	Values *[]SetValue `json:"values,omitempty"`
+	// UpdateTriggerToken - Base64 encoded update trigger token that will be attached with the base image trigger webhook.
+	UpdateTriggerToken *string `json:"updateTriggerToken,omitempty"`
+}
+
+// PlatformProperties the platform properties against which the run has to happen.
+type PlatformProperties struct {
+	// Os - The operating system type required for the run. Possible values include: 'Windows', 'Linux'
+	Os OS `json:"os,omitempty"`
+	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'ThreeEightSix', 'Arm', 'Arm64'
+	Architecture Architecture `json:"architecture,omitempty"`
+	// Variant - Variant of the CPU. Possible values include: 'V6', 'V7', 'V8'
+	Variant Variant `json:"variant,omitempty"`
+}
+
+// PlatformUpdateParameters the properties for updating the platform configuration.
+type PlatformUpdateParameters struct {
+	// Os - The operating system type required for the run. Possible values include: 'Windows', 'Linux'
+	Os OS `json:"os,omitempty"`
+	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'ThreeEightSix', 'Arm', 'Arm64'
+	Architecture Architecture `json:"architecture,omitempty"`
+	// Variant - Variant of the CPU. Possible values include: 'V6', 'V7', 'V8'
+	Variant Variant `json:"variant,omitempty"`
+}
+
 // Policies the policies for a container registry.
 type Policies struct {
 	// QuarantinePolicy - The quarantine policy for a container registry.
@@ -967,25 +2693,19 @@ type PrivateEndpoint struct {
 // registry.
 type PrivateEndpointConnection struct {
 	autorest.Response `json:"-"`
-	// Type - READ-ONLY; The resource type is private endpoint connection.
-	Type *string `json:"type,omitempty"`
-	// ID - The resource ID.
-	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
-	Name *string `json:"name,omitempty"`
 	// PrivateEndpointConnectionProperties - The properties of a private endpoint connection.
 	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PrivateEndpointConnection.
 func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if pec.ID != nil {
-		objectMap["id"] = pec.ID
-	}
-	if pec.Name != nil {
-		objectMap["name"] = pec.Name
-	}
 	if pec.PrivateEndpointConnectionProperties != nil {
 		objectMap["properties"] = pec.PrivateEndpointConnectionProperties
 	}
@@ -1001,14 +2721,14 @@ func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "type":
+		case "properties":
 			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
+				var privateEndpointConnectionProperties PrivateEndpointConnectionProperties
+				err = json.Unmarshal(*v, &privateEndpointConnectionProperties)
 				if err != nil {
 					return err
 				}
-				pec.Type = &typeVar
+				pec.PrivateEndpointConnectionProperties = &privateEndpointConnectionProperties
 			}
 		case "id":
 			if v != nil {
@@ -1028,14 +2748,14 @@ func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
 				}
 				pec.Name = &name
 			}
-		case "properties":
+		case "type":
 			if v != nil {
-				var privateEndpointConnectionProperties PrivateEndpointConnectionProperties
-				err = json.Unmarshal(*v, &privateEndpointConnectionProperties)
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
 				}
-				pec.PrivateEndpointConnectionProperties = &privateEndpointConnectionProperties
+				pec.Type = &typeVar
 			}
 		}
 	}
@@ -1499,6 +3219,17 @@ type PrivateLinkServiceConnectionState struct {
 	ActionsRequired ActionsRequired `json:"actionsRequired,omitempty"`
 }
 
+// ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
+// required location and tags.
+type ProxyResource struct {
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
 // QuarantinePolicy the quarantine policy for a container registry.
 type QuarantinePolicy struct {
 	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'PolicyStatusEnabled', 'PolicyStatusDisabled'
@@ -1563,6 +3294,35 @@ func (future *RegistriesDeleteFuture) Result(client RegistriesClient) (ar autore
 	return
 }
 
+// RegistriesGenerateCredentialsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type RegistriesGenerateCredentialsFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *RegistriesGenerateCredentialsFuture) Result(client RegistriesClient) (gcr GenerateCredentialsResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesGenerateCredentialsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesGenerateCredentialsFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if gcr.Response.Response, err = future.GetResult(sender); err == nil && gcr.Response.Response.StatusCode != http.StatusNoContent {
+		gcr, err = client.GenerateCredentialsResponder(gcr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesGenerateCredentialsFuture", "Result", gcr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // RegistriesImportImageFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type RegistriesImportImageFuture struct {
@@ -1583,6 +3343,35 @@ func (future *RegistriesImportImageFuture) Result(client RegistriesClient) (ar a
 		return
 	}
 	ar.Response = future.Response()
+	return
+}
+
+// RegistriesScheduleRunFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type RegistriesScheduleRunFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *RegistriesScheduleRunFuture) Result(client RegistriesClient) (r Run, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesScheduleRunFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesScheduleRunFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
+		r, err = client.ScheduleRunResponder(r.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesScheduleRunFuture", "Result", r.Response.Response, "Failure responding to request")
+		}
+	}
 	return
 }
 
@@ -2469,6 +4258,857 @@ type RetentionPolicy struct {
 	Status PolicyStatus `json:"status,omitempty"`
 }
 
+// Run run resource properties
+type Run struct {
+	autorest.Response `json:"-"`
+	// RunProperties - The properties of a run.
+	*RunProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Run.
+func (r Run) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.RunProperties != nil {
+		objectMap["properties"] = r.RunProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Run struct.
+func (r *Run) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var runProperties RunProperties
+				err = json.Unmarshal(*v, &runProperties)
+				if err != nil {
+					return err
+				}
+				r.RunProperties = &runProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				r.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				r.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				r.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// RunFilter properties that are enabled for Odata querying on runs.
+type RunFilter struct {
+	// RunID - The unique identifier for the run.
+	RunID *string `json:"runId,omitempty"`
+	// RunType - The type of run. Possible values include: 'QuickBuild', 'QuickRun', 'AutoBuild', 'AutoRun'
+	RunType RunType `json:"runType,omitempty"`
+	// Status - The current status of the run. Possible values include: 'RunStatusQueued', 'RunStatusStarted', 'RunStatusRunning', 'RunStatusSucceeded', 'RunStatusFailed', 'RunStatusCanceled', 'RunStatusError', 'RunStatusTimeout'
+	Status RunStatus `json:"status,omitempty"`
+	// CreateTime - The create time for a run.
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// FinishTime - The time the run finished.
+	FinishTime *date.Time `json:"finishTime,omitempty"`
+	// OutputImageManifests - The list of comma-separated image manifests that were generated from the run. This is applicable if the run is of
+	// build type.
+	OutputImageManifests *string `json:"outputImageManifests,omitempty"`
+	// IsArchiveEnabled - The value that indicates whether archiving is enabled or not.
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	// TaskName - The name of the task that the run corresponds to.
+	TaskName *string `json:"taskName,omitempty"`
+	// AgentPoolName - The name of the agent pool that the run corresponds to.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
+}
+
+// RunGetLogResult the result of get log link operation.
+type RunGetLogResult struct {
+	autorest.Response `json:"-"`
+	// LogLink - The link to logs for a run on a azure container registry.
+	LogLink *string `json:"logLink,omitempty"`
+}
+
+// RunListResult collection of runs.
+type RunListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The collection value.
+	Value *[]Run `json:"value,omitempty"`
+	// NextLink - The URI that can be used to request the next set of paged results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// RunListResultIterator provides access to a complete listing of Run values.
+type RunListResultIterator struct {
+	i    int
+	page RunListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *RunListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RunListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RunListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter RunListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter RunListResultIterator) Response() RunListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter RunListResultIterator) Value() Run {
+	if !iter.page.NotDone() {
+		return Run{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the RunListResultIterator type.
+func NewRunListResultIterator(page RunListResultPage) RunListResultIterator {
+	return RunListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rlr RunListResult) IsEmpty() bool {
+	return rlr.Value == nil || len(*rlr.Value) == 0
+}
+
+// runListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rlr RunListResult) runListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rlr.NextLink)))
+}
+
+// RunListResultPage contains a page of Run values.
+type RunListResultPage struct {
+	fn  func(context.Context, RunListResult) (RunListResult, error)
+	rlr RunListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *RunListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RunListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rlr)
+	if err != nil {
+		return err
+	}
+	page.rlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RunListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page RunListResultPage) NotDone() bool {
+	return !page.rlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page RunListResultPage) Response() RunListResult {
+	return page.rlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page RunListResultPage) Values() []Run {
+	if page.rlr.IsEmpty() {
+		return nil
+	}
+	return *page.rlr.Value
+}
+
+// Creates a new instance of the RunListResultPage type.
+func NewRunListResultPage(getNextPage func(context.Context, RunListResult) (RunListResult, error)) RunListResultPage {
+	return RunListResultPage{fn: getNextPage}
+}
+
+// RunProperties the properties for a run.
+type RunProperties struct {
+	// RunID - The unique identifier for the run.
+	RunID *string `json:"runId,omitempty"`
+	// Status - The current status of the run. Possible values include: 'RunStatusQueued', 'RunStatusStarted', 'RunStatusRunning', 'RunStatusSucceeded', 'RunStatusFailed', 'RunStatusCanceled', 'RunStatusError', 'RunStatusTimeout'
+	Status RunStatus `json:"status,omitempty"`
+	// LastUpdatedTime - The last updated time for the run.
+	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
+	// RunType - The type of run. Possible values include: 'QuickBuild', 'QuickRun', 'AutoBuild', 'AutoRun'
+	RunType RunType `json:"runType,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the run.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
+	// CreateTime - The time the run was scheduled.
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// StartTime - The time the run started.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// FinishTime - The time the run finished.
+	FinishTime *date.Time `json:"finishTime,omitempty"`
+	// OutputImages - The list of all images that were generated from the run. This is applicable if the run generates base image dependencies.
+	OutputImages *[]ImageDescriptor `json:"outputImages,omitempty"`
+	// Task - The task against which run was scheduled.
+	Task *string `json:"task,omitempty"`
+	// ImageUpdateTrigger - The image update trigger that caused the run. This is applicable if the task has base image trigger configured.
+	ImageUpdateTrigger *ImageUpdateTrigger `json:"imageUpdateTrigger,omitempty"`
+	// SourceTrigger - The source trigger that caused the run.
+	SourceTrigger *SourceTriggerDescriptor `json:"sourceTrigger,omitempty"`
+	// TimerTrigger - The timer trigger that caused the run.
+	TimerTrigger *TimerTriggerDescriptor `json:"timerTrigger,omitempty"`
+	// Platform - The platform properties against which the run will happen.
+	Platform *PlatformProperties `json:"platform,omitempty"`
+	// AgentConfiguration - The machine configuration of the run agent.
+	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
+	// SourceRegistryAuth - The scope of the credentials that were used to login to the source registry during this run.
+	SourceRegistryAuth *string `json:"sourceRegistryAuth,omitempty"`
+	// CustomRegistries - The list of custom registries that were logged in during this run.
+	CustomRegistries *[]string `json:"customRegistries,omitempty"`
+	// RunErrorMessage - READ-ONLY; The error message received from backend systems after the run is scheduled.
+	RunErrorMessage *string `json:"runErrorMessage,omitempty"`
+	// UpdateTriggerToken - The update trigger token passed for the Run.
+	UpdateTriggerToken *string `json:"updateTriggerToken,omitempty"`
+	// ProvisioningState - The provisioning state of a run. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// IsArchiveEnabled - The value that indicates whether archiving is enabled or not.
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+}
+
+// BasicRunRequest the request parameters for scheduling a run.
+type BasicRunRequest interface {
+	AsDockerBuildRequest() (*DockerBuildRequest, bool)
+	AsFileTaskRunRequest() (*FileTaskRunRequest, bool)
+	AsTaskRunRequest() (*TaskRunRequest, bool)
+	AsEncodedTaskRunRequest() (*EncodedTaskRunRequest, bool)
+	AsRunRequest() (*RunRequest, bool)
+}
+
+// RunRequest the request parameters for scheduling a run.
+type RunRequest struct {
+	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the run.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
+	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
+	Type Type `json:"type,omitempty"`
+}
+
+func unmarshalBasicRunRequest(body []byte) (BasicRunRequest, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeDockerBuildRequest):
+		var dbr DockerBuildRequest
+		err := json.Unmarshal(body, &dbr)
+		return dbr, err
+	case string(TypeFileTaskRunRequest):
+		var ftrr FileTaskRunRequest
+		err := json.Unmarshal(body, &ftrr)
+		return ftrr, err
+	case string(TypeTaskRunRequest):
+		var trr TaskRunRequest
+		err := json.Unmarshal(body, &trr)
+		return trr, err
+	case string(TypeEncodedTaskRunRequest):
+		var etrr EncodedTaskRunRequest
+		err := json.Unmarshal(body, &etrr)
+		return etrr, err
+	default:
+		var rr RunRequest
+		err := json.Unmarshal(body, &rr)
+		return rr, err
+	}
+}
+func unmarshalBasicRunRequestArray(body []byte) ([]BasicRunRequest, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	rrArray := make([]BasicRunRequest, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		rr, err := unmarshalBasicRunRequest(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		rrArray[index] = rr
+	}
+	return rrArray, nil
+}
+
+// MarshalJSON is the custom marshaler for RunRequest.
+func (rr RunRequest) MarshalJSON() ([]byte, error) {
+	rr.Type = TypeRunRequest
+	objectMap := make(map[string]interface{})
+	if rr.IsArchiveEnabled != nil {
+		objectMap["isArchiveEnabled"] = rr.IsArchiveEnabled
+	}
+	if rr.AgentPoolName != nil {
+		objectMap["agentPoolName"] = rr.AgentPoolName
+	}
+	if rr.Type != "" {
+		objectMap["type"] = rr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildRequest is the BasicRunRequest implementation for RunRequest.
+func (rr RunRequest) AsDockerBuildRequest() (*DockerBuildRequest, bool) {
+	return nil, false
+}
+
+// AsFileTaskRunRequest is the BasicRunRequest implementation for RunRequest.
+func (rr RunRequest) AsFileTaskRunRequest() (*FileTaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsTaskRunRequest is the BasicRunRequest implementation for RunRequest.
+func (rr RunRequest) AsTaskRunRequest() (*TaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsEncodedTaskRunRequest is the BasicRunRequest implementation for RunRequest.
+func (rr RunRequest) AsEncodedTaskRunRequest() (*EncodedTaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsRunRequest is the BasicRunRequest implementation for RunRequest.
+func (rr RunRequest) AsRunRequest() (*RunRequest, bool) {
+	return &rr, true
+}
+
+// AsBasicRunRequest is the BasicRunRequest implementation for RunRequest.
+func (rr RunRequest) AsBasicRunRequest() (BasicRunRequest, bool) {
+	return &rr, true
+}
+
+// RunsCancelFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type RunsCancelFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *RunsCancelFuture) Result(client RunsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RunsCancelFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.RunsCancelFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// RunsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type RunsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *RunsUpdateFuture) Result(client RunsClient) (r Run, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RunsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.RunsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
+		r, err = client.UpdateResponder(r.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.RunsUpdateFuture", "Result", r.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// RunUpdateParameters the set of run properties that can be updated.
+type RunUpdateParameters struct {
+	// IsArchiveEnabled - The value that indicates whether archiving is enabled or not.
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+}
+
+// ScopeMap an object that represents a scope map for a container registry.
+type ScopeMap struct {
+	autorest.Response `json:"-"`
+	// ScopeMapProperties - The properties of the scope map.
+	*ScopeMapProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScopeMap.
+func (sm ScopeMap) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sm.ScopeMapProperties != nil {
+		objectMap["properties"] = sm.ScopeMapProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ScopeMap struct.
+func (sm *ScopeMap) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var scopeMapProperties ScopeMapProperties
+				err = json.Unmarshal(*v, &scopeMapProperties)
+				if err != nil {
+					return err
+				}
+				sm.ScopeMapProperties = &scopeMapProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sm.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sm.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sm.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ScopeMapListResult the result of a request to list scope maps for a container registry.
+type ScopeMapListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of scope maps. Since this list may be incomplete, the nextLink field should be used to request the next list of scope maps.
+	Value *[]ScopeMap `json:"value,omitempty"`
+	// NextLink - The URI that can be used to request the next list of scope maps.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ScopeMapListResultIterator provides access to a complete listing of ScopeMap values.
+type ScopeMapListResultIterator struct {
+	i    int
+	page ScopeMapListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ScopeMapListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ScopeMapListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ScopeMapListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ScopeMapListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ScopeMapListResultIterator) Response() ScopeMapListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ScopeMapListResultIterator) Value() ScopeMap {
+	if !iter.page.NotDone() {
+		return ScopeMap{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ScopeMapListResultIterator type.
+func NewScopeMapListResultIterator(page ScopeMapListResultPage) ScopeMapListResultIterator {
+	return ScopeMapListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (smlr ScopeMapListResult) IsEmpty() bool {
+	return smlr.Value == nil || len(*smlr.Value) == 0
+}
+
+// scopeMapListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (smlr ScopeMapListResult) scopeMapListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if smlr.NextLink == nil || len(to.String(smlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(smlr.NextLink)))
+}
+
+// ScopeMapListResultPage contains a page of ScopeMap values.
+type ScopeMapListResultPage struct {
+	fn   func(context.Context, ScopeMapListResult) (ScopeMapListResult, error)
+	smlr ScopeMapListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ScopeMapListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ScopeMapListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.smlr)
+	if err != nil {
+		return err
+	}
+	page.smlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ScopeMapListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ScopeMapListResultPage) NotDone() bool {
+	return !page.smlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ScopeMapListResultPage) Response() ScopeMapListResult {
+	return page.smlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ScopeMapListResultPage) Values() []ScopeMap {
+	if page.smlr.IsEmpty() {
+		return nil
+	}
+	return *page.smlr.Value
+}
+
+// Creates a new instance of the ScopeMapListResultPage type.
+func NewScopeMapListResultPage(getNextPage func(context.Context, ScopeMapListResult) (ScopeMapListResult, error)) ScopeMapListResultPage {
+	return ScopeMapListResultPage{fn: getNextPage}
+}
+
+// ScopeMapProperties the properties of a scope map.
+type ScopeMapProperties struct {
+	// Description - The user friendly description of the scope map.
+	Description *string `json:"description,omitempty"`
+	// Type - READ-ONLY; The type of the scope map. E.g. BuildIn scope map.
+	Type *string `json:"type,omitempty"`
+	// CreationDate - READ-ONLY; The creation date of scope map.
+	CreationDate *date.Time `json:"creationDate,omitempty"`
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// Actions - The list of scoped permissions for registry artifacts.
+	// E.g. repositories/repository-name/content/read,
+	// repositories/repository-name/metadata/write
+	Actions *[]string `json:"actions,omitempty"`
+}
+
+// ScopeMapPropertiesUpdateParameters the update parameters for scope map properties.
+type ScopeMapPropertiesUpdateParameters struct {
+	// Description - The user friendly description of the scope map.
+	Description *string `json:"description,omitempty"`
+	// Actions - The list of scope permissions for registry artifacts.
+	// E.g. repositories/repository-name/pull,
+	// repositories/repository-name/delete
+	Actions *[]string `json:"actions,omitempty"`
+}
+
+// ScopeMapsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ScopeMapsCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ScopeMapsCreateFuture) Result(client ScopeMapsClient) (sm ScopeMap, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.ScopeMapsCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.ScopeMapsCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if sm.Response.Response, err = future.GetResult(sender); err == nil && sm.Response.Response.StatusCode != http.StatusNoContent {
+		sm, err = client.CreateResponder(sm.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.ScopeMapsCreateFuture", "Result", sm.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ScopeMapsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ScopeMapsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ScopeMapsDeleteFuture) Result(client ScopeMapsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.ScopeMapsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.ScopeMapsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ScopeMapsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ScopeMapsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ScopeMapsUpdateFuture) Result(client ScopeMapsClient) (sm ScopeMap, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.ScopeMapsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.ScopeMapsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if sm.Response.Response, err = future.GetResult(sender); err == nil && sm.Response.Response.StatusCode != http.StatusNoContent {
+		sm, err = client.UpdateResponder(sm.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.ScopeMapsUpdateFuture", "Result", sm.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ScopeMapUpdateParameters the properties for updating the scope map.
+type ScopeMapUpdateParameters struct {
+	// ScopeMapPropertiesUpdateParameters - The update parameters for scope map properties.
+	*ScopeMapPropertiesUpdateParameters `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScopeMapUpdateParameters.
+func (smup ScopeMapUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if smup.ScopeMapPropertiesUpdateParameters != nil {
+		objectMap["properties"] = smup.ScopeMapPropertiesUpdateParameters
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ScopeMapUpdateParameters struct.
+func (smup *ScopeMapUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var scopeMapPropertiesUpdateParameters ScopeMapPropertiesUpdateParameters
+				err = json.Unmarshal(*v, &scopeMapPropertiesUpdateParameters)
+				if err != nil {
+					return err
+				}
+				smup.ScopeMapPropertiesUpdateParameters = &scopeMapPropertiesUpdateParameters
+			}
+		}
+	}
+
+	return nil
+}
+
+// SecretObject describes the properties of a secret object value.
+type SecretObject struct {
+	// Value - The value of the secret. The format of this value will be determined
+	// based on the type of the secret object. If the type is Opaque, the value will be
+	// used as is without any modification.
+	Value *string `json:"value,omitempty"`
+	// Type - The type of the secret object which determines how the value of the secret object has to be
+	// interpreted. Possible values include: 'Opaque', 'Vaultsecret'
+	Type SecretObjectType `json:"type,omitempty"`
+}
+
+// SetValue the properties of a overridable value that can be passed to a task template.
+type SetValue struct {
+	// Name - The name of the overridable value.
+	Name *string `json:"name,omitempty"`
+	// Value - The overridable value.
+	Value *string `json:"value,omitempty"`
+	// IsSecret - Flag to indicate whether the value represents a secret or not.
+	IsSecret *bool `json:"isSecret,omitempty"`
+}
+
 // Sku the SKU of a container registry.
 type Sku struct {
 	// Name - The SKU name of the container registry. Required for registry creation. Possible values include: 'Classic', 'Basic', 'Standard', 'Premium'
@@ -2484,6 +5124,91 @@ type Source struct {
 	Addr *string `json:"addr,omitempty"`
 	// InstanceID - The running instance of an application. Changes after each restart.
 	InstanceID *string `json:"instanceID,omitempty"`
+}
+
+// SourceProperties the properties of the source code repository.
+type SourceProperties struct {
+	// SourceControlType - The type of source control service. Possible values include: 'Github', 'VisualStudioTeamService'
+	SourceControlType SourceControlType `json:"sourceControlType,omitempty"`
+	// RepositoryURL - The full URL to the source code repository
+	RepositoryURL *string `json:"repositoryUrl,omitempty"`
+	// Branch - The branch name of the source code.
+	Branch *string `json:"branch,omitempty"`
+	// SourceControlAuthProperties - The authorization properties for accessing the source code repository and to set up
+	// webhooks for notifications.
+	SourceControlAuthProperties *AuthInfo `json:"sourceControlAuthProperties,omitempty"`
+}
+
+// SourceRegistryCredentials describes the credential parameters for accessing the source registry.
+type SourceRegistryCredentials struct {
+	// LoginMode - The authentication mode which determines the source registry login scope. The credentials for the source registry
+	// will be generated using the given scope. These credentials will be used to login to
+	// the source registry during the run. Possible values include: 'SourceRegistryLoginModeNone', 'SourceRegistryLoginModeDefault'
+	LoginMode SourceRegistryLoginMode `json:"loginMode,omitempty"`
+}
+
+// SourceTrigger the properties of a source based trigger.
+type SourceTrigger struct {
+	// SourceRepository - The properties that describes the source(code) for the task.
+	SourceRepository *SourceProperties `json:"sourceRepository,omitempty"`
+	// SourceTriggerEvents - The source event corresponding to the trigger.
+	SourceTriggerEvents *[]SourceTriggerEvent `json:"sourceTriggerEvents,omitempty"`
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	Status TriggerStatus `json:"status,omitempty"`
+	// Name - The name of the trigger.
+	Name *string `json:"name,omitempty"`
+}
+
+// SourceTriggerDescriptor the source trigger that caused a run.
+type SourceTriggerDescriptor struct {
+	// ID - The unique ID of the trigger.
+	ID *string `json:"id,omitempty"`
+	// EventType - The event type of the trigger.
+	EventType *string `json:"eventType,omitempty"`
+	// CommitID - The unique ID that identifies a commit.
+	CommitID *string `json:"commitId,omitempty"`
+	// PullRequestID - The unique ID that identifies pull request.
+	PullRequestID *string `json:"pullRequestId,omitempty"`
+	// RepositoryURL - The repository URL.
+	RepositoryURL *string `json:"repositoryUrl,omitempty"`
+	// BranchName - The branch name in the repository.
+	BranchName *string `json:"branchName,omitempty"`
+	// ProviderType - The source control provider type.
+	ProviderType *string `json:"providerType,omitempty"`
+}
+
+// SourceTriggerUpdateParameters the properties for updating a source based trigger.
+type SourceTriggerUpdateParameters struct {
+	// SourceRepository - The properties that describes the source(code) for the task.
+	SourceRepository *SourceUpdateParameters `json:"sourceRepository,omitempty"`
+	// SourceTriggerEvents - The source event corresponding to the trigger.
+	SourceTriggerEvents *[]SourceTriggerEvent `json:"sourceTriggerEvents,omitempty"`
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	Status TriggerStatus `json:"status,omitempty"`
+	// Name - The name of the trigger.
+	Name *string `json:"name,omitempty"`
+}
+
+// SourceUpdateParameters the properties for updating the source code repository.
+type SourceUpdateParameters struct {
+	// SourceControlType - The type of source control service. Possible values include: 'Github', 'VisualStudioTeamService'
+	SourceControlType SourceControlType `json:"sourceControlType,omitempty"`
+	// RepositoryURL - The full URL to the source code repository
+	RepositoryURL *string `json:"repositoryUrl,omitempty"`
+	// Branch - The branch name of the source code.
+	Branch *string `json:"branch,omitempty"`
+	// SourceControlAuthProperties - The authorization properties for accessing the source code repository and to set up
+	// webhooks for notifications.
+	SourceControlAuthProperties *AuthInfoUpdateParameters `json:"sourceControlAuthProperties,omitempty"`
+}
+
+// SourceUploadDefinition the properties of a response to source upload request.
+type SourceUploadDefinition struct {
+	autorest.Response `json:"-"`
+	// UploadURL - The URL where the client can upload the source.
+	UploadURL *string `json:"uploadUrl,omitempty"`
+	// RelativePath - The relative path to the source. This is used to submit the subsequent queue build request.
+	RelativePath *string `json:"relativePath,omitempty"`
 }
 
 // Status1 the status of an Azure resource at the time the operation was called.
@@ -2523,6 +5248,1875 @@ type Target struct {
 	Name *string `json:"name,omitempty"`
 	// Version - The version of the artifact.
 	Version *string `json:"version,omitempty"`
+}
+
+// Task the task that has the ARM resource and task properties.
+// The task will have all information to schedule a run against it.
+type Task struct {
+	autorest.Response `json:"-"`
+	// Identity - Identity for the resource.
+	Identity *IdentityProperties `json:"identity,omitempty"`
+	// TaskProperties - The properties of a task.
+	*TaskProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+	// Location - The location of the resource. This cannot be changed after the resource is created.
+	Location *string `json:"location,omitempty"`
+	// Tags - The tags of the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Task.
+func (t Task) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if t.Identity != nil {
+		objectMap["identity"] = t.Identity
+	}
+	if t.TaskProperties != nil {
+		objectMap["properties"] = t.TaskProperties
+	}
+	if t.Location != nil {
+		objectMap["location"] = t.Location
+	}
+	if t.Tags != nil {
+		objectMap["tags"] = t.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Task struct.
+func (t *Task) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "identity":
+			if v != nil {
+				var identity IdentityProperties
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				t.Identity = &identity
+			}
+		case "properties":
+			if v != nil {
+				var taskProperties TaskProperties
+				err = json.Unmarshal(*v, &taskProperties)
+				if err != nil {
+					return err
+				}
+				t.TaskProperties = &taskProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				t.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				t.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				t.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				t.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				t.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// TaskListResult the collection of tasks.
+type TaskListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The collection value.
+	Value *[]Task `json:"value,omitempty"`
+	// NextLink - The URI that can be used to request the next set of paged results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// TaskListResultIterator provides access to a complete listing of Task values.
+type TaskListResultIterator struct {
+	i    int
+	page TaskListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *TaskListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TaskListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *TaskListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter TaskListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter TaskListResultIterator) Response() TaskListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter TaskListResultIterator) Value() Task {
+	if !iter.page.NotDone() {
+		return Task{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the TaskListResultIterator type.
+func NewTaskListResultIterator(page TaskListResultPage) TaskListResultIterator {
+	return TaskListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (tlr TaskListResult) IsEmpty() bool {
+	return tlr.Value == nil || len(*tlr.Value) == 0
+}
+
+// taskListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (tlr TaskListResult) taskListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if tlr.NextLink == nil || len(to.String(tlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(tlr.NextLink)))
+}
+
+// TaskListResultPage contains a page of Task values.
+type TaskListResultPage struct {
+	fn  func(context.Context, TaskListResult) (TaskListResult, error)
+	tlr TaskListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *TaskListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TaskListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.tlr)
+	if err != nil {
+		return err
+	}
+	page.tlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *TaskListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page TaskListResultPage) NotDone() bool {
+	return !page.tlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page TaskListResultPage) Response() TaskListResult {
+	return page.tlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page TaskListResultPage) Values() []Task {
+	if page.tlr.IsEmpty() {
+		return nil
+	}
+	return *page.tlr.Value
+}
+
+// Creates a new instance of the TaskListResultPage type.
+func NewTaskListResultPage(getNextPage func(context.Context, TaskListResult) (TaskListResult, error)) TaskListResultPage {
+	return TaskListResultPage{fn: getNextPage}
+}
+
+// TaskProperties the properties of a task.
+type TaskProperties struct {
+	// ProvisioningState - READ-ONLY; The provisioning state of the task. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// CreationDate - READ-ONLY; The creation date of task.
+	CreationDate *date.Time `json:"creationDate,omitempty"`
+	// Status - The current status of task. Possible values include: 'TaskStatusDisabled', 'TaskStatusEnabled'
+	Status TaskStatus `json:"status,omitempty"`
+	// Platform - The platform properties against which the run has to happen.
+	Platform *PlatformProperties `json:"platform,omitempty"`
+	// AgentConfiguration - The machine configuration of the run agent.
+	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the task.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
+	// Timeout - Run timeout in seconds.
+	Timeout *int32 `json:"timeout,omitempty"`
+	// Step - The properties of a task step.
+	Step BasicTaskStepProperties `json:"step,omitempty"`
+	// Trigger - The properties that describe all triggers for the task.
+	Trigger *TriggerProperties `json:"trigger,omitempty"`
+	// Credentials - The properties that describes a set of credentials that will be used when this run is invoked.
+	Credentials *Credentials `json:"credentials,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for TaskProperties struct.
+func (tp *TaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "provisioningState":
+			if v != nil {
+				var provisioningState ProvisioningState
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				tp.ProvisioningState = provisioningState
+			}
+		case "creationDate":
+			if v != nil {
+				var creationDate date.Time
+				err = json.Unmarshal(*v, &creationDate)
+				if err != nil {
+					return err
+				}
+				tp.CreationDate = &creationDate
+			}
+		case "status":
+			if v != nil {
+				var status TaskStatus
+				err = json.Unmarshal(*v, &status)
+				if err != nil {
+					return err
+				}
+				tp.Status = status
+			}
+		case "platform":
+			if v != nil {
+				var platform PlatformProperties
+				err = json.Unmarshal(*v, &platform)
+				if err != nil {
+					return err
+				}
+				tp.Platform = &platform
+			}
+		case "agentConfiguration":
+			if v != nil {
+				var agentConfiguration AgentProperties
+				err = json.Unmarshal(*v, &agentConfiguration)
+				if err != nil {
+					return err
+				}
+				tp.AgentConfiguration = &agentConfiguration
+			}
+		case "agentPoolName":
+			if v != nil {
+				var agentPoolName string
+				err = json.Unmarshal(*v, &agentPoolName)
+				if err != nil {
+					return err
+				}
+				tp.AgentPoolName = &agentPoolName
+			}
+		case "timeout":
+			if v != nil {
+				var timeout int32
+				err = json.Unmarshal(*v, &timeout)
+				if err != nil {
+					return err
+				}
+				tp.Timeout = &timeout
+			}
+		case "step":
+			if v != nil {
+				step, err := unmarshalBasicTaskStepProperties(*v)
+				if err != nil {
+					return err
+				}
+				tp.Step = step
+			}
+		case "trigger":
+			if v != nil {
+				var trigger TriggerProperties
+				err = json.Unmarshal(*v, &trigger)
+				if err != nil {
+					return err
+				}
+				tp.Trigger = &trigger
+			}
+		case "credentials":
+			if v != nil {
+				var credentials Credentials
+				err = json.Unmarshal(*v, &credentials)
+				if err != nil {
+					return err
+				}
+				tp.Credentials = &credentials
+			}
+		}
+	}
+
+	return nil
+}
+
+// TaskPropertiesUpdateParameters the properties for updating a task.
+type TaskPropertiesUpdateParameters struct {
+	// Status - The current status of task. Possible values include: 'TaskStatusDisabled', 'TaskStatusEnabled'
+	Status TaskStatus `json:"status,omitempty"`
+	// Platform - The platform properties against which the run has to happen.
+	Platform *PlatformUpdateParameters `json:"platform,omitempty"`
+	// AgentConfiguration - The machine configuration of the run agent.
+	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the task.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
+	// Timeout - Run timeout in seconds.
+	Timeout *int32 `json:"timeout,omitempty"`
+	// Step - The properties for updating a task step.
+	Step BasicTaskStepUpdateParameters `json:"step,omitempty"`
+	// Trigger - The properties for updating trigger properties.
+	Trigger *TriggerUpdateParameters `json:"trigger,omitempty"`
+	// Credentials - The parameters that describes a set of credentials that will be used when this run is invoked.
+	Credentials *Credentials `json:"credentials,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for TaskPropertiesUpdateParameters struct.
+func (tpup *TaskPropertiesUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "status":
+			if v != nil {
+				var status TaskStatus
+				err = json.Unmarshal(*v, &status)
+				if err != nil {
+					return err
+				}
+				tpup.Status = status
+			}
+		case "platform":
+			if v != nil {
+				var platform PlatformUpdateParameters
+				err = json.Unmarshal(*v, &platform)
+				if err != nil {
+					return err
+				}
+				tpup.Platform = &platform
+			}
+		case "agentConfiguration":
+			if v != nil {
+				var agentConfiguration AgentProperties
+				err = json.Unmarshal(*v, &agentConfiguration)
+				if err != nil {
+					return err
+				}
+				tpup.AgentConfiguration = &agentConfiguration
+			}
+		case "agentPoolName":
+			if v != nil {
+				var agentPoolName string
+				err = json.Unmarshal(*v, &agentPoolName)
+				if err != nil {
+					return err
+				}
+				tpup.AgentPoolName = &agentPoolName
+			}
+		case "timeout":
+			if v != nil {
+				var timeout int32
+				err = json.Unmarshal(*v, &timeout)
+				if err != nil {
+					return err
+				}
+				tpup.Timeout = &timeout
+			}
+		case "step":
+			if v != nil {
+				step, err := unmarshalBasicTaskStepUpdateParameters(*v)
+				if err != nil {
+					return err
+				}
+				tpup.Step = step
+			}
+		case "trigger":
+			if v != nil {
+				var trigger TriggerUpdateParameters
+				err = json.Unmarshal(*v, &trigger)
+				if err != nil {
+					return err
+				}
+				tpup.Trigger = &trigger
+			}
+		case "credentials":
+			if v != nil {
+				var credentials Credentials
+				err = json.Unmarshal(*v, &credentials)
+				if err != nil {
+					return err
+				}
+				tpup.Credentials = &credentials
+			}
+		}
+	}
+
+	return nil
+}
+
+// TaskRun the task run that has the ARM resource and properties.
+// The task run will have the information of request and result of a run.
+type TaskRun struct {
+	autorest.Response `json:"-"`
+	// Identity - Identity for the resource.
+	Identity *IdentityProperties `json:"identity,omitempty"`
+	// TaskRunProperties - The properties associated with the task run, i.e., request and result of the run
+	*TaskRunProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+	// Location - The location of the resource. This cannot be changed after the resource is created.
+	Location *string `json:"location,omitempty"`
+	// Tags - The tags of the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for TaskRun.
+func (tr TaskRun) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Identity != nil {
+		objectMap["identity"] = tr.Identity
+	}
+	if tr.TaskRunProperties != nil {
+		objectMap["properties"] = tr.TaskRunProperties
+	}
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
+	}
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for TaskRun struct.
+func (tr *TaskRun) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "identity":
+			if v != nil {
+				var identity IdentityProperties
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				tr.Identity = &identity
+			}
+		case "properties":
+			if v != nil {
+				var taskRunProperties TaskRunProperties
+				err = json.Unmarshal(*v, &taskRunProperties)
+				if err != nil {
+					return err
+				}
+				tr.TaskRunProperties = &taskRunProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				tr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				tr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				tr.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				tr.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				tr.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// TaskRunListResult the collection of task runs.
+type TaskRunListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The collection value.
+	Value *[]TaskRun `json:"value,omitempty"`
+	// NextLink - The URI that can be used to request the next set of paged results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// TaskRunListResultIterator provides access to a complete listing of TaskRun values.
+type TaskRunListResultIterator struct {
+	i    int
+	page TaskRunListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *TaskRunListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TaskRunListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *TaskRunListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter TaskRunListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter TaskRunListResultIterator) Response() TaskRunListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter TaskRunListResultIterator) Value() TaskRun {
+	if !iter.page.NotDone() {
+		return TaskRun{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the TaskRunListResultIterator type.
+func NewTaskRunListResultIterator(page TaskRunListResultPage) TaskRunListResultIterator {
+	return TaskRunListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (trlr TaskRunListResult) IsEmpty() bool {
+	return trlr.Value == nil || len(*trlr.Value) == 0
+}
+
+// taskRunListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (trlr TaskRunListResult) taskRunListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if trlr.NextLink == nil || len(to.String(trlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(trlr.NextLink)))
+}
+
+// TaskRunListResultPage contains a page of TaskRun values.
+type TaskRunListResultPage struct {
+	fn   func(context.Context, TaskRunListResult) (TaskRunListResult, error)
+	trlr TaskRunListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *TaskRunListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TaskRunListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.trlr)
+	if err != nil {
+		return err
+	}
+	page.trlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *TaskRunListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page TaskRunListResultPage) NotDone() bool {
+	return !page.trlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page TaskRunListResultPage) Response() TaskRunListResult {
+	return page.trlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page TaskRunListResultPage) Values() []TaskRun {
+	if page.trlr.IsEmpty() {
+		return nil
+	}
+	return *page.trlr.Value
+}
+
+// Creates a new instance of the TaskRunListResultPage type.
+func NewTaskRunListResultPage(getNextPage func(context.Context, TaskRunListResult) (TaskRunListResult, error)) TaskRunListResultPage {
+	return TaskRunListResultPage{fn: getNextPage}
+}
+
+// TaskRunProperties the properties of task run.
+type TaskRunProperties struct {
+	// ProvisioningState - READ-ONLY; The provisioning state of this task run. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// RunRequest - The request (parameters) for the run
+	RunRequest BasicRunRequest `json:"runRequest,omitempty"`
+	// RunResult - READ-ONLY; The result of this task run
+	RunResult *Run `json:"runResult,omitempty"`
+	// ForceUpdateTag - How the run should be forced to rerun even if the run request configuration has not changed
+	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for TaskRunProperties struct.
+func (trp *TaskRunProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "provisioningState":
+			if v != nil {
+				var provisioningState ProvisioningState
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				trp.ProvisioningState = provisioningState
+			}
+		case "runRequest":
+			if v != nil {
+				runRequest, err := unmarshalBasicRunRequest(*v)
+				if err != nil {
+					return err
+				}
+				trp.RunRequest = runRequest
+			}
+		case "runResult":
+			if v != nil {
+				var runResult Run
+				err = json.Unmarshal(*v, &runResult)
+				if err != nil {
+					return err
+				}
+				trp.RunResult = &runResult
+			}
+		case "forceUpdateTag":
+			if v != nil {
+				var forceUpdateTag string
+				err = json.Unmarshal(*v, &forceUpdateTag)
+				if err != nil {
+					return err
+				}
+				trp.ForceUpdateTag = &forceUpdateTag
+			}
+		}
+	}
+
+	return nil
+}
+
+// TaskRunPropertiesUpdateParameters the properties of a task run update parameters.
+type TaskRunPropertiesUpdateParameters struct {
+	// RunRequest - The request (parameters) for the new run
+	RunRequest BasicRunRequest `json:"runRequest,omitempty"`
+	// ForceUpdateTag - How the run should be forced to rerun even if the run request configuration has not changed
+	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for TaskRunPropertiesUpdateParameters struct.
+func (trpup *TaskRunPropertiesUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "runRequest":
+			if v != nil {
+				runRequest, err := unmarshalBasicRunRequest(*v)
+				if err != nil {
+					return err
+				}
+				trpup.RunRequest = runRequest
+			}
+		case "forceUpdateTag":
+			if v != nil {
+				var forceUpdateTag string
+				err = json.Unmarshal(*v, &forceUpdateTag)
+				if err != nil {
+					return err
+				}
+				trpup.ForceUpdateTag = &forceUpdateTag
+			}
+		}
+	}
+
+	return nil
+}
+
+// TaskRunRequest the parameters for a task run request.
+type TaskRunRequest struct {
+	// TaskID - The resource ID of task against which run has to be queued.
+	TaskID *string `json:"taskId,omitempty"`
+	// OverrideTaskStepProperties - Set of overridable parameters that can be passed when running a Task.
+	OverrideTaskStepProperties *OverrideTaskStepProperties `json:"overrideTaskStepProperties,omitempty"`
+	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the run.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
+	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TaskRunRequest.
+func (trr TaskRunRequest) MarshalJSON() ([]byte, error) {
+	trr.Type = TypeTaskRunRequest
+	objectMap := make(map[string]interface{})
+	if trr.TaskID != nil {
+		objectMap["taskId"] = trr.TaskID
+	}
+	if trr.OverrideTaskStepProperties != nil {
+		objectMap["overrideTaskStepProperties"] = trr.OverrideTaskStepProperties
+	}
+	if trr.IsArchiveEnabled != nil {
+		objectMap["isArchiveEnabled"] = trr.IsArchiveEnabled
+	}
+	if trr.AgentPoolName != nil {
+		objectMap["agentPoolName"] = trr.AgentPoolName
+	}
+	if trr.Type != "" {
+		objectMap["type"] = trr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildRequest is the BasicRunRequest implementation for TaskRunRequest.
+func (trr TaskRunRequest) AsDockerBuildRequest() (*DockerBuildRequest, bool) {
+	return nil, false
+}
+
+// AsFileTaskRunRequest is the BasicRunRequest implementation for TaskRunRequest.
+func (trr TaskRunRequest) AsFileTaskRunRequest() (*FileTaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsTaskRunRequest is the BasicRunRequest implementation for TaskRunRequest.
+func (trr TaskRunRequest) AsTaskRunRequest() (*TaskRunRequest, bool) {
+	return &trr, true
+}
+
+// AsEncodedTaskRunRequest is the BasicRunRequest implementation for TaskRunRequest.
+func (trr TaskRunRequest) AsEncodedTaskRunRequest() (*EncodedTaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsRunRequest is the BasicRunRequest implementation for TaskRunRequest.
+func (trr TaskRunRequest) AsRunRequest() (*RunRequest, bool) {
+	return nil, false
+}
+
+// AsBasicRunRequest is the BasicRunRequest implementation for TaskRunRequest.
+func (trr TaskRunRequest) AsBasicRunRequest() (BasicRunRequest, bool) {
+	return &trr, true
+}
+
+// TaskRunsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type TaskRunsCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *TaskRunsCreateFuture) Result(client TaskRunsClient) (tr TaskRun, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.TaskRunsCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if tr.Response.Response, err = future.GetResult(sender); err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
+		tr, err = client.CreateResponder(tr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsCreateFuture", "Result", tr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// TaskRunsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type TaskRunsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *TaskRunsDeleteFuture) Result(client TaskRunsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.TaskRunsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// TaskRunsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type TaskRunsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *TaskRunsUpdateFuture) Result(client TaskRunsClient) (tr TaskRun, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.TaskRunsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if tr.Response.Response, err = future.GetResult(sender); err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
+		tr, err = client.UpdateResponder(tr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsUpdateFuture", "Result", tr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// TaskRunUpdateParameters the parameters for updating a task run.
+type TaskRunUpdateParameters struct {
+	// Identity - Identity for the resource.
+	Identity *IdentityProperties `json:"identity,omitempty"`
+	// TaskRunPropertiesUpdateParameters - The properties for updating a task run.
+	*TaskRunPropertiesUpdateParameters `json:"properties,omitempty"`
+	// Tags - The ARM resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for TaskRunUpdateParameters.
+func (trup TaskRunUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if trup.Identity != nil {
+		objectMap["identity"] = trup.Identity
+	}
+	if trup.TaskRunPropertiesUpdateParameters != nil {
+		objectMap["properties"] = trup.TaskRunPropertiesUpdateParameters
+	}
+	if trup.Tags != nil {
+		objectMap["tags"] = trup.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for TaskRunUpdateParameters struct.
+func (trup *TaskRunUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "identity":
+			if v != nil {
+				var identity IdentityProperties
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				trup.Identity = &identity
+			}
+		case "properties":
+			if v != nil {
+				var taskRunPropertiesUpdateParameters TaskRunPropertiesUpdateParameters
+				err = json.Unmarshal(*v, &taskRunPropertiesUpdateParameters)
+				if err != nil {
+					return err
+				}
+				trup.TaskRunPropertiesUpdateParameters = &taskRunPropertiesUpdateParameters
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				trup.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// TasksCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type TasksCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *TasksCreateFuture) Result(client TasksClient) (t Task, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.TasksCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.TasksCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t, err = client.CreateResponder(t.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.TasksCreateFuture", "Result", t.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// TasksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type TasksDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *TasksDeleteFuture) Result(client TasksClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.TasksDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.TasksDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// BasicTaskStepProperties base properties for any task step.
+type BasicTaskStepProperties interface {
+	AsDockerBuildStep() (*DockerBuildStep, bool)
+	AsFileTaskStep() (*FileTaskStep, bool)
+	AsEncodedTaskStep() (*EncodedTaskStep, bool)
+	AsTaskStepProperties() (*TaskStepProperties, bool)
+}
+
+// TaskStepProperties base properties for any task step.
+type TaskStepProperties struct {
+	// BaseImageDependencies - READ-ONLY; List of base image dependencies for a step.
+	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
+	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
+	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
+	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
+}
+
+func unmarshalBasicTaskStepProperties(body []byte) (BasicTaskStepProperties, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeDocker):
+		var dbs DockerBuildStep
+		err := json.Unmarshal(body, &dbs)
+		return dbs, err
+	case string(TypeFileTask):
+		var fts FileTaskStep
+		err := json.Unmarshal(body, &fts)
+		return fts, err
+	case string(TypeEncodedTask):
+		var ets EncodedTaskStep
+		err := json.Unmarshal(body, &ets)
+		return ets, err
+	default:
+		var tsp TaskStepProperties
+		err := json.Unmarshal(body, &tsp)
+		return tsp, err
+	}
+}
+func unmarshalBasicTaskStepPropertiesArray(body []byte) ([]BasicTaskStepProperties, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	tspArray := make([]BasicTaskStepProperties, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		tsp, err := unmarshalBasicTaskStepProperties(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		tspArray[index] = tsp
+	}
+	return tspArray, nil
+}
+
+// MarshalJSON is the custom marshaler for TaskStepProperties.
+func (tsp TaskStepProperties) MarshalJSON() ([]byte, error) {
+	tsp.Type = TypeTaskStepProperties
+	objectMap := make(map[string]interface{})
+	if tsp.ContextPath != nil {
+		objectMap["contextPath"] = tsp.ContextPath
+	}
+	if tsp.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = tsp.ContextAccessToken
+	}
+	if tsp.Type != "" {
+		objectMap["type"] = tsp.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildStep is the BasicTaskStepProperties implementation for TaskStepProperties.
+func (tsp TaskStepProperties) AsDockerBuildStep() (*DockerBuildStep, bool) {
+	return nil, false
+}
+
+// AsFileTaskStep is the BasicTaskStepProperties implementation for TaskStepProperties.
+func (tsp TaskStepProperties) AsFileTaskStep() (*FileTaskStep, bool) {
+	return nil, false
+}
+
+// AsEncodedTaskStep is the BasicTaskStepProperties implementation for TaskStepProperties.
+func (tsp TaskStepProperties) AsEncodedTaskStep() (*EncodedTaskStep, bool) {
+	return nil, false
+}
+
+// AsTaskStepProperties is the BasicTaskStepProperties implementation for TaskStepProperties.
+func (tsp TaskStepProperties) AsTaskStepProperties() (*TaskStepProperties, bool) {
+	return &tsp, true
+}
+
+// AsBasicTaskStepProperties is the BasicTaskStepProperties implementation for TaskStepProperties.
+func (tsp TaskStepProperties) AsBasicTaskStepProperties() (BasicTaskStepProperties, bool) {
+	return &tsp, true
+}
+
+// BasicTaskStepUpdateParameters base properties for updating any task step.
+type BasicTaskStepUpdateParameters interface {
+	AsDockerBuildStepUpdateParameters() (*DockerBuildStepUpdateParameters, bool)
+	AsFileTaskStepUpdateParameters() (*FileTaskStepUpdateParameters, bool)
+	AsEncodedTaskStepUpdateParameters() (*EncodedTaskStepUpdateParameters, bool)
+	AsTaskStepUpdateParameters() (*TaskStepUpdateParameters, bool)
+}
+
+// TaskStepUpdateParameters base properties for updating any task step.
+type TaskStepUpdateParameters struct {
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
+	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
+	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
+	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
+}
+
+func unmarshalBasicTaskStepUpdateParameters(body []byte) (BasicTaskStepUpdateParameters, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeBasicTaskStepUpdateParametersTypeDocker):
+		var dbsup DockerBuildStepUpdateParameters
+		err := json.Unmarshal(body, &dbsup)
+		return dbsup, err
+	case string(TypeBasicTaskStepUpdateParametersTypeFileTask):
+		var ftsup FileTaskStepUpdateParameters
+		err := json.Unmarshal(body, &ftsup)
+		return ftsup, err
+	case string(TypeBasicTaskStepUpdateParametersTypeEncodedTask):
+		var etsup EncodedTaskStepUpdateParameters
+		err := json.Unmarshal(body, &etsup)
+		return etsup, err
+	default:
+		var tsup TaskStepUpdateParameters
+		err := json.Unmarshal(body, &tsup)
+		return tsup, err
+	}
+}
+func unmarshalBasicTaskStepUpdateParametersArray(body []byte) ([]BasicTaskStepUpdateParameters, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	tsupArray := make([]BasicTaskStepUpdateParameters, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		tsup, err := unmarshalBasicTaskStepUpdateParameters(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		tsupArray[index] = tsup
+	}
+	return tsupArray, nil
+}
+
+// MarshalJSON is the custom marshaler for TaskStepUpdateParameters.
+func (tsup TaskStepUpdateParameters) MarshalJSON() ([]byte, error) {
+	tsup.Type = TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters
+	objectMap := make(map[string]interface{})
+	if tsup.ContextPath != nil {
+		objectMap["contextPath"] = tsup.ContextPath
+	}
+	if tsup.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = tsup.ContextAccessToken
+	}
+	if tsup.Type != "" {
+		objectMap["type"] = tsup.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for TaskStepUpdateParameters.
+func (tsup TaskStepUpdateParameters) AsDockerBuildStepUpdateParameters() (*DockerBuildStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsFileTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for TaskStepUpdateParameters.
+func (tsup TaskStepUpdateParameters) AsFileTaskStepUpdateParameters() (*FileTaskStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsEncodedTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for TaskStepUpdateParameters.
+func (tsup TaskStepUpdateParameters) AsEncodedTaskStepUpdateParameters() (*EncodedTaskStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for TaskStepUpdateParameters.
+func (tsup TaskStepUpdateParameters) AsTaskStepUpdateParameters() (*TaskStepUpdateParameters, bool) {
+	return &tsup, true
+}
+
+// AsBasicTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for TaskStepUpdateParameters.
+func (tsup TaskStepUpdateParameters) AsBasicTaskStepUpdateParameters() (BasicTaskStepUpdateParameters, bool) {
+	return &tsup, true
+}
+
+// TasksUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type TasksUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *TasksUpdateFuture) Result(client TasksClient) (t Task, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.TasksUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.TasksUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t, err = client.UpdateResponder(t.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.TasksUpdateFuture", "Result", t.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// TaskUpdateParameters the parameters for updating a task.
+type TaskUpdateParameters struct {
+	// Identity - Identity for the resource.
+	Identity *IdentityProperties `json:"identity,omitempty"`
+	// TaskPropertiesUpdateParameters - The properties for updating a task.
+	*TaskPropertiesUpdateParameters `json:"properties,omitempty"`
+	// Tags - The ARM resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for TaskUpdateParameters.
+func (tup TaskUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tup.Identity != nil {
+		objectMap["identity"] = tup.Identity
+	}
+	if tup.TaskPropertiesUpdateParameters != nil {
+		objectMap["properties"] = tup.TaskPropertiesUpdateParameters
+	}
+	if tup.Tags != nil {
+		objectMap["tags"] = tup.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for TaskUpdateParameters struct.
+func (tup *TaskUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "identity":
+			if v != nil {
+				var identity IdentityProperties
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				tup.Identity = &identity
+			}
+		case "properties":
+			if v != nil {
+				var taskPropertiesUpdateParameters TaskPropertiesUpdateParameters
+				err = json.Unmarshal(*v, &taskPropertiesUpdateParameters)
+				if err != nil {
+					return err
+				}
+				tup.TaskPropertiesUpdateParameters = &taskPropertiesUpdateParameters
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				tup.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// TimerTrigger the properties of a timer trigger.
+type TimerTrigger struct {
+	// Schedule - The CRON expression for the task schedule
+	Schedule *string `json:"schedule,omitempty"`
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	Status TriggerStatus `json:"status,omitempty"`
+	// Name - The name of the trigger.
+	Name *string `json:"name,omitempty"`
+}
+
+// TimerTriggerDescriptor ...
+type TimerTriggerDescriptor struct {
+	// TimerTriggerName - The timer trigger name that caused the run.
+	TimerTriggerName *string `json:"timerTriggerName,omitempty"`
+	// ScheduleOccurrence - The occurrence that triggered the run.
+	ScheduleOccurrence *string `json:"scheduleOccurrence,omitempty"`
+}
+
+// TimerTriggerUpdateParameters the properties for updating a timer trigger.
+type TimerTriggerUpdateParameters struct {
+	// Schedule - The CRON expression for the task schedule
+	Schedule *string `json:"schedule,omitempty"`
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	Status TriggerStatus `json:"status,omitempty"`
+	// Name - The name of the trigger.
+	Name *string `json:"name,omitempty"`
+}
+
+// Token an object that represents a token for a container registry.
+type Token struct {
+	autorest.Response `json:"-"`
+	// TokenProperties - The properties of the token.
+	*TokenProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Token.
+func (t Token) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if t.TokenProperties != nil {
+		objectMap["properties"] = t.TokenProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Token struct.
+func (t *Token) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var tokenProperties TokenProperties
+				err = json.Unmarshal(*v, &tokenProperties)
+				if err != nil {
+					return err
+				}
+				t.TokenProperties = &tokenProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				t.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				t.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				t.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// TokenCertificate the properties of a certificate used for authenticating a token.
+type TokenCertificate struct {
+	// Name - Possible values include: 'Certificate1', 'Certificate2'
+	Name TokenCertificateName `json:"name,omitempty"`
+	// Expiry - The expiry datetime of the certificate.
+	Expiry *date.Time `json:"expiry,omitempty"`
+	// Thumbprint - The thumbprint of the certificate.
+	Thumbprint *string `json:"thumbprint,omitempty"`
+	// EncodedPemCertificate - Base 64 encoded string of the public certificate1 in PEM format that will be used for authenticating the token.
+	EncodedPemCertificate *string `json:"encodedPemCertificate,omitempty"`
+}
+
+// TokenCredentialsProperties the properties of the credentials that can be used for authenticating the
+// token.
+type TokenCredentialsProperties struct {
+	ActiveDirectoryObject *ActiveDirectoryObject `json:"activeDirectoryObject,omitempty"`
+	Certificates          *[]TokenCertificate    `json:"certificates,omitempty"`
+	Passwords             *[]TokenPassword       `json:"passwords,omitempty"`
+}
+
+// TokenListResult the result of a request to list tokens for a container registry.
+type TokenListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of tokens. Since this list may be incomplete, the nextLink field should be used to request the next list of tokens.
+	Value *[]Token `json:"value,omitempty"`
+	// NextLink - The URI that can be used to request the next list of tokens.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// TokenListResultIterator provides access to a complete listing of Token values.
+type TokenListResultIterator struct {
+	i    int
+	page TokenListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *TokenListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TokenListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *TokenListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter TokenListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter TokenListResultIterator) Response() TokenListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter TokenListResultIterator) Value() Token {
+	if !iter.page.NotDone() {
+		return Token{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the TokenListResultIterator type.
+func NewTokenListResultIterator(page TokenListResultPage) TokenListResultIterator {
+	return TokenListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (tlr TokenListResult) IsEmpty() bool {
+	return tlr.Value == nil || len(*tlr.Value) == 0
+}
+
+// tokenListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (tlr TokenListResult) tokenListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if tlr.NextLink == nil || len(to.String(tlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(tlr.NextLink)))
+}
+
+// TokenListResultPage contains a page of Token values.
+type TokenListResultPage struct {
+	fn  func(context.Context, TokenListResult) (TokenListResult, error)
+	tlr TokenListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *TokenListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TokenListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.tlr)
+	if err != nil {
+		return err
+	}
+	page.tlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *TokenListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page TokenListResultPage) NotDone() bool {
+	return !page.tlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page TokenListResultPage) Response() TokenListResult {
+	return page.tlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page TokenListResultPage) Values() []Token {
+	if page.tlr.IsEmpty() {
+		return nil
+	}
+	return *page.tlr.Value
+}
+
+// Creates a new instance of the TokenListResultPage type.
+func NewTokenListResultPage(getNextPage func(context.Context, TokenListResult) (TokenListResult, error)) TokenListResultPage {
+	return TokenListResultPage{fn: getNextPage}
+}
+
+// TokenPassword the password that will be used for authenticating the token of a container registry.
+type TokenPassword struct {
+	// CreationTime - The creation datetime of the password.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// Expiry - The expiry datetime of the password.
+	Expiry *date.Time `json:"expiry,omitempty"`
+	// Name - The password name "password1" or "password2". Possible values include: 'TokenPasswordNamePassword1', 'TokenPasswordNamePassword2'
+	Name TokenPasswordName `json:"name,omitempty"`
+	// Value - READ-ONLY; The password value.
+	Value *string `json:"value,omitempty"`
+}
+
+// TokenProperties the properties of a token.
+type TokenProperties struct {
+	// CreationDate - READ-ONLY; The creation date of scope map.
+	CreationDate *date.Time `json:"creationDate,omitempty"`
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// ScopeMapID - The resource ID of the scope map to which the token will be associated with.
+	ScopeMapID *string `json:"scopeMapId,omitempty"`
+	// Credentials - The credentials that can be used for authenticating the token.
+	Credentials *TokenCredentialsProperties `json:"credentials,omitempty"`
+	// Status - The status of the token example enabled or disabled. Possible values include: 'TokenStatusEnabled', 'TokenStatusDisabled'
+	Status TokenStatus `json:"status,omitempty"`
+}
+
+// TokensCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type TokensCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *TokensCreateFuture) Result(client TokensClient) (t Token, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.TokensCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.TokensCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t, err = client.CreateResponder(t.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.TokensCreateFuture", "Result", t.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// TokensDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type TokensDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *TokensDeleteFuture) Result(client TokensClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.TokensDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.TokensDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// TokensUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type TokensUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *TokensUpdateFuture) Result(client TokensClient) (t Token, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.TokensUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.TokensUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t, err = client.UpdateResponder(t.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.TokensUpdateFuture", "Result", t.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// TokenUpdateParameters the parameters for updating a token.
+type TokenUpdateParameters struct {
+	// TokenUpdateProperties - The properties of the token update parameters.
+	*TokenUpdateProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TokenUpdateParameters.
+func (tup TokenUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tup.TokenUpdateProperties != nil {
+		objectMap["properties"] = tup.TokenUpdateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for TokenUpdateParameters struct.
+func (tup *TokenUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var tokenUpdateProperties TokenUpdateProperties
+				err = json.Unmarshal(*v, &tokenUpdateProperties)
+				if err != nil {
+					return err
+				}
+				tup.TokenUpdateProperties = &tokenUpdateProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// TokenUpdateProperties the parameters for updating token properties.
+type TokenUpdateProperties struct {
+	// ScopeMapID - The resource ID of the scope map to which the token will be associated with.
+	ScopeMapID *string `json:"scopeMapId,omitempty"`
+	// Status - The status of the token example enabled or disabled. Possible values include: 'TokenStatusEnabled', 'TokenStatusDisabled'
+	Status TokenStatus `json:"status,omitempty"`
+	// Credentials - The credentials that can be used for authenticating the token.
+	Credentials *TokenCredentialsProperties `json:"credentials,omitempty"`
+}
+
+// TriggerProperties the properties of a trigger.
+type TriggerProperties struct {
+	// TimerTriggers - The collection of timer triggers.
+	TimerTriggers *[]TimerTrigger `json:"timerTriggers,omitempty"`
+	// SourceTriggers - The collection of triggers based on source code repository.
+	SourceTriggers *[]SourceTrigger `json:"sourceTriggers,omitempty"`
+	// BaseImageTrigger - The trigger based on base image dependencies.
+	BaseImageTrigger *BaseImageTrigger `json:"baseImageTrigger,omitempty"`
+}
+
+// TriggerUpdateParameters the properties for updating triggers.
+type TriggerUpdateParameters struct {
+	// TimerTriggers - The collection of timer triggers.
+	TimerTriggers *[]TimerTriggerUpdateParameters `json:"timerTriggers,omitempty"`
+	// SourceTriggers - The collection of triggers based on source code repository.
+	SourceTriggers *[]SourceTriggerUpdateParameters `json:"sourceTriggers,omitempty"`
+	// BaseImageTrigger - The trigger based on base image dependencies.
+	BaseImageTrigger *BaseImageTriggerUpdateParameters `json:"baseImageTrigger,omitempty"`
 }
 
 // TrustPolicy the content trust policy for a container registry.

@@ -29,11 +29,26 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type IdentityType = original.IdentityType
+
+const (
+	None           IdentityType = original.None
+	SystemAssigned IdentityType = original.SystemAssigned
+	UserAssigned   IdentityType = original.UserAssigned
+)
+
 type KeyName = original.KeyName
 
 const (
 	Key1 KeyName = original.Key1
 	Key2 KeyName = original.Key2
+)
+
+type KeySource = original.KeySource
+
+const (
+	MicrosoftCognitiveServices KeySource = original.MicrosoftCognitiveServices
+	MicrosoftKeyVault          KeySource = original.MicrosoftKeyVault
 )
 
 type NetworkRuleAction = original.NetworkRuleAction
@@ -112,9 +127,12 @@ type CheckDomainAvailabilityResult = original.CheckDomainAvailabilityResult
 type CheckSkuAvailabilityParameter = original.CheckSkuAvailabilityParameter
 type CheckSkuAvailabilityResult = original.CheckSkuAvailabilityResult
 type CheckSkuAvailabilityResultList = original.CheckSkuAvailabilityResultList
+type Encryption = original.Encryption
 type Error = original.Error
 type ErrorBody = original.ErrorBody
 type IPRule = original.IPRule
+type Identity = original.Identity
+type KeyVaultProperties = original.KeyVaultProperties
 type MetricName = original.MetricName
 type NetworkRuleSet = original.NetworkRuleSet
 type OperationDisplayInfo = original.OperationDisplayInfo
@@ -135,6 +153,8 @@ type ResourceSkusResultPage = original.ResourceSkusResultPage
 type Sku = original.Sku
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
+type UserAssignedIdentity = original.UserAssignedIdentity
+type UserOwnedStorage = original.UserOwnedStorage
 type VirtualNetworkRule = original.VirtualNetworkRule
 
 func New(subscriptionID string) BaseClient {
@@ -179,8 +199,14 @@ func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusRes
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
+}
 func PossibleKeyNameValues() []KeyName {
 	return original.PossibleKeyNameValues()
+}
+func PossibleKeySourceValues() []KeySource {
+	return original.PossibleKeySourceValues()
 }
 func PossibleNetworkRuleActionValues() []NetworkRuleAction {
 	return original.PossibleNetworkRuleActionValues()

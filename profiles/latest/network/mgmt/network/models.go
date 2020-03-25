@@ -22,7 +22,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-11-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-12-01/network"
 )
 
 const (
@@ -831,6 +831,7 @@ type RuleConditionType = original.RuleConditionType
 const (
 	RuleConditionTypeApplicationRuleCondition    RuleConditionType = original.RuleConditionTypeApplicationRuleCondition
 	RuleConditionTypeFirewallPolicyRuleCondition RuleConditionType = original.RuleConditionTypeFirewallPolicyRuleCondition
+	RuleConditionTypeNatRuleCondition            RuleConditionType = original.RuleConditionTypeNatRuleCondition
 	RuleConditionTypeNetworkRuleCondition        RuleConditionType = original.RuleConditionTypeNetworkRuleCondition
 )
 
@@ -1559,6 +1560,7 @@ type HubVirtualNetworkConnectionProperties = original.HubVirtualNetworkConnectio
 type HubVirtualNetworkConnectionsClient = original.HubVirtualNetworkConnectionsClient
 type IPAddressAvailabilityResult = original.IPAddressAvailabilityResult
 type IPConfiguration = original.IPConfiguration
+type IPConfigurationBgpPeeringAddress = original.IPConfigurationBgpPeeringAddress
 type IPConfigurationProfile = original.IPConfigurationProfile
 type IPConfigurationProfilePropertiesFormat = original.IPConfigurationProfilePropertiesFormat
 type IPConfigurationPropertiesFormat = original.IPConfigurationPropertiesFormat
@@ -1615,6 +1617,7 @@ type InterfacesDeleteFuture = original.InterfacesDeleteFuture
 type InterfacesGetEffectiveRouteTableFuture = original.InterfacesGetEffectiveRouteTableFuture
 type InterfacesListEffectiveNetworkSecurityGroupsFuture = original.InterfacesListEffectiveNetworkSecurityGroupsFuture
 type IpsecPolicy = original.IpsecPolicy
+type Ipv6CircuitConnectionConfig = original.Ipv6CircuitConnectionConfig
 type Ipv6ExpressRouteCircuitPeeringConfig = original.Ipv6ExpressRouteCircuitPeeringConfig
 type ListHubVirtualNetworkConnectionsResult = original.ListHubVirtualNetworkConnectionsResult
 type ListHubVirtualNetworkConnectionsResultIterator = original.ListHubVirtualNetworkConnectionsResultIterator
@@ -1710,6 +1713,7 @@ type NatGatewaySku = original.NatGatewaySku
 type NatGatewaysClient = original.NatGatewaysClient
 type NatGatewaysCreateOrUpdateFuture = original.NatGatewaysCreateOrUpdateFuture
 type NatGatewaysDeleteFuture = original.NatGatewaysDeleteFuture
+type NatRuleCondition = original.NatRuleCondition
 type NextHopParameters = original.NextHopParameters
 type NextHopResult = original.NextHopResult
 type Operation = original.Operation
@@ -1951,6 +1955,16 @@ type UsagesListResultPage = original.UsagesListResultPage
 type VM = original.VM
 type VerificationIPFlowParameters = original.VerificationIPFlowParameters
 type VerificationIPFlowResult = original.VerificationIPFlowResult
+type VirtualAppliance = original.VirtualAppliance
+type VirtualApplianceListResult = original.VirtualApplianceListResult
+type VirtualApplianceListResultIterator = original.VirtualApplianceListResultIterator
+type VirtualApplianceListResultPage = original.VirtualApplianceListResultPage
+type VirtualApplianceNicProperties = original.VirtualApplianceNicProperties
+type VirtualAppliancePropertiesFormat = original.VirtualAppliancePropertiesFormat
+type VirtualApplianceSkuProperties = original.VirtualApplianceSkuProperties
+type VirtualAppliancesClient = original.VirtualAppliancesClient
+type VirtualAppliancesCreateOrUpdateFuture = original.VirtualAppliancesCreateOrUpdateFuture
+type VirtualAppliancesDeleteFuture = original.VirtualAppliancesDeleteFuture
 type VirtualHub = original.VirtualHub
 type VirtualHubID = original.VirtualHubID
 type VirtualHubProperties = original.VirtualHubProperties
@@ -2985,6 +2999,18 @@ func NewUsagesListResultIterator(page UsagesListResultPage) UsagesListResultIter
 }
 func NewUsagesListResultPage(getNextPage func(context.Context, UsagesListResult) (UsagesListResult, error)) UsagesListResultPage {
 	return original.NewUsagesListResultPage(getNextPage)
+}
+func NewVirtualApplianceListResultIterator(page VirtualApplianceListResultPage) VirtualApplianceListResultIterator {
+	return original.NewVirtualApplianceListResultIterator(page)
+}
+func NewVirtualApplianceListResultPage(getNextPage func(context.Context, VirtualApplianceListResult) (VirtualApplianceListResult, error)) VirtualApplianceListResultPage {
+	return original.NewVirtualApplianceListResultPage(getNextPage)
+}
+func NewVirtualAppliancesClient(subscriptionID string) VirtualAppliancesClient {
+	return original.NewVirtualAppliancesClient(subscriptionID)
+}
+func NewVirtualAppliancesClientWithBaseURI(baseURI string, subscriptionID string) VirtualAppliancesClient {
+	return original.NewVirtualAppliancesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVirtualHubRouteTableV2sClient(subscriptionID string) VirtualHubRouteTableV2sClient {
 	return original.NewVirtualHubRouteTableV2sClient(subscriptionID)

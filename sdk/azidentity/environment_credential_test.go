@@ -9,10 +9,6 @@ import (
 	"testing"
 )
 
-const (
-	sdkAuthLocation = "sdkAuthLocation"
-)
-
 func initEnvironmentVarsForTest() error {
 	err := os.Setenv("AZURE_TENANT_ID", tenantID)
 	if err != nil {
@@ -23,10 +19,6 @@ func initEnvironmentVarsForTest() error {
 		return err
 	}
 	err = os.Setenv("AZURE_CLIENT_SECRET", secret)
-	if err != nil {
-		return err
-	}
-	err = os.Setenv("AZURE_AUTH_LOCATION", sdkAuthLocation)
 	if err != nil {
 		return err
 	}
@@ -43,10 +35,6 @@ func resetEnvironmentVarsForTest() error {
 		return err
 	}
 	err = os.Setenv("AZURE_CLIENT_SECRET", "")
-	if err != nil {
-		return err
-	}
-	err = os.Setenv("AZURE_AUTH_LOCATION", "")
 	if err != nil {
 		return err
 	}

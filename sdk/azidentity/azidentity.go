@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
+	"os"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -118,8 +119,15 @@ type TokenCredentialOptions struct {
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
 func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, error) {
+	var authorityHost string
+	envauthorityHost := os.Getenv("AZURE_AUTHORITY_HOST")
+	authorityHost = defaultAuthorityHost
+	if envauthorityHost != "" {
+		authorityHost = envauthorityHost
+	}
+
 	if c == nil {
-		defaultAuthorityHostURL, err := url.Parse(defaultAuthorityHost)
+		defaultAuthorityHostURL, err := url.Parse(authorityHost)
 		if err != nil {
 			return nil, err
 		}
@@ -127,7 +135,7 @@ func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, er
 	}
 
 	if c.AuthorityHost == nil {
-		defaultAuthorityHostURL, err := url.Parse(defaultAuthorityHost)
+		defaultAuthorityHostURL, err := url.Parse(authorityHost)
 		if err != nil {
 			return nil, err
 		}

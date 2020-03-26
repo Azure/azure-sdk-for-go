@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"time"
@@ -72,7 +73,11 @@ func (e *AuthenticationFailedError) Error() string {
 
 func newAADAuthenticationFailedError(resp *azcore.Response) error {
 	authFailed := &AADAuthenticationFailedError{}
-	err := json.Unmarshal(resp.Payload, authFailed)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(body, authFailed)
 	if err != nil {
 		authFailed.Message = resp.Status
 		authFailed.Description = "Failed to unmarshal response: " + err.Error()
@@ -109,7 +114,7 @@ type TokenCredentialOptions struct {
 	LogOptions azcore.RequestLogOptions
 
 	// Retry configures the built-in retry policy behavior.
-	Retry azcore.RetryOptions
+	Retry *azcore.RetryOptions
 
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry azcore.TelemetryOptions
@@ -164,7 +169,7 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 	var statusCodes []int
 	// retry policy for MSI is not end-user configurable
 	retryOpts := azcore.RetryOptions{
-		MaxTries:   5,
+		MaxRetries: 5,
 		RetryDelay: 2 * time.Second,
 		StatusCodes: append(statusCodes,
 			// The following status codes are a subset of those found in azcore.StatusCodesForRetry, these are the only ones specifically needed for MSI scenarios
@@ -189,6 +194,6 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 		o.HTTPClient,
 		azcore.NewTelemetryPolicy(o.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(retryOpts),
+		azcore.NewRetryPolicy(&retryOpts),
 		azcore.NewRequestLogPolicy(o.LogOptions))
 }

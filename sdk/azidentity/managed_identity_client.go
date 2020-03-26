@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -133,7 +134,11 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 		ExpiresIn    json.Number `json:"expires_in"` // this field should always return the number of seconds for which a token is valid
 		ExpiresOn    string      `json:"expires_on"` // the value returned in this field varies between a number and a date string
 	}{}
-	if err := json.Unmarshal(res.Payload, &value); err != nil {
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+	if err := json.Unmarshal(body, &value); err != nil {
 		return nil, fmt.Errorf("internal AccessToken: %w", err)
 	}
 	if value.ExpiresIn != "" {

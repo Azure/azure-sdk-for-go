@@ -150,7 +150,7 @@ func TestBearerPolicy_ChainedTokenCredential(t *testing.T) {
 		srv,
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
 		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(azcore.RetryOptions{}),
+		azcore.NewRetryPolicy(nil),
 		chainedCred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
 	_, err = pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))

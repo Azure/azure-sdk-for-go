@@ -26,30 +26,30 @@ import (
     "github.com/Azure/go-autorest/autorest/validation"
 )
 
-// ReplicationsClient is the client for the Replications methods of the Containerregistry service.
-type ReplicationsClient struct {
+// TaskRunsClient is the client for the TaskRuns methods of the Containerregistry service.
+type TaskRunsClient struct {
     BaseClient
 }
-// NewReplicationsClient creates an instance of the ReplicationsClient client.
-func NewReplicationsClient(subscriptionID string) ReplicationsClient {
-    return NewReplicationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewTaskRunsClient creates an instance of the TaskRunsClient client.
+func NewTaskRunsClient(subscriptionID string) TaskRunsClient {
+    return NewTaskRunsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewReplicationsClientWithBaseURI creates an instance of the ReplicationsClient client using a custom endpoint.  Use
-// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-    func NewReplicationsClientWithBaseURI(baseURI string, subscriptionID string) ReplicationsClient {
-        return ReplicationsClient{ NewWithBaseURI(baseURI, subscriptionID)}
+// NewTaskRunsClientWithBaseURI creates an instance of the TaskRunsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+    func NewTaskRunsClientWithBaseURI(baseURI string, subscriptionID string) TaskRunsClient {
+        return TaskRunsClient{ NewWithBaseURI(baseURI, subscriptionID)}
     }
 
-// Create creates a replication for a container registry with the specified parameters.
+// Create creates a task run for a container registry with the specified parameters.
     // Parameters:
         // resourceGroupName - the name of the resource group to which the container registry belongs.
         // registryName - the name of the container registry.
-        // replicationName - the name of the replication.
-        // replication - the parameters for creating a replication.
-func (client ReplicationsClient) Create(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replication Replication) (result ReplicationsCreateFuture, err error) {
+        // taskRunName - the name of task run.
+        // taskRun - the parameters of a run that needs to scheduled.
+func (client TaskRunsClient) Create(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun TaskRun) (result TaskRunsCreateFuture, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/ReplicationsClient.Create")
+        ctx = tracing.StartSpan(ctx, fqdn + "/TaskRunsClient.Create")
         defer func() {
             sc := -1
             if result.Response() != nil {
@@ -64,23 +64,19 @@ func (client ReplicationsClient) Create(ctx context.Context, resourceGroupName s
             { TargetValue: registryName,
              Constraints: []validation.Constraint{	{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil },
             	{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil },
-            	{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil }}},
-            { TargetValue: replicationName,
-             Constraints: []validation.Constraint{	{Target: "replicationName", Name: validation.MaxLength, Rule: 50, Chain: nil },
-            	{Target: "replicationName", Name: validation.MinLength, Rule: 5, Chain: nil },
-            	{Target: "replicationName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil }}}}); err != nil {
-            return result, validation.NewError("containerregistry.ReplicationsClient", "Create", err.Error())
+            	{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("containerregistry.TaskRunsClient", "Create", err.Error())
             }
 
-                req, err := client.CreatePreparer(ctx, resourceGroupName, registryName, replicationName, replication)
+                req, err := client.CreatePreparer(ctx, resourceGroupName, registryName, taskRunName, taskRun)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "Create", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "Create", nil , "Failure preparing request")
     return
     }
 
             result, err = client.CreateSender(req)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "Create", result.Response(), "Failure sending request")
+            err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "Create", result.Response(), "Failure sending request")
             return
             }
 
@@ -88,15 +84,15 @@ func (client ReplicationsClient) Create(ctx context.Context, resourceGroupName s
     }
 
     // CreatePreparer prepares the Create request.
-    func (client ReplicationsClient) CreatePreparer(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replication Replication) (*http.Request, error) {
+    func (client TaskRunsClient) CreatePreparer(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun TaskRun) (*http.Request, error) {
             pathParameters := map[string]interface{} {
             "registryName": autorest.Encode("path",registryName),
-            "replicationName": autorest.Encode("path",replicationName),
             "resourceGroupName": autorest.Encode("path",resourceGroupName),
             "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            "taskRunName": autorest.Encode("path",taskRunName),
             }
 
-                        const APIVersion = "2019-12-01-preview"
+                        const APIVersion = "2019-06-01-preview"
         queryParameters := map[string]interface{} {
         "api-version": APIVersion,
         }
@@ -105,15 +101,15 @@ func (client ReplicationsClient) Create(ctx context.Context, resourceGroupName s
     autorest.AsContentType("application/json; charset=utf-8"),
     autorest.AsPut(),
     autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}",pathParameters),
-    autorest.WithJSON(replication),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}",pathParameters),
+    autorest.WithJSON(taskRun),
     autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // CreateSender sends the Create request. The method will close the
     // http.Response Body if it receives an error.
-    func (client ReplicationsClient) CreateSender(req *http.Request) (future ReplicationsCreateFuture, err error) {
+    func (client TaskRunsClient) CreateSender(req *http.Request) (future TaskRunsCreateFuture, err error) {
             var resp *http.Response
             resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
             if err != nil {
@@ -125,7 +121,7 @@ func (client ReplicationsClient) Create(ctx context.Context, resourceGroupName s
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ReplicationsClient) CreateResponder(resp *http.Response) (result Replication, err error) {
+func (client TaskRunsClient) CreateResponder(resp *http.Response) (result TaskRun, err error) {
     err = autorest.Respond(
     resp,
     client.ByInspecting(),
@@ -136,14 +132,14 @@ func (client ReplicationsClient) CreateResponder(resp *http.Response) (result Re
         return
     }
 
-// Delete deletes a replication from a container registry.
+// Delete deletes a specified task run resource.
     // Parameters:
         // resourceGroupName - the name of the resource group to which the container registry belongs.
         // registryName - the name of the container registry.
-        // replicationName - the name of the replication.
-func (client ReplicationsClient) Delete(ctx context.Context, resourceGroupName string, registryName string, replicationName string) (result ReplicationsDeleteFuture, err error) {
+        // taskRunName - the task run name.
+func (client TaskRunsClient) Delete(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (result TaskRunsDeleteFuture, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/ReplicationsClient.Delete")
+        ctx = tracing.StartSpan(ctx, fqdn + "/TaskRunsClient.Delete")
         defer func() {
             sc := -1
             if result.Response() != nil {
@@ -158,23 +154,19 @@ func (client ReplicationsClient) Delete(ctx context.Context, resourceGroupName s
             { TargetValue: registryName,
              Constraints: []validation.Constraint{	{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil },
             	{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil },
-            	{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil }}},
-            { TargetValue: replicationName,
-             Constraints: []validation.Constraint{	{Target: "replicationName", Name: validation.MaxLength, Rule: 50, Chain: nil },
-            	{Target: "replicationName", Name: validation.MinLength, Rule: 5, Chain: nil },
-            	{Target: "replicationName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil }}}}); err != nil {
-            return result, validation.NewError("containerregistry.ReplicationsClient", "Delete", err.Error())
+            	{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("containerregistry.TaskRunsClient", "Delete", err.Error())
             }
 
-                req, err := client.DeletePreparer(ctx, resourceGroupName, registryName, replicationName)
+                req, err := client.DeletePreparer(ctx, resourceGroupName, registryName, taskRunName)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "Delete", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "Delete", nil , "Failure preparing request")
     return
     }
 
             result, err = client.DeleteSender(req)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "Delete", result.Response(), "Failure sending request")
+            err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "Delete", result.Response(), "Failure sending request")
             return
             }
 
@@ -182,15 +174,15 @@ func (client ReplicationsClient) Delete(ctx context.Context, resourceGroupName s
     }
 
     // DeletePreparer prepares the Delete request.
-    func (client ReplicationsClient) DeletePreparer(ctx context.Context, resourceGroupName string, registryName string, replicationName string) (*http.Request, error) {
+    func (client TaskRunsClient) DeletePreparer(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (*http.Request, error) {
             pathParameters := map[string]interface{} {
             "registryName": autorest.Encode("path",registryName),
-            "replicationName": autorest.Encode("path",replicationName),
             "resourceGroupName": autorest.Encode("path",resourceGroupName),
             "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            "taskRunName": autorest.Encode("path",taskRunName),
             }
 
-                        const APIVersion = "2019-12-01-preview"
+                        const APIVersion = "2019-06-01-preview"
         queryParameters := map[string]interface{} {
         "api-version": APIVersion,
         }
@@ -198,14 +190,14 @@ func (client ReplicationsClient) Delete(ctx context.Context, resourceGroupName s
         preparer := autorest.CreatePreparer(
     autorest.AsDelete(),
     autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}",pathParameters),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}",pathParameters),
     autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // DeleteSender sends the Delete request. The method will close the
     // http.Response Body if it receives an error.
-    func (client ReplicationsClient) DeleteSender(req *http.Request) (future ReplicationsDeleteFuture, err error) {
+    func (client TaskRunsClient) DeleteSender(req *http.Request) (future TaskRunsDeleteFuture, err error) {
             var resp *http.Response
             resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
             if err != nil {
@@ -217,7 +209,7 @@ func (client ReplicationsClient) Delete(ctx context.Context, resourceGroupName s
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ReplicationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client TaskRunsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
     err = autorest.Respond(
     resp,
     client.ByInspecting(),
@@ -227,14 +219,14 @@ func (client ReplicationsClient) DeleteResponder(resp *http.Response) (result au
         return
     }
 
-// Get gets the properties of the specified replication.
+// Get gets the detailed information for a given task run.
     // Parameters:
         // resourceGroupName - the name of the resource group to which the container registry belongs.
         // registryName - the name of the container registry.
-        // replicationName - the name of the replication.
-func (client ReplicationsClient) Get(ctx context.Context, resourceGroupName string, registryName string, replicationName string) (result Replication, err error) {
+        // taskRunName - the run request name.
+func (client TaskRunsClient) Get(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (result TaskRun, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/ReplicationsClient.Get")
+        ctx = tracing.StartSpan(ctx, fqdn + "/TaskRunsClient.Get")
         defer func() {
             sc := -1
             if result.Response.Response != nil {
@@ -249,45 +241,41 @@ func (client ReplicationsClient) Get(ctx context.Context, resourceGroupName stri
             { TargetValue: registryName,
              Constraints: []validation.Constraint{	{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil },
             	{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil },
-            	{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil }}},
-            { TargetValue: replicationName,
-             Constraints: []validation.Constraint{	{Target: "replicationName", Name: validation.MaxLength, Rule: 50, Chain: nil },
-            	{Target: "replicationName", Name: validation.MinLength, Rule: 5, Chain: nil },
-            	{Target: "replicationName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil }}}}); err != nil {
-            return result, validation.NewError("containerregistry.ReplicationsClient", "Get", err.Error())
+            	{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("containerregistry.TaskRunsClient", "Get", err.Error())
             }
 
-                req, err := client.GetPreparer(ctx, resourceGroupName, registryName, replicationName)
+                req, err := client.GetPreparer(ctx, resourceGroupName, registryName, taskRunName)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "Get", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "Get", nil , "Failure preparing request")
     return
     }
 
             resp, err := client.GetSender(req)
             if err != nil {
             result.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "Get", resp, "Failure sending request")
+            err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "Get", resp, "Failure sending request")
             return
             }
 
             result, err = client.GetResponder(resp)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "Get", resp, "Failure responding to request")
+            err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "Get", resp, "Failure responding to request")
             }
 
     return
     }
 
     // GetPreparer prepares the Get request.
-    func (client ReplicationsClient) GetPreparer(ctx context.Context, resourceGroupName string, registryName string, replicationName string) (*http.Request, error) {
+    func (client TaskRunsClient) GetPreparer(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (*http.Request, error) {
             pathParameters := map[string]interface{} {
             "registryName": autorest.Encode("path",registryName),
-            "replicationName": autorest.Encode("path",replicationName),
             "resourceGroupName": autorest.Encode("path",resourceGroupName),
             "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            "taskRunName": autorest.Encode("path",taskRunName),
             }
 
-                        const APIVersion = "2019-12-01-preview"
+                        const APIVersion = "2019-06-01-preview"
         queryParameters := map[string]interface{} {
         "api-version": APIVersion,
         }
@@ -295,20 +283,20 @@ func (client ReplicationsClient) Get(ctx context.Context, resourceGroupName stri
         preparer := autorest.CreatePreparer(
     autorest.AsGet(),
     autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}",pathParameters),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}",pathParameters),
     autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // GetSender sends the Get request. The method will close the
     // http.Response Body if it receives an error.
-    func (client ReplicationsClient) GetSender(req *http.Request) (*http.Response, error) {
+    func (client TaskRunsClient) GetSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ReplicationsClient) GetResponder(resp *http.Response) (result Replication, err error) {
+func (client TaskRunsClient) GetResponder(resp *http.Response) (result TaskRun, err error) {
     err = autorest.Respond(
     resp,
     client.ByInspecting(),
@@ -319,17 +307,18 @@ func (client ReplicationsClient) GetResponder(resp *http.Response) (result Repli
         return
     }
 
-// List lists all the replications for the specified container registry.
+// GetDetails gets the detailed information for a given task run that includes all secrets.
     // Parameters:
         // resourceGroupName - the name of the resource group to which the container registry belongs.
         // registryName - the name of the container registry.
-func (client ReplicationsClient) List(ctx context.Context, resourceGroupName string, registryName string) (result ReplicationListResultPage, err error) {
+        // taskRunName - the run request name.
+func (client TaskRunsClient) GetDetails(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (result TaskRun, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/ReplicationsClient.List")
+        ctx = tracing.StartSpan(ctx, fqdn + "/TaskRunsClient.GetDetails")
         defer func() {
             sc := -1
-            if result.rlr.Response.Response != nil {
-                sc = result.rlr.Response.Response.StatusCode
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
             }
             tracing.EndSpan(ctx, sc, err)
         }()
@@ -341,40 +330,127 @@ func (client ReplicationsClient) List(ctx context.Context, resourceGroupName str
              Constraints: []validation.Constraint{	{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil },
             	{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil },
             	{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil }}}}); err != nil {
-            return result, validation.NewError("containerregistry.ReplicationsClient", "List", err.Error())
+            return result, validation.NewError("containerregistry.TaskRunsClient", "GetDetails", err.Error())
+            }
+
+                req, err := client.GetDetailsPreparer(ctx, resourceGroupName, registryName, taskRunName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "GetDetails", nil , "Failure preparing request")
+    return
+    }
+
+            resp, err := client.GetDetailsSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "GetDetails", resp, "Failure sending request")
+            return
+            }
+
+            result, err = client.GetDetailsResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "GetDetails", resp, "Failure responding to request")
+            }
+
+    return
+    }
+
+    // GetDetailsPreparer prepares the GetDetails request.
+    func (client TaskRunsClient) GetDetailsPreparer(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "registryName": autorest.Encode("path",registryName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            "taskRunName": autorest.Encode("path",taskRunName),
+            }
+
+                        const APIVersion = "2019-06-01-preview"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
+
+        preparer := autorest.CreatePreparer(
+    autorest.AsPost(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}/listDetails",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
+
+    // GetDetailsSender sends the GetDetails request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client TaskRunsClient) GetDetailsSender(req *http.Request) (*http.Response, error) {
+            return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+            }
+
+// GetDetailsResponder handles the response to the GetDetails request. The method always
+// closes the http.Response Body.
+func (client TaskRunsClient) GetDetailsResponder(resp *http.Response) (result TaskRun, err error) {
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
+
+// List lists all the task runs for a specified container registry.
+    // Parameters:
+        // resourceGroupName - the name of the resource group to which the container registry belongs.
+        // registryName - the name of the container registry.
+func (client TaskRunsClient) List(ctx context.Context, resourceGroupName string, registryName string) (result TaskRunListResultPage, err error) {
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/TaskRunsClient.List")
+        defer func() {
+            sc := -1
+            if result.trlr.Response.Response != nil {
+                sc = result.trlr.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: resourceGroupName,
+             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil }}},
+            { TargetValue: registryName,
+             Constraints: []validation.Constraint{	{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil },
+            	{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil },
+            	{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("containerregistry.TaskRunsClient", "List", err.Error())
             }
 
                         result.fn = client.listNextResults
     req, err := client.ListPreparer(ctx, resourceGroupName, registryName)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "List", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "List", nil , "Failure preparing request")
     return
     }
 
             resp, err := client.ListSender(req)
             if err != nil {
-            result.rlr.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "List", resp, "Failure sending request")
+            result.trlr.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "List", resp, "Failure sending request")
             return
             }
 
-            result.rlr, err = client.ListResponder(resp)
+            result.trlr, err = client.ListResponder(resp)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "List", resp, "Failure responding to request")
+            err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "List", resp, "Failure responding to request")
             }
 
     return
     }
 
     // ListPreparer prepares the List request.
-    func (client ReplicationsClient) ListPreparer(ctx context.Context, resourceGroupName string, registryName string) (*http.Request, error) {
+    func (client TaskRunsClient) ListPreparer(ctx context.Context, resourceGroupName string, registryName string) (*http.Request, error) {
             pathParameters := map[string]interface{} {
             "registryName": autorest.Encode("path",registryName),
             "resourceGroupName": autorest.Encode("path",resourceGroupName),
             "subscriptionId": autorest.Encode("path",client.SubscriptionID),
             }
 
-                        const APIVersion = "2019-12-01-preview"
+                        const APIVersion = "2019-06-01-preview"
         queryParameters := map[string]interface{} {
         "api-version": APIVersion,
         }
@@ -382,20 +458,20 @@ func (client ReplicationsClient) List(ctx context.Context, resourceGroupName str
         preparer := autorest.CreatePreparer(
     autorest.AsGet(),
     autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications",pathParameters),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns",pathParameters),
     autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // ListSender sends the List request. The method will close the
     // http.Response Body if it receives an error.
-    func (client ReplicationsClient) ListSender(req *http.Request) (*http.Response, error) {
+    func (client TaskRunsClient) ListSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ReplicationsClient) ListResponder(resp *http.Response) (result ReplicationListResult, err error) {
+func (client TaskRunsClient) ListResponder(resp *http.Response) (result TaskRunListResult, err error) {
     err = autorest.Respond(
     resp,
     client.ByInspecting(),
@@ -407,10 +483,10 @@ func (client ReplicationsClient) ListResponder(resp *http.Response) (result Repl
     }
 
             // listNextResults retrieves the next set of results, if any.
-            func (client ReplicationsClient) listNextResults(ctx context.Context, lastResults ReplicationListResult) (result ReplicationListResult, err error) {
-            req, err := lastResults.replicationListResultPreparer(ctx)
+            func (client TaskRunsClient) listNextResults(ctx context.Context, lastResults TaskRunListResult) (result TaskRunListResult, err error) {
+            req, err := lastResults.taskRunListResultPreparer(ctx)
             if err != nil {
-            return result, autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "listNextResults", nil , "Failure preparing next results request")
+            return result, autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "listNextResults", nil , "Failure preparing next results request")
             }
             if req == nil {
             return
@@ -418,19 +494,19 @@ func (client ReplicationsClient) ListResponder(resp *http.Response) (result Repl
             resp, err := client.ListSender(req)
             if err != nil {
             result.Response = autorest.Response{Response: resp}
-            return result, autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "listNextResults", resp, "Failure sending next results request")
+            return result, autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "listNextResults", resp, "Failure sending next results request")
             }
             result, err = client.ListResponder(resp)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "listNextResults", resp, "Failure responding to next results request")
+            err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "listNextResults", resp, "Failure responding to next results request")
             }
             return
                     }
 
     // ListComplete enumerates all values, automatically crossing page boundaries as required.
-    func (client ReplicationsClient) ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result ReplicationListResultIterator, err error) {
+    func (client TaskRunsClient) ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result TaskRunListResultIterator, err error) {
         if tracing.IsEnabled() {
-            ctx = tracing.StartSpan(ctx, fqdn + "/ReplicationsClient.List")
+            ctx = tracing.StartSpan(ctx, fqdn + "/TaskRunsClient.List")
             defer func() {
                 sc := -1
                 if result.Response().Response.Response != nil {
@@ -443,15 +519,15 @@ func (client ReplicationsClient) ListResponder(resp *http.Response) (result Repl
                 return
         }
 
-// Update updates a replication for a container registry with the specified parameters.
+// Update updates a task run with the specified parameters.
     // Parameters:
         // resourceGroupName - the name of the resource group to which the container registry belongs.
         // registryName - the name of the container registry.
-        // replicationName - the name of the replication.
-        // replicationUpdateParameters - the parameters for updating a replication.
-func (client ReplicationsClient) Update(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replicationUpdateParameters ReplicationUpdateParameters) (result ReplicationsUpdateFuture, err error) {
+        // taskRunName - the task run name.
+        // updateParameters - the parameters for updating a task run.
+func (client TaskRunsClient) Update(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters) (result TaskRunsUpdateFuture, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/ReplicationsClient.Update")
+        ctx = tracing.StartSpan(ctx, fqdn + "/TaskRunsClient.Update")
         defer func() {
             sc := -1
             if result.Response() != nil {
@@ -466,23 +542,19 @@ func (client ReplicationsClient) Update(ctx context.Context, resourceGroupName s
             { TargetValue: registryName,
              Constraints: []validation.Constraint{	{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil },
             	{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil },
-            	{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil }}},
-            { TargetValue: replicationName,
-             Constraints: []validation.Constraint{	{Target: "replicationName", Name: validation.MaxLength, Rule: 50, Chain: nil },
-            	{Target: "replicationName", Name: validation.MinLength, Rule: 5, Chain: nil },
-            	{Target: "replicationName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil }}}}); err != nil {
-            return result, validation.NewError("containerregistry.ReplicationsClient", "Update", err.Error())
+            	{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("containerregistry.TaskRunsClient", "Update", err.Error())
             }
 
-                req, err := client.UpdatePreparer(ctx, resourceGroupName, registryName, replicationName, replicationUpdateParameters)
+                req, err := client.UpdatePreparer(ctx, resourceGroupName, registryName, taskRunName, updateParameters)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "Update", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "Update", nil , "Failure preparing request")
     return
     }
 
             result, err = client.UpdateSender(req)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsClient", "Update", result.Response(), "Failure sending request")
+            err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "Update", result.Response(), "Failure sending request")
             return
             }
 
@@ -490,15 +562,15 @@ func (client ReplicationsClient) Update(ctx context.Context, resourceGroupName s
     }
 
     // UpdatePreparer prepares the Update request.
-    func (client ReplicationsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replicationUpdateParameters ReplicationUpdateParameters) (*http.Request, error) {
+    func (client TaskRunsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters) (*http.Request, error) {
             pathParameters := map[string]interface{} {
             "registryName": autorest.Encode("path",registryName),
-            "replicationName": autorest.Encode("path",replicationName),
             "resourceGroupName": autorest.Encode("path",resourceGroupName),
             "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            "taskRunName": autorest.Encode("path",taskRunName),
             }
 
-                        const APIVersion = "2019-12-01-preview"
+                        const APIVersion = "2019-06-01-preview"
         queryParameters := map[string]interface{} {
         "api-version": APIVersion,
         }
@@ -507,15 +579,15 @@ func (client ReplicationsClient) Update(ctx context.Context, resourceGroupName s
     autorest.AsContentType("application/json; charset=utf-8"),
     autorest.AsPatch(),
     autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}",pathParameters),
-    autorest.WithJSON(replicationUpdateParameters),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}",pathParameters),
+    autorest.WithJSON(updateParameters),
     autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // UpdateSender sends the Update request. The method will close the
     // http.Response Body if it receives an error.
-    func (client ReplicationsClient) UpdateSender(req *http.Request) (future ReplicationsUpdateFuture, err error) {
+    func (client TaskRunsClient) UpdateSender(req *http.Request) (future TaskRunsUpdateFuture, err error) {
             var resp *http.Response
             resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
             if err != nil {
@@ -527,7 +599,7 @@ func (client ReplicationsClient) Update(ctx context.Context, resourceGroupName s
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client ReplicationsClient) UpdateResponder(resp *http.Response) (result Replication, err error) {
+func (client TaskRunsClient) UpdateResponder(resp *http.Response) (result TaskRun, err error) {
     err = autorest.Respond(
     resp,
     client.ByInspecting(),

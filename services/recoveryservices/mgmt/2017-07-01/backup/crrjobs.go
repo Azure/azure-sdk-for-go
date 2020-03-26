@@ -18,137 +18,137 @@ package backup
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/tracing"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // CrrJobsClient is the open API 2.0 Specs for Azure RecoveryServices Backup service
 type CrrJobsClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewCrrJobsClient creates an instance of the CrrJobsClient client.
 func NewCrrJobsClient(subscriptionID string) CrrJobsClient {
-	return NewCrrJobsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewCrrJobsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewCrrJobsClientWithBaseURI creates an instance of the CrrJobsClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewCrrJobsClientWithBaseURI(baseURI string, subscriptionID string) CrrJobsClient {
-	return CrrJobsClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
+    func NewCrrJobsClientWithBaseURI(baseURI string, subscriptionID string) CrrJobsClient {
+        return CrrJobsClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
 
 // List sends the list request.
-// Parameters:
-// azureRegion - azure region to hit Api
+    // Parameters:
+        // azureRegion - azure region to hit Api
 func (client CrrJobsClient) List(ctx context.Context, azureRegion string) (result JobResourceListPage, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/CrrJobsClient.List")
-		defer func() {
-			sc := -1
-			if result.jrl.Response.Response != nil {
-				sc = result.jrl.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, azureRegion)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.CrrJobsClient", "List", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/CrrJobsClient.List")
+        defer func() {
+            sc := -1
+            if result.jrl.Response.Response != nil {
+                sc = result.jrl.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+                result.fn = client.listNextResults
+    req, err := client.ListPreparer(ctx, azureRegion)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "backup.CrrJobsClient", "List", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.jrl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "backup.CrrJobsClient", "List", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListSender(req)
+            if err != nil {
+            result.jrl.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "backup.CrrJobsClient", "List", resp, "Failure sending request")
+            return
+            }
 
-	result.jrl, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.CrrJobsClient", "List", resp, "Failure responding to request")
-	}
+            result.jrl, err = client.ListResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "backup.CrrJobsClient", "List", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListPreparer prepares the List request.
-func (client CrrJobsClient) ListPreparer(ctx context.Context, azureRegion string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"azureRegion":    autorest.Encode("path", azureRegion),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
+    // ListPreparer prepares the List request.
+    func (client CrrJobsClient) ListPreparer(ctx context.Context, azureRegion string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "azureRegion": autorest.Encode("path",azureRegion),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2018-12-20"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2018-12-20"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupCrrJobs", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+        preparer := autorest.CreatePreparer(
+    autorest.AsPost(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupCrrJobs",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client CrrJobsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
-}
+    // ListSender sends the List request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client CrrJobsClient) ListSender(req *http.Request) (*http.Response, error) {
+            return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+            }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client CrrJobsClient) ListResponder(resp *http.Response) (result JobResourceList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
-// listNextResults retrieves the next set of results, if any.
-func (client CrrJobsClient) listNextResults(ctx context.Context, lastResults JobResourceList) (result JobResourceList, err error) {
-	req, err := lastResults.jobResourceListPreparer(ctx)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "backup.CrrJobsClient", "listNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "backup.CrrJobsClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.CrrJobsClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
+            // listNextResults retrieves the next set of results, if any.
+            func (client CrrJobsClient) listNextResults(ctx context.Context, lastResults JobResourceList) (result JobResourceList, err error) {
+            req, err := lastResults.jobResourceListPreparer(ctx)
+            if err != nil {
+            return result, autorest.NewErrorWithError(err, "backup.CrrJobsClient", "listNextResults", nil , "Failure preparing next results request")
+            }
+            if req == nil {
+            return
+            }
+            resp, err := client.ListSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            return result, autorest.NewErrorWithError(err, "backup.CrrJobsClient", "listNextResults", resp, "Failure sending next results request")
+            }
+            result, err = client.ListResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "backup.CrrJobsClient", "listNextResults", resp, "Failure responding to next results request")
+            }
+            return
+                    }
 
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client CrrJobsClient) ListComplete(ctx context.Context, azureRegion string) (result JobResourceListIterator, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/CrrJobsClient.List")
-		defer func() {
-			sc := -1
-			if result.Response().Response.Response != nil {
-				sc = result.page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.page, err = client.List(ctx, azureRegion)
-	return
-}
+    // ListComplete enumerates all values, automatically crossing page boundaries as required.
+    func (client CrrJobsClient) ListComplete(ctx context.Context, azureRegion string) (result JobResourceListIterator, err error) {
+        if tracing.IsEnabled() {
+            ctx = tracing.StartSpan(ctx, fqdn + "/CrrJobsClient.List")
+            defer func() {
+                sc := -1
+                if result.Response().Response.Response != nil {
+                    sc = result.page.Response().Response.Response.StatusCode
+                }
+                tracing.EndSpan(ctx, sc, err)
+            }()
+     }
+        result.page, err = client.List(ctx, azureRegion)
+                return
+        }
+

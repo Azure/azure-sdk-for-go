@@ -18,100 +18,100 @@ package backup
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/tracing"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // CrrOperationResultsClient is the open API 2.0 Specs for Azure RecoveryServices Backup service
 type CrrOperationResultsClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewCrrOperationResultsClient creates an instance of the CrrOperationResultsClient client.
 func NewCrrOperationResultsClient(subscriptionID string) CrrOperationResultsClient {
-	return NewCrrOperationResultsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewCrrOperationResultsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewCrrOperationResultsClientWithBaseURI creates an instance of the CrrOperationResultsClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewCrrOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) CrrOperationResultsClient {
-	return CrrOperationResultsClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
+    func NewCrrOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) CrrOperationResultsClient {
+        return CrrOperationResultsClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
 
 // Get sends the get request.
-// Parameters:
-// azureRegion - azure region to hit Api
+    // Parameters:
+        // azureRegion - azure region to hit Api
 func (client CrrOperationResultsClient) Get(ctx context.Context, azureRegion string, operationID string) (result CrrOperationResultsGetFuture, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/CrrOperationResultsClient.Get")
-		defer func() {
-			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.GetPreparer(ctx, azureRegion, operationID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.CrrOperationResultsClient", "Get", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/CrrOperationResultsClient.Get")
+        defer func() {
+            sc := -1
+            if result.Response() != nil {
+                sc = result.Response().StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetPreparer(ctx, azureRegion, operationID)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "backup.CrrOperationResultsClient", "Get", nil , "Failure preparing request")
+    return
+    }
 
-	result, err = client.GetSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.CrrOperationResultsClient", "Get", result.Response(), "Failure sending request")
-		return
-	}
+            result, err = client.GetSender(req)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "backup.CrrOperationResultsClient", "Get", result.Response(), "Failure sending request")
+            return
+            }
 
-	return
-}
+    return
+    }
 
-// GetPreparer prepares the Get request.
-func (client CrrOperationResultsClient) GetPreparer(ctx context.Context, azureRegion string, operationID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"azureRegion":    autorest.Encode("path", azureRegion),
-		"operationId":    autorest.Encode("path", operationID),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
+    // GetPreparer prepares the Get request.
+    func (client CrrOperationResultsClient) GetPreparer(ctx context.Context, azureRegion string, operationID string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "azureRegion": autorest.Encode("path",azureRegion),
+            "operationId": autorest.Encode("path",operationID),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2018-12-20"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2018-12-20"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupCrrOperationResults/{operationId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+        preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupCrrOperationResults/{operationId}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client CrrOperationResultsClient) GetSender(req *http.Request) (future CrrOperationResultsGetFuture, err error) {
-	var resp *http.Response
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
+    // GetSender sends the Get request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client CrrOperationResultsClient) GetSender(req *http.Request) (future CrrOperationResultsGetFuture, err error) {
+            var resp *http.Response
+            resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+            if err != nil {
+            return
+            }
+            future.Future, err = azure.NewFutureFromResponse(resp)
+            return
+            }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client CrrOperationResultsClient) GetResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
+    autorest.ByClosing())
+    result.Response = resp
+        return
+    }
+

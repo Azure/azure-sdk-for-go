@@ -128,8 +128,7 @@ func (client LargePersonGroupClient) CreatePreparer(ctx context.Context, largePe
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargePersonGroupClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -207,8 +206,7 @@ func (client LargePersonGroupClient) DeletePreparer(ctx context.Context, largePe
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargePersonGroupClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -298,8 +296,7 @@ func (client LargePersonGroupClient) GetPreparer(ctx context.Context, largePerso
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargePersonGroupClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -377,8 +374,7 @@ func (client LargePersonGroupClient) GetTrainingStatusPreparer(ctx context.Conte
 // GetTrainingStatusSender sends the GetTrainingStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargePersonGroupClient) GetTrainingStatusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetTrainingStatusResponder handles the response to the GetTrainingStatus request. The method always
@@ -486,8 +482,7 @@ func (client LargePersonGroupClient) ListPreparer(ctx context.Context, start str
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargePersonGroupClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -565,8 +560,7 @@ func (client LargePersonGroupClient) TrainPreparer(ctx context.Context, largePer
 // TrainSender sends the Train request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargePersonGroupClient) TrainSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // TrainResponder handles the response to the Train request. The method always
@@ -647,8 +641,7 @@ func (client LargePersonGroupClient) UpdatePreparer(ctx context.Context, largePe
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargePersonGroupClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

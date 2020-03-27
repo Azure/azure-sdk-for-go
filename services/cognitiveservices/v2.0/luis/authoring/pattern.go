@@ -97,8 +97,7 @@ func (client PatternClient) AddPatternPreparer(ctx context.Context, appID uuid.U
 // AddPatternSender sends the AddPattern request. The method will close the
 // http.Response Body if it receives an error.
 func (client PatternClient) AddPatternSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddPatternResponder handles the response to the AddPattern request. The method always
@@ -180,8 +179,7 @@ func (client PatternClient) BatchAddPatternsPreparer(ctx context.Context, appID 
 // BatchAddPatternsSender sends the BatchAddPatterns request. The method will close the
 // http.Response Body if it receives an error.
 func (client PatternClient) BatchAddPatternsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // BatchAddPatternsResponder handles the response to the BatchAddPatterns request. The method always
@@ -256,8 +254,7 @@ func (client PatternClient) DeletePatternPreparer(ctx context.Context, appID uui
 // DeletePatternSender sends the DeletePattern request. The method will close the
 // http.Response Body if it receives an error.
 func (client PatternClient) DeletePatternSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeletePatternResponder handles the response to the DeletePattern request. The method always
@@ -339,8 +336,7 @@ func (client PatternClient) DeletePatternsPreparer(ctx context.Context, appID uu
 // DeletePatternsSender sends the DeletePatterns request. The method will close the
 // http.Response Body if it receives an error.
 func (client PatternClient) DeletePatternsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeletePatternsResponder handles the response to the DeletePatterns request. The method always
@@ -442,8 +438,7 @@ func (client PatternClient) ListIntentPatternsPreparer(ctx context.Context, appI
 // ListIntentPatternsSender sends the ListIntentPatterns request. The method will close the
 // http.Response Body if it receives an error.
 func (client PatternClient) ListIntentPatternsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListIntentPatternsResponder handles the response to the ListIntentPatterns request. The method always
@@ -543,8 +538,7 @@ func (client PatternClient) ListPatternsPreparer(ctx context.Context, appID uuid
 // ListPatternsSender sends the ListPatterns request. The method will close the
 // http.Response Body if it receives an error.
 func (client PatternClient) ListPatternsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListPatternsResponder handles the response to the ListPatterns request. The method always
@@ -622,8 +616,7 @@ func (client PatternClient) UpdatePatternPreparer(ctx context.Context, appID uui
 // UpdatePatternSender sends the UpdatePattern request. The method will close the
 // http.Response Body if it receives an error.
 func (client PatternClient) UpdatePatternSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdatePatternResponder handles the response to the UpdatePattern request. The method always
@@ -705,8 +698,7 @@ func (client PatternClient) UpdatePatternsPreparer(ctx context.Context, appID uu
 // UpdatePatternsSender sends the UpdatePatterns request. The method will close the
 // http.Response Body if it receives an error.
 func (client PatternClient) UpdatePatternsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdatePatternsResponder handles the response to the UpdatePatterns request. The method always

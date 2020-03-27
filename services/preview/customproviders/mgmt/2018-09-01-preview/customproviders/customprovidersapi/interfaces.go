@@ -25,6 +25,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result customproviders.ResourceProviderOperationListPage, err error)
+	ListComplete(ctx context.Context) (result customproviders.ResourceProviderOperationListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*customproviders.OperationsClient)(nil)
@@ -35,7 +36,9 @@ type CustomResourceProviderClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, resourceProviderName string) (result customproviders.CustomResourceProviderDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, resourceProviderName string) (result customproviders.CustomRPManifest, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result customproviders.ListByCustomRPManifestPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result customproviders.ListByCustomRPManifestIterator, err error)
 	ListBySubscription(ctx context.Context) (result customproviders.ListByCustomRPManifestPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result customproviders.ListByCustomRPManifestIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceProviderName string, patchableResource customproviders.ResourceProvidersUpdate) (result customproviders.CustomRPManifest, err error)
 }
 
@@ -47,6 +50,7 @@ type AssociationsClientAPI interface {
 	Delete(ctx context.Context, scope string, associationName string) (result customproviders.AssociationsDeleteFuture, err error)
 	Get(ctx context.Context, scope string, associationName string) (result customproviders.Association, err error)
 	ListAll(ctx context.Context, scope string) (result customproviders.AssociationsListPage, err error)
+	ListAllComplete(ctx context.Context, scope string) (result customproviders.AssociationsListIterator, err error)
 }
 
 var _ AssociationsClientAPI = (*customproviders.AssociationsClient)(nil)

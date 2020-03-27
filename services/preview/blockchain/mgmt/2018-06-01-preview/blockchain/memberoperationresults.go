@@ -35,7 +35,9 @@ func NewMemberOperationResultsClient(subscriptionID string) MemberOperationResul
 	return NewMemberOperationResultsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMemberOperationResultsClientWithBaseURI creates an instance of the MemberOperationResultsClient client.
+// NewMemberOperationResultsClientWithBaseURI creates an instance of the MemberOperationResultsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewMemberOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) MemberOperationResultsClient {
 	return MemberOperationResultsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -100,8 +102,7 @@ func (client MemberOperationResultsClient) GetPreparer(ctx context.Context, loca
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client MemberOperationResultsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always

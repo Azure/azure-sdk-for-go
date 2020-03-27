@@ -31,9 +31,13 @@ type VaultsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, vaultName string) (result keyvault.Vault, err error)
 	GetDeleted(ctx context.Context, vaultName string, location string) (result keyvault.DeletedVault, err error)
 	List(ctx context.Context, top *int32) (result keyvault.ResourceListResultPage, err error)
+	ListComplete(ctx context.Context, top *int32) (result keyvault.ResourceListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, top *int32) (result keyvault.VaultListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, top *int32) (result keyvault.VaultListResultIterator, err error)
 	ListBySubscription(ctx context.Context, top *int32) (result keyvault.VaultListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, top *int32) (result keyvault.VaultListResultIterator, err error)
 	ListDeleted(ctx context.Context) (result keyvault.DeletedVaultListResultPage, err error)
+	ListDeletedComplete(ctx context.Context) (result keyvault.DeletedVaultListResultIterator, err error)
 	PurgeDeleted(ctx context.Context, vaultName string, location string) (result keyvault.VaultsPurgeDeletedFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, vaultName string, parameters keyvault.VaultPatchParameters) (result keyvault.Vault, err error)
 	UpdateAccessPolicy(ctx context.Context, resourceGroupName string, vaultName string, operationKind keyvault.AccessPolicyUpdateKind, parameters keyvault.VaultAccessPolicyParameters) (result keyvault.VaultAccessPolicyParameters, err error)
@@ -44,6 +48,7 @@ var _ VaultsClientAPI = (*keyvault.VaultsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result keyvault.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result keyvault.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*keyvault.OperationsClient)(nil)

@@ -35,7 +35,9 @@ func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient
 	return NewEnrollmentAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewEnrollmentAccountsClientWithBaseURI creates an instance of the EnrollmentAccountsClient client.
+// NewEnrollmentAccountsClientWithBaseURI creates an instance of the EnrollmentAccountsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsClient {
 	return EnrollmentAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -108,8 +110,7 @@ func (client EnrollmentAccountsClient) GetByEnrollmentAccountIDPreparer(ctx cont
 // GetByEnrollmentAccountIDSender sends the GetByEnrollmentAccountID request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnrollmentAccountsClient) GetByEnrollmentAccountIDSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByEnrollmentAccountIDResponder handles the response to the GetByEnrollmentAccountID request. The method always
@@ -192,8 +193,7 @@ func (client EnrollmentAccountsClient) ListByBillingAccountNamePreparer(ctx cont
 // ListByBillingAccountNameSender sends the ListByBillingAccountName request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnrollmentAccountsClient) ListByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingAccountNameResponder handles the response to the ListByBillingAccountName request. The method always

@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,10 +19,9 @@
 
 package netappapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2019-10-01/netapp/netappapi"
+import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2019-11-01/netapp/netappapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
-type MountTargetsClientAPI = original.MountTargetsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PoolsClientAPI = original.PoolsClientAPI
 type ResourceClientAPI = original.ResourceClientAPI

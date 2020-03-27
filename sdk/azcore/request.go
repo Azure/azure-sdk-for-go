@@ -1,3 +1,5 @@
+// +build go1.13
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -6,6 +8,7 @@ package azcore
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -16,14 +19,14 @@ import (
 )
 
 const (
-	contentTypeAppXML = "application/xml"
+	contentTypeAppJSON = "application/json"
+	contentTypeAppXML  = "application/xml"
 )
 
 // Request is an abstraction over the creation of an HTTP request as it passes through the pipeline.
 type Request struct {
 	*http.Request
 	policies []Policy
-	qp       url.Values
 	values   opValues
 }
 
@@ -75,12 +78,18 @@ func (req *Request) Next(ctx context.Context) (*Response, error) {
 	nextPolicy := req.policies[0]
 	nextReq := *req
 	nextReq.policies = nextReq.policies[1:]
-	// encode any pending query params
-	if nextReq.qp != nil {
-		nextReq.Request.URL.RawQuery = nextReq.qp.Encode()
-		nextReq.qp = nil
-	}
 	return nextPolicy.Do(ctx, &nextReq)
+}
+
+// MarshalAsJSON calls json.Marshal() to get the JSON encoding of v then calls SetBody.
+// If json.Marshal fails a MarshalError is returned.  Any error from SetBody is returned.
+func (req *Request) MarshalAsJSON(v interface{}) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return fmt.Errorf("error marshalling type %s: %w", reflect.TypeOf(v).Name(), err)
+	}
+	req.Header.Set(HeaderContentType, contentTypeAppJSON)
+	return req.SetBody(NopCloser(bytes.NewReader(b)))
 }
 
 // MarshalAsXML calls xml.Marshal() to get the XML encoding of v then calls SetBody.
@@ -110,14 +119,6 @@ func (req *Request) OperationValue(value interface{}) bool {
 	return req.values.get(value)
 }
 
-// SetQueryParam sets the key to value.
-func (req *Request) SetQueryParam(key, value string) {
-	if req.qp == nil {
-		req.qp = req.Request.URL.Query()
-	}
-	req.qp.Set(key, value)
-}
-
 // SetBody sets the specified ReadSeekCloser as the HTTP request body.
 func (req *Request) SetBody(body ReadSeekCloser) error {
 	// Set the body and content length.
@@ -141,6 +142,13 @@ func (req *Request) SetBody(body ReadSeekCloser) error {
 // SkipBodyDownload will disable automatic downloading of the response body.
 func (req *Request) SkipBodyDownload() {
 	req.SetOperationValue(bodyDownloadPolicyOpValues{skip: true})
+}
+
+// returns true if auto-body download policy is enabled
+func (req *Request) bodyDownloadEnabled() bool {
+	var opValues bodyDownloadPolicyOpValues
+	req.OperationValue(&opValues)
+	return !opValues.skip
 }
 
 // RewindBody seeks the request's Body stream back to the beginning so it can be resent when retrying an operation.

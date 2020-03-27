@@ -1,3 +1,5 @@
+// +build go1.13
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -34,7 +36,7 @@ func (cf credentialFunc) AuthenticationPolicy(options AuthenticationPolicyOption
 // TokenCredential represents a credential capable of providing an OAuth token.
 type TokenCredential interface {
 	Credential
-	// GetToken requests an access token for the specified set of scopes from the identity service.
+	// GetToken requests an access token for the specified set of scopes.
 	GetToken(ctx context.Context, options TokenRequestOptions) (*AccessToken, error)
 }
 

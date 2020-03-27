@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,11 +19,21 @@
 
 package eventgridapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-01-01-preview/eventgrid/eventgridapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-04-01-preview/eventgrid/eventgridapi"
 
 type DomainTopicsClientAPI = original.DomainTopicsClientAPI
 type DomainsClientAPI = original.DomainsClientAPI
+type EventChannelsClientAPI = original.EventChannelsClientAPI
 type EventSubscriptionsClientAPI = original.EventSubscriptionsClientAPI
+type ExtensionTopicsClientAPI = original.ExtensionTopicsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PartnerNamespacesClientAPI = original.PartnerNamespacesClientAPI
+type PartnerRegistrationsClientAPI = original.PartnerRegistrationsClientAPI
+type PartnerTopicEventSubscriptionsClientAPI = original.PartnerTopicEventSubscriptionsClientAPI
+type PartnerTopicsClientAPI = original.PartnerTopicsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
+type SystemTopicEventSubscriptionsClientAPI = original.SystemTopicEventSubscriptionsClientAPI
+type SystemTopicsClientAPI = original.SystemTopicsClientAPI
 type TopicTypesClientAPI = original.TopicTypesClientAPI
 type TopicsClientAPI = original.TopicsClientAPI

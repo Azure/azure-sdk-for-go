@@ -35,7 +35,8 @@ func NewPaymentMethodsClient(subscriptionID string) PaymentMethodsClient {
 	return NewPaymentMethodsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPaymentMethodsClientWithBaseURI creates an instance of the PaymentMethodsClient client.
+// NewPaymentMethodsClientWithBaseURI creates an instance of the PaymentMethodsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPaymentMethodsClientWithBaseURI(baseURI string, subscriptionID string) PaymentMethodsClient {
 	return PaymentMethodsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -98,8 +99,7 @@ func (client PaymentMethodsClient) ListByBillingAccountNamePreparer(ctx context.
 // ListByBillingAccountNameSender sends the ListByBillingAccountName request. The method will close the
 // http.Response Body if it receives an error.
 func (client PaymentMethodsClient) ListByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingAccountNameResponder handles the response to the ListByBillingAccountName request. The method always
@@ -212,8 +212,7 @@ func (client PaymentMethodsClient) ListByBillingProfileNamePreparer(ctx context.
 // ListByBillingProfileNameSender sends the ListByBillingProfileName request. The method will close the
 // http.Response Body if it receives an error.
 func (client PaymentMethodsClient) ListByBillingProfileNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingProfileNameResponder handles the response to the ListByBillingProfileName request. The method always

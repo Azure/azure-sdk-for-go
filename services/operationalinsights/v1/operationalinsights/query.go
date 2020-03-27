@@ -36,7 +36,8 @@ func NewQueryClient() QueryClient {
 	return NewQueryClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewQueryClientWithBaseURI creates an instance of the QueryClient client.
+// NewQueryClientWithBaseURI creates an instance of the QueryClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewQueryClientWithBaseURI(baseURI string) QueryClient {
 	return QueryClient{NewWithBaseURI(baseURI)}
 }
@@ -103,8 +104,7 @@ func (client QueryClient) ExecutePreparer(ctx context.Context, workspaceID strin
 // ExecuteSender sends the Execute request. The method will close the
 // http.Response Body if it receives an error.
 func (client QueryClient) ExecuteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ExecuteResponder handles the response to the Execute request. The method always

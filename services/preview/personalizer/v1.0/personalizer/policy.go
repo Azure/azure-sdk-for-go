@@ -89,8 +89,7 @@ func (client PolicyClient) GetPreparer(ctx context.Context) (*http.Request, erro
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -155,8 +154,7 @@ func (client PolicyClient) ResetPreparer(ctx context.Context) (*http.Request, er
 // ResetSender sends the Reset request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyClient) ResetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ResetResponder handles the response to the Reset request. The method always
@@ -234,8 +232,7 @@ func (client PolicyClient) UpdatePreparer(ctx context.Context, policy PolicyCont
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

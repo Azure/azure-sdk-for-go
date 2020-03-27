@@ -36,7 +36,9 @@ func NewReservationsSummariesClient(subscriptionID string) ReservationsSummaries
 	return NewReservationsSummariesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewReservationsSummariesClientWithBaseURI creates an instance of the ReservationsSummariesClient client.
+// NewReservationsSummariesClientWithBaseURI creates an instance of the ReservationsSummariesClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
 	return ReservationsSummariesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -106,8 +108,7 @@ func (client ReservationsSummariesClient) ListByReservationOrderPreparer(ctx con
 // ListByReservationOrderSender sends the ListByReservationOrder request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReservationsSummariesClient) ListByReservationOrderSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByReservationOrderResponder handles the response to the ListByReservationOrder request. The method always
@@ -227,8 +228,7 @@ func (client ReservationsSummariesClient) ListByReservationOrderAndReservationPr
 // ListByReservationOrderAndReservationSender sends the ListByReservationOrderAndReservation request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReservationsSummariesClient) ListByReservationOrderAndReservationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByReservationOrderAndReservationResponder handles the response to the ListByReservationOrderAndReservation request. The method always

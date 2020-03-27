@@ -36,7 +36,8 @@ func NewChargesClient(subscriptionID string) ChargesClient {
 	return NewChargesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewChargesClientWithBaseURI creates an instance of the ChargesClient client.
+// NewChargesClientWithBaseURI creates an instance of the ChargesClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewChargesClientWithBaseURI(baseURI string, subscriptionID string) ChargesClient {
 	return ChargesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -106,8 +107,7 @@ func (client ChargesClient) ListByDepartmentPreparer(ctx context.Context, billin
 // ListByDepartmentSender sends the ListByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ChargesClient) ListByDepartmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByDepartmentResponder handles the response to the ListByDepartment request. The method always
@@ -188,8 +188,7 @@ func (client ChargesClient) ListByEnrollmentAccountPreparer(ctx context.Context,
 // ListByEnrollmentAccountSender sends the ListByEnrollmentAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client ChargesClient) ListByEnrollmentAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByEnrollmentAccountResponder handles the response to the ListByEnrollmentAccount request. The method always
@@ -272,8 +271,7 @@ func (client ChargesClient) ListForBillingPeriodByDepartmentPreparer(ctx context
 // ListForBillingPeriodByDepartmentSender sends the ListForBillingPeriodByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ChargesClient) ListForBillingPeriodByDepartmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListForBillingPeriodByDepartmentResponder handles the response to the ListForBillingPeriodByDepartment request. The method always
@@ -356,8 +354,7 @@ func (client ChargesClient) ListForBillingPeriodByEnrollmentAccountPreparer(ctx 
 // ListForBillingPeriodByEnrollmentAccountSender sends the ListForBillingPeriodByEnrollmentAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client ChargesClient) ListForBillingPeriodByEnrollmentAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListForBillingPeriodByEnrollmentAccountResponder handles the response to the ListForBillingPeriodByEnrollmentAccount request. The method always

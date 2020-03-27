@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result relay.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result relay.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*relay.OperationsClient)(nil)
@@ -40,8 +41,11 @@ type NamespacesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, namespaceName string) (result relay.Namespace, err error)
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result relay.AuthorizationRule, err error)
 	List(ctx context.Context) (result relay.NamespaceListResultPage, err error)
+	ListComplete(ctx context.Context) (result relay.NamespaceListResultIterator, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string) (result relay.AuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result relay.AuthorizationRuleListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result relay.NamespaceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result relay.NamespaceListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result relay.AccessKeys, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters relay.RegenerateAccessKeyParameters) (result relay.AccessKeys, err error)
 	Update(ctx context.Context, resourceGroupName string, namespaceName string, parameters relay.UpdateParameters) (result relay.Namespace, err error)
@@ -58,7 +62,9 @@ type HybridConnectionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string) (result relay.HybridConnection, err error)
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string) (result relay.AuthorizationRule, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string) (result relay.AuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string) (result relay.AuthorizationRuleListResultIterator, err error)
 	ListByNamespace(ctx context.Context, resourceGroupName string, namespaceName string) (result relay.HybridConnectionListResultPage, err error)
+	ListByNamespaceComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result relay.HybridConnectionListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string) (result relay.AccessKeys, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, parameters relay.RegenerateAccessKeyParameters) (result relay.AccessKeys, err error)
 }
@@ -74,7 +80,9 @@ type WCFRelaysClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, relayName string) (result relay.WcfRelay, err error)
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string) (result relay.AuthorizationRule, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, relayName string) (result relay.AuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string, relayName string) (result relay.AuthorizationRuleListResultIterator, err error)
 	ListByNamespace(ctx context.Context, resourceGroupName string, namespaceName string) (result relay.WcfRelaysListResultPage, err error)
+	ListByNamespaceComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result relay.WcfRelaysListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string) (result relay.AccessKeys, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters relay.RegenerateAccessKeyParameters) (result relay.AccessKeys, err error)
 }

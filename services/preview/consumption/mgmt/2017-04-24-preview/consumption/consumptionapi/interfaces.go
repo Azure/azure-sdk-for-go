@@ -25,6 +25,7 @@ import (
 // UsageDetailsClientAPI contains the set of methods on the UsageDetailsClient type.
 type UsageDetailsClientAPI interface {
 	List(ctx context.Context, scope string, expand string, filter string, skiptoken string, top *int32) (result consumption.UsageDetailsListResultPage, err error)
+	ListComplete(ctx context.Context, scope string, expand string, filter string, skiptoken string, top *int32) (result consumption.UsageDetailsListResultIterator, err error)
 }
 
 var _ UsageDetailsClientAPI = (*consumption.UsageDetailsClient)(nil)
@@ -32,6 +33,7 @@ var _ UsageDetailsClientAPI = (*consumption.UsageDetailsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result consumption.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result consumption.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*consumption.OperationsClient)(nil)

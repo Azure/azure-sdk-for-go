@@ -27,6 +27,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result iothub.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result iothub.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*iothub.OperationsClient)(nil)
@@ -51,9 +52,13 @@ type IotDpsResourceClientAPI interface {
 	GetKeysForKeyName(ctx context.Context, provisioningServiceName string, keyName string, resourceGroupName string) (result iothub.SharedAccessSignatureAuthorizationRuleAccessRightsDescription, err error)
 	GetOperationResult(ctx context.Context, operationID string, resourceGroupName string, provisioningServiceName string, asyncinfo string) (result iothub.AsyncOperationResult, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result iothub.ProvisioningServiceDescriptionListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result iothub.ProvisioningServiceDescriptionListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result iothub.ProvisioningServiceDescriptionListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result iothub.ProvisioningServiceDescriptionListResultIterator, err error)
 	ListKeys(ctx context.Context, provisioningServiceName string, resourceGroupName string) (result iothub.SharedAccessSignatureAuthorizationRuleListResultPage, err error)
+	ListKeysComplete(ctx context.Context, provisioningServiceName string, resourceGroupName string) (result iothub.SharedAccessSignatureAuthorizationRuleListResultIterator, err error)
 	ListValidSkus(ctx context.Context, provisioningServiceName string, resourceGroupName string) (result iothub.IotDpsSkuDefinitionListResultPage, err error)
+	ListValidSkusComplete(ctx context.Context, provisioningServiceName string, resourceGroupName string) (result iothub.IotDpsSkuDefinitionListResultIterator, err error)
 }
 
 var _ IotDpsResourceClientAPI = (*iothub.IotDpsResourceClient)(nil)

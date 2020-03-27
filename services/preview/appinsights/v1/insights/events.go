@@ -35,7 +35,8 @@ func NewEventsClient() EventsClient {
 	return NewEventsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewEventsClientWithBaseURI creates an instance of the EventsClient client.
+// NewEventsClientWithBaseURI creates an instance of the EventsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewEventsClientWithBaseURI(baseURI string) EventsClient {
 	return EventsClient{NewWithBaseURI(baseURI)}
 }
@@ -106,8 +107,7 @@ func (client EventsClient) GetPreparer(ctx context.Context, appID string, eventT
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -224,8 +224,7 @@ func (client EventsClient) GetByTypePreparer(ctx context.Context, appID string, 
 // GetByTypeSender sends the GetByType request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventsClient) GetByTypeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByTypeResponder handles the response to the GetByType request. The method always
@@ -293,8 +292,7 @@ func (client EventsClient) GetOdataMetadataPreparer(ctx context.Context, appID s
 // GetOdataMetadataSender sends the GetOdataMetadata request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventsClient) GetOdataMetadataSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetOdataMetadataResponder handles the response to the GetOdataMetadata request. The method always

@@ -36,7 +36,9 @@ func NewAPITagDescriptionClient(subscriptionID string) APITagDescriptionClient {
 	return NewAPITagDescriptionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAPITagDescriptionClientWithBaseURI creates an instance of the APITagDescriptionClient client.
+// NewAPITagDescriptionClientWithBaseURI creates an instance of the APITagDescriptionClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewAPITagDescriptionClientWithBaseURI(baseURI string, subscriptionID string) APITagDescriptionClient {
 	return APITagDescriptionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

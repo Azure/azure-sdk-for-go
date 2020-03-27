@@ -36,7 +36,9 @@ func NewHybridConnectionsClient(subscriptionID string) HybridConnectionsClient {
 	return NewHybridConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewHybridConnectionsClientWithBaseURI creates an instance of the HybridConnectionsClient client.
+// NewHybridConnectionsClientWithBaseURI creates an instance of the HybridConnectionsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewHybridConnectionsClientWithBaseURI(baseURI string, subscriptionID string) HybridConnectionsClient {
 	return HybridConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -126,8 +128,7 @@ func (client HybridConnectionsClient) CreateOrUpdatePreparer(ctx context.Context
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridConnectionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -231,8 +232,7 @@ func (client HybridConnectionsClient) CreateOrUpdateAuthorizationRulePreparer(ct
 // CreateOrUpdateAuthorizationRuleSender sends the CreateOrUpdateAuthorizationRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridConnectionsClient) CreateOrUpdateAuthorizationRuleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateAuthorizationRuleResponder handles the response to the CreateOrUpdateAuthorizationRule request. The method always
@@ -323,8 +323,7 @@ func (client HybridConnectionsClient) DeletePreparer(ctx context.Context, resour
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridConnectionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -419,8 +418,7 @@ func (client HybridConnectionsClient) DeleteAuthorizationRulePreparer(ctx contex
 // DeleteAuthorizationRuleSender sends the DeleteAuthorizationRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridConnectionsClient) DeleteAuthorizationRuleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteAuthorizationRuleResponder handles the response to the DeleteAuthorizationRule request. The method always
@@ -510,8 +508,7 @@ func (client HybridConnectionsClient) GetPreparer(ctx context.Context, resourceG
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridConnectionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -607,8 +604,7 @@ func (client HybridConnectionsClient) GetAuthorizationRulePreparer(ctx context.C
 // GetAuthorizationRuleSender sends the GetAuthorizationRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridConnectionsClient) GetAuthorizationRuleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetAuthorizationRuleResponder handles the response to the GetAuthorizationRule request. The method always
@@ -700,8 +696,7 @@ func (client HybridConnectionsClient) ListAuthorizationRulesPreparer(ctx context
 // ListAuthorizationRulesSender sends the ListAuthorizationRules request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridConnectionsClient) ListAuthorizationRulesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAuthorizationRulesResponder handles the response to the ListAuthorizationRules request. The method always
@@ -825,8 +820,7 @@ func (client HybridConnectionsClient) ListByNamespacePreparer(ctx context.Contex
 // ListByNamespaceSender sends the ListByNamespace request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridConnectionsClient) ListByNamespaceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByNamespaceResponder handles the response to the ListByNamespace request. The method always
@@ -959,8 +953,7 @@ func (client HybridConnectionsClient) ListKeysPreparer(ctx context.Context, reso
 // ListKeysSender sends the ListKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridConnectionsClient) ListKeysSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListKeysResponder handles the response to the ListKeys request. The method always
@@ -1052,8 +1045,7 @@ func (client HybridConnectionsClient) ListPostAuthorizationRulesPreparer(ctx con
 // ListPostAuthorizationRulesSender sends the ListPostAuthorizationRules request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridConnectionsClient) ListPostAuthorizationRulesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListPostAuthorizationRulesResponder handles the response to the ListPostAuthorizationRules request. The method always
@@ -1186,8 +1178,7 @@ func (client HybridConnectionsClient) PostAuthorizationRulePreparer(ctx context.
 // PostAuthorizationRuleSender sends the PostAuthorizationRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridConnectionsClient) PostAuthorizationRuleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // PostAuthorizationRuleResponder handles the response to the PostAuthorizationRule request. The method always
@@ -1286,8 +1277,7 @@ func (client HybridConnectionsClient) RegenerateKeysPreparer(ctx context.Context
 // RegenerateKeysSender sends the RegenerateKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridConnectionsClient) RegenerateKeysSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RegenerateKeysResponder handles the response to the RegenerateKeys request. The method always

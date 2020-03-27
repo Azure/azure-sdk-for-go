@@ -97,8 +97,7 @@ func (client ModelClient) AddClosedListPreparer(ctx context.Context, appID uuid.
 // AddClosedListSender sends the AddClosedList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) AddClosedListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddClosedListResponder handles the response to the AddClosedList request. The method always
@@ -177,8 +176,7 @@ func (client ModelClient) AddCompositeEntityChildPreparer(ctx context.Context, a
 // AddCompositeEntityChildSender sends the AddCompositeEntityChild request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) AddCompositeEntityChildSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddCompositeEntityChildResponder handles the response to the AddCompositeEntityChild request. The method always
@@ -255,8 +253,7 @@ func (client ModelClient) AddCustomPrebuiltDomainPreparer(ctx context.Context, a
 // AddCustomPrebuiltDomainSender sends the AddCustomPrebuiltDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) AddCustomPrebuiltDomainSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddCustomPrebuiltDomainResponder handles the response to the AddCustomPrebuiltDomain request. The method always
@@ -333,8 +330,7 @@ func (client ModelClient) AddCustomPrebuiltEntityPreparer(ctx context.Context, a
 // AddCustomPrebuiltEntitySender sends the AddCustomPrebuiltEntity request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) AddCustomPrebuiltEntitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddCustomPrebuiltEntityResponder handles the response to the AddCustomPrebuiltEntity request. The method always
@@ -411,8 +407,7 @@ func (client ModelClient) AddCustomPrebuiltIntentPreparer(ctx context.Context, a
 // AddCustomPrebuiltIntentSender sends the AddCustomPrebuiltIntent request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) AddCustomPrebuiltIntentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddCustomPrebuiltIntentResponder handles the response to the AddCustomPrebuiltIntent request. The method always
@@ -488,8 +483,7 @@ func (client ModelClient) AddEntityPreparer(ctx context.Context, appID uuid.UUID
 // AddEntitySender sends the AddEntity request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) AddEntitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddEntityResponder handles the response to the AddEntity request. The method always
@@ -567,8 +561,7 @@ func (client ModelClient) AddEntityChildPreparer(ctx context.Context, appID uuid
 // AddEntityChildSender sends the AddEntityChild request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) AddEntityChildSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddEntityChildResponder handles the response to the AddEntityChild request. The method always
@@ -646,8 +639,7 @@ func (client ModelClient) AddExplicitListItemPreparer(ctx context.Context, appID
 // AddExplicitListItemSender sends the AddExplicitListItem request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) AddExplicitListItemSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddExplicitListItemResponder handles the response to the AddExplicitListItem request. The method always
@@ -723,8 +715,7 @@ func (client ModelClient) AddIntentPreparer(ctx context.Context, appID uuid.UUID
 // AddIntentSender sends the AddIntent request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) AddIntentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddIntentResponder handles the response to the AddIntent request. The method always
@@ -806,8 +797,7 @@ func (client ModelClient) AddPrebuiltPreparer(ctx context.Context, appID uuid.UU
 // AddPrebuiltSender sends the AddPrebuilt request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) AddPrebuiltSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddPrebuiltResponder handles the response to the AddPrebuilt request. The method always
@@ -885,8 +875,7 @@ func (client ModelClient) AddSubListPreparer(ctx context.Context, appID uuid.UUI
 // AddSubListSender sends the AddSubList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) AddSubListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddSubListResponder handles the response to the AddSubList request. The method always
@@ -964,8 +953,7 @@ func (client ModelClient) CreateClosedListEntityRolePreparer(ctx context.Context
 // CreateClosedListEntityRoleSender sends the CreateClosedListEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) CreateClosedListEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateClosedListEntityRoleResponder handles the response to the CreateClosedListEntityRole request. The method always
@@ -1043,8 +1031,7 @@ func (client ModelClient) CreateCompositeEntityRolePreparer(ctx context.Context,
 // CreateCompositeEntityRoleSender sends the CreateCompositeEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) CreateCompositeEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateCompositeEntityRoleResponder handles the response to the CreateCompositeEntityRole request. The method always
@@ -1122,8 +1109,7 @@ func (client ModelClient) CreateCustomPrebuiltEntityRolePreparer(ctx context.Con
 // CreateCustomPrebuiltEntityRoleSender sends the CreateCustomPrebuiltEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) CreateCustomPrebuiltEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateCustomPrebuiltEntityRoleResponder handles the response to the CreateCustomPrebuiltEntityRole request. The method always
@@ -1201,8 +1187,7 @@ func (client ModelClient) CreateEntityRolePreparer(ctx context.Context, appID uu
 // CreateEntityRoleSender sends the CreateEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) CreateEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateEntityRoleResponder handles the response to the CreateEntityRole request. The method always
@@ -1280,8 +1265,7 @@ func (client ModelClient) CreateHierarchicalEntityRolePreparer(ctx context.Conte
 // CreateHierarchicalEntityRoleSender sends the CreateHierarchicalEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) CreateHierarchicalEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateHierarchicalEntityRoleResponder handles the response to the CreateHierarchicalEntityRole request. The method always
@@ -1358,8 +1342,7 @@ func (client ModelClient) CreatePatternAnyEntityModelPreparer(ctx context.Contex
 // CreatePatternAnyEntityModelSender sends the CreatePatternAnyEntityModel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) CreatePatternAnyEntityModelSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreatePatternAnyEntityModelResponder handles the response to the CreatePatternAnyEntityModel request. The method always
@@ -1437,8 +1420,7 @@ func (client ModelClient) CreatePatternAnyEntityRolePreparer(ctx context.Context
 // CreatePatternAnyEntityRoleSender sends the CreatePatternAnyEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) CreatePatternAnyEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreatePatternAnyEntityRoleResponder handles the response to the CreatePatternAnyEntityRole request. The method always
@@ -1516,8 +1498,7 @@ func (client ModelClient) CreatePrebuiltEntityRolePreparer(ctx context.Context, 
 // CreatePrebuiltEntityRoleSender sends the CreatePrebuiltEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) CreatePrebuiltEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreatePrebuiltEntityRoleResponder handles the response to the CreatePrebuiltEntityRole request. The method always
@@ -1594,8 +1575,7 @@ func (client ModelClient) CreateRegexEntityModelPreparer(ctx context.Context, ap
 // CreateRegexEntityModelSender sends the CreateRegexEntityModel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) CreateRegexEntityModelSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateRegexEntityModelResponder handles the response to the CreateRegexEntityModel request. The method always
@@ -1673,8 +1653,7 @@ func (client ModelClient) CreateRegexEntityRolePreparer(ctx context.Context, app
 // CreateRegexEntityRoleSender sends the CreateRegexEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) CreateRegexEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateRegexEntityRoleResponder handles the response to the CreateRegexEntityRole request. The method always
@@ -1749,8 +1728,7 @@ func (client ModelClient) DeleteClosedListPreparer(ctx context.Context, appID uu
 // DeleteClosedListSender sends the DeleteClosedList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteClosedListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteClosedListResponder handles the response to the DeleteClosedList request. The method always
@@ -1827,8 +1805,7 @@ func (client ModelClient) DeleteClosedListEntityRolePreparer(ctx context.Context
 // DeleteClosedListEntityRoleSender sends the DeleteClosedListEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteClosedListEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteClosedListEntityRoleResponder handles the response to the DeleteClosedListEntityRole request. The method always
@@ -1903,8 +1880,7 @@ func (client ModelClient) DeleteCompositeEntityPreparer(ctx context.Context, app
 // DeleteCompositeEntitySender sends the DeleteCompositeEntity request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteCompositeEntitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteCompositeEntityResponder handles the response to the DeleteCompositeEntity request. The method always
@@ -1981,8 +1957,7 @@ func (client ModelClient) DeleteCompositeEntityChildPreparer(ctx context.Context
 // DeleteCompositeEntityChildSender sends the DeleteCompositeEntityChild request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteCompositeEntityChildSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteCompositeEntityChildResponder handles the response to the DeleteCompositeEntityChild request. The method always
@@ -2059,8 +2034,7 @@ func (client ModelClient) DeleteCompositeEntityRolePreparer(ctx context.Context,
 // DeleteCompositeEntityRoleSender sends the DeleteCompositeEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteCompositeEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteCompositeEntityRoleResponder handles the response to the DeleteCompositeEntityRole request. The method always
@@ -2137,8 +2111,7 @@ func (client ModelClient) DeleteCustomEntityRolePreparer(ctx context.Context, ap
 // DeleteCustomEntityRoleSender sends the DeleteCustomEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteCustomEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteCustomEntityRoleResponder handles the response to the DeleteCustomEntityRole request. The method always
@@ -2213,8 +2186,7 @@ func (client ModelClient) DeleteCustomPrebuiltDomainPreparer(ctx context.Context
 // DeleteCustomPrebuiltDomainSender sends the DeleteCustomPrebuiltDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteCustomPrebuiltDomainSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteCustomPrebuiltDomainResponder handles the response to the DeleteCustomPrebuiltDomain request. The method always
@@ -2289,8 +2261,7 @@ func (client ModelClient) DeleteEntityPreparer(ctx context.Context, appID uuid.U
 // DeleteEntitySender sends the DeleteEntity request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteEntitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteEntityResponder handles the response to the DeleteEntity request. The method always
@@ -2369,8 +2340,7 @@ func (client ModelClient) DeleteEntityFeaturePreparer(ctx context.Context, appID
 // DeleteEntityFeatureSender sends the DeleteEntityFeature request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteEntityFeatureSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteEntityFeatureResponder handles the response to the DeleteEntityFeature request. The method always
@@ -2447,8 +2417,7 @@ func (client ModelClient) DeleteEntityRolePreparer(ctx context.Context, appID uu
 // DeleteEntityRoleSender sends the DeleteEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteEntityRoleResponder handles the response to the DeleteEntityRole request. The method always
@@ -2525,8 +2494,7 @@ func (client ModelClient) DeleteExplicitListItemPreparer(ctx context.Context, ap
 // DeleteExplicitListItemSender sends the DeleteExplicitListItem request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteExplicitListItemSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteExplicitListItemResponder handles the response to the DeleteExplicitListItem request. The method always
@@ -2601,8 +2569,7 @@ func (client ModelClient) DeleteHierarchicalEntityPreparer(ctx context.Context, 
 // DeleteHierarchicalEntitySender sends the DeleteHierarchicalEntity request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteHierarchicalEntitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteHierarchicalEntityResponder handles the response to the DeleteHierarchicalEntity request. The method always
@@ -2679,8 +2646,7 @@ func (client ModelClient) DeleteHierarchicalEntityChildPreparer(ctx context.Cont
 // DeleteHierarchicalEntityChildSender sends the DeleteHierarchicalEntityChild request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteHierarchicalEntityChildSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteHierarchicalEntityChildResponder handles the response to the DeleteHierarchicalEntityChild request. The method always
@@ -2757,8 +2723,7 @@ func (client ModelClient) DeleteHierarchicalEntityRolePreparer(ctx context.Conte
 // DeleteHierarchicalEntityRoleSender sends the DeleteHierarchicalEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteHierarchicalEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteHierarchicalEntityRoleResponder handles the response to the DeleteHierarchicalEntityRole request. The method always
@@ -2843,8 +2808,7 @@ func (client ModelClient) DeleteIntentPreparer(ctx context.Context, appID uuid.U
 // DeleteIntentSender sends the DeleteIntent request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteIntentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteIntentResponder handles the response to the DeleteIntent request. The method always
@@ -2923,8 +2887,7 @@ func (client ModelClient) DeleteIntentFeaturePreparer(ctx context.Context, appID
 // DeleteIntentFeatureSender sends the DeleteIntentFeature request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteIntentFeatureSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteIntentFeatureResponder handles the response to the DeleteIntentFeature request. The method always
@@ -2999,8 +2962,7 @@ func (client ModelClient) DeletePatternAnyEntityModelPreparer(ctx context.Contex
 // DeletePatternAnyEntityModelSender sends the DeletePatternAnyEntityModel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeletePatternAnyEntityModelSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeletePatternAnyEntityModelResponder handles the response to the DeletePatternAnyEntityModel request. The method always
@@ -3077,8 +3039,7 @@ func (client ModelClient) DeletePatternAnyEntityRolePreparer(ctx context.Context
 // DeletePatternAnyEntityRoleSender sends the DeletePatternAnyEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeletePatternAnyEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeletePatternAnyEntityRoleResponder handles the response to the DeletePatternAnyEntityRole request. The method always
@@ -3153,8 +3114,7 @@ func (client ModelClient) DeletePrebuiltPreparer(ctx context.Context, appID uuid
 // DeletePrebuiltSender sends the DeletePrebuilt request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeletePrebuiltSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeletePrebuiltResponder handles the response to the DeletePrebuilt request. The method always
@@ -3231,8 +3191,7 @@ func (client ModelClient) DeletePrebuiltEntityRolePreparer(ctx context.Context, 
 // DeletePrebuiltEntityRoleSender sends the DeletePrebuiltEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeletePrebuiltEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeletePrebuiltEntityRoleResponder handles the response to the DeletePrebuiltEntityRole request. The method always
@@ -3307,8 +3266,7 @@ func (client ModelClient) DeleteRegexEntityModelPreparer(ctx context.Context, ap
 // DeleteRegexEntityModelSender sends the DeleteRegexEntityModel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteRegexEntityModelSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteRegexEntityModelResponder handles the response to the DeleteRegexEntityModel request. The method always
@@ -3385,8 +3343,7 @@ func (client ModelClient) DeleteRegexEntityRolePreparer(ctx context.Context, app
 // DeleteRegexEntityRoleSender sends the DeleteRegexEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteRegexEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteRegexEntityRoleResponder handles the response to the DeleteRegexEntityRole request. The method always
@@ -3463,8 +3420,7 @@ func (client ModelClient) DeleteSubListPreparer(ctx context.Context, appID uuid.
 // DeleteSubListSender sends the DeleteSubList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) DeleteSubListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteSubListResponder handles the response to the DeleteSubList request. The method always
@@ -3566,8 +3522,7 @@ func (client ModelClient) ExamplesMethodPreparer(ctx context.Context, appID uuid
 // ExamplesMethodSender sends the ExamplesMethod request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ExamplesMethodSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ExamplesMethodResponder handles the response to the ExamplesMethod request. The method always
@@ -3642,8 +3597,7 @@ func (client ModelClient) GetClosedListPreparer(ctx context.Context, appID uuid.
 // GetClosedListSender sends the GetClosedList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetClosedListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetClosedListResponder handles the response to the GetClosedList request. The method always
@@ -3720,8 +3674,7 @@ func (client ModelClient) GetClosedListEntityRolePreparer(ctx context.Context, a
 // GetClosedListEntityRoleSender sends the GetClosedListEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetClosedListEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetClosedListEntityRoleResponder handles the response to the GetClosedListEntityRole request. The method always
@@ -3796,8 +3749,7 @@ func (client ModelClient) GetCompositeEntityPreparer(ctx context.Context, appID 
 // GetCompositeEntitySender sends the GetCompositeEntity request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetCompositeEntitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCompositeEntityResponder handles the response to the GetCompositeEntity request. The method always
@@ -3874,8 +3826,7 @@ func (client ModelClient) GetCompositeEntityRolePreparer(ctx context.Context, ap
 // GetCompositeEntityRoleSender sends the GetCompositeEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetCompositeEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCompositeEntityRoleResponder handles the response to the GetCompositeEntityRole request. The method always
@@ -3952,8 +3903,7 @@ func (client ModelClient) GetCustomEntityRolePreparer(ctx context.Context, appID
 // GetCustomEntityRoleSender sends the GetCustomEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetCustomEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCustomEntityRoleResponder handles the response to the GetCustomEntityRole request. The method always
@@ -4028,8 +3978,7 @@ func (client ModelClient) GetEntityPreparer(ctx context.Context, appID uuid.UUID
 // GetEntitySender sends the GetEntity request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetEntitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetEntityResponder handles the response to the GetEntity request. The method always
@@ -4104,8 +4053,7 @@ func (client ModelClient) GetEntityFeaturesPreparer(ctx context.Context, appID u
 // GetEntityFeaturesSender sends the GetEntityFeatures request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetEntityFeaturesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetEntityFeaturesResponder handles the response to the GetEntityFeatures request. The method always
@@ -4182,8 +4130,7 @@ func (client ModelClient) GetEntityRolePreparer(ctx context.Context, appID uuid.
 // GetEntityRoleSender sends the GetEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetEntityRoleResponder handles the response to the GetEntityRole request. The method always
@@ -4258,8 +4205,7 @@ func (client ModelClient) GetExplicitListPreparer(ctx context.Context, appID uui
 // GetExplicitListSender sends the GetExplicitList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetExplicitListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetExplicitListResponder handles the response to the GetExplicitList request. The method always
@@ -4336,8 +4282,7 @@ func (client ModelClient) GetExplicitListItemPreparer(ctx context.Context, appID
 // GetExplicitListItemSender sends the GetExplicitListItem request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetExplicitListItemSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetExplicitListItemResponder handles the response to the GetExplicitListItem request. The method always
@@ -4412,8 +4357,7 @@ func (client ModelClient) GetHierarchicalEntityPreparer(ctx context.Context, app
 // GetHierarchicalEntitySender sends the GetHierarchicalEntity request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetHierarchicalEntitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetHierarchicalEntityResponder handles the response to the GetHierarchicalEntity request. The method always
@@ -4491,8 +4435,7 @@ func (client ModelClient) GetHierarchicalEntityChildPreparer(ctx context.Context
 // GetHierarchicalEntityChildSender sends the GetHierarchicalEntityChild request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetHierarchicalEntityChildSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetHierarchicalEntityChildResponder handles the response to the GetHierarchicalEntityChild request. The method always
@@ -4569,8 +4512,7 @@ func (client ModelClient) GetHierarchicalEntityRolePreparer(ctx context.Context,
 // GetHierarchicalEntityRoleSender sends the GetHierarchicalEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetHierarchicalEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetHierarchicalEntityRoleResponder handles the response to the GetHierarchicalEntityRole request. The method always
@@ -4645,8 +4587,7 @@ func (client ModelClient) GetIntentPreparer(ctx context.Context, appID uuid.UUID
 // GetIntentSender sends the GetIntent request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetIntentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetIntentResponder handles the response to the GetIntent request. The method always
@@ -4721,8 +4662,7 @@ func (client ModelClient) GetIntentFeaturesPreparer(ctx context.Context, appID u
 // GetIntentFeaturesSender sends the GetIntentFeatures request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetIntentFeaturesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetIntentFeaturesResponder handles the response to the GetIntentFeatures request. The method always
@@ -4797,8 +4737,7 @@ func (client ModelClient) GetPatternAnyEntityInfoPreparer(ctx context.Context, a
 // GetPatternAnyEntityInfoSender sends the GetPatternAnyEntityInfo request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetPatternAnyEntityInfoSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetPatternAnyEntityInfoResponder handles the response to the GetPatternAnyEntityInfo request. The method always
@@ -4875,8 +4814,7 @@ func (client ModelClient) GetPatternAnyEntityRolePreparer(ctx context.Context, a
 // GetPatternAnyEntityRoleSender sends the GetPatternAnyEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetPatternAnyEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetPatternAnyEntityRoleResponder handles the response to the GetPatternAnyEntityRole request. The method always
@@ -4951,8 +4889,7 @@ func (client ModelClient) GetPrebuiltPreparer(ctx context.Context, appID uuid.UU
 // GetPrebuiltSender sends the GetPrebuilt request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetPrebuiltSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetPrebuiltResponder handles the response to the GetPrebuilt request. The method always
@@ -5029,8 +4966,7 @@ func (client ModelClient) GetPrebuiltEntityRolePreparer(ctx context.Context, app
 // GetPrebuiltEntityRoleSender sends the GetPrebuiltEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetPrebuiltEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetPrebuiltEntityRoleResponder handles the response to the GetPrebuiltEntityRole request. The method always
@@ -5105,8 +5041,7 @@ func (client ModelClient) GetRegexEntityEntityInfoPreparer(ctx context.Context, 
 // GetRegexEntityEntityInfoSender sends the GetRegexEntityEntityInfo request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetRegexEntityEntityInfoSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetRegexEntityEntityInfoResponder handles the response to the GetRegexEntityEntityInfo request. The method always
@@ -5183,8 +5118,7 @@ func (client ModelClient) GetRegexEntityRolePreparer(ctx context.Context, appID 
 // GetRegexEntityRoleSender sends the GetRegexEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) GetRegexEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetRegexEntityRoleResponder handles the response to the GetRegexEntityRole request. The method always
@@ -5259,8 +5193,7 @@ func (client ModelClient) ListClosedListEntityRolesPreparer(ctx context.Context,
 // ListClosedListEntityRolesSender sends the ListClosedListEntityRoles request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListClosedListEntityRolesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListClosedListEntityRolesResponder handles the response to the ListClosedListEntityRoles request. The method always
@@ -5360,8 +5293,7 @@ func (client ModelClient) ListClosedListsPreparer(ctx context.Context, appID uui
 // ListClosedListsSender sends the ListClosedLists request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListClosedListsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListClosedListsResponder handles the response to the ListClosedLists request. The method always
@@ -5461,8 +5393,7 @@ func (client ModelClient) ListCompositeEntitiesPreparer(ctx context.Context, app
 // ListCompositeEntitiesSender sends the ListCompositeEntities request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListCompositeEntitiesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListCompositeEntitiesResponder handles the response to the ListCompositeEntities request. The method always
@@ -5537,8 +5468,7 @@ func (client ModelClient) ListCompositeEntityRolesPreparer(ctx context.Context, 
 // ListCompositeEntityRolesSender sends the ListCompositeEntityRoles request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListCompositeEntityRolesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListCompositeEntityRolesResponder handles the response to the ListCompositeEntityRoles request. The method always
@@ -5611,8 +5541,7 @@ func (client ModelClient) ListCustomPrebuiltEntitiesPreparer(ctx context.Context
 // ListCustomPrebuiltEntitiesSender sends the ListCustomPrebuiltEntities request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListCustomPrebuiltEntitiesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListCustomPrebuiltEntitiesResponder handles the response to the ListCustomPrebuiltEntities request. The method always
@@ -5687,8 +5616,7 @@ func (client ModelClient) ListCustomPrebuiltEntityRolesPreparer(ctx context.Cont
 // ListCustomPrebuiltEntityRolesSender sends the ListCustomPrebuiltEntityRoles request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListCustomPrebuiltEntityRolesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListCustomPrebuiltEntityRolesResponder handles the response to the ListCustomPrebuiltEntityRoles request. The method always
@@ -5762,8 +5690,7 @@ func (client ModelClient) ListCustomPrebuiltIntentsPreparer(ctx context.Context,
 // ListCustomPrebuiltIntentsSender sends the ListCustomPrebuiltIntents request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListCustomPrebuiltIntentsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListCustomPrebuiltIntentsResponder handles the response to the ListCustomPrebuiltIntents request. The method always
@@ -5837,8 +5764,7 @@ func (client ModelClient) ListCustomPrebuiltModelsPreparer(ctx context.Context, 
 // ListCustomPrebuiltModelsSender sends the ListCustomPrebuiltModels request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListCustomPrebuiltModelsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListCustomPrebuiltModelsResponder handles the response to the ListCustomPrebuiltModels request. The method always
@@ -5938,8 +5864,7 @@ func (client ModelClient) ListEntitiesPreparer(ctx context.Context, appID uuid.U
 // ListEntitiesSender sends the ListEntities request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListEntitiesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListEntitiesResponder handles the response to the ListEntities request. The method always
@@ -6014,8 +5939,7 @@ func (client ModelClient) ListEntityRolesPreparer(ctx context.Context, appID uui
 // ListEntityRolesSender sends the ListEntityRoles request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListEntityRolesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListEntityRolesResponder handles the response to the ListEntityRoles request. The method always
@@ -6109,8 +6033,7 @@ func (client ModelClient) ListEntitySuggestionsPreparer(ctx context.Context, app
 // ListEntitySuggestionsSender sends the ListEntitySuggestions request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListEntitySuggestionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListEntitySuggestionsResponder handles the response to the ListEntitySuggestions request. The method always
@@ -6210,8 +6133,7 @@ func (client ModelClient) ListHierarchicalEntitiesPreparer(ctx context.Context, 
 // ListHierarchicalEntitiesSender sends the ListHierarchicalEntities request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListHierarchicalEntitiesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListHierarchicalEntitiesResponder handles the response to the ListHierarchicalEntities request. The method always
@@ -6286,8 +6208,7 @@ func (client ModelClient) ListHierarchicalEntityRolesPreparer(ctx context.Contex
 // ListHierarchicalEntityRolesSender sends the ListHierarchicalEntityRoles request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListHierarchicalEntityRolesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListHierarchicalEntityRolesResponder handles the response to the ListHierarchicalEntityRoles request. The method always
@@ -6387,8 +6308,7 @@ func (client ModelClient) ListIntentsPreparer(ctx context.Context, appID uuid.UU
 // ListIntentsSender sends the ListIntents request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListIntentsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListIntentsResponder handles the response to the ListIntents request. The method always
@@ -6482,8 +6402,7 @@ func (client ModelClient) ListIntentSuggestionsPreparer(ctx context.Context, app
 // ListIntentSuggestionsSender sends the ListIntentSuggestions request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListIntentSuggestionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListIntentSuggestionsResponder handles the response to the ListIntentSuggestions request. The method always
@@ -6583,8 +6502,7 @@ func (client ModelClient) ListModelsPreparer(ctx context.Context, appID uuid.UUI
 // ListModelsSender sends the ListModels request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListModelsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListModelsResponder handles the response to the ListModels request. The method always
@@ -6684,8 +6602,7 @@ func (client ModelClient) ListPatternAnyEntityInfosPreparer(ctx context.Context,
 // ListPatternAnyEntityInfosSender sends the ListPatternAnyEntityInfos request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListPatternAnyEntityInfosSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListPatternAnyEntityInfosResponder handles the response to the ListPatternAnyEntityInfos request. The method always
@@ -6760,8 +6677,7 @@ func (client ModelClient) ListPatternAnyEntityRolesPreparer(ctx context.Context,
 // ListPatternAnyEntityRolesSender sends the ListPatternAnyEntityRoles request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListPatternAnyEntityRolesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListPatternAnyEntityRolesResponder handles the response to the ListPatternAnyEntityRoles request. The method always
@@ -6834,8 +6750,7 @@ func (client ModelClient) ListPrebuiltEntitiesPreparer(ctx context.Context, appI
 // ListPrebuiltEntitiesSender sends the ListPrebuiltEntities request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListPrebuiltEntitiesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListPrebuiltEntitiesResponder handles the response to the ListPrebuiltEntities request. The method always
@@ -6910,8 +6825,7 @@ func (client ModelClient) ListPrebuiltEntityRolesPreparer(ctx context.Context, a
 // ListPrebuiltEntityRolesSender sends the ListPrebuiltEntityRoles request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListPrebuiltEntityRolesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListPrebuiltEntityRolesResponder handles the response to the ListPrebuiltEntityRoles request. The method always
@@ -7011,8 +6925,7 @@ func (client ModelClient) ListPrebuiltsPreparer(ctx context.Context, appID uuid.
 // ListPrebuiltsSender sends the ListPrebuilts request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListPrebuiltsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListPrebuiltsResponder handles the response to the ListPrebuilts request. The method always
@@ -7112,8 +7025,7 @@ func (client ModelClient) ListRegexEntityInfosPreparer(ctx context.Context, appI
 // ListRegexEntityInfosSender sends the ListRegexEntityInfos request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListRegexEntityInfosSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListRegexEntityInfosResponder handles the response to the ListRegexEntityInfos request. The method always
@@ -7188,8 +7100,7 @@ func (client ModelClient) ListRegexEntityRolesPreparer(ctx context.Context, appI
 // ListRegexEntityRolesSender sends the ListRegexEntityRoles request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ListRegexEntityRolesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListRegexEntityRolesResponder handles the response to the ListRegexEntityRoles request. The method always
@@ -7267,8 +7178,7 @@ func (client ModelClient) PatchClosedListPreparer(ctx context.Context, appID uui
 // PatchClosedListSender sends the PatchClosedList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) PatchClosedListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // PatchClosedListResponder handles the response to the PatchClosedList request. The method always
@@ -7352,8 +7262,7 @@ func (client ModelClient) ReplaceEntityFeaturesPreparer(ctx context.Context, app
 // ReplaceEntityFeaturesSender sends the ReplaceEntityFeatures request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ReplaceEntityFeaturesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ReplaceEntityFeaturesResponder handles the response to the ReplaceEntityFeatures request. The method always
@@ -7437,8 +7346,7 @@ func (client ModelClient) ReplaceIntentFeaturesPreparer(ctx context.Context, app
 // ReplaceIntentFeaturesSender sends the ReplaceIntentFeatures request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) ReplaceIntentFeaturesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ReplaceIntentFeaturesResponder handles the response to the ReplaceIntentFeatures request. The method always
@@ -7516,8 +7424,7 @@ func (client ModelClient) UpdateClosedListPreparer(ctx context.Context, appID uu
 // UpdateClosedListSender sends the UpdateClosedList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateClosedListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateClosedListResponder handles the response to the UpdateClosedList request. The method always
@@ -7597,8 +7504,7 @@ func (client ModelClient) UpdateClosedListEntityRolePreparer(ctx context.Context
 // UpdateClosedListEntityRoleSender sends the UpdateClosedListEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateClosedListEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateClosedListEntityRoleResponder handles the response to the UpdateClosedListEntityRole request. The method always
@@ -7676,8 +7582,7 @@ func (client ModelClient) UpdateCompositeEntityPreparer(ctx context.Context, app
 // UpdateCompositeEntitySender sends the UpdateCompositeEntity request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateCompositeEntitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateCompositeEntityResponder handles the response to the UpdateCompositeEntity request. The method always
@@ -7757,8 +7662,7 @@ func (client ModelClient) UpdateCompositeEntityRolePreparer(ctx context.Context,
 // UpdateCompositeEntityRoleSender sends the UpdateCompositeEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateCompositeEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateCompositeEntityRoleResponder handles the response to the UpdateCompositeEntityRole request. The method always
@@ -7838,8 +7742,7 @@ func (client ModelClient) UpdateCustomPrebuiltEntityRolePreparer(ctx context.Con
 // UpdateCustomPrebuiltEntityRoleSender sends the UpdateCustomPrebuiltEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateCustomPrebuiltEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateCustomPrebuiltEntityRoleResponder handles the response to the UpdateCustomPrebuiltEntityRole request. The method always
@@ -7919,8 +7822,7 @@ func (client ModelClient) UpdateEntityChildPreparer(ctx context.Context, appID u
 // UpdateEntityChildSender sends the UpdateEntityChild request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateEntityChildSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateEntityChildResponder handles the response to the UpdateEntityChild request. The method always
@@ -8000,8 +7902,7 @@ func (client ModelClient) UpdateEntityRolePreparer(ctx context.Context, appID uu
 // UpdateEntityRoleSender sends the UpdateEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateEntityRoleResponder handles the response to the UpdateEntityRole request. The method always
@@ -8081,8 +7982,7 @@ func (client ModelClient) UpdateExplicitListItemPreparer(ctx context.Context, ap
 // UpdateExplicitListItemSender sends the UpdateExplicitListItem request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateExplicitListItemSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateExplicitListItemResponder handles the response to the UpdateExplicitListItem request. The method always
@@ -8160,8 +8060,7 @@ func (client ModelClient) UpdateHierarchicalEntityPreparer(ctx context.Context, 
 // UpdateHierarchicalEntitySender sends the UpdateHierarchicalEntity request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateHierarchicalEntitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateHierarchicalEntityResponder handles the response to the UpdateHierarchicalEntity request. The method always
@@ -8242,8 +8141,7 @@ func (client ModelClient) UpdateHierarchicalEntityChildPreparer(ctx context.Cont
 // UpdateHierarchicalEntityChildSender sends the UpdateHierarchicalEntityChild request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateHierarchicalEntityChildSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateHierarchicalEntityChildResponder handles the response to the UpdateHierarchicalEntityChild request. The method always
@@ -8323,8 +8221,7 @@ func (client ModelClient) UpdateHierarchicalEntityRolePreparer(ctx context.Conte
 // UpdateHierarchicalEntityRoleSender sends the UpdateHierarchicalEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateHierarchicalEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateHierarchicalEntityRoleResponder handles the response to the UpdateHierarchicalEntityRole request. The method always
@@ -8402,8 +8299,7 @@ func (client ModelClient) UpdateIntentPreparer(ctx context.Context, appID uuid.U
 // UpdateIntentSender sends the UpdateIntent request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateIntentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateIntentResponder handles the response to the UpdateIntent request. The method always
@@ -8481,8 +8377,7 @@ func (client ModelClient) UpdatePatternAnyEntityModelPreparer(ctx context.Contex
 // UpdatePatternAnyEntityModelSender sends the UpdatePatternAnyEntityModel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdatePatternAnyEntityModelSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdatePatternAnyEntityModelResponder handles the response to the UpdatePatternAnyEntityModel request. The method always
@@ -8562,8 +8457,7 @@ func (client ModelClient) UpdatePatternAnyEntityRolePreparer(ctx context.Context
 // UpdatePatternAnyEntityRoleSender sends the UpdatePatternAnyEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdatePatternAnyEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdatePatternAnyEntityRoleResponder handles the response to the UpdatePatternAnyEntityRole request. The method always
@@ -8643,8 +8537,7 @@ func (client ModelClient) UpdatePrebuiltEntityRolePreparer(ctx context.Context, 
 // UpdatePrebuiltEntityRoleSender sends the UpdatePrebuiltEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdatePrebuiltEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdatePrebuiltEntityRoleResponder handles the response to the UpdatePrebuiltEntityRole request. The method always
@@ -8722,8 +8615,7 @@ func (client ModelClient) UpdateRegexEntityModelPreparer(ctx context.Context, ap
 // UpdateRegexEntityModelSender sends the UpdateRegexEntityModel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateRegexEntityModelSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateRegexEntityModelResponder handles the response to the UpdateRegexEntityModel request. The method always
@@ -8803,8 +8695,7 @@ func (client ModelClient) UpdateRegexEntityRolePreparer(ctx context.Context, app
 // UpdateRegexEntityRoleSender sends the UpdateRegexEntityRole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateRegexEntityRoleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateRegexEntityRoleResponder handles the response to the UpdateRegexEntityRole request. The method always
@@ -8884,8 +8775,7 @@ func (client ModelClient) UpdateSubListPreparer(ctx context.Context, appID uuid.
 // UpdateSubListSender sends the UpdateSubList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ModelClient) UpdateSubListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateSubListResponder handles the response to the UpdateSubList request. The method always

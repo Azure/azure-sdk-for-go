@@ -35,7 +35,8 @@ func NewChildResourcesClient(subscriptionID string) ChildResourcesClient {
 	return NewChildResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewChildResourcesClientWithBaseURI creates an instance of the ChildResourcesClient client.
+// NewChildResourcesClientWithBaseURI creates an instance of the ChildResourcesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewChildResourcesClientWithBaseURI(baseURI string, subscriptionID string) ChildResourcesClient {
 	return ChildResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -110,8 +111,7 @@ func (client ChildResourcesClient) ListPreparer(ctx context.Context, resourceURI
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ChildResourcesClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

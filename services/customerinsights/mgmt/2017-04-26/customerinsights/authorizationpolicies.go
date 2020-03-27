@@ -38,7 +38,9 @@ func NewAuthorizationPoliciesClient(subscriptionID string) AuthorizationPolicies
 	return NewAuthorizationPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAuthorizationPoliciesClientWithBaseURI creates an instance of the AuthorizationPoliciesClient client.
+// NewAuthorizationPoliciesClientWithBaseURI creates an instance of the AuthorizationPoliciesClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewAuthorizationPoliciesClientWithBaseURI(baseURI string, subscriptionID string) AuthorizationPoliciesClient {
 	return AuthorizationPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -121,8 +123,7 @@ func (client AuthorizationPoliciesClient) CreateOrUpdatePreparer(ctx context.Con
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client AuthorizationPoliciesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -200,8 +201,7 @@ func (client AuthorizationPoliciesClient) GetPreparer(ctx context.Context, resou
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AuthorizationPoliciesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -278,8 +278,7 @@ func (client AuthorizationPoliciesClient) ListByHubPreparer(ctx context.Context,
 // ListByHubSender sends the ListByHub request. The method will close the
 // http.Response Body if it receives an error.
 func (client AuthorizationPoliciesClient) ListByHubSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByHubResponder handles the response to the ListByHub request. The method always
@@ -394,8 +393,7 @@ func (client AuthorizationPoliciesClient) RegeneratePrimaryKeyPreparer(ctx conte
 // RegeneratePrimaryKeySender sends the RegeneratePrimaryKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client AuthorizationPoliciesClient) RegeneratePrimaryKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RegeneratePrimaryKeyResponder handles the response to the RegeneratePrimaryKey request. The method always
@@ -473,8 +471,7 @@ func (client AuthorizationPoliciesClient) RegenerateSecondaryKeyPreparer(ctx con
 // RegenerateSecondaryKeySender sends the RegenerateSecondaryKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client AuthorizationPoliciesClient) RegenerateSecondaryKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RegenerateSecondaryKeyResponder handles the response to the RegenerateSecondaryKey request. The method always

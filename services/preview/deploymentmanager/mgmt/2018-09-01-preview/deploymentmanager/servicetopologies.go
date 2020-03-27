@@ -37,7 +37,9 @@ func NewServiceTopologiesClient(subscriptionID string) ServiceTopologiesClient {
 	return NewServiceTopologiesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewServiceTopologiesClientWithBaseURI creates an instance of the ServiceTopologiesClient client.
+// NewServiceTopologiesClientWithBaseURI creates an instance of the ServiceTopologiesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewServiceTopologiesClientWithBaseURI(baseURI string, subscriptionID string) ServiceTopologiesClient {
 	return ServiceTopologiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -115,8 +117,7 @@ func (client ServiceTopologiesClient) CreateOrUpdatePreparer(ctx context.Context
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceTopologiesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -200,8 +201,7 @@ func (client ServiceTopologiesClient) DeletePreparer(ctx context.Context, resour
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceTopologiesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -284,8 +284,7 @@ func (client ServiceTopologiesClient) GetPreparer(ctx context.Context, resourceG
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceTopologiesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always

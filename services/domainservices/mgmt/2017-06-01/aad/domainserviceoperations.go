@@ -35,7 +35,9 @@ func NewDomainServiceOperationsClient(subscriptionID string) DomainServiceOperat
 	return NewDomainServiceOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDomainServiceOperationsClientWithBaseURI creates an instance of the DomainServiceOperationsClient client.
+// NewDomainServiceOperationsClientWithBaseURI creates an instance of the DomainServiceOperationsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewDomainServiceOperationsClientWithBaseURI(baseURI string, subscriptionID string) DomainServiceOperationsClient {
 	return DomainServiceOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -92,8 +94,7 @@ func (client DomainServiceOperationsClient) ListPreparer(ctx context.Context) (*
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client DomainServiceOperationsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

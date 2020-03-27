@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ type AdaptiveApplicationControlsClientAPI = original.AdaptiveApplicationControls
 type AdvancedThreatProtectionClientAPI = original.AdvancedThreatProtectionClientAPI
 type AlertsClientAPI = original.AlertsClientAPI
 type AllowedConnectionsClientAPI = original.AllowedConnectionsClientAPI
+type AssessmentsClientAPI = original.AssessmentsClientAPI
 type AssessmentsMetadataClientAPI = original.AssessmentsMetadataClientAPI
-type AssessmentsMetadataSubscriptionClientAPI = original.AssessmentsMetadataSubscriptionClientAPI
 type AutoProvisioningSettingsClientAPI = original.AutoProvisioningSettingsClientAPI
 type AutomationsClientAPI = original.AutomationsClientAPI
 type ComplianceResultsClientAPI = original.ComplianceResultsClientAPI

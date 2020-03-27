@@ -36,7 +36,8 @@ func NewDimensionsClient(subscriptionID string) DimensionsClient {
 	return NewDimensionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDimensionsClientWithBaseURI creates an instance of the DimensionsClient client.
+// NewDimensionsClientWithBaseURI creates an instance of the DimensionsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDimensionsClientWithBaseURI(baseURI string, subscriptionID string) DimensionsClient {
 	return DimensionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -127,8 +128,7 @@ func (client DimensionsClient) ListByBillingAccountPreparer(ctx context.Context,
 // ListByBillingAccountSender sends the ListByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client DimensionsClient) ListByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingAccountResponder handles the response to the ListByBillingAccount request. The method always
@@ -232,8 +232,7 @@ func (client DimensionsClient) ListByDepartmentPreparer(ctx context.Context, bil
 // ListByDepartmentSender sends the ListByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client DimensionsClient) ListByDepartmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByDepartmentResponder handles the response to the ListByDepartment request. The method always
@@ -337,8 +336,7 @@ func (client DimensionsClient) ListByEnrollmentAccountPreparer(ctx context.Conte
 // ListByEnrollmentAccountSender sends the ListByEnrollmentAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client DimensionsClient) ListByEnrollmentAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByEnrollmentAccountResponder handles the response to the ListByEnrollmentAccount request. The method always
@@ -440,8 +438,7 @@ func (client DimensionsClient) ListByManagementGroupPreparer(ctx context.Context
 // ListByManagementGroupSender sends the ListByManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client DimensionsClient) ListByManagementGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByManagementGroupResponder handles the response to the ListByManagementGroup request. The method always
@@ -544,8 +541,7 @@ func (client DimensionsClient) ListByResourceGroupPreparer(ctx context.Context, 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client DimensionsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -646,8 +642,7 @@ func (client DimensionsClient) ListBySubscriptionPreparer(ctx context.Context, f
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client DimensionsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always

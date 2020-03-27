@@ -36,7 +36,8 @@ func NewIscsiDisksClient(subscriptionID string) IscsiDisksClient {
 	return NewIscsiDisksClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewIscsiDisksClientWithBaseURI creates an instance of the IscsiDisksClient client.
+// NewIscsiDisksClientWithBaseURI creates an instance of the IscsiDisksClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewIscsiDisksClientWithBaseURI(baseURI string, subscriptionID string) IscsiDisksClient {
 	return IscsiDisksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -116,9 +117,8 @@ func (client IscsiDisksClient) CreateOrUpdatePreparer(ctx context.Context, devic
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client IscsiDisksClient) CreateOrUpdateSender(req *http.Request) (future IscsiDisksCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -206,9 +206,8 @@ func (client IscsiDisksClient) DeletePreparer(ctx context.Context, deviceName st
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client IscsiDisksClient) DeleteSender(req *http.Request) (future IscsiDisksDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -301,8 +300,7 @@ func (client IscsiDisksClient) GetPreparer(ctx context.Context, deviceName strin
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client IscsiDisksClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -387,8 +385,7 @@ func (client IscsiDisksClient) ListByDevicePreparer(ctx context.Context, deviceN
 // ListByDeviceSender sends the ListByDevice request. The method will close the
 // http.Response Body if it receives an error.
 func (client IscsiDisksClient) ListByDeviceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDeviceResponder handles the response to the ListByDevice request. The method always
@@ -475,8 +472,7 @@ func (client IscsiDisksClient) ListByIscsiServerPreparer(ctx context.Context, de
 // ListByIscsiServerSender sends the ListByIscsiServer request. The method will close the
 // http.Response Body if it receives an error.
 func (client IscsiDisksClient) ListByIscsiServerSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByIscsiServerResponder handles the response to the ListByIscsiServer request. The method always
@@ -565,8 +561,7 @@ func (client IscsiDisksClient) ListMetricDefinitionPreparer(ctx context.Context,
 // ListMetricDefinitionSender sends the ListMetricDefinition request. The method will close the
 // http.Response Body if it receives an error.
 func (client IscsiDisksClient) ListMetricDefinitionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricDefinitionResponder handles the response to the ListMetricDefinition request. The method always
@@ -659,8 +654,7 @@ func (client IscsiDisksClient) ListMetricsPreparer(ctx context.Context, deviceNa
 // ListMetricsSender sends the ListMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client IscsiDisksClient) ListMetricsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricsResponder handles the response to the ListMetrics request. The method always

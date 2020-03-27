@@ -47,6 +47,23 @@ func PossibleCatalogCollationTypeValues() []CatalogCollationType {
 	return []CatalogCollationType{DATABASEDEFAULT, SQLLatin1GeneralCP1CIAS}
 }
 
+// DatabaseState enumerates the values for database state.
+type DatabaseState string
+
+const (
+	// All ...
+	All DatabaseState = "All"
+	// Deleted ...
+	Deleted DatabaseState = "Deleted"
+	// Live ...
+	Live DatabaseState = "Live"
+)
+
+// PossibleDatabaseStateValues returns an array of possible values for the DatabaseState const type.
+func PossibleDatabaseStateValues() []DatabaseState {
+	return []DatabaseState{All, Deleted, Live}
+}
+
 // IdentityType enumerates the values for identity type.
 type IdentityType string
 
@@ -87,11 +104,13 @@ const (
 	Recovery ManagedDatabaseCreateMode = "Recovery"
 	// RestoreExternalBackup ...
 	RestoreExternalBackup ManagedDatabaseCreateMode = "RestoreExternalBackup"
+	// RestoreLongTermRetentionBackup ...
+	RestoreLongTermRetentionBackup ManagedDatabaseCreateMode = "RestoreLongTermRetentionBackup"
 )
 
 // PossibleManagedDatabaseCreateModeValues returns an array of possible values for the ManagedDatabaseCreateMode const type.
 func PossibleManagedDatabaseCreateModeValues() []ManagedDatabaseCreateMode {
-	return []ManagedDatabaseCreateMode{Default, PointInTimeRestore, Recovery, RestoreExternalBackup}
+	return []ManagedDatabaseCreateMode{Default, PointInTimeRestore, Recovery, RestoreExternalBackup, RestoreLongTermRetentionBackup}
 }
 
 // ManagedDatabaseStatus enumerates the values for managed database status.
@@ -219,6 +238,27 @@ const (
 // PossibleSecurityAlertPolicyStateValues returns an array of possible values for the SecurityAlertPolicyState const type.
 func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
 	return []SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled, SecurityAlertPolicyStateNew}
+}
+
+// SensitivityLabelRank enumerates the values for sensitivity label rank.
+type SensitivityLabelRank string
+
+const (
+	// Critical ...
+	Critical SensitivityLabelRank = "Critical"
+	// High ...
+	High SensitivityLabelRank = "High"
+	// Low ...
+	Low SensitivityLabelRank = "Low"
+	// Medium ...
+	Medium SensitivityLabelRank = "Medium"
+	// None ...
+	None SensitivityLabelRank = "None"
+)
+
+// PossibleSensitivityLabelRankValues returns an array of possible values for the SensitivityLabelRank const type.
+func PossibleSensitivityLabelRankValues() []SensitivityLabelRank {
+	return []SensitivityLabelRank{Critical, High, Low, Medium, None}
 }
 
 // SensitivityLabelSource enumerates the values for sensitivity label source.
@@ -393,6 +433,18 @@ type AdministratorProperties struct {
 	Sid *uuid.UUID `json:"sid,omitempty"`
 	// TenantID - Tenant ID of the administrator.
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
+}
+
+// BaseLongTermRetentionPolicyProperties properties of a long term retention policy
+type BaseLongTermRetentionPolicyProperties struct {
+	// WeeklyRetention - The weekly retention policy for an LTR backup in an ISO 8601 format.
+	WeeklyRetention *string `json:"weeklyRetention,omitempty"`
+	// MonthlyRetention - The monthly retention policy for an LTR backup in an ISO 8601 format.
+	MonthlyRetention *string `json:"monthlyRetention,omitempty"`
+	// YearlyRetention - The yearly retention policy for an LTR backup in an ISO 8601 format.
+	YearlyRetention *string `json:"yearlyRetention,omitempty"`
+	// WeekOfYear - The week of year to take the yearly backup in an ISO 8601 format.
+	WeekOfYear *int32 `json:"weekOfYear,omitempty"`
 }
 
 // CompleteDatabaseRestoreDefinition contains the information necessary to perform a complete database
@@ -1035,6 +1087,52 @@ func (ipu InstancePoolUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture an abstraction for monitoring and
+// retrieving the results of a long-running operation.
+type LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture) Result(client LongTermRetentionManagedInstanceBackupsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// LongTermRetentionManagedInstanceBackupsDeleteFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type LongTermRetentionManagedInstanceBackupsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *LongTermRetentionManagedInstanceBackupsDeleteFuture) Result(client LongTermRetentionManagedInstanceBackupsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.LongTermRetentionManagedInstanceBackupsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.LongTermRetentionManagedInstanceBackupsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // ManagedDatabase a managed database resource.
 type ManagedDatabase struct {
 	autorest.Response `json:"-"`
@@ -1298,7 +1396,7 @@ type ManagedDatabaseProperties struct {
 	DefaultSecondaryLocation *string `json:"defaultSecondaryLocation,omitempty"`
 	// CatalogCollation - Collation of the metadata catalog. Possible values include: 'DATABASEDEFAULT', 'SQLLatin1GeneralCP1CIAS'
 	CatalogCollation CatalogCollationType `json:"catalogCollation,omitempty"`
-	// CreateMode - Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. Possible values include: 'Default', 'RestoreExternalBackup', 'PointInTimeRestore', 'Recovery'
+	// CreateMode - Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. Possible values include: 'Default', 'RestoreExternalBackup', 'PointInTimeRestore', 'Recovery', 'RestoreLongTermRetentionBackup'
 	CreateMode ManagedDatabaseCreateMode `json:"createMode,omitempty"`
 	// StorageContainerURI - Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the uri of the storage container where backups for this restore are stored.
 	StorageContainerURI *string `json:"storageContainerUri,omitempty"`
@@ -1312,6 +1410,8 @@ type ManagedDatabaseProperties struct {
 	FailoverGroupID *string `json:"failoverGroupId,omitempty"`
 	// RecoverableDatabaseID - The resource identifier of the recoverable database associated with create operation of this database.
 	RecoverableDatabaseID *string `json:"recoverableDatabaseId,omitempty"`
+	// LongTermRetentionBackupResourceID - The name of the Long Term Retention backup to be used for restore of this managed database.
+	LongTermRetentionBackupResourceID *string `json:"longTermRetentionBackupResourceId,omitempty"`
 }
 
 // ManagedDatabaseRestoreDetailsProperties the managed database's restore details properties.
@@ -1841,6 +1941,494 @@ func (page ManagedInstanceListResultPage) Values() []ManagedInstance {
 // Creates a new instance of the ManagedInstanceListResultPage type.
 func NewManagedInstanceListResultPage(getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
 	return ManagedInstanceListResultPage{fn: getNextPage}
+}
+
+// ManagedInstanceLongTermRetentionBackup a long term retention backup for a managed database.
+type ManagedInstanceLongTermRetentionBackup struct {
+	autorest.Response `json:"-"`
+	// ManagedInstanceLongTermRetentionBackupProperties - Resource properties.
+	*ManagedInstanceLongTermRetentionBackupProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedInstanceLongTermRetentionBackup.
+func (miltrb ManagedInstanceLongTermRetentionBackup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if miltrb.ManagedInstanceLongTermRetentionBackupProperties != nil {
+		objectMap["properties"] = miltrb.ManagedInstanceLongTermRetentionBackupProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagedInstanceLongTermRetentionBackup struct.
+func (miltrb *ManagedInstanceLongTermRetentionBackup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var managedInstanceLongTermRetentionBackupProperties ManagedInstanceLongTermRetentionBackupProperties
+				err = json.Unmarshal(*v, &managedInstanceLongTermRetentionBackupProperties)
+				if err != nil {
+					return err
+				}
+				miltrb.ManagedInstanceLongTermRetentionBackupProperties = &managedInstanceLongTermRetentionBackupProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				miltrb.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				miltrb.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				miltrb.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ManagedInstanceLongTermRetentionBackupListResult a list of long term retention backups for managed
+// database(s).
+type ManagedInstanceLongTermRetentionBackupListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]ManagedInstanceLongTermRetentionBackup `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ManagedInstanceLongTermRetentionBackupListResultIterator provides access to a complete listing of
+// ManagedInstanceLongTermRetentionBackup values.
+type ManagedInstanceLongTermRetentionBackupListResultIterator struct {
+	i    int
+	page ManagedInstanceLongTermRetentionBackupListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ManagedInstanceLongTermRetentionBackupListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedInstanceLongTermRetentionBackupListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ManagedInstanceLongTermRetentionBackupListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ManagedInstanceLongTermRetentionBackupListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ManagedInstanceLongTermRetentionBackupListResultIterator) Response() ManagedInstanceLongTermRetentionBackupListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ManagedInstanceLongTermRetentionBackupListResultIterator) Value() ManagedInstanceLongTermRetentionBackup {
+	if !iter.page.NotDone() {
+		return ManagedInstanceLongTermRetentionBackup{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ManagedInstanceLongTermRetentionBackupListResultIterator type.
+func NewManagedInstanceLongTermRetentionBackupListResultIterator(page ManagedInstanceLongTermRetentionBackupListResultPage) ManagedInstanceLongTermRetentionBackupListResultIterator {
+	return ManagedInstanceLongTermRetentionBackupListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (miltrblr ManagedInstanceLongTermRetentionBackupListResult) IsEmpty() bool {
+	return miltrblr.Value == nil || len(*miltrblr.Value) == 0
+}
+
+// managedInstanceLongTermRetentionBackupListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (miltrblr ManagedInstanceLongTermRetentionBackupListResult) managedInstanceLongTermRetentionBackupListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if miltrblr.NextLink == nil || len(to.String(miltrblr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(miltrblr.NextLink)))
+}
+
+// ManagedInstanceLongTermRetentionBackupListResultPage contains a page of
+// ManagedInstanceLongTermRetentionBackup values.
+type ManagedInstanceLongTermRetentionBackupListResultPage struct {
+	fn       func(context.Context, ManagedInstanceLongTermRetentionBackupListResult) (ManagedInstanceLongTermRetentionBackupListResult, error)
+	miltrblr ManagedInstanceLongTermRetentionBackupListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ManagedInstanceLongTermRetentionBackupListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedInstanceLongTermRetentionBackupListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.miltrblr)
+	if err != nil {
+		return err
+	}
+	page.miltrblr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ManagedInstanceLongTermRetentionBackupListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ManagedInstanceLongTermRetentionBackupListResultPage) NotDone() bool {
+	return !page.miltrblr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ManagedInstanceLongTermRetentionBackupListResultPage) Response() ManagedInstanceLongTermRetentionBackupListResult {
+	return page.miltrblr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ManagedInstanceLongTermRetentionBackupListResultPage) Values() []ManagedInstanceLongTermRetentionBackup {
+	if page.miltrblr.IsEmpty() {
+		return nil
+	}
+	return *page.miltrblr.Value
+}
+
+// Creates a new instance of the ManagedInstanceLongTermRetentionBackupListResultPage type.
+func NewManagedInstanceLongTermRetentionBackupListResultPage(getNextPage func(context.Context, ManagedInstanceLongTermRetentionBackupListResult) (ManagedInstanceLongTermRetentionBackupListResult, error)) ManagedInstanceLongTermRetentionBackupListResultPage {
+	return ManagedInstanceLongTermRetentionBackupListResultPage{fn: getNextPage}
+}
+
+// ManagedInstanceLongTermRetentionBackupProperties properties of a long term retention backup
+type ManagedInstanceLongTermRetentionBackupProperties struct {
+	// ManagedInstanceName - READ-ONLY; The managed instance that the backup database belongs to.
+	ManagedInstanceName *string `json:"managedInstanceName,omitempty"`
+	// ManagedInstanceCreateTime - READ-ONLY; The create time of the instance.
+	ManagedInstanceCreateTime *date.Time `json:"managedInstanceCreateTime,omitempty"`
+	// DatabaseName - READ-ONLY; The name of the database the backup belong to
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// DatabaseDeletionTime - READ-ONLY; The delete time of the database
+	DatabaseDeletionTime *date.Time `json:"databaseDeletionTime,omitempty"`
+	// BackupTime - READ-ONLY; The time the backup was taken
+	BackupTime *date.Time `json:"backupTime,omitempty"`
+	// BackupExpirationTime - READ-ONLY; The time the long term retention backup will expire.
+	BackupExpirationTime *date.Time `json:"backupExpirationTime,omitempty"`
+}
+
+// ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and
+// retrieving the results of a long-running operation.
+type ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture) Result(client ManagedInstanceLongTermRetentionPoliciesClient) (miltrp ManagedInstanceLongTermRetentionPolicy, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if miltrp.Response.Response, err = future.GetResult(sender); err == nil && miltrp.Response.Response.StatusCode != http.StatusNoContent {
+		miltrp, err = client.CreateOrUpdateResponder(miltrp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture", "Result", miltrp.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ManagedInstanceLongTermRetentionPolicy a long term retention policy.
+type ManagedInstanceLongTermRetentionPolicy struct {
+	autorest.Response `json:"-"`
+	// BaseLongTermRetentionPolicyProperties - Resource properties.
+	*BaseLongTermRetentionPolicyProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedInstanceLongTermRetentionPolicy.
+func (miltrp ManagedInstanceLongTermRetentionPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if miltrp.BaseLongTermRetentionPolicyProperties != nil {
+		objectMap["properties"] = miltrp.BaseLongTermRetentionPolicyProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagedInstanceLongTermRetentionPolicy struct.
+func (miltrp *ManagedInstanceLongTermRetentionPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var baseLongTermRetentionPolicyProperties BaseLongTermRetentionPolicyProperties
+				err = json.Unmarshal(*v, &baseLongTermRetentionPolicyProperties)
+				if err != nil {
+					return err
+				}
+				miltrp.BaseLongTermRetentionPolicyProperties = &baseLongTermRetentionPolicyProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				miltrp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				miltrp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				miltrp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ManagedInstanceLongTermRetentionPolicyListResult a list of long term retention policies.
+type ManagedInstanceLongTermRetentionPolicyListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]ManagedInstanceLongTermRetentionPolicy `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ManagedInstanceLongTermRetentionPolicyListResultIterator provides access to a complete listing of
+// ManagedInstanceLongTermRetentionPolicy values.
+type ManagedInstanceLongTermRetentionPolicyListResultIterator struct {
+	i    int
+	page ManagedInstanceLongTermRetentionPolicyListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ManagedInstanceLongTermRetentionPolicyListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedInstanceLongTermRetentionPolicyListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ManagedInstanceLongTermRetentionPolicyListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ManagedInstanceLongTermRetentionPolicyListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ManagedInstanceLongTermRetentionPolicyListResultIterator) Response() ManagedInstanceLongTermRetentionPolicyListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ManagedInstanceLongTermRetentionPolicyListResultIterator) Value() ManagedInstanceLongTermRetentionPolicy {
+	if !iter.page.NotDone() {
+		return ManagedInstanceLongTermRetentionPolicy{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ManagedInstanceLongTermRetentionPolicyListResultIterator type.
+func NewManagedInstanceLongTermRetentionPolicyListResultIterator(page ManagedInstanceLongTermRetentionPolicyListResultPage) ManagedInstanceLongTermRetentionPolicyListResultIterator {
+	return ManagedInstanceLongTermRetentionPolicyListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (miltrplr ManagedInstanceLongTermRetentionPolicyListResult) IsEmpty() bool {
+	return miltrplr.Value == nil || len(*miltrplr.Value) == 0
+}
+
+// managedInstanceLongTermRetentionPolicyListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (miltrplr ManagedInstanceLongTermRetentionPolicyListResult) managedInstanceLongTermRetentionPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if miltrplr.NextLink == nil || len(to.String(miltrplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(miltrplr.NextLink)))
+}
+
+// ManagedInstanceLongTermRetentionPolicyListResultPage contains a page of
+// ManagedInstanceLongTermRetentionPolicy values.
+type ManagedInstanceLongTermRetentionPolicyListResultPage struct {
+	fn       func(context.Context, ManagedInstanceLongTermRetentionPolicyListResult) (ManagedInstanceLongTermRetentionPolicyListResult, error)
+	miltrplr ManagedInstanceLongTermRetentionPolicyListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ManagedInstanceLongTermRetentionPolicyListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedInstanceLongTermRetentionPolicyListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.miltrplr)
+	if err != nil {
+		return err
+	}
+	page.miltrplr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ManagedInstanceLongTermRetentionPolicyListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ManagedInstanceLongTermRetentionPolicyListResultPage) NotDone() bool {
+	return !page.miltrplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ManagedInstanceLongTermRetentionPolicyListResultPage) Response() ManagedInstanceLongTermRetentionPolicyListResult {
+	return page.miltrplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ManagedInstanceLongTermRetentionPolicyListResultPage) Values() []ManagedInstanceLongTermRetentionPolicy {
+	if page.miltrplr.IsEmpty() {
+		return nil
+	}
+	return *page.miltrplr.Value
+}
+
+// Creates a new instance of the ManagedInstanceLongTermRetentionPolicyListResultPage type.
+func NewManagedInstanceLongTermRetentionPolicyListResultPage(getNextPage func(context.Context, ManagedInstanceLongTermRetentionPolicyListResult) (ManagedInstanceLongTermRetentionPolicyListResult, error)) ManagedInstanceLongTermRetentionPolicyListResultPage {
+	return ManagedInstanceLongTermRetentionPolicyListResultPage{fn: getNextPage}
 }
 
 // ManagedInstanceOperation a managed instance operation.
@@ -3111,6 +3699,8 @@ type SensitivityLabelProperties struct {
 	InformationTypeID *string `json:"informationTypeId,omitempty"`
 	// IsDisabled - READ-ONLY; Is sensitivity recommendation disabled. Applicable for recommended sensitivity label only. Specifies whether the sensitivity recommendation on this column is disabled (dismissed) or not.
 	IsDisabled *bool `json:"isDisabled,omitempty"`
+	// Rank - Possible values include: 'None', 'Low', 'Medium', 'High', 'Critical'
+	Rank SensitivityLabelRank `json:"rank,omitempty"`
 }
 
 // ServerAzureADAdministrator azure Active Directory administrator.

@@ -37,7 +37,8 @@ func NewLogFilesClient(subscriptionID string) LogFilesClient {
 	return NewLogFilesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewLogFilesClientWithBaseURI creates an instance of the LogFilesClient client.
+// NewLogFilesClientWithBaseURI creates an instance of the LogFilesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewLogFilesClientWithBaseURI(baseURI string, subscriptionID string) LogFilesClient {
 	return LogFilesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -103,8 +104,7 @@ func (client LogFilesClient) ListByServerPreparer(ctx context.Context, resourceG
 // ListByServerSender sends the ListByServer request. The method will close the
 // http.Response Body if it receives an error.
 func (client LogFilesClient) ListByServerSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByServerResponder handles the response to the ListByServer request. The method always

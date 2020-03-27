@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 package backupapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2019-05-13/backup/backupapi"
+import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2019-06-15/backup/backupapi"
 
 type BackupsClientAPI = original.BackupsClientAPI
 type EnginesClientAPI = original.EnginesClientAPI

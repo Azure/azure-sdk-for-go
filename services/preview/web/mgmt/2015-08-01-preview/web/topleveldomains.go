@@ -35,7 +35,8 @@ func NewTopLevelDomainsClient(subscriptionID string) TopLevelDomainsClient {
 	return NewTopLevelDomainsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewTopLevelDomainsClientWithBaseURI creates an instance of the TopLevelDomainsClient client.
+// NewTopLevelDomainsClientWithBaseURI creates an instance of the TopLevelDomainsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewTopLevelDomainsClientWithBaseURI(baseURI string, subscriptionID string) TopLevelDomainsClient {
 	return TopLevelDomainsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -96,8 +97,7 @@ func (client TopLevelDomainsClient) GetGetTopLevelDomainsPreparer(ctx context.Co
 // GetGetTopLevelDomainsSender sends the GetGetTopLevelDomains request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopLevelDomainsClient) GetGetTopLevelDomainsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetGetTopLevelDomainsResponder handles the response to the GetGetTopLevelDomains request. The method always
@@ -208,8 +208,7 @@ func (client TopLevelDomainsClient) GetTopLevelDomainPreparer(ctx context.Contex
 // GetTopLevelDomainSender sends the GetTopLevelDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopLevelDomainsClient) GetTopLevelDomainSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetTopLevelDomainResponder handles the response to the GetTopLevelDomain request. The method always
@@ -287,8 +286,7 @@ func (client TopLevelDomainsClient) ListTopLevelDomainAgreementsPreparer(ctx con
 // ListTopLevelDomainAgreementsSender sends the ListTopLevelDomainAgreements request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopLevelDomainsClient) ListTopLevelDomainAgreementsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListTopLevelDomainAgreementsResponder handles the response to the ListTopLevelDomainAgreements request. The method always

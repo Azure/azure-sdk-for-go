@@ -36,7 +36,8 @@ func NewWebhooksClient(subscriptionID string) WebhooksClient {
 	return NewWebhooksClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWebhooksClientWithBaseURI creates an instance of the WebhooksClient client.
+// NewWebhooksClientWithBaseURI creates an instance of the WebhooksClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewWebhooksClientWithBaseURI(baseURI string, subscriptionID string) WebhooksClient {
 	return WebhooksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -118,9 +119,8 @@ func (client WebhooksClient) CreatePreparer(ctx context.Context, resourceGroupNa
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client WebhooksClient) CreateSender(req *http.Request) (future WebhooksCreateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -209,9 +209,8 @@ func (client WebhooksClient) DeletePreparer(ctx context.Context, resourceGroupNa
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client WebhooksClient) DeleteSender(req *http.Request) (future WebhooksDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -305,8 +304,7 @@ func (client WebhooksClient) GetPreparer(ctx context.Context, resourceGroupName 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client WebhooksClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -396,8 +394,7 @@ func (client WebhooksClient) GetCallbackConfigPreparer(ctx context.Context, reso
 // GetCallbackConfigSender sends the GetCallbackConfig request. The method will close the
 // http.Response Body if it receives an error.
 func (client WebhooksClient) GetCallbackConfigSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetCallbackConfigResponder handles the response to the GetCallbackConfig request. The method always
@@ -482,8 +479,7 @@ func (client WebhooksClient) ListPreparer(ctx context.Context, resourceGroupName
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client WebhooksClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -611,8 +607,7 @@ func (client WebhooksClient) ListEventsPreparer(ctx context.Context, resourceGro
 // ListEventsSender sends the ListEvents request. The method will close the
 // http.Response Body if it receives an error.
 func (client WebhooksClient) ListEventsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListEventsResponder handles the response to the ListEvents request. The method always
@@ -739,8 +734,7 @@ func (client WebhooksClient) PingPreparer(ctx context.Context, resourceGroupName
 // PingSender sends the Ping request. The method will close the
 // http.Response Body if it receives an error.
 func (client WebhooksClient) PingSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // PingResponder handles the response to the Ping request. The method always
@@ -827,9 +821,8 @@ func (client WebhooksClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client WebhooksClient) UpdateSender(req *http.Request) (future WebhooksUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

@@ -35,7 +35,8 @@ func NewDataSetMappingsClient(subscriptionID string) DataSetMappingsClient {
 	return NewDataSetMappingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDataSetMappingsClientWithBaseURI creates an instance of the DataSetMappingsClient client.
+// NewDataSetMappingsClientWithBaseURI creates an instance of the DataSetMappingsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDataSetMappingsClientWithBaseURI(baseURI string, subscriptionID string) DataSetMappingsClient {
 	return DataSetMappingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -107,8 +108,7 @@ func (client DataSetMappingsClient) CreatePreparer(ctx context.Context, resource
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataSetMappingsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -188,8 +188,7 @@ func (client DataSetMappingsClient) DeletePreparer(ctx context.Context, resource
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataSetMappingsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -268,8 +267,7 @@ func (client DataSetMappingsClient) GetPreparer(ctx context.Context, resourceGro
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataSetMappingsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -352,8 +350,7 @@ func (client DataSetMappingsClient) ListByShareSubscriptionPreparer(ctx context.
 // ListByShareSubscriptionSender sends the ListByShareSubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataSetMappingsClient) ListByShareSubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByShareSubscriptionResponder handles the response to the ListByShareSubscription request. The method always

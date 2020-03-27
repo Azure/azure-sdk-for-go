@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result devops.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result devops.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*devops.OperationsClient)(nil)
@@ -33,6 +34,7 @@ var _ OperationsClientAPI = (*devops.OperationsClient)(nil)
 // PipelineTemplateDefinitionsClientAPI contains the set of methods on the PipelineTemplateDefinitionsClient type.
 type PipelineTemplateDefinitionsClientAPI interface {
 	List(ctx context.Context) (result devops.PipelineTemplateDefinitionListResultPage, err error)
+	ListComplete(ctx context.Context) (result devops.PipelineTemplateDefinitionListResultIterator, err error)
 }
 
 var _ PipelineTemplateDefinitionsClientAPI = (*devops.PipelineTemplateDefinitionsClient)(nil)
@@ -43,7 +45,9 @@ type PipelinesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, pipelineName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, pipelineName string) (result devops.Pipeline, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result devops.PipelineListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result devops.PipelineListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result devops.PipelineListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result devops.PipelineListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, pipelineName string, updateOperationParameters devops.PipelineUpdateParameters) (result devops.Pipeline, err error)
 }
 

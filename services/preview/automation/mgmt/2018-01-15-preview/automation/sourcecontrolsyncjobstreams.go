@@ -37,7 +37,9 @@ func NewSourceControlSyncJobStreamsClient(subscriptionID string) SourceControlSy
 	return NewSourceControlSyncJobStreamsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSourceControlSyncJobStreamsClientWithBaseURI creates an instance of the SourceControlSyncJobStreamsClient client.
+// NewSourceControlSyncJobStreamsClientWithBaseURI creates an instance of the SourceControlSyncJobStreamsClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewSourceControlSyncJobStreamsClientWithBaseURI(baseURI string, subscriptionID string) SourceControlSyncJobStreamsClient {
 	return SourceControlSyncJobStreamsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -116,8 +118,7 @@ func (client SourceControlSyncJobStreamsClient) GetPreparer(ctx context.Context,
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SourceControlSyncJobStreamsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -210,8 +211,7 @@ func (client SourceControlSyncJobStreamsClient) ListBySyncJobPreparer(ctx contex
 // ListBySyncJobSender sends the ListBySyncJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client SourceControlSyncJobStreamsClient) ListBySyncJobSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySyncJobResponder handles the response to the ListBySyncJob request. The method always

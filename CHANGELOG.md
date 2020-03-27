@@ -1,5 +1,231 @@
 # CHANGELOG
 
+## v40.6.0
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2019-12-01 |
+| network | 2019-12-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| cognitiveservices | 2017-04-18 |
+
+### Updated `./storage` package, which allows users to use azure-sdk-for-go to connect to and use cosmosdb table storage.
+
+## v40.5.0
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| kusto | 2020-02-15 |
+| subscriptions | 2019-11-01 |
+| support | 2020-04-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| policyinsights | 2019-10-01 |
+
+## `v40.4.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| advisor | 2020-01-01 |
+
+## `v40.3.0`
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| eventgrid | 2020-04-01-preview |
+
+## `v40.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| compute | 2019-12-01 |
+
+## `v40.1.0`
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| managementpartner | 2018-02-01 |
+
+**NOTE:** `services/preview/managementpartner/mgmt/2018-02-01/managementpartner` is a preview package.
+
+## `v40.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| logic | 2019-05-01 |
+| maps | 2020-02-01-preview |
+| peering | 2020-01-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| devspaces | 2019-04-01 |
+| machinelearningservices | 2020-01-01 |
+| msi | 2015-08-31-preview |
+| operationalinsights | 2015-03-20<br/>2015-11-01-preview |
+| policyinsights | 2019-10-01 |
+| security | v1.0<br/>v2.0 |
+| sql | 2015-05-01-preview<br/>2017-03-01-preview<br/>2018-06-01-preview |
+| subscriptions | 2018-06-01<br/>2019-06-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| backup | 2017-07-01 |
+| containerregistry | 2019-05-01-preview<br/>2019-06-01-preview<br/>2019-12-01-preview |
+| datafactory | 2018-06-01 |
+| datamigration | 2018-07-15-preview |
+| documentdb | 2019-12-12 |
+| features | 2019-07-01 |
+| frontdoor | 2020-01-01 |
+| graphrbac | 1.6 |
+| hanaonazure | 2017-11-03-preview |
+| msi | 2018-11-30 |
+| mysql | 2017-12-01 |
+| postgresql | 2017-12-01 |
+| prediction | customvision |
+| resources | 2015-11-01<br/>2016-02-01<br/>2016-07-01<br/>2016-09-01<br/>2017-05-10<br/>2018-02-01<br/>2018-05-01<br/>2019-03-01<br/>2019-05-01 |
+| security | v3.0 |
+| securityinsight | 2017-08-01-preview |
+| sql | v3.0 |
+| storage | 2019-06-01 |
+
+### Removed Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| logic | 2019-05-01 |
+
+**NOTE:** `services/preview/logic/mgmt/2019-05-01/logic` was moved to `services/logic/mgmt/2019-05-01/logic`, since it is a stable package and was placed in `preview` directory by mistake.
+
+## `v39.3.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| containerservice | 2019-10-27-preview |
+| synapse | 2019-06-01-preview |
+
+## `v39.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| containerservice | 2020-02-01 |
+
+## `v39.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2019-12-01-preview |
+| reservations | 2019-07-19-preview |
+
+## `v39.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| appconfiguration | 2019-11-01-preview |
+| backup | 2019-06-15 |
+| containerregistry | 2019-08-15-preview |
+| containerservice | 2020-01-01 |
+| digitaltwins | 2020-03-01-preview |
+| documentdb | 2019-12-12 |
+| frontdoor | 2020-01-01 |
+| hybridcompute | 2019-12-12 |
+| kusto | 2019-11-09 |
+| netapp | 2019-11-01 |
+| network | 2019-11-01 |
+| support | 2019-05-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| blueprint | 2018-11-01-preview |
+| compute | 2019-07-01 |
+| containerservice | 2019-11-01 |
+| eventgrid | 2020-04-01-preview |
+| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+| healthcareapis | 2019-09-16 |
+| keyvault | 2018-02-14 |
+| operationalinsights | 2015-11-01-preview |
+| policy | 2019-09-01 |
+| qnamaker | v4.0 |
+| search | 2015-08-19 |
+| siterecovery | 2018-07-10 |
+| sql | 2017-03-01-preview<br/>2018-06-01-preview<br/>v3.0 |
+| web | 2019-08-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2019-01-01 |
+| containerservice | 2017-07-01<br/>2017-08-31<br/>2017-09-30<br/>2018-03-31 |
+| insights | 2018-03-01<br/>2018-09-01<br/>2018-11-01-preview<br/>2019-03-01<br/>2019-06-01 |
+| machinelearningservices | 2018-11-19<br/>2019-05-01<br/>2019-06-01<br/>2019-11-01<br/>2020-01-01 |
+| managedapplications | 2019-07-01 |
+| mariadb | 2018-06-01 |
+| netapp | 2019-05-01<br/>2019-06-01<br/>2019-07-01<br/>2019-08-01<br/>2019-10-01 |
+| network | 2019-09-01 |
+| security | v1.0<br/>v2.0<br/>v3.0 |
+| securityinsight | 2017-08-01-preview |
+| siterecovery | 2018-01-10 |
+| storage | 2019-06-01 |
+
+## `v38.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| attestation | 2018-09-01-preview |
+| eventgrid | 2020-04-01-preview |
+| storagesync | 2019-06-01 |
+
+## `v38.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| frontdoor | 2019-10-01<br/>2019-11-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| storage | 2019-06-01 |
+
 ## `v38.0.0`
 
 ### New Packages

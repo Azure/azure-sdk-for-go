@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -934,6 +934,7 @@ type GeoRegionProperties = original.GeoRegionProperties
 type GlobalCsmSkuDescription = original.GlobalCsmSkuDescription
 type HTTPLogsConfig = original.HTTPLogsConfig
 type HandlerMapping = original.HandlerMapping
+type HostKeys = original.HostKeys
 type HostName = original.HostName
 type HostNameBinding = original.HostNameBinding
 type HostNameBindingCollection = original.HostNameBindingCollection
@@ -968,6 +969,7 @@ type JobCollection = original.JobCollection
 type JobCollectionIterator = original.JobCollectionIterator
 type JobCollectionPage = original.JobCollectionPage
 type JobProperties = original.JobProperties
+type KeyInfo = original.KeyInfo
 type KeyVaultReferenceCollection = original.KeyVaultReferenceCollection
 type KeyVaultReferenceCollectionProperties = original.KeyVaultReferenceCollectionProperties
 type KeyVaultReferenceResource = original.KeyVaultReferenceResource

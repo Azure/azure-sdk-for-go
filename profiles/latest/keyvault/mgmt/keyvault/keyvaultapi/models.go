@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,4 +22,6 @@ package keyvaultapi
 import original "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2018-02-14/keyvault/keyvaultapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type VaultsClientAPI = original.VaultsClientAPI

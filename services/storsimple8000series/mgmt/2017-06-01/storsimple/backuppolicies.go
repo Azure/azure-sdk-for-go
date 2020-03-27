@@ -36,7 +36,8 @@ func NewBackupPoliciesClient(subscriptionID string) BackupPoliciesClient {
 	return NewBackupPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBackupPoliciesClientWithBaseURI creates an instance of the BackupPoliciesClient client.
+// NewBackupPoliciesClientWithBaseURI creates an instance of the BackupPoliciesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupPoliciesClient {
 	return BackupPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -108,9 +109,8 @@ func (client BackupPoliciesClient) BackupNowPreparer(ctx context.Context, device
 // BackupNowSender sends the BackupNow request. The method will close the
 // http.Response Body if it receives an error.
 func (client BackupPoliciesClient) BackupNowSender(req *http.Request) (future BackupPoliciesBackupNowFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -201,9 +201,8 @@ func (client BackupPoliciesClient) CreateOrUpdatePreparer(ctx context.Context, d
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client BackupPoliciesClient) CreateOrUpdateSender(req *http.Request) (future BackupPoliciesCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -289,9 +288,8 @@ func (client BackupPoliciesClient) DeletePreparer(ctx context.Context, deviceNam
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client BackupPoliciesClient) DeleteSender(req *http.Request) (future BackupPoliciesDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -382,8 +380,7 @@ func (client BackupPoliciesClient) GetPreparer(ctx context.Context, deviceName s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client BackupPoliciesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -468,8 +465,7 @@ func (client BackupPoliciesClient) ListByDevicePreparer(ctx context.Context, dev
 // ListByDeviceSender sends the ListByDevice request. The method will close the
 // http.Response Body if it receives an error.
 func (client BackupPoliciesClient) ListByDeviceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDeviceResponder handles the response to the ListByDevice request. The method always

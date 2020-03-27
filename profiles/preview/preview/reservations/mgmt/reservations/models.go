@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ package reservations
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-04-01/reservations"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-07-19-preview/reservations"
 )
 
 const (
@@ -156,6 +156,10 @@ const (
 type AppliedReservationList = original.AppliedReservationList
 type AppliedReservations = original.AppliedReservations
 type AppliedReservationsProperties = original.AppliedReservationsProperties
+type AqiSettings = original.AqiSettings
+type AutoQuotaIncreaseClient = original.AutoQuotaIncreaseClient
+type AutoQuotaIncreaseDetail = original.AutoQuotaIncreaseDetail
+type AutoQuotaIncreaseSettings = original.AutoQuotaIncreaseSettings
 type BaseClient = original.BaseClient
 type CalculatePriceResponse = original.CalculatePriceResponse
 type CalculatePriceResponseProperties = original.CalculatePriceResponseProperties
@@ -163,7 +167,14 @@ type CalculatePriceResponsePropertiesBillingCurrencyTotal = original.CalculatePr
 type CalculatePriceResponsePropertiesPricingCurrencyTotal = original.CalculatePriceResponsePropertiesPricingCurrencyTotal
 type Catalog = original.Catalog
 type Client = original.Client
+type CreateGenericQuotaRequestParameters = original.CreateGenericQuotaRequestParameters
+type CurrentQuotaLimit = original.CurrentQuotaLimit
+type CurrentQuotaLimitBase = original.CurrentQuotaLimitBase
+type CurrentQuotaLimitBaseName = original.CurrentQuotaLimitBaseName
+type EmailAction = original.EmailAction
+type EmailActions = original.EmailActions
 type Error = original.Error
+type ExceptionResponse = original.ExceptionResponse
 type ExtendedErrorInfo = original.ExtendedErrorInfo
 type ExtendedStatusInfo = original.ExtendedStatusInfo
 type List = original.List
@@ -174,6 +185,9 @@ type ListResponse = original.ListResponse
 type MergeProperties = original.MergeProperties
 type MergePropertiesType = original.MergePropertiesType
 type MergeRequest = original.MergeRequest
+type OnFailure = original.OnFailure
+type OnFailureEmailActions = original.OnFailureEmailActions
+type OnFailurePhoneActions = original.OnFailurePhoneActions
 type OperationClient = original.OperationClient
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
@@ -192,12 +206,33 @@ type Patch = original.Patch
 type PatchProperties = original.PatchProperties
 type PatchPropertiesRenewProperties = original.PatchPropertiesRenewProperties
 type PaymentDetail = original.PaymentDetail
+type PhoneAction = original.PhoneAction
 type Price = original.Price
 type Properties = original.Properties
 type PropertiesType = original.PropertiesType
 type PurchaseRequest = original.PurchaseRequest
 type PurchaseRequestProperties = original.PurchaseRequestProperties
 type PurchaseRequestPropertiesReservedResourceProperties = original.PurchaseRequestPropertiesReservedResourceProperties
+type QuotaClient = original.QuotaClient
+type QuotaLimits = original.QuotaLimits
+type QuotaLimitsIterator = original.QuotaLimitsIterator
+type QuotaLimitsPage = original.QuotaLimitsPage
+type QuotaLimitsResponse = original.QuotaLimitsResponse
+type QuotaRequestClient = original.QuotaRequestClient
+type QuotaRequestCreateFuture = original.QuotaRequestCreateFuture
+type QuotaRequestDetails = original.QuotaRequestDetails
+type QuotaRequestDetailsList = original.QuotaRequestDetailsList
+type QuotaRequestDetailsListIterator = original.QuotaRequestDetailsListIterator
+type QuotaRequestDetailsListPage = original.QuotaRequestDetailsListPage
+type QuotaRequestOneResourceProperties = original.QuotaRequestOneResourceProperties
+type QuotaRequestOneResourceSubmitResponse = original.QuotaRequestOneResourceSubmitResponse
+type QuotaRequestProperties = original.QuotaRequestProperties
+type QuotaRequestStatusDetails = original.QuotaRequestStatusDetails
+type QuotaRequestSubmitResponse = original.QuotaRequestSubmitResponse
+type QuotaRequestSubmitResponse201 = original.QuotaRequestSubmitResponse201
+type QuotaRequestUpdateFuture = original.QuotaRequestUpdateFuture
+type QuotaRequestsClient = original.QuotaRequestsClient
+type QuotasClient = original.QuotasClient
 type RenewPropertiesResponse = original.RenewPropertiesResponse
 type RenewPropertiesResponseBillingCurrencyTotal = original.RenewPropertiesResponseBillingCurrencyTotal
 type RenewPropertiesResponsePricingCurrencyTotal = original.RenewPropertiesResponsePricingCurrencyTotal
@@ -206,6 +241,9 @@ type ReservationMergeFuture = original.ReservationMergeFuture
 type ReservationUpdateFuture = original.ReservationUpdateFuture
 type Response = original.Response
 type ScopeProperties = original.ScopeProperties
+type ServiceError = original.ServiceError
+type ServiceErrorDetail = original.ServiceErrorDetail
+type SetObject = original.SetObject
 type SkuName = original.SkuName
 type SkuProperty = original.SkuProperty
 type SkuRestriction = original.SkuRestriction
@@ -213,10 +251,19 @@ type SplitFuture = original.SplitFuture
 type SplitProperties = original.SplitProperties
 type SplitPropertiesType = original.SplitPropertiesType
 type SplitRequest = original.SplitRequest
+type SubRequest = original.SubRequest
+type SubRequestName = original.SubRequestName
 type SubscriptionScopeProperties = original.SubscriptionScopeProperties
+type SupportRequestAction = original.SupportRequestAction
 
 func New() BaseClient {
 	return original.New()
+}
+func NewAutoQuotaIncreaseClient() AutoQuotaIncreaseClient {
+	return original.NewAutoQuotaIncreaseClient()
+}
+func NewAutoQuotaIncreaseClientWithBaseURI(baseURI string) AutoQuotaIncreaseClient {
+	return original.NewAutoQuotaIncreaseClientWithBaseURI(baseURI)
 }
 func NewClient() Client {
 	return original.NewClient()
@@ -253,6 +300,42 @@ func NewOrderListIterator(page OrderListPage) OrderListIterator {
 }
 func NewOrderListPage(getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
 	return original.NewOrderListPage(getNextPage)
+}
+func NewQuotaClient() QuotaClient {
+	return original.NewQuotaClient()
+}
+func NewQuotaClientWithBaseURI(baseURI string) QuotaClient {
+	return original.NewQuotaClientWithBaseURI(baseURI)
+}
+func NewQuotaLimitsIterator(page QuotaLimitsPage) QuotaLimitsIterator {
+	return original.NewQuotaLimitsIterator(page)
+}
+func NewQuotaLimitsPage(getNextPage func(context.Context, QuotaLimits) (QuotaLimits, error)) QuotaLimitsPage {
+	return original.NewQuotaLimitsPage(getNextPage)
+}
+func NewQuotaRequestClient() QuotaRequestClient {
+	return original.NewQuotaRequestClient()
+}
+func NewQuotaRequestClientWithBaseURI(baseURI string) QuotaRequestClient {
+	return original.NewQuotaRequestClientWithBaseURI(baseURI)
+}
+func NewQuotaRequestDetailsListIterator(page QuotaRequestDetailsListPage) QuotaRequestDetailsListIterator {
+	return original.NewQuotaRequestDetailsListIterator(page)
+}
+func NewQuotaRequestDetailsListPage(getNextPage func(context.Context, QuotaRequestDetailsList) (QuotaRequestDetailsList, error)) QuotaRequestDetailsListPage {
+	return original.NewQuotaRequestDetailsListPage(getNextPage)
+}
+func NewQuotaRequestsClient() QuotaRequestsClient {
+	return original.NewQuotaRequestsClient()
+}
+func NewQuotaRequestsClientWithBaseURI(baseURI string) QuotaRequestsClient {
+	return original.NewQuotaRequestsClientWithBaseURI(baseURI)
+}
+func NewQuotasClient() QuotasClient {
+	return original.NewQuotasClient()
+}
+func NewQuotasClientWithBaseURI(baseURI string) QuotasClient {
+	return original.NewQuotasClientWithBaseURI(baseURI)
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)

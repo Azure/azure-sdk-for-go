@@ -29,6 +29,7 @@ import (
 type PipelineClientAPI interface {
 	Get(ctx context.Context, accountName string, pipelineIdentity uuid.UUID, startDateTime *date.Time, endDateTime *date.Time) (result job.PipelineInformation, err error)
 	List(ctx context.Context, accountName string, startDateTime *date.Time, endDateTime *date.Time) (result job.PipelineInformationListResultPage, err error)
+	ListComplete(ctx context.Context, accountName string, startDateTime *date.Time, endDateTime *date.Time) (result job.PipelineInformationListResultIterator, err error)
 }
 
 var _ PipelineClientAPI = (*job.PipelineClient)(nil)
@@ -37,6 +38,7 @@ var _ PipelineClientAPI = (*job.PipelineClient)(nil)
 type RecurrenceClientAPI interface {
 	Get(ctx context.Context, accountName string, recurrenceIdentity uuid.UUID, startDateTime *date.Time, endDateTime *date.Time) (result job.RecurrenceInformation, err error)
 	List(ctx context.Context, accountName string, startDateTime *date.Time, endDateTime *date.Time) (result job.RecurrenceInformationListResultPage, err error)
+	ListComplete(ctx context.Context, accountName string, startDateTime *date.Time, endDateTime *date.Time) (result job.RecurrenceInformationListResultIterator, err error)
 }
 
 var _ RecurrenceClientAPI = (*job.RecurrenceClient)(nil)
@@ -50,6 +52,7 @@ type ClientAPI interface {
 	GetDebugDataPath(ctx context.Context, accountName string, jobIdentity uuid.UUID) (result job.DataPath, err error)
 	GetStatistics(ctx context.Context, accountName string, jobIdentity uuid.UUID) (result job.Statistics, err error)
 	List(ctx context.Context, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result job.InfoListResultPage, err error)
+	ListComplete(ctx context.Context, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result job.InfoListResultIterator, err error)
 }
 
 var _ ClientAPI = (*job.Client)(nil)

@@ -42,6 +42,7 @@ var _ CapacitiesClientAPI = (*powerbidedicated.CapacitiesClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result powerbidedicated.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result powerbidedicated.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*powerbidedicated.OperationsClient)(nil)

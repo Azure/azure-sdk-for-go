@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,40 +19,77 @@
 
 package containerregistry
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/runtime/2019-07/containerregistry"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/runtime/2019-08-15-preview/containerregistry"
 
 type AccessToken = original.AccessToken
+type AccessTokensClient = original.AccessTokensClient
 type AcrErrorInfo = original.AcrErrorInfo
 type AcrErrors = original.AcrErrors
-type AcrManifestAttributes = original.AcrManifestAttributes
-type AcrManifestAttributesBase = original.AcrManifestAttributesBase
 type AcrManifests = original.AcrManifests
-type AcrRepositoryTags = original.AcrRepositoryTags
-type AcrTagAttributes = original.AcrTagAttributes
-type AcrTagAttributesBase = original.AcrTagAttributesBase
+type Annotations = original.Annotations
 type BaseClient = original.BaseClient
+type BlobClient = original.BlobClient
 type ChangeableAttributes = original.ChangeableAttributes
 type DeletedRepository = original.DeletedRepository
+type Descriptor = original.Descriptor
 type FsLayer = original.FsLayer
 type History = original.History
 type ImageSignature = original.ImageSignature
 type JWK = original.JWK
 type JWKHeader = original.JWKHeader
 type Manifest = original.Manifest
+type ManifestAttributes = original.ManifestAttributes
+type ManifestAttributesBase = original.ManifestAttributesBase
 type ManifestAttributesManifest = original.ManifestAttributesManifest
 type ManifestAttributesManifestReferences = original.ManifestAttributesManifestReferences
 type ManifestChangeableAttributes = original.ManifestChangeableAttributes
+type ManifestList = original.ManifestList
+type ManifestListAttributes = original.ManifestListAttributes
+type ManifestWrapper = original.ManifestWrapper
+type ManifestsClient = original.ManifestsClient
+type OCIIndex = original.OCIIndex
+type OCIManifest = original.OCIManifest
+type Platform = original.Platform
+type ReadCloser = original.ReadCloser
 type RefreshToken = original.RefreshToken
+type RefreshTokensClient = original.RefreshTokensClient
 type Repositories = original.Repositories
 type RepositoryAttributes = original.RepositoryAttributes
+type RepositoryClient = original.RepositoryClient
 type RepositoryTags = original.RepositoryTags
 type SetObject = original.SetObject
 type TagAttributes = original.TagAttributes
+type TagAttributesBase = original.TagAttributesBase
 type TagAttributesTag = original.TagAttributesTag
-type V2Descriptor = original.V2Descriptor
+type TagClient = original.TagClient
+type TagList = original.TagList
+type V1Manifest = original.V1Manifest
+type V2Manifest = original.V2Manifest
+type V2SupportClient = original.V2SupportClient
 
 func New(loginURI string) BaseClient {
 	return original.New(loginURI)
+}
+func NewAccessTokensClient(loginURI string) AccessTokensClient {
+	return original.NewAccessTokensClient(loginURI)
+}
+func NewBlobClient(loginURI string) BlobClient {
+	return original.NewBlobClient(loginURI)
+}
+func NewManifestsClient(loginURI string) ManifestsClient {
+	return original.NewManifestsClient(loginURI)
+}
+func NewRefreshTokensClient(loginURI string) RefreshTokensClient {
+	return original.NewRefreshTokensClient(loginURI)
+}
+func NewRepositoryClient(loginURI string) RepositoryClient {
+	return original.NewRepositoryClient(loginURI)
+}
+func NewTagClient(loginURI string) TagClient {
+	return original.NewTagClient(loginURI)
+}
+func NewV2SupportClient(loginURI string) V2SupportClient {
+	return original.NewV2SupportClient(loginURI)
 }
 func NewWithoutDefaults(loginURI string) BaseClient {
 	return original.NewWithoutDefaults(loginURI)

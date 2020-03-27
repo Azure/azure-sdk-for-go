@@ -37,7 +37,8 @@ func NewQueryTextsClient(subscriptionID string) QueryTextsClient {
 	return NewQueryTextsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewQueryTextsClientWithBaseURI creates an instance of the QueryTextsClient client.
+// NewQueryTextsClientWithBaseURI creates an instance of the QueryTextsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewQueryTextsClientWithBaseURI(baseURI string, subscriptionID string) QueryTextsClient {
 	return QueryTextsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -107,8 +108,7 @@ func (client QueryTextsClient) ListByQueryPreparer(ctx context.Context, resource
 // ListByQuerySender sends the ListByQuery request. The method will close the
 // http.Response Body if it receives an error.
 func (client QueryTextsClient) ListByQuerySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByQueryResponder handles the response to the ListByQuery request. The method always

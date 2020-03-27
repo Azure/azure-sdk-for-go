@@ -129,7 +129,7 @@ interactions:
       - Tue, 28 May 2019 22:36:04 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.table.core.windows.net/table29storageentitysuitetestupd%28PartitionKey=%27mypartitionkey%27,%20RowKey=%27myrowkey%27%29
+    url: https://golangrocksonazure.table.core.windows.net/table29storageentitysuitetestupd%28PartitionKey=%27mypartitionkey%27,RowKey=%27myrowkey%27%29
     method: PUT
   response:
     body: ""
@@ -180,7 +180,7 @@ interactions:
       - Tue, 28 May 2019 22:36:04 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.table.core.windows.net/table29storageentitysuitetestupd%28PartitionKey=%27mypartitionkey%27,%20RowKey=%27myrowkey%27%29
+    url: https://golangrocksonazure.table.core.windows.net/table29storageentitysuitetestupd%28PartitionKey=%27mypartitionkey%27,RowKey=%27myrowkey%27%29
     method: PUT
   response:
     body: '{"odata.error":{"code":"ConditionNotMet","message":{"lang":"en-US","value":"The
@@ -226,7 +226,7 @@ interactions:
       - Tue, 28 May 2019 22:36:04 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.table.core.windows.net/table29storageentitysuitetestupd%28PartitionKey=%27mypartitionkey%27,%20RowKey=%27myrowkey%27%29
+    url: https://golangrocksonazure.table.core.windows.net/table29storageentitysuitetestupd%28PartitionKey=%27mypartitionkey%27,RowKey=%27myrowkey%27%29
     method: PUT
   response:
     body: ""

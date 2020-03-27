@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 package networkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-09-01/network/networkapi"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-12-01/network/networkapi"
 
 type ApplicationGatewaysClientAPI = original.ApplicationGatewaysClientAPI
 type ApplicationSecurityGroupsClientAPI = original.ApplicationSecurityGroupsClientAPI
@@ -51,6 +51,7 @@ type ExpressRoutePortsLocationsClientAPI = original.ExpressRoutePortsLocationsCl
 type ExpressRouteServiceProvidersClientAPI = original.ExpressRouteServiceProvidersClientAPI
 type FirewallPoliciesClientAPI = original.FirewallPoliciesClientAPI
 type FirewallPolicyRuleGroupsClientAPI = original.FirewallPolicyRuleGroupsClientAPI
+type FlowLogsClientAPI = original.FlowLogsClientAPI
 type HubVirtualNetworkConnectionsClientAPI = original.HubVirtualNetworkConnectionsClientAPI
 type IPGroupsClientAPI = original.IPGroupsClientAPI
 type InboundNatRulesClientAPI = original.InboundNatRulesClientAPI
@@ -89,6 +90,7 @@ type ServiceEndpointPolicyDefinitionsClientAPI = original.ServiceEndpointPolicyD
 type ServiceTagsClientAPI = original.ServiceTagsClientAPI
 type SubnetsClientAPI = original.SubnetsClientAPI
 type UsagesClientAPI = original.UsagesClientAPI
+type VirtualAppliancesClientAPI = original.VirtualAppliancesClientAPI
 type VirtualHubRouteTableV2sClientAPI = original.VirtualHubRouteTableV2sClientAPI
 type VirtualHubsClientAPI = original.VirtualHubsClientAPI
 type VirtualNetworkGatewayConnectionsClientAPI = original.VirtualNetworkGatewayConnectionsClientAPI

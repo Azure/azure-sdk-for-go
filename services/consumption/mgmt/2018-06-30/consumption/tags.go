@@ -36,7 +36,8 @@ func NewTagsClient(subscriptionID string) TagsClient {
 	return NewTagsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewTagsClientWithBaseURI creates an instance of the TagsClient client.
+// NewTagsClientWithBaseURI creates an instance of the TagsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
 	return TagsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -98,8 +99,7 @@ func (client TagsClient) GetPreparer(ctx context.Context, billingAccountID strin
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always

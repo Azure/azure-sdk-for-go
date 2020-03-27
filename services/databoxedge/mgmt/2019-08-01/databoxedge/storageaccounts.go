@@ -36,7 +36,8 @@ func NewStorageAccountsClient(subscriptionID string) StorageAccountsClient {
 	return NewStorageAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewStorageAccountsClientWithBaseURI creates an instance of the StorageAccountsClient client.
+// NewStorageAccountsClientWithBaseURI creates an instance of the StorageAccountsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewStorageAccountsClientWithBaseURI(baseURI string, subscriptionID string) StorageAccountsClient {
 	return StorageAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -106,9 +107,8 @@ func (client StorageAccountsClient) CreateOrUpdatePreparer(ctx context.Context, 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client StorageAccountsClient) CreateOrUpdateSender(req *http.Request) (future StorageAccountsCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -185,9 +185,8 @@ func (client StorageAccountsClient) DeletePreparer(ctx context.Context, deviceNa
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client StorageAccountsClient) DeleteSender(req *http.Request) (future StorageAccountsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -269,8 +268,7 @@ func (client StorageAccountsClient) GetPreparer(ctx context.Context, deviceName 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client StorageAccountsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -347,8 +345,7 @@ func (client StorageAccountsClient) ListByDataBoxEdgeDevicePreparer(ctx context.
 // ListByDataBoxEdgeDeviceSender sends the ListByDataBoxEdgeDevice request. The method will close the
 // http.Response Body if it receives an error.
 func (client StorageAccountsClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDataBoxEdgeDeviceResponder handles the response to the ListByDataBoxEdgeDevice request. The method always

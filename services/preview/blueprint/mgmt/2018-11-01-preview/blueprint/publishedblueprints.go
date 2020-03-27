@@ -36,7 +36,9 @@ func NewPublishedBlueprintsClient() PublishedBlueprintsClient {
 	return NewPublishedBlueprintsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewPublishedBlueprintsClientWithBaseURI creates an instance of the PublishedBlueprintsClient client.
+// NewPublishedBlueprintsClientWithBaseURI creates an instance of the PublishedBlueprintsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewPublishedBlueprintsClientWithBaseURI(baseURI string) PublishedBlueprintsClient {
 	return PublishedBlueprintsClient{NewWithBaseURI(baseURI)}
 }
@@ -123,8 +125,7 @@ func (client PublishedBlueprintsClient) CreatePreparer(ctx context.Context, scop
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublishedBlueprintsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -204,8 +205,7 @@ func (client PublishedBlueprintsClient) DeletePreparer(ctx context.Context, scop
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublishedBlueprintsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -285,8 +285,7 @@ func (client PublishedBlueprintsClient) GetPreparer(ctx context.Context, scope s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublishedBlueprintsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -365,8 +364,7 @@ func (client PublishedBlueprintsClient) ListPreparer(ctx context.Context, scope 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublishedBlueprintsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

@@ -35,7 +35,9 @@ func NewSupportPlanTypesClient(subscriptionID string) SupportPlanTypesClient {
 	return NewSupportPlanTypesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSupportPlanTypesClientWithBaseURI creates an instance of the SupportPlanTypesClient client.
+// NewSupportPlanTypesClientWithBaseURI creates an instance of the SupportPlanTypesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewSupportPlanTypesClientWithBaseURI(baseURI string, subscriptionID string) SupportPlanTypesClient {
 	return SupportPlanTypesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -94,9 +96,8 @@ func (client SupportPlanTypesClient) CreateOrUpdatePreparer(ctx context.Context,
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) CreateOrUpdateSender(req *http.Request) (future SupportPlanTypesCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -171,9 +172,8 @@ func (client SupportPlanTypesClient) DeletePreparer(ctx context.Context, provide
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) DeleteSender(req *http.Request) (future SupportPlanTypesDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -254,8 +254,7 @@ func (client SupportPlanTypesClient) GetPreparer(ctx context.Context, providerNa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -326,8 +325,7 @@ func (client SupportPlanTypesClient) ListInfoPreparer(ctx context.Context) (*htt
 // ListInfoSender sends the ListInfo request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) ListInfoSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListInfoResponder handles the response to the ListInfo request. The method always

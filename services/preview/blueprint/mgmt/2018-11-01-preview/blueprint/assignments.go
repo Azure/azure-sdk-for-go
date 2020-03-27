@@ -36,7 +36,8 @@ func NewAssignmentsClient() AssignmentsClient {
 	return NewAssignmentsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewAssignmentsClientWithBaseURI creates an instance of the AssignmentsClient client.
+// NewAssignmentsClientWithBaseURI creates an instance of the AssignmentsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAssignmentsClientWithBaseURI(baseURI string) AssignmentsClient {
 	return AssignmentsClient{NewWithBaseURI(baseURI)}
 }
@@ -116,8 +117,7 @@ func (client AssignmentsClient) CreateOrUpdatePreparer(ctx context.Context, scop
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -195,8 +195,7 @@ func (client AssignmentsClient) DeletePreparer(ctx context.Context, scope string
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -274,8 +273,7 @@ func (client AssignmentsClient) GetPreparer(ctx context.Context, scope string, a
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -352,8 +350,7 @@ func (client AssignmentsClient) ListPreparer(ctx context.Context, scope string) 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -468,8 +465,7 @@ func (client AssignmentsClient) WhoIsBlueprintPreparer(ctx context.Context, scop
 // WhoIsBlueprintSender sends the WhoIsBlueprint request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) WhoIsBlueprintSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // WhoIsBlueprintResponder handles the response to the WhoIsBlueprint request. The method always

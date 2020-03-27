@@ -36,7 +36,8 @@ func NewQueryClient(subscriptionID string) QueryClient {
 	return NewQueryClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewQueryClientWithBaseURI creates an instance of the QueryClient client.
+// NewQueryClientWithBaseURI creates an instance of the QueryClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewQueryClientWithBaseURI(baseURI string, subscriptionID string) QueryClient {
 	return QueryClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -141,8 +142,7 @@ func (client QueryClient) UsageByScopePreparer(ctx context.Context, scope string
 // UsageByScopeSender sends the UsageByScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client QueryClient) UsageByScopeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UsageByScopeResponder handles the response to the UsageByScope request. The method always

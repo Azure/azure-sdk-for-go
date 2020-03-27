@@ -757,6 +757,8 @@ type AssignmentLockSettings struct {
 	Mode AssignmentLockMode `json:"mode,omitempty"`
 	// ExcludedPrincipals - List of AAD principals excluded from blueprint locks. Up to 5 principals are permitted.
 	ExcludedPrincipals *[]string `json:"excludedPrincipals,omitempty"`
+	// ExcludedActions - List of management operations that are excluded from blueprint locks. Up to 200 actions are permitted. If the lock mode is set to 'AllResourcesReadOnly', then the following actions are automatically appended to 'excludedActions': '*/read', 'Microsoft.Network/virtualNetworks/subnets/join/action' and 'Microsoft.Authorization/locks/delete'. If the lock mode is set to 'AllResourcesDoNotDelete', then the following actions are automatically appended to 'excludedActions': 'Microsoft.Authorization/locks/delete'. Duplicate actions will get removed.
+	ExcludedActions *[]string `json:"excludedActions,omitempty"`
 }
 
 // AssignmentOperation represents underlying deployment detail for each update to the blueprint assignment.
@@ -1414,7 +1416,7 @@ type ParameterDefinitionMetadata struct {
 
 // ParameterValue value for the specified parameter. Can be either 'value' or 'reference' but not both.
 type ParameterValue struct {
-	// Value - Parameter value as value type.
+	// Value - Parameter value. Any valid JSON value is allowed including objects, arrays, strings, numbers and booleans.
 	Value interface{} `json:"value,omitempty"`
 	// Reference - Parameter value as reference type.
 	Reference *SecretValueReference `json:"reference,omitempty"`

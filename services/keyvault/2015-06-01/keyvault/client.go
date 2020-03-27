@@ -108,8 +108,7 @@ func (client BaseClient) BackupKeyPreparer(ctx context.Context, vaultBaseURL str
 // BackupKeySender sends the BackupKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) BackupKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // BackupKeyResponder handles the response to the BackupKey request. The method always
@@ -204,8 +203,7 @@ func (client BaseClient) CreateCertificatePreparer(ctx context.Context, vaultBas
 // CreateCertificateSender sends the CreateCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateCertificateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateCertificateResponder handles the response to the CreateCertificate request. The method always
@@ -292,8 +290,7 @@ func (client BaseClient) CreateKeyPreparer(ctx context.Context, vaultBaseURL str
 // CreateKeySender sends the CreateKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateKeyResponder handles the response to the CreateKey request. The method always
@@ -382,8 +379,7 @@ func (client BaseClient) DecryptPreparer(ctx context.Context, vaultBaseURL strin
 // DecryptSender sends the Decrypt request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DecryptSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DecryptResponder handles the response to the Decrypt request. The method always
@@ -461,8 +457,7 @@ func (client BaseClient) DeleteCertificatePreparer(ctx context.Context, vaultBas
 // DeleteCertificateSender sends the DeleteCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteCertificateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteCertificateResponder handles the response to the DeleteCertificate request. The method always
@@ -535,8 +530,7 @@ func (client BaseClient) DeleteCertificateContactsPreparer(ctx context.Context, 
 // DeleteCertificateContactsSender sends the DeleteCertificateContacts request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteCertificateContactsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteCertificateContactsResponder handles the response to the DeleteCertificateContacts request. The method always
@@ -614,8 +608,7 @@ func (client BaseClient) DeleteCertificateIssuerPreparer(ctx context.Context, va
 // DeleteCertificateIssuerSender sends the DeleteCertificateIssuer request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteCertificateIssuerSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteCertificateIssuerResponder handles the response to the DeleteCertificateIssuer request. The method always
@@ -693,8 +686,7 @@ func (client BaseClient) DeleteCertificateOperationPreparer(ctx context.Context,
 // DeleteCertificateOperationSender sends the DeleteCertificateOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteCertificateOperationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteCertificateOperationResponder handles the response to the DeleteCertificateOperation request. The method always
@@ -772,8 +764,7 @@ func (client BaseClient) DeleteKeyPreparer(ctx context.Context, vaultBaseURL str
 // DeleteKeySender sends the DeleteKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteKeyResponder handles the response to the DeleteKey request. The method always
@@ -851,8 +842,7 @@ func (client BaseClient) DeleteSecretPreparer(ctx context.Context, vaultBaseURL 
 // DeleteSecretSender sends the DeleteSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteSecretSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteSecretResponder handles the response to the DeleteSecret request. The method always
@@ -941,8 +931,7 @@ func (client BaseClient) EncryptPreparer(ctx context.Context, vaultBaseURL strin
 // EncryptSender sends the Encrypt request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) EncryptSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // EncryptResponder handles the response to the Encrypt request. The method always
@@ -1022,8 +1011,7 @@ func (client BaseClient) GetCertificatePreparer(ctx context.Context, vaultBaseUR
 // GetCertificateSender sends the GetCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetCertificateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificateResponder handles the response to the GetCertificate request. The method always
@@ -1096,8 +1084,7 @@ func (client BaseClient) GetCertificateContactsPreparer(ctx context.Context, vau
 // GetCertificateContactsSender sends the GetCertificateContacts request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetCertificateContactsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificateContactsResponder handles the response to the GetCertificateContacts request. The method always
@@ -1175,8 +1162,7 @@ func (client BaseClient) GetCertificateIssuerPreparer(ctx context.Context, vault
 // GetCertificateIssuerSender sends the GetCertificateIssuer request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetCertificateIssuerSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificateIssuerResponder handles the response to the GetCertificateIssuer request. The method always
@@ -1264,8 +1250,7 @@ func (client BaseClient) GetCertificateIssuersPreparer(ctx context.Context, vaul
 // GetCertificateIssuersSender sends the GetCertificateIssuers request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetCertificateIssuersSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificateIssuersResponder handles the response to the GetCertificateIssuers request. The method always
@@ -1380,8 +1365,7 @@ func (client BaseClient) GetCertificateOperationPreparer(ctx context.Context, va
 // GetCertificateOperationSender sends the GetCertificateOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetCertificateOperationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificateOperationResponder handles the response to the GetCertificateOperation request. The method always
@@ -1459,8 +1443,7 @@ func (client BaseClient) GetCertificatePolicyPreparer(ctx context.Context, vault
 // GetCertificatePolicySender sends the GetCertificatePolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetCertificatePolicySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificatePolicyResponder handles the response to the GetCertificatePolicy request. The method always
@@ -1548,8 +1531,7 @@ func (client BaseClient) GetCertificatesPreparer(ctx context.Context, vaultBaseU
 // GetCertificatesSender sends the GetCertificates request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetCertificatesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificatesResponder handles the response to the GetCertificates request. The method always
@@ -1679,8 +1661,7 @@ func (client BaseClient) GetCertificateVersionsPreparer(ctx context.Context, vau
 // GetCertificateVersionsSender sends the GetCertificateVersions request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetCertificateVersionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificateVersionsResponder handles the response to the GetCertificateVersions request. The method always
@@ -1797,8 +1778,7 @@ func (client BaseClient) GetKeyPreparer(ctx context.Context, vaultBaseURL string
 // GetKeySender sends the GetKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetKeyResponder handles the response to the GetKey request. The method always
@@ -1886,8 +1866,7 @@ func (client BaseClient) GetKeysPreparer(ctx context.Context, vaultBaseURL strin
 // GetKeysSender sends the GetKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetKeysSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetKeysResponder handles the response to the GetKeys request. The method always
@@ -2017,8 +1996,7 @@ func (client BaseClient) GetKeyVersionsPreparer(ctx context.Context, vaultBaseUR
 // GetKeyVersionsSender sends the GetKeyVersions request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetKeyVersionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetKeyVersionsResponder handles the response to the GetKeyVersions request. The method always
@@ -2135,8 +2113,7 @@ func (client BaseClient) GetSecretPreparer(ctx context.Context, vaultBaseURL str
 // GetSecretSender sends the GetSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetSecretSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetSecretResponder handles the response to the GetSecret request. The method always
@@ -2224,8 +2201,7 @@ func (client BaseClient) GetSecretsPreparer(ctx context.Context, vaultBaseURL st
 // GetSecretsSender sends the GetSecrets request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetSecretsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetSecretsResponder handles the response to the GetSecrets request. The method always
@@ -2355,8 +2331,7 @@ func (client BaseClient) GetSecretVersionsPreparer(ctx context.Context, vaultBas
 // GetSecretVersionsSender sends the GetSecretVersions request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetSecretVersionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetSecretVersionsResponder handles the response to the GetSecretVersions request. The method always
@@ -2488,8 +2463,7 @@ func (client BaseClient) ImportCertificatePreparer(ctx context.Context, vaultBas
 // ImportCertificateSender sends the ImportCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) ImportCertificateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ImportCertificateResponder handles the response to the ImportCertificate request. The method always
@@ -2578,8 +2552,7 @@ func (client BaseClient) ImportKeyPreparer(ctx context.Context, vaultBaseURL str
 // ImportKeySender sends the ImportKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) ImportKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ImportKeyResponder handles the response to the ImportKey request. The method always
@@ -2666,8 +2639,7 @@ func (client BaseClient) MergeCertificatePreparer(ctx context.Context, vaultBase
 // MergeCertificateSender sends the MergeCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) MergeCertificateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // MergeCertificateResponder handles the response to the MergeCertificate request. The method always
@@ -2749,8 +2721,7 @@ func (client BaseClient) RestoreKeyPreparer(ctx context.Context, vaultBaseURL st
 // RestoreKeySender sends the RestoreKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) RestoreKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RestoreKeyResponder handles the response to the RestoreKey request. The method always
@@ -2827,8 +2798,7 @@ func (client BaseClient) SetCertificateContactsPreparer(ctx context.Context, vau
 // SetCertificateContactsSender sends the SetCertificateContacts request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) SetCertificateContactsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SetCertificateContactsResponder handles the response to the SetCertificateContacts request. The method always
@@ -2915,8 +2885,7 @@ func (client BaseClient) SetCertificateIssuerPreparer(ctx context.Context, vault
 // SetCertificateIssuerSender sends the SetCertificateIssuer request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) SetCertificateIssuerSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SetCertificateIssuerResponder handles the response to the SetCertificateIssuer request. The method always
@@ -3005,8 +2974,7 @@ func (client BaseClient) SetSecretPreparer(ctx context.Context, vaultBaseURL str
 // SetSecretSender sends the SetSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) SetSecretSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SetSecretResponder handles the response to the SetSecret request. The method always
@@ -3095,8 +3063,7 @@ func (client BaseClient) SignPreparer(ctx context.Context, vaultBaseURL string, 
 // SignSender sends the Sign request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) SignSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SignResponder handles the response to the Sign request. The method always
@@ -3186,8 +3153,7 @@ func (client BaseClient) UnwrapKeyPreparer(ctx context.Context, vaultBaseURL str
 // UnwrapKeySender sends the UnwrapKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) UnwrapKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UnwrapKeyResponder handles the response to the UnwrapKey request. The method always
@@ -3269,8 +3235,7 @@ func (client BaseClient) UpdateCertificatePreparer(ctx context.Context, vaultBas
 // UpdateCertificateSender sends the UpdateCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateCertificateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateCertificateResponder handles the response to the UpdateCertificate request. The method always
@@ -3351,8 +3316,7 @@ func (client BaseClient) UpdateCertificateIssuerPreparer(ctx context.Context, va
 // UpdateCertificateIssuerSender sends the UpdateCertificateIssuer request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateCertificateIssuerSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateCertificateIssuerResponder handles the response to the UpdateCertificateIssuer request. The method always
@@ -3433,8 +3397,7 @@ func (client BaseClient) UpdateCertificateOperationPreparer(ctx context.Context,
 // UpdateCertificateOperationSender sends the UpdateCertificateOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateCertificateOperationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateCertificateOperationResponder handles the response to the UpdateCertificateOperation request. The method always
@@ -3517,8 +3480,7 @@ func (client BaseClient) UpdateCertificatePolicyPreparer(ctx context.Context, va
 // UpdateCertificatePolicySender sends the UpdateCertificatePolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateCertificatePolicySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateCertificatePolicyResponder handles the response to the UpdateCertificatePolicy request. The method always
@@ -3601,8 +3563,7 @@ func (client BaseClient) UpdateKeyPreparer(ctx context.Context, vaultBaseURL str
 // UpdateKeySender sends the UpdateKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateKeyResponder handles the response to the UpdateKey request. The method always
@@ -3684,8 +3645,7 @@ func (client BaseClient) UpdateSecretPreparer(ctx context.Context, vaultBaseURL 
 // UpdateSecretSender sends the UpdateSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateSecretSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateSecretResponder handles the response to the UpdateSecret request. The method always
@@ -3775,8 +3735,7 @@ func (client BaseClient) VerifyPreparer(ctx context.Context, vaultBaseURL string
 // VerifySender sends the Verify request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) VerifySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // VerifyResponder handles the response to the Verify request. The method always
@@ -3865,8 +3824,7 @@ func (client BaseClient) WrapKeyPreparer(ctx context.Context, vaultBaseURL strin
 // WrapKeySender sends the WrapKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) WrapKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // WrapKeyResponder handles the response to the WrapKey request. The method always

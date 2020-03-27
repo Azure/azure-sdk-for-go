@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-07-01/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-12-01/compute"
 )
 
 const (
@@ -703,6 +703,7 @@ type ContainerServicesDeleteFuture = original.ContainerServicesDeleteFuture
 type CreationData = original.CreationData
 type DataDisk = original.DataDisk
 type DataDiskImage = original.DataDiskImage
+type DataDiskImageEncryption = original.DataDiskImageEncryption
 type DedicatedHost = original.DedicatedHost
 type DedicatedHostAllocatableVM = original.DedicatedHostAllocatableVM
 type DedicatedHostAvailableCapacity = original.DedicatedHostAvailableCapacity
@@ -739,6 +740,7 @@ type DiskEncryptionSetsCreateOrUpdateFuture = original.DiskEncryptionSetsCreateO
 type DiskEncryptionSetsDeleteFuture = original.DiskEncryptionSetsDeleteFuture
 type DiskEncryptionSetsUpdateFuture = original.DiskEncryptionSetsUpdateFuture
 type DiskEncryptionSettings = original.DiskEncryptionSettings
+type DiskImageEncryption = original.DiskImageEncryption
 type DiskInstanceView = original.DiskInstanceView
 type DiskList = original.DiskList
 type DiskListIterator = original.DiskListIterator
@@ -754,6 +756,7 @@ type DisksGrantAccessFuture = original.DisksGrantAccessFuture
 type DisksRevokeAccessFuture = original.DisksRevokeAccessFuture
 type DisksUpdateFuture = original.DisksUpdateFuture
 type Encryption = original.Encryption
+type EncryptionImages = original.EncryptionImages
 type EncryptionSetIdentity = original.EncryptionSetIdentity
 type EncryptionSetProperties = original.EncryptionSetProperties
 type EncryptionSettingsCollection = original.EncryptionSettingsCollection
@@ -864,6 +867,7 @@ type NetworkInterfaceReferenceProperties = original.NetworkInterfaceReferencePro
 type NetworkProfile = original.NetworkProfile
 type OSDisk = original.OSDisk
 type OSDiskImage = original.OSDiskImage
+type OSDiskImageEncryption = original.OSDiskImageEncryption
 type OSProfile = original.OSProfile
 type OperationListResult = original.OperationListResult
 type OperationValue = original.OperationValue
@@ -916,6 +920,7 @@ type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
 type ScaleInPolicy = original.ScaleInPolicy
 type ScheduledEventsProfile = original.ScheduledEventsProfile
+type ShareInfoElement = original.ShareInfoElement
 type Sku = original.Sku
 type Snapshot = original.Snapshot
 type SnapshotList = original.SnapshotList
@@ -940,6 +945,7 @@ type TargetRegion = original.TargetRegion
 type TerminateNotificationProfile = original.TerminateNotificationProfile
 type ThrottledRequestsInput = original.ThrottledRequestsInput
 type UpdateResource = original.UpdateResource
+type UpdateResourceDefinition = original.UpdateResourceDefinition
 type UpgradeOperationHistoricalStatusInfo = original.UpgradeOperationHistoricalStatusInfo
 type UpgradeOperationHistoricalStatusInfoProperties = original.UpgradeOperationHistoricalStatusInfoProperties
 type UpgradeOperationHistoryStatus = original.UpgradeOperationHistoryStatus

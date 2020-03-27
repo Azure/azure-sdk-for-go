@@ -33,6 +33,7 @@ type ClientAPI interface {
 	GetDebugDataPath(ctx context.Context, accountName string, jobIdentity uuid.UUID) (result job.DataPath, err error)
 	GetStatistics(ctx context.Context, accountName string, jobIdentity uuid.UUID) (result job.Statistics, err error)
 	List(ctx context.Context, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result job.InfoListResultPage, err error)
+	ListComplete(ctx context.Context, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result job.InfoListResultIterator, err error)
 }
 
 var _ ClientAPI = (*job.Client)(nil)

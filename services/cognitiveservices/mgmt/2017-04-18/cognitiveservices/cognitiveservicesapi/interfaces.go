@@ -38,7 +38,9 @@ type AccountsClientAPI interface {
 	GetProperties(ctx context.Context, resourceGroupName string, accountName string) (result cognitiveservices.Account, err error)
 	GetUsages(ctx context.Context, resourceGroupName string, accountName string, filter string) (result cognitiveservices.UsagesResult, err error)
 	List(ctx context.Context) (result cognitiveservices.AccountListResultPage, err error)
+	ListComplete(ctx context.Context) (result cognitiveservices.AccountListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result cognitiveservices.AccountListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result cognitiveservices.AccountListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, accountName string) (result cognitiveservices.AccountKeys, err error)
 	ListSkus(ctx context.Context, resourceGroupName string, accountName string) (result cognitiveservices.AccountEnumerateSkusResult, err error)
 	RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, parameters cognitiveservices.RegenerateKeyParameters) (result cognitiveservices.AccountKeys, err error)
@@ -50,6 +52,7 @@ var _ AccountsClientAPI = (*cognitiveservices.AccountsClient)(nil)
 // ResourceSkusClientAPI contains the set of methods on the ResourceSkusClient type.
 type ResourceSkusClientAPI interface {
 	List(ctx context.Context) (result cognitiveservices.ResourceSkusResultPage, err error)
+	ListComplete(ctx context.Context) (result cognitiveservices.ResourceSkusResultIterator, err error)
 }
 
 var _ ResourceSkusClientAPI = (*cognitiveservices.ResourceSkusClient)(nil)
@@ -57,6 +60,7 @@ var _ ResourceSkusClientAPI = (*cognitiveservices.ResourceSkusClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result cognitiveservices.OperationEntityListResultPage, err error)
+	ListComplete(ctx context.Context) (result cognitiveservices.OperationEntityListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*cognitiveservices.OperationsClient)(nil)

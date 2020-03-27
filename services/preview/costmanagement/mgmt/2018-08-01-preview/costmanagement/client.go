@@ -46,7 +46,8 @@ func New(subscriptionID string) BaseClient {
 	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWithBaseURI creates an instance of the BaseClient client.
+// NewWithBaseURI creates an instance of the BaseClient client using a custom endpoint.  Use this when interacting with
+// an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
 		Client:         autorest.NewClientWithUserAgent(UserAgent()),
@@ -148,8 +149,7 @@ func (client BaseClient) QueryBillingAccountPreparer(ctx context.Context, billin
 // QueryBillingAccountSender sends the QueryBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) QueryBillingAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // QueryBillingAccountResponder handles the response to the QueryBillingAccount request. The method always
@@ -259,8 +259,7 @@ func (client BaseClient) QueryResourceGroupPreparer(ctx context.Context, resourc
 // QueryResourceGroupSender sends the QueryResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) QueryResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // QueryResourceGroupResponder handles the response to the QueryResourceGroup request. The method always
@@ -368,8 +367,7 @@ func (client BaseClient) QuerySubscriptionPreparer(ctx context.Context, paramete
 // QuerySubscriptionSender sends the QuerySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) QuerySubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // QuerySubscriptionResponder handles the response to the QuerySubscription request. The method always

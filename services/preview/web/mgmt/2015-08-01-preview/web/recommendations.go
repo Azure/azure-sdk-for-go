@@ -35,7 +35,8 @@ func NewRecommendationsClient(subscriptionID string) RecommendationsClient {
 	return NewRecommendationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewRecommendationsClientWithBaseURI creates an instance of the RecommendationsClient client.
+// NewRecommendationsClientWithBaseURI creates an instance of the RecommendationsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) RecommendationsClient {
 	return RecommendationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -106,8 +107,7 @@ func (client RecommendationsClient) GetRecommendationBySubscriptionPreparer(ctx 
 // GetRecommendationBySubscriptionSender sends the GetRecommendationBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) GetRecommendationBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetRecommendationBySubscriptionResponder handles the response to the GetRecommendationBySubscription request. The method always
@@ -193,8 +193,7 @@ func (client RecommendationsClient) GetRecommendationHistoryForSitePreparer(ctx 
 // GetRecommendationHistoryForSiteSender sends the GetRecommendationHistoryForSite request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) GetRecommendationHistoryForSiteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetRecommendationHistoryForSiteResponder handles the response to the GetRecommendationHistoryForSite request. The method always
@@ -283,8 +282,7 @@ func (client RecommendationsClient) GetRecommendedRulesForSitePreparer(ctx conte
 // GetRecommendedRulesForSiteSender sends the GetRecommendedRulesForSite request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) GetRecommendedRulesForSiteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetRecommendedRulesForSiteResponder handles the response to the GetRecommendedRulesForSite request. The method always
@@ -362,8 +360,7 @@ func (client RecommendationsClient) GetRuleDetailsBySiteNamePreparer(ctx context
 // GetRuleDetailsBySiteNameSender sends the GetRuleDetailsBySiteName request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) GetRuleDetailsBySiteNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetRuleDetailsBySiteNameResponder handles the response to the GetRuleDetailsBySiteName request. The method always

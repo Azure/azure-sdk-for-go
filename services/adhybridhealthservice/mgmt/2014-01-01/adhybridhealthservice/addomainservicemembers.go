@@ -35,7 +35,9 @@ func NewAdDomainServiceMembersClient() AdDomainServiceMembersClient {
 	return NewAdDomainServiceMembersClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewAdDomainServiceMembersClientWithBaseURI creates an instance of the AdDomainServiceMembersClient client.
+// NewAdDomainServiceMembersClientWithBaseURI creates an instance of the AdDomainServiceMembersClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewAdDomainServiceMembersClientWithBaseURI(baseURI string) AdDomainServiceMembersClient {
 	return AdDomainServiceMembersClient{NewWithBaseURI(baseURI)}
 }
@@ -115,8 +117,7 @@ func (client AdDomainServiceMembersClient) ListPreparer(ctx context.Context, ser
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AdDomainServiceMembersClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

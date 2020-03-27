@@ -37,7 +37,8 @@ func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
 	return NewUsageDetailsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewUsageDetailsClientWithBaseURI creates an instance of the UsageDetailsClient client.
+// NewUsageDetailsClientWithBaseURI creates an instance of the UsageDetailsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
 	return UsageDetailsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -135,8 +136,7 @@ func (client UsageDetailsClient) ListPreparer(ctx context.Context, expand string
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsageDetailsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -283,8 +283,7 @@ func (client UsageDetailsClient) ListByBillingAccountPreparer(ctx context.Contex
 // ListByBillingAccountSender sends the ListByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsageDetailsClient) ListByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingAccountResponder handles the response to the ListByBillingAccount request. The method always
@@ -433,8 +432,7 @@ func (client UsageDetailsClient) ListByBillingPeriodPreparer(ctx context.Context
 // ListByBillingPeriodSender sends the ListByBillingPeriod request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsageDetailsClient) ListByBillingPeriodSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByBillingPeriodResponder handles the response to the ListByBillingPeriod request. The method always
@@ -581,8 +579,7 @@ func (client UsageDetailsClient) ListByDepartmentPreparer(ctx context.Context, d
 // ListByDepartmentSender sends the ListByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsageDetailsClient) ListByDepartmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByDepartmentResponder handles the response to the ListByDepartment request. The method always
@@ -729,8 +726,7 @@ func (client UsageDetailsClient) ListByEnrollmentAccountPreparer(ctx context.Con
 // ListByEnrollmentAccountSender sends the ListByEnrollmentAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsageDetailsClient) ListByEnrollmentAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByEnrollmentAccountResponder handles the response to the ListByEnrollmentAccount request. The method always
@@ -877,8 +873,7 @@ func (client UsageDetailsClient) ListByManagementGroupPreparer(ctx context.Conte
 // ListByManagementGroupSender sends the ListByManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsageDetailsClient) ListByManagementGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByManagementGroupResponder handles the response to the ListByManagementGroup request. The method always
@@ -1028,8 +1023,7 @@ func (client UsageDetailsClient) ListForBillingPeriodByBillingAccountPreparer(ct
 // ListForBillingPeriodByBillingAccountSender sends the ListForBillingPeriodByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsageDetailsClient) ListForBillingPeriodByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListForBillingPeriodByBillingAccountResponder handles the response to the ListForBillingPeriodByBillingAccount request. The method always
@@ -1179,8 +1173,7 @@ func (client UsageDetailsClient) ListForBillingPeriodByDepartmentPreparer(ctx co
 // ListForBillingPeriodByDepartmentSender sends the ListForBillingPeriodByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsageDetailsClient) ListForBillingPeriodByDepartmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListForBillingPeriodByDepartmentResponder handles the response to the ListForBillingPeriodByDepartment request. The method always
@@ -1330,8 +1323,7 @@ func (client UsageDetailsClient) ListForBillingPeriodByEnrollmentAccountPreparer
 // ListForBillingPeriodByEnrollmentAccountSender sends the ListForBillingPeriodByEnrollmentAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsageDetailsClient) ListForBillingPeriodByEnrollmentAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListForBillingPeriodByEnrollmentAccountResponder handles the response to the ListForBillingPeriodByEnrollmentAccount request. The method always
@@ -1481,8 +1473,7 @@ func (client UsageDetailsClient) ListForBillingPeriodByManagementGroupPreparer(c
 // ListForBillingPeriodByManagementGroupSender sends the ListForBillingPeriodByManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsageDetailsClient) ListForBillingPeriodByManagementGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListForBillingPeriodByManagementGroupResponder handles the response to the ListForBillingPeriodByManagementGroup request. The method always

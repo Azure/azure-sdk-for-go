@@ -35,7 +35,8 @@ func NewMachinesClient(subscriptionID string, acceptLanguage string) MachinesCli
 	return NewMachinesClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
-// NewMachinesClientWithBaseURI creates an instance of the MachinesClient client.
+// NewMachinesClientWithBaseURI creates an instance of the MachinesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) MachinesClient {
 	return MachinesClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
@@ -109,8 +110,7 @@ func (client MachinesClient) EnumerateMachinesPreparer(ctx context.Context, reso
 // EnumerateMachinesSender sends the EnumerateMachines request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachinesClient) EnumerateMachinesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // EnumerateMachinesResponder handles the response to the EnumerateMachines request. The method always
@@ -188,8 +188,7 @@ func (client MachinesClient) GetMachinePreparer(ctx context.Context, resourceGro
 // GetMachineSender sends the GetMachine request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachinesClient) GetMachineSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMachineResponder handles the response to the GetMachine request. The method always

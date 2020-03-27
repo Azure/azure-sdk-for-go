@@ -35,7 +35,8 @@ func NewLocationsClient(subscriptionID string) LocationsClient {
 	return NewLocationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewLocationsClientWithBaseURI creates an instance of the LocationsClient client.
+// NewLocationsClientWithBaseURI creates an instance of the LocationsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
 	return LocationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -104,8 +105,7 @@ func (client LocationsClient) CheckNameAvailabilityPreparer(ctx context.Context,
 // CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client LocationsClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
@@ -179,8 +179,7 @@ func (client LocationsClient) ListConsortiumsPreparer(ctx context.Context, locat
 // ListConsortiumsSender sends the ListConsortiums request. The method will close the
 // http.Response Body if it receives an error.
 func (client LocationsClient) ListConsortiumsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListConsortiumsResponder handles the response to the ListConsortiums request. The method always

@@ -35,7 +35,8 @@ func NewAddressesClient(subscriptionID string) AddressesClient {
 	return NewAddressesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAddressesClientWithBaseURI creates an instance of the AddressesClient client.
+// NewAddressesClientWithBaseURI creates an instance of the AddressesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAddressesClientWithBaseURI(baseURI string, subscriptionID string) AddressesClient {
 	return AddressesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -93,8 +94,7 @@ func (client AddressesClient) ValidatePreparer(ctx context.Context, address Addr
 // ValidateSender sends the Validate request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddressesClient) ValidateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ValidateResponder handles the response to the Validate request. The method always

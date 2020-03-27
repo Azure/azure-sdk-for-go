@@ -1,3 +1,5 @@
+// +build go1.13
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -49,8 +51,15 @@ func (l *Logger) SetListener(lst Listener) {
 }
 
 // Should returns true if the specified log classification should be written to the log.
-// TODO: explain why you would want to call this
+// By default all log classifications will be logged.  Call SetClassification() to limit
+// the log classifications for logging.
+// If no listener has been set this will return false.
+// Calling this method is useful when the message to log is computationally expensive
+// and you want to avoid the overhead if its log classification is not enabled.
 func (l *Logger) Should(cls LogClassification) bool {
+	if l.lst == nil {
+		return false
+	}
 	if l.cls == nil || len(l.cls) == 0 {
 		return true
 	}

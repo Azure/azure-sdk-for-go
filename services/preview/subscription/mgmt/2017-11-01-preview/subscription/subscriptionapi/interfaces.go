@@ -26,6 +26,7 @@ import (
 // DefinitionsOperationMetadataClientAPI contains the set of methods on the DefinitionsOperationMetadataClient type.
 type DefinitionsOperationMetadataClientAPI interface {
 	List(ctx context.Context) (result subscription.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result subscription.OperationListResultIterator, err error)
 }
 
 var _ DefinitionsOperationMetadataClientAPI = (*subscription.DefinitionsOperationMetadataClient)(nil)
@@ -36,6 +37,7 @@ type DefinitionsClientAPI interface {
 	Get(ctx context.Context, subscriptionDefinitionName string) (result subscription.Definition, err error)
 	GetOperationStatus(ctx context.Context, operationID uuid.UUID) (result subscription.Definition, err error)
 	List(ctx context.Context) (result subscription.DefinitionListPage, err error)
+	ListComplete(ctx context.Context) (result subscription.DefinitionListIterator, err error)
 }
 
 var _ DefinitionsClientAPI = (*subscription.DefinitionsClient)(nil)

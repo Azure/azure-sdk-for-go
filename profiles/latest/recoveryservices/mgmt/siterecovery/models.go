@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -358,6 +358,13 @@ const (
 	InstanceTypeScriptActionDetails            InstanceTypeBasicRecoveryPlanActionDetails = original.InstanceTypeScriptActionDetails
 )
 
+type InstanceTypeBasicRecoveryPlanProviderSpecificDetails = original.InstanceTypeBasicRecoveryPlanProviderSpecificDetails
+
+const (
+	InstanceTypeRecoveryPlanA2ADetails              InstanceTypeBasicRecoveryPlanProviderSpecificDetails = original.InstanceTypeRecoveryPlanA2ADetails
+	InstanceTypeRecoveryPlanProviderSpecificDetails InstanceTypeBasicRecoveryPlanProviderSpecificDetails = original.InstanceTypeRecoveryPlanProviderSpecificDetails
+)
+
 type InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput = original.InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput
 
 const (
@@ -367,6 +374,13 @@ const (
 	InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage                                    InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput = original.InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage
 	InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2                             InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput = original.InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2
 	InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput = original.InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput
+)
+
+type InstanceTypeBasicRecoveryPlanProviderSpecificInput = original.InstanceTypeBasicRecoveryPlanProviderSpecificInput
+
+const (
+	InstanceTypeBasicRecoveryPlanProviderSpecificInputInstanceTypeA2A                               InstanceTypeBasicRecoveryPlanProviderSpecificInput = original.InstanceTypeBasicRecoveryPlanProviderSpecificInputInstanceTypeA2A
+	InstanceTypeBasicRecoveryPlanProviderSpecificInputInstanceTypeRecoveryPlanProviderSpecificInput InstanceTypeBasicRecoveryPlanProviderSpecificInput = original.InstanceTypeBasicRecoveryPlanProviderSpecificInputInstanceTypeRecoveryPlanProviderSpecificInput
 )
 
 type InstanceTypeBasicRemoveDisksProviderSpecificInput = original.InstanceTypeBasicRemoveDisksProviderSpecificInput
@@ -712,7 +726,9 @@ type BasicProtectionContainerMappingProviderSpecificDetails = original.BasicProt
 type BasicProviderSpecificFailoverInput = original.BasicProviderSpecificFailoverInput
 type BasicProviderSpecificRecoveryPointDetails = original.BasicProviderSpecificRecoveryPointDetails
 type BasicRecoveryPlanActionDetails = original.BasicRecoveryPlanActionDetails
+type BasicRecoveryPlanProviderSpecificDetails = original.BasicRecoveryPlanProviderSpecificDetails
 type BasicRecoveryPlanProviderSpecificFailoverInput = original.BasicRecoveryPlanProviderSpecificFailoverInput
+type BasicRecoveryPlanProviderSpecificInput = original.BasicRecoveryPlanProviderSpecificInput
 type BasicRemoveDisksProviderSpecificInput = original.BasicRemoveDisksProviderSpecificInput
 type BasicReplicationProviderSpecificContainerCreationInput = original.BasicReplicationProviderSpecificContainerCreationInput
 type BasicReplicationProviderSpecificContainerMappingInput = original.BasicReplicationProviderSpecificContainerMappingInput
@@ -810,6 +826,7 @@ type HyperVReplicaPolicyInput = original.HyperVReplicaPolicyInput
 type HyperVReplicaReplicationDetails = original.HyperVReplicaReplicationDetails
 type HyperVSiteDetails = original.HyperVSiteDetails
 type HyperVVirtualMachineDetails = original.HyperVVirtualMachineDetails
+type IPConfig = original.IPConfig
 type IdentityProviderDetails = original.IdentityProviderDetails
 type IdentityProviderInput = original.IdentityProviderInput
 type InMageAgentDetails = original.InMageAgentDetails
@@ -934,7 +951,9 @@ type ProviderSpecificFailoverInput = original.ProviderSpecificFailoverInput
 type ProviderSpecificRecoveryPointDetails = original.ProviderSpecificRecoveryPointDetails
 type RcmAzureMigrationPolicyDetails = original.RcmAzureMigrationPolicyDetails
 type RecoveryPlan = original.RecoveryPlan
+type RecoveryPlanA2ADetails = original.RecoveryPlanA2ADetails
 type RecoveryPlanA2AFailoverInput = original.RecoveryPlanA2AFailoverInput
+type RecoveryPlanA2AInput = original.RecoveryPlanA2AInput
 type RecoveryPlanAction = original.RecoveryPlanAction
 type RecoveryPlanActionDetails = original.RecoveryPlanActionDetails
 type RecoveryPlanAutomationRunbookActionDetails = original.RecoveryPlanAutomationRunbookActionDetails
@@ -952,7 +971,9 @@ type RecoveryPlanPlannedFailoverInput = original.RecoveryPlanPlannedFailoverInpu
 type RecoveryPlanPlannedFailoverInputProperties = original.RecoveryPlanPlannedFailoverInputProperties
 type RecoveryPlanProperties = original.RecoveryPlanProperties
 type RecoveryPlanProtectedItem = original.RecoveryPlanProtectedItem
+type RecoveryPlanProviderSpecificDetails = original.RecoveryPlanProviderSpecificDetails
 type RecoveryPlanProviderSpecificFailoverInput = original.RecoveryPlanProviderSpecificFailoverInput
+type RecoveryPlanProviderSpecificInput = original.RecoveryPlanProviderSpecificInput
 type RecoveryPlanScriptActionDetails = original.RecoveryPlanScriptActionDetails
 type RecoveryPlanShutdownGroupTaskDetails = original.RecoveryPlanShutdownGroupTaskDetails
 type RecoveryPlanTestFailoverCleanupInput = original.RecoveryPlanTestFailoverCleanupInput
@@ -1612,8 +1633,14 @@ func PossibleInstanceTypeBasicProviderSpecificRecoveryPointDetailsValues() []Ins
 func PossibleInstanceTypeBasicRecoveryPlanActionDetailsValues() []InstanceTypeBasicRecoveryPlanActionDetails {
 	return original.PossibleInstanceTypeBasicRecoveryPlanActionDetailsValues()
 }
+func PossibleInstanceTypeBasicRecoveryPlanProviderSpecificDetailsValues() []InstanceTypeBasicRecoveryPlanProviderSpecificDetails {
+	return original.PossibleInstanceTypeBasicRecoveryPlanProviderSpecificDetailsValues()
+}
 func PossibleInstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputValues() []InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput {
 	return original.PossibleInstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputValues()
+}
+func PossibleInstanceTypeBasicRecoveryPlanProviderSpecificInputValues() []InstanceTypeBasicRecoveryPlanProviderSpecificInput {
+	return original.PossibleInstanceTypeBasicRecoveryPlanProviderSpecificInputValues()
 }
 func PossibleInstanceTypeBasicRemoveDisksProviderSpecificInputValues() []InstanceTypeBasicRemoveDisksProviderSpecificInput {
 	return original.PossibleInstanceTypeBasicRemoveDisksProviderSpecificInputValues()

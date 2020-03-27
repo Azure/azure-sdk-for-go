@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,18 +22,6 @@ package securityinsightapi
 import original "github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2017-08-01-preview/securityinsight/securityinsightapi"
 
 type ActionsClientAPI = original.ActionsClientAPI
-type AlertRuleTemplatesClientAPI = original.AlertRuleTemplatesClientAPI
 type AlertRulesClientAPI = original.AlertRulesClientAPI
-type BookmarkRelationsClientAPI = original.BookmarkRelationsClientAPI
-type BookmarksClientAPI = original.BookmarksClientAPI
-type CaseCommentsClientAPI = original.CaseCommentsClientAPI
-type CaseRelationsClientAPI = original.CaseRelationsClientAPI
-type CasesAggregationsClientAPI = original.CasesAggregationsClientAPI
-type CasesClientAPI = original.CasesClientAPI
-type CommentsClientAPI = original.CommentsClientAPI
 type DataConnectorsClientAPI = original.DataConnectorsClientAPI
-type EntitiesClientAPI = original.EntitiesClientAPI
-type EntityQueriesClientAPI = original.EntityQueriesClientAPI
-type OfficeConsentsClientAPI = original.OfficeConsentsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
-type ProductSettingsClientAPI = original.ProductSettingsClientAPI

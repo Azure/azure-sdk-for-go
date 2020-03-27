@@ -36,7 +36,8 @@ func NewSharesClient(subscriptionID string) SharesClient {
 	return NewSharesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSharesClientWithBaseURI creates an instance of the SharesClient client.
+// NewSharesClientWithBaseURI creates an instance of the SharesClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSharesClientWithBaseURI(baseURI string, subscriptionID string) SharesClient {
 	return SharesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -111,9 +112,8 @@ func (client SharesClient) CreateOrUpdatePreparer(ctx context.Context, deviceNam
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SharesClient) CreateOrUpdateSender(req *http.Request) (future SharesCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -190,9 +190,8 @@ func (client SharesClient) DeletePreparer(ctx context.Context, deviceName string
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SharesClient) DeleteSender(req *http.Request) (future SharesDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -274,8 +273,7 @@ func (client SharesClient) GetPreparer(ctx context.Context, deviceName string, n
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SharesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -352,8 +350,7 @@ func (client SharesClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, 
 // ListByDataBoxEdgeDeviceSender sends the ListByDataBoxEdgeDevice request. The method will close the
 // http.Response Body if it receives an error.
 func (client SharesClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDataBoxEdgeDeviceResponder handles the response to the ListByDataBoxEdgeDevice request. The method always
@@ -462,9 +459,8 @@ func (client SharesClient) RefreshPreparer(ctx context.Context, deviceName strin
 // RefreshSender sends the Refresh request. The method will close the
 // http.Response Body if it receives an error.
 func (client SharesClient) RefreshSender(req *http.Request) (future SharesRefreshFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

@@ -37,7 +37,8 @@ func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
 	return NewMarketplacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMarketplacesClientWithBaseURI creates an instance of the MarketplacesClient client.
+// NewMarketplacesClientWithBaseURI creates an instance of the MarketplacesClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
 	return MarketplacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -134,8 +135,7 @@ func (client MarketplacesClient) ListPreparer(ctx context.Context, scope string,
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplacesClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

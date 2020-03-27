@@ -35,7 +35,9 @@ func NewConsumerSourceDataSetsClient(subscriptionID string) ConsumerSourceDataSe
 	return NewConsumerSourceDataSetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewConsumerSourceDataSetsClientWithBaseURI creates an instance of the ConsumerSourceDataSetsClient client.
+// NewConsumerSourceDataSetsClientWithBaseURI creates an instance of the ConsumerSourceDataSetsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewConsumerSourceDataSetsClientWithBaseURI(baseURI string, subscriptionID string) ConsumerSourceDataSetsClient {
 	return ConsumerSourceDataSetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -107,8 +109,7 @@ func (client ConsumerSourceDataSetsClient) ListByShareSubscriptionPreparer(ctx c
 // ListByShareSubscriptionSender sends the ListByShareSubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConsumerSourceDataSetsClient) ListByShareSubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByShareSubscriptionResponder handles the response to the ListByShareSubscription request. The method always

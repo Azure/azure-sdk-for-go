@@ -1,3 +1,5 @@
+// +build go1.13
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -23,8 +25,10 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 	srv.SetResponse()
 	pl := NewPipeline(srv, NewRequestLogPolicy(RequestLogOptions{}))
 	req := NewRequest(http.MethodGet, srv.URL())
-	req.SetQueryParam("one", "fish")
-	req.SetQueryParam("sig", "redact")
+	qp := req.URL.Query()
+	qp.Set("one", "fish")
+	qp.Set("sig", "redact")
+	req.URL.RawQuery = qp.Encode()
 	resp, err := pl.Do(context.Background(), req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

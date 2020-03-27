@@ -36,7 +36,9 @@ func NewHybridUseBenefitRevisionClient(subscriptionID string) HybridUseBenefitRe
 	return NewHybridUseBenefitRevisionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewHybridUseBenefitRevisionClientWithBaseURI creates an instance of the HybridUseBenefitRevisionClient client.
+// NewHybridUseBenefitRevisionClientWithBaseURI creates an instance of the HybridUseBenefitRevisionClient client using
+// a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewHybridUseBenefitRevisionClientWithBaseURI(baseURI string, subscriptionID string) HybridUseBenefitRevisionClient {
 	return HybridUseBenefitRevisionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -102,8 +104,7 @@ func (client HybridUseBenefitRevisionClient) ListPreparer(ctx context.Context, s
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridUseBenefitRevisionClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

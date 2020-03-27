@@ -26,7 +26,9 @@ import (
 // PermissionsClientAPI contains the set of methods on the PermissionsClient type.
 type PermissionsClientAPI interface {
 	ListForResource(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (result authorization.PermissionGetResultPage, err error)
+	ListForResourceComplete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (result authorization.PermissionGetResultIterator, err error)
 	ListForResourceGroup(ctx context.Context, resourceGroupName string) (result authorization.PermissionGetResultPage, err error)
+	ListForResourceGroupComplete(ctx context.Context, resourceGroupName string) (result authorization.PermissionGetResultIterator, err error)
 }
 
 var _ PermissionsClientAPI = (*authorization.PermissionsClient)(nil)
@@ -38,6 +40,7 @@ type RoleDefinitionsClientAPI interface {
 	Get(ctx context.Context, scope string, roleDefinitionID string) (result authorization.RoleDefinition, err error)
 	GetByID(ctx context.Context, roleDefinitionID string) (result authorization.RoleDefinition, err error)
 	List(ctx context.Context, scope string, filter string) (result authorization.RoleDefinitionListResultPage, err error)
+	ListComplete(ctx context.Context, scope string, filter string) (result authorization.RoleDefinitionListResultIterator, err error)
 }
 
 var _ RoleDefinitionsClientAPI = (*authorization.RoleDefinitionsClient)(nil)
@@ -46,6 +49,7 @@ var _ RoleDefinitionsClientAPI = (*authorization.RoleDefinitionsClient)(nil)
 type ProviderOperationsMetadataClientAPI interface {
 	Get(ctx context.Context, resourceProviderNamespace string, APIVersion string, expand string) (result authorization.ProviderOperationsMetadata, err error)
 	List(ctx context.Context, APIVersion string, expand string) (result authorization.ProviderOperationsMetadataListResultPage, err error)
+	ListComplete(ctx context.Context, APIVersion string, expand string) (result authorization.ProviderOperationsMetadataListResultIterator, err error)
 }
 
 var _ ProviderOperationsMetadataClientAPI = (*authorization.ProviderOperationsMetadataClient)(nil)
@@ -66,9 +70,13 @@ type RoleAssignmentsClientAPI interface {
 	Get(ctx context.Context, scope string, roleAssignmentName string) (result authorization.RoleAssignment, err error)
 	GetByID(ctx context.Context, roleAssignmentID string) (result authorization.RoleAssignment, err error)
 	List(ctx context.Context, filter string) (result authorization.RoleAssignmentListResultPage, err error)
+	ListComplete(ctx context.Context, filter string) (result authorization.RoleAssignmentListResultIterator, err error)
 	ListForResource(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result authorization.RoleAssignmentListResultPage, err error)
+	ListForResourceComplete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result authorization.RoleAssignmentListResultIterator, err error)
 	ListForResourceGroup(ctx context.Context, resourceGroupName string, filter string) (result authorization.RoleAssignmentListResultPage, err error)
+	ListForResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string) (result authorization.RoleAssignmentListResultIterator, err error)
 	ListForScope(ctx context.Context, scope string, filter string) (result authorization.RoleAssignmentListResultPage, err error)
+	ListForScopeComplete(ctx context.Context, scope string, filter string) (result authorization.RoleAssignmentListResultIterator, err error)
 }
 
 var _ RoleAssignmentsClientAPI = (*authorization.RoleAssignmentsClient)(nil)
@@ -76,6 +84,7 @@ var _ RoleAssignmentsClientAPI = (*authorization.RoleAssignmentsClient)(nil)
 // ClassicAdministratorsClientAPI contains the set of methods on the ClassicAdministratorsClient type.
 type ClassicAdministratorsClientAPI interface {
 	List(ctx context.Context) (result authorization.ClassicAdministratorListResultPage, err error)
+	ListComplete(ctx context.Context) (result authorization.ClassicAdministratorListResultIterator, err error)
 }
 
 var _ ClassicAdministratorsClientAPI = (*authorization.ClassicAdministratorsClient)(nil)

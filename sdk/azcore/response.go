@@ -1,3 +1,5 @@
+// +build go1.13
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -5,6 +7,7 @@ package azcore
 
 import (
 	"bytes"
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -20,19 +23,15 @@ import (
 // Response represents the response from an HTTP request.
 type Response struct {
 	*http.Response
-
-	// Payload contains the contents of the HTTP response body if available.
-	Payload []byte
 }
 
-// CheckStatusCode returns a RequestError if the Response's status code isn't one of the specified values.
-func (r *Response) CheckStatusCode(statusCodes ...int) error {
-	if !r.HasStatusCode(statusCodes...) {
-		msg := r.Status
-		if len(r.Payload) > 0 {
-			msg = string(r.Payload)
-		}
-		return newRequestError(msg, r)
+func (r *Response) payload() []byte {
+	if r.Body == nil {
+		return nil
+	}
+	// r.Body won't be a nopClosingBytesReader if downloading was skipped
+	if buf, ok := r.Body.(*nopClosingBytesReader); ok {
+		return buf.Bytes()
 	}
 	return nil
 }
@@ -50,14 +49,30 @@ func (r *Response) HasStatusCode(statusCodes ...int) bool {
 	return false
 }
 
+// UnmarshalAsJSON calls json.Unmarshal() to unmarshal the received payload into the value pointed to by v.
+// If no payload was received a RequestError is returned.  If json.Unmarshal fails a UnmarshalError is returned.
+func (r *Response) UnmarshalAsJSON(v interface{}) error {
+	// TODO: verify early exit is correct
+	if len(r.payload()) == 0 {
+		return nil
+	}
+	r.removeBOM()
+	err := json.Unmarshal(r.payload(), v)
+	if err != nil {
+		err = fmt.Errorf("unmarshalling type %s: %w", reflect.TypeOf(v).Elem().Name(), err)
+	}
+	return err
+}
+
 // UnmarshalAsXML calls xml.Unmarshal() to unmarshal the received payload into the value pointed to by v.
 // If no payload was received a RequestError is returned.  If xml.Unmarshal fails a UnmarshalError is returned.
 func (r *Response) UnmarshalAsXML(v interface{}) error {
-	if len(r.Payload) == 0 {
-		return newRequestError("missing payload", r)
+	// TODO: verify early exit is correct
+	if len(r.payload()) == 0 {
+		return nil
 	}
 	r.removeBOM()
-	err := xml.Unmarshal(r.Payload, v)
+	err := xml.Unmarshal(r.payload(), v)
 	if err != nil {
 		err = fmt.Errorf("unmarshalling type %s: %w", reflect.TypeOf(v).Elem().Name(), err)
 	}
@@ -75,16 +90,27 @@ func (r *Response) Drain() {
 // removeBOM removes any byte-order mark prefix from the payload if present.
 func (r *Response) removeBOM() {
 	// UTF8
-	r.Payload = bytes.TrimPrefix(r.Payload, []byte("\xef\xbb\xbf"))
+	trimmed := bytes.TrimPrefix(r.payload(), []byte("\xef\xbb\xbf"))
+	if len(trimmed) < len(r.payload()) {
+		r.Body.(*nopClosingBytesReader).Set(trimmed)
+	}
 }
 
-// RetryAfter returns (non-zero, true) if the response contains a Retry-After header value
+// RetryAfter returns (non-zero, true) if the response contains a Retry-After header value.
 func (r *Response) RetryAfter() (time.Duration, bool) {
 	if r == nil {
 		return 0, false
 	}
-	if retryAfter, _ := strconv.Atoi(r.Header.Get("Retry-After")); retryAfter > 0 {
+	ra := r.Header.Get(HeaderRetryAfter)
+	if ra == "" {
+		return 0, false
+	}
+	// retry-after values are expressed in either number of
+	// seconds or an HTTP-date indicating when to try again
+	if retryAfter, _ := strconv.Atoi(ra); retryAfter > 0 {
 		return time.Duration(retryAfter) * time.Second, true
+	} else if t, err := time.Parse(time.RFC1123, ra); err == nil {
+		return t.Sub(time.Now()), true
 	}
 	return 0, false
 }

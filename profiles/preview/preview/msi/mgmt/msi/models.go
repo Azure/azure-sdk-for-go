@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -46,6 +46,9 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type Resource = original.Resource
+type SystemAssignedIdentitiesClient = original.SystemAssignedIdentitiesClient
+type SystemAssignedIdentity = original.SystemAssignedIdentity
 type UserAssignedIdentitiesClient = original.UserAssignedIdentitiesClient
 type UserAssignedIdentitiesListResult = original.UserAssignedIdentitiesListResult
 type UserAssignedIdentitiesListResultIterator = original.UserAssignedIdentitiesListResultIterator
@@ -65,6 +68,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSystemAssignedIdentitiesClient(subscriptionID string) SystemAssignedIdentitiesClient {
+	return original.NewSystemAssignedIdentitiesClient(subscriptionID)
+}
+func NewSystemAssignedIdentitiesClientWithBaseURI(baseURI string, subscriptionID string) SystemAssignedIdentitiesClient {
+	return original.NewSystemAssignedIdentitiesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewUserAssignedIdentitiesClient(subscriptionID string) UserAssignedIdentitiesClient {
 	return original.NewUserAssignedIdentitiesClient(subscriptionID)

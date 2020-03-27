@@ -36,7 +36,8 @@ func NewBalancesClient(subscriptionID string) BalancesClient {
 	return NewBalancesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBalancesClientWithBaseURI creates an instance of the BalancesClient client.
+// NewBalancesClientWithBaseURI creates an instance of the BalancesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewBalancesClientWithBaseURI(baseURI string, subscriptionID string) BalancesClient {
 	return BalancesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -99,8 +100,7 @@ func (client BalancesClient) GetByBillingAccountPreparer(ctx context.Context, bi
 // GetByBillingAccountSender sends the GetByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client BalancesClient) GetByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByBillingAccountResponder handles the response to the GetByBillingAccount request. The method always
@@ -176,8 +176,7 @@ func (client BalancesClient) GetForBillingPeriodByBillingAccountPreparer(ctx con
 // GetForBillingPeriodByBillingAccountSender sends the GetForBillingPeriodByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client BalancesClient) GetForBillingPeriodByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetForBillingPeriodByBillingAccountResponder handles the response to the GetForBillingPeriodByBillingAccount request. The method always

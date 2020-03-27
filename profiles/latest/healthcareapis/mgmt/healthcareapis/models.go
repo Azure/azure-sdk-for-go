@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,6 +35,13 @@ const (
 	Fhir     Kind = original.Fhir
 	FhirR4   Kind = original.FhirR4
 	FhirStu3 Kind = original.FhirStu3
+)
+
+type ManagedServiceIdentityType = original.ManagedServiceIdentityType
+
+const (
+	None           ManagedServiceIdentityType = original.None
+	SystemAssigned ManagedServiceIdentityType = original.SystemAssigned
 )
 
 type OperationResultStatus = original.OperationResultStatus
@@ -81,6 +88,7 @@ type OperationResultsClient = original.OperationResultsClient
 type OperationResultsDescription = original.OperationResultsDescription
 type OperationsClient = original.OperationsClient
 type Resource = original.Resource
+type ResourceIdentity = original.ResourceIdentity
 type ServiceAccessPolicyEntry = original.ServiceAccessPolicyEntry
 type ServiceAuthenticationConfigurationInfo = original.ServiceAuthenticationConfigurationInfo
 type ServiceCorsConfigurationInfo = original.ServiceCorsConfigurationInfo
@@ -136,6 +144,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
+}
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return original.PossibleManagedServiceIdentityTypeValues()
 }
 func PossibleOperationResultStatusValues() []OperationResultStatus {
 	return original.PossibleOperationResultStatusValues()

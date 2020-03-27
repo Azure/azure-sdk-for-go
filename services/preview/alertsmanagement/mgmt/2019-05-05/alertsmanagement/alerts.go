@@ -36,7 +36,8 @@ func NewAlertsClient(subscriptionID string) AlertsClient {
 	return NewAlertsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAlertsClientWithBaseURI creates an instance of the AlertsClient client.
+// NewAlertsClientWithBaseURI creates an instance of the AlertsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
 	return AlertsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -107,8 +108,7 @@ func (client AlertsClient) ChangeStatePreparer(ctx context.Context, alertID stri
 // ChangeStateSender sends the ChangeState request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) ChangeStateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ChangeStateResponder handles the response to the ChangeState request. The method always
@@ -265,8 +265,7 @@ func (client AlertsClient) GetAllPreparer(ctx context.Context, targetResource st
 // GetAllSender sends the GetAll request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) GetAllSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetAllResponder handles the response to the GetAll request. The method always
@@ -383,8 +382,7 @@ func (client AlertsClient) GetByIDPreparer(ctx context.Context, alertID string) 
 // GetByIDSender sends the GetByID request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) GetByIDSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetByIDResponder handles the response to the GetByID request. The method always
@@ -465,8 +463,7 @@ func (client AlertsClient) GetHistoryPreparer(ctx context.Context, alertID strin
 // GetHistorySender sends the GetHistory request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) GetHistorySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHistoryResponder handles the response to the GetHistory request. The method always
@@ -595,8 +592,7 @@ func (client AlertsClient) GetSummaryPreparer(ctx context.Context, groupby Alert
 // GetSummarySender sends the GetSummary request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) GetSummarySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetSummaryResponder handles the response to the GetSummary request. The method always
@@ -664,8 +660,7 @@ func (client AlertsClient) MetaDataPreparer(ctx context.Context) (*http.Request,
 // MetaDataSender sends the MetaData request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) MetaDataSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // MetaDataResponder handles the response to the MetaData request. The method always

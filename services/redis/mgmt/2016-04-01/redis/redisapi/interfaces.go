@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result redis.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result redis.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*redis.OperationsClient)(nil)
@@ -39,7 +40,9 @@ type ClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, name string) (result redis.ResourceType, err error)
 	ImportData(ctx context.Context, resourceGroupName string, name string, parameters redis.ImportRDBParameters) (result redis.ImportDataFuture, err error)
 	List(ctx context.Context) (result redis.ListResultPage, err error)
+	ListComplete(ctx context.Context) (result redis.ListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result redis.ListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result redis.ListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, name string) (result redis.AccessKeys, err error)
 	RegenerateKey(ctx context.Context, resourceGroupName string, name string, parameters redis.RegenerateKeyParameters) (result redis.AccessKeys, err error)
 	Update(ctx context.Context, resourceGroupName string, name string, parameters redis.UpdateParameters) (result redis.ResourceType, err error)
@@ -50,6 +53,7 @@ var _ ClientAPI = (*redis.Client)(nil)
 // FirewallRulesClientAPI contains the set of methods on the FirewallRulesClient type.
 type FirewallRulesClientAPI interface {
 	List(ctx context.Context, resourceGroupName string, cacheName string) (result redis.FirewallRuleListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, cacheName string) (result redis.FirewallRuleListResultIterator, err error)
 }
 
 var _ FirewallRulesClientAPI = (*redis.FirewallRulesClient)(nil)

@@ -36,7 +36,9 @@ func NewReplicationMigrationItemsClient(subscriptionID string, resourceGroupName
 	return NewReplicationMigrationItemsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, resourceName)
 }
 
-// NewReplicationMigrationItemsClientWithBaseURI creates an instance of the ReplicationMigrationItemsClient client.
+// NewReplicationMigrationItemsClientWithBaseURI creates an instance of the ReplicationMigrationItemsClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewReplicationMigrationItemsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationMigrationItemsClient {
 	return ReplicationMigrationItemsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
@@ -111,9 +113,8 @@ func (client ReplicationMigrationItemsClient) CreatePreparer(ctx context.Context
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) CreateSender(req *http.Request) (future ReplicationMigrationItemsCreateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -196,9 +197,8 @@ func (client ReplicationMigrationItemsClient) DeletePreparer(ctx context.Context
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) DeleteSender(req *http.Request) (future ReplicationMigrationItemsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -282,8 +282,7 @@ func (client ReplicationMigrationItemsClient) GetPreparer(ctx context.Context, f
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -366,8 +365,7 @@ func (client ReplicationMigrationItemsClient) ListPreparer(ctx context.Context, 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -483,8 +481,7 @@ func (client ReplicationMigrationItemsClient) ListByReplicationProtectionContain
 // ListByReplicationProtectionContainersSender sends the ListByReplicationProtectionContainers request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) ListByReplicationProtectionContainersSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByReplicationProtectionContainersResponder handles the response to the ListByReplicationProtectionContainers request. The method always
@@ -605,9 +602,8 @@ func (client ReplicationMigrationItemsClient) MigratePreparer(ctx context.Contex
 // MigrateSender sends the Migrate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) MigrateSender(req *http.Request) (future ReplicationMigrationItemsMigrateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -696,9 +692,8 @@ func (client ReplicationMigrationItemsClient) TestMigratePreparer(ctx context.Co
 // TestMigrateSender sends the TestMigrate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) TestMigrateSender(req *http.Request) (future ReplicationMigrationItemsTestMigrateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -786,9 +781,8 @@ func (client ReplicationMigrationItemsClient) TestMigrateCleanupPreparer(ctx con
 // TestMigrateCleanupSender sends the TestMigrateCleanup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) TestMigrateCleanupSender(req *http.Request) (future ReplicationMigrationItemsTestMigrateCleanupFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -870,9 +864,8 @@ func (client ReplicationMigrationItemsClient) UpdatePreparer(ctx context.Context
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) UpdateSender(req *http.Request) (future ReplicationMigrationItemsUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

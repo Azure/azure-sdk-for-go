@@ -25,6 +25,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result batchai.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result batchai.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*batchai.OperationsClient)(nil)
@@ -32,6 +33,7 @@ var _ OperationsClientAPI = (*batchai.OperationsClient)(nil)
 // UsageClientAPI contains the set of methods on the UsageClient type.
 type UsageClientAPI interface {
 	List(ctx context.Context, location string) (result batchai.ListUsagesResultPage, err error)
+	ListComplete(ctx context.Context, location string) (result batchai.ListUsagesResultIterator, err error)
 }
 
 var _ UsageClientAPI = (*batchai.UsageClient)(nil)
@@ -42,8 +44,11 @@ type ClustersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, clusterName string) (result batchai.ClustersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, clusterName string) (result batchai.Cluster, err error)
 	List(ctx context.Context, filter string, selectParameter string, maxResults *int32) (result batchai.ClusterListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, selectParameter string, maxResults *int32) (result batchai.ClusterListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, selectParameter string, maxResults *int32) (result batchai.ClusterListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, selectParameter string, maxResults *int32) (result batchai.ClusterListResultIterator, err error)
 	ListRemoteLoginInformation(ctx context.Context, resourceGroupName string, clusterName string) (result batchai.RemoteLoginInformationListResultPage, err error)
+	ListRemoteLoginInformationComplete(ctx context.Context, resourceGroupName string, clusterName string) (result batchai.RemoteLoginInformationListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, clusterName string, parameters batchai.ClusterUpdateParameters) (result batchai.Cluster, err error)
 }
 
@@ -55,9 +60,13 @@ type JobsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, jobName string) (result batchai.JobsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, jobName string) (result batchai.Job, err error)
 	List(ctx context.Context, filter string, selectParameter string, maxResults *int32) (result batchai.JobListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, selectParameter string, maxResults *int32) (result batchai.JobListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, selectParameter string, maxResults *int32) (result batchai.JobListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, selectParameter string, maxResults *int32) (result batchai.JobListResultIterator, err error)
 	ListOutputFiles(ctx context.Context, resourceGroupName string, jobName string, outputdirectoryid string, directory string, linkexpiryinminutes *int32, maxResults *int32) (result batchai.FileListResultPage, err error)
+	ListOutputFilesComplete(ctx context.Context, resourceGroupName string, jobName string, outputdirectoryid string, directory string, linkexpiryinminutes *int32, maxResults *int32) (result batchai.FileListResultIterator, err error)
 	ListRemoteLoginInformation(ctx context.Context, resourceGroupName string, jobName string) (result batchai.RemoteLoginInformationListResultPage, err error)
+	ListRemoteLoginInformationComplete(ctx context.Context, resourceGroupName string, jobName string) (result batchai.RemoteLoginInformationListResultIterator, err error)
 	Terminate(ctx context.Context, resourceGroupName string, jobName string) (result batchai.JobsTerminateFuture, err error)
 }
 
@@ -69,7 +78,9 @@ type FileServersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, fileServerName string) (result batchai.FileServersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, fileServerName string) (result batchai.FileServer, err error)
 	List(ctx context.Context, filter string, selectParameter string, maxResults *int32) (result batchai.FileServerListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, selectParameter string, maxResults *int32) (result batchai.FileServerListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, selectParameter string, maxResults *int32) (result batchai.FileServerListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, selectParameter string, maxResults *int32) (result batchai.FileServerListResultIterator, err error)
 }
 
 var _ FileServersClientAPI = (*batchai.FileServersClient)(nil)

@@ -35,7 +35,8 @@ func NewDataSetsClient(subscriptionID string) DataSetsClient {
 	return NewDataSetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDataSetsClientWithBaseURI creates an instance of the DataSetsClient client.
+// NewDataSetsClientWithBaseURI creates an instance of the DataSetsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDataSetsClientWithBaseURI(baseURI string, subscriptionID string) DataSetsClient {
 	return DataSetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -107,8 +108,7 @@ func (client DataSetsClient) CreatePreparer(ctx context.Context, resourceGroupNa
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataSetsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -182,9 +182,8 @@ func (client DataSetsClient) DeletePreparer(ctx context.Context, resourceGroupNa
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataSetsClient) DeleteSender(req *http.Request) (future DataSetsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -268,8 +267,7 @@ func (client DataSetsClient) GetPreparer(ctx context.Context, resourceGroupName 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataSetsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -352,8 +350,7 @@ func (client DataSetsClient) ListBySharePreparer(ctx context.Context, resourceGr
 // ListByShareSender sends the ListByShare request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataSetsClient) ListByShareSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByShareResponder handles the response to the ListByShare request. The method always

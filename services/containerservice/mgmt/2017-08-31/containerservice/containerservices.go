@@ -36,7 +36,9 @@ func NewContainerServicesClient(subscriptionID string) ContainerServicesClient {
 	return NewContainerServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewContainerServicesClientWithBaseURI creates an instance of the ContainerServicesClient client.
+// NewContainerServicesClientWithBaseURI creates an instance of the ContainerServicesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string) ContainerServicesClient {
 	return ContainerServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -60,34 +62,35 @@ func (client ContainerServicesClient) CreateOrUpdate(ctx context.Context, resour
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.Properties", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.Properties.OrchestratorProfile", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "parameters.Properties.CustomProfile", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "parameters.Properties.CustomProfile.Orchestrator", Name: validation.Null, Rule: true, Chain: nil}}},
-						{Target: "parameters.Properties.ServicePrincipalProfile", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "parameters.Properties.ServicePrincipalProfile.ClientID", Name: validation.Null, Rule: true, Chain: nil},
-								{Target: "parameters.Properties.ServicePrincipalProfile.KeyVaultSecretRef", Name: validation.Null, Rule: false,
-									Chain: []validation.Constraint{{Target: "parameters.Properties.ServicePrincipalProfile.KeyVaultSecretRef.VaultID", Name: validation.Null, Rule: true, Chain: nil},
-										{Target: "parameters.Properties.ServicePrincipalProfile.KeyVaultSecretRef.SecretName", Name: validation.Null, Rule: true, Chain: nil},
-									}},
-							}},
-						{Target: "parameters.Properties.MasterProfile", Name: validation.Null, Rule: true,
-							Chain: []validation.Constraint{{Target: "parameters.Properties.MasterProfile.DNSPrefix", Name: validation.Null, Rule: true, Chain: nil}}},
-						{Target: "parameters.Properties.WindowsProfile", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "parameters.Properties.WindowsProfile.AdminUsername", Name: validation.Null, Rule: true, Chain: nil},
-								{Target: "parameters.Properties.WindowsProfile.AdminPassword", Name: validation.Null, Rule: true, Chain: nil},
-							}},
-						{Target: "parameters.Properties.LinuxProfile", Name: validation.Null, Rule: true,
-							Chain: []validation.Constraint{{Target: "parameters.Properties.LinuxProfile.AdminUsername", Name: validation.Null, Rule: true, Chain: nil},
-								{Target: "parameters.Properties.LinuxProfile.SSH", Name: validation.Null, Rule: true,
-									Chain: []validation.Constraint{{Target: "parameters.Properties.LinuxProfile.SSH.PublicKeys", Name: validation.Null, Rule: true, Chain: nil}}},
-							}},
-						{Target: "parameters.Properties.DiagnosticsProfile", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "parameters.Properties.DiagnosticsProfile.VMDiagnostics", Name: validation.Null, Rule: true,
-								Chain: []validation.Constraint{{Target: "parameters.Properties.DiagnosticsProfile.VMDiagnostics.Enabled", Name: validation.Null, Rule: true, Chain: nil}}},
-							}},
-					}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.Properties.OrchestratorProfile", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.Properties.CustomProfile", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.Properties.CustomProfile.Orchestrator", Name: validation.Null, Rule: true, Chain: nil}}},
+					{Target: "parameters.Properties.ServicePrincipalProfile", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.Properties.ServicePrincipalProfile.ClientID", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "parameters.Properties.ServicePrincipalProfile.KeyVaultSecretRef", Name: validation.Null, Rule: false,
+								Chain: []validation.Constraint{{Target: "parameters.Properties.ServicePrincipalProfile.KeyVaultSecretRef.VaultID", Name: validation.Null, Rule: true, Chain: nil},
+									{Target: "parameters.Properties.ServicePrincipalProfile.KeyVaultSecretRef.SecretName", Name: validation.Null, Rule: true, Chain: nil},
+								}},
+						}},
+					{Target: "parameters.Properties.MasterProfile", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "parameters.Properties.MasterProfile.DNSPrefix", Name: validation.Null, Rule: true, Chain: nil}}},
+					{Target: "parameters.Properties.WindowsProfile", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.Properties.WindowsProfile.AdminUsername", Name: validation.Null, Rule: true,
+							Chain: []validation.Constraint{{Target: "parameters.Properties.WindowsProfile.AdminUsername", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$`, Chain: nil}}},
+							{Target: "parameters.Properties.WindowsProfile.AdminPassword", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+					{Target: "parameters.Properties.LinuxProfile", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "parameters.Properties.LinuxProfile.AdminUsername", Name: validation.Null, Rule: true,
+							Chain: []validation.Constraint{{Target: "parameters.Properties.LinuxProfile.AdminUsername", Name: validation.Pattern, Rule: `^[A-Za-z][-A-Za-z0-9_]*$`, Chain: nil}}},
+							{Target: "parameters.Properties.LinuxProfile.SSH", Name: validation.Null, Rule: true,
+								Chain: []validation.Constraint{{Target: "parameters.Properties.LinuxProfile.SSH.PublicKeys", Name: validation.Null, Rule: true, Chain: nil}}},
+						}},
+					{Target: "parameters.Properties.DiagnosticsProfile", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.Properties.DiagnosticsProfile.VMDiagnostics", Name: validation.Null, Rule: true,
+							Chain: []validation.Constraint{{Target: "parameters.Properties.DiagnosticsProfile.VMDiagnostics.Enabled", Name: validation.Null, Rule: true, Chain: nil}}},
+						}},
+				}}}}}); err != nil {
 		return result, validation.NewError("containerservice.ContainerServicesClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -119,9 +122,6 @@ func (client ContainerServicesClient) CreateOrUpdatePreparer(ctx context.Context
 		"api-version": APIVersion,
 	}
 
-	parameters.ID = nil
-	parameters.Name = nil
-	parameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -135,9 +135,8 @@ func (client ContainerServicesClient) CreateOrUpdatePreparer(ctx context.Context
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerServicesClient) CreateOrUpdateSender(req *http.Request) (future ContainerServicesCreateOrUpdateFutureType, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -215,9 +214,8 @@ func (client ContainerServicesClient) DeletePreparer(ctx context.Context, resour
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerServicesClient) DeleteSender(req *http.Request) (future ContainerServicesDeleteFutureType, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -299,8 +297,7 @@ func (client ContainerServicesClient) GetPreparer(ctx context.Context, resourceG
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerServicesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -373,8 +370,7 @@ func (client ContainerServicesClient) ListPreparer(ctx context.Context) (*http.R
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerServicesClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -488,8 +484,7 @@ func (client ContainerServicesClient) ListByResourceGroupPreparer(ctx context.Co
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerServicesClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always

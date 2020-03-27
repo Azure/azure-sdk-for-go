@@ -25,6 +25,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result signalr.OperationListPage, err error)
+	ListComplete(ctx context.Context) (result signalr.OperationListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*signalr.OperationsClient)(nil)
@@ -36,7 +37,9 @@ type ClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.DeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.ResourceType, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result signalr.ResourceListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result signalr.ResourceListIterator, err error)
 	ListBySubscription(ctx context.Context) (result signalr.ResourceListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result signalr.ResourceListIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.Keys, err error)
 	RegenerateKey(ctx context.Context, resourceGroupName string, resourceName string, parameters *signalr.RegenerateKeyParameters) (result signalr.RegenerateKeyFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, parameters *signalr.UpdateParameters) (result signalr.UpdateFuture, err error)
@@ -47,6 +50,7 @@ var _ ClientAPI = (*signalr.Client)(nil)
 // UsagesClientAPI contains the set of methods on the UsagesClient type.
 type UsagesClientAPI interface {
 	List(ctx context.Context, location string) (result signalr.UsageListPage, err error)
+	ListComplete(ctx context.Context, location string) (result signalr.UsageListIterator, err error)
 }
 
 var _ UsagesClientAPI = (*signalr.UsagesClient)(nil)

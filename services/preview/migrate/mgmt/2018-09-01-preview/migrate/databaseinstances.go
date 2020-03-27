@@ -35,7 +35,9 @@ func NewDatabaseInstancesClient(subscriptionID string, acceptLanguage string) Da
 	return NewDatabaseInstancesClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
-// NewDatabaseInstancesClientWithBaseURI creates an instance of the DatabaseInstancesClient client.
+// NewDatabaseInstancesClientWithBaseURI creates an instance of the DatabaseInstancesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewDatabaseInstancesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) DatabaseInstancesClient {
 	return DatabaseInstancesClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
@@ -113,8 +115,7 @@ func (client DatabaseInstancesClient) EnumerateDatabaseInstancesPreparer(ctx con
 // EnumerateDatabaseInstancesSender sends the EnumerateDatabaseInstances request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabaseInstancesClient) EnumerateDatabaseInstancesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // EnumerateDatabaseInstancesResponder handles the response to the EnumerateDatabaseInstances request. The method always
@@ -196,8 +197,7 @@ func (client DatabaseInstancesClient) GetDatabaseInstancePreparer(ctx context.Co
 // GetDatabaseInstanceSender sends the GetDatabaseInstance request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabaseInstancesClient) GetDatabaseInstanceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDatabaseInstanceResponder handles the response to the GetDatabaseInstance request. The method always

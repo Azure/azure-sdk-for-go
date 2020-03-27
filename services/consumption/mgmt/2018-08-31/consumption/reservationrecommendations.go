@@ -36,7 +36,9 @@ func NewReservationRecommendationsClient(subscriptionID string) ReservationRecom
 	return NewReservationRecommendationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewReservationRecommendationsClientWithBaseURI creates an instance of the ReservationRecommendationsClient client.
+// NewReservationRecommendationsClientWithBaseURI creates an instance of the ReservationRecommendationsClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) ReservationRecommendationsClient {
 	return ReservationRecommendationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -102,8 +104,7 @@ func (client ReservationRecommendationsClient) ListPreparer(ctx context.Context,
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReservationRecommendationsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always

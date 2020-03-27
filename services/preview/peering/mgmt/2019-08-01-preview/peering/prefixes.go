@@ -35,7 +35,8 @@ func NewPrefixesClient(subscriptionID string) PrefixesClient {
 	return NewPrefixesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPrefixesClientWithBaseURI creates an instance of the PrefixesClient client.
+// NewPrefixesClientWithBaseURI creates an instance of the PrefixesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPrefixesClientWithBaseURI(baseURI string, subscriptionID string) PrefixesClient {
 	return PrefixesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -101,8 +102,7 @@ func (client PrefixesClient) ListByPeeringServicePreparer(ctx context.Context, r
 // ListByPeeringServiceSender sends the ListByPeeringService request. The method will close the
 // http.Response Body if it receives an error.
 func (client PrefixesClient) ListByPeeringServiceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByPeeringServiceResponder handles the response to the ListByPeeringService request. The method always

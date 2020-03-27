@@ -38,7 +38,9 @@ func NewConnectorMappingsClient(subscriptionID string) ConnectorMappingsClient {
 	return NewConnectorMappingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewConnectorMappingsClientWithBaseURI creates an instance of the ConnectorMappingsClient client.
+// NewConnectorMappingsClientWithBaseURI creates an instance of the ConnectorMappingsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewConnectorMappingsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorMappingsClient {
 	return ConnectorMappingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -131,8 +133,7 @@ func (client ConnectorMappingsClient) CreateOrUpdatePreparer(ctx context.Context
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectorMappingsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -212,8 +213,7 @@ func (client ConnectorMappingsClient) DeletePreparer(ctx context.Context, resour
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectorMappingsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -292,8 +292,7 @@ func (client ConnectorMappingsClient) GetPreparer(ctx context.Context, resourceG
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectorMappingsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -372,8 +371,7 @@ func (client ConnectorMappingsClient) ListByConnectorPreparer(ctx context.Contex
 // ListByConnectorSender sends the ListByConnector request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectorMappingsClient) ListByConnectorSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByConnectorResponder handles the response to the ListByConnector request. The method always

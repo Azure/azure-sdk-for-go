@@ -35,7 +35,9 @@ func NewConfigurationAssignmentsClient(subscriptionID string) ConfigurationAssig
 	return NewConfigurationAssignmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewConfigurationAssignmentsClientWithBaseURI creates an instance of the ConfigurationAssignmentsClient client.
+// NewConfigurationAssignmentsClientWithBaseURI creates an instance of the ConfigurationAssignmentsClient client using
+// a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewConfigurationAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationAssignmentsClient {
 	return ConfigurationAssignmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -109,8 +111,7 @@ func (client ConfigurationAssignmentsClient) CreateOrUpdatePreparer(ctx context.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConfigurationAssignmentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -199,8 +200,7 @@ func (client ConfigurationAssignmentsClient) CreateOrUpdateParentPreparer(ctx co
 // CreateOrUpdateParentSender sends the CreateOrUpdateParent request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConfigurationAssignmentsClient) CreateOrUpdateParentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateParentResponder handles the response to the CreateOrUpdateParent request. The method always
@@ -282,8 +282,7 @@ func (client ConfigurationAssignmentsClient) DeletePreparer(ctx context.Context,
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConfigurationAssignmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -369,8 +368,7 @@ func (client ConfigurationAssignmentsClient) DeleteParentPreparer(ctx context.Co
 // DeleteParentSender sends the DeleteParent request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConfigurationAssignmentsClient) DeleteParentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteParentResponder handles the response to the DeleteParent request. The method always
@@ -450,8 +448,7 @@ func (client ConfigurationAssignmentsClient) ListPreparer(ctx context.Context, r
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConfigurationAssignmentsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -535,8 +532,7 @@ func (client ConfigurationAssignmentsClient) ListParentPreparer(ctx context.Cont
 // ListParentSender sends the ListParent request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConfigurationAssignmentsClient) ListParentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListParentResponder handles the response to the ListParent request. The method always

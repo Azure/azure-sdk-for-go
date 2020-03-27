@@ -37,7 +37,8 @@ func NewMeshNetworkClient() MeshNetworkClient {
 	return NewMeshNetworkClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewMeshNetworkClientWithBaseURI creates an instance of the MeshNetworkClient client.
+// NewMeshNetworkClientWithBaseURI creates an instance of the MeshNetworkClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMeshNetworkClientWithBaseURI(baseURI string) MeshNetworkClient {
 	return MeshNetworkClient{NewWithBaseURI(baseURI)}
 }
@@ -111,8 +112,7 @@ func (client MeshNetworkClient) CreateOrUpdatePreparer(ctx context.Context, netw
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client MeshNetworkClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -185,8 +185,7 @@ func (client MeshNetworkClient) DeletePreparer(ctx context.Context, networkResou
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client MeshNetworkClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -259,8 +258,7 @@ func (client MeshNetworkClient) GetPreparer(ctx context.Context, networkResource
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client MeshNetworkClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -328,8 +326,7 @@ func (client MeshNetworkClient) ListPreparer(ctx context.Context) (*http.Request
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client MeshNetworkClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

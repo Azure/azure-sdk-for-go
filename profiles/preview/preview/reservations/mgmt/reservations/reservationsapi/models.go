@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,9 +19,14 @@
 
 package reservationsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-04-01/reservations/reservationsapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-07-19-preview/reservations/reservationsapi"
 
+type AutoQuotaIncreaseClientAPI = original.AutoQuotaIncreaseClientAPI
 type BaseClientAPI = original.BaseClientAPI
 type ClientAPI = original.ClientAPI
 type OperationClientAPI = original.OperationClientAPI
 type OrderClientAPI = original.OrderClientAPI
+type QuotaClientAPI = original.QuotaClientAPI
+type QuotaRequestClientAPI = original.QuotaRequestClientAPI
+type QuotaRequestsClientAPI = original.QuotaRequestsClientAPI
+type QuotasClientAPI = original.QuotasClientAPI

@@ -35,6 +35,7 @@ var _ BaseClientAPI = (*resourcegraph.BaseClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result resourcegraph.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result resourcegraph.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*resourcegraph.OperationsClient)(nil)
@@ -45,6 +46,7 @@ type GraphQueryClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result resourcegraph.GraphQueryResource, err error)
 	List(ctx context.Context, resourceGroupName string) (result resourcegraph.GraphQueryListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result resourcegraph.GraphQueryListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, body resourcegraph.GraphQueryUpdateParameters) (result resourcegraph.GraphQueryResource, err error)
 }
 

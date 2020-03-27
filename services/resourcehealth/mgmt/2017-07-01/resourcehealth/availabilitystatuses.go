@@ -35,7 +35,9 @@ func NewAvailabilityStatusesClient(subscriptionID string) AvailabilityStatusesCl
 	return NewAvailabilityStatusesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAvailabilityStatusesClientWithBaseURI creates an instance of the AvailabilityStatusesClient client.
+// NewAvailabilityStatusesClientWithBaseURI creates an instance of the AvailabilityStatusesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewAvailabilityStatusesClientWithBaseURI(baseURI string, subscriptionID string) AvailabilityStatusesClient {
 	return AvailabilityStatusesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -110,8 +112,7 @@ func (client AvailabilityStatusesClient) GetByResourcePreparer(ctx context.Conte
 // GetByResourceSender sends the GetByResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client AvailabilityStatusesClient) GetByResourceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByResourceResponder handles the response to the GetByResource request. The method always
@@ -199,8 +200,7 @@ func (client AvailabilityStatusesClient) ListPreparer(ctx context.Context, resou
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AvailabilityStatusesClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -322,8 +322,7 @@ func (client AvailabilityStatusesClient) ListByResourceGroupPreparer(ctx context
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AvailabilityStatusesClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -443,8 +442,7 @@ func (client AvailabilityStatusesClient) ListBySubscriptionIDPreparer(ctx contex
 // ListBySubscriptionIDSender sends the ListBySubscriptionID request. The method will close the
 // http.Response Body if it receives an error.
 func (client AvailabilityStatusesClient) ListBySubscriptionIDSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySubscriptionIDResponder handles the response to the ListBySubscriptionID request. The method always

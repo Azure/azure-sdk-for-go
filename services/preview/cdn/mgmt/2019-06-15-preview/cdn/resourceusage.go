@@ -35,7 +35,8 @@ func NewResourceUsageClient(subscriptionID string, subscriptionID1 string) Resou
 	return NewResourceUsageClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
-// NewResourceUsageClientWithBaseURI creates an instance of the ResourceUsageClient client.
+// NewResourceUsageClientWithBaseURI creates an instance of the ResourceUsageClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ResourceUsageClient {
 	return ResourceUsageClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
@@ -96,8 +97,7 @@ func (client ResourceUsageClient) ListPreparer(ctx context.Context) (*http.Reque
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ResourceUsageClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always

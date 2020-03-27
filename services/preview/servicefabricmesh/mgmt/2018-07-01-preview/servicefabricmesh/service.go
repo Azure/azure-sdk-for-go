@@ -35,7 +35,8 @@ func NewServiceClient(subscriptionID string) ServiceClient {
 	return NewServiceClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewServiceClientWithBaseURI creates an instance of the ServiceClient client.
+// NewServiceClientWithBaseURI creates an instance of the ServiceClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceClient {
 	return ServiceClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -102,8 +103,7 @@ func (client ServiceClient) GetPreparer(ctx context.Context, resourceGroupName s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -181,8 +181,7 @@ func (client ServiceClient) ListByApplicationNamePreparer(ctx context.Context, r
 // ListByApplicationNameSender sends the ListByApplicationName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceClient) ListByApplicationNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByApplicationNameResponder handles the response to the ListByApplicationName request. The method always

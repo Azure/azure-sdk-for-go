@@ -35,7 +35,8 @@ func NewCodePackageClient(subscriptionID string) CodePackageClient {
 	return NewCodePackageClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCodePackageClientWithBaseURI creates an instance of the CodePackageClient client.
+// NewCodePackageClientWithBaseURI creates an instance of the CodePackageClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCodePackageClientWithBaseURI(baseURI string, subscriptionID string) CodePackageClient {
 	return CodePackageClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -110,8 +111,7 @@ func (client CodePackageClient) GetContainerLogsPreparer(ctx context.Context, re
 // GetContainerLogsSender sends the GetContainerLogs request. The method will close the
 // http.Response Body if it receives an error.
 func (client CodePackageClient) GetContainerLogsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetContainerLogsResponder handles the response to the GetContainerLogs request. The method always

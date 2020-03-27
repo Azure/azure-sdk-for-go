@@ -35,7 +35,8 @@ func NewSmartGroupsClient(scope string, subscriptionID string, subscriptionID1 s
 	return NewSmartGroupsClientWithBaseURI(DefaultBaseURI, scope, subscriptionID, subscriptionID1)
 }
 
-// NewSmartGroupsClientWithBaseURI creates an instance of the SmartGroupsClient client.
+// NewSmartGroupsClientWithBaseURI creates an instance of the SmartGroupsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSmartGroupsClientWithBaseURI(baseURI string, scope string, subscriptionID string, subscriptionID1 string) SmartGroupsClient {
 	return SmartGroupsClient{NewWithBaseURI(baseURI, scope, subscriptionID, subscriptionID1)}
 }
@@ -100,8 +101,7 @@ func (client SmartGroupsClient) ChangeStatePreparer(ctx context.Context, smartGr
 // ChangeStateSender sends the ChangeState request. The method will close the
 // http.Response Body if it receives an error.
 func (client SmartGroupsClient) ChangeStateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ChangeStateResponder handles the response to the ChangeState request. The method always
@@ -220,8 +220,7 @@ func (client SmartGroupsClient) GetAllPreparer(ctx context.Context, targetResour
 // GetAllSender sends the GetAll request. The method will close the
 // http.Response Body if it receives an error.
 func (client SmartGroupsClient) GetAllSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetAllResponder handles the response to the GetAll request. The method always
@@ -295,8 +294,7 @@ func (client SmartGroupsClient) GetByIDPreparer(ctx context.Context, smartGroupI
 // GetByIDSender sends the GetByID request. The method will close the
 // http.Response Body if it receives an error.
 func (client SmartGroupsClient) GetByIDSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetByIDResponder handles the response to the GetByID request. The method always
@@ -370,8 +368,7 @@ func (client SmartGroupsClient) GetHistoryPreparer(ctx context.Context, smartGro
 // GetHistorySender sends the GetHistory request. The method will close the
 // http.Response Body if it receives an error.
 func (client SmartGroupsClient) GetHistorySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHistoryResponder handles the response to the GetHistory request. The method always

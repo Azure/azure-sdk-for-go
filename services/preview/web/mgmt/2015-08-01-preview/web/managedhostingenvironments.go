@@ -35,7 +35,9 @@ func NewManagedHostingEnvironmentsClient(subscriptionID string) ManagedHostingEn
 	return NewManagedHostingEnvironmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewManagedHostingEnvironmentsClientWithBaseURI creates an instance of the ManagedHostingEnvironmentsClient client.
+// NewManagedHostingEnvironmentsClientWithBaseURI creates an instance of the ManagedHostingEnvironmentsClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewManagedHostingEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) ManagedHostingEnvironmentsClient {
 	return ManagedHostingEnvironmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -97,9 +99,8 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 // CreateOrUpdateManagedHostingEnvironmentSender sends the CreateOrUpdateManagedHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironmentSender(req *http.Request) (future ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -178,9 +179,8 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentPr
 // DeleteManagedHostingEnvironmentSender sends the DeleteManagedHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentSender(req *http.Request) (future ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -261,8 +261,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentPrepa
 // GetManagedHostingEnvironmentSender sends the GetManagedHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetManagedHostingEnvironmentResponder handles the response to the GetManagedHostingEnvironment request. The method always
@@ -340,8 +339,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOpera
 // GetManagedHostingEnvironmentOperationSender sends the GetManagedHostingEnvironmentOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOperationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetManagedHostingEnvironmentOperationResponder handles the response to the GetManagedHostingEnvironmentOperation request. The method always
@@ -416,8 +414,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsPrep
 // GetManagedHostingEnvironmentsSender sends the GetManagedHostingEnvironments request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetManagedHostingEnvironmentsResponder handles the response to the GetManagedHostingEnvironments request. The method always
@@ -531,8 +528,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServe
 // GetManagedHostingEnvironmentServerFarmsSender sends the GetManagedHostingEnvironmentServerFarms request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServerFarmsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetManagedHostingEnvironmentServerFarmsResponder handles the response to the GetManagedHostingEnvironmentServerFarms request. The method always
@@ -650,8 +646,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSites
 // GetManagedHostingEnvironmentSitesSender sends the GetManagedHostingEnvironmentSites request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSitesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetManagedHostingEnvironmentSitesResponder handles the response to the GetManagedHostingEnvironmentSites request. The method always
@@ -764,8 +759,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVipsP
 // GetManagedHostingEnvironmentVipsSender sends the GetManagedHostingEnvironmentVips request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVipsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetManagedHostingEnvironmentVipsResponder handles the response to the GetManagedHostingEnvironmentVips request. The method always
@@ -842,8 +836,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHo
 // GetManagedHostingEnvironmentWebHostingPlansSender sends the GetManagedHostingEnvironmentWebHostingPlans request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHostingPlansSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetManagedHostingEnvironmentWebHostingPlansResponder handles the response to the GetManagedHostingEnvironmentWebHostingPlans request. The method always

@@ -36,7 +36,8 @@ func NewResourceGroupsClient(subscriptionID string) ResourceGroupsClient {
 	return NewResourceGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewResourceGroupsClientWithBaseURI creates an instance of the ResourceGroupsClient client.
+// NewResourceGroupsClientWithBaseURI creates an instance of the ResourceGroupsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewResourceGroupsClientWithBaseURI(baseURI string, subscriptionID string) ResourceGroupsClient {
 	return ResourceGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -107,8 +108,7 @@ func (client ResourceGroupsClient) CheckExistencePreparer(ctx context.Context, r
 // CheckExistenceSender sends the CheckExistence request. The method will close the
 // http.Response Body if it receives an error.
 func (client ResourceGroupsClient) CheckExistenceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CheckExistenceResponder handles the response to the CheckExistence request. The method always
@@ -199,8 +199,7 @@ func (client ResourceGroupsClient) CreateOrUpdatePreparer(ctx context.Context, r
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ResourceGroupsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -277,9 +276,8 @@ func (client ResourceGroupsClient) DeletePreparer(ctx context.Context, resourceG
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ResourceGroupsClient) DeleteSender(req *http.Request) (future ResourceGroupsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -368,8 +366,7 @@ func (client ResourceGroupsClient) ExportTemplatePreparer(ctx context.Context, r
 // ExportTemplateSender sends the ExportTemplate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ResourceGroupsClient) ExportTemplateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ExportTemplateResponder handles the response to the ExportTemplate request. The method always
@@ -451,8 +448,7 @@ func (client ResourceGroupsClient) GetPreparer(ctx context.Context, resourceGrou
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ResourceGroupsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -534,8 +530,7 @@ func (client ResourceGroupsClient) ListPreparer(ctx context.Context, filter stri
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ResourceGroupsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -658,8 +653,7 @@ func (client ResourceGroupsClient) UpdatePreparer(ctx context.Context, resourceG
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client ResourceGroupsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

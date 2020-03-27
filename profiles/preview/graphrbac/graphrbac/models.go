@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,6 +34,14 @@ type ConsentType = original.ConsentType
 const (
 	AllPrincipals ConsentType = original.AllPrincipals
 	Principal     ConsentType = original.Principal
+)
+
+type GroupMembershipClaimTypes = original.GroupMembershipClaimTypes
+
+const (
+	All           GroupMembershipClaimTypes = original.All
+	None          GroupMembershipClaimTypes = original.None
+	SecurityGroup GroupMembershipClaimTypes = original.SecurityGroup
 )
 
 type ObjectType = original.ObjectType
@@ -230,6 +238,9 @@ func NewWithBaseURI(baseURI string, tenantID string) BaseClient {
 }
 func PossibleConsentTypeValues() []ConsentType {
 	return original.PossibleConsentTypeValues()
+}
+func PossibleGroupMembershipClaimTypesValues() []GroupMembershipClaimTypes {
+	return original.PossibleGroupMembershipClaimTypesValues()
 }
 func PossibleObjectTypeValues() []ObjectType {
 	return original.PossibleObjectTypeValues()

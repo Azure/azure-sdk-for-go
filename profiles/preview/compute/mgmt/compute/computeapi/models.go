@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 package computeapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-07-01/compute/computeapi"
+import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-12-01/compute/computeapi"
 
 type AvailabilitySetsClientAPI = original.AvailabilitySetsClientAPI
 type ContainerServicesClientAPI = original.ContainerServicesClientAPI

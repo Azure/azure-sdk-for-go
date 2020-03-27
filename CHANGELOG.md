@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## v40.6.0
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2019-12-01 |
+| network | 2019-12-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| cognitiveservices | 2017-04-18 |
+
+### Updated `./storage` package, which allows users to use azure-sdk-for-go to connect to and use cosmosdb table storage.
+
 ## v40.5.0
 
 ### New Packages

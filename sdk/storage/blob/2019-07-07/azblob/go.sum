@@ -1,4 +1,3 @@
-github.com/Azure/azure-sdk-for-go v40.5.0+incompatible h1:CVQNKuUepSFBo6BW6gM1J9slPHLRcjn6vaw+j+causw=
 github.com/Azure/azure-sdk-for-go/sdk/azcore v0.5.0 h1:8y3iLpYKpMGE3ADy1fZdjgkAH//+7K80J21bWU6G6wg=
 github.com/Azure/azure-sdk-for-go/sdk/azcore v0.5.0/go.mod h1:UKq2za3CMGx75vfPM9tPSuTBNODR4hX1qAeb+GRoDkc=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.1.0 h1:sgOdyT1ZAW3nErwCuvlGrkeP03pTtbRBW5MGCXWGZws=

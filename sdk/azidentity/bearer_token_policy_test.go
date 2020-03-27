@@ -35,7 +35,7 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 		srv,
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
 		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(azcore.RetryOptions{}),
+		azcore.NewRetryPolicy(nil),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
 	resp, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
@@ -62,7 +62,7 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 		srv,
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
 		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(azcore.RetryOptions{}),
+		azcore.NewRetryPolicy(nil),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
 	resp, err := pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
@@ -94,7 +94,7 @@ func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 		srv,
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
 		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(azcore.RetryOptions{}),
+		azcore.NewRetryPolicy(nil),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
 	req := azcore.NewRequest(http.MethodGet, srv.URL())
@@ -123,7 +123,7 @@ func TestRetryPolicy_IsNotRetriable(t *testing.T) {
 		srv,
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
 		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(azcore.RetryOptions{}),
+		azcore.NewRetryPolicy(nil),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
 	_, err = pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
@@ -146,7 +146,7 @@ func TestRetryPolicy_HTTPRequest(t *testing.T) {
 		srv,
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
 		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(azcore.RetryOptions{}),
+		azcore.NewRetryPolicy(nil),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
 	_, err = pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))

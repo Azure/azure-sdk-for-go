@@ -123,19 +123,3 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 		}
 	}
 }
-
-func TestClientSecretCredential_CreateAuthRequestFail(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	srvURL := srv.URL()
-	srvURL.Host = "ht @"
-	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
-	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one")
-	}
-}

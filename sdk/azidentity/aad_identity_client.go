@@ -12,7 +12,6 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -164,11 +163,7 @@ func (c *aadIdentityClient) createRefreshAccessToken(res *azcore.Response) (*tok
 		ExpiresIn    json.Number `json:"expires_in"`
 		ExpiresOn    string      `json:"expires_on"`
 	}{}
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	if err := json.Unmarshal(body, &value); err != nil {
+	if err := res.UnmarshalAsJSON(&value); err != nil {
 		return nil, fmt.Errorf("internal AccessToken: %w", err)
 	}
 	t, err := value.ExpiresIn.Int64()
@@ -294,11 +289,7 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, c
 
 func createDeviceCodeResult(res *azcore.Response) (*deviceCodeResult, error) {
 	value := &deviceCodeResult{}
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	if err := json.Unmarshal(body, &value); err != nil {
+	if err := res.UnmarshalAsJSON(&value); err != nil {
 		return nil, fmt.Errorf("DeviceCodeResult: %w", err)
 	}
 	return value, nil

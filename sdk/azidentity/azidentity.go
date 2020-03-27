@@ -4,8 +4,6 @@
 package azidentity
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"time"
@@ -73,11 +71,7 @@ func (e *AuthenticationFailedError) Error() string {
 
 func newAADAuthenticationFailedError(resp *azcore.Response) error {
 	authFailed := &AADAuthenticationFailedError{}
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return err
-	}
-	err = json.Unmarshal(body, authFailed)
+	err := resp.UnmarshalAsJSON(authFailed)
 	if err != nil {
 		authFailed.Message = resp.Status
 		authFailed.Description = "Failed to unmarshal response: " + err.Error()

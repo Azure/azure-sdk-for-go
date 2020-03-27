@@ -169,7 +169,7 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 	var statusCodes []int
 	// retry policy for MSI is not end-user configurable
 	retryOpts := azcore.RetryOptions{
-		MaxRetries: 5,
+		MaxRetries: 4,
 		RetryDelay: 2 * time.Second,
 		TryTimeout: 1 * time.Minute,
 		StatusCodes: append(statusCodes,

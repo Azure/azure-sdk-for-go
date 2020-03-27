@@ -194,7 +194,7 @@ func TestBearerPolicy_ManagedIdentityCredential(t *testing.T) {
 		srv,
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
 		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(azcore.RetryOptions{}),
+		azcore.NewRetryPolicy(nil),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{msiScope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
 	_, err = pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))

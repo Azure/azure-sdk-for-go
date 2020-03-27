@@ -26,7 +26,7 @@ steps:
     workingDirectory: '${{parameters.GoWorkspace}}'
 
   - pwsh: |
-      go test -race -v -coverprofile coverage.txt -covermode atomic $(SCOPE) | go-junit-report > $(Build.SourcesDirectory)/report.xml
+      go test -race -v -coverprofile coverage.txt -covermode atomic $(SCOPE) | go-junit-report -set-exit-code > $(Build.SourcesDirectory)/report.xml
     displayName: 'Run Tests'
     workingDirectory: '${{parameters.GoWorkspace}}'
 

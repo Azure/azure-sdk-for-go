@@ -55,6 +55,16 @@ type managedIdentityClient struct {
 	endpoint               *url.URL
 }
 
+type wrappedNumber json.Number
+
+func (n *wrappedNumber) UnmarshalJSON(b []byte) error {
+	c := string(b)
+	if c == "\"\"" {
+		return nil
+	}
+	return json.Unmarshal(b, (*json.Number)(n))
+}
+
 var (
 	imdsURL        *url.URL // these are initialized in the init func and are R/O afterwards
 	defaultMSIOpts = newDefaultManagedIdentityOptions()
@@ -129,10 +139,10 @@ func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, msiType msi
 func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
 	value := struct {
 		// these are the only fields that we use
-		Token        string      `json:"access_token"`
-		RefreshToken string      `json:"refresh_token"`
-		ExpiresIn    json.Number `json:"expires_in"` // this field should always return the number of seconds for which a token is valid
-		ExpiresOn    string      `json:"expires_on"` // the value returned in this field varies between a number and a date string
+		Token        string         `json:"access_token,omitempty"`
+		RefreshToken string         `json:"refresh_token,omitempty"`
+		ExpiresIn    *wrappedNumber `json:"expires_in,omitempty"` // this field should always return the number of seconds for which a token is valid
+		ExpiresOn    string         `json:"expires_on,omitempty"` // the value returned in this field varies between a number and a date string
 	}{}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
@@ -141,8 +151,8 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 	if err := json.Unmarshal(body, &value); err != nil {
 		return nil, fmt.Errorf("internal AccessToken: %w", err)
 	}
-	if value.ExpiresIn != "" {
-		expiresIn, err := value.ExpiresIn.Int64()
+	if value.ExpiresIn != nil && *value.ExpiresIn != "" {
+		expiresIn, err := json.Number(*value.ExpiresIn).Int64()
 		if err != nil {
 			return nil, err
 		}

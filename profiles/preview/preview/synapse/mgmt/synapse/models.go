@@ -39,6 +39,14 @@ const (
 	Unknown   ActualState = original.Unknown
 )
 
+type AuthorizationType = original.AuthorizationType
+
+const (
+	AuthorizationTypeKey                          AuthorizationType = original.AuthorizationTypeKey
+	AuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = original.AuthorizationTypeLinkedIntegrationRuntimeType
+	AuthorizationTypeRBAC                         AuthorizationType = original.AuthorizationTypeRBAC
+)
+
 type BlobAuditingPolicyState = original.BlobAuditingPolicyState
 
 const (
@@ -85,6 +93,14 @@ const (
 	XML              ColumnDataType = original.XML
 )
 
+type DataFlowComputeType = original.DataFlowComputeType
+
+const (
+	ComputeOptimized DataFlowComputeType = original.ComputeOptimized
+	General          DataFlowComputeType = original.General
+	MemoryOptimized  DataFlowComputeType = original.MemoryOptimized
+)
+
 type DesiredState = original.DesiredState
 
 const (
@@ -97,6 +113,97 @@ type GeoBackupPolicyState = original.GeoBackupPolicyState
 const (
 	GeoBackupPolicyStateDisabled GeoBackupPolicyState = original.GeoBackupPolicyStateDisabled
 	GeoBackupPolicyStateEnabled  GeoBackupPolicyState = original.GeoBackupPolicyStateEnabled
+)
+
+type IntegrationRuntimeAuthKeyName = original.IntegrationRuntimeAuthKeyName
+
+const (
+	AuthKey1 IntegrationRuntimeAuthKeyName = original.AuthKey1
+	AuthKey2 IntegrationRuntimeAuthKeyName = original.AuthKey2
+)
+
+type IntegrationRuntimeAutoUpdate = original.IntegrationRuntimeAutoUpdate
+
+const (
+	Off IntegrationRuntimeAutoUpdate = original.Off
+	On  IntegrationRuntimeAutoUpdate = original.On
+)
+
+type IntegrationRuntimeEdition = original.IntegrationRuntimeEdition
+
+const (
+	Enterprise IntegrationRuntimeEdition = original.Enterprise
+	Standard   IntegrationRuntimeEdition = original.Standard
+)
+
+type IntegrationRuntimeEntityReferenceType = original.IntegrationRuntimeEntityReferenceType
+
+const (
+	IntegrationRuntimeReference IntegrationRuntimeEntityReferenceType = original.IntegrationRuntimeReference
+	LinkedServiceReference      IntegrationRuntimeEntityReferenceType = original.LinkedServiceReference
+)
+
+type IntegrationRuntimeInternalChannelEncryptionMode = original.IntegrationRuntimeInternalChannelEncryptionMode
+
+const (
+	NotEncrypted IntegrationRuntimeInternalChannelEncryptionMode = original.NotEncrypted
+	NotSet       IntegrationRuntimeInternalChannelEncryptionMode = original.NotSet
+	SslEncrypted IntegrationRuntimeInternalChannelEncryptionMode = original.SslEncrypted
+)
+
+type IntegrationRuntimeLicenseType = original.IntegrationRuntimeLicenseType
+
+const (
+	BasePrice       IntegrationRuntimeLicenseType = original.BasePrice
+	LicenseIncluded IntegrationRuntimeLicenseType = original.LicenseIncluded
+)
+
+type IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTier
+
+const (
+	IntegrationRuntimeSsisCatalogPricingTierBasic     IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTierBasic
+	IntegrationRuntimeSsisCatalogPricingTierPremium   IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTierPremium
+	IntegrationRuntimeSsisCatalogPricingTierPremiumRS IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTierPremiumRS
+	IntegrationRuntimeSsisCatalogPricingTierStandard  IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTierStandard
+)
+
+type IntegrationRuntimeState = original.IntegrationRuntimeState
+
+const (
+	AccessDenied     IntegrationRuntimeState = original.AccessDenied
+	Initial          IntegrationRuntimeState = original.Initial
+	Limited          IntegrationRuntimeState = original.Limited
+	NeedRegistration IntegrationRuntimeState = original.NeedRegistration
+	Offline          IntegrationRuntimeState = original.Offline
+	Online           IntegrationRuntimeState = original.Online
+	Started          IntegrationRuntimeState = original.Started
+	Starting         IntegrationRuntimeState = original.Starting
+	Stopped          IntegrationRuntimeState = original.Stopped
+	Stopping         IntegrationRuntimeState = original.Stopping
+)
+
+type IntegrationRuntimeType = original.IntegrationRuntimeType
+
+const (
+	Managed    IntegrationRuntimeType = original.Managed
+	SelfHosted IntegrationRuntimeType = original.SelfHosted
+)
+
+type IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResult
+
+const (
+	Fail    IntegrationRuntimeUpdateResult = original.Fail
+	None    IntegrationRuntimeUpdateResult = original.None
+	Succeed IntegrationRuntimeUpdateResult = original.Succeed
+)
+
+type ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatus
+
+const (
+	ManagedIntegrationRuntimeNodeStatusAvailable   ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusAvailable
+	ManagedIntegrationRuntimeNodeStatusRecycling   ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusRecycling
+	ManagedIntegrationRuntimeNodeStatusStarting    ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusStarting
+	ManagedIntegrationRuntimeNodeStatusUnavailable ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusUnavailable
 )
 
 type ManagementOperationState = original.ManagementOperationState
@@ -113,10 +220,10 @@ const (
 type NodeSize = original.NodeSize
 
 const (
-	Large  NodeSize = original.Large
-	Medium NodeSize = original.Medium
-	None   NodeSize = original.None
-	Small  NodeSize = original.Small
+	NodeSizeLarge  NodeSize = original.NodeSizeLarge
+	NodeSizeMedium NodeSize = original.NodeSizeMedium
+	NodeSizeNone   NodeSize = original.NodeSizeNone
+	NodeSizeSmall  NodeSize = original.NodeSizeSmall
 )
 
 type NodeSizeFamily = original.NodeSizeFamily
@@ -223,11 +330,74 @@ const (
 	SecurityAlertPolicyStateNew      SecurityAlertPolicyState = original.SecurityAlertPolicyStateNew
 )
 
+type SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatus
+
+const (
+	SelfHostedIntegrationRuntimeNodeStatusInitializeFailed SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusInitializeFailed
+	SelfHostedIntegrationRuntimeNodeStatusInitializing     SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusInitializing
+	SelfHostedIntegrationRuntimeNodeStatusLimited          SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusLimited
+	SelfHostedIntegrationRuntimeNodeStatusNeedRegistration SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusNeedRegistration
+	SelfHostedIntegrationRuntimeNodeStatusOffline          SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusOffline
+	SelfHostedIntegrationRuntimeNodeStatusOnline           SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusOnline
+	SelfHostedIntegrationRuntimeNodeStatusUpgrading        SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusUpgrading
+)
+
+type SsisObjectMetadataType = original.SsisObjectMetadataType
+
+const (
+	Environment SsisObjectMetadataType = original.Environment
+	Folder      SsisObjectMetadataType = original.Folder
+	Package     SsisObjectMetadataType = original.Package
+	Project     SsisObjectMetadataType = original.Project
+)
+
 type TransparentDataEncryptionStatus = original.TransparentDataEncryptionStatus
 
 const (
 	TransparentDataEncryptionStatusDisabled TransparentDataEncryptionStatus = original.TransparentDataEncryptionStatusDisabled
 	TransparentDataEncryptionStatusEnabled  TransparentDataEncryptionStatus = original.TransparentDataEncryptionStatusEnabled
+)
+
+type Type = original.Type
+
+const (
+	TypeIntegrationRuntime Type = original.TypeIntegrationRuntime
+	TypeManaged            Type = original.TypeManaged
+	TypeSelfHosted         Type = original.TypeSelfHosted
+)
+
+type TypeBasicCustomSetupBase = original.TypeBasicCustomSetupBase
+
+const (
+	TypeCmdkeySetup              TypeBasicCustomSetupBase = original.TypeCmdkeySetup
+	TypeComponentSetup           TypeBasicCustomSetupBase = original.TypeComponentSetup
+	TypeCustomSetupBase          TypeBasicCustomSetupBase = original.TypeCustomSetupBase
+	TypeEnvironmentVariableSetup TypeBasicCustomSetupBase = original.TypeEnvironmentVariableSetup
+)
+
+type TypeBasicIntegrationRuntimeStatus = original.TypeBasicIntegrationRuntimeStatus
+
+const (
+	TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus TypeBasicIntegrationRuntimeStatus = original.TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus
+	TypeBasicIntegrationRuntimeStatusTypeManaged                  TypeBasicIntegrationRuntimeStatus = original.TypeBasicIntegrationRuntimeStatusTypeManaged
+	TypeBasicIntegrationRuntimeStatusTypeSelfHosted               TypeBasicIntegrationRuntimeStatus = original.TypeBasicIntegrationRuntimeStatusTypeSelfHosted
+)
+
+type TypeBasicSecretBase = original.TypeBasicSecretBase
+
+const (
+	TypeSecretBase   TypeBasicSecretBase = original.TypeSecretBase
+	TypeSecureString TypeBasicSecretBase = original.TypeSecureString
+)
+
+type TypeBasicSsisObjectMetadata = original.TypeBasicSsisObjectMetadata
+
+const (
+	TypeEnvironment        TypeBasicSsisObjectMetadata = original.TypeEnvironment
+	TypeFolder             TypeBasicSsisObjectMetadata = original.TypeFolder
+	TypePackage            TypeBasicSsisObjectMetadata = original.TypePackage
+	TypeProject            TypeBasicSsisObjectMetadata = original.TypeProject
+	TypeSsisObjectMetadata TypeBasicSsisObjectMetadata = original.TypeSsisObjectMetadata
 )
 
 type VulnerabilityAssessmentPolicyBaselineName = original.VulnerabilityAssessmentPolicyBaselineName
@@ -260,6 +430,12 @@ type AvailableRpOperation = original.AvailableRpOperation
 type AvailableRpOperationDisplayInfo = original.AvailableRpOperationDisplayInfo
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
+type BasicCustomSetupBase = original.BasicCustomSetupBase
+type BasicIntegrationRuntime = original.BasicIntegrationRuntime
+type BasicIntegrationRuntimeStatus = original.BasicIntegrationRuntimeStatus
+type BasicLinkedIntegrationRuntimeType = original.BasicLinkedIntegrationRuntimeType
+type BasicSecretBase = original.BasicSecretBase
+type BasicSsisObjectMetadata = original.BasicSsisObjectMetadata
 type BigDataPoolPatchInfo = original.BigDataPoolPatchInfo
 type BigDataPoolResourceInfo = original.BigDataPoolResourceInfo
 type BigDataPoolResourceInfoListResult = original.BigDataPoolResourceInfoListResult
@@ -271,16 +447,26 @@ type BigDataPoolsCreateOrUpdateFuture = original.BigDataPoolsCreateOrUpdateFutur
 type BigDataPoolsDeleteFuture = original.BigDataPoolsDeleteFuture
 type CheckNameAvailabilityRequest = original.CheckNameAvailabilityRequest
 type CheckNameAvailabilityResponse = original.CheckNameAvailabilityResponse
+type CloudError = original.CloudError
+type CloudErrorBody = original.CloudErrorBody
+type CmdkeySetup = original.CmdkeySetup
+type CmdkeySetupTypeProperties = original.CmdkeySetupTypeProperties
+type ComponentSetup = original.ComponentSetup
 type CreateSQLPoolRestorePointDefinition = original.CreateSQLPoolRestorePointDefinition
+type CustomSetupBase = original.CustomSetupBase
 type DataLakeStorageAccountDetails = original.DataLakeStorageAccountDetails
 type DataWarehouseUserActivities = original.DataWarehouseUserActivities
 type DataWarehouseUserActivitiesProperties = original.DataWarehouseUserActivitiesProperties
+type EntityReference = original.EntityReference
+type EnvironmentVariableSetup = original.EnvironmentVariableSetup
+type EnvironmentVariableSetupTypeProperties = original.EnvironmentVariableSetupTypeProperties
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorContract = original.ErrorContract
 type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
 type GeoBackupPolicy = original.GeoBackupPolicy
 type GeoBackupPolicyProperties = original.GeoBackupPolicyProperties
+type GetSsisObjectMetadataRequest = original.GetSsisObjectMetadataRequest
 type IPFirewallRuleInfo = original.IPFirewallRuleInfo
 type IPFirewallRuleInfoListResult = original.IPFirewallRuleInfoListResult
 type IPFirewallRuleInfoListResultIterator = original.IPFirewallRuleInfoListResultIterator
@@ -290,12 +476,53 @@ type IPFirewallRulesClient = original.IPFirewallRulesClient
 type IPFirewallRulesCreateOrUpdateFuture = original.IPFirewallRulesCreateOrUpdateFuture
 type IPFirewallRulesDeleteFuture = original.IPFirewallRulesDeleteFuture
 type IPFirewallRulesReplaceAllFuture = original.IPFirewallRulesReplaceAllFuture
+type IntegrationRuntime = original.IntegrationRuntime
+type IntegrationRuntimeAuthKeys = original.IntegrationRuntimeAuthKeys
+type IntegrationRuntimeAuthKeysClient = original.IntegrationRuntimeAuthKeysClient
+type IntegrationRuntimeComputeProperties = original.IntegrationRuntimeComputeProperties
+type IntegrationRuntimeConnectionInfo = original.IntegrationRuntimeConnectionInfo
+type IntegrationRuntimeConnectionInfosClient = original.IntegrationRuntimeConnectionInfosClient
+type IntegrationRuntimeCredentialsClient = original.IntegrationRuntimeCredentialsClient
+type IntegrationRuntimeCustomSetupScriptProperties = original.IntegrationRuntimeCustomSetupScriptProperties
+type IntegrationRuntimeDataFlowProperties = original.IntegrationRuntimeDataFlowProperties
+type IntegrationRuntimeDataProxyProperties = original.IntegrationRuntimeDataProxyProperties
+type IntegrationRuntimeListResponse = original.IntegrationRuntimeListResponse
+type IntegrationRuntimeListResponseIterator = original.IntegrationRuntimeListResponseIterator
+type IntegrationRuntimeListResponsePage = original.IntegrationRuntimeListResponsePage
+type IntegrationRuntimeMonitoringData = original.IntegrationRuntimeMonitoringData
+type IntegrationRuntimeMonitoringDataClient = original.IntegrationRuntimeMonitoringDataClient
+type IntegrationRuntimeNodeIPAddress = original.IntegrationRuntimeNodeIPAddress
+type IntegrationRuntimeNodeIPAddressClient = original.IntegrationRuntimeNodeIPAddressClient
+type IntegrationRuntimeNodeMonitoringData = original.IntegrationRuntimeNodeMonitoringData
+type IntegrationRuntimeNodesClient = original.IntegrationRuntimeNodesClient
+type IntegrationRuntimeObjectMetadataClient = original.IntegrationRuntimeObjectMetadataClient
+type IntegrationRuntimeRegenerateKeyParameters = original.IntegrationRuntimeRegenerateKeyParameters
+type IntegrationRuntimeResource = original.IntegrationRuntimeResource
+type IntegrationRuntimeSsisCatalogInfo = original.IntegrationRuntimeSsisCatalogInfo
+type IntegrationRuntimeSsisProperties = original.IntegrationRuntimeSsisProperties
+type IntegrationRuntimeStatus = original.IntegrationRuntimeStatus
+type IntegrationRuntimeStatusClient = original.IntegrationRuntimeStatusClient
+type IntegrationRuntimeStatusResponse = original.IntegrationRuntimeStatusResponse
+type IntegrationRuntimeVNetProperties = original.IntegrationRuntimeVNetProperties
+type IntegrationRuntimesClient = original.IntegrationRuntimesClient
 type LibraryRequirements = original.LibraryRequirements
+type LicensedComponentSetupTypeProperties = original.LicensedComponentSetupTypeProperties
+type LinkedIntegrationRuntime = original.LinkedIntegrationRuntime
+type LinkedIntegrationRuntimeKeyAuthorization = original.LinkedIntegrationRuntimeKeyAuthorization
+type LinkedIntegrationRuntimeRbacAuthorization = original.LinkedIntegrationRuntimeRbacAuthorization
+type LinkedIntegrationRuntimeType = original.LinkedIntegrationRuntimeType
 type ListAvailableRpOperation = original.ListAvailableRpOperation
 type ManagedIdentity = original.ManagedIdentity
 type ManagedIdentitySQLControlSettingsModel = original.ManagedIdentitySQLControlSettingsModel
 type ManagedIdentitySQLControlSettingsModelProperties = original.ManagedIdentitySQLControlSettingsModelProperties
 type ManagedIdentitySQLControlSettingsModelPropertiesGrantSQLControlToManagedIdentity = original.ManagedIdentitySQLControlSettingsModelPropertiesGrantSQLControlToManagedIdentity
+type ManagedIntegrationRuntime = original.ManagedIntegrationRuntime
+type ManagedIntegrationRuntimeError = original.ManagedIntegrationRuntimeError
+type ManagedIntegrationRuntimeNode = original.ManagedIntegrationRuntimeNode
+type ManagedIntegrationRuntimeOperationResult = original.ManagedIntegrationRuntimeOperationResult
+type ManagedIntegrationRuntimeStatus = original.ManagedIntegrationRuntimeStatus
+type ManagedIntegrationRuntimeStatusTypeProperties = original.ManagedIntegrationRuntimeStatusTypeProperties
+type ManagedIntegrationRuntimeTypeProperties = original.ManagedIntegrationRuntimeTypeProperties
 type MetadataSyncConfig = original.MetadataSyncConfig
 type MetadataSyncConfigProperties = original.MetadataSyncConfigProperties
 type OperationMetaLogSpecification = original.OperationMetaLogSpecification
@@ -392,7 +619,14 @@ type SQLPoolsCreateFuture = original.SQLPoolsCreateFuture
 type SQLPoolsDeleteFuture = original.SQLPoolsDeleteFuture
 type SQLPoolsPauseFuture = original.SQLPoolsPauseFuture
 type SQLPoolsResumeFuture = original.SQLPoolsResumeFuture
+type SecretBase = original.SecretBase
+type SecureString = original.SecureString
 type SecurityAlertPolicyProperties = original.SecurityAlertPolicyProperties
+type SelfHostedIntegrationRuntime = original.SelfHostedIntegrationRuntime
+type SelfHostedIntegrationRuntimeNode = original.SelfHostedIntegrationRuntimeNode
+type SelfHostedIntegrationRuntimeStatus = original.SelfHostedIntegrationRuntimeStatus
+type SelfHostedIntegrationRuntimeStatusTypeProperties = original.SelfHostedIntegrationRuntimeStatusTypeProperties
+type SelfHostedIntegrationRuntimeTypeProperties = original.SelfHostedIntegrationRuntimeTypeProperties
 type SensitivityLabel = original.SensitivityLabel
 type SensitivityLabelListResult = original.SensitivityLabelListResult
 type SensitivityLabelListResultIterator = original.SensitivityLabelListResultIterator
@@ -400,11 +634,24 @@ type SensitivityLabelListResultPage = original.SensitivityLabelListResultPage
 type SensitivityLabelProperties = original.SensitivityLabelProperties
 type SetObject = original.SetObject
 type Sku = original.Sku
+type SsisEnvironment = original.SsisEnvironment
+type SsisEnvironmentReference = original.SsisEnvironmentReference
+type SsisFolder = original.SsisFolder
+type SsisObjectMetadata = original.SsisObjectMetadata
+type SsisObjectMetadataListResponse = original.SsisObjectMetadataListResponse
+type SsisObjectMetadataStatusResponse = original.SsisObjectMetadataStatusResponse
+type SsisPackage = original.SsisPackage
+type SsisParameter = original.SsisParameter
+type SsisProject = original.SsisProject
+type SsisVariable = original.SsisVariable
+type SubResource = original.SubResource
 type TopQueries = original.TopQueries
 type TopQueriesListResult = original.TopQueriesListResult
 type TrackedResource = original.TrackedResource
 type TransparentDataEncryption = original.TransparentDataEncryption
 type TransparentDataEncryptionProperties = original.TransparentDataEncryptionProperties
+type UpdateIntegrationRuntimeNodeRequest = original.UpdateIntegrationRuntimeNodeRequest
+type UpdateIntegrationRuntimeRequest = original.UpdateIntegrationRuntimeRequest
 type VirtualNetworkProfile = original.VirtualNetworkProfile
 type VulnerabilityAssessmentRecurringScansProperties = original.VulnerabilityAssessmentRecurringScansProperties
 type VulnerabilityAssessmentScanError = original.VulnerabilityAssessmentScanError
@@ -456,6 +703,66 @@ func NewIPFirewallRulesClient(subscriptionID string) IPFirewallRulesClient {
 }
 func NewIPFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) IPFirewallRulesClient {
 	return original.NewIPFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIntegrationRuntimeAuthKeysClient(subscriptionID string) IntegrationRuntimeAuthKeysClient {
+	return original.NewIntegrationRuntimeAuthKeysClient(subscriptionID)
+}
+func NewIntegrationRuntimeAuthKeysClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeAuthKeysClient {
+	return original.NewIntegrationRuntimeAuthKeysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIntegrationRuntimeConnectionInfosClient(subscriptionID string) IntegrationRuntimeConnectionInfosClient {
+	return original.NewIntegrationRuntimeConnectionInfosClient(subscriptionID)
+}
+func NewIntegrationRuntimeConnectionInfosClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeConnectionInfosClient {
+	return original.NewIntegrationRuntimeConnectionInfosClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIntegrationRuntimeCredentialsClient(subscriptionID string) IntegrationRuntimeCredentialsClient {
+	return original.NewIntegrationRuntimeCredentialsClient(subscriptionID)
+}
+func NewIntegrationRuntimeCredentialsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeCredentialsClient {
+	return original.NewIntegrationRuntimeCredentialsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIntegrationRuntimeListResponseIterator(page IntegrationRuntimeListResponsePage) IntegrationRuntimeListResponseIterator {
+	return original.NewIntegrationRuntimeListResponseIterator(page)
+}
+func NewIntegrationRuntimeListResponsePage(getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
+	return original.NewIntegrationRuntimeListResponsePage(getNextPage)
+}
+func NewIntegrationRuntimeMonitoringDataClient(subscriptionID string) IntegrationRuntimeMonitoringDataClient {
+	return original.NewIntegrationRuntimeMonitoringDataClient(subscriptionID)
+}
+func NewIntegrationRuntimeMonitoringDataClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeMonitoringDataClient {
+	return original.NewIntegrationRuntimeMonitoringDataClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIntegrationRuntimeNodeIPAddressClient(subscriptionID string) IntegrationRuntimeNodeIPAddressClient {
+	return original.NewIntegrationRuntimeNodeIPAddressClient(subscriptionID)
+}
+func NewIntegrationRuntimeNodeIPAddressClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeNodeIPAddressClient {
+	return original.NewIntegrationRuntimeNodeIPAddressClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIntegrationRuntimeNodesClient(subscriptionID string) IntegrationRuntimeNodesClient {
+	return original.NewIntegrationRuntimeNodesClient(subscriptionID)
+}
+func NewIntegrationRuntimeNodesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeNodesClient {
+	return original.NewIntegrationRuntimeNodesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIntegrationRuntimeObjectMetadataClient(subscriptionID string) IntegrationRuntimeObjectMetadataClient {
+	return original.NewIntegrationRuntimeObjectMetadataClient(subscriptionID)
+}
+func NewIntegrationRuntimeObjectMetadataClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeObjectMetadataClient {
+	return original.NewIntegrationRuntimeObjectMetadataClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIntegrationRuntimeStatusClient(subscriptionID string) IntegrationRuntimeStatusClient {
+	return original.NewIntegrationRuntimeStatusClient(subscriptionID)
+}
+func NewIntegrationRuntimeStatusClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeStatusClient {
+	return original.NewIntegrationRuntimeStatusClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIntegrationRuntimesClient(subscriptionID string) IntegrationRuntimesClient {
+	return original.NewIntegrationRuntimesClient(subscriptionID)
+}
+func NewIntegrationRuntimesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimesClient {
+	return original.NewIntegrationRuntimesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -679,17 +986,56 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 func PossibleActualStateValues() []ActualState {
 	return original.PossibleActualStateValues()
 }
+func PossibleAuthorizationTypeValues() []AuthorizationType {
+	return original.PossibleAuthorizationTypeValues()
+}
 func PossibleBlobAuditingPolicyStateValues() []BlobAuditingPolicyState {
 	return original.PossibleBlobAuditingPolicyStateValues()
 }
 func PossibleColumnDataTypeValues() []ColumnDataType {
 	return original.PossibleColumnDataTypeValues()
 }
+func PossibleDataFlowComputeTypeValues() []DataFlowComputeType {
+	return original.PossibleDataFlowComputeTypeValues()
+}
 func PossibleDesiredStateValues() []DesiredState {
 	return original.PossibleDesiredStateValues()
 }
 func PossibleGeoBackupPolicyStateValues() []GeoBackupPolicyState {
 	return original.PossibleGeoBackupPolicyStateValues()
+}
+func PossibleIntegrationRuntimeAuthKeyNameValues() []IntegrationRuntimeAuthKeyName {
+	return original.PossibleIntegrationRuntimeAuthKeyNameValues()
+}
+func PossibleIntegrationRuntimeAutoUpdateValues() []IntegrationRuntimeAutoUpdate {
+	return original.PossibleIntegrationRuntimeAutoUpdateValues()
+}
+func PossibleIntegrationRuntimeEditionValues() []IntegrationRuntimeEdition {
+	return original.PossibleIntegrationRuntimeEditionValues()
+}
+func PossibleIntegrationRuntimeEntityReferenceTypeValues() []IntegrationRuntimeEntityReferenceType {
+	return original.PossibleIntegrationRuntimeEntityReferenceTypeValues()
+}
+func PossibleIntegrationRuntimeInternalChannelEncryptionModeValues() []IntegrationRuntimeInternalChannelEncryptionMode {
+	return original.PossibleIntegrationRuntimeInternalChannelEncryptionModeValues()
+}
+func PossibleIntegrationRuntimeLicenseTypeValues() []IntegrationRuntimeLicenseType {
+	return original.PossibleIntegrationRuntimeLicenseTypeValues()
+}
+func PossibleIntegrationRuntimeSsisCatalogPricingTierValues() []IntegrationRuntimeSsisCatalogPricingTier {
+	return original.PossibleIntegrationRuntimeSsisCatalogPricingTierValues()
+}
+func PossibleIntegrationRuntimeStateValues() []IntegrationRuntimeState {
+	return original.PossibleIntegrationRuntimeStateValues()
+}
+func PossibleIntegrationRuntimeTypeValues() []IntegrationRuntimeType {
+	return original.PossibleIntegrationRuntimeTypeValues()
+}
+func PossibleIntegrationRuntimeUpdateResultValues() []IntegrationRuntimeUpdateResult {
+	return original.PossibleIntegrationRuntimeUpdateResultValues()
+}
+func PossibleManagedIntegrationRuntimeNodeStatusValues() []ManagedIntegrationRuntimeNodeStatus {
+	return original.PossibleManagedIntegrationRuntimeNodeStatusValues()
 }
 func PossibleManagementOperationStateValues() []ManagementOperationState {
 	return original.PossibleManagementOperationStateValues()
@@ -733,8 +1079,29 @@ func PossibleRestorePointTypeValues() []RestorePointType {
 func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
 	return original.PossibleSecurityAlertPolicyStateValues()
 }
+func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrationRuntimeNodeStatus {
+	return original.PossibleSelfHostedIntegrationRuntimeNodeStatusValues()
+}
+func PossibleSsisObjectMetadataTypeValues() []SsisObjectMetadataType {
+	return original.PossibleSsisObjectMetadataTypeValues()
+}
 func PossibleTransparentDataEncryptionStatusValues() []TransparentDataEncryptionStatus {
 	return original.PossibleTransparentDataEncryptionStatusValues()
+}
+func PossibleTypeBasicCustomSetupBaseValues() []TypeBasicCustomSetupBase {
+	return original.PossibleTypeBasicCustomSetupBaseValues()
+}
+func PossibleTypeBasicIntegrationRuntimeStatusValues() []TypeBasicIntegrationRuntimeStatus {
+	return original.PossibleTypeBasicIntegrationRuntimeStatusValues()
+}
+func PossibleTypeBasicSecretBaseValues() []TypeBasicSecretBase {
+	return original.PossibleTypeBasicSecretBaseValues()
+}
+func PossibleTypeBasicSsisObjectMetadataValues() []TypeBasicSsisObjectMetadata {
+	return original.PossibleTypeBasicSsisObjectMetadataValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
 }
 func PossibleVulnerabilityAssessmentPolicyBaselineNameValues() []VulnerabilityAssessmentPolicyBaselineName {
 	return original.PossibleVulnerabilityAssessmentPolicyBaselineNameValues()

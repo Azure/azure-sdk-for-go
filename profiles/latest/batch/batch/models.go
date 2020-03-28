@@ -22,7 +22,7 @@ package batch
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/batch/2019-08-01.10.0/batch"
+	original "github.com/Azure/azure-sdk-for-go/services/batch/2020-03-01.11.0/batch"
 )
 
 type AccessScope = original.AccessScope
@@ -166,6 +166,13 @@ const (
 	DisableJobOptionWait      DisableJobOption = original.DisableJobOptionWait
 )
 
+type DiskEncryptionTarget = original.DiskEncryptionTarget
+
+const (
+	OsDisk        DiskEncryptionTarget = original.OsDisk
+	TemporaryDisk DiskEncryptionTarget = original.TemporaryDisk
+)
+
 type DynamicVNetAssignmentScope = original.DynamicVNetAssignmentScope
 
 const (
@@ -185,6 +192,14 @@ type ErrorCategory = original.ErrorCategory
 const (
 	ServerError ErrorCategory = original.ServerError
 	UserError   ErrorCategory = original.UserError
+)
+
+type IPAddressProvisioningType = original.IPAddressProvisioningType
+
+const (
+	BatchManaged        IPAddressProvisioningType = original.BatchManaged
+	NoPublicIPAddresses IPAddressProvisioningType = original.NoPublicIPAddresses
+	UserManaged         IPAddressProvisioningType = original.UserManaged
 )
 
 type InboundEndpointProtocol = original.InboundEndpointProtocol
@@ -417,6 +432,7 @@ type ContainerConfiguration = original.ContainerConfiguration
 type ContainerRegistry = original.ContainerRegistry
 type DataDisk = original.DataDisk
 type DeleteCertificateError = original.DeleteCertificateError
+type DiskEncryptionConfiguration = original.DiskEncryptionConfiguration
 type EnvironmentSetting = original.EnvironmentSetting
 type Error = original.Error
 type ErrorDetail = original.ErrorDetail
@@ -497,6 +513,7 @@ type PoolSpecification = original.PoolSpecification
 type PoolStatistics = original.PoolStatistics
 type PoolUpdatePropertiesParameter = original.PoolUpdatePropertiesParameter
 type PoolUsageMetrics = original.PoolUsageMetrics
+type PublicIPAddressConfiguration = original.PublicIPAddressConfiguration
 type ReadCloser = original.ReadCloser
 type RecentJob = original.RecentJob
 type ResizeError = original.ResizeError
@@ -688,6 +705,9 @@ func PossibleDisableComputeNodeSchedulingOptionValues() []DisableComputeNodeSche
 func PossibleDisableJobOptionValues() []DisableJobOption {
 	return original.PossibleDisableJobOptionValues()
 }
+func PossibleDiskEncryptionTargetValues() []DiskEncryptionTarget {
+	return original.PossibleDiskEncryptionTargetValues()
+}
 func PossibleDynamicVNetAssignmentScopeValues() []DynamicVNetAssignmentScope {
 	return original.PossibleDynamicVNetAssignmentScopeValues()
 }
@@ -696,6 +716,9 @@ func PossibleElevationLevelValues() []ElevationLevel {
 }
 func PossibleErrorCategoryValues() []ErrorCategory {
 	return original.PossibleErrorCategoryValues()
+}
+func PossibleIPAddressProvisioningTypeValues() []IPAddressProvisioningType {
+	return original.PossibleIPAddressProvisioningTypeValues()
 }
 func PossibleInboundEndpointProtocolValues() []InboundEndpointProtocol {
 	return original.PossibleInboundEndpointProtocolValues()

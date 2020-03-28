@@ -148,6 +148,104 @@ type ActivationKeyResult struct {
 	ActivationKey *string `json:"activationKey,omitempty"`
 }
 
+// CloudManifestFileDeploymentData cloud specific manifest data for AzureStack deployment.
+type CloudManifestFileDeploymentData struct {
+	// ExternalDsmsCertificates - Dsms external certificates.
+	ExternalDsmsCertificates *string `json:"externalDsmsCertificates,omitempty"`
+	// CustomCloudVerificationKey - Signing verification public key.
+	CustomCloudVerificationKey *string `json:"customCloudVerificationKey,omitempty"`
+	// CloudManifestFileEnvironmentEndpoints - Environment endpoints.
+	*CloudManifestFileEnvironmentEndpoints `json:"customEnvironmentEndpoints,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudManifestFileDeploymentData.
+func (cmfdd CloudManifestFileDeploymentData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cmfdd.ExternalDsmsCertificates != nil {
+		objectMap["externalDsmsCertificates"] = cmfdd.ExternalDsmsCertificates
+	}
+	if cmfdd.CustomCloudVerificationKey != nil {
+		objectMap["customCloudVerificationKey"] = cmfdd.CustomCloudVerificationKey
+	}
+	if cmfdd.CloudManifestFileEnvironmentEndpoints != nil {
+		objectMap["customEnvironmentEndpoints"] = cmfdd.CloudManifestFileEnvironmentEndpoints
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CloudManifestFileDeploymentData struct.
+func (cmfdd *CloudManifestFileDeploymentData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "externalDsmsCertificates":
+			if v != nil {
+				var externalDsmsCertificates string
+				err = json.Unmarshal(*v, &externalDsmsCertificates)
+				if err != nil {
+					return err
+				}
+				cmfdd.ExternalDsmsCertificates = &externalDsmsCertificates
+			}
+		case "customCloudVerificationKey":
+			if v != nil {
+				var customCloudVerificationKey string
+				err = json.Unmarshal(*v, &customCloudVerificationKey)
+				if err != nil {
+					return err
+				}
+				cmfdd.CustomCloudVerificationKey = &customCloudVerificationKey
+			}
+		case "customEnvironmentEndpoints":
+			if v != nil {
+				var cloudManifestFileEnvironmentEndpoints CloudManifestFileEnvironmentEndpoints
+				err = json.Unmarshal(*v, &cloudManifestFileEnvironmentEndpoints)
+				if err != nil {
+					return err
+				}
+				cmfdd.CloudManifestFileEnvironmentEndpoints = &cloudManifestFileEnvironmentEndpoints
+			}
+		}
+	}
+
+	return nil
+}
+
+// CloudManifestFileEnvironmentEndpoints cloud specific environment endpoints for AzureStack deployment.
+type CloudManifestFileEnvironmentEndpoints struct {
+	// CustomCloudArmEndpoint - ARM endpoint.
+	CustomCloudArmEndpoint *string `json:"customCloudArmEndpoint,omitempty"`
+	// ExternalDsmsEndpoint - Dsms endpoint.
+	ExternalDsmsEndpoint *string `json:"externalDsmsEndpoint,omitempty"`
+}
+
+// CloudManifestFileProperties cloud specific manifest JSON properties.
+type CloudManifestFileProperties struct {
+	// DeploymentData - Cloud specific manifest data.
+	DeploymentData *CloudManifestFileDeploymentData `json:"deploymentData,omitempty"`
+	// Signature - Signature of the cloud specific manifest data.
+	Signature *string `json:"signature,omitempty"`
+}
+
+// CloudManifestFileResponse cloud specific manifest GET response.
+type CloudManifestFileResponse struct {
+	autorest.Response `json:"-"`
+	// Properties - Cloud specific manifest data.
+	Properties *CloudManifestFileProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; ID of the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Type of Resource.
+	Type *string `json:"type,omitempty"`
+	// Etag - The entity tag used for optimistic concurrency when modifying the resource.
+	Etag *string `json:"etag,omitempty"`
+}
+
 // Compatibility product compatibility
 type Compatibility struct {
 	// IsCompatible - Tells if product is compatible with current device

@@ -25,6 +25,4 @@ type BaseClientAPI = original.BaseClientAPI
 type DataSourcesClientAPI = original.DataSourcesClientAPI
 type LinkedServicesClientAPI = original.LinkedServicesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
-type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
-type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type WorkspacesClientAPI = original.WorkspacesClientAPI

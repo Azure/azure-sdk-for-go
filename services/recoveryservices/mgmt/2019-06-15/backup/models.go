@@ -12481,6 +12481,14 @@ type EngineExtendedInfo struct {
 	AzureProtectedInstances *int32 `json:"azureProtectedInstances,omitempty"`
 }
 
+// ErrorAdditionalInfo the resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// Type - READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty"`
+	// Info - READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty"`
+}
+
 // ErrorDetail error Detail class which encapsulates Code, Message and Recommendations.
 type ErrorDetail struct {
 	// Code - READ-ONLY; Error code.
@@ -12489,6 +12497,20 @@ type ErrorDetail struct {
 	Message *string `json:"message,omitempty"`
 	// Recommendations - READ-ONLY; List of recommendation strings.
 	Recommendations *[]string `json:"recommendations,omitempty"`
+}
+
+// ErrorResponse the resource management error response.
+type ErrorResponse struct {
+	// Code - READ-ONLY; The error code.
+	Code *string `json:"code,omitempty"`
+	// Message - READ-ONLY; The error message.
+	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The error target.
+	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]ErrorResponse `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
 // ExportJobsOperationResultInfo this class is used to send blob details after exporting jobs.

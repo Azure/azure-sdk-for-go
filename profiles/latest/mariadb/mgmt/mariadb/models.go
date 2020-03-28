@@ -54,6 +54,38 @@ const (
 	User         OperationOrigin = original.User
 )
 
+type PrivateEndpointProvisioningState = original.PrivateEndpointProvisioningState
+
+const (
+	Approving PrivateEndpointProvisioningState = original.Approving
+	Dropping  PrivateEndpointProvisioningState = original.Dropping
+	Failed    PrivateEndpointProvisioningState = original.Failed
+	Ready     PrivateEndpointProvisioningState = original.Ready
+	Rejecting PrivateEndpointProvisioningState = original.Rejecting
+)
+
+type PrivateLinkServiceConnectionStateActionsRequire = original.PrivateLinkServiceConnectionStateActionsRequire
+
+const (
+	None PrivateLinkServiceConnectionStateActionsRequire = original.None
+)
+
+type PrivateLinkServiceConnectionStateStatus = original.PrivateLinkServiceConnectionStateStatus
+
+const (
+	Approved     PrivateLinkServiceConnectionStateStatus = original.Approved
+	Disconnected PrivateLinkServiceConnectionStateStatus = original.Disconnected
+	Pending      PrivateLinkServiceConnectionStateStatus = original.Pending
+	Rejected     PrivateLinkServiceConnectionStateStatus = original.Rejected
+)
+
+type PublicNetworkAccessEnum = original.PublicNetworkAccessEnum
+
+const (
+	PublicNetworkAccessEnumDisabled PublicNetworkAccessEnum = original.PublicNetworkAccessEnumDisabled
+	PublicNetworkAccessEnumEnabled  PublicNetworkAccessEnum = original.PublicNetworkAccessEnumEnabled
+)
+
 type ServerSecurityAlertPolicyState = original.ServerSecurityAlertPolicyState
 
 const (
@@ -101,11 +133,11 @@ const (
 type VirtualNetworkRuleState = original.VirtualNetworkRuleState
 
 const (
-	Deleting     VirtualNetworkRuleState = original.Deleting
-	Initializing VirtualNetworkRuleState = original.Initializing
-	InProgress   VirtualNetworkRuleState = original.InProgress
-	Ready        VirtualNetworkRuleState = original.Ready
-	Unknown      VirtualNetworkRuleState = original.Unknown
+	VirtualNetworkRuleStateDeleting     VirtualNetworkRuleState = original.VirtualNetworkRuleStateDeleting
+	VirtualNetworkRuleStateInitializing VirtualNetworkRuleState = original.VirtualNetworkRuleStateInitializing
+	VirtualNetworkRuleStateInProgress   VirtualNetworkRuleState = original.VirtualNetworkRuleStateInProgress
+	VirtualNetworkRuleStateReady        VirtualNetworkRuleState = original.VirtualNetworkRuleStateReady
+	VirtualNetworkRuleStateUnknown      VirtualNetworkRuleState = original.VirtualNetworkRuleStateUnknown
 )
 
 type Advisor = original.Advisor
@@ -193,6 +225,9 @@ type SecurityAlertPolicyProperties = original.SecurityAlertPolicyProperties
 type Server = original.Server
 type ServerForCreate = original.ServerForCreate
 type ServerListResult = original.ServerListResult
+type ServerPrivateEndpointConnection = original.ServerPrivateEndpointConnection
+type ServerPrivateEndpointConnectionProperties = original.ServerPrivateEndpointConnectionProperties
+type ServerPrivateLinkServiceConnectionStateProperty = original.ServerPrivateLinkServiceConnectionStateProperty
 type ServerProperties = original.ServerProperties
 type ServerPropertiesForCreate = original.ServerPropertiesForCreate
 type ServerPropertiesForDefaultCreate = original.ServerPropertiesForDefaultCreate
@@ -418,6 +453,18 @@ func PossibleGeoRedundantBackupValues() []GeoRedundantBackup {
 }
 func PossibleOperationOriginValues() []OperationOrigin {
 	return original.PossibleOperationOriginValues()
+}
+func PossiblePrivateEndpointProvisioningStateValues() []PrivateEndpointProvisioningState {
+	return original.PossiblePrivateEndpointProvisioningStateValues()
+}
+func PossiblePrivateLinkServiceConnectionStateActionsRequireValues() []PrivateLinkServiceConnectionStateActionsRequire {
+	return original.PossiblePrivateLinkServiceConnectionStateActionsRequireValues()
+}
+func PossiblePrivateLinkServiceConnectionStateStatusValues() []PrivateLinkServiceConnectionStateStatus {
+	return original.PossiblePrivateLinkServiceConnectionStateStatusValues()
+}
+func PossiblePublicNetworkAccessEnumValues() []PublicNetworkAccessEnum {
+	return original.PossiblePublicNetworkAccessEnumValues()
 }
 func PossibleServerSecurityAlertPolicyStateValues() []ServerSecurityAlertPolicyState {
 	return original.PossibleServerSecurityAlertPolicyStateValues()

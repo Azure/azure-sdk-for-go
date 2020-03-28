@@ -342,6 +342,45 @@ type EmailTemplateClientAPI interface {
 
 var _ EmailTemplateClientAPI = (*apimanagement.EmailTemplateClient)(nil)
 
+// GatewayClientAPI contains the set of methods on the GatewayClient type.
+type GatewayClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, parameters apimanagement.GatewayContract, ifMatch string) (result apimanagement.GatewayContract, err error)
+	Delete(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, ifMatch string) (result autorest.Response, err error)
+	GenerateToken(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, parameters apimanagement.GatewayTokenRequestContract) (result apimanagement.GatewayTokenContract, err error)
+	Get(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string) (result apimanagement.GatewayContract, err error)
+	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string) (result autorest.Response, err error)
+	ListByService(ctx context.Context, resourceGroupName string, serviceName string, top *int32, skip *int32) (result apimanagement.GatewayCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, top *int32, skip *int32) (result apimanagement.GatewayCollectionIterator, err error)
+	ListKeys(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string) (result apimanagement.GatewayKeysContract, err error)
+	RegenerateKey(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, parameters apimanagement.GatewayKeyRegenerationRequestContract) (result autorest.Response, err error)
+	Update(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, parameters apimanagement.GatewayContract, ifMatch string) (result autorest.Response, err error)
+}
+
+var _ GatewayClientAPI = (*apimanagement.GatewayClient)(nil)
+
+// GatewayHostnameConfigurationClientAPI contains the set of methods on the GatewayHostnameConfigurationClient type.
+type GatewayHostnameConfigurationClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, parameters apimanagement.GatewayHostnameConfigurationContract) (result apimanagement.GatewayHostnameConfigurationContract, err error)
+	Delete(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string) (result apimanagement.GatewayHostnameConfigurationContract, err error)
+	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string) (result autorest.Response, err error)
+	ListByService(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, top *int32, skip *int32) (result apimanagement.GatewayHostnameConfigurationCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, top *int32, skip *int32) (result apimanagement.GatewayHostnameConfigurationCollectionIterator, err error)
+}
+
+var _ GatewayHostnameConfigurationClientAPI = (*apimanagement.GatewayHostnameConfigurationClient)(nil)
+
+// GatewayAPIClientAPI contains the set of methods on the GatewayAPIClient type.
+type GatewayAPIClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, apiid string, parameters *apimanagement.AssociationContract) (result apimanagement.APIContract, err error)
+	Delete(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, apiid string) (result autorest.Response, err error)
+	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, apiid string) (result autorest.Response, err error)
+	ListByService(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, top *int32, skip *int32) (result apimanagement.APICollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, top *int32, skip *int32) (result apimanagement.APICollectionIterator, err error)
+}
+
+var _ GatewayAPIClientAPI = (*apimanagement.GatewayAPIClient)(nil)
+
 // GroupClientAPI contains the set of methods on the GroupClient type.
 type GroupClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, groupID string, parameters apimanagement.GroupCreateParameters, ifMatch string) (result apimanagement.GroupContract, err error)
@@ -368,7 +407,7 @@ var _ GroupUserClientAPI = (*apimanagement.GroupUserClient)(nil)
 
 // IdentityProviderClientAPI contains the set of methods on the IdentityProviderClient type.
 type IdentityProviderClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName apimanagement.IdentityProviderType, parameters apimanagement.IdentityProviderContract, ifMatch string) (result apimanagement.IdentityProviderContract, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName apimanagement.IdentityProviderType, parameters apimanagement.IdentityProviderCreateContract, ifMatch string) (result apimanagement.IdentityProviderContract, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName apimanagement.IdentityProviderType, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName apimanagement.IdentityProviderType) (result apimanagement.IdentityProviderContract, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName apimanagement.IdentityProviderType) (result autorest.Response, err error)
@@ -497,6 +536,7 @@ type DelegationSettingsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters apimanagement.PortalDelegationSettings, ifMatch string) (result apimanagement.PortalDelegationSettings, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string) (result apimanagement.PortalDelegationSettings, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string) (result autorest.Response, err error)
+	ListSecrets(ctx context.Context, resourceGroupName string, serviceName string) (result apimanagement.PortalSettingValidationKeyContract, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, parameters apimanagement.PortalDelegationSettings, ifMatch string) (result autorest.Response, err error)
 }
 
@@ -560,12 +600,13 @@ var _ ProductPolicyClientAPI = (*apimanagement.ProductPolicyClient)(nil)
 
 // NamedValueClientAPI contains the set of methods on the NamedValueClient type.
 type NamedValueClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, parameters apimanagement.NamedValueContract, ifMatch string) (result apimanagement.NamedValueCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, parameters apimanagement.NamedValueCreateContract, ifMatch string) (result apimanagement.NamedValueCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string) (result apimanagement.NamedValueContract, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string) (result autorest.Response, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.NamedValueCollectionPage, err error)
 	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.NamedValueCollectionIterator, err error)
+	ListValue(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string) (result apimanagement.PropertyValueContract, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, parameters apimanagement.NamedValueUpdateParameters, ifMatch string) (result apimanagement.NamedValueUpdateFuture, err error)
 }
 
@@ -713,7 +754,7 @@ var _ UserIdentitiesClientAPI = (*apimanagement.UserIdentitiesClient)(nil)
 
 // UserConfirmationPasswordClientAPI contains the set of methods on the UserConfirmationPasswordClient type.
 type UserConfirmationPasswordClientAPI interface {
-	Send(ctx context.Context, resourceGroupName string, serviceName string, userID string) (result autorest.Response, err error)
+	SendMethod(ctx context.Context, resourceGroupName string, serviceName string, userID string) (result autorest.Response, err error)
 }
 
 var _ UserConfirmationPasswordClientAPI = (*apimanagement.UserConfirmationPasswordClient)(nil)

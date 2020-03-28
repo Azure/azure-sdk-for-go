@@ -168,7 +168,6 @@ const (
 type ARMProxyResource = original.ARMProxyResource
 type ARMResourceProperties = original.ARMResourceProperties
 type AutoUpgradePolicyResource = original.AutoUpgradePolicyResource
-type AutopilotSettingsResource = original.AutopilotSettingsResource
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type Capability = original.Capability
@@ -289,6 +288,16 @@ type MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture = original.MongoDBRes
 type MongoIndex = original.MongoIndex
 type MongoIndexKeys = original.MongoIndexKeys
 type MongoIndexOptions = original.MongoIndexOptions
+type NotebookWorkspace = original.NotebookWorkspace
+type NotebookWorkspaceConnectionInfoResult = original.NotebookWorkspaceConnectionInfoResult
+type NotebookWorkspaceCreateUpdateParameters = original.NotebookWorkspaceCreateUpdateParameters
+type NotebookWorkspaceListResult = original.NotebookWorkspaceListResult
+type NotebookWorkspaceProperties = original.NotebookWorkspaceProperties
+type NotebookWorkspacesClient = original.NotebookWorkspacesClient
+type NotebookWorkspacesCreateOrUpdateFuture = original.NotebookWorkspacesCreateOrUpdateFuture
+type NotebookWorkspacesDeleteFuture = original.NotebookWorkspacesDeleteFuture
+type NotebookWorkspacesRegenerateAuthTokenFuture = original.NotebookWorkspacesRegenerateAuthTokenFuture
+type NotebookWorkspacesStartFuture = original.NotebookWorkspacesStartFuture
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -319,6 +328,7 @@ type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
+type ProvisionedThroughputSettingsResource = original.ProvisionedThroughputSettingsResource
 type ProxyResource = original.ProxyResource
 type RegionForOnlineOffline = original.RegionForOnlineOffline
 type Resource = original.Resource
@@ -458,6 +468,12 @@ func NewMongoDBResourcesClient(subscriptionID string, subscriptionID1 string) Mo
 }
 func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
 	return original.NewMongoDBResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+}
+func NewNotebookWorkspacesClient(subscriptionID string, subscriptionID1 string) NotebookWorkspacesClient {
+	return original.NewNotebookWorkspacesClient(subscriptionID, subscriptionID1)
+}
+func NewNotebookWorkspacesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) NotebookWorkspacesClient {
+	return original.NewNotebookWorkspacesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)

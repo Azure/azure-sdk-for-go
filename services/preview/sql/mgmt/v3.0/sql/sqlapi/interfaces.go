@@ -961,6 +961,13 @@ type WorkloadClassifiersClientAPI interface {
 
 var _ WorkloadClassifiersClientAPI = (*sql.WorkloadClassifiersClient)(nil)
 
+// ManagedDatabaseRestoreDetailsClientAPI contains the set of methods on the ManagedDatabaseRestoreDetailsClient type.
+type ManagedDatabaseRestoreDetailsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabaseRestoreDetailsResult, err error)
+}
+
+var _ ManagedDatabaseRestoreDetailsClientAPI = (*sql.ManagedDatabaseRestoreDetailsClient)(nil)
+
 // ManagedDatabasesClientAPI contains the set of methods on the ManagedDatabasesClient type.
 type ManagedDatabasesClientAPI interface {
 	CompleteRestore(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.CompleteDatabaseRestoreDefinition) (result sql.ManagedDatabasesCompleteRestoreFuture, err error)
@@ -987,3 +994,13 @@ type ServerAzureADAdministratorsClientAPI interface {
 }
 
 var _ ServerAzureADAdministratorsClientAPI = (*sql.ServerAzureADAdministratorsClient)(nil)
+
+// ManagedInstanceOperationsClientAPI contains the set of methods on the ManagedInstanceOperationsClient type.
+type ManagedInstanceOperationsClientAPI interface {
+	Cancel(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID uuid.UUID) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID uuid.UUID) (result sql.ManagedInstanceOperation, err error)
+	ListByManagedInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceOperationListResultPage, err error)
+	ListByManagedInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceOperationListResultIterator, err error)
+}
+
+var _ ManagedInstanceOperationsClientAPI = (*sql.ManagedInstanceOperationsClient)(nil)

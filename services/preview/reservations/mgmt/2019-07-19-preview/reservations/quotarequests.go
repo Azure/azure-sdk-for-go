@@ -42,7 +42,7 @@ func NewQuotaRequestsClientWithBaseURI(baseURI string) QuotaRequestsClient {
 	return QuotaRequestsClient{NewWithBaseURI(baseURI)}
 }
 
-// GetStatus gets the QuotaRequest details and status by the quota requestId for the resources for the resource
+// GetStatus gets the QuotaRequest details and status by the quota request Id for the resources for the resource
 // provider at a specific location. The requestId is returned as response to the Put requests for serviceLimits.
 // Parameters:
 // subscriptionID - azure subscription id.

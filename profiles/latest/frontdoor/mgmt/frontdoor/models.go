@@ -315,8 +315,10 @@ const (
 type Query = original.Query
 
 const (
-	StripAll  Query = original.StripAll
-	StripNone Query = original.StripNone
+	StripAll       Query = original.StripAll
+	StripAllExcept Query = original.StripAllExcept
+	StripNone      Query = original.StripNone
+	StripOnly      Query = original.StripOnly
 )
 
 type RedirectProtocol = original.RedirectProtocol

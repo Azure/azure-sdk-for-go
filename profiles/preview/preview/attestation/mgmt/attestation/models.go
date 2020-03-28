@@ -49,6 +49,8 @@ type ProvidersClient = original.ProvidersClient
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
 type ServiceCreationParams = original.ServiceCreationParams
+type ServiceCreationSpecificParams = original.ServiceCreationSpecificParams
+type ServicePatchParams = original.ServicePatchParams
 type StatusResult = original.StatusResult
 type TrackedResource = original.TrackedResource
 

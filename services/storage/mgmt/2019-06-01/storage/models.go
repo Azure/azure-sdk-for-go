@@ -1698,6 +1698,8 @@ type BlobServicePropertiesProperties struct {
 	ChangeFeed *ChangeFeed `json:"changeFeed,omitempty"`
 	// RestorePolicy - The blob service properties for blob restore policy.
 	RestorePolicy *RestorePolicyProperties `json:"restorePolicy,omitempty"`
+	// ContainerDeleteRetentionPolicy - The blob service properties for container soft delete.
+	ContainerDeleteRetentionPolicy *DeleteRetentionPolicy `json:"containerDeleteRetentionPolicy,omitempty"`
 }
 
 // ChangeFeed the blob service properties for change feed events.
@@ -1736,6 +1738,10 @@ type CloudErrorBody struct {
 
 // ContainerProperties the properties of a container.
 type ContainerProperties struct {
+	// DefaultEncryptionScope - Default the container to use specified encryption scope for all writes.
+	DefaultEncryptionScope *string `json:"defaultEncryptionScope,omitempty"`
+	// DenyEncryptionScopeOverride - Block override of encryption scope from the container default.
+	DenyEncryptionScopeOverride *bool `json:"denyEncryptionScopeOverride,omitempty"`
 	// PublicAccess - Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'PublicAccessContainer', 'PublicAccessBlob', 'PublicAccessNone'
 	PublicAccess PublicAccess `json:"publicAccess,omitempty"`
 	// LastModifiedTime - READ-ONLY; Returns the date and time the container was last modified.
@@ -1761,6 +1767,12 @@ type ContainerProperties struct {
 // MarshalJSON is the custom marshaler for ContainerProperties.
 func (cp ContainerProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if cp.DefaultEncryptionScope != nil {
+		objectMap["defaultEncryptionScope"] = cp.DefaultEncryptionScope
+	}
+	if cp.DenyEncryptionScopeOverride != nil {
+		objectMap["denyEncryptionScopeOverride"] = cp.DenyEncryptionScopeOverride
+	}
 	if cp.PublicAccess != "" {
 		objectMap["publicAccess"] = cp.PublicAccess
 	}
@@ -2736,6 +2748,8 @@ type ImmutabilityPolicyProperty struct {
 	ImmutabilityPeriodSinceCreationInDays *int32 `json:"immutabilityPeriodSinceCreationInDays,omitempty"`
 	// State - READ-ONLY; The ImmutabilityPolicy state of a blob container, possible values include: Locked and Unlocked. Possible values include: 'Locked', 'Unlocked'
 	State ImmutabilityPolicyState `json:"state,omitempty"`
+	// AllowProtectedAppendWrites - This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API
+	AllowProtectedAppendWrites *bool `json:"allowProtectedAppendWrites,omitempty"`
 }
 
 // IPRule IP rule with specific IP or IP range in CIDR format.
@@ -2754,6 +2768,10 @@ type KeyVaultProperties struct {
 	KeyVersion *string `json:"keyversion,omitempty"`
 	// KeyVaultURI - The Uri of KeyVault.
 	KeyVaultURI *string `json:"keyvaulturi,omitempty"`
+	// CurrentVersionedKeyIdentifier - READ-ONLY; The object identifier of the current versioned Key Vault Key in use.
+	CurrentVersionedKeyIdentifier *string `json:"currentVersionedKeyIdentifier,omitempty"`
+	// LastKeyRotationTimestamp - READ-ONLY; Timestamp of last rotation of the Key Vault Key.
+	LastKeyRotationTimestamp *date.Time `json:"lastKeyRotationTimestamp,omitempty"`
 }
 
 // LeaseContainerRequest lease Container request schema.

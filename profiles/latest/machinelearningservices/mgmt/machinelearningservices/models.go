@@ -22,7 +22,7 @@ package machinelearningservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2020-01-01/machinelearningservices"
+	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2020-03-01/machinelearningservices"
 )
 
 const (
@@ -107,9 +107,11 @@ const (
 type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
 
 const (
-	Approved PrivateEndpointServiceConnectionStatus = original.Approved
-	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
-	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
+	Approved     PrivateEndpointServiceConnectionStatus = original.Approved
+	Disconnected PrivateEndpointServiceConnectionStatus = original.Disconnected
+	Pending      PrivateEndpointServiceConnectionStatus = original.Pending
+	Rejected     PrivateEndpointServiceConnectionStatus = original.Rejected
+	Timeout      PrivateEndpointServiceConnectionStatus = original.Timeout
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -272,6 +274,8 @@ type Restriction = original.Restriction
 type SKUCapability = original.SKUCapability
 type ScaleSettings = original.ScaleSettings
 type ServicePrincipalCredentials = original.ServicePrincipalCredentials
+type SharedPrivateLinkResource = original.SharedPrivateLinkResource
+type SharedPrivateLinkResourceProperty = original.SharedPrivateLinkResourceProperty
 type Sku = original.Sku
 type SkuListResult = original.SkuListResult
 type SkuListResultIterator = original.SkuListResultIterator

@@ -102,6 +102,18 @@ const (
 	BackupRestoreOperationTypeSnapshot   BackupRestoreOperationType = original.BackupRestoreOperationTypeSnapshot
 )
 
+type BuildStatus = original.BuildStatus
+
+const (
+	BuildStatusDeleting             BuildStatus = original.BuildStatusDeleting
+	BuildStatusDeploying            BuildStatus = original.BuildStatusDeploying
+	BuildStatusDetached             BuildStatus = original.BuildStatusDetached
+	BuildStatusFailed               BuildStatus = original.BuildStatusFailed
+	BuildStatusReady                BuildStatus = original.BuildStatusReady
+	BuildStatusUploading            BuildStatus = original.BuildStatusUploading
+	BuildStatusWaitingForDeployment BuildStatus = original.BuildStatusWaitingForDeployment
+)
+
 type BuiltInAuthenticationProvider = original.BuiltInAuthenticationProvider
 
 const (
@@ -631,6 +643,13 @@ const (
 	OneFullStopOne  SupportedTLSVersions = original.OneFullStopOne
 	OneFullStopTwo  SupportedTLSVersions = original.OneFullStopTwo
 	OneFullStopZero SupportedTLSVersions = original.OneFullStopZero
+)
+
+type TriggerTypes = original.TriggerTypes
+
+const (
+	TriggerTypesHTTPTrigger TriggerTypes = original.TriggerTypesHTTPTrigger
+	TriggerTypesUnknown     TriggerTypes = original.TriggerTypesUnknown
 )
 
 type TriggeredWebJobStatus = original.TriggeredWebJobStatus
@@ -1169,6 +1188,40 @@ type StampCapacity = original.StampCapacity
 type StampCapacityCollection = original.StampCapacityCollection
 type StampCapacityCollectionIterator = original.StampCapacityCollectionIterator
 type StampCapacityCollectionPage = original.StampCapacityCollectionPage
+type StaticSite = original.StaticSite
+type StaticSiteARMResource = original.StaticSiteARMResource
+type StaticSiteBuildARMResource = original.StaticSiteBuildARMResource
+type StaticSiteBuildARMResourceProperties = original.StaticSiteBuildARMResourceProperties
+type StaticSiteBuildCollection = original.StaticSiteBuildCollection
+type StaticSiteBuildCollectionIterator = original.StaticSiteBuildCollectionIterator
+type StaticSiteBuildCollectionPage = original.StaticSiteBuildCollectionPage
+type StaticSiteBuildProperties = original.StaticSiteBuildProperties
+type StaticSiteCollection = original.StaticSiteCollection
+type StaticSiteCollectionIterator = original.StaticSiteCollectionIterator
+type StaticSiteCollectionPage = original.StaticSiteCollectionPage
+type StaticSiteCustomDomainOverviewARMResource = original.StaticSiteCustomDomainOverviewARMResource
+type StaticSiteCustomDomainOverviewARMResourceProperties = original.StaticSiteCustomDomainOverviewARMResourceProperties
+type StaticSiteCustomDomainOverviewCollection = original.StaticSiteCustomDomainOverviewCollection
+type StaticSiteCustomDomainOverviewCollectionIterator = original.StaticSiteCustomDomainOverviewCollectionIterator
+type StaticSiteCustomDomainOverviewCollectionPage = original.StaticSiteCustomDomainOverviewCollectionPage
+type StaticSiteFunctionOverviewARMResource = original.StaticSiteFunctionOverviewARMResource
+type StaticSiteFunctionOverviewARMResourceProperties = original.StaticSiteFunctionOverviewARMResourceProperties
+type StaticSiteFunctionOverviewCollection = original.StaticSiteFunctionOverviewCollection
+type StaticSiteFunctionOverviewCollectionIterator = original.StaticSiteFunctionOverviewCollectionIterator
+type StaticSiteFunctionOverviewCollectionPage = original.StaticSiteFunctionOverviewCollectionPage
+type StaticSitePatchResource = original.StaticSitePatchResource
+type StaticSiteResetPropertiesARMResource = original.StaticSiteResetPropertiesARMResource
+type StaticSiteResetPropertiesARMResourceProperties = original.StaticSiteResetPropertiesARMResourceProperties
+type StaticSiteUserARMResource = original.StaticSiteUserARMResource
+type StaticSiteUserARMResourceProperties = original.StaticSiteUserARMResourceProperties
+type StaticSiteUserCollection = original.StaticSiteUserCollection
+type StaticSiteUserCollectionIterator = original.StaticSiteUserCollectionIterator
+type StaticSiteUserCollectionPage = original.StaticSiteUserCollectionPage
+type StaticSiteUserInvitationRequestResource = original.StaticSiteUserInvitationRequestResource
+type StaticSiteUserInvitationRequestResourceProperties = original.StaticSiteUserInvitationRequestResourceProperties
+type StaticSiteUserInvitationResponseResource = original.StaticSiteUserInvitationResponseResource
+type StaticSiteUserInvitationResponseResourceProperties = original.StaticSiteUserInvitationResponseResourceProperties
+type StaticSitesClient = original.StaticSitesClient
 type StatusCodesBasedTrigger = original.StatusCodesBasedTrigger
 type StorageMigrationOptions = original.StorageMigrationOptions
 type StorageMigrationOptionsProperties = original.StorageMigrationOptionsProperties
@@ -1603,6 +1656,42 @@ func NewStampCapacityCollectionIterator(page StampCapacityCollectionPage) StampC
 func NewStampCapacityCollectionPage(getNextPage func(context.Context, StampCapacityCollection) (StampCapacityCollection, error)) StampCapacityCollectionPage {
 	return original.NewStampCapacityCollectionPage(getNextPage)
 }
+func NewStaticSiteBuildCollectionIterator(page StaticSiteBuildCollectionPage) StaticSiteBuildCollectionIterator {
+	return original.NewStaticSiteBuildCollectionIterator(page)
+}
+func NewStaticSiteBuildCollectionPage(getNextPage func(context.Context, StaticSiteBuildCollection) (StaticSiteBuildCollection, error)) StaticSiteBuildCollectionPage {
+	return original.NewStaticSiteBuildCollectionPage(getNextPage)
+}
+func NewStaticSiteCollectionIterator(page StaticSiteCollectionPage) StaticSiteCollectionIterator {
+	return original.NewStaticSiteCollectionIterator(page)
+}
+func NewStaticSiteCollectionPage(getNextPage func(context.Context, StaticSiteCollection) (StaticSiteCollection, error)) StaticSiteCollectionPage {
+	return original.NewStaticSiteCollectionPage(getNextPage)
+}
+func NewStaticSiteCustomDomainOverviewCollectionIterator(page StaticSiteCustomDomainOverviewCollectionPage) StaticSiteCustomDomainOverviewCollectionIterator {
+	return original.NewStaticSiteCustomDomainOverviewCollectionIterator(page)
+}
+func NewStaticSiteCustomDomainOverviewCollectionPage(getNextPage func(context.Context, StaticSiteCustomDomainOverviewCollection) (StaticSiteCustomDomainOverviewCollection, error)) StaticSiteCustomDomainOverviewCollectionPage {
+	return original.NewStaticSiteCustomDomainOverviewCollectionPage(getNextPage)
+}
+func NewStaticSiteFunctionOverviewCollectionIterator(page StaticSiteFunctionOverviewCollectionPage) StaticSiteFunctionOverviewCollectionIterator {
+	return original.NewStaticSiteFunctionOverviewCollectionIterator(page)
+}
+func NewStaticSiteFunctionOverviewCollectionPage(getNextPage func(context.Context, StaticSiteFunctionOverviewCollection) (StaticSiteFunctionOverviewCollection, error)) StaticSiteFunctionOverviewCollectionPage {
+	return original.NewStaticSiteFunctionOverviewCollectionPage(getNextPage)
+}
+func NewStaticSiteUserCollectionIterator(page StaticSiteUserCollectionPage) StaticSiteUserCollectionIterator {
+	return original.NewStaticSiteUserCollectionIterator(page)
+}
+func NewStaticSiteUserCollectionPage(getNextPage func(context.Context, StaticSiteUserCollection) (StaticSiteUserCollection, error)) StaticSiteUserCollectionPage {
+	return original.NewStaticSiteUserCollectionPage(getNextPage)
+}
+func NewStaticSitesClient(subscriptionID string) StaticSitesClient {
+	return original.NewStaticSitesClient(subscriptionID)
+}
+func NewStaticSitesClientWithBaseURI(baseURI string, subscriptionID string) StaticSitesClient {
+	return original.NewStaticSitesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewTldLegalAgreementCollectionIterator(page TldLegalAgreementCollectionPage) TldLegalAgreementCollectionIterator {
 	return original.NewTldLegalAgreementCollectionIterator(page)
 }
@@ -1671,6 +1760,9 @@ func PossibleBackupItemStatusValues() []BackupItemStatus {
 }
 func PossibleBackupRestoreOperationTypeValues() []BackupRestoreOperationType {
 	return original.PossibleBackupRestoreOperationTypeValues()
+}
+func PossibleBuildStatusValues() []BuildStatus {
+	return original.PossibleBuildStatusValues()
 }
 func PossibleBuiltInAuthenticationProviderValues() []BuiltInAuthenticationProvider {
 	return original.PossibleBuiltInAuthenticationProviderValues()
@@ -1836,6 +1928,9 @@ func PossibleStatusOptionsValues() []StatusOptions {
 }
 func PossibleSupportedTLSVersionsValues() []SupportedTLSVersions {
 	return original.PossibleSupportedTLSVersionsValues()
+}
+func PossibleTriggerTypesValues() []TriggerTypes {
+	return original.PossibleTriggerTypesValues()
 }
 func PossibleTriggeredWebJobStatusValues() []TriggeredWebJobStatus {
 	return original.PossibleTriggeredWebJobStatusValues()

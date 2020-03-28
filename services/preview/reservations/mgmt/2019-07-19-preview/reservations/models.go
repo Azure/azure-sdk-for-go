@@ -588,29 +588,8 @@ func (cql *CurrentQuotaLimit) UnmarshalJSON(body []byte) error {
 // CurrentQuotaLimitBase quota limits.
 type CurrentQuotaLimitBase struct {
 	autorest.Response `json:"-"`
-	// Limit - The quota limit.
-	Limit *int32 `json:"limit,omitempty"`
-	// CurrentValue - READ-ONLY; The current resource usages information.
-	CurrentValue *int32 `json:"currentValue,omitempty"`
-	// Unit -  The units of the limit, such as - Count, Bytes, etc. Use the unit field provided in the Get quota response.
-	Unit *string `json:"unit,omitempty"`
-	// Name - Name of the resource provide by the resource Provider. Please use this name property for quotaRequests.
-	Name *CurrentQuotaLimitBaseName `json:"name,omitempty"`
-	// ResourceType - The Resource Type Name.
-	ResourceType interface{} `json:"resourceType,omitempty"`
-	// QuotaPeriod - READ-ONLY; The quota period over which the usage values are summarized, such as - P1D (Per one day), PT1M (Per one minute), PT1S (Per one second). This parameter is optional because, for some resources like compute, the period doesn’t matter.
-	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
-	// Properties - Additional properties for the specific resource provider.
-	Properties interface{} `json:"properties,omitempty"`
-}
-
-// CurrentQuotaLimitBaseName name of the resource provide by the resource Provider. Please use this name
-// property for quotaRequests.
-type CurrentQuotaLimitBaseName struct {
-	// Value - Resource name.
-	Value *string `json:"value,omitempty"`
-	// LocalizedValue - READ-ONLY; Resource display name.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	// Properties - Quota properties for the resource.
+	Properties *QuotaProperties `json:"properties,omitempty"`
 }
 
 // EmailAction email Action.
@@ -621,7 +600,7 @@ type EmailAction struct {
 
 // EmailActions the email actions.
 type EmailActions struct {
-	// Value - The list of actions based on the success or failure of automatic quota increase action.
+	// Value - The list of email actions based on the success or failure of automatic quota increase action.
 	Value *[]EmailAction `json:"value,omitempty"`
 }
 
@@ -1709,6 +1688,24 @@ type QuotaLimitsResponse struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// QuotaProperties resource quota properties.
+type QuotaProperties struct {
+	// Limit - The quota limit.
+	Limit *int32 `json:"limit,omitempty"`
+	// CurrentValue - READ-ONLY; The current resource usages information.
+	CurrentValue *int32 `json:"currentValue,omitempty"`
+	// Unit -  The units of the limit, such as - Count, Bytes, etc. Use the unit field provided in the Get quota response.
+	Unit *string `json:"unit,omitempty"`
+	// Name - Name of the resource provide by the resource Provider. Please use this name property for quotaRequests.
+	Name *ResourceName `json:"name,omitempty"`
+	// ResourceType - The Resource Type Name.
+	ResourceType interface{} `json:"resourceType,omitempty"`
+	// QuotaPeriod - READ-ONLY; The quota period over which the usage values are summarized, such as - P1D (Per one day), PT1M (Per one minute), PT1S (Per one second). This parameter is optional because, for some resources like compute, the period doesn’t matter.
+	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
+	// Properties - Additional properties for the specific resource provider.
+	Properties interface{} `json:"properties,omitempty"`
+}
+
 // QuotaRequestCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type QuotaRequestCreateFuture struct {
@@ -2344,6 +2341,15 @@ func (future *ReservationUpdateFuture) Result(client Client) (r Response, err er
 	return
 }
 
+// ResourceName name of the resource provide by the resource Provider. Please use this name property for
+// quotaRequests.
+type ResourceName struct {
+	// Value - Resource name.
+	Value *string `json:"value,omitempty"`
+	// LocalizedValue - READ-ONLY; Resource display name.
+	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
 // Response ...
 type Response struct {
 	autorest.Response `json:"-"`
@@ -2500,7 +2506,7 @@ type SubRequest struct {
 	// Limit - READ-ONLY; The Resource limit.
 	Limit *int32 `json:"limit,omitempty"`
 	// Name - The Resource name.
-	Name *SubRequestName `json:"name,omitempty"`
+	Name *ResourceName `json:"name,omitempty"`
 	// ResourceType - READ-ONLY; Resource type for which the quota check was made.
 	ResourceType *string `json:"resourceType,omitempty"`
 	// Unit -  The units of the limit, such as - Count, Bytes, etc. Use the unit field provided in the Get quota response.
@@ -2511,14 +2517,6 @@ type SubRequest struct {
 	Message *string `json:"message,omitempty"`
 	// SubRequestID - READ-ONLY; Sub request id for individual request.
 	SubRequestID *string `json:"subRequestId,omitempty"`
-}
-
-// SubRequestName the Resource name.
-type SubRequestName struct {
-	// LocalizedValue - READ-ONLY; Resource display name.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
-	// Value - READ-ONLY; Resource name.
-	Value *string `json:"value,omitempty"`
 }
 
 // SubscriptionScopeProperties ...

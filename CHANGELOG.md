@@ -1,6 +1,71 @@
 # CHANGELOG
 
-## v40.6.0
+## `v41.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| batch | 2020-03-01<br/>2020-03-01.11.0 |
+| computervision | v3.0-preview |
+| containerservice | 2020-03-01 |
+| keyvault | v7.1-preview<br/>v7.2-preview |
+| machinelearningservices | 2020-02-18-preview<br/>2020-03-01 |
+| managementgroups | 2020-02-01 |
+| migrate | 2020-01-01 |
+| redhatopenshift | 2020-04-30 |
+| search | 2020-03-13 |
+| storagesync | 2019-10-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| azurestack | 2017-06-01 |
+| backup | 2019-06-15 |
+| blueprint | 2018-11-01-preview |
+| compute | 2019-12-01 |
+| documentdb | 2019-08-01<br/>2019-08-01-preview |
+| features | 2015-12-01 |
+| frontdoor | 2019-04-01<br/>2019-05-01<br/>2019-10-01<br/>2019-11-01 |
+| insights | 2015-05-01<br/>v1 |
+| operationalinsights | v1 |
+| siterecovery | 2018-01-10 |
+| sql | 2018-06-01-preview<br/>v3.0 |
+| storage | 2019-06-01 |
+| web | 2019-08-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2018-06-01-preview<br/>2019-01-01<br/>2019-12-01-preview |
+| attestation | 2018-09-01-preview |
+| cdn | 2019-06-15-preview |
+| containerregistry | 2019-06-01-preview<br/>2019-12-01-preview |
+| datafactory | 2018-06-01 |
+| documentdb | 2019-12-12 |
+| eventgrid | 2018-01-01 |
+| eventhub | 2015-08-01<br/>2017-04-01 |
+| frontdoor | 2020-01-01 |
+| insights | 2018-03-01<br/>2018-09-01<br/>2018-11-01-preview<br/>2019-03-01<br/>2019-06-01 |
+| iotcentral | 2018-09-01 |
+| mariadb | 2018-06-01 |
+| msi | 2015-08-31-preview<br/>2018-11-30 |
+| mysql | 2017-12-01<br/>2017-12-01-preview |
+| netapp | 2019-11-01 |
+| network | 2016-09-01<br/>2016-12-01<br/>2019-11-01 |
+| notificationhubs | 2014-09-01<br/>2016-03-01<br/>2017-04-01 |
+| operationalinsights | 2015-11-01-preview |
+| postgresql | 2017-12-01<br/>2017-12-01-preview |
+| relay | 2016-07-01<br/>2017-04-01 |
+| reservations | 2019-07-19-preview |
+| security | v1.0<br/>v2.0<br/>v3.0 |
+| servicebus | 2015-08-01<br/>2017-04-01 |
+| siterecovery | 2018-07-10 |
+| synapse | 2019-06-01-preview |
+
+## `v40.6.0`
 
 ### New Packages
 
@@ -17,7 +82,7 @@
 
 ### Updated `./storage` package, which allows users to use azure-sdk-for-go to connect to and use cosmosdb table storage.
 
-## v40.5.0
+## `v40.5.0`
 
 ### New Packages
 

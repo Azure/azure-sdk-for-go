@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"testing"
 
@@ -39,6 +40,10 @@ func TestChainedTokenCredential_InstantiateSuccess(t *testing.T) {
 }
 
 func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
+	l := azcore.Log()
+	l.SetListener(func(c azcore.LogClassification, s string) {
+		fmt.Println(s)
+	})
 	err := initEnvironmentVarsForTest()
 	if err != nil {
 		t.Fatalf("Could not set environment variables for testing: %v", err)
@@ -72,6 +77,10 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
+	l := azcore.Log()
+	l.SetListener(func(c azcore.LogClassification, s string) {
+		fmt.Println(s)
+	})
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))

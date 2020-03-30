@@ -45,15 +45,15 @@ func (c *ClientSecretCredential) GetToken(ctx context.Context, opts azcore.Token
 	log := azcore.Log()
 	if err != nil {
 		msg := fmt.Sprintf("Azure Identity => ERROR in GetToken() call for %T: %s", c, err.Error())
-		log.Write(CredentialClassification, msg)
+		log.Write(LogCredential, msg)
 	} else {
 		msg := fmt.Sprintf("Azure Identity => GetToken() result for %T: SUCCESS", c)
-		log.Write(CredentialClassification, msg)
+		log.Write(LogCredential, msg)
 
 	}
-	if log.Should(CredentialClassificationVerbose) {
+	if log.Should(LogCredentialVerbose) {
 		vmsg := fmt.Sprintf("Azure Identity => Scopes: [%s]", strings.Join(opts.Scopes, ", "))
-		log.Write(CredentialClassificationVerbose, vmsg)
+		log.Write(LogCredentialVerbose, vmsg)
 	}
 	return tk, err
 }

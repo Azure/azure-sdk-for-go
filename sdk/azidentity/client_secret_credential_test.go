@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -64,6 +65,11 @@ func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
 }
 
 func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
+	l := azcore.Log()
+	// l.SetClassifications(CredentialClassification)
+	l.SetListener(func(c azcore.LogClassification, s string) {
+		fmt.Println(s)
+	})
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
@@ -79,6 +85,11 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
+	l := azcore.Log()
+	l.SetClassifications(CredentialClassification, CredentialClassificationVerbose)
+	l.SetListener(func(c azcore.LogClassification, s string) {
+		fmt.Println(s)
+	})
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))

@@ -355,16 +355,6 @@ func (arp ARMResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AutopilotSettingsResource cosmos DB autopilot settings object
-type AutopilotSettingsResource struct {
-	// MaxThroughput - Represents max throughput an autopilot container can operate at.
-	MaxThroughput *int32 `json:"maxThroughput,omitempty"`
-	// AutoUpgradePolicy - Cosmos DB resource auto-upgrade policy
-	AutoUpgradePolicy *AutoUpgradePolicyResource `json:"autoUpgradePolicy,omitempty"`
-	// TargetMaxThroughput - READ-ONLY; Represents target max throughput an autopilot container should operate at once offer is no longer in pending state.
-	TargetMaxThroughput *int32 `json:"targetMaxThroughput,omitempty"`
-}
-
 // AutoUpgradePolicyResource cosmos DB resource auto-upgrade policy
 type AutoUpgradePolicyResource struct {
 	// ThroughputPolicy - Represents throughput policy which service must adhere to for auto-upgrade
@@ -3297,6 +3287,211 @@ type MongoIndexOptions struct {
 	Unique *bool `json:"unique,omitempty"`
 }
 
+// NotebookWorkspace a notebook workspace resource
+type NotebookWorkspace struct {
+	autorest.Response `json:"-"`
+	// NotebookWorkspaceProperties - Resource properties.
+	*NotebookWorkspaceProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NotebookWorkspace.
+func (nw NotebookWorkspace) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nw.NotebookWorkspaceProperties != nil {
+		objectMap["properties"] = nw.NotebookWorkspaceProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for NotebookWorkspace struct.
+func (nw *NotebookWorkspace) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var notebookWorkspaceProperties NotebookWorkspaceProperties
+				err = json.Unmarshal(*v, &notebookWorkspaceProperties)
+				if err != nil {
+					return err
+				}
+				nw.NotebookWorkspaceProperties = &notebookWorkspaceProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				nw.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				nw.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				nw.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// NotebookWorkspaceConnectionInfoResult the connection info for the given notebook workspace
+type NotebookWorkspaceConnectionInfoResult struct {
+	autorest.Response `json:"-"`
+	// AuthToken - READ-ONLY; Specifies auth token used for connecting to Notebook server (uses token-based auth).
+	AuthToken *string `json:"authToken,omitempty"`
+	// NotebookServerEndpoint - READ-ONLY; Specifies the endpoint of Notebook server.
+	NotebookServerEndpoint *string `json:"notebookServerEndpoint,omitempty"`
+}
+
+// NotebookWorkspaceCreateUpdateParameters parameters to create a notebook workspace resource
+type NotebookWorkspaceCreateUpdateParameters struct {
+	// ID - READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// NotebookWorkspaceListResult a list of notebook workspace resources
+type NotebookWorkspaceListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of notebook workspace resources
+	Value *[]NotebookWorkspace `json:"value,omitempty"`
+}
+
+// NotebookWorkspaceProperties properties of a notebook workspace resource.
+type NotebookWorkspaceProperties struct {
+	// NotebookServerEndpoint - READ-ONLY; Specifies the endpoint of Notebook server.
+	NotebookServerEndpoint *string `json:"notebookServerEndpoint,omitempty"`
+	// Status - READ-ONLY; Status of the notebook workspace. Possible values are: Creating, Online, Deleting, Failed, Updating.
+	Status *string `json:"status,omitempty"`
+}
+
+// NotebookWorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type NotebookWorkspacesCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *NotebookWorkspacesCreateOrUpdateFuture) Result(client NotebookWorkspacesClient) (nw NotebookWorkspace, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.NotebookWorkspacesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("documentdb.NotebookWorkspacesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if nw.Response.Response, err = future.GetResult(sender); err == nil && nw.Response.Response.StatusCode != http.StatusNoContent {
+		nw, err = client.CreateOrUpdateResponder(nw.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.NotebookWorkspacesCreateOrUpdateFuture", "Result", nw.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// NotebookWorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type NotebookWorkspacesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *NotebookWorkspacesDeleteFuture) Result(client NotebookWorkspacesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.NotebookWorkspacesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("documentdb.NotebookWorkspacesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// NotebookWorkspacesRegenerateAuthTokenFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
+type NotebookWorkspacesRegenerateAuthTokenFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *NotebookWorkspacesRegenerateAuthTokenFuture) Result(client NotebookWorkspacesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.NotebookWorkspacesRegenerateAuthTokenFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("documentdb.NotebookWorkspacesRegenerateAuthTokenFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// NotebookWorkspacesStartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type NotebookWorkspacesStartFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *NotebookWorkspacesStartFuture) Result(client NotebookWorkspacesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.NotebookWorkspacesStartFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("documentdb.NotebookWorkspacesStartFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // Operation REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
@@ -3811,6 +4006,16 @@ type PrivateLinkServiceConnectionStateProperty struct {
 	Description *string `json:"description,omitempty"`
 	// ActionsRequired - READ-ONLY; Any action that is required beyond basic workflow (approve/ reject/ disconnect)
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
+}
+
+// ProvisionedThroughputSettingsResource cosmos DB provisioned throughput settings object
+type ProvisionedThroughputSettingsResource struct {
+	// MaxThroughput - Represents maximum throughput container can scale up to.
+	MaxThroughput *int32 `json:"maxThroughput,omitempty"`
+	// AutoUpgradePolicy - Cosmos DB resource auto-upgrade policy
+	AutoUpgradePolicy *AutoUpgradePolicyResource `json:"autoUpgradePolicy,omitempty"`
+	// TargetMaxThroughput - READ-ONLY; Represents target maximum throughput container can scale up to once offer is no longer in pending state.
+	TargetMaxThroughput *int32 `json:"targetMaxThroughput,omitempty"`
 }
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
@@ -5733,10 +5938,10 @@ type ThroughputSettingsGetProperties struct {
 
 // ThroughputSettingsGetPropertiesResource ...
 type ThroughputSettingsGetPropertiesResource struct {
-	// Throughput - Value of the Cosmos DB resource throughput. Either throughput is required or autopilotSettings is required, but not both.
+	// Throughput - Value of the Cosmos DB resource throughput. Either throughput is required or provisionedThroughputSettings is required, but not both.
 	Throughput *int32 `json:"throughput,omitempty"`
-	// AutopilotSettings - Cosmos DB resource for Autopilot settings. Either throughput is required or autopilotSettings is required, but not both.
-	AutopilotSettings *AutopilotSettingsResource `json:"autopilotSettings,omitempty"`
+	// ProvisionedThroughputSettings - Cosmos DB resource for provisioned throughput settings. Either throughput is required or provisionedThroughputSettings is required, but not both.
+	ProvisionedThroughputSettings *ProvisionedThroughputSettingsResource `json:"provisionedThroughputSettings,omitempty"`
 	// MinimumThroughput - READ-ONLY; The minimum throughput of the resource
 	MinimumThroughput *string `json:"minimumThroughput,omitempty"`
 	// OfferReplacePending - READ-ONLY; The throughput replace is pending
@@ -5850,12 +6055,12 @@ func (tsgr *ThroughputSettingsGetResults) UnmarshalJSON(body []byte) error {
 }
 
 // ThroughputSettingsResource cosmos DB resource throughput object. Either throughput is required or
-// autopilotSettings is required, but not both.
+// provisionedThroughputSettings is required, but not both.
 type ThroughputSettingsResource struct {
-	// Throughput - Value of the Cosmos DB resource throughput. Either throughput is required or autopilotSettings is required, but not both.
+	// Throughput - Value of the Cosmos DB resource throughput. Either throughput is required or provisionedThroughputSettings is required, but not both.
 	Throughput *int32 `json:"throughput,omitempty"`
-	// AutopilotSettings - Cosmos DB resource for Autopilot settings. Either throughput is required or autopilotSettings is required, but not both.
-	AutopilotSettings *AutopilotSettingsResource `json:"autopilotSettings,omitempty"`
+	// ProvisionedThroughputSettings - Cosmos DB resource for provisioned throughput settings. Either throughput is required or provisionedThroughputSettings is required, but not both.
+	ProvisionedThroughputSettings *ProvisionedThroughputSettingsResource `json:"provisionedThroughputSettings,omitempty"`
 	// MinimumThroughput - READ-ONLY; The minimum throughput of the resource
 	MinimumThroughput *string `json:"minimumThroughput,omitempty"`
 	// OfferReplacePending - READ-ONLY; The throughput replace is pending

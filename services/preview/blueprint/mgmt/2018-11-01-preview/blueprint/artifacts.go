@@ -43,14 +43,13 @@ func NewArtifactsClientWithBaseURI(baseURI string) ArtifactsClient {
 
 // CreateOrUpdate create or update blueprint artifact.
 // Parameters:
-// scope - the scope of the resource. Valid scopes are: management group (format:
+// resourceScope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
-// use.
+// '/subscriptions/{subscriptionId}').
 // blueprintName - name of the blueprint definition.
 // artifactName - name of the blueprint artifact.
 // artifact - blueprint artifact to create or update.
-func (client ArtifactsClient) CreateOrUpdate(ctx context.Context, scope string, blueprintName string, artifactName string, artifact BasicArtifact) (result ArtifactModel, err error) {
+func (client ArtifactsClient) CreateOrUpdate(ctx context.Context, resourceScope string, blueprintName string, artifactName string, artifact BasicArtifact) (result ArtifactModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactsClient.CreateOrUpdate")
 		defer func() {
@@ -61,7 +60,7 @@ func (client ArtifactsClient) CreateOrUpdate(ctx context.Context, scope string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, scope, blueprintName, artifactName, artifact)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceScope, blueprintName, artifactName, artifact)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.ArtifactsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -83,11 +82,11 @@ func (client ArtifactsClient) CreateOrUpdate(ctx context.Context, scope string, 
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ArtifactsClient) CreateOrUpdatePreparer(ctx context.Context, scope string, blueprintName string, artifactName string, artifact BasicArtifact) (*http.Request, error) {
+func (client ArtifactsClient) CreateOrUpdatePreparer(ctx context.Context, resourceScope string, blueprintName string, artifactName string, artifact BasicArtifact) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"artifactName":  autorest.Encode("path", artifactName),
 		"blueprintName": autorest.Encode("path", blueprintName),
-		"scope":         scope,
+		"resourceScope": resourceScope,
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -99,7 +98,7 @@ func (client ArtifactsClient) CreateOrUpdatePreparer(ctx context.Context, scope 
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}", pathParameters),
+		autorest.WithPathParameters("/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}", pathParameters),
 		autorest.WithJSON(artifact),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -126,13 +125,12 @@ func (client ArtifactsClient) CreateOrUpdateResponder(resp *http.Response) (resu
 
 // Delete delete a blueprint artifact.
 // Parameters:
-// scope - the scope of the resource. Valid scopes are: management group (format:
+// resourceScope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
-// use.
+// '/subscriptions/{subscriptionId}').
 // blueprintName - name of the blueprint definition.
 // artifactName - name of the blueprint artifact.
-func (client ArtifactsClient) Delete(ctx context.Context, scope string, blueprintName string, artifactName string) (result ArtifactModel, err error) {
+func (client ArtifactsClient) Delete(ctx context.Context, resourceScope string, blueprintName string, artifactName string) (result ArtifactModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactsClient.Delete")
 		defer func() {
@@ -143,7 +141,7 @@ func (client ArtifactsClient) Delete(ctx context.Context, scope string, blueprin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, scope, blueprintName, artifactName)
+	req, err := client.DeletePreparer(ctx, resourceScope, blueprintName, artifactName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.ArtifactsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -165,11 +163,11 @@ func (client ArtifactsClient) Delete(ctx context.Context, scope string, blueprin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ArtifactsClient) DeletePreparer(ctx context.Context, scope string, blueprintName string, artifactName string) (*http.Request, error) {
+func (client ArtifactsClient) DeletePreparer(ctx context.Context, resourceScope string, blueprintName string, artifactName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"artifactName":  autorest.Encode("path", artifactName),
 		"blueprintName": autorest.Encode("path", blueprintName),
-		"scope":         scope,
+		"resourceScope": resourceScope,
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -180,7 +178,7 @@ func (client ArtifactsClient) DeletePreparer(ctx context.Context, scope string, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}", pathParameters),
+		autorest.WithPathParameters("/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -206,13 +204,12 @@ func (client ArtifactsClient) DeleteResponder(resp *http.Response) (result Artif
 
 // Get get a blueprint artifact.
 // Parameters:
-// scope - the scope of the resource. Valid scopes are: management group (format:
+// resourceScope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
-// use.
+// '/subscriptions/{subscriptionId}').
 // blueprintName - name of the blueprint definition.
 // artifactName - name of the blueprint artifact.
-func (client ArtifactsClient) Get(ctx context.Context, scope string, blueprintName string, artifactName string) (result ArtifactModel, err error) {
+func (client ArtifactsClient) Get(ctx context.Context, resourceScope string, blueprintName string, artifactName string) (result ArtifactModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactsClient.Get")
 		defer func() {
@@ -223,7 +220,7 @@ func (client ArtifactsClient) Get(ctx context.Context, scope string, blueprintNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, scope, blueprintName, artifactName)
+	req, err := client.GetPreparer(ctx, resourceScope, blueprintName, artifactName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.ArtifactsClient", "Get", nil, "Failure preparing request")
 		return
@@ -245,11 +242,11 @@ func (client ArtifactsClient) Get(ctx context.Context, scope string, blueprintNa
 }
 
 // GetPreparer prepares the Get request.
-func (client ArtifactsClient) GetPreparer(ctx context.Context, scope string, blueprintName string, artifactName string) (*http.Request, error) {
+func (client ArtifactsClient) GetPreparer(ctx context.Context, resourceScope string, blueprintName string, artifactName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"artifactName":  autorest.Encode("path", artifactName),
 		"blueprintName": autorest.Encode("path", blueprintName),
-		"scope":         scope,
+		"resourceScope": resourceScope,
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -260,7 +257,7 @@ func (client ArtifactsClient) GetPreparer(ctx context.Context, scope string, blu
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}", pathParameters),
+		autorest.WithPathParameters("/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -286,12 +283,11 @@ func (client ArtifactsClient) GetResponder(resp *http.Response) (result Artifact
 
 // List list artifacts for a given blueprint definition.
 // Parameters:
-// scope - the scope of the resource. Valid scopes are: management group (format:
+// resourceScope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
-// use.
+// '/subscriptions/{subscriptionId}').
 // blueprintName - name of the blueprint definition.
-func (client ArtifactsClient) List(ctx context.Context, scope string, blueprintName string) (result ArtifactListPage, err error) {
+func (client ArtifactsClient) List(ctx context.Context, resourceScope string, blueprintName string) (result ArtifactListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactsClient.List")
 		defer func() {
@@ -303,7 +299,7 @@ func (client ArtifactsClient) List(ctx context.Context, scope string, blueprintN
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, scope, blueprintName)
+	req, err := client.ListPreparer(ctx, resourceScope, blueprintName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.ArtifactsClient", "List", nil, "Failure preparing request")
 		return
@@ -325,10 +321,10 @@ func (client ArtifactsClient) List(ctx context.Context, scope string, blueprintN
 }
 
 // ListPreparer prepares the List request.
-func (client ArtifactsClient) ListPreparer(ctx context.Context, scope string, blueprintName string) (*http.Request, error) {
+func (client ArtifactsClient) ListPreparer(ctx context.Context, resourceScope string, blueprintName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"blueprintName": autorest.Encode("path", blueprintName),
-		"scope":         scope,
+		"resourceScope": resourceScope,
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -339,7 +335,7 @@ func (client ArtifactsClient) ListPreparer(ctx context.Context, scope string, bl
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts", pathParameters),
+		autorest.WithPathParameters("/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -385,7 +381,7 @@ func (client ArtifactsClient) listNextResults(ctx context.Context, lastResults A
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ArtifactsClient) ListComplete(ctx context.Context, scope string, blueprintName string) (result ArtifactListIterator, err error) {
+func (client ArtifactsClient) ListComplete(ctx context.Context, resourceScope string, blueprintName string) (result ArtifactListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactsClient.List")
 		defer func() {
@@ -396,6 +392,6 @@ func (client ArtifactsClient) ListComplete(ctx context.Context, scope string, bl
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, scope, blueprintName)
+	result.page, err = client.List(ctx, resourceScope, blueprintName)
 	return
 }

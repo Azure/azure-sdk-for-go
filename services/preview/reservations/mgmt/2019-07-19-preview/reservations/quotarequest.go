@@ -42,10 +42,10 @@ func NewQuotaRequestClientWithBaseURI(baseURI string) QuotaRequestClient {
 }
 
 // Create submits Quota change request for a resource provider for the specified location for the specific resource in
-// the parameter. To use, first make a Get request to get quota information. This information consists of a list of
-// resources and information regarding those resources. For all the resources in that list which require an update to
-// their quotas, update their limit fields in the response from the Get request to their new values. Then, submit this
-// updated JSON object to this quota request API. This will update the quota to the values specified. The location
+// the parameter. To use, first make a Get request to get quota information for the specific resource. This information
+// consists of information regarding that specific resources. For the specific resource, if it requires an update to
+// the quota, update the limit field in the response from the Get request to the new value of quota. Then, submit this
+// updated JSON object to this quota request API. This will update the quota to the value specified. The location
 // header in the response will be used to track the status of the quota request. Please check the provisioningState
 // field in the response.
 // Parameters:
@@ -97,8 +97,6 @@ func (client QuotaRequestClient) CreatePreparer(ctx context.Context, subscriptio
 		"api-version": APIVersion,
 	}
 
-	createQuotaRequest.CurrentValue = nil
-	createQuotaRequest.QuotaPeriod = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -136,10 +134,10 @@ func (client QuotaRequestClient) CreateResponder(resp *http.Response) (result Se
 }
 
 // Update submits Quota change request for a resource provider for the specified location for the specific resource in
-// the parameter. To use, first make a Get request to get quota information. This information consists of a list of
-// resources and information regarding those resources. For all the resources in that list which require an update to
-// their quotas, update their limit fields in the response from the Get request to their new values. Then, submit this
-// updated JSON object to this quota request API. This will update the quota to the values specified. The location
+// the parameter. To use, first make a Get request to get quota information for the specific resource. This information
+// consists of information regarding that specific resources. For the specific resource, if it requires an update to
+// the quota, update the limit field in the response from the Get request to the new value of quota. Then, submit this
+// updated JSON object to this quota request API. This will update the quota to the value specified. The location
 // header in the response will be used to track the status of the quota request. Please check the provisioningState
 // field in the response.
 // Parameters:
@@ -191,8 +189,6 @@ func (client QuotaRequestClient) UpdatePreparer(ctx context.Context, subscriptio
 		"api-version": APIVersion,
 	}
 
-	createQuotaRequest.CurrentValue = nil
-	createQuotaRequest.QuotaPeriod = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

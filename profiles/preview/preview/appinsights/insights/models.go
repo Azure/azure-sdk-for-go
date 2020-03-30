@@ -41,6 +41,18 @@ const (
 	Traces              EventType = original.Traces
 )
 
+type MetadataColumnDataType = original.MetadataColumnDataType
+
+const (
+	Bool     MetadataColumnDataType = original.Bool
+	Datetime MetadataColumnDataType = original.Datetime
+	Dynamic  MetadataColumnDataType = original.Dynamic
+	Int      MetadataColumnDataType = original.Int
+	Long     MetadataColumnDataType = original.Long
+	Real     MetadataColumnDataType = original.Real
+	String   MetadataColumnDataType = original.String
+)
+
 type MetricID = original.MetricID
 
 const (
@@ -168,7 +180,14 @@ type EventsSessionInfo = original.EventsSessionInfo
 type EventsTraceInfo = original.EventsTraceInfo
 type EventsTraceResult = original.EventsTraceResult
 type EventsUserInfo = original.EventsUserInfo
+type GetClient = original.GetClient
 type ListMetricsResultsItem = original.ListMetricsResultsItem
+type MetadataApplication = original.MetadataApplication
+type MetadataFunction = original.MetadataFunction
+type MetadataResults = original.MetadataResults
+type MetadataTable = original.MetadataTable
+type MetadataTableColumnsItem = original.MetadataTableColumnsItem
+type MetadataTableGroup = original.MetadataTableGroup
 type MetricsClient = original.MetricsClient
 type MetricsPostBodySchema = original.MetricsPostBodySchema
 type MetricsPostBodySchemaParameters = original.MetricsPostBodySchemaParameters
@@ -176,6 +195,7 @@ type MetricsResult = original.MetricsResult
 type MetricsResultInfo = original.MetricsResultInfo
 type MetricsResultsItem = original.MetricsResultsItem
 type MetricsSegmentInfo = original.MetricsSegmentInfo
+type PostClient = original.PostClient
 type QueryBody = original.QueryBody
 type QueryClient = original.QueryClient
 type QueryResults = original.QueryResults
@@ -191,11 +211,23 @@ func NewEventsClient() EventsClient {
 func NewEventsClientWithBaseURI(baseURI string) EventsClient {
 	return original.NewEventsClientWithBaseURI(baseURI)
 }
+func NewGetClient() GetClient {
+	return original.NewGetClient()
+}
+func NewGetClientWithBaseURI(baseURI string) GetClient {
+	return original.NewGetClientWithBaseURI(baseURI)
+}
 func NewMetricsClient() MetricsClient {
 	return original.NewMetricsClient()
 }
 func NewMetricsClientWithBaseURI(baseURI string) MetricsClient {
 	return original.NewMetricsClientWithBaseURI(baseURI)
+}
+func NewPostClient() PostClient {
+	return original.NewPostClient()
+}
+func NewPostClientWithBaseURI(baseURI string) PostClient {
+	return original.NewPostClientWithBaseURI(baseURI)
 }
 func NewQueryClient() QueryClient {
 	return original.NewQueryClient()
@@ -208,6 +240,9 @@ func NewWithBaseURI(baseURI string) BaseClient {
 }
 func PossibleEventTypeValues() []EventType {
 	return original.PossibleEventTypeValues()
+}
+func PossibleMetadataColumnDataTypeValues() []MetadataColumnDataType {
+	return original.PossibleMetadataColumnDataTypeValues()
 }
 func PossibleMetricIDValues() []MetricID {
 	return original.PossibleMetricIDValues()

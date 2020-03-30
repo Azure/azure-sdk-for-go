@@ -1000,6 +1000,8 @@ type AssignmentOperationProperties struct {
 type AssignmentProperties struct {
 	// BlueprintID - ID of the published version of a blueprint definition.
 	BlueprintID *string `json:"blueprintId,omitempty"`
+	// Scope - The target subscription scope of the blueprint assignment (format: '/subscriptions/{subscriptionId}'). For management group level assignments, the property is required.
+	Scope *string `json:"scope,omitempty"`
 	// Parameters - Blueprint assignment parameter values.
 	Parameters map[string]*ParameterValue `json:"parameters"`
 	// ResourceGroups - Names and locations of resource group placeholders.
@@ -1021,6 +1023,9 @@ func (ap AssignmentProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ap.BlueprintID != nil {
 		objectMap["blueprintId"] = ap.BlueprintID
+	}
+	if ap.Scope != nil {
+		objectMap["scope"] = ap.Scope
 	}
 	if ap.Parameters != nil {
 		objectMap["parameters"] = ap.Parameters

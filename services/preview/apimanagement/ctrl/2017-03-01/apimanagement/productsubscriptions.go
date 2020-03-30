@@ -133,8 +133,7 @@ func (client ProductSubscriptionsClient) ListPreparer(ctx context.Context, apimB
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductSubscriptionsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

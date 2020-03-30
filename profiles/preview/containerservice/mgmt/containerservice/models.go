@@ -22,11 +22,18 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-02-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-03-01/containerservice"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type AgentPoolMode = original.AgentPoolMode
+
+const (
+	System AgentPoolMode = original.System
+	User   AgentPoolMode = original.User
 )
 
 type AgentPoolType = original.AgentPoolType
@@ -48,6 +55,19 @@ type LoadBalancerSku = original.LoadBalancerSku
 const (
 	Basic    LoadBalancerSku = original.Basic
 	Standard LoadBalancerSku = original.Standard
+)
+
+type ManagedClusterSKUName = original.ManagedClusterSKUName
+
+const (
+	ManagedClusterSKUNameBasic ManagedClusterSKUName = original.ManagedClusterSKUNameBasic
+)
+
+type ManagedClusterSKUTier = original.ManagedClusterSKUTier
+
+const (
+	Free ManagedClusterSKUTier = original.Free
+	Paid ManagedClusterSKUTier = original.Paid
 )
 
 type NetworkMode = original.NetworkMode
@@ -401,6 +421,7 @@ type ManagedClusterPoolUpgradeProfileUpgradesItem = original.ManagedClusterPoolU
 type ManagedClusterProperties = original.ManagedClusterProperties
 type ManagedClusterPropertiesAutoScalerProfile = original.ManagedClusterPropertiesAutoScalerProfile
 type ManagedClusterPropertiesIdentityProfileValue = original.ManagedClusterPropertiesIdentityProfileValue
+type ManagedClusterSKU = original.ManagedClusterSKU
 type ManagedClusterServicePrincipalProfile = original.ManagedClusterServicePrincipalProfile
 type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
@@ -513,6 +534,9 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleAgentPoolModeValues() []AgentPoolMode {
+	return original.PossibleAgentPoolModeValues()
+}
 func PossibleAgentPoolTypeValues() []AgentPoolType {
 	return original.PossibleAgentPoolTypeValues()
 }
@@ -521,6 +545,12 @@ func PossibleKindValues() []Kind {
 }
 func PossibleLoadBalancerSkuValues() []LoadBalancerSku {
 	return original.PossibleLoadBalancerSkuValues()
+}
+func PossibleManagedClusterSKUNameValues() []ManagedClusterSKUName {
+	return original.PossibleManagedClusterSKUNameValues()
+}
+func PossibleManagedClusterSKUTierValues() []ManagedClusterSKUTier {
+	return original.PossibleManagedClusterSKUTierValues()
 }
 func PossibleNetworkModeValues() []NetworkMode {
 	return original.PossibleNetworkModeValues()

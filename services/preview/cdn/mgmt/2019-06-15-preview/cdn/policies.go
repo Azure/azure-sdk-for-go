@@ -68,12 +68,8 @@ func (client PoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 		{TargetValue: cdnWebApplicationFirewallPolicy,
 			Constraints: []validation.Constraint{{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings.DefaultCustomBlockResponseStatusCode", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings.DefaultCustomBlockResponseStatusCode", Name: validation.InclusiveMaximum, Rule: int64(599), Chain: nil},
-							{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings.DefaultCustomBlockResponseStatusCode", Name: validation.InclusiveMinimum, Rule: int64(200), Chain: nil},
-						}},
-						{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings.DefaultCustomBlockResponseBody", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings.DefaultCustomBlockResponseBody", Name: validation.Pattern, Rule: `^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$`, Chain: nil}}},
+					Chain: []validation.Constraint{{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings.DefaultCustomBlockResponseBody", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "cdnWebApplicationFirewallPolicy.WebApplicationFirewallPolicyProperties.PolicySettings.DefaultCustomBlockResponseBody", Name: validation.Pattern, Rule: `^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$`, Chain: nil}}},
 					}},
 				}},
 				{Target: "cdnWebApplicationFirewallPolicy.Sku", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -103,7 +99,7 @@ func (client PoliciesClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-06-15-preview"
+	const APIVersion = "2019-06-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -197,7 +193,7 @@ func (client PoliciesClient) DeletePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-06-15-preview"
+	const APIVersion = "2019-06-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -282,7 +278,7 @@ func (client PoliciesClient) GetPreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-06-15-preview"
+	const APIVersion = "2019-06-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -365,7 +361,7 @@ func (client PoliciesClient) ListPreparer(ctx context.Context, resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-06-15-preview"
+	const APIVersion = "2019-06-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -484,7 +480,7 @@ func (client PoliciesClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-06-15-preview"
+	const APIVersion = "2019-06-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

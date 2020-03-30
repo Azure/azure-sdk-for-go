@@ -172,6 +172,10 @@ type Provider struct {
 	autorest.Response `json:"-"`
 	// StatusResult - Describes Attestation service status.
 	*StatusResult `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -185,6 +189,12 @@ func (p Provider) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if p.StatusResult != nil {
 		objectMap["properties"] = p.StatusResult
+	}
+	if p.Tags != nil {
+		objectMap["tags"] = p.Tags
+	}
+	if p.Location != nil {
+		objectMap["location"] = p.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -206,6 +216,24 @@ func (p *Provider) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				p.StatusResult = &statusResult
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				p.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				p.Location = &location
 			}
 		case "id":
 			if v != nil {
@@ -268,16 +296,59 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// ServiceCreationParams client supplied parameters passed to attestation service.
+// ServiceCreationParams parameters for creating an attestation service instance
 type ServiceCreationParams struct {
+	// Location - The supported Azure location where the attestation service instance should be created.
+	Location *string `json:"location,omitempty"`
+	// Tags - The tags that will be assigned to the attestation service instance.
+	Tags map[string]*string `json:"tags"`
+	// Properties - Properties of the attestation service instance
+	Properties *ServiceCreationSpecificParams `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceCreationParams.
+func (scp ServiceCreationParams) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if scp.Location != nil {
+		objectMap["location"] = scp.Location
+	}
+	if scp.Tags != nil {
+		objectMap["tags"] = scp.Tags
+	}
+	if scp.Properties != nil {
+		objectMap["properties"] = scp.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// ServiceCreationSpecificParams client supplied parameters used to create a new attestation service
+// instance.
+type ServiceCreationSpecificParams struct {
 	// AttestationPolicy - Name of attestation policy.
 	AttestationPolicy *string `json:"attestationPolicy,omitempty"`
 	// PolicySigningCertificates - JSON Web Key Set defining a set of X.509 Certificates that will represent the parent certificate for the signing certificate used for policy operations
 	PolicySigningCertificates *JSONWebKeySet `json:"policySigningCertificates,omitempty"`
 }
 
+// ServicePatchParams parameters for patching an attestation service instance
+type ServicePatchParams struct {
+	// Tags - The tags that will be assigned to the attestation service instance.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ServicePatchParams.
+func (spp ServicePatchParams) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if spp.Tags != nil {
+		objectMap["tags"] = spp.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // StatusResult status of attestation service.
 type StatusResult struct {
+	// TrustModel - Trust model for the attestation service instance.
+	TrustModel *string `json:"trustModel,omitempty"`
 	// Status - Status of attestation service. Possible values include: 'Ready', 'NotReady', 'Error'
 	Status ServiceStatus `json:"status,omitempty"`
 	// AttestURI - Gets the uri of attestation service

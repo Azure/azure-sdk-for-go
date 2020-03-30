@@ -763,7 +763,7 @@ type MachineLearningServicesModelRegisteredEventData struct {
 	// ModelName - The name of the model that was registered.
 	ModelName *string `json:"modelName,omitempty"`
 	// ModelVersion - The version of the model that was registered.
-	ModelVersion *int32 `json:"modelVersion,omitempty"`
+	ModelVersion *string `json:"modelVersion,omitempty"`
 	// ModelTags - The tags of the model that was registered.
 	ModelTags interface{} `json:"modelTags,omitempty"`
 	// ModelProperties - The properties of the model that was registered.
@@ -785,6 +785,25 @@ type MachineLearningServicesRunCompletedEventData struct {
 	RunTags interface{} `json:"runTags,omitempty"`
 	// RunProperties - The properties of the completed Run.
 	RunProperties interface{} `json:"runProperties,omitempty"`
+}
+
+// MachineLearningServicesRunStatusChangedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.MachineLearningServices.RunStatusChanged event.
+type MachineLearningServicesRunStatusChangedEventData struct {
+	// ExperimentID - The ID of the experiment that the Machine Learning Run belongs to.
+	ExperimentID *string `json:"experimentId,omitempty"`
+	// ExperimentName - The name of the experiment that the Machine Learning Run belongs to.
+	ExperimentName *string `json:"experimentName,omitempty"`
+	// RunID - The ID of the Machine Learning Run.
+	RunID *string `json:"runId,omitempty"`
+	// RunType - The Run Type of the Machine Learning Run.
+	RunType *string `json:"runType,omitempty"`
+	// RunTags - The tags of the Machine Learning Run.
+	RunTags interface{} `json:"runTags,omitempty"`
+	// RunProperties - The properties of the Machine Learning Run.
+	RunProperties interface{} `json:"runProperties,omitempty"`
+	// RunStatus - The status of the Machine Learning Run.
+	RunStatus *string `json:"runStatus,omitempty"`
 }
 
 // MapsGeofenceEnteredEventData schema of the Data property of an EventGridEvent for a
@@ -1931,6 +1950,50 @@ type MediaLiveEventTrackDiscontinuityDetectedEventData struct {
 	Timescale *string `json:"timescale,omitempty"`
 	// DiscontinuityGap - READ-ONLY; Gets the discontinuity gap between PreviousTimestamp and NewTimestamp.
 	DiscontinuityGap *string `json:"discontinuityGap,omitempty"`
+}
+
+// RedisExportRDBCompletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Cache.ExportRDBCompleted event.
+type RedisExportRDBCompletedEventData struct {
+	// Timestamp - The time at which the event occurred.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Name - The name of this event.
+	Name *string `json:"name,omitempty"`
+	// Status - The status of this event. Failed or  succeeded
+	Status *string `json:"status,omitempty"`
+}
+
+// RedisImportRDBCompletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Cache.ImportRDBCompleted event.
+type RedisImportRDBCompletedEventData struct {
+	// Timestamp - The time at which the event occurred.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Name - The name of this event.
+	Name *string `json:"name,omitempty"`
+	// Status - The status of this event. Failed or  succeeded
+	Status *string `json:"status,omitempty"`
+}
+
+// RedisPatchingCompletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Cache.PatchingCompleted event.
+type RedisPatchingCompletedEventData struct {
+	// Timestamp - The time at which the event occurred.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Name - The name of this event.
+	Name *string `json:"name,omitempty"`
+	// Status - The status of this event. Failed or  succeeded
+	Status *string `json:"status,omitempty"`
+}
+
+// RedisScalingCompletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Cache.ScalingCompleted event.
+type RedisScalingCompletedEventData struct {
+	// Timestamp - The time at which the event occurred.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Name - The name of this event.
+	Name *string `json:"name,omitempty"`
+	// Status - The status of this event. Failed or  succeeded
+	Status *string `json:"status,omitempty"`
 }
 
 // ResourceActionCancelData schema of the Data property of an EventGridEvent for an

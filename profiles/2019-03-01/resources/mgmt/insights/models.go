@@ -93,6 +93,22 @@ const (
 	CriterionTypeStaticThresholdCriterion  CriterionType = original.CriterionTypeStaticThresholdCriterion
 )
 
+type DynamicThresholdOperator = original.DynamicThresholdOperator
+
+const (
+	DynamicThresholdOperatorGreaterOrLessThan DynamicThresholdOperator = original.DynamicThresholdOperatorGreaterOrLessThan
+	DynamicThresholdOperatorGreaterThan       DynamicThresholdOperator = original.DynamicThresholdOperatorGreaterThan
+	DynamicThresholdOperatorLessThan          DynamicThresholdOperator = original.DynamicThresholdOperatorLessThan
+)
+
+type DynamicThresholdSensitivity = original.DynamicThresholdSensitivity
+
+const (
+	High   DynamicThresholdSensitivity = original.High
+	Low    DynamicThresholdSensitivity = original.Low
+	Medium DynamicThresholdSensitivity = original.Medium
+)
+
 type Enabled = original.Enabled
 
 const (
@@ -167,6 +183,17 @@ const (
 	OdataTypeRuleCondition                                                        OdataTypeBasicRuleCondition = original.OdataTypeRuleCondition
 )
 
+type Operator = original.Operator
+
+const (
+	OperatorEquals             Operator = original.OperatorEquals
+	OperatorGreaterThan        Operator = original.OperatorGreaterThan
+	OperatorGreaterThanOrEqual Operator = original.OperatorGreaterThanOrEqual
+	OperatorLessThan           Operator = original.OperatorLessThan
+	OperatorLessThanOrEqual    Operator = original.OperatorLessThanOrEqual
+	OperatorNotEquals          Operator = original.OperatorNotEquals
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -229,9 +256,9 @@ const (
 type Sensitivity = original.Sensitivity
 
 const (
-	High   Sensitivity = original.High
-	Low    Sensitivity = original.Low
-	Medium Sensitivity = original.Medium
+	SensitivityHigh   Sensitivity = original.SensitivityHigh
+	SensitivityLow    Sensitivity = original.SensitivityLow
+	SensitivityMedium Sensitivity = original.SensitivityMedium
 )
 
 type TimeAggregationOperator = original.TimeAggregationOperator
@@ -429,6 +456,7 @@ type TriggerCondition = original.TriggerCondition
 type VoiceReceiver = original.VoiceReceiver
 type WebhookNotification = original.WebhookNotification
 type WebhookReceiver = original.WebhookReceiver
+type WebtestLocationAvailabilityCriteria = original.WebtestLocationAvailabilityCriteria
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -577,6 +605,12 @@ func PossibleConditionalOperatorValues() []ConditionalOperator {
 func PossibleCriterionTypeValues() []CriterionType {
 	return original.PossibleCriterionTypeValues()
 }
+func PossibleDynamicThresholdOperatorValues() []DynamicThresholdOperator {
+	return original.PossibleDynamicThresholdOperatorValues()
+}
+func PossibleDynamicThresholdSensitivityValues() []DynamicThresholdSensitivity {
+	return original.PossibleDynamicThresholdSensitivityValues()
+}
 func PossibleEnabledValues() []Enabled {
 	return original.PossibleEnabledValues()
 }
@@ -603,6 +637,9 @@ func PossibleOdataTypeBasicRuleConditionValues() []OdataTypeBasicRuleCondition {
 }
 func PossibleOdataTypeValues() []OdataType {
 	return original.PossibleOdataTypeValues()
+}
+func PossibleOperatorValues() []Operator {
+	return original.PossibleOperatorValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

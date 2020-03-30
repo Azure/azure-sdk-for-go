@@ -614,9 +614,10 @@ const (
 type SsisPackageLocationType = original.SsisPackageLocationType
 
 const (
-	File          SsisPackageLocationType = original.File
-	InlinePackage SsisPackageLocationType = original.InlinePackage
-	SSISDB        SsisPackageLocationType = original.SSISDB
+	SsisPackageLocationTypeFile          SsisPackageLocationType = original.SsisPackageLocationTypeFile
+	SsisPackageLocationTypeInlinePackage SsisPackageLocationType = original.SsisPackageLocationTypeInlinePackage
+	SsisPackageLocationTypePackageStore  SsisPackageLocationType = original.SsisPackageLocationTypePackageStore
+	SsisPackageLocationTypeSSISDB        SsisPackageLocationType = original.SsisPackageLocationTypeSSISDB
 )
 
 type StoredProcedureParameterType = original.StoredProcedureParameterType
@@ -760,6 +761,7 @@ const (
 	TypeSalesforceServiceCloudSink   TypeBasicCopySink = original.TypeSalesforceServiceCloudSink
 	TypeSalesforceSink               TypeBasicCopySink = original.TypeSalesforceSink
 	TypeSapCloudForCustomerSink      TypeBasicCopySink = original.TypeSapCloudForCustomerSink
+	TypeSnowflakeSink                TypeBasicCopySink = original.TypeSnowflakeSink
 	TypeSQLDWSink                    TypeBasicCopySink = original.TypeSQLDWSink
 	TypeSQLMISink                    TypeBasicCopySink = original.TypeSQLMISink
 	TypeSQLServerSink                TypeBasicCopySink = original.TypeSQLServerSink
@@ -843,7 +845,9 @@ const (
 	TypeSapOpenHubSource               TypeBasicCopySource = original.TypeSapOpenHubSource
 	TypeSapTableSource                 TypeBasicCopySource = original.TypeSapTableSource
 	TypeServiceNowSource               TypeBasicCopySource = original.TypeServiceNowSource
+	TypeSharePointOnlineListSource     TypeBasicCopySource = original.TypeSharePointOnlineListSource
 	TypeShopifySource                  TypeBasicCopySource = original.TypeShopifySource
+	TypeSnowflakeSource                TypeBasicCopySource = original.TypeSnowflakeSource
 	TypeSparkSource                    TypeBasicCopySource = original.TypeSparkSource
 	TypeSQLDWSource                    TypeBasicCopySource = original.TypeSQLDWSource
 	TypeSQLMISource                    TypeBasicCopySource = original.TypeSQLMISource
@@ -956,7 +960,9 @@ const (
 	TypeSapOpenHubTable                TypeBasicDataset = original.TypeSapOpenHubTable
 	TypeSapTableResource               TypeBasicDataset = original.TypeSapTableResource
 	TypeServiceNowObject               TypeBasicDataset = original.TypeServiceNowObject
+	TypeSharePointOnlineListResource   TypeBasicDataset = original.TypeSharePointOnlineListResource
 	TypeShopifyObject                  TypeBasicDataset = original.TypeShopifyObject
+	TypeSnowflakeTable                 TypeBasicDataset = original.TypeSnowflakeTable
 	TypeSparkObject                    TypeBasicDataset = original.TypeSparkObject
 	TypeSQLServerTable                 TypeBasicDataset = original.TypeSQLServerTable
 	TypeSquareObject                   TypeBasicDataset = original.TypeSquareObject
@@ -1015,6 +1021,13 @@ const (
 	TypeTumblingWindowTriggerDependencyReference     TypeBasicDependencyReference = original.TypeTumblingWindowTriggerDependencyReference
 )
 
+type TypeBasicExportSettings = original.TypeBasicExportSettings
+
+const (
+	TypeExportSettings             TypeBasicExportSettings = original.TypeExportSettings
+	TypeSnowflakeExportCopyCommand TypeBasicExportSettings = original.TypeSnowflakeExportCopyCommand
+)
+
 type TypeBasicFactoryRepoConfiguration = original.TypeBasicFactoryRepoConfiguration
 
 const (
@@ -1037,6 +1050,13 @@ const (
 	TypeDelimitedTextWriteSettings TypeBasicFormatWriteSettings = original.TypeDelimitedTextWriteSettings
 	TypeFormatWriteSettings        TypeBasicFormatWriteSettings = original.TypeFormatWriteSettings
 	TypeJSONWriteSettings          TypeBasicFormatWriteSettings = original.TypeJSONWriteSettings
+)
+
+type TypeBasicImportSettings = original.TypeBasicImportSettings
+
+const (
+	TypeImportSettings             TypeBasicImportSettings = original.TypeImportSettings
+	TypeSnowflakeImportCopyCommand TypeBasicImportSettings = original.TypeSnowflakeImportCopyCommand
 )
 
 type TypeBasicIntegrationRuntime = original.TypeBasicIntegrationRuntime
@@ -1143,7 +1163,9 @@ const (
 	TypeSapTable                 TypeBasicLinkedService = original.TypeSapTable
 	TypeServiceNow               TypeBasicLinkedService = original.TypeServiceNow
 	TypeSftp                     TypeBasicLinkedService = original.TypeSftp
+	TypeSharePointOnlineList     TypeBasicLinkedService = original.TypeSharePointOnlineList
 	TypeShopify                  TypeBasicLinkedService = original.TypeShopify
+	TypeSnowflake                TypeBasicLinkedService = original.TypeSnowflake
 	TypeSpark                    TypeBasicLinkedService = original.TypeSpark
 	TypeSQLServer                TypeBasicLinkedService = original.TypeSQLServer
 	TypeSquare                   TypeBasicLinkedService = original.TypeSquare
@@ -1378,9 +1400,11 @@ type BasicDatasetLocation = original.BasicDatasetLocation
 type BasicDatasetStorageFormat = original.BasicDatasetStorageFormat
 type BasicDependencyReference = original.BasicDependencyReference
 type BasicExecutionActivity = original.BasicExecutionActivity
+type BasicExportSettings = original.BasicExportSettings
 type BasicFactoryRepoConfiguration = original.BasicFactoryRepoConfiguration
 type BasicFormatReadSettings = original.BasicFormatReadSettings
 type BasicFormatWriteSettings = original.BasicFormatWriteSettings
+type BasicImportSettings = original.BasicImportSettings
 type BasicIntegrationRuntime = original.BasicIntegrationRuntime
 type BasicIntegrationRuntimeStatus = original.BasicIntegrationRuntimeStatus
 type BasicLinkedIntegrationRuntimeType = original.BasicLinkedIntegrationRuntimeType
@@ -1562,6 +1586,7 @@ type ExecutePipelineActivityTypeProperties = original.ExecutePipelineActivityTyp
 type ExecuteSSISPackageActivity = original.ExecuteSSISPackageActivity
 type ExecuteSSISPackageActivityTypeProperties = original.ExecuteSSISPackageActivityTypeProperties
 type ExecutionActivity = original.ExecutionActivity
+type ExportSettings = original.ExportSettings
 type ExposureControlClient = original.ExposureControlClient
 type ExposureControlRequest = original.ExposureControlRequest
 type ExposureControlResponse = original.ExposureControlResponse
@@ -1668,6 +1693,7 @@ type ImpalaLinkedService = original.ImpalaLinkedService
 type ImpalaLinkedServiceTypeProperties = original.ImpalaLinkedServiceTypeProperties
 type ImpalaObjectDataset = original.ImpalaObjectDataset
 type ImpalaSource = original.ImpalaSource
+type ImportSettings = original.ImportSettings
 type InformixLinkedService = original.InformixLinkedService
 type InformixLinkedServiceTypeProperties = original.InformixLinkedServiceTypeProperties
 type InformixSink = original.InformixSink
@@ -1824,6 +1850,7 @@ type OrcDatasetTypeProperties = original.OrcDatasetTypeProperties
 type OrcFormat = original.OrcFormat
 type OrcSink = original.OrcSink
 type OrcSource = original.OrcSource
+type PackageStore = original.PackageStore
 type ParameterSpecification = original.ParameterSpecification
 type ParquetDataset = original.ParquetDataset
 type ParquetDatasetTypeProperties = original.ParquetDatasetTypeProperties
@@ -1986,11 +2013,24 @@ type SftpReadSettings = original.SftpReadSettings
 type SftpServerLinkedService = original.SftpServerLinkedService
 type SftpServerLinkedServiceTypeProperties = original.SftpServerLinkedServiceTypeProperties
 type SftpWriteSettings = original.SftpWriteSettings
+type SharePointOnlineListDatasetTypeProperties = original.SharePointOnlineListDatasetTypeProperties
+type SharePointOnlineListLinkedService = original.SharePointOnlineListLinkedService
+type SharePointOnlineListLinkedServiceTypeProperties = original.SharePointOnlineListLinkedServiceTypeProperties
+type SharePointOnlineListResourceDataset = original.SharePointOnlineListResourceDataset
+type SharePointOnlineListSource = original.SharePointOnlineListSource
 type ShopifyLinkedService = original.ShopifyLinkedService
 type ShopifyLinkedServiceTypeProperties = original.ShopifyLinkedServiceTypeProperties
 type ShopifyObjectDataset = original.ShopifyObjectDataset
 type ShopifySource = original.ShopifySource
 type SkipErrorFile = original.SkipErrorFile
+type SnowflakeDataset = original.SnowflakeDataset
+type SnowflakeDatasetTypeProperties = original.SnowflakeDatasetTypeProperties
+type SnowflakeExportCopyCommand = original.SnowflakeExportCopyCommand
+type SnowflakeImportCopyCommand = original.SnowflakeImportCopyCommand
+type SnowflakeLinkedService = original.SnowflakeLinkedService
+type SnowflakeLinkedServiceTypeProperties = original.SnowflakeLinkedServiceTypeProperties
+type SnowflakeSink = original.SnowflakeSink
+type SnowflakeSource = original.SnowflakeSource
 type SparkDatasetTypeProperties = original.SparkDatasetTypeProperties
 type SparkLinkedService = original.SparkLinkedService
 type SparkLinkedServiceTypeProperties = original.SparkLinkedServiceTypeProperties
@@ -2498,6 +2538,9 @@ func PossibleTypeBasicDatasetValues() []TypeBasicDataset {
 func PossibleTypeBasicDependencyReferenceValues() []TypeBasicDependencyReference {
 	return original.PossibleTypeBasicDependencyReferenceValues()
 }
+func PossibleTypeBasicExportSettingsValues() []TypeBasicExportSettings {
+	return original.PossibleTypeBasicExportSettingsValues()
+}
 func PossibleTypeBasicFactoryRepoConfigurationValues() []TypeBasicFactoryRepoConfiguration {
 	return original.PossibleTypeBasicFactoryRepoConfigurationValues()
 }
@@ -2506,6 +2549,9 @@ func PossibleTypeBasicFormatReadSettingsValues() []TypeBasicFormatReadSettings {
 }
 func PossibleTypeBasicFormatWriteSettingsValues() []TypeBasicFormatWriteSettings {
 	return original.PossibleTypeBasicFormatWriteSettingsValues()
+}
+func PossibleTypeBasicImportSettingsValues() []TypeBasicImportSettings {
+	return original.PossibleTypeBasicImportSettingsValues()
 }
 func PossibleTypeBasicIntegrationRuntimeStatusValues() []TypeBasicIntegrationRuntimeStatus {
 	return original.PossibleTypeBasicIntegrationRuntimeStatusValues()

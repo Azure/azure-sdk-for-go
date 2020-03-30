@@ -46,3 +46,17 @@ type QueryClientAPI interface {
 }
 
 var _ QueryClientAPI = (*insights.QueryClient)(nil)
+
+// PostClientAPI contains the set of methods on the PostClient type.
+type PostClientAPI interface {
+	Metadata(ctx context.Context, appID string) (result insights.MetadataResults, err error)
+}
+
+var _ PostClientAPI = (*insights.PostClient)(nil)
+
+// GetClientAPI contains the set of methods on the GetClient type.
+type GetClientAPI interface {
+	Metadata(ctx context.Context, appID string) (result insights.MetadataResults, err error)
+}
+
+var _ GetClientAPI = (*insights.GetClient)(nil)

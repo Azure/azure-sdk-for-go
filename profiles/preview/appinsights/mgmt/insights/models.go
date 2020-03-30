@@ -189,6 +189,7 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type PrivateLinkScopedResource = original.PrivateLinkScopedResource
 type ProactiveDetectionConfigurationsClient = original.ProactiveDetectionConfigurationsClient
 type TagsResource = original.TagsResource
 type WebTest = original.WebTest

@@ -656,6 +656,45 @@ type AppsClientAPI interface {
 
 var _ AppsClientAPI = (*web.AppsClient)(nil)
 
+// StaticSitesClientAPI contains the set of methods on the StaticSitesClient type.
+type StaticSitesClientAPI interface {
+	CreateOrUpdateStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope web.StaticSiteARMResource) (result web.StaticSiteARMResource, err error)
+	CreateOrUpdateStaticSiteBuildFunctionAppSettings(ctx context.Context, resourceGroupName string, name string, prID string, appSettings web.StringDictionary) (result web.StringDictionary, err error)
+	CreateOrUpdateStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string) (result web.StaticSiteCustomDomainOverviewARMResource, err error)
+	CreateOrUpdateStaticSiteFunctionAppSettings(ctx context.Context, resourceGroupName string, name string, appSettings web.StringDictionary) (result web.StringDictionary, err error)
+	CreateUserRolesInvitationLink(ctx context.Context, resourceGroupName string, name string, staticSiteUserRolesInvitationEnvelope web.StaticSiteUserInvitationRequestResource) (result web.StaticSiteUserInvitationResponseResource, err error)
+	DeleteStaticSite(ctx context.Context, resourceGroupName string, name string) (result autorest.Response, err error)
+	DeleteStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, prID string) (result autorest.Response, err error)
+	DeleteStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string) (result autorest.Response, err error)
+	DeleteStaticSiteUser(ctx context.Context, resourceGroupName string, name string, authprovider string, userid string) (result autorest.Response, err error)
+	DetachStaticSite(ctx context.Context, resourceGroupName string, name string) (result autorest.Response, err error)
+	GetStaticSite(ctx context.Context, resourceGroupName string, name string) (result web.StaticSiteARMResource, err error)
+	GetStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, prID string) (result web.StaticSiteBuildARMResource, err error)
+	GetStaticSiteBuilds(ctx context.Context, resourceGroupName string, name string) (result web.StaticSiteBuildCollectionPage, err error)
+	GetStaticSiteBuildsComplete(ctx context.Context, resourceGroupName string, name string) (result web.StaticSiteBuildCollectionIterator, err error)
+	GetStaticSitesByResourceGroup(ctx context.Context, resourceGroupName string) (result web.StaticSiteCollectionPage, err error)
+	GetStaticSitesByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result web.StaticSiteCollectionIterator, err error)
+	List(ctx context.Context) (result web.StaticSiteCollectionPage, err error)
+	ListComplete(ctx context.Context) (result web.StaticSiteCollectionIterator, err error)
+	ListStaticSiteBuildFunctionAppSettings(ctx context.Context, resourceGroupName string, name string, prID string) (result web.StringDictionary, err error)
+	ListStaticSiteBuildFunctions(ctx context.Context, resourceGroupName string, name string, prID string) (result web.StaticSiteFunctionOverviewCollectionPage, err error)
+	ListStaticSiteBuildFunctionsComplete(ctx context.Context, resourceGroupName string, name string, prID string) (result web.StaticSiteFunctionOverviewCollectionIterator, err error)
+	ListStaticSiteCustomDomains(ctx context.Context, resourceGroupName string, name string) (result web.StaticSiteCustomDomainOverviewCollectionPage, err error)
+	ListStaticSiteCustomDomainsComplete(ctx context.Context, resourceGroupName string, name string) (result web.StaticSiteCustomDomainOverviewCollectionIterator, err error)
+	ListStaticSiteFunctionAppSettings(ctx context.Context, resourceGroupName string, name string) (result web.StringDictionary, err error)
+	ListStaticSiteFunctions(ctx context.Context, resourceGroupName string, name string) (result web.StaticSiteFunctionOverviewCollectionPage, err error)
+	ListStaticSiteFunctionsComplete(ctx context.Context, resourceGroupName string, name string) (result web.StaticSiteFunctionOverviewCollectionIterator, err error)
+	ListStaticSiteSecrets(ctx context.Context, resourceGroupName string, name string) (result web.StringDictionary, err error)
+	ListStaticSiteUsers(ctx context.Context, resourceGroupName string, name string, authprovider string) (result web.StaticSiteUserCollectionPage, err error)
+	ListStaticSiteUsersComplete(ctx context.Context, resourceGroupName string, name string, authprovider string) (result web.StaticSiteUserCollectionIterator, err error)
+	ResetStaticSiteAPIKey(ctx context.Context, resourceGroupName string, name string, resetPropertiesEnvelope web.StaticSiteResetPropertiesARMResource) (result autorest.Response, err error)
+	UpdateStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope web.StaticSitePatchResource) (result web.StaticSiteARMResource, err error)
+	UpdateStaticSiteUser(ctx context.Context, resourceGroupName string, name string, authprovider string, userid string, staticSiteUserEnvelope web.StaticSiteUserARMResource) (result web.StaticSiteUserARMResource, err error)
+	ValidateCustomDomainCanBeAddedToStaticSite(ctx context.Context, resourceGroupName string, name string, domainName string) (result autorest.Response, err error)
+}
+
+var _ StaticSitesClientAPI = (*web.StaticSitesClient)(nil)
+
 // AppServiceEnvironmentsClientAPI contains the set of methods on the AppServiceEnvironmentsClient type.
 type AppServiceEnvironmentsClientAPI interface {
 	ChangeVnet(ctx context.Context, resourceGroupName string, name string, vnetInfo web.VirtualNetworkProfile) (result web.AppServiceEnvironmentsChangeVnetFuture, err error)

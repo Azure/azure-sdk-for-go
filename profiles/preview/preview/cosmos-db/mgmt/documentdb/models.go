@@ -286,6 +286,16 @@ type MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture = original.MongoDBRes
 type MongoIndex = original.MongoIndex
 type MongoIndexKeys = original.MongoIndexKeys
 type MongoIndexOptions = original.MongoIndexOptions
+type NotebookWorkspace = original.NotebookWorkspace
+type NotebookWorkspaceConnectionInfoResult = original.NotebookWorkspaceConnectionInfoResult
+type NotebookWorkspaceCreateUpdateParameters = original.NotebookWorkspaceCreateUpdateParameters
+type NotebookWorkspaceListResult = original.NotebookWorkspaceListResult
+type NotebookWorkspaceProperties = original.NotebookWorkspaceProperties
+type NotebookWorkspacesClient = original.NotebookWorkspacesClient
+type NotebookWorkspacesCreateOrUpdateFuture = original.NotebookWorkspacesCreateOrUpdateFuture
+type NotebookWorkspacesDeleteFuture = original.NotebookWorkspacesDeleteFuture
+type NotebookWorkspacesRegenerateAuthTokenFuture = original.NotebookWorkspacesRegenerateAuthTokenFuture
+type NotebookWorkspacesStartFuture = original.NotebookWorkspacesStartFuture
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -454,6 +464,12 @@ func NewMongoDBResourcesClient(subscriptionID string, subscriptionID1 string) Mo
 }
 func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
 	return original.NewMongoDBResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+}
+func NewNotebookWorkspacesClient(subscriptionID string, subscriptionID1 string) NotebookWorkspacesClient {
+	return original.NewNotebookWorkspacesClient(subscriptionID, subscriptionID1)
+}
+func NewNotebookWorkspacesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) NotebookWorkspacesClient {
+	return original.NewNotebookWorkspacesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)

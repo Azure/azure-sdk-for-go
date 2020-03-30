@@ -22,7 +22,7 @@ package storagesync
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2019-06-01/storagesync"
+	original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2019-10-01/storagesync"
 )
 
 const (
@@ -186,8 +186,14 @@ type CloudEndpointsPostRestoreFuture = original.CloudEndpointsPostRestoreFuture
 type CloudEndpointsPreBackupFuture = original.CloudEndpointsPreBackupFuture
 type CloudEndpointsPreRestoreFuture = original.CloudEndpointsPreRestoreFuture
 type CloudEndpointsTriggerChangeDetectionFuture = original.CloudEndpointsTriggerChangeDetectionFuture
+type CloudTieringCachePerformance = original.CloudTieringCachePerformance
+type CloudTieringDatePolicyStatus = original.CloudTieringDatePolicyStatus
+type CloudTieringFilesNotTiering = original.CloudTieringFilesNotTiering
+type CloudTieringSpaceSavings = original.CloudTieringSpaceSavings
+type CloudTieringVolumeFreeSpacePolicyStatus = original.CloudTieringVolumeFreeSpacePolicyStatus
 type Error = original.Error
 type ErrorDetails = original.ErrorDetails
+type FilesNotTieringError = original.FilesNotTieringError
 type OperationDisplayInfo = original.OperationDisplayInfo
 type OperationDisplayResource = original.OperationDisplayResource
 type OperationEntity = original.OperationEntity

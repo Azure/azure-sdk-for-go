@@ -261,3 +261,78 @@ type WorkspaceManagedIdentitySQLControlSettingsClientAPI interface {
 }
 
 var _ WorkspaceManagedIdentitySQLControlSettingsClientAPI = (*synapse.WorkspaceManagedIdentitySQLControlSettingsClient)(nil)
+
+// IntegrationRuntimesClientAPI contains the set of methods on the IntegrationRuntimesClient type.
+type IntegrationRuntimesClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, integrationRuntime synapse.IntegrationRuntimeResource, ifMatch string) (result synapse.IntegrationRuntimeResource, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, ifNoneMatch string) (result synapse.IntegrationRuntimeResource, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.IntegrationRuntimeListResponsePage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.IntegrationRuntimeListResponseIterator, err error)
+	Start(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimeStatusResponse, err error)
+	Stop(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result autorest.Response, err error)
+	Update(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, updateIntegrationRuntimeRequest synapse.UpdateIntegrationRuntimeRequest) (result synapse.IntegrationRuntimeResource, err error)
+	Upgrade(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result autorest.Response, err error)
+}
+
+var _ IntegrationRuntimesClientAPI = (*synapse.IntegrationRuntimesClient)(nil)
+
+// IntegrationRuntimeNodeIPAddressClientAPI contains the set of methods on the IntegrationRuntimeNodeIPAddressClient type.
+type IntegrationRuntimeNodeIPAddressClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, nodeName string) (result synapse.IntegrationRuntimeNodeIPAddress, err error)
+}
+
+var _ IntegrationRuntimeNodeIPAddressClientAPI = (*synapse.IntegrationRuntimeNodeIPAddressClient)(nil)
+
+// IntegrationRuntimeObjectMetadataClientAPI contains the set of methods on the IntegrationRuntimeObjectMetadataClient type.
+type IntegrationRuntimeObjectMetadataClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, getMetadataRequest *synapse.GetSsisObjectMetadataRequest) (result synapse.SsisObjectMetadataListResponse, err error)
+	Refresh(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.SsisObjectMetadataStatusResponse, err error)
+}
+
+var _ IntegrationRuntimeObjectMetadataClientAPI = (*synapse.IntegrationRuntimeObjectMetadataClient)(nil)
+
+// IntegrationRuntimeNodesClientAPI contains the set of methods on the IntegrationRuntimeNodesClient type.
+type IntegrationRuntimeNodesClientAPI interface {
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, nodeName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, nodeName string) (result synapse.SelfHostedIntegrationRuntimeNode, err error)
+	Update(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, nodeName string, updateIntegrationRuntimeNodeRequest synapse.UpdateIntegrationRuntimeNodeRequest) (result synapse.SelfHostedIntegrationRuntimeNode, err error)
+}
+
+var _ IntegrationRuntimeNodesClientAPI = (*synapse.IntegrationRuntimeNodesClient)(nil)
+
+// IntegrationRuntimeCredentialsClientAPI contains the set of methods on the IntegrationRuntimeCredentialsClient type.
+type IntegrationRuntimeCredentialsClientAPI interface {
+	Sync(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result autorest.Response, err error)
+}
+
+var _ IntegrationRuntimeCredentialsClientAPI = (*synapse.IntegrationRuntimeCredentialsClient)(nil)
+
+// IntegrationRuntimeConnectionInfosClientAPI contains the set of methods on the IntegrationRuntimeConnectionInfosClient type.
+type IntegrationRuntimeConnectionInfosClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimeConnectionInfo, err error)
+}
+
+var _ IntegrationRuntimeConnectionInfosClientAPI = (*synapse.IntegrationRuntimeConnectionInfosClient)(nil)
+
+// IntegrationRuntimeAuthKeysClientAPI contains the set of methods on the IntegrationRuntimeAuthKeysClient type.
+type IntegrationRuntimeAuthKeysClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimeAuthKeys, err error)
+	Regenerate(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, regenerateKeyParameters synapse.IntegrationRuntimeRegenerateKeyParameters) (result synapse.IntegrationRuntimeAuthKeys, err error)
+}
+
+var _ IntegrationRuntimeAuthKeysClientAPI = (*synapse.IntegrationRuntimeAuthKeysClient)(nil)
+
+// IntegrationRuntimeMonitoringDataClientAPI contains the set of methods on the IntegrationRuntimeMonitoringDataClient type.
+type IntegrationRuntimeMonitoringDataClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimeMonitoringData, err error)
+}
+
+var _ IntegrationRuntimeMonitoringDataClientAPI = (*synapse.IntegrationRuntimeMonitoringDataClient)(nil)
+
+// IntegrationRuntimeStatusClientAPI contains the set of methods on the IntegrationRuntimeStatusClient type.
+type IntegrationRuntimeStatusClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimeStatusResponse, err error)
+}
+
+var _ IntegrationRuntimeStatusClientAPI = (*synapse.IntegrationRuntimeStatusClient)(nil)

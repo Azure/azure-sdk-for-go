@@ -299,6 +299,18 @@ const (
 
 type ActiveDirectoryObject = original.ActiveDirectoryObject
 type Actor = original.Actor
+type AgentPool = original.AgentPool
+type AgentPoolListResult = original.AgentPoolListResult
+type AgentPoolListResultIterator = original.AgentPoolListResultIterator
+type AgentPoolListResultPage = original.AgentPoolListResultPage
+type AgentPoolProperties = original.AgentPoolProperties
+type AgentPoolPropertiesUpdateParameters = original.AgentPoolPropertiesUpdateParameters
+type AgentPoolQueueStatus = original.AgentPoolQueueStatus
+type AgentPoolUpdateParameters = original.AgentPoolUpdateParameters
+type AgentPoolsClient = original.AgentPoolsClient
+type AgentPoolsCreateFuture = original.AgentPoolsCreateFuture
+type AgentPoolsDeleteFuture = original.AgentPoolsDeleteFuture
+type AgentPoolsUpdateFuture = original.AgentPoolsUpdateFuture
 type AgentProperties = original.AgentProperties
 type Argument = original.Argument
 type AuthInfo = original.AuthInfo
@@ -319,8 +331,8 @@ type DockerBuildStepUpdateParameters = original.DockerBuildStepUpdateParameters
 type EncodedTaskRunRequest = original.EncodedTaskRunRequest
 type EncodedTaskStep = original.EncodedTaskStep
 type EncodedTaskStepUpdateParameters = original.EncodedTaskStepUpdateParameters
-type Error = original.Error
-type ErrorSchema = original.ErrorSchema
+type ErrorResponse = original.ErrorResponse
+type ErrorResponseBody = original.ErrorResponseBody
 type Event = original.Event
 type EventContent = original.EventContent
 type EventInfo = original.EventInfo
@@ -491,6 +503,18 @@ type WebhooksUpdateFuture = original.WebhooksUpdateFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAgentPoolListResultIterator(page AgentPoolListResultPage) AgentPoolListResultIterator {
+	return original.NewAgentPoolListResultIterator(page)
+}
+func NewAgentPoolListResultPage(getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
+	return original.NewAgentPoolListResultPage(getNextPage)
+}
+func NewAgentPoolsClient(subscriptionID string) AgentPoolsClient {
+	return original.NewAgentPoolsClient(subscriptionID)
+}
+func NewAgentPoolsClientWithBaseURI(baseURI string, subscriptionID string) AgentPoolsClient {
+	return original.NewAgentPoolsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewEventListResultIterator(page EventListResultPage) EventListResultIterator {
 	return original.NewEventListResultIterator(page)

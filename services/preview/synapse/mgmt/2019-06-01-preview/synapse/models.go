@@ -53,6 +53,23 @@ func PossibleActualStateValues() []ActualState {
 	return []ActualState{Disabled, Disabling, Enabled, Enabling, Unknown}
 }
 
+// AuthorizationType enumerates the values for authorization type.
+type AuthorizationType string
+
+const (
+	// AuthorizationTypeKey ...
+	AuthorizationTypeKey AuthorizationType = "Key"
+	// AuthorizationTypeLinkedIntegrationRuntimeType ...
+	AuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = "LinkedIntegrationRuntimeType"
+	// AuthorizationTypeRBAC ...
+	AuthorizationTypeRBAC AuthorizationType = "RBAC"
+)
+
+// PossibleAuthorizationTypeValues returns an array of possible values for the AuthorizationType const type.
+func PossibleAuthorizationTypeValues() []AuthorizationType {
+	return []AuthorizationType{AuthorizationTypeKey, AuthorizationTypeLinkedIntegrationRuntimeType, AuthorizationTypeRBAC}
+}
+
 // BlobAuditingPolicyState enumerates the values for blob auditing policy state.
 type BlobAuditingPolicyState string
 
@@ -147,6 +164,23 @@ func PossibleColumnDataTypeValues() []ColumnDataType {
 	return []ColumnDataType{Bigint, Binary, Bit, Char, Date, Datetime, Datetime2, Datetimeoffset, Decimal, Float, Geography, Geometry, Hierarchyid, Image, Int, Money, Nchar, Ntext, Numeric, Nvarchar, Real, Smalldatetime, Smallint, Smallmoney, SQLVariant, Sysname, Text, Time, Timestamp, Tinyint, Uniqueidentifier, Varbinary, Varchar, XML}
 }
 
+// DataFlowComputeType enumerates the values for data flow compute type.
+type DataFlowComputeType string
+
+const (
+	// ComputeOptimized ...
+	ComputeOptimized DataFlowComputeType = "ComputeOptimized"
+	// General ...
+	General DataFlowComputeType = "General"
+	// MemoryOptimized ...
+	MemoryOptimized DataFlowComputeType = "MemoryOptimized"
+)
+
+// PossibleDataFlowComputeTypeValues returns an array of possible values for the DataFlowComputeType const type.
+func PossibleDataFlowComputeTypeValues() []DataFlowComputeType {
+	return []DataFlowComputeType{ComputeOptimized, General, MemoryOptimized}
+}
+
 // DesiredState enumerates the values for desired state.
 type DesiredState string
 
@@ -177,6 +211,201 @@ func PossibleGeoBackupPolicyStateValues() []GeoBackupPolicyState {
 	return []GeoBackupPolicyState{GeoBackupPolicyStateDisabled, GeoBackupPolicyStateEnabled}
 }
 
+// IntegrationRuntimeAuthKeyName enumerates the values for integration runtime auth key name.
+type IntegrationRuntimeAuthKeyName string
+
+const (
+	// AuthKey1 ...
+	AuthKey1 IntegrationRuntimeAuthKeyName = "authKey1"
+	// AuthKey2 ...
+	AuthKey2 IntegrationRuntimeAuthKeyName = "authKey2"
+)
+
+// PossibleIntegrationRuntimeAuthKeyNameValues returns an array of possible values for the IntegrationRuntimeAuthKeyName const type.
+func PossibleIntegrationRuntimeAuthKeyNameValues() []IntegrationRuntimeAuthKeyName {
+	return []IntegrationRuntimeAuthKeyName{AuthKey1, AuthKey2}
+}
+
+// IntegrationRuntimeAutoUpdate enumerates the values for integration runtime auto update.
+type IntegrationRuntimeAutoUpdate string
+
+const (
+	// Off ...
+	Off IntegrationRuntimeAutoUpdate = "Off"
+	// On ...
+	On IntegrationRuntimeAutoUpdate = "On"
+)
+
+// PossibleIntegrationRuntimeAutoUpdateValues returns an array of possible values for the IntegrationRuntimeAutoUpdate const type.
+func PossibleIntegrationRuntimeAutoUpdateValues() []IntegrationRuntimeAutoUpdate {
+	return []IntegrationRuntimeAutoUpdate{Off, On}
+}
+
+// IntegrationRuntimeEdition enumerates the values for integration runtime edition.
+type IntegrationRuntimeEdition string
+
+const (
+	// Enterprise ...
+	Enterprise IntegrationRuntimeEdition = "Enterprise"
+	// Standard ...
+	Standard IntegrationRuntimeEdition = "Standard"
+)
+
+// PossibleIntegrationRuntimeEditionValues returns an array of possible values for the IntegrationRuntimeEdition const type.
+func PossibleIntegrationRuntimeEditionValues() []IntegrationRuntimeEdition {
+	return []IntegrationRuntimeEdition{Enterprise, Standard}
+}
+
+// IntegrationRuntimeEntityReferenceType enumerates the values for integration runtime entity reference type.
+type IntegrationRuntimeEntityReferenceType string
+
+const (
+	// IntegrationRuntimeReference ...
+	IntegrationRuntimeReference IntegrationRuntimeEntityReferenceType = "IntegrationRuntimeReference"
+	// LinkedServiceReference ...
+	LinkedServiceReference IntegrationRuntimeEntityReferenceType = "LinkedServiceReference"
+)
+
+// PossibleIntegrationRuntimeEntityReferenceTypeValues returns an array of possible values for the IntegrationRuntimeEntityReferenceType const type.
+func PossibleIntegrationRuntimeEntityReferenceTypeValues() []IntegrationRuntimeEntityReferenceType {
+	return []IntegrationRuntimeEntityReferenceType{IntegrationRuntimeReference, LinkedServiceReference}
+}
+
+// IntegrationRuntimeInternalChannelEncryptionMode enumerates the values for integration runtime internal
+// channel encryption mode.
+type IntegrationRuntimeInternalChannelEncryptionMode string
+
+const (
+	// NotEncrypted ...
+	NotEncrypted IntegrationRuntimeInternalChannelEncryptionMode = "NotEncrypted"
+	// NotSet ...
+	NotSet IntegrationRuntimeInternalChannelEncryptionMode = "NotSet"
+	// SslEncrypted ...
+	SslEncrypted IntegrationRuntimeInternalChannelEncryptionMode = "SslEncrypted"
+)
+
+// PossibleIntegrationRuntimeInternalChannelEncryptionModeValues returns an array of possible values for the IntegrationRuntimeInternalChannelEncryptionMode const type.
+func PossibleIntegrationRuntimeInternalChannelEncryptionModeValues() []IntegrationRuntimeInternalChannelEncryptionMode {
+	return []IntegrationRuntimeInternalChannelEncryptionMode{NotEncrypted, NotSet, SslEncrypted}
+}
+
+// IntegrationRuntimeLicenseType enumerates the values for integration runtime license type.
+type IntegrationRuntimeLicenseType string
+
+const (
+	// BasePrice ...
+	BasePrice IntegrationRuntimeLicenseType = "BasePrice"
+	// LicenseIncluded ...
+	LicenseIncluded IntegrationRuntimeLicenseType = "LicenseIncluded"
+)
+
+// PossibleIntegrationRuntimeLicenseTypeValues returns an array of possible values for the IntegrationRuntimeLicenseType const type.
+func PossibleIntegrationRuntimeLicenseTypeValues() []IntegrationRuntimeLicenseType {
+	return []IntegrationRuntimeLicenseType{BasePrice, LicenseIncluded}
+}
+
+// IntegrationRuntimeSsisCatalogPricingTier enumerates the values for integration runtime ssis catalog pricing
+// tier.
+type IntegrationRuntimeSsisCatalogPricingTier string
+
+const (
+	// IntegrationRuntimeSsisCatalogPricingTierBasic ...
+	IntegrationRuntimeSsisCatalogPricingTierBasic IntegrationRuntimeSsisCatalogPricingTier = "Basic"
+	// IntegrationRuntimeSsisCatalogPricingTierPremium ...
+	IntegrationRuntimeSsisCatalogPricingTierPremium IntegrationRuntimeSsisCatalogPricingTier = "Premium"
+	// IntegrationRuntimeSsisCatalogPricingTierPremiumRS ...
+	IntegrationRuntimeSsisCatalogPricingTierPremiumRS IntegrationRuntimeSsisCatalogPricingTier = "PremiumRS"
+	// IntegrationRuntimeSsisCatalogPricingTierStandard ...
+	IntegrationRuntimeSsisCatalogPricingTierStandard IntegrationRuntimeSsisCatalogPricingTier = "Standard"
+)
+
+// PossibleIntegrationRuntimeSsisCatalogPricingTierValues returns an array of possible values for the IntegrationRuntimeSsisCatalogPricingTier const type.
+func PossibleIntegrationRuntimeSsisCatalogPricingTierValues() []IntegrationRuntimeSsisCatalogPricingTier {
+	return []IntegrationRuntimeSsisCatalogPricingTier{IntegrationRuntimeSsisCatalogPricingTierBasic, IntegrationRuntimeSsisCatalogPricingTierPremium, IntegrationRuntimeSsisCatalogPricingTierPremiumRS, IntegrationRuntimeSsisCatalogPricingTierStandard}
+}
+
+// IntegrationRuntimeState enumerates the values for integration runtime state.
+type IntegrationRuntimeState string
+
+const (
+	// AccessDenied ...
+	AccessDenied IntegrationRuntimeState = "AccessDenied"
+	// Initial ...
+	Initial IntegrationRuntimeState = "Initial"
+	// Limited ...
+	Limited IntegrationRuntimeState = "Limited"
+	// NeedRegistration ...
+	NeedRegistration IntegrationRuntimeState = "NeedRegistration"
+	// Offline ...
+	Offline IntegrationRuntimeState = "Offline"
+	// Online ...
+	Online IntegrationRuntimeState = "Online"
+	// Started ...
+	Started IntegrationRuntimeState = "Started"
+	// Starting ...
+	Starting IntegrationRuntimeState = "Starting"
+	// Stopped ...
+	Stopped IntegrationRuntimeState = "Stopped"
+	// Stopping ...
+	Stopping IntegrationRuntimeState = "Stopping"
+)
+
+// PossibleIntegrationRuntimeStateValues returns an array of possible values for the IntegrationRuntimeState const type.
+func PossibleIntegrationRuntimeStateValues() []IntegrationRuntimeState {
+	return []IntegrationRuntimeState{AccessDenied, Initial, Limited, NeedRegistration, Offline, Online, Started, Starting, Stopped, Stopping}
+}
+
+// IntegrationRuntimeType enumerates the values for integration runtime type.
+type IntegrationRuntimeType string
+
+const (
+	// Managed ...
+	Managed IntegrationRuntimeType = "Managed"
+	// SelfHosted ...
+	SelfHosted IntegrationRuntimeType = "SelfHosted"
+)
+
+// PossibleIntegrationRuntimeTypeValues returns an array of possible values for the IntegrationRuntimeType const type.
+func PossibleIntegrationRuntimeTypeValues() []IntegrationRuntimeType {
+	return []IntegrationRuntimeType{Managed, SelfHosted}
+}
+
+// IntegrationRuntimeUpdateResult enumerates the values for integration runtime update result.
+type IntegrationRuntimeUpdateResult string
+
+const (
+	// Fail ...
+	Fail IntegrationRuntimeUpdateResult = "Fail"
+	// None ...
+	None IntegrationRuntimeUpdateResult = "None"
+	// Succeed ...
+	Succeed IntegrationRuntimeUpdateResult = "Succeed"
+)
+
+// PossibleIntegrationRuntimeUpdateResultValues returns an array of possible values for the IntegrationRuntimeUpdateResult const type.
+func PossibleIntegrationRuntimeUpdateResultValues() []IntegrationRuntimeUpdateResult {
+	return []IntegrationRuntimeUpdateResult{Fail, None, Succeed}
+}
+
+// ManagedIntegrationRuntimeNodeStatus enumerates the values for managed integration runtime node status.
+type ManagedIntegrationRuntimeNodeStatus string
+
+const (
+	// ManagedIntegrationRuntimeNodeStatusAvailable ...
+	ManagedIntegrationRuntimeNodeStatusAvailable ManagedIntegrationRuntimeNodeStatus = "Available"
+	// ManagedIntegrationRuntimeNodeStatusRecycling ...
+	ManagedIntegrationRuntimeNodeStatusRecycling ManagedIntegrationRuntimeNodeStatus = "Recycling"
+	// ManagedIntegrationRuntimeNodeStatusStarting ...
+	ManagedIntegrationRuntimeNodeStatusStarting ManagedIntegrationRuntimeNodeStatus = "Starting"
+	// ManagedIntegrationRuntimeNodeStatusUnavailable ...
+	ManagedIntegrationRuntimeNodeStatusUnavailable ManagedIntegrationRuntimeNodeStatus = "Unavailable"
+)
+
+// PossibleManagedIntegrationRuntimeNodeStatusValues returns an array of possible values for the ManagedIntegrationRuntimeNodeStatus const type.
+func PossibleManagedIntegrationRuntimeNodeStatusValues() []ManagedIntegrationRuntimeNodeStatus {
+	return []ManagedIntegrationRuntimeNodeStatus{ManagedIntegrationRuntimeNodeStatusAvailable, ManagedIntegrationRuntimeNodeStatusRecycling, ManagedIntegrationRuntimeNodeStatusStarting, ManagedIntegrationRuntimeNodeStatusUnavailable}
+}
+
 // ManagementOperationState enumerates the values for management operation state.
 type ManagementOperationState string
 
@@ -204,19 +433,19 @@ func PossibleManagementOperationStateValues() []ManagementOperationState {
 type NodeSize string
 
 const (
-	// Large ...
-	Large NodeSize = "Large"
-	// Medium ...
-	Medium NodeSize = "Medium"
-	// None ...
-	None NodeSize = "None"
-	// Small ...
-	Small NodeSize = "Small"
+	// NodeSizeLarge ...
+	NodeSizeLarge NodeSize = "Large"
+	// NodeSizeMedium ...
+	NodeSizeMedium NodeSize = "Medium"
+	// NodeSizeNone ...
+	NodeSizeNone NodeSize = "None"
+	// NodeSizeSmall ...
+	NodeSizeSmall NodeSize = "Small"
 )
 
 // PossibleNodeSizeValues returns an array of possible values for the NodeSize const type.
 func PossibleNodeSizeValues() []NodeSize {
-	return []NodeSize{Large, Medium, None, Small}
+	return []NodeSize{NodeSizeLarge, NodeSizeMedium, NodeSizeNone, NodeSizeSmall}
 }
 
 // NodeSizeFamily enumerates the values for node size family.
@@ -439,6 +668,51 @@ func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
 	return []SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled, SecurityAlertPolicyStateNew}
 }
 
+// SelfHostedIntegrationRuntimeNodeStatus enumerates the values for self hosted integration runtime node
+// status.
+type SelfHostedIntegrationRuntimeNodeStatus string
+
+const (
+	// SelfHostedIntegrationRuntimeNodeStatusInitializeFailed ...
+	SelfHostedIntegrationRuntimeNodeStatusInitializeFailed SelfHostedIntegrationRuntimeNodeStatus = "InitializeFailed"
+	// SelfHostedIntegrationRuntimeNodeStatusInitializing ...
+	SelfHostedIntegrationRuntimeNodeStatusInitializing SelfHostedIntegrationRuntimeNodeStatus = "Initializing"
+	// SelfHostedIntegrationRuntimeNodeStatusLimited ...
+	SelfHostedIntegrationRuntimeNodeStatusLimited SelfHostedIntegrationRuntimeNodeStatus = "Limited"
+	// SelfHostedIntegrationRuntimeNodeStatusNeedRegistration ...
+	SelfHostedIntegrationRuntimeNodeStatusNeedRegistration SelfHostedIntegrationRuntimeNodeStatus = "NeedRegistration"
+	// SelfHostedIntegrationRuntimeNodeStatusOffline ...
+	SelfHostedIntegrationRuntimeNodeStatusOffline SelfHostedIntegrationRuntimeNodeStatus = "Offline"
+	// SelfHostedIntegrationRuntimeNodeStatusOnline ...
+	SelfHostedIntegrationRuntimeNodeStatusOnline SelfHostedIntegrationRuntimeNodeStatus = "Online"
+	// SelfHostedIntegrationRuntimeNodeStatusUpgrading ...
+	SelfHostedIntegrationRuntimeNodeStatusUpgrading SelfHostedIntegrationRuntimeNodeStatus = "Upgrading"
+)
+
+// PossibleSelfHostedIntegrationRuntimeNodeStatusValues returns an array of possible values for the SelfHostedIntegrationRuntimeNodeStatus const type.
+func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrationRuntimeNodeStatus {
+	return []SelfHostedIntegrationRuntimeNodeStatus{SelfHostedIntegrationRuntimeNodeStatusInitializeFailed, SelfHostedIntegrationRuntimeNodeStatusInitializing, SelfHostedIntegrationRuntimeNodeStatusLimited, SelfHostedIntegrationRuntimeNodeStatusNeedRegistration, SelfHostedIntegrationRuntimeNodeStatusOffline, SelfHostedIntegrationRuntimeNodeStatusOnline, SelfHostedIntegrationRuntimeNodeStatusUpgrading}
+}
+
+// SsisObjectMetadataType enumerates the values for ssis object metadata type.
+type SsisObjectMetadataType string
+
+const (
+	// Environment ...
+	Environment SsisObjectMetadataType = "Environment"
+	// Folder ...
+	Folder SsisObjectMetadataType = "Folder"
+	// Package ...
+	Package SsisObjectMetadataType = "Package"
+	// Project ...
+	Project SsisObjectMetadataType = "Project"
+)
+
+// PossibleSsisObjectMetadataTypeValues returns an array of possible values for the SsisObjectMetadataType const type.
+func PossibleSsisObjectMetadataTypeValues() []SsisObjectMetadataType {
+	return []SsisObjectMetadataType{Environment, Folder, Package, Project}
+}
+
 // TransparentDataEncryptionStatus enumerates the values for transparent data encryption status.
 type TransparentDataEncryptionStatus string
 
@@ -452,6 +726,95 @@ const (
 // PossibleTransparentDataEncryptionStatusValues returns an array of possible values for the TransparentDataEncryptionStatus const type.
 func PossibleTransparentDataEncryptionStatusValues() []TransparentDataEncryptionStatus {
 	return []TransparentDataEncryptionStatus{TransparentDataEncryptionStatusDisabled, TransparentDataEncryptionStatusEnabled}
+}
+
+// Type enumerates the values for type.
+type Type string
+
+const (
+	// TypeIntegrationRuntime ...
+	TypeIntegrationRuntime Type = "IntegrationRuntime"
+	// TypeManaged ...
+	TypeManaged Type = "Managed"
+	// TypeSelfHosted ...
+	TypeSelfHosted Type = "SelfHosted"
+)
+
+// PossibleTypeValues returns an array of possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{TypeIntegrationRuntime, TypeManaged, TypeSelfHosted}
+}
+
+// TypeBasicCustomSetupBase enumerates the values for type basic custom setup base.
+type TypeBasicCustomSetupBase string
+
+const (
+	// TypeCmdkeySetup ...
+	TypeCmdkeySetup TypeBasicCustomSetupBase = "CmdkeySetup"
+	// TypeComponentSetup ...
+	TypeComponentSetup TypeBasicCustomSetupBase = "ComponentSetup"
+	// TypeCustomSetupBase ...
+	TypeCustomSetupBase TypeBasicCustomSetupBase = "CustomSetupBase"
+	// TypeEnvironmentVariableSetup ...
+	TypeEnvironmentVariableSetup TypeBasicCustomSetupBase = "EnvironmentVariableSetup"
+)
+
+// PossibleTypeBasicCustomSetupBaseValues returns an array of possible values for the TypeBasicCustomSetupBase const type.
+func PossibleTypeBasicCustomSetupBaseValues() []TypeBasicCustomSetupBase {
+	return []TypeBasicCustomSetupBase{TypeCmdkeySetup, TypeComponentSetup, TypeCustomSetupBase, TypeEnvironmentVariableSetup}
+}
+
+// TypeBasicIntegrationRuntimeStatus enumerates the values for type basic integration runtime status.
+type TypeBasicIntegrationRuntimeStatus string
+
+const (
+	// TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus ...
+	TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus TypeBasicIntegrationRuntimeStatus = "IntegrationRuntimeStatus"
+	// TypeBasicIntegrationRuntimeStatusTypeManaged ...
+	TypeBasicIntegrationRuntimeStatusTypeManaged TypeBasicIntegrationRuntimeStatus = "Managed"
+	// TypeBasicIntegrationRuntimeStatusTypeSelfHosted ...
+	TypeBasicIntegrationRuntimeStatusTypeSelfHosted TypeBasicIntegrationRuntimeStatus = "SelfHosted"
+)
+
+// PossibleTypeBasicIntegrationRuntimeStatusValues returns an array of possible values for the TypeBasicIntegrationRuntimeStatus const type.
+func PossibleTypeBasicIntegrationRuntimeStatusValues() []TypeBasicIntegrationRuntimeStatus {
+	return []TypeBasicIntegrationRuntimeStatus{TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus, TypeBasicIntegrationRuntimeStatusTypeManaged, TypeBasicIntegrationRuntimeStatusTypeSelfHosted}
+}
+
+// TypeBasicSecretBase enumerates the values for type basic secret base.
+type TypeBasicSecretBase string
+
+const (
+	// TypeSecretBase ...
+	TypeSecretBase TypeBasicSecretBase = "SecretBase"
+	// TypeSecureString ...
+	TypeSecureString TypeBasicSecretBase = "SecureString"
+)
+
+// PossibleTypeBasicSecretBaseValues returns an array of possible values for the TypeBasicSecretBase const type.
+func PossibleTypeBasicSecretBaseValues() []TypeBasicSecretBase {
+	return []TypeBasicSecretBase{TypeSecretBase, TypeSecureString}
+}
+
+// TypeBasicSsisObjectMetadata enumerates the values for type basic ssis object metadata.
+type TypeBasicSsisObjectMetadata string
+
+const (
+	// TypeEnvironment ...
+	TypeEnvironment TypeBasicSsisObjectMetadata = "Environment"
+	// TypeFolder ...
+	TypeFolder TypeBasicSsisObjectMetadata = "Folder"
+	// TypePackage ...
+	TypePackage TypeBasicSsisObjectMetadata = "Package"
+	// TypeProject ...
+	TypeProject TypeBasicSsisObjectMetadata = "Project"
+	// TypeSsisObjectMetadata ...
+	TypeSsisObjectMetadata TypeBasicSsisObjectMetadata = "SsisObjectMetadata"
+)
+
+// PossibleTypeBasicSsisObjectMetadataValues returns an array of possible values for the TypeBasicSsisObjectMetadata const type.
+func PossibleTypeBasicSsisObjectMetadataValues() []TypeBasicSsisObjectMetadata {
+	return []TypeBasicSsisObjectMetadata{TypeEnvironment, TypeFolder, TypePackage, TypeProject, TypeSsisObjectMetadata}
 }
 
 // VulnerabilityAssessmentPolicyBaselineName enumerates the values for vulnerability assessment policy baseline
@@ -936,7 +1299,7 @@ type BigDataPoolResourceProperties struct {
 	SparkVersion *string `json:"sparkVersion,omitempty"`
 	// DefaultSparkLogFolder - The default folder where Spark logs will be written.
 	DefaultSparkLogFolder *string `json:"defaultSparkLogFolder,omitempty"`
-	// NodeSize - The level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large'
+	// NodeSize - The level of compute power that each node in the Big Data pool has. Possible values include: 'NodeSizeNone', 'NodeSizeSmall', 'NodeSizeMedium', 'NodeSizeLarge'
 	NodeSize NodeSize `json:"nodeSize,omitempty"`
 	// NodeSizeFamily - The kind of nodes that the Big Data pool provides. Possible values include: 'NodeSizeFamilyNone', 'NodeSizeFamilyMemoryOptimized'
 	NodeSizeFamily NodeSizeFamily `json:"nodeSizeFamily,omitempty"`
@@ -1021,11 +1384,365 @@ type CheckNameAvailabilityResponse struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// CloudError the object that defines the structure of an Azure Synapse error response.
+type CloudError struct {
+	// CloudErrorBody - Error data
+	*CloudErrorBody `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudError.
+func (ce CloudError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ce.CloudErrorBody != nil {
+		objectMap["error"] = ce.CloudErrorBody
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CloudError struct.
+func (ce *CloudError) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "error":
+			if v != nil {
+				var cloudErrorBody CloudErrorBody
+				err = json.Unmarshal(*v, &cloudErrorBody)
+				if err != nil {
+					return err
+				}
+				ce.CloudErrorBody = &cloudErrorBody
+			}
+		}
+	}
+
+	return nil
+}
+
+// CloudErrorBody the object that defines the structure of an Azure Synapse error.
+type CloudErrorBody struct {
+	// Code - Error code.
+	Code *string `json:"code,omitempty"`
+	// Message - Error message.
+	Message *string `json:"message,omitempty"`
+	// Target - Property name/path in request associated with error.
+	Target *string `json:"target,omitempty"`
+	// Details - Array with additional error details.
+	Details *[]CloudError `json:"details,omitempty"`
+}
+
+// CmdkeySetup the custom setup of running cmdkey commands.
+type CmdkeySetup struct {
+	// CmdkeySetupTypeProperties - Cmdkey command custom setup type properties.
+	*CmdkeySetupTypeProperties `json:"typeProperties,omitempty"`
+	// Type - Possible values include: 'TypeCustomSetupBase', 'TypeCmdkeySetup', 'TypeEnvironmentVariableSetup', 'TypeComponentSetup'
+	Type TypeBasicCustomSetupBase `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CmdkeySetup.
+func (cs CmdkeySetup) MarshalJSON() ([]byte, error) {
+	cs.Type = TypeCmdkeySetup
+	objectMap := make(map[string]interface{})
+	if cs.CmdkeySetupTypeProperties != nil {
+		objectMap["typeProperties"] = cs.CmdkeySetupTypeProperties
+	}
+	if cs.Type != "" {
+		objectMap["type"] = cs.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCmdkeySetup is the BasicCustomSetupBase implementation for CmdkeySetup.
+func (cs CmdkeySetup) AsCmdkeySetup() (*CmdkeySetup, bool) {
+	return &cs, true
+}
+
+// AsEnvironmentVariableSetup is the BasicCustomSetupBase implementation for CmdkeySetup.
+func (cs CmdkeySetup) AsEnvironmentVariableSetup() (*EnvironmentVariableSetup, bool) {
+	return nil, false
+}
+
+// AsComponentSetup is the BasicCustomSetupBase implementation for CmdkeySetup.
+func (cs CmdkeySetup) AsComponentSetup() (*ComponentSetup, bool) {
+	return nil, false
+}
+
+// AsCustomSetupBase is the BasicCustomSetupBase implementation for CmdkeySetup.
+func (cs CmdkeySetup) AsCustomSetupBase() (*CustomSetupBase, bool) {
+	return nil, false
+}
+
+// AsBasicCustomSetupBase is the BasicCustomSetupBase implementation for CmdkeySetup.
+func (cs CmdkeySetup) AsBasicCustomSetupBase() (BasicCustomSetupBase, bool) {
+	return &cs, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for CmdkeySetup struct.
+func (cs *CmdkeySetup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "typeProperties":
+			if v != nil {
+				var cmdkeySetupTypeProperties CmdkeySetupTypeProperties
+				err = json.Unmarshal(*v, &cmdkeySetupTypeProperties)
+				if err != nil {
+					return err
+				}
+				cs.CmdkeySetupTypeProperties = &cmdkeySetupTypeProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicCustomSetupBase
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cs.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// CmdkeySetupTypeProperties cmdkey command custom setup type properties.
+type CmdkeySetupTypeProperties struct {
+	// TargetName - The server name of data source access.
+	TargetName interface{} `json:"targetName,omitempty"`
+	// UserName - The user name of data source access.
+	UserName interface{} `json:"userName,omitempty"`
+	// Password - The password of data source access.
+	Password BasicSecretBase `json:"password,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for CmdkeySetupTypeProperties struct.
+func (cstp *CmdkeySetupTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "targetName":
+			if v != nil {
+				var targetName interface{}
+				err = json.Unmarshal(*v, &targetName)
+				if err != nil {
+					return err
+				}
+				cstp.TargetName = targetName
+			}
+		case "userName":
+			if v != nil {
+				var userName interface{}
+				err = json.Unmarshal(*v, &userName)
+				if err != nil {
+					return err
+				}
+				cstp.UserName = userName
+			}
+		case "password":
+			if v != nil {
+				password, err := unmarshalBasicSecretBase(*v)
+				if err != nil {
+					return err
+				}
+				cstp.Password = password
+			}
+		}
+	}
+
+	return nil
+}
+
+// ComponentSetup the custom setup of installing 3rd party components.
+type ComponentSetup struct {
+	// LicensedComponentSetupTypeProperties - Install 3rd party component type properties.
+	*LicensedComponentSetupTypeProperties `json:"typeProperties,omitempty"`
+	// Type - Possible values include: 'TypeCustomSetupBase', 'TypeCmdkeySetup', 'TypeEnvironmentVariableSetup', 'TypeComponentSetup'
+	Type TypeBasicCustomSetupBase `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ComponentSetup.
+func (cs ComponentSetup) MarshalJSON() ([]byte, error) {
+	cs.Type = TypeComponentSetup
+	objectMap := make(map[string]interface{})
+	if cs.LicensedComponentSetupTypeProperties != nil {
+		objectMap["typeProperties"] = cs.LicensedComponentSetupTypeProperties
+	}
+	if cs.Type != "" {
+		objectMap["type"] = cs.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCmdkeySetup is the BasicCustomSetupBase implementation for ComponentSetup.
+func (cs ComponentSetup) AsCmdkeySetup() (*CmdkeySetup, bool) {
+	return nil, false
+}
+
+// AsEnvironmentVariableSetup is the BasicCustomSetupBase implementation for ComponentSetup.
+func (cs ComponentSetup) AsEnvironmentVariableSetup() (*EnvironmentVariableSetup, bool) {
+	return nil, false
+}
+
+// AsComponentSetup is the BasicCustomSetupBase implementation for ComponentSetup.
+func (cs ComponentSetup) AsComponentSetup() (*ComponentSetup, bool) {
+	return &cs, true
+}
+
+// AsCustomSetupBase is the BasicCustomSetupBase implementation for ComponentSetup.
+func (cs ComponentSetup) AsCustomSetupBase() (*CustomSetupBase, bool) {
+	return nil, false
+}
+
+// AsBasicCustomSetupBase is the BasicCustomSetupBase implementation for ComponentSetup.
+func (cs ComponentSetup) AsBasicCustomSetupBase() (BasicCustomSetupBase, bool) {
+	return &cs, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ComponentSetup struct.
+func (cs *ComponentSetup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "typeProperties":
+			if v != nil {
+				var licensedComponentSetupTypeProperties LicensedComponentSetupTypeProperties
+				err = json.Unmarshal(*v, &licensedComponentSetupTypeProperties)
+				if err != nil {
+					return err
+				}
+				cs.LicensedComponentSetupTypeProperties = &licensedComponentSetupTypeProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicCustomSetupBase
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cs.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // CreateSQLPoolRestorePointDefinition contains the information necessary to perform a create Sql pool
 // restore point operation.
 type CreateSQLPoolRestorePointDefinition struct {
 	// RestorePointLabel - The restore point label to apply
 	RestorePointLabel *string `json:"restorePointLabel,omitempty"`
+}
+
+// BasicCustomSetupBase the base definition of the custom setup.
+type BasicCustomSetupBase interface {
+	AsCmdkeySetup() (*CmdkeySetup, bool)
+	AsEnvironmentVariableSetup() (*EnvironmentVariableSetup, bool)
+	AsComponentSetup() (*ComponentSetup, bool)
+	AsCustomSetupBase() (*CustomSetupBase, bool)
+}
+
+// CustomSetupBase the base definition of the custom setup.
+type CustomSetupBase struct {
+	// Type - Possible values include: 'TypeCustomSetupBase', 'TypeCmdkeySetup', 'TypeEnvironmentVariableSetup', 'TypeComponentSetup'
+	Type TypeBasicCustomSetupBase `json:"type,omitempty"`
+}
+
+func unmarshalBasicCustomSetupBase(body []byte) (BasicCustomSetupBase, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeCmdkeySetup):
+		var cs CmdkeySetup
+		err := json.Unmarshal(body, &cs)
+		return cs, err
+	case string(TypeEnvironmentVariableSetup):
+		var evs EnvironmentVariableSetup
+		err := json.Unmarshal(body, &evs)
+		return evs, err
+	case string(TypeComponentSetup):
+		var cs ComponentSetup
+		err := json.Unmarshal(body, &cs)
+		return cs, err
+	default:
+		var csb CustomSetupBase
+		err := json.Unmarshal(body, &csb)
+		return csb, err
+	}
+}
+func unmarshalBasicCustomSetupBaseArray(body []byte) ([]BasicCustomSetupBase, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	csbArray := make([]BasicCustomSetupBase, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		csb, err := unmarshalBasicCustomSetupBase(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		csbArray[index] = csb
+	}
+	return csbArray, nil
+}
+
+// MarshalJSON is the custom marshaler for CustomSetupBase.
+func (csb CustomSetupBase) MarshalJSON() ([]byte, error) {
+	csb.Type = TypeCustomSetupBase
+	objectMap := make(map[string]interface{})
+	if csb.Type != "" {
+		objectMap["type"] = csb.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCmdkeySetup is the BasicCustomSetupBase implementation for CustomSetupBase.
+func (csb CustomSetupBase) AsCmdkeySetup() (*CmdkeySetup, bool) {
+	return nil, false
+}
+
+// AsEnvironmentVariableSetup is the BasicCustomSetupBase implementation for CustomSetupBase.
+func (csb CustomSetupBase) AsEnvironmentVariableSetup() (*EnvironmentVariableSetup, bool) {
+	return nil, false
+}
+
+// AsComponentSetup is the BasicCustomSetupBase implementation for CustomSetupBase.
+func (csb CustomSetupBase) AsComponentSetup() (*ComponentSetup, bool) {
+	return nil, false
+}
+
+// AsCustomSetupBase is the BasicCustomSetupBase implementation for CustomSetupBase.
+func (csb CustomSetupBase) AsCustomSetupBase() (*CustomSetupBase, bool) {
+	return &csb, true
+}
+
+// AsBasicCustomSetupBase is the BasicCustomSetupBase implementation for CustomSetupBase.
+func (csb CustomSetupBase) AsBasicCustomSetupBase() (BasicCustomSetupBase, bool) {
+	return &csb, true
 }
 
 // DataLakeStorageAccountDetails details of the data lake storage account associated with the workspace
@@ -1115,6 +1832,101 @@ func (dwua *DataWarehouseUserActivities) UnmarshalJSON(body []byte) error {
 type DataWarehouseUserActivitiesProperties struct {
 	// ActiveQueriesCount - READ-ONLY; Count of running and suspended queries.
 	ActiveQueriesCount *int32 `json:"activeQueriesCount,omitempty"`
+}
+
+// EntityReference the entity reference.
+type EntityReference struct {
+	// Type - The type of this referenced entity. Possible values include: 'IntegrationRuntimeReference', 'LinkedServiceReference'
+	Type IntegrationRuntimeEntityReferenceType `json:"type,omitempty"`
+	// ReferenceName - The name of this referenced entity.
+	ReferenceName *string `json:"referenceName,omitempty"`
+}
+
+// EnvironmentVariableSetup the custom setup of setting environment variable.
+type EnvironmentVariableSetup struct {
+	// EnvironmentVariableSetupTypeProperties - Add environment variable type properties.
+	*EnvironmentVariableSetupTypeProperties `json:"typeProperties,omitempty"`
+	// Type - Possible values include: 'TypeCustomSetupBase', 'TypeCmdkeySetup', 'TypeEnvironmentVariableSetup', 'TypeComponentSetup'
+	Type TypeBasicCustomSetupBase `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EnvironmentVariableSetup.
+func (evs EnvironmentVariableSetup) MarshalJSON() ([]byte, error) {
+	evs.Type = TypeEnvironmentVariableSetup
+	objectMap := make(map[string]interface{})
+	if evs.EnvironmentVariableSetupTypeProperties != nil {
+		objectMap["typeProperties"] = evs.EnvironmentVariableSetupTypeProperties
+	}
+	if evs.Type != "" {
+		objectMap["type"] = evs.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCmdkeySetup is the BasicCustomSetupBase implementation for EnvironmentVariableSetup.
+func (evs EnvironmentVariableSetup) AsCmdkeySetup() (*CmdkeySetup, bool) {
+	return nil, false
+}
+
+// AsEnvironmentVariableSetup is the BasicCustomSetupBase implementation for EnvironmentVariableSetup.
+func (evs EnvironmentVariableSetup) AsEnvironmentVariableSetup() (*EnvironmentVariableSetup, bool) {
+	return &evs, true
+}
+
+// AsComponentSetup is the BasicCustomSetupBase implementation for EnvironmentVariableSetup.
+func (evs EnvironmentVariableSetup) AsComponentSetup() (*ComponentSetup, bool) {
+	return nil, false
+}
+
+// AsCustomSetupBase is the BasicCustomSetupBase implementation for EnvironmentVariableSetup.
+func (evs EnvironmentVariableSetup) AsCustomSetupBase() (*CustomSetupBase, bool) {
+	return nil, false
+}
+
+// AsBasicCustomSetupBase is the BasicCustomSetupBase implementation for EnvironmentVariableSetup.
+func (evs EnvironmentVariableSetup) AsBasicCustomSetupBase() (BasicCustomSetupBase, bool) {
+	return &evs, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for EnvironmentVariableSetup struct.
+func (evs *EnvironmentVariableSetup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "typeProperties":
+			if v != nil {
+				var environmentVariableSetupTypeProperties EnvironmentVariableSetupTypeProperties
+				err = json.Unmarshal(*v, &environmentVariableSetupTypeProperties)
+				if err != nil {
+					return err
+				}
+				evs.EnvironmentVariableSetupTypeProperties = &environmentVariableSetupTypeProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicCustomSetupBase
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				evs.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// EnvironmentVariableSetupTypeProperties environment variable custom setup type properties.
+type EnvironmentVariableSetupTypeProperties struct {
+	// VariableName - The name of the environment variable.
+	VariableName *string `json:"variableName,omitempty"`
+	// VariableValue - The value of the environment variable.
+	VariableValue *string `json:"variableValue,omitempty"`
 }
 
 // ErrorAdditionalInfo the resource management error additional info.
@@ -1256,6 +2068,1367 @@ type GeoBackupPolicyProperties struct {
 	State GeoBackupPolicyState `json:"state,omitempty"`
 	// StorageType - READ-ONLY; The storage type of the geo backup policy.
 	StorageType *string `json:"storageType,omitempty"`
+}
+
+// GetSsisObjectMetadataRequest the request payload of get SSIS object metadata.
+type GetSsisObjectMetadataRequest struct {
+	// MetadataPath - Metadata path.
+	MetadataPath *string `json:"metadataPath,omitempty"`
+}
+
+// BasicIntegrationRuntime azure Synapse nested object which serves as a compute resource for activities.
+type BasicIntegrationRuntime interface {
+	AsManagedIntegrationRuntime() (*ManagedIntegrationRuntime, bool)
+	AsSelfHostedIntegrationRuntime() (*SelfHostedIntegrationRuntime, bool)
+	AsIntegrationRuntime() (*IntegrationRuntime, bool)
+}
+
+// IntegrationRuntime azure Synapse nested object which serves as a compute resource for activities.
+type IntegrationRuntime struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// Description - Integration runtime description.
+	Description *string `json:"description,omitempty"`
+	// Type - Possible values include: 'TypeIntegrationRuntime', 'TypeManaged', 'TypeSelfHosted'
+	Type Type `json:"type,omitempty"`
+}
+
+func unmarshalBasicIntegrationRuntime(body []byte) (BasicIntegrationRuntime, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeManaged):
+		var mir ManagedIntegrationRuntime
+		err := json.Unmarshal(body, &mir)
+		return mir, err
+	case string(TypeSelfHosted):
+		var shir SelfHostedIntegrationRuntime
+		err := json.Unmarshal(body, &shir)
+		return shir, err
+	default:
+		var ir IntegrationRuntime
+		err := json.Unmarshal(body, &ir)
+		return ir, err
+	}
+}
+func unmarshalBasicIntegrationRuntimeArray(body []byte) ([]BasicIntegrationRuntime, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	irArray := make([]BasicIntegrationRuntime, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		ir, err := unmarshalBasicIntegrationRuntime(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		irArray[index] = ir
+	}
+	return irArray, nil
+}
+
+// MarshalJSON is the custom marshaler for IntegrationRuntime.
+func (ir IntegrationRuntime) MarshalJSON() ([]byte, error) {
+	ir.Type = TypeIntegrationRuntime
+	objectMap := make(map[string]interface{})
+	if ir.Description != nil {
+		objectMap["description"] = ir.Description
+	}
+	if ir.Type != "" {
+		objectMap["type"] = ir.Type
+	}
+	for k, v := range ir.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsManagedIntegrationRuntime is the BasicIntegrationRuntime implementation for IntegrationRuntime.
+func (ir IntegrationRuntime) AsManagedIntegrationRuntime() (*ManagedIntegrationRuntime, bool) {
+	return nil, false
+}
+
+// AsSelfHostedIntegrationRuntime is the BasicIntegrationRuntime implementation for IntegrationRuntime.
+func (ir IntegrationRuntime) AsSelfHostedIntegrationRuntime() (*SelfHostedIntegrationRuntime, bool) {
+	return nil, false
+}
+
+// AsIntegrationRuntime is the BasicIntegrationRuntime implementation for IntegrationRuntime.
+func (ir IntegrationRuntime) AsIntegrationRuntime() (*IntegrationRuntime, bool) {
+	return &ir, true
+}
+
+// AsBasicIntegrationRuntime is the BasicIntegrationRuntime implementation for IntegrationRuntime.
+func (ir IntegrationRuntime) AsBasicIntegrationRuntime() (BasicIntegrationRuntime, bool) {
+	return &ir, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for IntegrationRuntime struct.
+func (ir *IntegrationRuntime) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if ir.AdditionalProperties == nil {
+					ir.AdditionalProperties = make(map[string]interface{})
+				}
+				ir.AdditionalProperties[k] = additionalProperties
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				ir.Description = &description
+			}
+		case "type":
+			if v != nil {
+				var typeVar Type
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ir.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// IntegrationRuntimeAuthKeys the integration runtime authentication keys.
+type IntegrationRuntimeAuthKeys struct {
+	autorest.Response `json:"-"`
+	// AuthKey1 - The primary integration runtime authentication key.
+	AuthKey1 *string `json:"authKey1,omitempty"`
+	// AuthKey2 - The secondary integration runtime authentication key.
+	AuthKey2 *string `json:"authKey2,omitempty"`
+}
+
+// IntegrationRuntimeComputeProperties the compute resource properties for managed integration runtime.
+type IntegrationRuntimeComputeProperties struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// Location - The location for managed integration runtime. The supported regions could be found on https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities
+	Location *string `json:"location,omitempty"`
+	// NodeSize - The node size requirement to managed integration runtime.
+	NodeSize *string `json:"nodeSize,omitempty"`
+	// NumberOfNodes - The required number of nodes for managed integration runtime.
+	NumberOfNodes *int32 `json:"numberOfNodes,omitempty"`
+	// MaxParallelExecutionsPerNode - Maximum parallel executions count per node for managed integration runtime.
+	MaxParallelExecutionsPerNode *int32 `json:"maxParallelExecutionsPerNode,omitempty"`
+	// DataFlowProperties - Data flow properties for managed integration runtime.
+	DataFlowProperties *IntegrationRuntimeDataFlowProperties `json:"dataFlowProperties,omitempty"`
+	// VNetProperties - VNet properties for managed integration runtime.
+	VNetProperties *IntegrationRuntimeVNetProperties `json:"vNetProperties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationRuntimeComputeProperties.
+func (ircp IntegrationRuntimeComputeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ircp.Location != nil {
+		objectMap["location"] = ircp.Location
+	}
+	if ircp.NodeSize != nil {
+		objectMap["nodeSize"] = ircp.NodeSize
+	}
+	if ircp.NumberOfNodes != nil {
+		objectMap["numberOfNodes"] = ircp.NumberOfNodes
+	}
+	if ircp.MaxParallelExecutionsPerNode != nil {
+		objectMap["maxParallelExecutionsPerNode"] = ircp.MaxParallelExecutionsPerNode
+	}
+	if ircp.DataFlowProperties != nil {
+		objectMap["dataFlowProperties"] = ircp.DataFlowProperties
+	}
+	if ircp.VNetProperties != nil {
+		objectMap["vNetProperties"] = ircp.VNetProperties
+	}
+	for k, v := range ircp.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IntegrationRuntimeComputeProperties struct.
+func (ircp *IntegrationRuntimeComputeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if ircp.AdditionalProperties == nil {
+					ircp.AdditionalProperties = make(map[string]interface{})
+				}
+				ircp.AdditionalProperties[k] = additionalProperties
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ircp.Location = &location
+			}
+		case "nodeSize":
+			if v != nil {
+				var nodeSize string
+				err = json.Unmarshal(*v, &nodeSize)
+				if err != nil {
+					return err
+				}
+				ircp.NodeSize = &nodeSize
+			}
+		case "numberOfNodes":
+			if v != nil {
+				var numberOfNodes int32
+				err = json.Unmarshal(*v, &numberOfNodes)
+				if err != nil {
+					return err
+				}
+				ircp.NumberOfNodes = &numberOfNodes
+			}
+		case "maxParallelExecutionsPerNode":
+			if v != nil {
+				var maxParallelExecutionsPerNode int32
+				err = json.Unmarshal(*v, &maxParallelExecutionsPerNode)
+				if err != nil {
+					return err
+				}
+				ircp.MaxParallelExecutionsPerNode = &maxParallelExecutionsPerNode
+			}
+		case "dataFlowProperties":
+			if v != nil {
+				var dataFlowProperties IntegrationRuntimeDataFlowProperties
+				err = json.Unmarshal(*v, &dataFlowProperties)
+				if err != nil {
+					return err
+				}
+				ircp.DataFlowProperties = &dataFlowProperties
+			}
+		case "vNetProperties":
+			if v != nil {
+				var vNetProperties IntegrationRuntimeVNetProperties
+				err = json.Unmarshal(*v, &vNetProperties)
+				if err != nil {
+					return err
+				}
+				ircp.VNetProperties = &vNetProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// IntegrationRuntimeConnectionInfo connection information for encrypting the on-premises data source
+// credentials.
+type IntegrationRuntimeConnectionInfo struct {
+	autorest.Response `json:"-"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// ServiceToken - READ-ONLY; The token generated in service. Callers use this token to authenticate to integration runtime.
+	ServiceToken *string `json:"serviceToken,omitempty"`
+	// IdentityCertThumbprint - READ-ONLY; The integration runtime SSL certificate thumbprint. Click-Once application uses it to do server validation.
+	IdentityCertThumbprint *string `json:"identityCertThumbprint,omitempty"`
+	// HostServiceURI - READ-ONLY; The on-premises integration runtime host URL.
+	HostServiceURI *string `json:"hostServiceUri,omitempty"`
+	// Version - READ-ONLY; The integration runtime version.
+	Version *string `json:"version,omitempty"`
+	// PublicKey - READ-ONLY; The public key for encrypting a credential when transferring the credential to the integration runtime.
+	PublicKey *string `json:"publicKey,omitempty"`
+	// IsIdentityCertExprired - READ-ONLY; Whether the identity certificate is expired.
+	IsIdentityCertExprired *bool `json:"isIdentityCertExprired,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationRuntimeConnectionInfo.
+func (irci IntegrationRuntimeConnectionInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	for k, v := range irci.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IntegrationRuntimeConnectionInfo struct.
+func (irci *IntegrationRuntimeConnectionInfo) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if irci.AdditionalProperties == nil {
+					irci.AdditionalProperties = make(map[string]interface{})
+				}
+				irci.AdditionalProperties[k] = additionalProperties
+			}
+		case "serviceToken":
+			if v != nil {
+				var serviceToken string
+				err = json.Unmarshal(*v, &serviceToken)
+				if err != nil {
+					return err
+				}
+				irci.ServiceToken = &serviceToken
+			}
+		case "identityCertThumbprint":
+			if v != nil {
+				var identityCertThumbprint string
+				err = json.Unmarshal(*v, &identityCertThumbprint)
+				if err != nil {
+					return err
+				}
+				irci.IdentityCertThumbprint = &identityCertThumbprint
+			}
+		case "hostServiceUri":
+			if v != nil {
+				var hostServiceURI string
+				err = json.Unmarshal(*v, &hostServiceURI)
+				if err != nil {
+					return err
+				}
+				irci.HostServiceURI = &hostServiceURI
+			}
+		case "version":
+			if v != nil {
+				var version string
+				err = json.Unmarshal(*v, &version)
+				if err != nil {
+					return err
+				}
+				irci.Version = &version
+			}
+		case "publicKey":
+			if v != nil {
+				var publicKey string
+				err = json.Unmarshal(*v, &publicKey)
+				if err != nil {
+					return err
+				}
+				irci.PublicKey = &publicKey
+			}
+		case "isIdentityCertExprired":
+			if v != nil {
+				var isIdentityCertExprired bool
+				err = json.Unmarshal(*v, &isIdentityCertExprired)
+				if err != nil {
+					return err
+				}
+				irci.IsIdentityCertExprired = &isIdentityCertExprired
+			}
+		}
+	}
+
+	return nil
+}
+
+// IntegrationRuntimeCustomSetupScriptProperties custom setup script properties for a managed dedicated
+// integration runtime.
+type IntegrationRuntimeCustomSetupScriptProperties struct {
+	// BlobContainerURI - The URI of the Azure blob container that contains the custom setup script.
+	BlobContainerURI *string `json:"blobContainerUri,omitempty"`
+	// SasToken - The SAS token of the Azure blob container.
+	SasToken *SecureString `json:"sasToken,omitempty"`
+}
+
+// IntegrationRuntimeDataFlowProperties data flow properties for managed integration runtime.
+type IntegrationRuntimeDataFlowProperties struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// ComputeType - Compute type of the cluster which will execute data flow job. Possible values include: 'General', 'MemoryOptimized', 'ComputeOptimized'
+	ComputeType DataFlowComputeType `json:"computeType,omitempty"`
+	// CoreCount - Core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and 272.
+	CoreCount *int32 `json:"coreCount,omitempty"`
+	// TimeToLive - Time to live (in minutes) setting of the cluster which will execute data flow job.
+	TimeToLive *int32 `json:"timeToLive,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationRuntimeDataFlowProperties.
+func (irdfp IntegrationRuntimeDataFlowProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if irdfp.ComputeType != "" {
+		objectMap["computeType"] = irdfp.ComputeType
+	}
+	if irdfp.CoreCount != nil {
+		objectMap["coreCount"] = irdfp.CoreCount
+	}
+	if irdfp.TimeToLive != nil {
+		objectMap["timeToLive"] = irdfp.TimeToLive
+	}
+	for k, v := range irdfp.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IntegrationRuntimeDataFlowProperties struct.
+func (irdfp *IntegrationRuntimeDataFlowProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if irdfp.AdditionalProperties == nil {
+					irdfp.AdditionalProperties = make(map[string]interface{})
+				}
+				irdfp.AdditionalProperties[k] = additionalProperties
+			}
+		case "computeType":
+			if v != nil {
+				var computeType DataFlowComputeType
+				err = json.Unmarshal(*v, &computeType)
+				if err != nil {
+					return err
+				}
+				irdfp.ComputeType = computeType
+			}
+		case "coreCount":
+			if v != nil {
+				var coreCount int32
+				err = json.Unmarshal(*v, &coreCount)
+				if err != nil {
+					return err
+				}
+				irdfp.CoreCount = &coreCount
+			}
+		case "timeToLive":
+			if v != nil {
+				var timeToLive int32
+				err = json.Unmarshal(*v, &timeToLive)
+				if err != nil {
+					return err
+				}
+				irdfp.TimeToLive = &timeToLive
+			}
+		}
+	}
+
+	return nil
+}
+
+// IntegrationRuntimeDataProxyProperties data proxy properties for a managed dedicated integration runtime.
+type IntegrationRuntimeDataProxyProperties struct {
+	// ConnectVia - The self-hosted integration runtime reference.
+	ConnectVia *EntityReference `json:"connectVia,omitempty"`
+	// StagingLinkedService - The staging linked service reference.
+	StagingLinkedService *EntityReference `json:"stagingLinkedService,omitempty"`
+	// Path - The path to contain the staged data in the Blob storage.
+	Path *string `json:"path,omitempty"`
+}
+
+// IntegrationRuntimeListResponse a list of integration runtime resources.
+type IntegrationRuntimeListResponse struct {
+	autorest.Response `json:"-"`
+	// Value - List of integration runtimes.
+	Value *[]IntegrationRuntimeResource `json:"value,omitempty"`
+	// NextLink - The link to the next page of results, if any remaining results exist.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// IntegrationRuntimeListResponseIterator provides access to a complete listing of
+// IntegrationRuntimeResource values.
+type IntegrationRuntimeListResponseIterator struct {
+	i    int
+	page IntegrationRuntimeListResponsePage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IntegrationRuntimeListResponseIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationRuntimeListResponseIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IntegrationRuntimeListResponseIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IntegrationRuntimeListResponseIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IntegrationRuntimeListResponseIterator) Response() IntegrationRuntimeListResponse {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IntegrationRuntimeListResponseIterator) Value() IntegrationRuntimeResource {
+	if !iter.page.NotDone() {
+		return IntegrationRuntimeResource{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IntegrationRuntimeListResponseIterator type.
+func NewIntegrationRuntimeListResponseIterator(page IntegrationRuntimeListResponsePage) IntegrationRuntimeListResponseIterator {
+	return IntegrationRuntimeListResponseIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (irlr IntegrationRuntimeListResponse) IsEmpty() bool {
+	return irlr.Value == nil || len(*irlr.Value) == 0
+}
+
+// integrationRuntimeListResponsePreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (irlr IntegrationRuntimeListResponse) integrationRuntimeListResponsePreparer(ctx context.Context) (*http.Request, error) {
+	if irlr.NextLink == nil || len(to.String(irlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(irlr.NextLink)))
+}
+
+// IntegrationRuntimeListResponsePage contains a page of IntegrationRuntimeResource values.
+type IntegrationRuntimeListResponsePage struct {
+	fn   func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)
+	irlr IntegrationRuntimeListResponse
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IntegrationRuntimeListResponsePage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationRuntimeListResponsePage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.irlr)
+	if err != nil {
+		return err
+	}
+	page.irlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IntegrationRuntimeListResponsePage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IntegrationRuntimeListResponsePage) NotDone() bool {
+	return !page.irlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IntegrationRuntimeListResponsePage) Response() IntegrationRuntimeListResponse {
+	return page.irlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IntegrationRuntimeListResponsePage) Values() []IntegrationRuntimeResource {
+	if page.irlr.IsEmpty() {
+		return nil
+	}
+	return *page.irlr.Value
+}
+
+// Creates a new instance of the IntegrationRuntimeListResponsePage type.
+func NewIntegrationRuntimeListResponsePage(getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
+	return IntegrationRuntimeListResponsePage{fn: getNextPage}
+}
+
+// IntegrationRuntimeMonitoringData get monitoring data response.
+type IntegrationRuntimeMonitoringData struct {
+	autorest.Response `json:"-"`
+	// Name - Integration runtime name.
+	Name *string `json:"name,omitempty"`
+	// Nodes - Integration runtime node monitoring data.
+	Nodes *[]IntegrationRuntimeNodeMonitoringData `json:"nodes,omitempty"`
+}
+
+// IntegrationRuntimeNodeIPAddress the IP address of self-hosted integration runtime node.
+type IntegrationRuntimeNodeIPAddress struct {
+	autorest.Response `json:"-"`
+	// IPAddress - READ-ONLY; The IP address of self-hosted integration runtime node.
+	IPAddress *string `json:"ipAddress,omitempty"`
+}
+
+// IntegrationRuntimeNodeMonitoringData monitoring data for integration runtime node.
+type IntegrationRuntimeNodeMonitoringData struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// NodeName - READ-ONLY; Name of the integration runtime node.
+	NodeName *string `json:"nodeName,omitempty"`
+	// AvailableMemoryInMB - READ-ONLY; Available memory (MB) on the integration runtime node.
+	AvailableMemoryInMB *int32 `json:"availableMemoryInMB,omitempty"`
+	// CPUUtilization - READ-ONLY; CPU percentage on the integration runtime node.
+	CPUUtilization *int32 `json:"cpuUtilization,omitempty"`
+	// ConcurrentJobsLimit - READ-ONLY; Maximum concurrent jobs on the integration runtime node.
+	ConcurrentJobsLimit *int32 `json:"concurrentJobsLimit,omitempty"`
+	// ConcurrentJobsRunning - READ-ONLY; The number of jobs currently running on the integration runtime node.
+	ConcurrentJobsRunning *int32 `json:"concurrentJobsRunning,omitempty"`
+	// MaxConcurrentJobs - READ-ONLY; The maximum concurrent jobs in this integration runtime.
+	MaxConcurrentJobs *int32 `json:"maxConcurrentJobs,omitempty"`
+	// SentBytes - READ-ONLY; Sent bytes on the integration runtime node.
+	SentBytes *float64 `json:"sentBytes,omitempty"`
+	// ReceivedBytes - READ-ONLY; Received bytes on the integration runtime node.
+	ReceivedBytes *float64 `json:"receivedBytes,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationRuntimeNodeMonitoringData.
+func (irnmd IntegrationRuntimeNodeMonitoringData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	for k, v := range irnmd.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IntegrationRuntimeNodeMonitoringData struct.
+func (irnmd *IntegrationRuntimeNodeMonitoringData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if irnmd.AdditionalProperties == nil {
+					irnmd.AdditionalProperties = make(map[string]interface{})
+				}
+				irnmd.AdditionalProperties[k] = additionalProperties
+			}
+		case "nodeName":
+			if v != nil {
+				var nodeName string
+				err = json.Unmarshal(*v, &nodeName)
+				if err != nil {
+					return err
+				}
+				irnmd.NodeName = &nodeName
+			}
+		case "availableMemoryInMB":
+			if v != nil {
+				var availableMemoryInMB int32
+				err = json.Unmarshal(*v, &availableMemoryInMB)
+				if err != nil {
+					return err
+				}
+				irnmd.AvailableMemoryInMB = &availableMemoryInMB
+			}
+		case "cpuUtilization":
+			if v != nil {
+				var CPUUtilization int32
+				err = json.Unmarshal(*v, &CPUUtilization)
+				if err != nil {
+					return err
+				}
+				irnmd.CPUUtilization = &CPUUtilization
+			}
+		case "concurrentJobsLimit":
+			if v != nil {
+				var concurrentJobsLimit int32
+				err = json.Unmarshal(*v, &concurrentJobsLimit)
+				if err != nil {
+					return err
+				}
+				irnmd.ConcurrentJobsLimit = &concurrentJobsLimit
+			}
+		case "concurrentJobsRunning":
+			if v != nil {
+				var concurrentJobsRunning int32
+				err = json.Unmarshal(*v, &concurrentJobsRunning)
+				if err != nil {
+					return err
+				}
+				irnmd.ConcurrentJobsRunning = &concurrentJobsRunning
+			}
+		case "maxConcurrentJobs":
+			if v != nil {
+				var maxConcurrentJobs int32
+				err = json.Unmarshal(*v, &maxConcurrentJobs)
+				if err != nil {
+					return err
+				}
+				irnmd.MaxConcurrentJobs = &maxConcurrentJobs
+			}
+		case "sentBytes":
+			if v != nil {
+				var sentBytes float64
+				err = json.Unmarshal(*v, &sentBytes)
+				if err != nil {
+					return err
+				}
+				irnmd.SentBytes = &sentBytes
+			}
+		case "receivedBytes":
+			if v != nil {
+				var receivedBytes float64
+				err = json.Unmarshal(*v, &receivedBytes)
+				if err != nil {
+					return err
+				}
+				irnmd.ReceivedBytes = &receivedBytes
+			}
+		}
+	}
+
+	return nil
+}
+
+// IntegrationRuntimeRegenerateKeyParameters parameters to regenerate the authentication key.
+type IntegrationRuntimeRegenerateKeyParameters struct {
+	// KeyName - The name of the authentication key to regenerate. Possible values include: 'AuthKey1', 'AuthKey2'
+	KeyName IntegrationRuntimeAuthKeyName `json:"keyName,omitempty"`
+}
+
+// IntegrationRuntimeResource integration runtime resource type.
+type IntegrationRuntimeResource struct {
+	autorest.Response `json:"-"`
+	// Properties - Integration runtime properties.
+	Properties BasicIntegrationRuntime `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty"`
+	// Etag - READ-ONLY; Etag identifies change in the resource.
+	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for IntegrationRuntimeResource struct.
+func (irr *IntegrationRuntimeResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				properties, err := unmarshalBasicIntegrationRuntime(*v)
+				if err != nil {
+					return err
+				}
+				irr.Properties = properties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				irr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				irr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				irr.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				irr.Etag = &etag
+			}
+		}
+	}
+
+	return nil
+}
+
+// IntegrationRuntimeSsisCatalogInfo catalog information for managed dedicated integration runtime.
+type IntegrationRuntimeSsisCatalogInfo struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// CatalogServerEndpoint - The catalog database server URL.
+	CatalogServerEndpoint *string `json:"catalogServerEndpoint,omitempty"`
+	// CatalogAdminUserName - The administrator user name of catalog database.
+	CatalogAdminUserName *string `json:"catalogAdminUserName,omitempty"`
+	// CatalogAdminPassword - The password of the administrator user account of the catalog database.
+	CatalogAdminPassword *SecureString `json:"catalogAdminPassword,omitempty"`
+	// CatalogPricingTier - The pricing tier for the catalog database. The valid values could be found in https://azure.microsoft.com/en-us/pricing/details/sql-database/. Possible values include: 'IntegrationRuntimeSsisCatalogPricingTierBasic', 'IntegrationRuntimeSsisCatalogPricingTierStandard', 'IntegrationRuntimeSsisCatalogPricingTierPremium', 'IntegrationRuntimeSsisCatalogPricingTierPremiumRS'
+	CatalogPricingTier IntegrationRuntimeSsisCatalogPricingTier `json:"catalogPricingTier,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationRuntimeSsisCatalogInfo.
+func (irsci IntegrationRuntimeSsisCatalogInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if irsci.CatalogServerEndpoint != nil {
+		objectMap["catalogServerEndpoint"] = irsci.CatalogServerEndpoint
+	}
+	if irsci.CatalogAdminUserName != nil {
+		objectMap["catalogAdminUserName"] = irsci.CatalogAdminUserName
+	}
+	if irsci.CatalogAdminPassword != nil {
+		objectMap["catalogAdminPassword"] = irsci.CatalogAdminPassword
+	}
+	if irsci.CatalogPricingTier != "" {
+		objectMap["catalogPricingTier"] = irsci.CatalogPricingTier
+	}
+	for k, v := range irsci.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IntegrationRuntimeSsisCatalogInfo struct.
+func (irsci *IntegrationRuntimeSsisCatalogInfo) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if irsci.AdditionalProperties == nil {
+					irsci.AdditionalProperties = make(map[string]interface{})
+				}
+				irsci.AdditionalProperties[k] = additionalProperties
+			}
+		case "catalogServerEndpoint":
+			if v != nil {
+				var catalogServerEndpoint string
+				err = json.Unmarshal(*v, &catalogServerEndpoint)
+				if err != nil {
+					return err
+				}
+				irsci.CatalogServerEndpoint = &catalogServerEndpoint
+			}
+		case "catalogAdminUserName":
+			if v != nil {
+				var catalogAdminUserName string
+				err = json.Unmarshal(*v, &catalogAdminUserName)
+				if err != nil {
+					return err
+				}
+				irsci.CatalogAdminUserName = &catalogAdminUserName
+			}
+		case "catalogAdminPassword":
+			if v != nil {
+				var catalogAdminPassword SecureString
+				err = json.Unmarshal(*v, &catalogAdminPassword)
+				if err != nil {
+					return err
+				}
+				irsci.CatalogAdminPassword = &catalogAdminPassword
+			}
+		case "catalogPricingTier":
+			if v != nil {
+				var catalogPricingTier IntegrationRuntimeSsisCatalogPricingTier
+				err = json.Unmarshal(*v, &catalogPricingTier)
+				if err != nil {
+					return err
+				}
+				irsci.CatalogPricingTier = catalogPricingTier
+			}
+		}
+	}
+
+	return nil
+}
+
+// IntegrationRuntimeSsisProperties SSIS properties for managed integration runtime.
+type IntegrationRuntimeSsisProperties struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// CatalogInfo - Catalog information for managed dedicated integration runtime.
+	CatalogInfo *IntegrationRuntimeSsisCatalogInfo `json:"catalogInfo,omitempty"`
+	// LicenseType - License type for bringing your own license scenario. Possible values include: 'BasePrice', 'LicenseIncluded'
+	LicenseType IntegrationRuntimeLicenseType `json:"licenseType,omitempty"`
+	// CustomSetupScriptProperties - Custom setup script properties for a managed dedicated integration runtime.
+	CustomSetupScriptProperties *IntegrationRuntimeCustomSetupScriptProperties `json:"customSetupScriptProperties,omitempty"`
+	// DataProxyProperties - Data proxy properties for a managed dedicated integration runtime.
+	DataProxyProperties *IntegrationRuntimeDataProxyProperties `json:"dataProxyProperties,omitempty"`
+	// Edition - The edition for the SSIS Integration Runtime. Possible values include: 'Standard', 'Enterprise'
+	Edition IntegrationRuntimeEdition `json:"edition,omitempty"`
+	// ExpressCustomSetupProperties - Custom setup without script properties for a SSIS integration runtime.
+	ExpressCustomSetupProperties *[]BasicCustomSetupBase `json:"expressCustomSetupProperties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationRuntimeSsisProperties.
+func (irsp IntegrationRuntimeSsisProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if irsp.CatalogInfo != nil {
+		objectMap["catalogInfo"] = irsp.CatalogInfo
+	}
+	if irsp.LicenseType != "" {
+		objectMap["licenseType"] = irsp.LicenseType
+	}
+	if irsp.CustomSetupScriptProperties != nil {
+		objectMap["customSetupScriptProperties"] = irsp.CustomSetupScriptProperties
+	}
+	if irsp.DataProxyProperties != nil {
+		objectMap["dataProxyProperties"] = irsp.DataProxyProperties
+	}
+	if irsp.Edition != "" {
+		objectMap["edition"] = irsp.Edition
+	}
+	if irsp.ExpressCustomSetupProperties != nil {
+		objectMap["expressCustomSetupProperties"] = irsp.ExpressCustomSetupProperties
+	}
+	for k, v := range irsp.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IntegrationRuntimeSsisProperties struct.
+func (irsp *IntegrationRuntimeSsisProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if irsp.AdditionalProperties == nil {
+					irsp.AdditionalProperties = make(map[string]interface{})
+				}
+				irsp.AdditionalProperties[k] = additionalProperties
+			}
+		case "catalogInfo":
+			if v != nil {
+				var catalogInfo IntegrationRuntimeSsisCatalogInfo
+				err = json.Unmarshal(*v, &catalogInfo)
+				if err != nil {
+					return err
+				}
+				irsp.CatalogInfo = &catalogInfo
+			}
+		case "licenseType":
+			if v != nil {
+				var licenseType IntegrationRuntimeLicenseType
+				err = json.Unmarshal(*v, &licenseType)
+				if err != nil {
+					return err
+				}
+				irsp.LicenseType = licenseType
+			}
+		case "customSetupScriptProperties":
+			if v != nil {
+				var customSetupScriptProperties IntegrationRuntimeCustomSetupScriptProperties
+				err = json.Unmarshal(*v, &customSetupScriptProperties)
+				if err != nil {
+					return err
+				}
+				irsp.CustomSetupScriptProperties = &customSetupScriptProperties
+			}
+		case "dataProxyProperties":
+			if v != nil {
+				var dataProxyProperties IntegrationRuntimeDataProxyProperties
+				err = json.Unmarshal(*v, &dataProxyProperties)
+				if err != nil {
+					return err
+				}
+				irsp.DataProxyProperties = &dataProxyProperties
+			}
+		case "edition":
+			if v != nil {
+				var edition IntegrationRuntimeEdition
+				err = json.Unmarshal(*v, &edition)
+				if err != nil {
+					return err
+				}
+				irsp.Edition = edition
+			}
+		case "expressCustomSetupProperties":
+			if v != nil {
+				expressCustomSetupProperties, err := unmarshalBasicCustomSetupBaseArray(*v)
+				if err != nil {
+					return err
+				}
+				irsp.ExpressCustomSetupProperties = &expressCustomSetupProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicIntegrationRuntimeStatus integration runtime status.
+type BasicIntegrationRuntimeStatus interface {
+	AsManagedIntegrationRuntimeStatus() (*ManagedIntegrationRuntimeStatus, bool)
+	AsSelfHostedIntegrationRuntimeStatus() (*SelfHostedIntegrationRuntimeStatus, bool)
+	AsIntegrationRuntimeStatus() (*IntegrationRuntimeStatus, bool)
+}
+
+// IntegrationRuntimeStatus integration runtime status.
+type IntegrationRuntimeStatus struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// DataFactoryName - READ-ONLY; The workspace name which the integration runtime belong to.
+	DataFactoryName *string `json:"dataFactoryName,omitempty"`
+	// State - READ-ONLY; The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
+	State IntegrationRuntimeState `json:"state,omitempty"`
+	// Type - Possible values include: 'TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus', 'TypeBasicIntegrationRuntimeStatusTypeManaged', 'TypeBasicIntegrationRuntimeStatusTypeSelfHosted'
+	Type TypeBasicIntegrationRuntimeStatus `json:"type,omitempty"`
+}
+
+func unmarshalBasicIntegrationRuntimeStatus(body []byte) (BasicIntegrationRuntimeStatus, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeBasicIntegrationRuntimeStatusTypeManaged):
+		var mirs ManagedIntegrationRuntimeStatus
+		err := json.Unmarshal(body, &mirs)
+		return mirs, err
+	case string(TypeBasicIntegrationRuntimeStatusTypeSelfHosted):
+		var shirs SelfHostedIntegrationRuntimeStatus
+		err := json.Unmarshal(body, &shirs)
+		return shirs, err
+	default:
+		var irs IntegrationRuntimeStatus
+		err := json.Unmarshal(body, &irs)
+		return irs, err
+	}
+}
+func unmarshalBasicIntegrationRuntimeStatusArray(body []byte) ([]BasicIntegrationRuntimeStatus, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	irsArray := make([]BasicIntegrationRuntimeStatus, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		irs, err := unmarshalBasicIntegrationRuntimeStatus(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		irsArray[index] = irs
+	}
+	return irsArray, nil
+}
+
+// MarshalJSON is the custom marshaler for IntegrationRuntimeStatus.
+func (irs IntegrationRuntimeStatus) MarshalJSON() ([]byte, error) {
+	irs.Type = TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus
+	objectMap := make(map[string]interface{})
+	if irs.Type != "" {
+		objectMap["type"] = irs.Type
+	}
+	for k, v := range irs.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsManagedIntegrationRuntimeStatus is the BasicIntegrationRuntimeStatus implementation for IntegrationRuntimeStatus.
+func (irs IntegrationRuntimeStatus) AsManagedIntegrationRuntimeStatus() (*ManagedIntegrationRuntimeStatus, bool) {
+	return nil, false
+}
+
+// AsSelfHostedIntegrationRuntimeStatus is the BasicIntegrationRuntimeStatus implementation for IntegrationRuntimeStatus.
+func (irs IntegrationRuntimeStatus) AsSelfHostedIntegrationRuntimeStatus() (*SelfHostedIntegrationRuntimeStatus, bool) {
+	return nil, false
+}
+
+// AsIntegrationRuntimeStatus is the BasicIntegrationRuntimeStatus implementation for IntegrationRuntimeStatus.
+func (irs IntegrationRuntimeStatus) AsIntegrationRuntimeStatus() (*IntegrationRuntimeStatus, bool) {
+	return &irs, true
+}
+
+// AsBasicIntegrationRuntimeStatus is the BasicIntegrationRuntimeStatus implementation for IntegrationRuntimeStatus.
+func (irs IntegrationRuntimeStatus) AsBasicIntegrationRuntimeStatus() (BasicIntegrationRuntimeStatus, bool) {
+	return &irs, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for IntegrationRuntimeStatus struct.
+func (irs *IntegrationRuntimeStatus) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if irs.AdditionalProperties == nil {
+					irs.AdditionalProperties = make(map[string]interface{})
+				}
+				irs.AdditionalProperties[k] = additionalProperties
+			}
+		case "dataFactoryName":
+			if v != nil {
+				var dataFactoryName string
+				err = json.Unmarshal(*v, &dataFactoryName)
+				if err != nil {
+					return err
+				}
+				irs.DataFactoryName = &dataFactoryName
+			}
+		case "state":
+			if v != nil {
+				var state IntegrationRuntimeState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				irs.State = state
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicIntegrationRuntimeStatus
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				irs.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// IntegrationRuntimeStatusResponse integration runtime status response.
+type IntegrationRuntimeStatusResponse struct {
+	autorest.Response `json:"-"`
+	// Name - READ-ONLY; The integration runtime name.
+	Name *string `json:"name,omitempty"`
+	// Properties - Integration runtime properties.
+	Properties BasicIntegrationRuntimeStatus `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for IntegrationRuntimeStatusResponse struct.
+func (irsr *IntegrationRuntimeStatusResponse) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				irsr.Name = &name
+			}
+		case "properties":
+			if v != nil {
+				properties, err := unmarshalBasicIntegrationRuntimeStatus(*v)
+				if err != nil {
+					return err
+				}
+				irsr.Properties = properties
+			}
+		}
+	}
+
+	return nil
+}
+
+// IntegrationRuntimeVNetProperties vNet properties for managed integration runtime.
+type IntegrationRuntimeVNetProperties struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// VNetID - The ID of the VNet that this integration runtime will join.
+	VNetID *string `json:"vNetId,omitempty"`
+	// Subnet - The name of the subnet this integration runtime will join.
+	Subnet *string `json:"subnet,omitempty"`
+	// PublicIPs - Resource IDs of the public IP addresses that this integration runtime will use.
+	PublicIPs *[]string `json:"publicIPs,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationRuntimeVNetProperties.
+func (irvnp IntegrationRuntimeVNetProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if irvnp.VNetID != nil {
+		objectMap["vNetId"] = irvnp.VNetID
+	}
+	if irvnp.Subnet != nil {
+		objectMap["subnet"] = irvnp.Subnet
+	}
+	if irvnp.PublicIPs != nil {
+		objectMap["publicIPs"] = irvnp.PublicIPs
+	}
+	for k, v := range irvnp.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IntegrationRuntimeVNetProperties struct.
+func (irvnp *IntegrationRuntimeVNetProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if irvnp.AdditionalProperties == nil {
+					irvnp.AdditionalProperties = make(map[string]interface{})
+				}
+				irvnp.AdditionalProperties[k] = additionalProperties
+			}
+		case "vNetId":
+			if v != nil {
+				var vNetID string
+				err = json.Unmarshal(*v, &vNetID)
+				if err != nil {
+					return err
+				}
+				irvnp.VNetID = &vNetID
+			}
+		case "subnet":
+			if v != nil {
+				var subnet string
+				err = json.Unmarshal(*v, &subnet)
+				if err != nil {
+					return err
+				}
+				irvnp.Subnet = &subnet
+			}
+		case "publicIPs":
+			if v != nil {
+				var publicIPs []string
+				err = json.Unmarshal(*v, &publicIPs)
+				if err != nil {
+					return err
+				}
+				irvnp.PublicIPs = &publicIPs
+			}
+		}
+	}
+
+	return nil
 }
 
 // IPFirewallRuleInfo IP firewall rule
@@ -1584,6 +3757,227 @@ type LibraryRequirements struct {
 	Filename *string `json:"filename,omitempty"`
 }
 
+// LicensedComponentSetupTypeProperties installation of licensed component setup type properties.
+type LicensedComponentSetupTypeProperties struct {
+	// ComponentName - The name of the 3rd party component.
+	ComponentName *string `json:"componentName,omitempty"`
+	// LicenseKey - The license key to activate the component.
+	LicenseKey BasicSecretBase `json:"licenseKey,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for LicensedComponentSetupTypeProperties struct.
+func (lcstp *LicensedComponentSetupTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "componentName":
+			if v != nil {
+				var componentName string
+				err = json.Unmarshal(*v, &componentName)
+				if err != nil {
+					return err
+				}
+				lcstp.ComponentName = &componentName
+			}
+		case "licenseKey":
+			if v != nil {
+				licenseKey, err := unmarshalBasicSecretBase(*v)
+				if err != nil {
+					return err
+				}
+				lcstp.LicenseKey = licenseKey
+			}
+		}
+	}
+
+	return nil
+}
+
+// LinkedIntegrationRuntime the linked integration runtime information.
+type LinkedIntegrationRuntime struct {
+	// Name - READ-ONLY; The name of the linked integration runtime.
+	Name *string `json:"name,omitempty"`
+	// SubscriptionID - READ-ONLY; The subscription ID for which the linked integration runtime belong to.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// DataFactoryName - READ-ONLY; The name of the workspace for which the linked integration runtime belong to.
+	DataFactoryName *string `json:"dataFactoryName,omitempty"`
+	// DataFactoryLocation - READ-ONLY; The location of the workspace for which the linked integration runtime belong to.
+	DataFactoryLocation *string `json:"dataFactoryLocation,omitempty"`
+	// CreateTime - READ-ONLY; The creating time of the linked integration runtime.
+	CreateTime *date.Time `json:"createTime,omitempty"`
+}
+
+// LinkedIntegrationRuntimeKeyAuthorization the key authorization type integration runtime.
+type LinkedIntegrationRuntimeKeyAuthorization struct {
+	// Key - The key used for authorization.
+	Key *SecureString `json:"key,omitempty"`
+	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeType', 'AuthorizationTypeKey', 'AuthorizationTypeRBAC'
+	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) MarshalJSON() ([]byte, error) {
+	lirka.AuthorizationType = AuthorizationTypeKey
+	objectMap := make(map[string]interface{})
+	if lirka.Key != nil {
+		objectMap["key"] = lirka.Key
+	}
+	if lirka.AuthorizationType != "" {
+		objectMap["authorizationType"] = lirka.AuthorizationType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsLinkedIntegrationRuntimeKeyAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool) {
+	return &lirka, true
+}
+
+// AsLinkedIntegrationRuntimeRbacAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool) {
+	return nil, false
+}
+
+// AsLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool) {
+	return nil, false
+}
+
+// AsBasicLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType, bool) {
+	return &lirka, true
+}
+
+// LinkedIntegrationRuntimeRbacAuthorization the role based access control (RBAC) authorization type
+// integration runtime.
+type LinkedIntegrationRuntimeRbacAuthorization struct {
+	// ResourceID - The resource identifier of the integration runtime to be shared.
+	ResourceID *string `json:"resourceId,omitempty"`
+	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeType', 'AuthorizationTypeKey', 'AuthorizationTypeRBAC'
+	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) MarshalJSON() ([]byte, error) {
+	lirra.AuthorizationType = AuthorizationTypeRBAC
+	objectMap := make(map[string]interface{})
+	if lirra.ResourceID != nil {
+		objectMap["resourceId"] = lirra.ResourceID
+	}
+	if lirra.AuthorizationType != "" {
+		objectMap["authorizationType"] = lirra.AuthorizationType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsLinkedIntegrationRuntimeKeyAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool) {
+	return nil, false
+}
+
+// AsLinkedIntegrationRuntimeRbacAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool) {
+	return &lirra, true
+}
+
+// AsLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool) {
+	return nil, false
+}
+
+// AsBasicLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType, bool) {
+	return &lirra, true
+}
+
+// BasicLinkedIntegrationRuntimeType the base definition of a linked integration runtime.
+type BasicLinkedIntegrationRuntimeType interface {
+	AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool)
+	AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool)
+	AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool)
+}
+
+// LinkedIntegrationRuntimeType the base definition of a linked integration runtime.
+type LinkedIntegrationRuntimeType struct {
+	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeType', 'AuthorizationTypeKey', 'AuthorizationTypeRBAC'
+	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
+}
+
+func unmarshalBasicLinkedIntegrationRuntimeType(body []byte) (BasicLinkedIntegrationRuntimeType, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["authorizationType"] {
+	case string(AuthorizationTypeKey):
+		var lirka LinkedIntegrationRuntimeKeyAuthorization
+		err := json.Unmarshal(body, &lirka)
+		return lirka, err
+	case string(AuthorizationTypeRBAC):
+		var lirra LinkedIntegrationRuntimeRbacAuthorization
+		err := json.Unmarshal(body, &lirra)
+		return lirra, err
+	default:
+		var lirt LinkedIntegrationRuntimeType
+		err := json.Unmarshal(body, &lirt)
+		return lirt, err
+	}
+}
+func unmarshalBasicLinkedIntegrationRuntimeTypeArray(body []byte) ([]BasicLinkedIntegrationRuntimeType, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	lirtArray := make([]BasicLinkedIntegrationRuntimeType, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		lirt, err := unmarshalBasicLinkedIntegrationRuntimeType(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		lirtArray[index] = lirt
+	}
+	return lirtArray, nil
+}
+
+// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) MarshalJSON() ([]byte, error) {
+	lirt.AuthorizationType = AuthorizationTypeLinkedIntegrationRuntimeType
+	objectMap := make(map[string]interface{})
+	if lirt.AuthorizationType != "" {
+		objectMap["authorizationType"] = lirt.AuthorizationType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsLinkedIntegrationRuntimeKeyAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool) {
+	return nil, false
+}
+
+// AsLinkedIntegrationRuntimeRbacAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool) {
+	return nil, false
+}
+
+// AsLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool) {
+	return &lirt, true
+}
+
+// AsBasicLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType, bool) {
+	return &lirt, true
+}
+
 // ListAvailableRpOperation ...
 type ListAvailableRpOperation struct {
 	autorest.Response `json:"-"`
@@ -1686,6 +4080,294 @@ type ManagedIdentitySQLControlSettingsModelPropertiesGrantSQLControlToManagedIde
 	DesiredState DesiredState `json:"desiredState,omitempty"`
 	// ActualState - READ-ONLY; Actual state. Possible values include: 'Enabling', 'Enabled', 'Disabling', 'Disabled', 'Unknown'
 	ActualState ActualState `json:"actualState,omitempty"`
+}
+
+// ManagedIntegrationRuntime managed integration runtime, including managed elastic and managed dedicated
+// integration runtimes.
+type ManagedIntegrationRuntime struct {
+	// State - READ-ONLY; Integration runtime state, only valid for managed dedicated integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
+	State IntegrationRuntimeState `json:"state,omitempty"`
+	// ManagedIntegrationRuntimeTypeProperties - Managed integration runtime properties.
+	*ManagedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// Description - Integration runtime description.
+	Description *string `json:"description,omitempty"`
+	// Type - Possible values include: 'TypeIntegrationRuntime', 'TypeManaged', 'TypeSelfHosted'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedIntegrationRuntime.
+func (mir ManagedIntegrationRuntime) MarshalJSON() ([]byte, error) {
+	mir.Type = TypeManaged
+	objectMap := make(map[string]interface{})
+	if mir.ManagedIntegrationRuntimeTypeProperties != nil {
+		objectMap["typeProperties"] = mir.ManagedIntegrationRuntimeTypeProperties
+	}
+	if mir.Description != nil {
+		objectMap["description"] = mir.Description
+	}
+	if mir.Type != "" {
+		objectMap["type"] = mir.Type
+	}
+	for k, v := range mir.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsManagedIntegrationRuntime is the BasicIntegrationRuntime implementation for ManagedIntegrationRuntime.
+func (mir ManagedIntegrationRuntime) AsManagedIntegrationRuntime() (*ManagedIntegrationRuntime, bool) {
+	return &mir, true
+}
+
+// AsSelfHostedIntegrationRuntime is the BasicIntegrationRuntime implementation for ManagedIntegrationRuntime.
+func (mir ManagedIntegrationRuntime) AsSelfHostedIntegrationRuntime() (*SelfHostedIntegrationRuntime, bool) {
+	return nil, false
+}
+
+// AsIntegrationRuntime is the BasicIntegrationRuntime implementation for ManagedIntegrationRuntime.
+func (mir ManagedIntegrationRuntime) AsIntegrationRuntime() (*IntegrationRuntime, bool) {
+	return nil, false
+}
+
+// AsBasicIntegrationRuntime is the BasicIntegrationRuntime implementation for ManagedIntegrationRuntime.
+func (mir ManagedIntegrationRuntime) AsBasicIntegrationRuntime() (BasicIntegrationRuntime, bool) {
+	return &mir, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagedIntegrationRuntime struct.
+func (mir *ManagedIntegrationRuntime) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "state":
+			if v != nil {
+				var state IntegrationRuntimeState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				mir.State = state
+			}
+		case "typeProperties":
+			if v != nil {
+				var managedIntegrationRuntimeTypeProperties ManagedIntegrationRuntimeTypeProperties
+				err = json.Unmarshal(*v, &managedIntegrationRuntimeTypeProperties)
+				if err != nil {
+					return err
+				}
+				mir.ManagedIntegrationRuntimeTypeProperties = &managedIntegrationRuntimeTypeProperties
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if mir.AdditionalProperties == nil {
+					mir.AdditionalProperties = make(map[string]interface{})
+				}
+				mir.AdditionalProperties[k] = additionalProperties
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				mir.Description = &description
+			}
+		case "type":
+			if v != nil {
+				var typeVar Type
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mir.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ManagedIntegrationRuntimeError error definition for managed integration runtime.
+type ManagedIntegrationRuntimeError struct {
+	// Time - READ-ONLY; The time when the error occurred.
+	Time *date.Time `json:"time,omitempty"`
+	// Code - READ-ONLY; Error code.
+	Code *string `json:"code,omitempty"`
+	// Parameters - READ-ONLY; Managed integration runtime error parameters.
+	Parameters *[]string `json:"parameters,omitempty"`
+	// Message - READ-ONLY; Error message.
+	Message *string `json:"message,omitempty"`
+}
+
+// ManagedIntegrationRuntimeNode properties of integration runtime node.
+type ManagedIntegrationRuntimeNode struct {
+	// NodeID - READ-ONLY; The managed integration runtime node id.
+	NodeID *string `json:"nodeId,omitempty"`
+	// Status - READ-ONLY; The managed integration runtime node status. Possible values include: 'ManagedIntegrationRuntimeNodeStatusStarting', 'ManagedIntegrationRuntimeNodeStatusAvailable', 'ManagedIntegrationRuntimeNodeStatusRecycling', 'ManagedIntegrationRuntimeNodeStatusUnavailable'
+	Status ManagedIntegrationRuntimeNodeStatus `json:"status,omitempty"`
+	// Errors - The errors that occurred on this integration runtime node.
+	Errors *[]ManagedIntegrationRuntimeError `json:"errors,omitempty"`
+}
+
+// ManagedIntegrationRuntimeOperationResult properties of managed integration runtime operation result.
+type ManagedIntegrationRuntimeOperationResult struct {
+	// Type - READ-ONLY; The operation type. Could be start or stop.
+	Type *string `json:"type,omitempty"`
+	// StartTime - READ-ONLY; The start time of the operation.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// Result - READ-ONLY; The operation result.
+	Result *string `json:"result,omitempty"`
+	// ErrorCode - READ-ONLY; The error code.
+	ErrorCode *string `json:"errorCode,omitempty"`
+	// Parameters - READ-ONLY; Managed integration runtime error parameters.
+	Parameters *[]string `json:"parameters,omitempty"`
+	// ActivityID - READ-ONLY; The activity id for the operation request.
+	ActivityID *string `json:"activityId,omitempty"`
+}
+
+// ManagedIntegrationRuntimeStatus managed integration runtime status.
+type ManagedIntegrationRuntimeStatus struct {
+	// ManagedIntegrationRuntimeStatusTypeProperties - Managed integration runtime status type properties.
+	*ManagedIntegrationRuntimeStatusTypeProperties `json:"typeProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// DataFactoryName - READ-ONLY; The workspace name which the integration runtime belong to.
+	DataFactoryName *string `json:"dataFactoryName,omitempty"`
+	// State - READ-ONLY; The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
+	State IntegrationRuntimeState `json:"state,omitempty"`
+	// Type - Possible values include: 'TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus', 'TypeBasicIntegrationRuntimeStatusTypeManaged', 'TypeBasicIntegrationRuntimeStatusTypeSelfHosted'
+	Type TypeBasicIntegrationRuntimeStatus `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedIntegrationRuntimeStatus.
+func (mirs ManagedIntegrationRuntimeStatus) MarshalJSON() ([]byte, error) {
+	mirs.Type = TypeBasicIntegrationRuntimeStatusTypeManaged
+	objectMap := make(map[string]interface{})
+	if mirs.ManagedIntegrationRuntimeStatusTypeProperties != nil {
+		objectMap["typeProperties"] = mirs.ManagedIntegrationRuntimeStatusTypeProperties
+	}
+	if mirs.Type != "" {
+		objectMap["type"] = mirs.Type
+	}
+	for k, v := range mirs.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsManagedIntegrationRuntimeStatus is the BasicIntegrationRuntimeStatus implementation for ManagedIntegrationRuntimeStatus.
+func (mirs ManagedIntegrationRuntimeStatus) AsManagedIntegrationRuntimeStatus() (*ManagedIntegrationRuntimeStatus, bool) {
+	return &mirs, true
+}
+
+// AsSelfHostedIntegrationRuntimeStatus is the BasicIntegrationRuntimeStatus implementation for ManagedIntegrationRuntimeStatus.
+func (mirs ManagedIntegrationRuntimeStatus) AsSelfHostedIntegrationRuntimeStatus() (*SelfHostedIntegrationRuntimeStatus, bool) {
+	return nil, false
+}
+
+// AsIntegrationRuntimeStatus is the BasicIntegrationRuntimeStatus implementation for ManagedIntegrationRuntimeStatus.
+func (mirs ManagedIntegrationRuntimeStatus) AsIntegrationRuntimeStatus() (*IntegrationRuntimeStatus, bool) {
+	return nil, false
+}
+
+// AsBasicIntegrationRuntimeStatus is the BasicIntegrationRuntimeStatus implementation for ManagedIntegrationRuntimeStatus.
+func (mirs ManagedIntegrationRuntimeStatus) AsBasicIntegrationRuntimeStatus() (BasicIntegrationRuntimeStatus, bool) {
+	return &mirs, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagedIntegrationRuntimeStatus struct.
+func (mirs *ManagedIntegrationRuntimeStatus) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "typeProperties":
+			if v != nil {
+				var managedIntegrationRuntimeStatusTypeProperties ManagedIntegrationRuntimeStatusTypeProperties
+				err = json.Unmarshal(*v, &managedIntegrationRuntimeStatusTypeProperties)
+				if err != nil {
+					return err
+				}
+				mirs.ManagedIntegrationRuntimeStatusTypeProperties = &managedIntegrationRuntimeStatusTypeProperties
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if mirs.AdditionalProperties == nil {
+					mirs.AdditionalProperties = make(map[string]interface{})
+				}
+				mirs.AdditionalProperties[k] = additionalProperties
+			}
+		case "dataFactoryName":
+			if v != nil {
+				var dataFactoryName string
+				err = json.Unmarshal(*v, &dataFactoryName)
+				if err != nil {
+					return err
+				}
+				mirs.DataFactoryName = &dataFactoryName
+			}
+		case "state":
+			if v != nil {
+				var state IntegrationRuntimeState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				mirs.State = state
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicIntegrationRuntimeStatus
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mirs.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ManagedIntegrationRuntimeStatusTypeProperties managed integration runtime status type properties.
+type ManagedIntegrationRuntimeStatusTypeProperties struct {
+	// CreateTime - READ-ONLY; The time at which the integration runtime was created, in ISO8601 format.
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// Nodes - READ-ONLY; The list of nodes for managed integration runtime.
+	Nodes *[]ManagedIntegrationRuntimeNode `json:"nodes,omitempty"`
+	// OtherErrors - READ-ONLY; The errors that occurred on this integration runtime.
+	OtherErrors *[]ManagedIntegrationRuntimeError `json:"otherErrors,omitempty"`
+	// LastOperation - READ-ONLY; The last operation result that occurred on this integration runtime.
+	LastOperation *ManagedIntegrationRuntimeOperationResult `json:"lastOperation,omitempty"`
+}
+
+// ManagedIntegrationRuntimeTypeProperties managed integration runtime type properties.
+type ManagedIntegrationRuntimeTypeProperties struct {
+	// ComputeProperties - The compute resource for managed integration runtime.
+	ComputeProperties *IntegrationRuntimeComputeProperties `json:"computeProperties,omitempty"`
+	// SsisProperties - SSIS properties for managed integration runtime.
+	SsisProperties *IntegrationRuntimeSsisProperties `json:"ssisProperties,omitempty"`
 }
 
 // MetadataSyncConfig configuration for metadata sync
@@ -2421,6 +5103,117 @@ type RestorePointProperties struct {
 	RestorePointLabel *string `json:"restorePointLabel,omitempty"`
 }
 
+// BasicSecretBase the base definition of a secret type.
+type BasicSecretBase interface {
+	AsSecureString() (*SecureString, bool)
+	AsSecretBase() (*SecretBase, bool)
+}
+
+// SecretBase the base definition of a secret type.
+type SecretBase struct {
+	// Type - Possible values include: 'TypeSecretBase', 'TypeSecureString'
+	Type TypeBasicSecretBase `json:"type,omitempty"`
+}
+
+func unmarshalBasicSecretBase(body []byte) (BasicSecretBase, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeSecureString):
+		var ss SecureString
+		err := json.Unmarshal(body, &ss)
+		return ss, err
+	default:
+		var sb SecretBase
+		err := json.Unmarshal(body, &sb)
+		return sb, err
+	}
+}
+func unmarshalBasicSecretBaseArray(body []byte) ([]BasicSecretBase, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	sbArray := make([]BasicSecretBase, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		sb, err := unmarshalBasicSecretBase(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		sbArray[index] = sb
+	}
+	return sbArray, nil
+}
+
+// MarshalJSON is the custom marshaler for SecretBase.
+func (sb SecretBase) MarshalJSON() ([]byte, error) {
+	sb.Type = TypeSecretBase
+	objectMap := make(map[string]interface{})
+	if sb.Type != "" {
+		objectMap["type"] = sb.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSecureString is the BasicSecretBase implementation for SecretBase.
+func (sb SecretBase) AsSecureString() (*SecureString, bool) {
+	return nil, false
+}
+
+// AsSecretBase is the BasicSecretBase implementation for SecretBase.
+func (sb SecretBase) AsSecretBase() (*SecretBase, bool) {
+	return &sb, true
+}
+
+// AsBasicSecretBase is the BasicSecretBase implementation for SecretBase.
+func (sb SecretBase) AsBasicSecretBase() (BasicSecretBase, bool) {
+	return &sb, true
+}
+
+// SecureString azure Synapse secure string definition. The string value will be masked with asterisks '*'
+// during Get or List API calls.
+type SecureString struct {
+	// Value - Value of secure string.
+	Value *string `json:"value,omitempty"`
+	// Type - Possible values include: 'TypeSecretBase', 'TypeSecureString'
+	Type TypeBasicSecretBase `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SecureString.
+func (ss SecureString) MarshalJSON() ([]byte, error) {
+	ss.Type = TypeSecureString
+	objectMap := make(map[string]interface{})
+	if ss.Value != nil {
+		objectMap["value"] = ss.Value
+	}
+	if ss.Type != "" {
+		objectMap["type"] = ss.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSecureString is the BasicSecretBase implementation for SecureString.
+func (ss SecureString) AsSecureString() (*SecureString, bool) {
+	return &ss, true
+}
+
+// AsSecretBase is the BasicSecretBase implementation for SecureString.
+func (ss SecureString) AsSecretBase() (*SecretBase, bool) {
+	return nil, false
+}
+
+// AsBasicSecretBase is the BasicSecretBase implementation for SecureString.
+func (ss SecureString) AsBasicSecretBase() (BasicSecretBase, bool) {
+	return &ss, true
+}
+
 // SecurityAlertPolicyProperties properties of a security alert policy.
 type SecurityAlertPolicyProperties struct {
 	// State - Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific Sql pool. Possible values include: 'SecurityAlertPolicyStateNew', 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'
@@ -2439,6 +5232,347 @@ type SecurityAlertPolicyProperties struct {
 	RetentionDays *int32 `json:"retentionDays,omitempty"`
 	// CreationTime - READ-ONLY; Specifies the UTC creation time of the policy.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
+}
+
+// SelfHostedIntegrationRuntime self-hosted integration runtime.
+type SelfHostedIntegrationRuntime struct {
+	// SelfHostedIntegrationRuntimeTypeProperties - When this property is not null, means this is a linked integration runtime. The property is used to access original integration runtime.
+	*SelfHostedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// Description - Integration runtime description.
+	Description *string `json:"description,omitempty"`
+	// Type - Possible values include: 'TypeIntegrationRuntime', 'TypeManaged', 'TypeSelfHosted'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SelfHostedIntegrationRuntime.
+func (shir SelfHostedIntegrationRuntime) MarshalJSON() ([]byte, error) {
+	shir.Type = TypeSelfHosted
+	objectMap := make(map[string]interface{})
+	if shir.SelfHostedIntegrationRuntimeTypeProperties != nil {
+		objectMap["typeProperties"] = shir.SelfHostedIntegrationRuntimeTypeProperties
+	}
+	if shir.Description != nil {
+		objectMap["description"] = shir.Description
+	}
+	if shir.Type != "" {
+		objectMap["type"] = shir.Type
+	}
+	for k, v := range shir.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsManagedIntegrationRuntime is the BasicIntegrationRuntime implementation for SelfHostedIntegrationRuntime.
+func (shir SelfHostedIntegrationRuntime) AsManagedIntegrationRuntime() (*ManagedIntegrationRuntime, bool) {
+	return nil, false
+}
+
+// AsSelfHostedIntegrationRuntime is the BasicIntegrationRuntime implementation for SelfHostedIntegrationRuntime.
+func (shir SelfHostedIntegrationRuntime) AsSelfHostedIntegrationRuntime() (*SelfHostedIntegrationRuntime, bool) {
+	return &shir, true
+}
+
+// AsIntegrationRuntime is the BasicIntegrationRuntime implementation for SelfHostedIntegrationRuntime.
+func (shir SelfHostedIntegrationRuntime) AsIntegrationRuntime() (*IntegrationRuntime, bool) {
+	return nil, false
+}
+
+// AsBasicIntegrationRuntime is the BasicIntegrationRuntime implementation for SelfHostedIntegrationRuntime.
+func (shir SelfHostedIntegrationRuntime) AsBasicIntegrationRuntime() (BasicIntegrationRuntime, bool) {
+	return &shir, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for SelfHostedIntegrationRuntime struct.
+func (shir *SelfHostedIntegrationRuntime) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "typeProperties":
+			if v != nil {
+				var selfHostedIntegrationRuntimeTypeProperties SelfHostedIntegrationRuntimeTypeProperties
+				err = json.Unmarshal(*v, &selfHostedIntegrationRuntimeTypeProperties)
+				if err != nil {
+					return err
+				}
+				shir.SelfHostedIntegrationRuntimeTypeProperties = &selfHostedIntegrationRuntimeTypeProperties
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if shir.AdditionalProperties == nil {
+					shir.AdditionalProperties = make(map[string]interface{})
+				}
+				shir.AdditionalProperties[k] = additionalProperties
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				shir.Description = &description
+			}
+		case "type":
+			if v != nil {
+				var typeVar Type
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				shir.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SelfHostedIntegrationRuntimeNode properties of Self-hosted integration runtime node.
+type SelfHostedIntegrationRuntimeNode struct {
+	autorest.Response `json:"-"`
+	// NodeName - READ-ONLY; Name of the integration runtime node.
+	NodeName *string `json:"nodeName,omitempty"`
+	// MachineName - READ-ONLY; Machine name of the integration runtime node.
+	MachineName *string `json:"machineName,omitempty"`
+	// HostServiceURI - READ-ONLY; URI for the host machine of the integration runtime.
+	HostServiceURI *string `json:"hostServiceUri,omitempty"`
+	// Status - READ-ONLY; Status of the integration runtime node. Possible values include: 'SelfHostedIntegrationRuntimeNodeStatusNeedRegistration', 'SelfHostedIntegrationRuntimeNodeStatusOnline', 'SelfHostedIntegrationRuntimeNodeStatusLimited', 'SelfHostedIntegrationRuntimeNodeStatusOffline', 'SelfHostedIntegrationRuntimeNodeStatusUpgrading', 'SelfHostedIntegrationRuntimeNodeStatusInitializing', 'SelfHostedIntegrationRuntimeNodeStatusInitializeFailed'
+	Status SelfHostedIntegrationRuntimeNodeStatus `json:"status,omitempty"`
+	// Capabilities - READ-ONLY; The integration runtime capabilities dictionary
+	Capabilities map[string]*string `json:"capabilities"`
+	// VersionStatus - READ-ONLY; Status of the integration runtime node version.
+	VersionStatus *string `json:"versionStatus,omitempty"`
+	// Version - READ-ONLY; Version of the integration runtime node.
+	Version *string `json:"version,omitempty"`
+	// RegisterTime - READ-ONLY; The time at which the integration runtime node was registered in ISO8601 format.
+	RegisterTime *date.Time `json:"registerTime,omitempty"`
+	// LastConnectTime - READ-ONLY; The most recent time at which the integration runtime was connected in ISO8601 format.
+	LastConnectTime *date.Time `json:"lastConnectTime,omitempty"`
+	// ExpiryTime - READ-ONLY; The time at which the integration runtime will expire in ISO8601 format.
+	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
+	// LastStartTime - READ-ONLY; The time the node last started up.
+	LastStartTime *date.Time `json:"lastStartTime,omitempty"`
+	// LastStopTime - READ-ONLY; The integration runtime node last stop time.
+	LastStopTime *date.Time `json:"lastStopTime,omitempty"`
+	// LastUpdateResult - READ-ONLY; The result of the last integration runtime node update. Possible values include: 'None', 'Succeed', 'Fail'
+	LastUpdateResult IntegrationRuntimeUpdateResult `json:"lastUpdateResult,omitempty"`
+	// LastStartUpdateTime - READ-ONLY; The last time for the integration runtime node update start.
+	LastStartUpdateTime *date.Time `json:"lastStartUpdateTime,omitempty"`
+	// LastEndUpdateTime - READ-ONLY; The last time for the integration runtime node update end.
+	LastEndUpdateTime *date.Time `json:"lastEndUpdateTime,omitempty"`
+	// IsActiveDispatcher - READ-ONLY; Indicates whether this node is the active dispatcher for integration runtime requests.
+	IsActiveDispatcher *bool `json:"isActiveDispatcher,omitempty"`
+	// ConcurrentJobsLimit - READ-ONLY; Maximum concurrent jobs on the integration runtime node.
+	ConcurrentJobsLimit *int32 `json:"concurrentJobsLimit,omitempty"`
+	// MaxConcurrentJobs - READ-ONLY; The maximum concurrent jobs in this integration runtime.
+	MaxConcurrentJobs *int32 `json:"maxConcurrentJobs,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SelfHostedIntegrationRuntimeNode.
+func (shirn SelfHostedIntegrationRuntimeNode) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// SelfHostedIntegrationRuntimeStatus self-hosted integration runtime status.
+type SelfHostedIntegrationRuntimeStatus struct {
+	// SelfHostedIntegrationRuntimeStatusTypeProperties - Self-hosted integration runtime status type properties.
+	*SelfHostedIntegrationRuntimeStatusTypeProperties `json:"typeProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// DataFactoryName - READ-ONLY; The workspace name which the integration runtime belong to.
+	DataFactoryName *string `json:"dataFactoryName,omitempty"`
+	// State - READ-ONLY; The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
+	State IntegrationRuntimeState `json:"state,omitempty"`
+	// Type - Possible values include: 'TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus', 'TypeBasicIntegrationRuntimeStatusTypeManaged', 'TypeBasicIntegrationRuntimeStatusTypeSelfHosted'
+	Type TypeBasicIntegrationRuntimeStatus `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SelfHostedIntegrationRuntimeStatus.
+func (shirs SelfHostedIntegrationRuntimeStatus) MarshalJSON() ([]byte, error) {
+	shirs.Type = TypeBasicIntegrationRuntimeStatusTypeSelfHosted
+	objectMap := make(map[string]interface{})
+	if shirs.SelfHostedIntegrationRuntimeStatusTypeProperties != nil {
+		objectMap["typeProperties"] = shirs.SelfHostedIntegrationRuntimeStatusTypeProperties
+	}
+	if shirs.Type != "" {
+		objectMap["type"] = shirs.Type
+	}
+	for k, v := range shirs.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsManagedIntegrationRuntimeStatus is the BasicIntegrationRuntimeStatus implementation for SelfHostedIntegrationRuntimeStatus.
+func (shirs SelfHostedIntegrationRuntimeStatus) AsManagedIntegrationRuntimeStatus() (*ManagedIntegrationRuntimeStatus, bool) {
+	return nil, false
+}
+
+// AsSelfHostedIntegrationRuntimeStatus is the BasicIntegrationRuntimeStatus implementation for SelfHostedIntegrationRuntimeStatus.
+func (shirs SelfHostedIntegrationRuntimeStatus) AsSelfHostedIntegrationRuntimeStatus() (*SelfHostedIntegrationRuntimeStatus, bool) {
+	return &shirs, true
+}
+
+// AsIntegrationRuntimeStatus is the BasicIntegrationRuntimeStatus implementation for SelfHostedIntegrationRuntimeStatus.
+func (shirs SelfHostedIntegrationRuntimeStatus) AsIntegrationRuntimeStatus() (*IntegrationRuntimeStatus, bool) {
+	return nil, false
+}
+
+// AsBasicIntegrationRuntimeStatus is the BasicIntegrationRuntimeStatus implementation for SelfHostedIntegrationRuntimeStatus.
+func (shirs SelfHostedIntegrationRuntimeStatus) AsBasicIntegrationRuntimeStatus() (BasicIntegrationRuntimeStatus, bool) {
+	return &shirs, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for SelfHostedIntegrationRuntimeStatus struct.
+func (shirs *SelfHostedIntegrationRuntimeStatus) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "typeProperties":
+			if v != nil {
+				var selfHostedIntegrationRuntimeStatusTypeProperties SelfHostedIntegrationRuntimeStatusTypeProperties
+				err = json.Unmarshal(*v, &selfHostedIntegrationRuntimeStatusTypeProperties)
+				if err != nil {
+					return err
+				}
+				shirs.SelfHostedIntegrationRuntimeStatusTypeProperties = &selfHostedIntegrationRuntimeStatusTypeProperties
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if shirs.AdditionalProperties == nil {
+					shirs.AdditionalProperties = make(map[string]interface{})
+				}
+				shirs.AdditionalProperties[k] = additionalProperties
+			}
+		case "dataFactoryName":
+			if v != nil {
+				var dataFactoryName string
+				err = json.Unmarshal(*v, &dataFactoryName)
+				if err != nil {
+					return err
+				}
+				shirs.DataFactoryName = &dataFactoryName
+			}
+		case "state":
+			if v != nil {
+				var state IntegrationRuntimeState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				shirs.State = state
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicIntegrationRuntimeStatus
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				shirs.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SelfHostedIntegrationRuntimeStatusTypeProperties self-hosted integration runtime status type properties.
+type SelfHostedIntegrationRuntimeStatusTypeProperties struct {
+	// CreateTime - READ-ONLY; The time at which the integration runtime was created, in ISO8601 format.
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// TaskQueueID - READ-ONLY; The task queue id of the integration runtime.
+	TaskQueueID *string `json:"taskQueueId,omitempty"`
+	// InternalChannelEncryption - READ-ONLY; It is used to set the encryption mode for node-node communication channel (when more than 2 self-hosted integration runtime nodes exist). Possible values include: 'NotSet', 'SslEncrypted', 'NotEncrypted'
+	InternalChannelEncryption IntegrationRuntimeInternalChannelEncryptionMode `json:"internalChannelEncryption,omitempty"`
+	// Version - READ-ONLY; Version of the integration runtime.
+	Version *string `json:"version,omitempty"`
+	// Nodes - The list of nodes for this integration runtime.
+	Nodes *[]SelfHostedIntegrationRuntimeNode `json:"nodes,omitempty"`
+	// ScheduledUpdateDate - READ-ONLY; The date at which the integration runtime will be scheduled to update, in ISO8601 format.
+	ScheduledUpdateDate *date.Time `json:"scheduledUpdateDate,omitempty"`
+	// UpdateDelayOffset - READ-ONLY; The time in the date scheduled by service to update the integration runtime, e.g., PT03H is 3 hours
+	UpdateDelayOffset *string `json:"updateDelayOffset,omitempty"`
+	// LocalTimeZoneOffset - READ-ONLY; The local time zone offset in hours.
+	LocalTimeZoneOffset *string `json:"localTimeZoneOffset,omitempty"`
+	// Capabilities - READ-ONLY; Object with additional information about integration runtime capabilities.
+	Capabilities map[string]*string `json:"capabilities"`
+	// ServiceUrls - READ-ONLY; The URLs for the services used in integration runtime backend service.
+	ServiceUrls *[]string `json:"serviceUrls,omitempty"`
+	// AutoUpdate - READ-ONLY; Whether Self-hosted integration runtime auto update has been turned on. Possible values include: 'On', 'Off'
+	AutoUpdate IntegrationRuntimeAutoUpdate `json:"autoUpdate,omitempty"`
+	// VersionStatus - READ-ONLY; Status of the integration runtime version.
+	VersionStatus *string `json:"versionStatus,omitempty"`
+	// Links - The list of linked integration runtimes that are created to share with this integration runtime.
+	Links *[]LinkedIntegrationRuntime `json:"links,omitempty"`
+	// PushedVersion - READ-ONLY; The version that the integration runtime is going to update to.
+	PushedVersion *string `json:"pushedVersion,omitempty"`
+	// LatestVersion - READ-ONLY; The latest version on download center.
+	LatestVersion *string `json:"latestVersion,omitempty"`
+	// AutoUpdateETA - READ-ONLY; The estimated time when the self-hosted integration runtime will be updated.
+	AutoUpdateETA *date.Time `json:"autoUpdateETA,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SelfHostedIntegrationRuntimeStatusTypeProperties.
+func (shirstp SelfHostedIntegrationRuntimeStatusTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if shirstp.Nodes != nil {
+		objectMap["nodes"] = shirstp.Nodes
+	}
+	if shirstp.Links != nil {
+		objectMap["links"] = shirstp.Links
+	}
+	return json.Marshal(objectMap)
+}
+
+// SelfHostedIntegrationRuntimeTypeProperties the self-hosted integration runtime properties.
+type SelfHostedIntegrationRuntimeTypeProperties struct {
+	LinkedInfo BasicLinkedIntegrationRuntimeType `json:"linkedInfo,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SelfHostedIntegrationRuntimeTypeProperties struct.
+func (shirtp *SelfHostedIntegrationRuntimeTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "linkedInfo":
+			if v != nil {
+				linkedInfo, err := unmarshalBasicLinkedIntegrationRuntimeType(*v)
+				if err != nil {
+					return err
+				}
+				shirtp.LinkedInfo = linkedInfo
+			}
+		}
+	}
+
+	return nil
 }
 
 // SensitivityLabel a sensitivity label.
@@ -4925,6 +8059,543 @@ func (future *SQLPoolVulnerabilityAssessmentScansInitiateScanFuture) Result(clie
 	return
 }
 
+// SsisEnvironment ssis environment.
+type SsisEnvironment struct {
+	// FolderID - Folder id which contains environment.
+	FolderID *int64 `json:"folderId,omitempty"`
+	// Variables - Variable in environment
+	Variables *[]SsisVariable `json:"variables,omitempty"`
+	// ID - Metadata id.
+	ID *int64 `json:"id,omitempty"`
+	// Name - Metadata name.
+	Name *string `json:"name,omitempty"`
+	// Description - Metadata description.
+	Description *string `json:"description,omitempty"`
+	// Type - Possible values include: 'TypeSsisObjectMetadata', 'TypeFolder', 'TypeProject', 'TypePackage', 'TypeEnvironment'
+	Type TypeBasicSsisObjectMetadata `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SsisEnvironment.
+func (se SsisEnvironment) MarshalJSON() ([]byte, error) {
+	se.Type = TypeEnvironment
+	objectMap := make(map[string]interface{})
+	if se.FolderID != nil {
+		objectMap["folderId"] = se.FolderID
+	}
+	if se.Variables != nil {
+		objectMap["variables"] = se.Variables
+	}
+	if se.ID != nil {
+		objectMap["id"] = se.ID
+	}
+	if se.Name != nil {
+		objectMap["name"] = se.Name
+	}
+	if se.Description != nil {
+		objectMap["description"] = se.Description
+	}
+	if se.Type != "" {
+		objectMap["type"] = se.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSsisFolder is the BasicSsisObjectMetadata implementation for SsisEnvironment.
+func (se SsisEnvironment) AsSsisFolder() (*SsisFolder, bool) {
+	return nil, false
+}
+
+// AsSsisProject is the BasicSsisObjectMetadata implementation for SsisEnvironment.
+func (se SsisEnvironment) AsSsisProject() (*SsisProject, bool) {
+	return nil, false
+}
+
+// AsSsisPackage is the BasicSsisObjectMetadata implementation for SsisEnvironment.
+func (se SsisEnvironment) AsSsisPackage() (*SsisPackage, bool) {
+	return nil, false
+}
+
+// AsSsisEnvironment is the BasicSsisObjectMetadata implementation for SsisEnvironment.
+func (se SsisEnvironment) AsSsisEnvironment() (*SsisEnvironment, bool) {
+	return &se, true
+}
+
+// AsSsisObjectMetadata is the BasicSsisObjectMetadata implementation for SsisEnvironment.
+func (se SsisEnvironment) AsSsisObjectMetadata() (*SsisObjectMetadata, bool) {
+	return nil, false
+}
+
+// AsBasicSsisObjectMetadata is the BasicSsisObjectMetadata implementation for SsisEnvironment.
+func (se SsisEnvironment) AsBasicSsisObjectMetadata() (BasicSsisObjectMetadata, bool) {
+	return &se, true
+}
+
+// SsisEnvironmentReference ssis environment reference.
+type SsisEnvironmentReference struct {
+	// ID - Environment reference id.
+	ID *int64 `json:"id,omitempty"`
+	// EnvironmentFolderName - Environment folder name.
+	EnvironmentFolderName *string `json:"environmentFolderName,omitempty"`
+	// EnvironmentName - Environment name.
+	EnvironmentName *string `json:"environmentName,omitempty"`
+	// ReferenceType - Reference type
+	ReferenceType *string `json:"referenceType,omitempty"`
+}
+
+// SsisFolder ssis folder.
+type SsisFolder struct {
+	// ID - Metadata id.
+	ID *int64 `json:"id,omitempty"`
+	// Name - Metadata name.
+	Name *string `json:"name,omitempty"`
+	// Description - Metadata description.
+	Description *string `json:"description,omitempty"`
+	// Type - Possible values include: 'TypeSsisObjectMetadata', 'TypeFolder', 'TypeProject', 'TypePackage', 'TypeEnvironment'
+	Type TypeBasicSsisObjectMetadata `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SsisFolder.
+func (sf SsisFolder) MarshalJSON() ([]byte, error) {
+	sf.Type = TypeFolder
+	objectMap := make(map[string]interface{})
+	if sf.ID != nil {
+		objectMap["id"] = sf.ID
+	}
+	if sf.Name != nil {
+		objectMap["name"] = sf.Name
+	}
+	if sf.Description != nil {
+		objectMap["description"] = sf.Description
+	}
+	if sf.Type != "" {
+		objectMap["type"] = sf.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSsisFolder is the BasicSsisObjectMetadata implementation for SsisFolder.
+func (sf SsisFolder) AsSsisFolder() (*SsisFolder, bool) {
+	return &sf, true
+}
+
+// AsSsisProject is the BasicSsisObjectMetadata implementation for SsisFolder.
+func (sf SsisFolder) AsSsisProject() (*SsisProject, bool) {
+	return nil, false
+}
+
+// AsSsisPackage is the BasicSsisObjectMetadata implementation for SsisFolder.
+func (sf SsisFolder) AsSsisPackage() (*SsisPackage, bool) {
+	return nil, false
+}
+
+// AsSsisEnvironment is the BasicSsisObjectMetadata implementation for SsisFolder.
+func (sf SsisFolder) AsSsisEnvironment() (*SsisEnvironment, bool) {
+	return nil, false
+}
+
+// AsSsisObjectMetadata is the BasicSsisObjectMetadata implementation for SsisFolder.
+func (sf SsisFolder) AsSsisObjectMetadata() (*SsisObjectMetadata, bool) {
+	return nil, false
+}
+
+// AsBasicSsisObjectMetadata is the BasicSsisObjectMetadata implementation for SsisFolder.
+func (sf SsisFolder) AsBasicSsisObjectMetadata() (BasicSsisObjectMetadata, bool) {
+	return &sf, true
+}
+
+// BasicSsisObjectMetadata SSIS object metadata.
+type BasicSsisObjectMetadata interface {
+	AsSsisFolder() (*SsisFolder, bool)
+	AsSsisProject() (*SsisProject, bool)
+	AsSsisPackage() (*SsisPackage, bool)
+	AsSsisEnvironment() (*SsisEnvironment, bool)
+	AsSsisObjectMetadata() (*SsisObjectMetadata, bool)
+}
+
+// SsisObjectMetadata SSIS object metadata.
+type SsisObjectMetadata struct {
+	// ID - Metadata id.
+	ID *int64 `json:"id,omitempty"`
+	// Name - Metadata name.
+	Name *string `json:"name,omitempty"`
+	// Description - Metadata description.
+	Description *string `json:"description,omitempty"`
+	// Type - Possible values include: 'TypeSsisObjectMetadata', 'TypeFolder', 'TypeProject', 'TypePackage', 'TypeEnvironment'
+	Type TypeBasicSsisObjectMetadata `json:"type,omitempty"`
+}
+
+func unmarshalBasicSsisObjectMetadata(body []byte) (BasicSsisObjectMetadata, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeFolder):
+		var sf SsisFolder
+		err := json.Unmarshal(body, &sf)
+		return sf, err
+	case string(TypeProject):
+		var sp SsisProject
+		err := json.Unmarshal(body, &sp)
+		return sp, err
+	case string(TypePackage):
+		var sp SsisPackage
+		err := json.Unmarshal(body, &sp)
+		return sp, err
+	case string(TypeEnvironment):
+		var se SsisEnvironment
+		err := json.Unmarshal(body, &se)
+		return se, err
+	default:
+		var som SsisObjectMetadata
+		err := json.Unmarshal(body, &som)
+		return som, err
+	}
+}
+func unmarshalBasicSsisObjectMetadataArray(body []byte) ([]BasicSsisObjectMetadata, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	somArray := make([]BasicSsisObjectMetadata, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		som, err := unmarshalBasicSsisObjectMetadata(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		somArray[index] = som
+	}
+	return somArray, nil
+}
+
+// MarshalJSON is the custom marshaler for SsisObjectMetadata.
+func (som SsisObjectMetadata) MarshalJSON() ([]byte, error) {
+	som.Type = TypeSsisObjectMetadata
+	objectMap := make(map[string]interface{})
+	if som.ID != nil {
+		objectMap["id"] = som.ID
+	}
+	if som.Name != nil {
+		objectMap["name"] = som.Name
+	}
+	if som.Description != nil {
+		objectMap["description"] = som.Description
+	}
+	if som.Type != "" {
+		objectMap["type"] = som.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSsisFolder is the BasicSsisObjectMetadata implementation for SsisObjectMetadata.
+func (som SsisObjectMetadata) AsSsisFolder() (*SsisFolder, bool) {
+	return nil, false
+}
+
+// AsSsisProject is the BasicSsisObjectMetadata implementation for SsisObjectMetadata.
+func (som SsisObjectMetadata) AsSsisProject() (*SsisProject, bool) {
+	return nil, false
+}
+
+// AsSsisPackage is the BasicSsisObjectMetadata implementation for SsisObjectMetadata.
+func (som SsisObjectMetadata) AsSsisPackage() (*SsisPackage, bool) {
+	return nil, false
+}
+
+// AsSsisEnvironment is the BasicSsisObjectMetadata implementation for SsisObjectMetadata.
+func (som SsisObjectMetadata) AsSsisEnvironment() (*SsisEnvironment, bool) {
+	return nil, false
+}
+
+// AsSsisObjectMetadata is the BasicSsisObjectMetadata implementation for SsisObjectMetadata.
+func (som SsisObjectMetadata) AsSsisObjectMetadata() (*SsisObjectMetadata, bool) {
+	return &som, true
+}
+
+// AsBasicSsisObjectMetadata is the BasicSsisObjectMetadata implementation for SsisObjectMetadata.
+func (som SsisObjectMetadata) AsBasicSsisObjectMetadata() (BasicSsisObjectMetadata, bool) {
+	return &som, true
+}
+
+// SsisObjectMetadataListResponse a list of SSIS object metadata.
+type SsisObjectMetadataListResponse struct {
+	autorest.Response `json:"-"`
+	// Value - List of SSIS object metadata.
+	Value *[]BasicSsisObjectMetadata `json:"value,omitempty"`
+	// NextLink - The link to the next page of results, if any remaining results exist.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SsisObjectMetadataListResponse struct.
+func (somlr *SsisObjectMetadataListResponse) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "value":
+			if v != nil {
+				value, err := unmarshalBasicSsisObjectMetadataArray(*v)
+				if err != nil {
+					return err
+				}
+				somlr.Value = &value
+			}
+		case "nextLink":
+			if v != nil {
+				var nextLink string
+				err = json.Unmarshal(*v, &nextLink)
+				if err != nil {
+					return err
+				}
+				somlr.NextLink = &nextLink
+			}
+		}
+	}
+
+	return nil
+}
+
+// SsisObjectMetadataStatusResponse the status of the operation.
+type SsisObjectMetadataStatusResponse struct {
+	autorest.Response `json:"-"`
+	// Status - The status of the operation.
+	Status *string `json:"status,omitempty"`
+	// Name - The operation name.
+	Name *string `json:"name,omitempty"`
+	// Properties - The operation properties.
+	Properties *string `json:"properties,omitempty"`
+	// Error - The operation error message.
+	Error *string `json:"error,omitempty"`
+}
+
+// SsisPackage ssis Package.
+type SsisPackage struct {
+	// FolderID - Folder id which contains package.
+	FolderID *int64 `json:"folderId,omitempty"`
+	// ProjectVersion - Project version which contains package.
+	ProjectVersion *int64 `json:"projectVersion,omitempty"`
+	// ProjectID - Project id which contains package.
+	ProjectID *int64 `json:"projectId,omitempty"`
+	// Parameters - Parameters in package
+	Parameters *[]SsisParameter `json:"parameters,omitempty"`
+	// ID - Metadata id.
+	ID *int64 `json:"id,omitempty"`
+	// Name - Metadata name.
+	Name *string `json:"name,omitempty"`
+	// Description - Metadata description.
+	Description *string `json:"description,omitempty"`
+	// Type - Possible values include: 'TypeSsisObjectMetadata', 'TypeFolder', 'TypeProject', 'TypePackage', 'TypeEnvironment'
+	Type TypeBasicSsisObjectMetadata `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SsisPackage.
+func (sp SsisPackage) MarshalJSON() ([]byte, error) {
+	sp.Type = TypePackage
+	objectMap := make(map[string]interface{})
+	if sp.FolderID != nil {
+		objectMap["folderId"] = sp.FolderID
+	}
+	if sp.ProjectVersion != nil {
+		objectMap["projectVersion"] = sp.ProjectVersion
+	}
+	if sp.ProjectID != nil {
+		objectMap["projectId"] = sp.ProjectID
+	}
+	if sp.Parameters != nil {
+		objectMap["parameters"] = sp.Parameters
+	}
+	if sp.ID != nil {
+		objectMap["id"] = sp.ID
+	}
+	if sp.Name != nil {
+		objectMap["name"] = sp.Name
+	}
+	if sp.Description != nil {
+		objectMap["description"] = sp.Description
+	}
+	if sp.Type != "" {
+		objectMap["type"] = sp.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSsisFolder is the BasicSsisObjectMetadata implementation for SsisPackage.
+func (sp SsisPackage) AsSsisFolder() (*SsisFolder, bool) {
+	return nil, false
+}
+
+// AsSsisProject is the BasicSsisObjectMetadata implementation for SsisPackage.
+func (sp SsisPackage) AsSsisProject() (*SsisProject, bool) {
+	return nil, false
+}
+
+// AsSsisPackage is the BasicSsisObjectMetadata implementation for SsisPackage.
+func (sp SsisPackage) AsSsisPackage() (*SsisPackage, bool) {
+	return &sp, true
+}
+
+// AsSsisEnvironment is the BasicSsisObjectMetadata implementation for SsisPackage.
+func (sp SsisPackage) AsSsisEnvironment() (*SsisEnvironment, bool) {
+	return nil, false
+}
+
+// AsSsisObjectMetadata is the BasicSsisObjectMetadata implementation for SsisPackage.
+func (sp SsisPackage) AsSsisObjectMetadata() (*SsisObjectMetadata, bool) {
+	return nil, false
+}
+
+// AsBasicSsisObjectMetadata is the BasicSsisObjectMetadata implementation for SsisPackage.
+func (sp SsisPackage) AsBasicSsisObjectMetadata() (BasicSsisObjectMetadata, bool) {
+	return &sp, true
+}
+
+// SsisParameter ssis parameter.
+type SsisParameter struct {
+	// ID - Parameter id.
+	ID *int64 `json:"id,omitempty"`
+	// Name - Parameter name.
+	Name *string `json:"name,omitempty"`
+	// Description - Parameter description.
+	Description *string `json:"description,omitempty"`
+	// DataType - Parameter type.
+	DataType *string `json:"dataType,omitempty"`
+	// Required - Whether parameter is required.
+	Required *bool `json:"required,omitempty"`
+	// Sensitive - Whether parameter is sensitive.
+	Sensitive *bool `json:"sensitive,omitempty"`
+	// DesignDefaultValue - Design default value of parameter.
+	DesignDefaultValue *string `json:"designDefaultValue,omitempty"`
+	// DefaultValue - Default value of parameter.
+	DefaultValue *string `json:"defaultValue,omitempty"`
+	// SensitiveDefaultValue - Default sensitive value of parameter.
+	SensitiveDefaultValue *string `json:"sensitiveDefaultValue,omitempty"`
+	// ValueType - Parameter value type.
+	ValueType *string `json:"valueType,omitempty"`
+	// ValueSet - Parameter value set.
+	ValueSet *bool `json:"valueSet,omitempty"`
+	// Variable - Parameter reference variable.
+	Variable *string `json:"variable,omitempty"`
+}
+
+// SsisProject ssis project.
+type SsisProject struct {
+	// FolderID - Folder id which contains project.
+	FolderID *int64 `json:"folderId,omitempty"`
+	// Version - Project version.
+	Version *int64 `json:"version,omitempty"`
+	// EnvironmentRefs - Environment reference in project
+	EnvironmentRefs *[]SsisEnvironmentReference `json:"environmentRefs,omitempty"`
+	// Parameters - Parameters in project
+	Parameters *[]SsisParameter `json:"parameters,omitempty"`
+	// ID - Metadata id.
+	ID *int64 `json:"id,omitempty"`
+	// Name - Metadata name.
+	Name *string `json:"name,omitempty"`
+	// Description - Metadata description.
+	Description *string `json:"description,omitempty"`
+	// Type - Possible values include: 'TypeSsisObjectMetadata', 'TypeFolder', 'TypeProject', 'TypePackage', 'TypeEnvironment'
+	Type TypeBasicSsisObjectMetadata `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SsisProject.
+func (sp SsisProject) MarshalJSON() ([]byte, error) {
+	sp.Type = TypeProject
+	objectMap := make(map[string]interface{})
+	if sp.FolderID != nil {
+		objectMap["folderId"] = sp.FolderID
+	}
+	if sp.Version != nil {
+		objectMap["version"] = sp.Version
+	}
+	if sp.EnvironmentRefs != nil {
+		objectMap["environmentRefs"] = sp.EnvironmentRefs
+	}
+	if sp.Parameters != nil {
+		objectMap["parameters"] = sp.Parameters
+	}
+	if sp.ID != nil {
+		objectMap["id"] = sp.ID
+	}
+	if sp.Name != nil {
+		objectMap["name"] = sp.Name
+	}
+	if sp.Description != nil {
+		objectMap["description"] = sp.Description
+	}
+	if sp.Type != "" {
+		objectMap["type"] = sp.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSsisFolder is the BasicSsisObjectMetadata implementation for SsisProject.
+func (sp SsisProject) AsSsisFolder() (*SsisFolder, bool) {
+	return nil, false
+}
+
+// AsSsisProject is the BasicSsisObjectMetadata implementation for SsisProject.
+func (sp SsisProject) AsSsisProject() (*SsisProject, bool) {
+	return &sp, true
+}
+
+// AsSsisPackage is the BasicSsisObjectMetadata implementation for SsisProject.
+func (sp SsisProject) AsSsisPackage() (*SsisPackage, bool) {
+	return nil, false
+}
+
+// AsSsisEnvironment is the BasicSsisObjectMetadata implementation for SsisProject.
+func (sp SsisProject) AsSsisEnvironment() (*SsisEnvironment, bool) {
+	return nil, false
+}
+
+// AsSsisObjectMetadata is the BasicSsisObjectMetadata implementation for SsisProject.
+func (sp SsisProject) AsSsisObjectMetadata() (*SsisObjectMetadata, bool) {
+	return nil, false
+}
+
+// AsBasicSsisObjectMetadata is the BasicSsisObjectMetadata implementation for SsisProject.
+func (sp SsisProject) AsBasicSsisObjectMetadata() (BasicSsisObjectMetadata, bool) {
+	return &sp, true
+}
+
+// SsisVariable ssis variable.
+type SsisVariable struct {
+	// ID - Variable id.
+	ID *int64 `json:"id,omitempty"`
+	// Name - Variable name.
+	Name *string `json:"name,omitempty"`
+	// Description - Variable description.
+	Description *string `json:"description,omitempty"`
+	// DataType - Variable type.
+	DataType *string `json:"dataType,omitempty"`
+	// Sensitive - Whether variable is sensitive.
+	Sensitive *bool `json:"sensitive,omitempty"`
+	// Value - Variable value.
+	Value *string `json:"value,omitempty"`
+	// SensitiveValue - Variable sensitive value.
+	SensitiveValue *string `json:"sensitiveValue,omitempty"`
+}
+
+// SubResource azure Synapse nested resource, which belongs to a factory.
+type SubResource struct {
+	// ID - READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty"`
+	// Etag - READ-ONLY; Etag identifies change in the resource.
+	Etag *string `json:"etag,omitempty"`
+}
+
 // TopQueries a database query.
 type TopQueries struct {
 	// AggregationFunction - READ-ONLY; The function that is used to aggregate each query's metrics. Possible values include: 'Min', 'Max', 'Avg', 'Sum'
@@ -5065,6 +8736,20 @@ func (tde *TransparentDataEncryption) UnmarshalJSON(body []byte) error {
 type TransparentDataEncryptionProperties struct {
 	// Status - The status of the database transparent data encryption. Possible values include: 'TransparentDataEncryptionStatusEnabled', 'TransparentDataEncryptionStatusDisabled'
 	Status TransparentDataEncryptionStatus `json:"status,omitempty"`
+}
+
+// UpdateIntegrationRuntimeNodeRequest update integration runtime node request.
+type UpdateIntegrationRuntimeNodeRequest struct {
+	// ConcurrentJobsLimit - The number of concurrent jobs permitted to run on the integration runtime node. Values between 1 and maxConcurrentJobs(inclusive) are allowed.
+	ConcurrentJobsLimit *int32 `json:"concurrentJobsLimit,omitempty"`
+}
+
+// UpdateIntegrationRuntimeRequest update integration runtime request.
+type UpdateIntegrationRuntimeRequest struct {
+	// AutoUpdate - Enables or disables the auto-update feature of the self-hosted integration runtime. See https://go.microsoft.com/fwlink/?linkid=854189. Possible values include: 'On', 'Off'
+	AutoUpdate IntegrationRuntimeAutoUpdate `json:"autoUpdate,omitempty"`
+	// UpdateDelayOffset - The time offset (in hours) in the day, e.g., PT03H is 3 hours. The integration runtime auto update will happen on that time.
+	UpdateDelayOffset *string `json:"updateDelayOffset,omitempty"`
 }
 
 // VirtualNetworkProfile virtual Network Profile

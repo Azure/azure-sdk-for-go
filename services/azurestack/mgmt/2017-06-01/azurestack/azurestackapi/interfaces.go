@@ -31,6 +31,14 @@ type OperationsClientAPI interface {
 
 var _ OperationsClientAPI = (*azurestack.OperationsClient)(nil)
 
+// CloudManifestFileClientAPI contains the set of methods on the CloudManifestFileClient type.
+type CloudManifestFileClientAPI interface {
+	Get(ctx context.Context, verificationVersion string, versionCreationDate string) (result azurestack.CloudManifestFileResponse, err error)
+	List(ctx context.Context) (result azurestack.CloudManifestFileResponse, err error)
+}
+
+var _ CloudManifestFileClientAPI = (*azurestack.CloudManifestFileClient)(nil)
+
 // ProductsClientAPI contains the set of methods on the ProductsClient type.
 type ProductsClientAPI interface {
 	Get(ctx context.Context, resourceGroup string, registrationName string, productName string) (result azurestack.Product, err error)

@@ -154,6 +154,13 @@ const (
 	TwinData DataSource = original.TwinData
 )
 
+type Direction = original.Direction
+
+const (
+	Inbound  Direction = original.Inbound
+	Outbound Direction = original.Outbound
+)
+
 type EnforcementMode = original.EnforcementMode
 
 const (
@@ -326,6 +333,16 @@ const (
 	ProvisioningStateSucceeded      ProvisioningState = original.ProvisioningStateSucceeded
 )
 
+type Rank = original.Rank
+
+const (
+	RankCritical Rank = original.RankCritical
+	RankHigh     Rank = original.RankHigh
+	RankLow      Rank = original.RankLow
+	RankMedium   Rank = original.RankMedium
+	RankNone     Rank = original.RankNone
+)
+
 type RecommendationAction = original.RecommendationAction
 
 const (
@@ -490,6 +507,13 @@ const (
 	ThreatResistance     Threats = original.ThreatResistance
 )
 
+type TransportProtocol = original.TransportProtocol
+
+const (
+	TransportProtocolTCP TransportProtocol = original.TransportProtocolTCP
+	TransportProtocolUDP TransportProtocol = original.TransportProtocolUDP
+)
+
 type Type = original.Type
 
 const (
@@ -527,6 +551,14 @@ type AadConnectivityState1 = original.AadConnectivityState1
 type AadExternalSecuritySolution = original.AadExternalSecuritySolution
 type AadSolutionProperties = original.AadSolutionProperties
 type AdaptiveApplicationControlsClient = original.AdaptiveApplicationControlsClient
+type AdaptiveNetworkHardening = original.AdaptiveNetworkHardening
+type AdaptiveNetworkHardeningEnforceRequest = original.AdaptiveNetworkHardeningEnforceRequest
+type AdaptiveNetworkHardeningProperties = original.AdaptiveNetworkHardeningProperties
+type AdaptiveNetworkHardeningsClient = original.AdaptiveNetworkHardeningsClient
+type AdaptiveNetworkHardeningsEnforceFuture = original.AdaptiveNetworkHardeningsEnforceFuture
+type AdaptiveNetworkHardeningsList = original.AdaptiveNetworkHardeningsList
+type AdaptiveNetworkHardeningsListIterator = original.AdaptiveNetworkHardeningsListIterator
+type AdaptiveNetworkHardeningsListPage = original.AdaptiveNetworkHardeningsListPage
 type AdditionalData = original.AdditionalData
 type AdvancedThreatProtectionClient = original.AdvancedThreatProtectionClient
 type AdvancedThreatProtectionProperties = original.AdvancedThreatProtectionProperties
@@ -646,6 +678,7 @@ type DiscoveredSecuritySolutionListPage = original.DiscoveredSecuritySolutionLis
 type DiscoveredSecuritySolutionProperties = original.DiscoveredSecuritySolutionProperties
 type DiscoveredSecuritySolutionsClient = original.DiscoveredSecuritySolutionsClient
 type ETag = original.ETag
+type EffectiveNetworkSecurityGroups = original.EffectiveNetworkSecurityGroups
 type ExternalSecuritySolution = original.ExternalSecuritySolution
 type ExternalSecuritySolutionKind1 = original.ExternalSecuritySolutionKind1
 type ExternalSecuritySolutionList = original.ExternalSecuritySolutionList
@@ -743,6 +776,7 @@ type RegulatoryComplianceStandardProperties = original.RegulatoryComplianceStand
 type RegulatoryComplianceStandardsClient = original.RegulatoryComplianceStandardsClient
 type Resource = original.Resource
 type ResourceDetails = original.ResourceDetails
+type Rule = original.Rule
 type SQLServerVulnerabilityProperties = original.SQLServerVulnerabilityProperties
 type SensitivityLabel = original.SensitivityLabel
 type ServerVulnerabilityAssessment = original.ServerVulnerabilityAssessment
@@ -805,6 +839,18 @@ func NewAdaptiveApplicationControlsClient(subscriptionID string, ascLocation str
 }
 func NewAdaptiveApplicationControlsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AdaptiveApplicationControlsClient {
 	return original.NewAdaptiveApplicationControlsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAdaptiveNetworkHardeningsClient(subscriptionID string, ascLocation string) AdaptiveNetworkHardeningsClient {
+	return original.NewAdaptiveNetworkHardeningsClient(subscriptionID, ascLocation)
+}
+func NewAdaptiveNetworkHardeningsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AdaptiveNetworkHardeningsClient {
+	return original.NewAdaptiveNetworkHardeningsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAdaptiveNetworkHardeningsListIterator(page AdaptiveNetworkHardeningsListPage) AdaptiveNetworkHardeningsListIterator {
+	return original.NewAdaptiveNetworkHardeningsListIterator(page)
+}
+func NewAdaptiveNetworkHardeningsListPage(getNextPage func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error)) AdaptiveNetworkHardeningsListPage {
+	return original.NewAdaptiveNetworkHardeningsListPage(getNextPage)
 }
 func NewAdvancedThreatProtectionClient(subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
 	return original.NewAdvancedThreatProtectionClient(subscriptionID, ascLocation)
@@ -1202,6 +1248,9 @@ func PossibleConnectionTypeValues() []ConnectionType {
 func PossibleDataSourceValues() []DataSource {
 	return original.PossibleDataSourceValues()
 }
+func PossibleDirectionValues() []Direction {
+	return original.PossibleDirectionValues()
+}
 func PossibleEnforcementMode1Values() []EnforcementMode1 {
 	return original.PossibleEnforcementMode1Values()
 }
@@ -1262,6 +1311,9 @@ func PossibleProtocolValues() []Protocol {
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
+func PossibleRankValues() []Rank {
+	return original.PossibleRankValues()
+}
 func PossibleRecommendationAction1Values() []RecommendationAction1 {
 	return original.PossibleRecommendationAction1Values()
 }
@@ -1315,6 +1367,9 @@ func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 }
 func PossibleThreatsValues() []Threats {
 	return original.PossibleThreatsValues()
+}
+func PossibleTransportProtocolValues() []TransportProtocol {
+	return original.PossibleTransportProtocolValues()
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()

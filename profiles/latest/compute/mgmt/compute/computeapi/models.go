@@ -37,6 +37,7 @@ type LogAnalyticsClientAPI = original.LogAnalyticsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type ProximityPlacementGroupsClientAPI = original.ProximityPlacementGroupsClientAPI
 type ResourceSkusClientAPI = original.ResourceSkusClientAPI
+type SSHPublicKeysClientAPI = original.SSHPublicKeysClientAPI
 type SnapshotsClientAPI = original.SnapshotsClientAPI
 type UsageClientAPI = original.UsageClientAPI
 type VirtualMachineExtensionImagesClientAPI = original.VirtualMachineExtensionImagesClientAPI

@@ -26,6 +26,7 @@ import (
 // ResourceVaultConfigsClientAPI contains the set of methods on the ResourceVaultConfigsClient type.
 type ResourceVaultConfigsClientAPI interface {
 	Get(ctx context.Context, vaultName string, resourceGroupName string) (result backup.ResourceVaultConfigResource, err error)
+	Put(ctx context.Context, vaultName string, resourceGroupName string, parameters backup.ResourceVaultConfigResource) (result backup.ResourceVaultConfigResource, err error)
 	Update(ctx context.Context, vaultName string, resourceGroupName string, parameters backup.ResourceVaultConfigResource) (result backup.ResourceVaultConfigResource, err error)
 }
 

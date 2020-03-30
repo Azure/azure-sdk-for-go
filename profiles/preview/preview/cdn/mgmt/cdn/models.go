@@ -160,7 +160,6 @@ type MatchVariable = original.MatchVariable
 
 const (
 	Cookies       MatchVariable = original.Cookies
-	Country       MatchVariable = original.Country
 	PostArgs      MatchVariable = original.PostArgs
 	QueryString   MatchVariable = original.QueryString
 	RemoteAddr    MatchVariable = original.RemoteAddr
@@ -168,6 +167,7 @@ const (
 	RequestHeader MatchVariable = original.RequestHeader
 	RequestMethod MatchVariable = original.RequestMethod
 	RequestURI    MatchVariable = original.RequestURI
+	SocketAddr    MatchVariable = original.SocketAddr
 )
 
 type MinimumTLSVersion = original.MinimumTLSVersion

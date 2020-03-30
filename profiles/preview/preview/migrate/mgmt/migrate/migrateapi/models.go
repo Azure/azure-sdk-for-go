@@ -19,12 +19,18 @@
 
 package migrateapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/migrate/mgmt/2018-09-01-preview/migrate/migrateapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/migrate/mgmt/2020-01-01/migrate/migrateapi"
 
-type DatabaseInstancesClientAPI = original.DatabaseInstancesClientAPI
-type DatabasesClientAPI = original.DatabasesClientAPI
-type EventsClientAPI = original.EventsClientAPI
+type HyperVClusterClientAPI = original.HyperVClusterClientAPI
+type HyperVHostClientAPI = original.HyperVHostClientAPI
+type HyperVJobsClientAPI = original.HyperVJobsClientAPI
+type HyperVMachinesClientAPI = original.HyperVMachinesClientAPI
+type HyperVOperationsStatusClientAPI = original.HyperVOperationsStatusClientAPI
+type HyperVRunAsAccountsClientAPI = original.HyperVRunAsAccountsClientAPI
+type HyperVSitesClientAPI = original.HyperVSitesClientAPI
+type JobsClientAPI = original.JobsClientAPI
 type MachinesClientAPI = original.MachinesClientAPI
-type OperationsClientAPI = original.OperationsClientAPI
-type ProjectsClientAPI = original.ProjectsClientAPI
-type SolutionsClientAPI = original.SolutionsClientAPI
+type RunAsAccountsClientAPI = original.RunAsAccountsClientAPI
+type SitesClientAPI = original.SitesClientAPI
+type VCenterClientAPI = original.VCenterClientAPI
+type VMwareOperationsStatusClientAPI = original.VMwareOperationsStatusClientAPI

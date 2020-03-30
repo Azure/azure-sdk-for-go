@@ -8,6 +8,6 @@ import (
 )
 
 const (
-	CredentialClassification        azcore.LogClassification = "credential"
-	CredentialClassificationVerbose azcore.LogClassification = "credentialVerbose"
+	LogCredential        azcore.LogClassification = "credential"
+	LogCredentialVerbose azcore.LogClassification = "credentialVerbose"
 )

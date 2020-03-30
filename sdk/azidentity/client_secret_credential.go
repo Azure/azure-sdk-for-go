@@ -5,7 +5,9 @@ package azidentity
 
 import (
 	"context"
+	"fmt"
 	"path"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -39,7 +41,21 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 // scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *ClientSecretCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return c.client.authenticate(ctx, c.tenantID, c.clientID, c.clientSecret, opts.Scopes)
+	tk, err := c.client.authenticate(ctx, c.tenantID, c.clientID, c.clientSecret, opts.Scopes)
+	log := azcore.Log()
+	if err != nil {
+		msg := fmt.Sprintf("Azure Identity => ERROR in GetToken() call for %T: %s", c, err.Error())
+		log.Write(CredentialClassification, msg)
+	} else {
+		msg := fmt.Sprintf("Azure Identity => GetToken() result for %T: SUCCESS", c)
+		log.Write(CredentialClassification, msg)
+
+	}
+	if log.Should(CredentialClassificationVerbose) {
+		vmsg := fmt.Sprintf("Azure Identity => Scopes: [%s]", strings.Join(opts.Scopes, ", "))
+		log.Write(CredentialClassificationVerbose, vmsg)
+	}
+	return tk, err
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.

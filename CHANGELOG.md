@@ -14,7 +14,6 @@
 | managementgroups | 2020-02-01 |
 | migrate | 2020-01-01 |
 | redhatopenshift | 2020-04-30 |
-| search | 2020-03-13 |
 | storagesync | 2019-10-01 |
 
 ### Updated Packages

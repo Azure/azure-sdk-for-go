@@ -8,11 +8,12 @@ package azblob
 import (
 	"context"
 	"encoding/base64"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // BlockBlobOperations contains the methods for the BlockBlob group.
@@ -26,7 +27,7 @@ type BlockBlobOperations interface {
 	// StageBlockFromURL - The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from a URL.
 	StageBlockFromURL(ctx context.Context, blockId string, contentLength int64, sourceUrl url.URL, options *BlockBlobStageBlockFromURLOptions) (*BlockBlobStageBlockFromURLResponse, error)
 	// Upload - The Upload Block Blob operation updates the content of an existing block blob. Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a block blob, use the Put Block List operation.
-	Upload(ctx context.Context, contentLength int64, options *BlockBlobUploadOptions) (*BlockBlobUploadResponse, error)
+	Upload(ctx context.Context, blockID string, contentLength int64, options *BlockBlobUploadOptions) (*BlockBlobUploadResponse, error)
 }
 
 // blockBlobOperations implements the BlockBlobOperations interface.
@@ -451,8 +452,8 @@ func (client *blockBlobOperations) stageBlockFromUrlHandleResponse(resp *azcore.
 }
 
 // Upload - The Upload Block Blob operation updates the content of an existing block blob. Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a block blob, use the Put Block List operation.
-func (client *blockBlobOperations) Upload(ctx context.Context, contentLength int64, options *BlockBlobUploadOptions) (*BlockBlobUploadResponse, error) {
-	req, err := client.uploadCreateRequest(contentLength, options)
+func (client *blockBlobOperations) Upload(ctx context.Context, blockID string, contentLength int64, options *BlockBlobUploadOptions) (*BlockBlobUploadResponse, error) {
+	req, err := client.uploadCreateRequest(blockID, contentLength, options)
 	if err != nil {
 		return nil, err
 	}
@@ -468,9 +469,11 @@ func (client *blockBlobOperations) Upload(ctx context.Context, contentLength int
 }
 
 // uploadCreateRequest creates the Upload request.
-func (client *blockBlobOperations) uploadCreateRequest(contentLength int64, options *BlockBlobUploadOptions) (*azcore.Request, error) {
+func (client *blockBlobOperations) uploadCreateRequest(blockID string, contentLength int64, options *BlockBlobUploadOptions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
+	query.Set("comp", "block")
+	query.Set("blockid", blockID)
 	if options != nil && options.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}

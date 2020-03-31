@@ -6,7 +6,6 @@ package azblob
 import (
 	"context"
 	"fmt"
-	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
@@ -26,7 +25,25 @@ const (
 	accountKey  = "<accountKey>"
 )
 
-func TestExample_UploadBlockBlob(t *testing.T) {
+func Example_CreateContainer() {
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	if err != nil {
+		panic(err)
+	}
+	client, err := NewClient(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+	containerClient := client.ContainerOperations()
+	c, err := containerClient.Create(context.Background(), nil)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(c.RawResponse)
+}
+
+func Example_UploadBlockBlob() {
 	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
 	if err != nil {
 		panic(err)
@@ -49,7 +66,7 @@ func TestExample_UploadBlockBlob(t *testing.T) {
 	fmt.Println(b)
 }
 
-func TestExample_ListContainer(t *testing.T) {
+func Example_ListContainer() {
 	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
 	if err != nil {
 		panic(err)
@@ -59,18 +76,19 @@ func TestExample_ListContainer(t *testing.T) {
 		panic(err)
 	}
 	blobClient := client.ContainerOperations()
-	b, err := blobClient.ListBlobFlatSegment(nil)
+	page, err := blobClient.ListBlobFlatSegment(nil)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
-	for {
-		if next := b.NextPage(context.Background()); next {
-			if b.Err() != nil {
-				panic(b.Err())
-			}
-			fmt.Println(b.PageResponse())
-		}
+	for page.NextPage(context.Background()) {
+		resp := page.PageResponse()
+		fmt.Println(*resp.EnumerationResults)
+	}
+	if err = page.Err(); err != nil {
+		panic(err)
+	}
+	if page.PageResponse() == nil {
+		panic("unexpected nil payload")
 	}
 }

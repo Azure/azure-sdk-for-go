@@ -21,19 +21,7 @@ const (
 	blockBlobName = "azblobsampleblockblob"
 )
 
-var (
-	// comes from environment var AZURE_STORAGE_ENDPOINT
-	// e.g. https://<your_storage_account>.blob.core.windows.net
-	storageEndpoint string
-)
-
-func init() {
-	storageEndpoint = os.Getenv("AZURE_STORAGE_ENDPOINT")
-	if storageEndpoint == "" {
-		panic("missing environment variable AZURE_STORAGE_ENDPOINT")
-	}
-}
-
+// returns a credential that can be used to authenticate with blob storage
 func getCredential() azcore.Credential {
 	// NewEnvironmentCredential() will read various environment vars
 	// to obtain a credential.  see the documentation for more info.
@@ -44,6 +32,17 @@ func getCredential() azcore.Credential {
 	return cred
 }
 
+// comes from environment var AZURE_STORAGE_ENDPOINT
+// e.g. https://<your_storage_account>.blob.core.windows.net
+func getEndpoint() string {
+	storageEndpoint := os.Getenv("AZURE_STORAGE_ENDPOINT")
+	if storageEndpoint == "" {
+		panic("missing environment variable AZURE_STORAGE_ENDPOINT")
+	}
+	return storageEndpoint
+}
+
+// returns a byte slice for dummy blob content
 func generateBlobContent(size int) []byte {
 	content := make([]byte, size, size)
 	for i := 0; i < size; i++ {
@@ -52,6 +51,7 @@ func generateBlobContent(size int) []byte {
 	return content
 }
 
+// concatenates all elements together with a '/' between each element
 func pathJoin(elem ...string) string {
 	// add a trailing '/' if it doesn't already end with one
 	if i := len(elem[0]); elem[0][i-1] != '/' {
@@ -65,7 +65,7 @@ func pathJoin(elem ...string) string {
 }
 
 func ExampleContainerOperations_Create() {
-	endpoint := pathJoin(storageEndpoint, containerName)
+	endpoint := pathJoin(getEndpoint(), containerName)
 	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -80,7 +80,7 @@ func ExampleContainerOperations_Create() {
 }
 
 func ExampleBlockBlobOperations_Upload() {
-	endpoint := pathJoin(storageEndpoint, containerName, blockBlobName)
+	endpoint := pathJoin(getEndpoint(), containerName, blockBlobName)
 	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -138,7 +138,7 @@ func ExampleBlockBlobOperations_Upload() {
 }*/
 
 func ExampleBlobOperations_Delete() {
-	endpoint := pathJoin(storageEndpoint, containerName, blockBlobName)
+	endpoint := pathJoin(getEndpoint(), containerName, blockBlobName)
 	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -153,7 +153,7 @@ func ExampleBlobOperations_Delete() {
 }
 
 func ExampleContainerOperations_Delete() {
-	endpoint := pathJoin(storageEndpoint, containerName)
+	endpoint := pathJoin(getEndpoint(), containerName)
 	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)

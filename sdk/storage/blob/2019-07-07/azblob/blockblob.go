@@ -468,7 +468,7 @@ func (client *blockBlobOperations) uploadCreateRequest(block Block, body azcore.
 	u := client.u
 	query := u.Query()
 	query.Set("comp", "block")
-	query.Set("blockid", url.QueryEscape(block.Name))
+	query.Set("blockid", url.QueryEscape(base64.StdEncoding.EncodeToString([]byte(block.Name))))
 	if options != nil && options.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}

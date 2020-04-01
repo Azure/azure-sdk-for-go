@@ -57,8 +57,12 @@ func Example_UploadBlockBlob() {
 		panic(err)
 	}
 	blobClient := client.BlockBlobOperations()
-	cl := int64(80)
-	b, err := blobClient.Upload(context.Background(), "myblockID", cl, nil)
+	block := Block{
+		Name: "myblockID",
+		Size: 80,
+	}
+	// TODO: body
+	b, err := blobClient.Upload(context.Background(), block, nil, nil)
 	if err != nil {
 		fmt.Println(err)
 		return

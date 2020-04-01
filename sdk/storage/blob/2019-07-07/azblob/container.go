@@ -970,12 +970,7 @@ func (client *containerOperations) setAccessPolicyCreateRequest(options *Contain
 		XMLName      xml.Name            `xml:"SignedIdentifiers"`
 		ContainerAcl *[]SignedIDentifier `xml:"SignedIdentifier"`
 	}
-	if err := req.MarshalAsXML(wrapper{ContainerAcl: options.ContainerAcl}); err != nil {
-		if err != nil {
-			return nil, err
-		}
-	}
-	return req, nil
+	return req, req.MarshalAsXML(wrapper{ContainerAcl: options.ContainerAcl})
 }
 
 // setAccessPolicyHandleResponse handles the SetAccessPolicy response.

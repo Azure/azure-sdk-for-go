@@ -18,7 +18,7 @@ import (
 // AppendBlobOperations contains the methods for the AppendBlob group.
 type AppendBlobOperations interface {
 	// AppendBlock - The Append Block operation commits a new block of data to the end of an existing append blob. The Append Block operation is permitted only if the blob was created with x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
-	AppendBlock(ctx context.Context, contentLength int64, options *AppendBlobAppendBlockOptions) (*AppendBlobAppendBlockResponse, error)
+	AppendBlock(ctx context.Context, contentLength int64, body azcore.ReadSeekCloser, options *AppendBlobAppendBlockOptions) (*AppendBlobAppendBlockResponse, error)
 	// AppendBlockFromURL - The Append Block operation commits a new block of data to the end of an existing append blob where the contents are read from a source url. The Append Block operation is permitted only if the blob was created with x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
 	AppendBlockFromURL(ctx context.Context, sourceUrl url.URL, contentLength int64, options *AppendBlobAppendBlockFromURLOptions) (*AppendBlobAppendBlockFromURLResponse, error)
 	// Create - The Create Append Blob operation creates a new append blob.
@@ -31,8 +31,8 @@ type appendBlobOperations struct {
 }
 
 // AppendBlock - The Append Block operation commits a new block of data to the end of an existing append blob. The Append Block operation is permitted only if the blob was created with x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
-func (client *appendBlobOperations) AppendBlock(ctx context.Context, contentLength int64, options *AppendBlobAppendBlockOptions) (*AppendBlobAppendBlockResponse, error) {
-	req, err := client.appendBlockCreateRequest(contentLength, options)
+func (client *appendBlobOperations) AppendBlock(ctx context.Context, contentLength int64, body azcore.ReadSeekCloser, options *AppendBlobAppendBlockOptions) (*AppendBlobAppendBlockResponse, error) {
+	req, err := client.appendBlockCreateRequest(contentLength, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (client *appendBlobOperations) AppendBlock(ctx context.Context, contentLeng
 }
 
 // appendBlockCreateRequest creates the AppendBlock request.
-func (client *appendBlobOperations) appendBlockCreateRequest(contentLength int64, options *AppendBlobAppendBlockOptions) (*azcore.Request, error) {
+func (client *appendBlobOperations) appendBlockCreateRequest(contentLength int64, body azcore.ReadSeekCloser, options *AppendBlobAppendBlockOptions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("comp", "appendblock")
@@ -98,7 +98,7 @@ func (client *appendBlobOperations) appendBlockCreateRequest(contentLength int64
 	if options != nil && options.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
-	return req, nil
+	return req, req.SetBody(body)
 }
 
 // appendBlockHandleResponse handles the AppendBlock response.

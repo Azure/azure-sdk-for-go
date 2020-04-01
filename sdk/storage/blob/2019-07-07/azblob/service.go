@@ -228,12 +228,7 @@ func (client *serviceOperations) getUserDelegationKeyCreateRequest(keyInfo KeyIn
 	if options != nil && options.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
-	if err := req.MarshalAsXML(keyInfo); err != nil {
-		if err != nil {
-			return nil, err
-		}
-	}
-	return req, nil
+	return req, req.MarshalAsXML(keyInfo)
 }
 
 // getUserDelegationKeyHandleResponse handles the GetUserDelegationKey response.
@@ -352,12 +347,7 @@ func (client *serviceOperations) setPropertiesCreateRequest(storageServiceProper
 	if options != nil && options.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
-	if err := req.MarshalAsXML(storageServiceProperties); err != nil {
-		if err != nil {
-			return nil, err
-		}
-	}
-	return req, nil
+	return req, req.MarshalAsXML(storageServiceProperties)
 }
 
 // setPropertiesHandleResponse handles the SetProperties response.
@@ -402,18 +392,14 @@ func (client *serviceOperations) submitBatchCreateRequest(contentLength int64, m
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodPost, *u)
+	req.SkipBodyDownload()
 	req.Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
 	req.Header.Set("Content-Type", multipartContentType)
 	req.Header.Set("x-ms-version", "2019-07-07")
 	if options != nil && options.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
-	if err := req.MarshalAsXML(body); err != nil {
-		if err != nil {
-			return nil, err
-		}
-	}
-	return req, nil
+	return req, req.MarshalAsXML(body)
 }
 
 // submitBatchHandleResponse handles the SubmitBatch response.

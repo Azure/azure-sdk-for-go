@@ -23,11 +23,11 @@ type BlockBlobOperations interface {
 	// GetBlockList - The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob
 	GetBlockList(ctx context.Context, listType BlockListType, options *BlockBlobGetBlockListOptions) (*BlockListResponse, error)
 	// StageBlock - The Stage Block operation creates a new block to be committed as part of a blob
-	StageBlock(ctx context.Context, blockId string, contentLength int64, options *BlockBlobStageBlockOptions) (*BlockBlobStageBlockResponse, error)
+	StageBlock(ctx context.Context, blockId string, contentLength int64, body azcore.ReadSeekCloser, options *BlockBlobStageBlockOptions) (*BlockBlobStageBlockResponse, error)
 	// StageBlockFromURL - The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from a URL.
 	StageBlockFromURL(ctx context.Context, blockId string, contentLength int64, sourceUrl url.URL, options *BlockBlobStageBlockFromURLOptions) (*BlockBlobStageBlockFromURLResponse, error)
 	// Upload - The Upload Block Blob operation updates the content of an existing block blob. Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a block blob, use the Put Block List operation.
-	Upload(ctx context.Context, blockID string, contentLength int64, options *BlockBlobUploadOptions) (*BlockBlobUploadResponse, error)
+	Upload(ctx context.Context, block Block, body azcore.ReadSeekCloser, options *BlockBlobUploadOptions) (*BlockBlobUploadResponse, error)
 }
 
 // blockBlobOperations implements the BlockBlobOperations interface.
@@ -120,12 +120,7 @@ func (client *blockBlobOperations) commitBlockListCreateRequest(blocks BlockLook
 	if options != nil && options.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
-	if err := req.MarshalAsXML(blocks); err != nil {
-		if err != nil {
-			return nil, err
-		}
-	}
-	return req, nil
+	return req, req.MarshalAsXML(blocks)
 }
 
 // commitBlockListHandleResponse handles the CommitBlockList response.
@@ -250,8 +245,8 @@ func (client *blockBlobOperations) getBlockListHandleResponse(resp *azcore.Respo
 }
 
 // StageBlock - The Stage Block operation creates a new block to be committed as part of a blob
-func (client *blockBlobOperations) StageBlock(ctx context.Context, blockId string, contentLength int64, options *BlockBlobStageBlockOptions) (*BlockBlobStageBlockResponse, error) {
-	req, err := client.stageBlockCreateRequest(blockId, contentLength, options)
+func (client *blockBlobOperations) StageBlock(ctx context.Context, blockId string, contentLength int64, body azcore.ReadSeekCloser, options *BlockBlobStageBlockOptions) (*BlockBlobStageBlockResponse, error) {
+	req, err := client.stageBlockCreateRequest(blockId, contentLength, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -267,7 +262,7 @@ func (client *blockBlobOperations) StageBlock(ctx context.Context, blockId strin
 }
 
 // stageBlockCreateRequest creates the StageBlock request.
-func (client *blockBlobOperations) stageBlockCreateRequest(blockId string, contentLength int64, options *BlockBlobStageBlockOptions) (*azcore.Request, error) {
+func (client *blockBlobOperations) stageBlockCreateRequest(blockId string, contentLength int64, body azcore.ReadSeekCloser, options *BlockBlobStageBlockOptions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("comp", "block")
@@ -300,7 +295,7 @@ func (client *blockBlobOperations) stageBlockCreateRequest(blockId string, conte
 	if options != nil && options.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
-	return req, nil
+	return req, req.SetBody(body)
 }
 
 // stageBlockHandleResponse handles the StageBlock response.
@@ -423,6 +418,11 @@ func (client *blockBlobOperations) stageBlockFromUrlHandleResponse(resp *azcore.
 		return nil, err
 	}
 	result.ContentMd5 = &contentMd5
+	contentCrc64, err := base64.StdEncoding.DecodeString(resp.Header.Get("x-ms-content-crc64"))
+	if err != nil {
+		return nil, err
+	}
+	result.ContentCrc64 = &contentCrc64
 	clientRequestId := resp.Header.Get("x-ms-client-request-id")
 	result.ClientRequestId = &clientRequestId
 	requestId := resp.Header.Get("x-ms-request-id")
@@ -434,11 +434,6 @@ func (client *blockBlobOperations) stageBlockFromUrlHandleResponse(resp *azcore.
 		return nil, err
 	}
 	result.Date = &date
-	contentCrc64, err := base64.StdEncoding.DecodeString(resp.Header.Get("x-ms-content-crc64"))
-	if err != nil {
-		return nil, err
-	}
-	result.ContentCrc64 = &contentCrc64
 	requestServerEncrypted, err := strconv.ParseBool(resp.Header.Get("x-ms-request-server-encrypted"))
 	if err != nil {
 		return nil, err
@@ -452,8 +447,8 @@ func (client *blockBlobOperations) stageBlockFromUrlHandleResponse(resp *azcore.
 }
 
 // Upload - The Upload Block Blob operation updates the content of an existing block blob. Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a block blob, use the Put Block List operation.
-func (client *blockBlobOperations) Upload(ctx context.Context, blockID string, contentLength int64, options *BlockBlobUploadOptions) (*BlockBlobUploadResponse, error) {
-	req, err := client.uploadCreateRequest(blockID, contentLength, options)
+func (client *blockBlobOperations) Upload(ctx context.Context, block Block, body azcore.ReadSeekCloser, options *BlockBlobUploadOptions) (*BlockBlobUploadResponse, error) {
+	req, err := client.uploadCreateRequest(block, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -469,11 +464,11 @@ func (client *blockBlobOperations) Upload(ctx context.Context, blockID string, c
 }
 
 // uploadCreateRequest creates the Upload request.
-func (client *blockBlobOperations) uploadCreateRequest(blockID string, contentLength int64, options *BlockBlobUploadOptions) (*azcore.Request, error) {
+func (client *blockBlobOperations) uploadCreateRequest(block Block, body azcore.ReadSeekCloser, options *BlockBlobUploadOptions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("comp", "block")
-	query.Set("blockid", blockID)
+	query.Set("blockid", url.QueryEscape(block.Name))
 	if options != nil && options.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
@@ -483,7 +478,7 @@ func (client *blockBlobOperations) uploadCreateRequest(blockID string, contentLe
 	if options != nil && options.TransactionalContentMd5 != nil {
 		req.Header.Set("Content-MD5", base64.StdEncoding.EncodeToString(*options.TransactionalContentMd5))
 	}
-	req.Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
+	req.Header.Set("Content-Length", strconv.FormatInt(int64(block.Size), 10))
 	if options != nil && options.BlobContentType != nil {
 		req.Header.Set("x-ms-blob-content-type", *options.BlobContentType)
 	}
@@ -536,7 +531,7 @@ func (client *blockBlobOperations) uploadCreateRequest(blockID string, contentLe
 	if options != nil && options.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
-	return req, nil
+	return req, req.SetBody(body)
 }
 
 // uploadHandleResponse handles the Upload response.

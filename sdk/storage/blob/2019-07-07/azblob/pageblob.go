@@ -32,7 +32,7 @@ type PageBlobOperations interface {
 	// UpdateSequenceNumber - Update the sequence number of the blob
 	UpdateSequenceNumber(ctx context.Context, sequenceNumberAction SequenceNumberActionType, options *PageBlobUpdateSequenceNumberOptions) (*PageBlobUpdateSequenceNumberResponse, error)
 	// UploadPages - The Upload Pages operation writes a range of pages to a page blob
-	UploadPages(ctx context.Context, contentLength int64, options *PageBlobUploadPagesOptions) (*PageBlobUploadPagesResponse, error)
+	UploadPages(ctx context.Context, contentLength int64, body azcore.ReadSeekCloser, options *PageBlobUploadPagesOptions) (*PageBlobUploadPagesResponse, error)
 	// UploadPagesFromURL - The Upload Pages operation writes a range of pages to a page blob where the contents are read from a URL
 	UploadPagesFromURL(ctx context.Context, sourceUrl url.URL, sourceRange string, contentLength int64, rangeParameter string, options *PageBlobUploadPagesFromURLOptions) (*PageBlobUploadPagesFromURLResponse, error)
 }
@@ -719,8 +719,8 @@ func (client *pageBlobOperations) updateSequenceNumberHandleResponse(resp *azcor
 }
 
 // UploadPages - The Upload Pages operation writes a range of pages to a page blob
-func (client *pageBlobOperations) UploadPages(ctx context.Context, contentLength int64, options *PageBlobUploadPagesOptions) (*PageBlobUploadPagesResponse, error) {
-	req, err := client.uploadPagesCreateRequest(contentLength, options)
+func (client *pageBlobOperations) UploadPages(ctx context.Context, contentLength int64, body azcore.ReadSeekCloser, options *PageBlobUploadPagesOptions) (*PageBlobUploadPagesResponse, error) {
+	req, err := client.uploadPagesCreateRequest(contentLength, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -736,7 +736,7 @@ func (client *pageBlobOperations) UploadPages(ctx context.Context, contentLength
 }
 
 // uploadPagesCreateRequest creates the UploadPages request.
-func (client *pageBlobOperations) uploadPagesCreateRequest(contentLength int64, options *PageBlobUploadPagesOptions) (*azcore.Request, error) {
+func (client *pageBlobOperations) uploadPagesCreateRequest(contentLength int64, body azcore.ReadSeekCloser, options *PageBlobUploadPagesOptions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("comp", "page")
@@ -793,7 +793,7 @@ func (client *pageBlobOperations) uploadPagesCreateRequest(contentLength int64, 
 	if options != nil && options.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
-	return req, nil
+	return req, req.SetBody(body)
 }
 
 // uploadPagesHandleResponse handles the UploadPages response.

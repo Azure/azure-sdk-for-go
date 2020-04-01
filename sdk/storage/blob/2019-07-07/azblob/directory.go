@@ -299,7 +299,7 @@ func (client *directoryOperations) getAccessControlHandleResponse(resp *azcore.R
 
 // Rename - Rename a directory. By default, the destination is overwritten and if the destination already exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations). To fail if the destination already exists, use a conditional request with If-None-Match: "*".
 func (client *directoryOperations) Rename(ctx context.Context, renameSource string, options *DirectoryRenameOptions) (*DirectoryRenameResponse, error) {
-	req, err := client.renameCreateRequest(renameSource, client.pathRenameMode, options)
+	req, err := client.renameCreateRequest(renameSource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -315,7 +315,7 @@ func (client *directoryOperations) Rename(ctx context.Context, renameSource stri
 }
 
 // renameCreateRequest creates the Rename request.
-func (client *directoryOperations) renameCreateRequest(renameSource string, pathRenameMode *PathRenameMode, options *DirectoryRenameOptions) (*azcore.Request, error) {
+func (client *directoryOperations) renameCreateRequest(renameSource string, options *DirectoryRenameOptions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	if options != nil && options.Timeout != nil {
@@ -324,8 +324,8 @@ func (client *directoryOperations) renameCreateRequest(renameSource string, path
 	if options != nil && options.Marker != nil {
 		query.Set("continuation", *options.Marker)
 	}
-	if pathRenameMode != nil {
-		query.Set("mode", string(*pathRenameMode))
+	if client.pathRenameMode != nil {
+		query.Set("mode", string(*client.pathRenameMode))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodPut, *u)

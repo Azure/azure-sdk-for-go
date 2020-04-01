@@ -351,12 +351,12 @@ func (client *blobOperations) changeLeaseHandleResponse(resp *azcore.Response) (
 		return nil, err
 	}
 	result.LastModified = &lastModified
-	leaseId := resp.Header.Get("x-ms-lease-id")
-	result.LeaseId = &leaseId
 	clientRequestId := resp.Header.Get("x-ms-client-request-id")
 	result.ClientRequestId = &clientRequestId
 	requestId := resp.Header.Get("x-ms-request-id")
 	result.RequestId = &requestId
+	leaseId := resp.Header.Get("x-ms-lease-id")
+	result.LeaseId = &leaseId
 	version := resp.Header.Get("x-ms-version")
 	result.Version = &version
 	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
@@ -677,6 +677,7 @@ func (client *blobOperations) downloadCreateRequest(options *BlobDownloadOptions
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodGet, *u)
+	req.SkipBodyDownload()
 	if options != nil && options.RangeParameter != nil {
 		req.Header.Set("x-ms-range", *options.RangeParameter)
 	}
@@ -1212,7 +1213,7 @@ func (client *blobOperations) releaseLeaseHandleResponse(resp *azcore.Response) 
 
 // Rename - Rename a blob/file.  By default, the destination is overwritten and if the destination already exists and has a lease the lease is broken.  This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).  To fail if the destination already exists, use a conditional request with If-None-Match: "*".
 func (client *blobOperations) Rename(ctx context.Context, renameSource string, options *BlobRenameOptions) (*BlobRenameResponse, error) {
-	req, err := client.renameCreateRequest(renameSource, client.pathRenameMode, options)
+	req, err := client.renameCreateRequest(renameSource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -1228,14 +1229,14 @@ func (client *blobOperations) Rename(ctx context.Context, renameSource string, o
 }
 
 // renameCreateRequest creates the Rename request.
-func (client *blobOperations) renameCreateRequest(renameSource string, pathRenameMode *PathRenameMode, options *BlobRenameOptions) (*azcore.Request, error) {
+func (client *blobOperations) renameCreateRequest(renameSource string, options *BlobRenameOptions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	if options != nil && options.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	if pathRenameMode != nil {
-		query.Set("mode", string(*pathRenameMode))
+	if client.pathRenameMode != nil {
+		query.Set("mode", string(*client.pathRenameMode))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodPut, *u)

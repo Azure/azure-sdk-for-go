@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## `v41.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| backup | 2020-02-02 |
+
+
 ## `v41.0.0`
 
 ### New Packages

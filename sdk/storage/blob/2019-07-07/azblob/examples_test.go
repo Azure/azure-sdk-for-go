@@ -4,41 +4,68 @@
 package azblob
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
 const (
-	endpoint = "<endpoint>"
+	// the name of the sample container to create
+	containerName = "azblobsamplecontainer"
+
+	// the name of the sample block blob
+	blockBlobName = "azblobsampleblockblob"
 )
 
-const (
-	tenantID     = "<tenantID>"
-	clientID     = "<clientID>"
-	clientSecret = "<clientSecret"
+var (
+	// comes from environment var AZURE_STORAGE_ENDPOINT
+	// e.g. https://<your_storage_account>.blob.core.windows.net
+	storageEndpoint string
 )
 
-const (
-	accountName = "<accountName>"
-	accountKey  = "<accountKey>"
-)
+func init() {
+	storageEndpoint = os.Getenv("AZURE_STORAGE_ENDPOINT")
+	if storageEndpoint == "" {
+		panic("missing environment variable AZURE_STORAGE_ENDPOINT")
+	}
+}
 
 func getCredential() azcore.Credential {
-	// cred, err := NewSharedKeyCredential(accountName, accountKey)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	// NewEnvironmentCredential() will read various environment vars
+	// to obtain a credential.  see the documentation for more info.
+	cred, err := azidentity.NewEnvironmentCredential(nil)
 	if err != nil {
 		panic(err)
 	}
 	return cred
 }
 
+func generateBlobContent(size int) []byte {
+	content := make([]byte, size, size)
+	for i := 0; i < size; i++ {
+		content[i] = byte(i % 256)
+	}
+	return content
+}
+
+func pathJoin(elem ...string) string {
+	// add a trailing '/' if it doesn't already end with one
+	if i := len(elem[0]); elem[0][i-1] != '/' {
+		elem[0] = elem[0] + "/"
+	}
+	// join all the parts together
+	for i := 1; i < len(elem); i++ {
+		elem[0] = elem[0] + elem[i] + "/"
+	}
+	return elem[0]
+}
+
 func ExampleContainerOperations_Create() {
+	endpoint := pathJoin(storageEndpoint, containerName)
 	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -48,28 +75,33 @@ func ExampleContainerOperations_Create() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(c.RawResponse)
+	fmt.Println(c.RawResponse.StatusCode)
+	// Output: 201
 }
 
 func ExampleBlockBlobOperations_Upload() {
+	endpoint := pathJoin(storageEndpoint, containerName, blockBlobName)
 	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
+	const blockSize = 80
 	blobClient := client.BlockBlobOperations()
 	block := Block{
 		Name: "myblockID",
-		Size: 80,
+		Size: blockSize,
 	}
-	// TODO: body
-	b, err := blobClient.Upload(context.Background(), block, nil, nil)
+	body := azcore.NopCloser(bytes.NewReader(generateBlobContent(blockSize)))
+	b, err := blobClient.Upload(context.Background(), block, body, nil)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(b)
+	fmt.Println(b.RawResponse.StatusCode)
+	// Output: 201
 }
 
-func ExampleContainerOperations_ListBlobFlatSegment() {
+/*func ExampleContainerOperations_ListBlobFlatSegment() {
+	endpoint := pathJoin(storageEndpoint, containerName)
 	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -89,9 +121,9 @@ func ExampleContainerOperations_ListBlobFlatSegment() {
 	if page.PageResponse() == nil {
 		panic("unexpected nil payload")
 	}
-}
+}*/
 
-func ExampleAppendBlobOperations_Create() {
+/*func ExampleAppendBlobOperations_Create() {
 	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -103,9 +135,10 @@ func ExampleAppendBlobOperations_Create() {
 		panic(err)
 	}
 	fmt.Println(a.RawResponse.StatusCode)
-}
+}*/
 
 func ExampleBlobOperations_Delete() {
+	endpoint := pathJoin(storageEndpoint, containerName, blockBlobName)
 	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -115,10 +148,12 @@ func ExampleBlobOperations_Delete() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(d)
+	fmt.Println(d.RawResponse.StatusCode)
+	// Output: 204
 }
 
 func ExampleContainerOperations_Delete() {
+	endpoint := pathJoin(storageEndpoint, containerName)
 	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -128,5 +163,6 @@ func ExampleContainerOperations_Delete() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(d)
+	fmt.Println(d.RawResponse.StatusCode)
+	// Output: 204
 }

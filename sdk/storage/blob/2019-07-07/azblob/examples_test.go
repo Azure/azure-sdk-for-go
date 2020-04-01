@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
@@ -25,34 +26,33 @@ const (
 	accountKey  = "<accountKey>"
 )
 
-func Example_CreateContainer() {
+func getCredential() azcore.Credential {
+	// cred, err := NewSharedKeyCredential(accountName, accountKey)
+	// if err != nil {
+	// 	panic(err)
+	// }
 	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
 	if err != nil {
 		panic(err)
 	}
-	client, err := NewClient(endpoint, cred, nil)
+	return cred
+}
+
+func ExampleContainerOperations_Create() {
+	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
 	containerClient := client.ContainerOperations()
 	c, err := containerClient.Create(context.Background(), nil)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 	fmt.Println(c.RawResponse)
 }
 
-func Example_UploadBlockBlob() {
-	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
-	if err != nil {
-		panic(err)
-	}
-	// cred, err := NewSharedKeyCredential(accountName, accountKey)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	client, err := NewClient(endpoint, cred, nil)
+func ExampleBlockBlobOperations_Upload() {
+	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -64,26 +64,20 @@ func Example_UploadBlockBlob() {
 	// TODO: body
 	b, err := blobClient.Upload(context.Background(), block, nil, nil)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 	fmt.Println(b)
 }
 
-func Example_ListContainer() {
-	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
-	if err != nil {
-		panic(err)
-	}
-	client, err := NewClient(endpoint, cred, nil)
+func ExampleContainerOperations_ListBlobFlatSegment() {
+	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
 	blobClient := client.ContainerOperations()
 	page, err := blobClient.ListBlobFlatSegment(nil)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 	for page.NextPage(context.Background()) {
 		resp := page.PageResponse()
@@ -97,12 +91,8 @@ func Example_ListContainer() {
 	}
 }
 
-func Example_CreateAppendBlob() {
-	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
-	if err != nil {
-		panic(err)
-	}
-	client, err := NewClient(endpoint, cred, nil)
+func ExampleAppendBlobOperations_Create() {
+	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -110,44 +100,33 @@ func Example_CreateAppendBlob() {
 	s := "text/plain"
 	a, err := blobClient.Create(context.Background(), int64(10), &AppendBlobCreateOptions{BlobContentType: &s})
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 	fmt.Println(a.RawResponse.StatusCode)
 }
 
-func Example_DeleteBlob() {
-	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
-	if err != nil {
-		panic(err)
-	}
-	client, err := NewClient(endpoint, cred, nil)
+func ExampleBlobOperations_Delete() {
+	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
 	blobClient := client.BlobOperations(nil)
 	d, err := blobClient.Delete(context.Background(), nil)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 	fmt.Println(d)
 }
 
-func Example_DeleteContainer() {
-	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
-	if err != nil {
-		panic(err)
-	}
-	client, err := NewClient(endpoint, cred, nil)
+func ExampleContainerOperations_Delete() {
+	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
 	blobClient := client.ContainerOperations()
 	d, err := blobClient.Delete(context.Background(), nil)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 	fmt.Println(d)
 }

@@ -119,12 +119,9 @@ type TokenCredentialOptions struct {
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
 func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, error) {
-	var authorityHost string
-	envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST")
-	if envAuthorityHost != "" {
+	authorityHost := defaultAuthorityHost
+	if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
 		authorityHost = envAuthorityHost
-	} else {
-		authorityHost = defaultAuthorityHost
 	}
 
 	if c == nil {

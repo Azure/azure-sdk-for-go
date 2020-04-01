@@ -92,3 +92,58 @@ func Example_ListContainer() {
 		panic("unexpected nil payload")
 	}
 }
+
+func Example_CreateAppendBlob() {
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	if err != nil {
+		panic(err)
+	}
+	client, err := NewClient(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+	blobClient := client.AppendBlobOperations()
+	s := "text/plain"
+	a, err := blobClient.Create(context.Background(), int64(10), &AppendBlobCreateOptions{BlobContentType: &s})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(a.RawResponse.StatusCode)
+}
+
+func Example_DeleteBlob() {
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	if err != nil {
+		panic(err)
+	}
+	client, err := NewClient(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+	blobClient := client.BlobOperations(nil)
+	d, err := blobClient.Delete(context.Background(), nil)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(d)
+}
+
+func Example_DeleteContainer() {
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	if err != nil {
+		panic(err)
+	}
+	client, err := NewClient(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+	blobClient := client.ContainerOperations()
+	d, err := blobClient.Delete(context.Background(), nil)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(d)
+}

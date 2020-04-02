@@ -81,7 +81,7 @@ var _ VirtualMachinesClientAPI = (*compute.VirtualMachinesClient)(nil)
 // VirtualMachineImagesClientAPI contains the set of methods on the VirtualMachineImagesClient type.
 type VirtualMachineImagesClientAPI interface {
 	Get(ctx context.Context, location string, publisherName string, offer string, skus string, version string) (result compute.VirtualMachineImage, err error)
-	List(ctx context.Context, location string, publisherName string, offer string, skus string, filter string, top *int32, orderby string) (result compute.ListVirtualMachineImageResource, err error)
+	List(ctx context.Context, location string, publisherName string, offer string, skus string, expand string, top *int32, orderby string) (result compute.ListVirtualMachineImageResource, err error)
 	ListOffers(ctx context.Context, location string, publisherName string) (result compute.ListVirtualMachineImageResource, err error)
 	ListPublishers(ctx context.Context, location string) (result compute.ListVirtualMachineImageResource, err error)
 	ListSkus(ctx context.Context, location string, publisherName string, offer string) (result compute.ListVirtualMachineImageResource, err error)

@@ -50,7 +50,7 @@ func NewIdentityProviderClientWithBaseURI(baseURI string, subscriptionID string)
 // identityProviderName - identity Provider Type identifier.
 // parameters - create parameters.
 // ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
-func (client IdentityProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderContract, ifMatch string) (result IdentityProviderContract, err error) {
+func (client IdentityProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderCreateContract, ifMatch string) (result IdentityProviderContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IdentityProviderClient.CreateOrUpdate")
 		defer func() {
@@ -67,11 +67,11 @@ func (client IdentityProviderClient) CreateOrUpdate(ctx context.Context, resourc
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.IdentityProviderContractProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.IdentityProviderContractProperties.ClientID", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "parameters.IdentityProviderContractProperties.ClientID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-					{Target: "parameters.IdentityProviderContractProperties.ClientSecret", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.IdentityProviderContractProperties.ClientSecret", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "parameters.IdentityProviderCreateContractProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.IdentityProviderCreateContractProperties.ClientID", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "parameters.IdentityProviderCreateContractProperties.ClientID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+					{Target: "parameters.IdentityProviderCreateContractProperties.ClientSecret", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "parameters.IdentityProviderCreateContractProperties.ClientSecret", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("apimanagement.IdentityProviderClient", "CreateOrUpdate", err.Error())
 	}
@@ -98,7 +98,7 @@ func (client IdentityProviderClient) CreateOrUpdate(ctx context.Context, resourc
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client IdentityProviderClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderContract, ifMatch string) (*http.Request, error) {
+func (client IdentityProviderClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderCreateContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"identityProviderName": autorest.Encode("path", identityProviderName),
 		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
@@ -128,8 +128,7 @@ func (client IdentityProviderClient) CreateOrUpdatePreparer(ctx context.Context,
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client IdentityProviderClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -218,8 +217,7 @@ func (client IdentityProviderClient) DeletePreparer(ctx context.Context, resourc
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client IdentityProviderClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -304,8 +302,7 @@ func (client IdentityProviderClient) GetPreparer(ctx context.Context, resourceGr
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client IdentityProviderClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -391,8 +388,7 @@ func (client IdentityProviderClient) GetEntityTagPreparer(ctx context.Context, r
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client IdentityProviderClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
@@ -476,8 +472,7 @@ func (client IdentityProviderClient) ListByServicePreparer(ctx context.Context, 
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client IdentityProviderClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByServiceResponder handles the response to the ListByService request. The method always
@@ -600,8 +595,7 @@ func (client IdentityProviderClient) ListSecretsPreparer(ctx context.Context, re
 // ListSecretsSender sends the ListSecrets request. The method will close the
 // http.Response Body if it receives an error.
 func (client IdentityProviderClient) ListSecretsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSecretsResponder handles the response to the ListSecrets request. The method always
@@ -693,8 +687,7 @@ func (client IdentityProviderClient) UpdatePreparer(ctx context.Context, resourc
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client IdentityProviderClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

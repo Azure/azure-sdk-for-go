@@ -8,11 +8,12 @@ package azblob
 import (
 	"context"
 	"encoding/base64"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // BlockBlobOperations contains the methods for the BlockBlob group.
@@ -22,11 +23,11 @@ type BlockBlobOperations interface {
 	// GetBlockList - The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob
 	GetBlockList(ctx context.Context, listType BlockListType, options *BlockBlobGetBlockListOptions) (*BlockListResponse, error)
 	// StageBlock - The Stage Block operation creates a new block to be committed as part of a blob
-	StageBlock(ctx context.Context, blockId string, contentLength int64, options *BlockBlobStageBlockOptions) (*BlockBlobStageBlockResponse, error)
+	StageBlock(ctx context.Context, blockId string, contentLength int64, body azcore.ReadSeekCloser, options *BlockBlobStageBlockOptions) (*BlockBlobStageBlockResponse, error)
 	// StageBlockFromURL - The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from a URL.
 	StageBlockFromURL(ctx context.Context, blockId string, contentLength int64, sourceUrl url.URL, options *BlockBlobStageBlockFromURLOptions) (*BlockBlobStageBlockFromURLResponse, error)
 	// Upload - The Upload Block Blob operation updates the content of an existing block blob. Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a block blob, use the Put Block List operation.
-	Upload(ctx context.Context, contentLength int64, options *BlockBlobUploadOptions) (*BlockBlobUploadResponse, error)
+	Upload(ctx context.Context, block Block, body azcore.ReadSeekCloser, options *BlockBlobUploadOptions) (*BlockBlobUploadResponse, error)
 }
 
 // blockBlobOperations implements the BlockBlobOperations interface.
@@ -119,12 +120,7 @@ func (client *blockBlobOperations) commitBlockListCreateRequest(blocks BlockLook
 	if options != nil && options.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
-	if err := req.MarshalAsXML(blocks); err != nil {
-		if err != nil {
-			return nil, err
-		}
-	}
-	return req, nil
+	return req, req.MarshalAsXML(blocks)
 }
 
 // commitBlockListHandleResponse handles the CommitBlockList response.
@@ -133,43 +129,59 @@ func (client *blockBlobOperations) commitBlockListHandleResponse(resp *azcore.Re
 		return nil, newStorageError(resp)
 	}
 	result := BlockBlobCommitBlockListResponse{RawResponse: resp.Response}
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.LastModified = &lastModified
-	contentMd5, err := base64.StdEncoding.DecodeString(resp.Header.Get("Content-MD5"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
 	}
-	result.ContentMd5 = &contentMd5
-	contentCrc64, err := base64.StdEncoding.DecodeString(resp.Header.Get("x-ms-content-crc64"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Content-MD5"); val != "" {
+		contentMd5, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return nil, err
+		}
+		result.ContentMd5 = &contentMd5
 	}
-	result.ContentCrc64 = &contentCrc64
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
+		contentCrc64, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return nil, err
+		}
+		result.ContentCrc64 = &contentCrc64
 	}
-	result.Date = &date
-	requestServerEncrypted, err := strconv.ParseBool(resp.Header.Get("x-ms-request-server-encrypted"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
 	}
-	result.RequestServerEncrypted = &requestServerEncrypted
-	encryptionKeySha256 := resp.Header.Get("x-ms-encryption-key-sha256")
-	result.EncryptionKeySha256 = &encryptionKeySha256
-	encryptionScope := resp.Header.Get("x-ms-encryption-scope")
-	result.EncryptionScope = &encryptionScope
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
+	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+		requestServerEncrypted, err := strconv.ParseBool(val)
+		if err != nil {
+			return nil, err
+		}
+		result.RequestServerEncrypted = &requestServerEncrypted
+	}
+	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+		result.EncryptionKeySha256 = &val
+	}
+	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
+		result.EncryptionScope = &val
+	}
 	return &result, nil
 }
 
@@ -220,37 +232,48 @@ func (client *blockBlobOperations) getBlockListHandleResponse(resp *azcore.Respo
 		return nil, newStorageError(resp)
 	}
 	result := BlockListResponse{RawResponse: resp.Response}
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
 	}
-	result.LastModified = &lastModified
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	contentType := resp.Header.Get("Content-Type")
-	result.ContentType = &contentType
-	blobContentLength, err := strconv.ParseInt(resp.Header.Get("x-ms-blob-content-length"), 10, 64)
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.BlobContentLength = &blobContentLength
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-blob-content-length"); val != "" {
+		blobContentLength, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return nil, err
+		}
+		result.BlobContentLength = &blobContentLength
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, resp.UnmarshalAsXML(&result.BlockList)
 }
 
 // StageBlock - The Stage Block operation creates a new block to be committed as part of a blob
-func (client *blockBlobOperations) StageBlock(ctx context.Context, blockId string, contentLength int64, options *BlockBlobStageBlockOptions) (*BlockBlobStageBlockResponse, error) {
-	req, err := client.stageBlockCreateRequest(blockId, contentLength, options)
+func (client *blockBlobOperations) StageBlock(ctx context.Context, blockId string, contentLength int64, body azcore.ReadSeekCloser, options *BlockBlobStageBlockOptions) (*BlockBlobStageBlockResponse, error) {
+	req, err := client.stageBlockCreateRequest(blockId, contentLength, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -266,7 +289,7 @@ func (client *blockBlobOperations) StageBlock(ctx context.Context, blockId strin
 }
 
 // stageBlockCreateRequest creates the StageBlock request.
-func (client *blockBlobOperations) stageBlockCreateRequest(blockId string, contentLength int64, options *BlockBlobStageBlockOptions) (*azcore.Request, error) {
+func (client *blockBlobOperations) stageBlockCreateRequest(blockId string, contentLength int64, body azcore.ReadSeekCloser, options *BlockBlobStageBlockOptions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("comp", "block")
@@ -299,7 +322,7 @@ func (client *blockBlobOperations) stageBlockCreateRequest(blockId string, conte
 	if options != nil && options.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
-	return req, nil
+	return req, req.SetBody(body)
 }
 
 // stageBlockHandleResponse handles the StageBlock response.
@@ -308,36 +331,49 @@ func (client *blockBlobOperations) stageBlockHandleResponse(resp *azcore.Respons
 		return nil, newStorageError(resp)
 	}
 	result := BlockBlobStageBlockResponse{RawResponse: resp.Response}
-	contentMd5, err := base64.StdEncoding.DecodeString(resp.Header.Get("Content-MD5"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Content-MD5"); val != "" {
+		contentMd5, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return nil, err
+		}
+		result.ContentMd5 = &contentMd5
 	}
-	result.ContentMd5 = &contentMd5
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
 	}
-	result.Date = &date
-	contentCrc64, err := base64.StdEncoding.DecodeString(resp.Header.Get("x-ms-content-crc64"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
 	}
-	result.ContentCrc64 = &contentCrc64
-	requestServerEncrypted, err := strconv.ParseBool(resp.Header.Get("x-ms-request-server-encrypted"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
 	}
-	result.RequestServerEncrypted = &requestServerEncrypted
-	encryptionKeySha256 := resp.Header.Get("x-ms-encryption-key-sha256")
-	result.EncryptionKeySha256 = &encryptionKeySha256
-	encryptionScope := resp.Header.Get("x-ms-encryption-scope")
-	result.EncryptionScope = &encryptionScope
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
+	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
+		contentCrc64, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return nil, err
+		}
+		result.ContentCrc64 = &contentCrc64
+	}
+	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+		requestServerEncrypted, err := strconv.ParseBool(val)
+		if err != nil {
+			return nil, err
+		}
+		result.RequestServerEncrypted = &requestServerEncrypted
+	}
+	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+		result.EncryptionKeySha256 = &val
+	}
+	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
+		result.EncryptionScope = &val
+	}
 	return &result, nil
 }
 
@@ -417,42 +453,55 @@ func (client *blockBlobOperations) stageBlockFromUrlHandleResponse(resp *azcore.
 		return nil, newStorageError(resp)
 	}
 	result := BlockBlobStageBlockFromURLResponse{RawResponse: resp.Response}
-	contentMd5, err := base64.StdEncoding.DecodeString(resp.Header.Get("Content-MD5"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Content-MD5"); val != "" {
+		contentMd5, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return nil, err
+		}
+		result.ContentMd5 = &contentMd5
 	}
-	result.ContentMd5 = &contentMd5
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
+		contentCrc64, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return nil, err
+		}
+		result.ContentCrc64 = &contentCrc64
 	}
-	result.Date = &date
-	contentCrc64, err := base64.StdEncoding.DecodeString(resp.Header.Get("x-ms-content-crc64"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
 	}
-	result.ContentCrc64 = &contentCrc64
-	requestServerEncrypted, err := strconv.ParseBool(resp.Header.Get("x-ms-request-server-encrypted"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
 	}
-	result.RequestServerEncrypted = &requestServerEncrypted
-	encryptionKeySha256 := resp.Header.Get("x-ms-encryption-key-sha256")
-	result.EncryptionKeySha256 = &encryptionKeySha256
-	encryptionScope := resp.Header.Get("x-ms-encryption-scope")
-	result.EncryptionScope = &encryptionScope
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
+	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+		requestServerEncrypted, err := strconv.ParseBool(val)
+		if err != nil {
+			return nil, err
+		}
+		result.RequestServerEncrypted = &requestServerEncrypted
+	}
+	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+		result.EncryptionKeySha256 = &val
+	}
+	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
+		result.EncryptionScope = &val
+	}
 	return &result, nil
 }
 
 // Upload - The Upload Block Blob operation updates the content of an existing block blob. Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a block blob, use the Put Block List operation.
-func (client *blockBlobOperations) Upload(ctx context.Context, contentLength int64, options *BlockBlobUploadOptions) (*BlockBlobUploadResponse, error) {
-	req, err := client.uploadCreateRequest(contentLength, options)
+func (client *blockBlobOperations) Upload(ctx context.Context, block Block, body azcore.ReadSeekCloser, options *BlockBlobUploadOptions) (*BlockBlobUploadResponse, error) {
+	req, err := client.uploadCreateRequest(block, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -468,9 +517,11 @@ func (client *blockBlobOperations) Upload(ctx context.Context, contentLength int
 }
 
 // uploadCreateRequest creates the Upload request.
-func (client *blockBlobOperations) uploadCreateRequest(contentLength int64, options *BlockBlobUploadOptions) (*azcore.Request, error) {
+func (client *blockBlobOperations) uploadCreateRequest(block Block, body azcore.ReadSeekCloser, options *BlockBlobUploadOptions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
+	query.Set("comp", "block")
+	query.Set("blockid", url.QueryEscape(base64.StdEncoding.EncodeToString([]byte(*block.Name))))
 	if options != nil && options.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
@@ -480,7 +531,7 @@ func (client *blockBlobOperations) uploadCreateRequest(contentLength int64, opti
 	if options != nil && options.TransactionalContentMd5 != nil {
 		req.Header.Set("Content-MD5", base64.StdEncoding.EncodeToString(*options.TransactionalContentMd5))
 	}
-	req.Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
+	req.Header.Set("Content-Length", strconv.FormatInt(int64(*block.Size), 10))
 	if options != nil && options.BlobContentType != nil {
 		req.Header.Set("x-ms-blob-content-type", *options.BlobContentType)
 	}
@@ -533,7 +584,7 @@ func (client *blockBlobOperations) uploadCreateRequest(contentLength int64, opti
 	if options != nil && options.RequestId != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
-	return req, nil
+	return req, req.SetBody(body)
 }
 
 // uploadHandleResponse handles the Upload response.
@@ -542,37 +593,51 @@ func (client *blockBlobOperations) uploadHandleResponse(resp *azcore.Response) (
 		return nil, newStorageError(resp)
 	}
 	result := BlockBlobUploadResponse{RawResponse: resp.Response}
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.LastModified = &lastModified
-	contentMd5, err := base64.StdEncoding.DecodeString(resp.Header.Get("Content-MD5"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
 	}
-	result.ContentMd5 = &contentMd5
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Content-MD5"); val != "" {
+		contentMd5, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return nil, err
+		}
+		result.ContentMd5 = &contentMd5
 	}
-	result.Date = &date
-	requestServerEncrypted, err := strconv.ParseBool(resp.Header.Get("x-ms-request-server-encrypted"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
 	}
-	result.RequestServerEncrypted = &requestServerEncrypted
-	encryptionKeySha256 := resp.Header.Get("x-ms-encryption-key-sha256")
-	result.EncryptionKeySha256 = &encryptionKeySha256
-	encryptionScope := resp.Header.Get("x-ms-encryption-scope")
-	result.EncryptionScope = &encryptionScope
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
+	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+		requestServerEncrypted, err := strconv.ParseBool(val)
+		if err != nil {
+			return nil, err
+		}
+		result.RequestServerEncrypted = &requestServerEncrypted
+	}
+	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+		result.EncryptionKeySha256 = &val
+	}
+	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
+		result.EncryptionScope = &val
+	}
 	return &result, nil
 }

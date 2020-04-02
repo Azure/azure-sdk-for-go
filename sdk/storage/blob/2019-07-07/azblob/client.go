@@ -12,6 +12,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+const (
+	scope = "https://storage.azure.com/.default"
+)
+
 type ClientOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient azcore.Transport
@@ -37,7 +41,7 @@ type Client struct {
 }
 
 // NewClient creates an instance of the Client type with the specified endpoint.
-func NewClient(endpoint string, options *ClientOptions) (*Client, error) {
+func NewClient(endpoint string, cred azcore.Credential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		o := DefaultClientOptions()
 		options = &o
@@ -46,6 +50,7 @@ func NewClient(endpoint string, options *ClientOptions) (*Client, error) {
 		azcore.NewTelemetryPolicy(options.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(&options.Retry),
+		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(options.LogOptions))
 	return NewClientWithPipeline(endpoint, p)
 }

@@ -160,7 +160,7 @@ func ExampleAppendBlobOperations_AppendBlock() {
 	// Output: 201
 }
 
-func ExampleBlobOperations_Delete_BlockBlob() {
+func ExampleBlobOperations_Delete() {
 	endpoint := pathJoin(getEndpoint(), containerName, blockBlobName)
 	client, err := NewClient(endpoint, getCredential(), nil)
 	if err != nil {
@@ -172,22 +172,21 @@ func ExampleBlobOperations_Delete_BlockBlob() {
 		panic(err)
 	}
 	fmt.Println(d.RawResponse.StatusCode)
-	// Output: 202
-}
 
-func ExampleBlobOperations_Delete_AppendBlob() {
-	endpoint := pathJoin(getEndpoint(), containerName, appendBlobName)
-	client, err := NewClient(endpoint, getCredential(), nil)
+	endpoint = pathJoin(getEndpoint(), containerName, appendBlobName)
+	client, err = NewClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
-	blobClient := client.BlobOperations(nil)
-	d, err := blobClient.Delete(context.Background(), nil)
+	blobClient = client.BlobOperations(nil)
+	d, err = blobClient.Delete(context.Background(), nil)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(d.RawResponse.StatusCode)
-	// Output: 202
+	// Output:
+	// 202
+	// 202
 }
 
 func ExampleContainerOperations_Delete() {

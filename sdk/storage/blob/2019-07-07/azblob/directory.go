@@ -112,29 +112,39 @@ func (client *directoryOperations) createHandleResponse(resp *azcore.Response) (
 		return nil, newDataLakeStorageError(resp)
 	}
 	result := DirectoryCreateResponse{RawResponse: resp.Response}
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.LastModified = &lastModified
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	contentLength, err := strconv.ParseInt(resp.Header.Get("Content-Length"), 10, 64)
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
 	}
-	result.ContentLength = &contentLength
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Content-Length"); val != "" {
+		contentLength, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return nil, err
+		}
+		result.ContentLength = &contentLength
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, nil
 }
 
@@ -196,19 +206,25 @@ func (client *directoryOperations) deleteHandleResponse(resp *azcore.Response) (
 		return nil, newDataLakeStorageError(resp)
 	}
 	result := DirectoryDeleteResponse{RawResponse: resp.Response}
-	continuation := resp.Header.Get("x-ms-continuation")
-	result.Continuation = &continuation
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+		result.Continuation = &val
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, nil
 }
 
@@ -270,36 +286,47 @@ func (client *directoryOperations) getAccessControlHandleResponse(resp *azcore.R
 		return nil, newDataLakeStorageError(resp)
 	}
 	result := DirectoryGetAccessControlResponse{RawResponse: resp.Response}
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
 	}
-	result.Date = &date
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.LastModified = &lastModified
-	owner := resp.Header.Get("x-ms-owner")
-	result.Owner = &owner
-	group := resp.Header.Get("x-ms-group")
-	result.Group = &group
-	permissions := resp.Header.Get("x-ms-permissions")
-	result.Permissions = &permissions
-	acl := resp.Header.Get("x-ms-acl")
-	result.Acl = &acl
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
+	}
+	if val := resp.Header.Get("x-ms-owner"); val != "" {
+		result.Owner = &val
+	}
+	if val := resp.Header.Get("x-ms-group"); val != "" {
+		result.Group = &val
+	}
+	if val := resp.Header.Get("x-ms-permissions"); val != "" {
+		result.Permissions = &val
+	}
+	if val := resp.Header.Get("x-ms-acl"); val != "" {
+		result.Acl = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
 	return &result, nil
 }
 
 // Rename - Rename a directory. By default, the destination is overwritten and if the destination already exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations). To fail if the destination already exists, use a conditional request with If-None-Match: "*".
 func (client *directoryOperations) Rename(ctx context.Context, renameSource string, options *DirectoryRenameOptions) (*DirectoryRenameResponse, error) {
-	req, err := client.renameCreateRequest(renameSource, client.pathRenameMode, options)
+	req, err := client.renameCreateRequest(renameSource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -315,7 +342,7 @@ func (client *directoryOperations) Rename(ctx context.Context, renameSource stri
 }
 
 // renameCreateRequest creates the Rename request.
-func (client *directoryOperations) renameCreateRequest(renameSource string, pathRenameMode *PathRenameMode, options *DirectoryRenameOptions) (*azcore.Request, error) {
+func (client *directoryOperations) renameCreateRequest(renameSource string, options *DirectoryRenameOptions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	if options != nil && options.Timeout != nil {
@@ -324,8 +351,8 @@ func (client *directoryOperations) renameCreateRequest(renameSource string, path
 	if options != nil && options.Marker != nil {
 		query.Set("continuation", *options.Marker)
 	}
-	if pathRenameMode != nil {
-		query.Set("mode", string(*pathRenameMode))
+	if client.pathRenameMode != nil {
+		query.Set("mode", string(*client.pathRenameMode))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodPut, *u)
@@ -397,31 +424,42 @@ func (client *directoryOperations) renameHandleResponse(resp *azcore.Response) (
 		return nil, newDataLakeStorageError(resp)
 	}
 	result := DirectoryRenameResponse{RawResponse: resp.Response}
-	continuation := resp.Header.Get("x-ms-continuation")
-	result.Continuation = &continuation
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+		result.Continuation = &val
 	}
-	result.LastModified = &lastModified
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	contentLength, err := strconv.ParseInt(resp.Header.Get("Content-Length"), 10, 64)
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.ContentLength = &contentLength
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Content-Length"); val != "" {
+		contentLength, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return nil, err
+		}
+		result.ContentLength = &contentLength
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, nil
 }
 
@@ -492,21 +530,28 @@ func (client *directoryOperations) setAccessControlHandleResponse(resp *azcore.R
 		return nil, newDataLakeStorageError(resp)
 	}
 	result := DirectorySetAccessControlResponse{RawResponse: resp.Response}
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
 	}
-	result.Date = &date
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.LastModified = &lastModified
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
 	return &result, nil
 }

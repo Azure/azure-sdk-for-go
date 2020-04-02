@@ -166,7 +166,7 @@ func (c *SharedKeyCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOp
 	return azcore.PolicyFunc(func(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
 		// Add a x-ms-date header if it doesn't already exist
 		if d := req.Request.Header.Get(azcore.HeaderXmsDate); d == "" {
-			req.Request.Header[azcore.HeaderXmsDate] = []string{time.Now().UTC().Format(http.TimeFormat)}
+			req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
 		}
 		stringToSign, err := c.buildStringToSign(req.Request)
 		if err != nil {
@@ -174,7 +174,7 @@ func (c *SharedKeyCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOp
 		}
 		signature := c.computeHMACSHA256(stringToSign)
 		authHeader := strings.Join([]string{"SharedKey ", c.AccountName(), ":", signature}, "")
-		req.Request.Header[azcore.HeaderAuthorization] = []string{authHeader}
+		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
 
 		response, err := req.Next(ctx)
 		if err != nil && response != nil && response.StatusCode == http.StatusForbidden {

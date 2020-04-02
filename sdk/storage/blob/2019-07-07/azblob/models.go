@@ -158,8 +158,6 @@ type AppendBlobAppendBlockOptions struct {
 	// Append Block will succeed only if the append position is equal to this number. If it is not, the request will fail with
 	// the AppendPositionConditionNotMet error (HTTP status code 412 - Precondition Failed).
 	AppendPosition *int64
-	// Initial data
-	Body *azcore.ReadSeekCloser
 	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
 	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
 	EncryptionKey *string
@@ -1832,8 +1830,6 @@ type BlockBlobStageBlockFromURLResponse struct {
 
 // BlockBlobStageBlockOptions contains the optional parameters for the BlockBlob.StageBlock method.
 type BlockBlobStageBlockOptions struct {
-	// Initial data
-	Body *azcore.ReadSeekCloser
 	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
 	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
 	EncryptionKey *string
@@ -1907,8 +1903,6 @@ type BlockBlobUploadOptions struct {
 	BlobContentMd5 *[]byte
 	// Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
 	BlobContentType *string
-	// Initial data
-	Body *azcore.ReadSeekCloser
 	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
 	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
 	EncryptionKey *string
@@ -2359,7 +2353,7 @@ type ContainerGetPropertiesResponse struct {
 // An Azure Storage container
 type ContainerItem struct {
 	// Dictionary of <string>
-	Metadata *map[string]*string `xml:"string"`
+	Metadata *map[string]*string `xml:"String"`
 	Name     *string             `xml:"Name"`
 
 	// Properties of a container
@@ -3635,8 +3629,6 @@ type PageBlobUploadPagesFromURLResponse struct {
 
 // PageBlobUploadPagesOptions contains the optional parameters for the PageBlob.UploadPages method.
 type PageBlobUploadPagesOptions struct {
-	// Initial data
-	Body *azcore.ReadSeekCloser
 	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
 	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
 	EncryptionKey *string

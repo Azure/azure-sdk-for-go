@@ -73,21 +73,28 @@ func (client *serviceOperations) getAccountInfoHandleResponse(resp *azcore.Respo
 		return nil, newStorageError(resp)
 	}
 	result := ServiceGetAccountInfoResponse{RawResponse: resp.Response}
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
 	}
-	result.Date = &date
-	skuName := SkuName(resp.Header.Get("x-ms-sku-name"))
-	result.SkuName = &skuName
-	accountKind := AccountKind(resp.Header.Get("x-ms-account-kind"))
-	result.AccountKind = &accountKind
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
+	if val := resp.Header.Get("x-ms-sku-name"); val != "" {
+		result.SkuName = (*SkuName)(&val)
+	}
+	if val := resp.Header.Get("x-ms-account-kind"); val != "" {
+		result.AccountKind = (*AccountKind)(&val)
+	}
 	return &result, nil
 }
 
@@ -132,12 +139,15 @@ func (client *serviceOperations) getPropertiesHandleResponse(resp *azcore.Respon
 		return nil, newStorageError(resp)
 	}
 	result := StorageServicePropertiesResponse{RawResponse: resp.Response}
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
 	return &result, resp.UnmarshalAsXML(&result.StorageServiceProperties)
 }
 
@@ -182,17 +192,22 @@ func (client *serviceOperations) getStatisticsHandleResponse(resp *azcore.Respon
 		return nil, newStorageError(resp)
 	}
 	result := StorageServiceStatsResponse{RawResponse: resp.Response}
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, resp.UnmarshalAsXML(&result.StorageServiceStats)
 }
 
@@ -237,17 +252,22 @@ func (client *serviceOperations) getUserDelegationKeyHandleResponse(resp *azcore
 		return nil, newStorageError(resp)
 	}
 	result := UserDelegationKeyResponse{RawResponse: resp.Response}
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, resp.UnmarshalAsXML(&result.UserDelegationKey)
 }
 
@@ -306,12 +326,15 @@ func (client *serviceOperations) listContainersSegmentHandleResponse(resp *azcor
 		return nil, newStorageError(resp)
 	}
 	result := ListContainersSegmentResponseResponse{RawResponse: resp.Response}
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
 	return &result, resp.UnmarshalAsXML(&result.EnumerationResults)
 }
 
@@ -356,12 +379,15 @@ func (client *serviceOperations) setPropertiesHandleResponse(resp *azcore.Respon
 		return nil, newStorageError(resp)
 	}
 	result := ServiceSetPropertiesResponse{RawResponse: resp.Response}
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
 	return &result, nil
 }
 
@@ -408,11 +434,14 @@ func (client *serviceOperations) submitBatchHandleResponse(resp *azcore.Response
 		return nil, newStorageError(resp)
 	}
 	result := ServiceSubmitBatchResponse{RawResponse: resp.Response}
-	contentType := resp.Header.Get("Content-Type")
-	result.ContentType = &contentType
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
 	return &result, nil
 }

@@ -8,11 +8,10 @@ package azblob
 import (
 	"encoding/xml"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // An Access policy
@@ -1644,10 +1643,10 @@ type BlobUndeleteResponse struct {
 // Represents a single block in a block blob. It describes the block's ID and size.
 type Block struct {
 	// The base64 encoded block ID.
-	Name string `xml:"Name"`
+	Name *string `xml:"Name"`
 
 	// The block size in bytes.
-	Size int32 `xml:"Size"`
+	Size *int32 `xml:"Size"`
 }
 
 // BlockBlobCommitBlockListOptions contains the optional parameters for the BlockBlob.CommitBlockList method.

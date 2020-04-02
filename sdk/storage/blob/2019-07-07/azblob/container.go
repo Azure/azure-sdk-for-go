@@ -108,26 +108,35 @@ func (client *containerOperations) acquireLeaseHandleResponse(resp *azcore.Respo
 		return nil, newStorageError(resp)
 	}
 	result := ContainerAcquireLeaseResponse{RawResponse: resp.Response}
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.LastModified = &lastModified
-	leaseId := resp.Header.Get("x-ms-lease-id")
-	result.LeaseId = &leaseId
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
+		result.LeaseId = &val
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, nil
 }
 
@@ -182,30 +191,40 @@ func (client *containerOperations) breakLeaseHandleResponse(resp *azcore.Respons
 		return nil, newStorageError(resp)
 	}
 	result := ContainerBreakLeaseResponse{RawResponse: resp.Response}
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.LastModified = &lastModified
-	leaseTime32, err := strconv.ParseInt(resp.Header.Get("x-ms-lease-time"), 10, 32)
-	leaseTime := int32(leaseTime32)
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
 	}
-	result.LeaseTime = &leaseTime
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-lease-time"); val != "" {
+		leaseTime32, err := strconv.ParseInt(val, 10, 32)
+		leaseTime := int32(leaseTime32)
+		if err != nil {
+			return nil, err
+		}
+		result.LeaseTime = &leaseTime
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, nil
 }
 
@@ -259,26 +278,35 @@ func (client *containerOperations) changeLeaseHandleResponse(resp *azcore.Respon
 		return nil, newStorageError(resp)
 	}
 	result := ContainerChangeLeaseResponse{RawResponse: resp.Response}
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.LastModified = &lastModified
-	leaseId := resp.Header.Get("x-ms-lease-id")
-	result.LeaseId = &leaseId
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
+		result.LeaseId = &val
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, nil
 }
 
@@ -334,24 +362,32 @@ func (client *containerOperations) createHandleResponse(resp *azcore.Response) (
 		return nil, newStorageError(resp)
 	}
 	result := ContainerCreateResponse{RawResponse: resp.Response}
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.LastModified = &lastModified
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, nil
 }
 
@@ -404,17 +440,22 @@ func (client *containerOperations) deleteHandleResponse(resp *azcore.Response) (
 		return nil, newStorageError(resp)
 	}
 	result := ContainerDeleteResponse{RawResponse: resp.Response}
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, nil
 }
 
@@ -462,26 +503,35 @@ func (client *containerOperations) getAccessPolicyHandleResponse(resp *azcore.Re
 		return nil, newStorageError(resp)
 	}
 	result := SignedIDentifierArrayResponse{RawResponse: resp.Response}
-	blobPublicAccess := PublicAccessType(resp.Header.Get("x-ms-blob-public-access"))
-	result.BlobPublicAccess = &blobPublicAccess
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-blob-public-access"); val != "" {
+		result.BlobPublicAccess = (*PublicAccessType)(&val)
 	}
-	result.LastModified = &lastModified
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.Date = &date
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, resp.UnmarshalAsXML(&result)
 }
 
@@ -520,21 +570,28 @@ func (client *containerOperations) getAccountInfoHandleResponse(resp *azcore.Res
 		return nil, newStorageError(resp)
 	}
 	result := ContainerGetAccountInfoResponse{RawResponse: resp.Response}
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
 	}
-	result.Date = &date
-	skuName := SkuName(resp.Header.Get("x-ms-sku-name"))
-	result.SkuName = &skuName
-	accountKind := AccountKind(resp.Header.Get("x-ms-account-kind"))
-	result.AccountKind = &accountKind
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
+	if val := resp.Header.Get("x-ms-sku-name"); val != "" {
+		result.SkuName = (*SkuName)(&val)
+	}
+	if val := resp.Header.Get("x-ms-account-kind"); val != "" {
+		result.AccountKind = (*AccountKind)(&val)
+	}
 	return &result, nil
 }
 
@@ -581,51 +638,71 @@ func (client *containerOperations) getPropertiesHandleResponse(resp *azcore.Resp
 		return nil, newStorageError(resp)
 	}
 	result := ContainerGetPropertiesResponse{RawResponse: resp.Response}
-	meta := resp.Header.Get("x-ms-meta")
-	result.Meta = &meta
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-meta"); val != "" {
+		result.Meta = &val
 	}
-	result.LastModified = &lastModified
-	leaseDuration := LeaseDurationType(resp.Header.Get("x-ms-lease-duration"))
-	result.LeaseDuration = &leaseDuration
-	leaseState := LeaseStateType(resp.Header.Get("x-ms-lease-state"))
-	result.LeaseState = &leaseState
-	leaseStatus := LeaseStatusType(resp.Header.Get("x-ms-lease-status"))
-	result.LeaseStatus = &leaseStatus
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.Date = &date
-	blobPublicAccess := PublicAccessType(resp.Header.Get("x-ms-blob-public-access"))
-	result.BlobPublicAccess = &blobPublicAccess
-	hasImmutabilityPolicy, err := strconv.ParseBool(resp.Header.Get("x-ms-has-immutability-policy"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
 	}
-	result.HasImmutabilityPolicy = &hasImmutabilityPolicy
-	hasLegalHold, err := strconv.ParseBool(resp.Header.Get("x-ms-has-legal-hold"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
+		result.LeaseDuration = (*LeaseDurationType)(&val)
 	}
-	result.HasLegalHold = &hasLegalHold
-	defaultEncryptionScope := resp.Header.Get("x-ms-default-encryption-scope")
-	result.DefaultEncryptionScope = &defaultEncryptionScope
-	denyEncryptionScopeOverride, err := strconv.ParseBool(resp.Header.Get("x-ms-deny-encryption-scope-override"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("x-ms-lease-state"); val != "" {
+		result.LeaseState = (*LeaseStateType)(&val)
 	}
-	result.DenyEncryptionScopeOverride = &denyEncryptionScopeOverride
+	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
+		result.LeaseStatus = (*LeaseStatusType)(&val)
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
+	if val := resp.Header.Get("x-ms-blob-public-access"); val != "" {
+		result.BlobPublicAccess = (*PublicAccessType)(&val)
+	}
+	if val := resp.Header.Get("x-ms-has-immutability-policy"); val != "" {
+		hasImmutabilityPolicy, err := strconv.ParseBool(val)
+		if err != nil {
+			return nil, err
+		}
+		result.HasImmutabilityPolicy = &hasImmutabilityPolicy
+	}
+	if val := resp.Header.Get("x-ms-has-legal-hold"); val != "" {
+		hasLegalHold, err := strconv.ParseBool(val)
+		if err != nil {
+			return nil, err
+		}
+		result.HasLegalHold = &hasLegalHold
+	}
+	if val := resp.Header.Get("x-ms-default-encryption-scope"); val != "" {
+		result.DefaultEncryptionScope = &val
+	}
+	if val := resp.Header.Get("x-ms-deny-encryption-scope-override"); val != "" {
+		denyEncryptionScopeOverride, err := strconv.ParseBool(val)
+		if err != nil {
+			return nil, err
+		}
+		result.DenyEncryptionScopeOverride = &denyEncryptionScopeOverride
+	}
 	return &result, nil
 }
 
@@ -688,19 +765,25 @@ func (client *containerOperations) listBlobFlatSegmentHandleResponse(resp *azcor
 		return nil, newStorageError(resp)
 	}
 	result := ListBlobsFlatSegmentResponseResponse{RawResponse: resp.Response}
-	contentType := resp.Header.Get("Content-Type")
-	result.ContentType = &contentType
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, resp.UnmarshalAsXML(&result.EnumerationResults)
 }
 
@@ -764,19 +847,25 @@ func (client *containerOperations) listBlobHierarchySegmentHandleResponse(resp *
 		return nil, newStorageError(resp)
 	}
 	result := ListBlobsHierarchySegmentResponseResponse{RawResponse: resp.Response}
-	contentType := resp.Header.Get("Content-Type")
-	result.ContentType = &contentType
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, resp.UnmarshalAsXML(&result.EnumerationResults)
 }
 
@@ -829,24 +918,32 @@ func (client *containerOperations) releaseLeaseHandleResponse(resp *azcore.Respo
 		return nil, newStorageError(resp)
 	}
 	result := ContainerReleaseLeaseResponse{RawResponse: resp.Response}
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.LastModified = &lastModified
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, nil
 }
 
@@ -899,26 +996,35 @@ func (client *containerOperations) renewLeaseHandleResponse(resp *azcore.Respons
 		return nil, newStorageError(resp)
 	}
 	result := ContainerRenewLeaseResponse{RawResponse: resp.Response}
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.LastModified = &lastModified
-	leaseId := resp.Header.Get("x-ms-lease-id")
-	result.LeaseId = &leaseId
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
+		result.LeaseId = &val
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, nil
 }
 
@@ -979,24 +1085,32 @@ func (client *containerOperations) setAccessPolicyHandleResponse(resp *azcore.Re
 		return nil, newStorageError(resp)
 	}
 	result := ContainerSetAccessPolicyResponse{RawResponse: resp.Response}
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.LastModified = &lastModified
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, nil
 }
 
@@ -1050,23 +1164,31 @@ func (client *containerOperations) setMetadataHandleResponse(resp *azcore.Respon
 		return nil, newStorageError(resp)
 	}
 	result := ContainerSetMetadataResponse{RawResponse: resp.Response}
-	eTag := resp.Header.Get("ETag")
-	result.ETag = &eTag
-	lastModified, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
 	}
-	result.LastModified = &lastModified
-	clientRequestId := resp.Header.Get("x-ms-client-request-id")
-	result.ClientRequestId = &clientRequestId
-	requestId := resp.Header.Get("x-ms-request-id")
-	result.RequestId = &requestId
-	version := resp.Header.Get("x-ms-version")
-	result.Version = &version
-	date, err := time.Parse(time.RFC1123, resp.Header.Get("Date"))
-	if err != nil {
-		return nil, err
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.LastModified = &lastModified
 	}
-	result.Date = &date
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
 	return &result, nil
 }

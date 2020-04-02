@@ -213,6 +213,8 @@ type AppResource struct {
 	autorest.Response `json:"-"`
 	// Properties - Properties of the App resource
 	Properties *AppResourceProperties `json:"properties,omitempty"`
+	// Location - The GEO location of the application, always the same with its parent resource
+	Location *string `json:"location,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource.
@@ -1042,10 +1044,10 @@ type DeploymentResourceProperties struct {
 	Source *UserSourceInfo `json:"source,omitempty"`
 	// AppName - READ-ONLY; App name of the deployment
 	AppName *string `json:"appName,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the Deployment. Possible values include: 'DeploymentResourceProvisioningStateCreating', 'DeploymentResourceProvisioningStateUpdating', 'DeploymentResourceProvisioningStateSucceeded', 'DeploymentResourceProvisioningStateFailed'
-	ProvisioningState DeploymentResourceProvisioningState `json:"provisioningState,omitempty"`
 	// DeploymentSettings - Deployment settings of the Deployment
 	DeploymentSettings *DeploymentSettings `json:"deploymentSettings,omitempty"`
+	// ProvisioningState - READ-ONLY; Provisioning state of the Deployment. Possible values include: 'DeploymentResourceProvisioningStateCreating', 'DeploymentResourceProvisioningStateUpdating', 'DeploymentResourceProvisioningStateSucceeded', 'DeploymentResourceProvisioningStateFailed'
+	ProvisioningState DeploymentResourceProvisioningState `json:"provisioningState,omitempty"`
 	// Status - READ-ONLY; Status of the Deployment. Possible values include: 'DeploymentResourceStatusUnknown', 'DeploymentResourceStatusStopped', 'DeploymentResourceStatusRunning', 'DeploymentResourceStatusFailed', 'DeploymentResourceStatusAllocating', 'DeploymentResourceStatusUpgrading', 'DeploymentResourceStatusCompiling'
 	Status DeploymentResourceStatus `json:"status,omitempty"`
 	// Active - READ-ONLY; Indicates whether the Deployment is active

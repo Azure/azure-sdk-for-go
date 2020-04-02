@@ -19,9 +19,10 @@
 
 package backupapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2019-06-15/backup/backupapi"
+import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2020-02-02/backup/backupapi"
 
 type BackupsClientAPI = original.BackupsClientAPI
+type BaseClientAPI = original.BaseClientAPI
 type EnginesClientAPI = original.EnginesClientAPI
 type ExportJobsOperationResultsClientAPI = original.ExportJobsOperationResultsClientAPI
 type FeatureSupportClientAPI = original.FeatureSupportClientAPI
@@ -36,6 +37,7 @@ type OperationResultsClientAPI = original.OperationResultsClientAPI
 type OperationStatusesClientAPI = original.OperationStatusesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PoliciesClientAPI = original.PoliciesClientAPI
+type PrivateEndpointConnectionClientAPI = original.PrivateEndpointConnectionClientAPI
 type ProtectableContainersClientAPI = original.ProtectableContainersClientAPI
 type ProtectableItemsClientAPI = original.ProtectableItemsClientAPI
 type ProtectedItemOperationResultsClientAPI = original.ProtectedItemOperationResultsClientAPI

@@ -22,7 +22,7 @@ package backup
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2019-06-15/backup"
+	original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2020-02-02/backup"
 )
 
 const (
@@ -384,9 +384,10 @@ const (
 type ObjectType = original.ObjectType
 
 const (
-	ObjectTypeExportJobsOperationResultInfo ObjectType = original.ObjectTypeExportJobsOperationResultInfo
-	ObjectTypeOperationResultInfo           ObjectType = original.ObjectTypeOperationResultInfo
-	ObjectTypeOperationResultInfoBase       ObjectType = original.ObjectTypeOperationResultInfoBase
+	ObjectTypeOperationStatusExtendedInfo             ObjectType = original.ObjectTypeOperationStatusExtendedInfo
+	ObjectTypeOperationStatusJobExtendedInfo          ObjectType = original.ObjectTypeOperationStatusJobExtendedInfo
+	ObjectTypeOperationStatusJobsExtendedInfo         ObjectType = original.ObjectTypeOperationStatusJobsExtendedInfo
+	ObjectTypeOperationStatusProvisionILRExtendedInfo ObjectType = original.ObjectTypeOperationStatusProvisionILRExtendedInfo
 )
 
 type ObjectTypeBasicILRRequest = original.ObjectTypeBasicILRRequest
@@ -397,13 +398,12 @@ const (
 	ObjectTypeILRRequest                        ObjectTypeBasicILRRequest = original.ObjectTypeILRRequest
 )
 
-type ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeBasicOperationStatusExtendedInfo
+type ObjectTypeBasicOperationResultInfoBase = original.ObjectTypeBasicOperationResultInfoBase
 
 const (
-	ObjectTypeOperationStatusExtendedInfo             ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusExtendedInfo
-	ObjectTypeOperationStatusJobExtendedInfo          ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobExtendedInfo
-	ObjectTypeOperationStatusJobsExtendedInfo         ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobsExtendedInfo
-	ObjectTypeOperationStatusProvisionILRExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusProvisionILRExtendedInfo
+	ObjectTypeExportJobsOperationResultInfo ObjectTypeBasicOperationResultInfoBase = original.ObjectTypeExportJobsOperationResultInfo
+	ObjectTypeOperationResultInfo           ObjectTypeBasicOperationResultInfoBase = original.ObjectTypeOperationResultInfo
+	ObjectTypeOperationResultInfoBase       ObjectTypeBasicOperationResultInfoBase = original.ObjectTypeOperationResultInfoBase
 )
 
 type ObjectTypeBasicRecoveryPoint = original.ObjectTypeBasicRecoveryPoint
@@ -486,6 +486,15 @@ const (
 	PolicyTypeFull         PolicyType = original.PolicyTypeFull
 	PolicyTypeInvalid      PolicyType = original.PolicyTypeInvalid
 	PolicyTypeLog          PolicyType = original.PolicyTypeLog
+)
+
+type PrivateEndpointConnectionStatus = original.PrivateEndpointConnectionStatus
+
+const (
+	Approved     PrivateEndpointConnectionStatus = original.Approved
+	Disconnected PrivateEndpointConnectionStatus = original.Disconnected
+	Pending      PrivateEndpointConnectionStatus = original.Pending
+	Rejected     PrivateEndpointConnectionStatus = original.Rejected
 )
 
 type ProtectableContainerType = original.ProtectableContainerType
@@ -581,6 +590,15 @@ const (
 	ProtectionStatusProtected        ProtectionStatus = original.ProtectionStatusProtected
 	ProtectionStatusProtecting       ProtectionStatus = original.ProtectionStatusProtecting
 	ProtectionStatusProtectionFailed ProtectionStatus = original.ProtectionStatusProtectionFailed
+)
+
+type ProvisioningState = original.ProvisioningState
+
+const (
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStatePending   ProvisioningState = original.ProvisioningStatePending
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
 )
 
 type RecoveryMode = original.RecoveryMode
@@ -1065,6 +1083,13 @@ type PoliciesClient = original.PoliciesClient
 type PreBackupValidation = original.PreBackupValidation
 type PreValidateEnableBackupRequest = original.PreValidateEnableBackupRequest
 type PreValidateEnableBackupResponse = original.PreValidateEnableBackupResponse
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionClient = original.PrivateEndpointConnectionClient
+type PrivateEndpointConnectionDeleteFuture = original.PrivateEndpointConnectionDeleteFuture
+type PrivateEndpointConnectionPutFuture = original.PrivateEndpointConnectionPutFuture
+type PrivateEndpointConnectionResource = original.PrivateEndpointConnectionResource
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProtectableContainer = original.ProtectableContainer
 type ProtectableContainerResource = original.ProtectableContainerResource
 type ProtectableContainerResourceList = original.ProtectableContainerResourceList
@@ -1278,6 +1303,12 @@ func NewPoliciesClient(subscriptionID string) PoliciesClient {
 }
 func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
 	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateEndpointConnectionClient(subscriptionID string) PrivateEndpointConnectionClient {
+	return original.NewPrivateEndpointConnectionClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionClient {
+	return original.NewPrivateEndpointConnectionClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProtectableContainerResourceListIterator(page ProtectableContainerResourceListPage) ProtectableContainerResourceListIterator {
 	return original.NewProtectableContainerResourceListIterator(page)
@@ -1549,8 +1580,8 @@ func PossibleMonthOfYearValues() []MonthOfYear {
 func PossibleObjectTypeBasicILRRequestValues() []ObjectTypeBasicILRRequest {
 	return original.PossibleObjectTypeBasicILRRequestValues()
 }
-func PossibleObjectTypeBasicOperationStatusExtendedInfoValues() []ObjectTypeBasicOperationStatusExtendedInfo {
-	return original.PossibleObjectTypeBasicOperationStatusExtendedInfoValues()
+func PossibleObjectTypeBasicOperationResultInfoBaseValues() []ObjectTypeBasicOperationResultInfoBase {
+	return original.PossibleObjectTypeBasicOperationResultInfoBaseValues()
 }
 func PossibleObjectTypeBasicRecoveryPointValues() []ObjectTypeBasicRecoveryPoint {
 	return original.PossibleObjectTypeBasicRecoveryPointValues()
@@ -1579,6 +1610,9 @@ func PossibleOverwriteOptionsValues() []OverwriteOptions {
 func PossiblePolicyTypeValues() []PolicyType {
 	return original.PossiblePolicyTypeValues()
 }
+func PossiblePrivateEndpointConnectionStatusValues() []PrivateEndpointConnectionStatus {
+	return original.PossiblePrivateEndpointConnectionStatusValues()
+}
 func PossibleProtectableContainerTypeValues() []ProtectableContainerType {
 	return original.PossibleProtectableContainerTypeValues()
 }
@@ -1602,6 +1636,9 @@ func PossibleProtectionStateValues() []ProtectionState {
 }
 func PossibleProtectionStatusValues() []ProtectionStatus {
 	return original.PossibleProtectionStatusValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
 }
 func PossibleRecoveryModeValues() []RecoveryMode {
 	return original.PossibleRecoveryModeValues()

@@ -26,6 +26,16 @@ const (
 
 // returns a credential that can be used to authenticate with blob storage
 func getCredential() azcore.Credential {
+	// check environment for shared key credential info
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	if accountName != "" && accountKey != "" {
+		keyCred, err := NewSharedKeyCredential(accountName, accountKey)
+		if err != nil {
+			panic(err)
+		}
+		return keyCred
+	}
 	// NewEnvironmentCredential() will read various environment vars
 	// to obtain a credential.  see the documentation for more info.
 	cred, err := azidentity.NewEnvironmentCredential(nil)
@@ -82,6 +92,27 @@ func ExampleContainerOperations_Create() {
 	// Output: 201
 }
 
+func ExampleServiceOperations_ListContainersSegment() {
+	client, err := NewClient(getEndpoint(), getCredential(), nil)
+	if err != nil {
+		panic(err)
+	}
+	pager, err := client.ServiceOperations().ListContainersSegment(nil)
+	if err != nil {
+		panic(err)
+	}
+	for pager.NextPage(context.Background()) {
+		page := pager.PageResponse()
+		for _, container := range *page.EnumerationResults.ContainerItems {
+			fmt.Println(*container.Name)
+		}
+	}
+	if pager.Err() != nil {
+		panic(pager.Err())
+	}
+	// Output: azblobsamplecontainer
+}
+
 func ExampleBlockBlobOperations_Upload() {
 	endpoint := pathJoin(getEndpoint(), containerName, blockBlobName)
 	client, err := NewClient(endpoint, getCredential(), nil)
@@ -104,29 +135,6 @@ func ExampleBlockBlobOperations_Upload() {
 	// Output: 201
 }
 
-/*func ExampleContainerOperations_ListBlobFlatSegment() {
-	endpoint := pathJoin(storageEndpoint, containerName)
-	client, err := NewClient(endpoint, getCredential(), nil)
-	if err != nil {
-		panic(err)
-	}
-	blobClient := client.ContainerOperations()
-	page, err := blobClient.ListBlobFlatSegment(nil)
-	if err != nil {
-		panic(err)
-	}
-	for page.NextPage(context.Background()) {
-		resp := page.PageResponse()
-		fmt.Println(*resp.EnumerationResults)
-	}
-	if err = page.Err(); err != nil {
-		panic(err)
-	}
-	if page.PageResponse() == nil {
-		panic("unexpected nil payload")
-	}
-}*/
-
 func ExampleAppendBlobOperations_Create() {
 	endpoint := pathJoin(getEndpoint(), containerName, appendBlobName)
 	client, err := NewClient(endpoint, getCredential(), nil)
@@ -134,8 +142,7 @@ func ExampleAppendBlobOperations_Create() {
 		panic(err)
 	}
 	blobClient := client.AppendBlobOperations()
-	s := "text/plain"
-	a, err := blobClient.Create(context.Background(), int64(10), &AppendBlobCreateOptions{BlobContentType: &s})
+	a, err := blobClient.Create(context.Background(), 0, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -158,6 +165,35 @@ func ExampleAppendBlobOperations_AppendBlock() {
 	}
 	fmt.Println(a.RawResponse.StatusCode)
 	// Output: 201
+}
+
+func ExampleContainerOperations_ListBlobFlatSegment() {
+	endpoint := pathJoin(getEndpoint(), containerName)
+	client, err := NewClient(endpoint, getCredential(), nil)
+	if err != nil {
+		panic(err)
+	}
+	blobClient := client.ContainerOperations()
+	pager, err := blobClient.ListBlobFlatSegment(&ContainerListBlobFlatSegmentOptions{
+		Include: &[]ListBlobsIncludeItem{
+			ListBlobsIncludeItemUncommittedblobs,
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+	for pager.NextPage(context.Background()) {
+		page := pager.PageResponse()
+		for _, blob := range *page.EnumerationResults.Segment.BlobItems {
+			fmt.Println(*blob.Name)
+		}
+	}
+	if err = pager.Err(); err != nil {
+		panic(err)
+	}
+	// Unordered output:
+	// azblobsampleblockblob/
+	// azblobsampleappendblob/
 }
 
 func ExampleBlobOperations_Delete() {

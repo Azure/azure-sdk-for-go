@@ -76,3 +76,11 @@ func Test_CustomAuthorityHost(t *testing.T) {
 		t.Fatalf("Unexpected error when unset environment vairable: %v", err)
 	}
 }
+
+func Test_DefaultAuthorityHost(t *testing.T) {
+	opts := &TokenCredentialOptions{}
+	opts, err := opts.setDefaultValues()
+	if opts.AuthorityHost.String() != defaultAuthorityHost {
+		t.Fatalf("Unexpected error when set default AuthorityHost: %v", err)
+	}
+}

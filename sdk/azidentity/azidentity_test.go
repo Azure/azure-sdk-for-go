@@ -45,6 +45,12 @@ func Test_SetEnvAuthorityHost(t *testing.T) {
 	if opts.AuthorityHost.String() != envHostString {
 		t.Fatalf("Unexpected error when get host from environment vairable: %v", err)
 	}
+
+	// Unset that host environment vairable to avoid other tests failed.
+	err = os.Unsetenv("AZURE_AUTHORITY_HOST")
+	if err != nil {
+		t.Fatalf("Unexpected error when unset environment vairable: %v", err)
+	}
 }
 
 func Test_CustomAuthorityHost(t *testing.T) {
@@ -62,5 +68,11 @@ func Test_CustomAuthorityHost(t *testing.T) {
 	opts, err = opts.setDefaultValues()
 	if opts.AuthorityHost.String() != customHostString {
 		t.Fatalf("Unexpected error when get host from environment vairable: %v", err)
+	}
+
+	// Unset that host environment vairable to avoid other tests failed.
+	err = os.Unsetenv("AZURE_AUTHORITY_HOST")
+	if err != nil {
+		t.Fatalf("Unexpected error when unset environment vairable: %v", err)
 	}
 }

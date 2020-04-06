@@ -44,9 +44,18 @@ type ReplicationUsagesClientAPI interface {
 
 var _ ReplicationUsagesClientAPI = (*recoveryservices.ReplicationUsagesClient)(nil)
 
+// PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
+type PrivateLinkResourcesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, vaultName string, privateLinkResourceName string) (result recoveryservices.PrivateLinkResource, err error)
+	List(ctx context.Context, resourceGroupName string, vaultName string) (result recoveryservices.PrivateLinkResourcesPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, vaultName string) (result recoveryservices.PrivateLinkResourcesIterator, err error)
+}
+
+var _ PrivateLinkResourcesClientAPI = (*recoveryservices.PrivateLinkResourcesClient)(nil)
+
 // ClientAPI contains the set of methods on the Client type.
 type ClientAPI interface {
-	CheckNameAvailability(ctx context.Context, resourceGroupName string, location string, input recoveryservices.CheckNameAvailabilityParameters) (result recoveryservices.CheckNameAvailabilityResultResource, err error)
+	CheckNameAvailability(ctx context.Context, resourceGroupName string, location string, input recoveryservices.CheckNameAvailabilityParameters) (result recoveryservices.CheckNameAvailabilityResult, err error)
 }
 
 var _ ClientAPI = (*recoveryservices.Client)(nil)

@@ -528,8 +528,8 @@ func (client TableResourcesClient) UpdateTableThroughput(ctx context.Context, re
 		{TargetValue: updateThroughputParameters,
 			Constraints: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource.AutopilotSettings", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource.AutopilotSettings.MaxThroughput", Name: validation.Null, Rule: true, Chain: nil}}},
+					Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource.ProvisionedThroughputSettings", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource.ProvisionedThroughputSettings.MaxThroughput", Name: validation.Null, Rule: true, Chain: nil}}},
 					}},
 				}}}}}); err != nil {
 		return result, validation.NewError("documentdb.TableResourcesClient", "UpdateTableThroughput", err.Error())

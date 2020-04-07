@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -66,15 +67,11 @@ func generateBlobContent(size int) []byte {
 
 // concatenates all elements together with a '/' between each element
 func pathJoin(elem ...string) string {
-	// add a trailing '/' if it doesn't already end with one
-	if i := len(elem[0]); elem[0][i-1] != '/' {
-		elem[0] = elem[0] + "/"
+	// remove trailing '/' if needed
+	if i := len(elem[0]); elem[0][i-1] == '/' {
+		elem[0] = elem[0][0 : i-1]
 	}
-	// join all the parts together
-	for i := 1; i < len(elem); i++ {
-		elem[0] = elem[0] + elem[i] + "/"
-	}
-	return elem[0]
+	return strings.Join(elem, "/")
 }
 
 func ExampleContainerOperations_Create() {
@@ -119,15 +116,10 @@ func ExampleBlockBlobOperations_Upload() {
 	if err != nil {
 		panic(err)
 	}
-	blockSize := int32(80)
-	blockID := "myblockID"
+	const blockSize = 80
 	blobClient := client.BlockBlobOperations()
-	block := Block{
-		Name: &blockID,
-		Size: &blockSize,
-	}
-	body := azcore.NopCloser(bytes.NewReader(generateBlobContent(int(blockSize))))
-	b, err := blobClient.Upload(context.Background(), block, body, nil)
+	body := azcore.NopCloser(bytes.NewReader(generateBlobContent(blockSize)))
+	b, err := blobClient.Upload(context.Background(), blockSize, body, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -192,8 +184,8 @@ func ExampleContainerOperations_ListBlobFlatSegment() {
 		panic(err)
 	}
 	// Unordered output:
-	// azblobsampleblockblob/
-	// azblobsampleappendblob/
+	// azblobsampleblockblob
+	// azblobsampleappendblob
 }
 
 func ExampleBlobOperations_Delete() {

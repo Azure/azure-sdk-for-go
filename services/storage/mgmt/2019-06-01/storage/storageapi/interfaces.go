@@ -90,6 +90,16 @@ type PrivateLinkResourcesClientAPI interface {
 
 var _ PrivateLinkResourcesClientAPI = (*storage.PrivateLinkResourcesClient)(nil)
 
+// ObjectReplicationPoliciesClientAPI contains the set of methods on the ObjectReplicationPoliciesClient type.
+type ObjectReplicationPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyID string, properties storage.ObjectReplicationPolicy) (result storage.ObjectReplicationPolicy, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyID string) (result storage.ObjectReplicationPolicy, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.ObjectReplicationPolicies, err error)
+}
+
+var _ ObjectReplicationPoliciesClientAPI = (*storage.ObjectReplicationPoliciesClient)(nil)
+
 // EncryptionScopesClientAPI contains the set of methods on the EncryptionScopesClient type.
 type EncryptionScopesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string) (result storage.EncryptionScope, err error)

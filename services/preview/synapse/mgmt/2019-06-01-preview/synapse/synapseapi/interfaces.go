@@ -49,6 +49,7 @@ var _ OperationsClientAPI = (*synapse.OperationsClient)(nil)
 type IPFirewallRulesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, IPFirewallRuleInfo synapse.IPFirewallRuleInfo) (result synapse.IPFirewallRulesCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string) (result synapse.IPFirewallRulesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string) (result synapse.IPFirewallRuleInfo, err error)
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.IPFirewallRuleInfoListResultPage, err error)
 	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.IPFirewallRuleInfoListResultIterator, err error)
 	ReplaceAll(ctx context.Context, resourceGroupName string, workspaceName string, request synapse.ReplaceAllIPFirewallRulesRequest) (result synapse.IPFirewallRulesReplaceAllFuture, err error)
@@ -336,3 +337,23 @@ type IntegrationRuntimeStatusClientAPI interface {
 }
 
 var _ IntegrationRuntimeStatusClientAPI = (*synapse.IntegrationRuntimeStatusClient)(nil)
+
+// PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
+type PrivateLinkResourcesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, privateLinkResourceName string) (result synapse.PrivateLinkResource, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.PrivateLinkResourceListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.PrivateLinkResourceListResultIterator, err error)
+}
+
+var _ PrivateLinkResourcesClientAPI = (*synapse.PrivateLinkResourcesClient)(nil)
+
+// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
+type PrivateEndpointConnectionsClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string) (result synapse.PrivateEndpointConnectionsCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string) (result synapse.PrivateEndpointConnectionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string) (result synapse.PrivateEndpointConnection, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.PrivateEndpointConnectionListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.PrivateEndpointConnectionListIterator, err error)
+}
+
+var _ PrivateEndpointConnectionsClientAPI = (*synapse.PrivateEndpointConnectionsClient)(nil)

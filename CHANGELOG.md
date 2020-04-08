@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v41.2.0
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| synapse | 2019-06-01-preview |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| eventgrid | 2020-04-01-preview |
+
 ## `v41.1.0`
 
 ### New Packages

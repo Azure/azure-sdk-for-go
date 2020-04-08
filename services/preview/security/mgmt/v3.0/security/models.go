@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
@@ -296,6 +297,21 @@ const (
 // PossibleDataSourceValues returns an array of possible values for the DataSource const type.
 func PossibleDataSourceValues() []DataSource {
 	return []DataSource{TwinData}
+}
+
+// Direction enumerates the values for direction.
+type Direction string
+
+const (
+	// Inbound ...
+	Inbound Direction = "Inbound"
+	// Outbound ...
+	Outbound Direction = "Outbound"
+)
+
+// PossibleDirectionValues returns an array of possible values for the Direction const type.
+func PossibleDirectionValues() []Direction {
+	return []Direction{Inbound, Outbound}
 }
 
 // EnforcementMode enumerates the values for enforcement mode.
@@ -662,6 +678,27 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{ProvisioningStateCanceled, ProvisioningStateDeprovisioning, ProvisioningStateFailed, ProvisioningStateProvisioning, ProvisioningStateSucceeded}
 }
 
+// Rank enumerates the values for rank.
+type Rank string
+
+const (
+	// RankCritical ...
+	RankCritical Rank = "Critical"
+	// RankHigh ...
+	RankHigh Rank = "High"
+	// RankLow ...
+	RankLow Rank = "Low"
+	// RankMedium ...
+	RankMedium Rank = "Medium"
+	// RankNone ...
+	RankNone Rank = "None"
+)
+
+// PossibleRankValues returns an array of possible values for the Rank const type.
+func PossibleRankValues() []Rank {
+	return []Rank{RankCritical, RankHigh, RankLow, RankMedium, RankNone}
+}
+
 // RecommendationAction enumerates the values for recommendation action.
 type RecommendationAction string
 
@@ -821,6 +858,67 @@ const (
 // PossibleResourceStatusValues returns an array of possible values for the ResourceStatus const type.
 func PossibleResourceStatusValues() []ResourceStatus {
 	return []ResourceStatus{ResourceStatusHealthy, ResourceStatusNotApplicable, ResourceStatusNotHealthy, ResourceStatusOffByPolicy}
+}
+
+// RuleType enumerates the values for rule type.
+type RuleType string
+
+const (
+	// RuleTypeActiveConnectionsNotInAllowedRange ...
+	RuleTypeActiveConnectionsNotInAllowedRange RuleType = "ActiveConnectionsNotInAllowedRange"
+	// RuleTypeAllowlistCustomAlertRule ...
+	RuleTypeAllowlistCustomAlertRule RuleType = "AllowlistCustomAlertRule"
+	// RuleTypeAmqpC2DMessagesNotInAllowedRange ...
+	RuleTypeAmqpC2DMessagesNotInAllowedRange RuleType = "AmqpC2DMessagesNotInAllowedRange"
+	// RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange ...
+	RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange RuleType = "AmqpC2DRejectedMessagesNotInAllowedRange"
+	// RuleTypeAmqpD2CMessagesNotInAllowedRange ...
+	RuleTypeAmqpD2CMessagesNotInAllowedRange RuleType = "AmqpD2CMessagesNotInAllowedRange"
+	// RuleTypeConnectionToIPNotAllowed ...
+	RuleTypeConnectionToIPNotAllowed RuleType = "ConnectionToIpNotAllowed"
+	// RuleTypeCustomAlertRule ...
+	RuleTypeCustomAlertRule RuleType = "CustomAlertRule"
+	// RuleTypeDenylistCustomAlertRule ...
+	RuleTypeDenylistCustomAlertRule RuleType = "DenylistCustomAlertRule"
+	// RuleTypeDirectMethodInvokesNotInAllowedRange ...
+	RuleTypeDirectMethodInvokesNotInAllowedRange RuleType = "DirectMethodInvokesNotInAllowedRange"
+	// RuleTypeFailedLocalLoginsNotInAllowedRange ...
+	RuleTypeFailedLocalLoginsNotInAllowedRange RuleType = "FailedLocalLoginsNotInAllowedRange"
+	// RuleTypeFileUploadsNotInAllowedRange ...
+	RuleTypeFileUploadsNotInAllowedRange RuleType = "FileUploadsNotInAllowedRange"
+	// RuleTypeHTTPC2DMessagesNotInAllowedRange ...
+	RuleTypeHTTPC2DMessagesNotInAllowedRange RuleType = "HttpC2DMessagesNotInAllowedRange"
+	// RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange ...
+	RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange RuleType = "HttpC2DRejectedMessagesNotInAllowedRange"
+	// RuleTypeHTTPD2CMessagesNotInAllowedRange ...
+	RuleTypeHTTPD2CMessagesNotInAllowedRange RuleType = "HttpD2CMessagesNotInAllowedRange"
+	// RuleTypeListCustomAlertRule ...
+	RuleTypeListCustomAlertRule RuleType = "ListCustomAlertRule"
+	// RuleTypeLocalUserNotAllowed ...
+	RuleTypeLocalUserNotAllowed RuleType = "LocalUserNotAllowed"
+	// RuleTypeMqttC2DMessagesNotInAllowedRange ...
+	RuleTypeMqttC2DMessagesNotInAllowedRange RuleType = "MqttC2DMessagesNotInAllowedRange"
+	// RuleTypeMqttC2DRejectedMessagesNotInAllowedRange ...
+	RuleTypeMqttC2DRejectedMessagesNotInAllowedRange RuleType = "MqttC2DRejectedMessagesNotInAllowedRange"
+	// RuleTypeMqttD2CMessagesNotInAllowedRange ...
+	RuleTypeMqttD2CMessagesNotInAllowedRange RuleType = "MqttD2CMessagesNotInAllowedRange"
+	// RuleTypeProcessNotAllowed ...
+	RuleTypeProcessNotAllowed RuleType = "ProcessNotAllowed"
+	// RuleTypeQueuePurgesNotInAllowedRange ...
+	RuleTypeQueuePurgesNotInAllowedRange RuleType = "QueuePurgesNotInAllowedRange"
+	// RuleTypeThresholdCustomAlertRule ...
+	RuleTypeThresholdCustomAlertRule RuleType = "ThresholdCustomAlertRule"
+	// RuleTypeTimeWindowCustomAlertRule ...
+	RuleTypeTimeWindowCustomAlertRule RuleType = "TimeWindowCustomAlertRule"
+	// RuleTypeTwinUpdatesNotInAllowedRange ...
+	RuleTypeTwinUpdatesNotInAllowedRange RuleType = "TwinUpdatesNotInAllowedRange"
+	// RuleTypeUnauthorizedOperationsNotInAllowedRange ...
+	RuleTypeUnauthorizedOperationsNotInAllowedRange RuleType = "UnauthorizedOperationsNotInAllowedRange"
+)
+
+// PossibleRuleTypeValues returns an array of possible values for the RuleType const type.
+func PossibleRuleTypeValues() []RuleType {
+	return []RuleType{RuleTypeActiveConnectionsNotInAllowedRange, RuleTypeAllowlistCustomAlertRule, RuleTypeAmqpC2DMessagesNotInAllowedRange, RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange, RuleTypeAmqpD2CMessagesNotInAllowedRange, RuleTypeConnectionToIPNotAllowed, RuleTypeCustomAlertRule, RuleTypeDenylistCustomAlertRule, RuleTypeDirectMethodInvokesNotInAllowedRange, RuleTypeFailedLocalLoginsNotInAllowedRange, RuleTypeFileUploadsNotInAllowedRange, RuleTypeHTTPC2DMessagesNotInAllowedRange, RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange, RuleTypeHTTPD2CMessagesNotInAllowedRange, RuleTypeListCustomAlertRule, RuleTypeLocalUserNotAllowed, RuleTypeMqttC2DMessagesNotInAllowedRange, RuleTypeMqttC2DRejectedMessagesNotInAllowedRange, RuleTypeMqttD2CMessagesNotInAllowedRange, RuleTypeProcessNotAllowed, RuleTypeQueuePurgesNotInAllowedRange, RuleTypeThresholdCustomAlertRule, RuleTypeTimeWindowCustomAlertRule, RuleTypeTwinUpdatesNotInAllowedRange, RuleTypeUnauthorizedOperationsNotInAllowedRange}
 }
 
 // Script enumerates the values for script.
@@ -1021,6 +1119,21 @@ func PossibleThreatsValues() []Threats {
 	return []Threats{AccountBreach, DataExfiltration, DataSpillage, DenialOfService, ElevationOfPrivilege, MaliciousInsider, MissingCoverage, ThreatResistance}
 }
 
+// TransportProtocol enumerates the values for transport protocol.
+type TransportProtocol string
+
+const (
+	// TransportProtocolTCP ...
+	TransportProtocolTCP TransportProtocol = "TCP"
+	// TransportProtocolUDP ...
+	TransportProtocolUDP TransportProtocol = "UDP"
+)
+
+// PossibleTransportProtocolValues returns an array of possible values for the TransportProtocol const type.
+func PossibleTransportProtocolValues() []TransportProtocol {
+	return []TransportProtocol{TransportProtocolTCP, TransportProtocolUDP}
+}
+
 // Type enumerates the values for type.
 type Type string
 
@@ -1158,6 +1271,458 @@ type AadSolutionProperties struct {
 	Workspace    *ConnectedWorkspace `json:"workspace,omitempty"`
 	// ConnectivityState - Possible values include: 'Discovered', 'NotLicensed', 'Connected'
 	ConnectivityState AadConnectivityState `json:"connectivityState,omitempty"`
+}
+
+// ActiveConnectionsNotInAllowedRange number of active connections is not in allowed range.
+type ActiveConnectionsNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	acniar.RuleType = RuleTypeActiveConnectionsNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if acniar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = acniar.TimeWindowSize
+	}
+	if acniar.MinThreshold != nil {
+		objectMap["minThreshold"] = acniar.MinThreshold
+	}
+	if acniar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = acniar.MaxThreshold
+	}
+	if acniar.IsEnabled != nil {
+		objectMap["isEnabled"] = acniar.IsEnabled
+	}
+	if acniar.RuleType != "" {
+		objectMap["ruleType"] = acniar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &acniar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &acniar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return &acniar, true
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for ActiveConnectionsNotInAllowedRange.
+func (acniar ActiveConnectionsNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &acniar, true
+}
+
+// AdaptiveNetworkHardening the resource whose properties describes the Adaptive Network Hardening settings
+// for some Azure resource
+type AdaptiveNetworkHardening struct {
+	autorest.Response `json:"-"`
+	// AdaptiveNetworkHardeningProperties - Properties of the Adaptive Network Hardening resource
+	*AdaptiveNetworkHardeningProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AdaptiveNetworkHardening.
+func (anh AdaptiveNetworkHardening) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if anh.AdaptiveNetworkHardeningProperties != nil {
+		objectMap["properties"] = anh.AdaptiveNetworkHardeningProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AdaptiveNetworkHardening struct.
+func (anh *AdaptiveNetworkHardening) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var adaptiveNetworkHardeningProperties AdaptiveNetworkHardeningProperties
+				err = json.Unmarshal(*v, &adaptiveNetworkHardeningProperties)
+				if err != nil {
+					return err
+				}
+				anh.AdaptiveNetworkHardeningProperties = &adaptiveNetworkHardeningProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				anh.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				anh.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				anh.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AdaptiveNetworkHardeningEnforceRequest ...
+type AdaptiveNetworkHardeningEnforceRequest struct {
+	// Rules - The rules to enforce
+	Rules *[]Rule `json:"rules,omitempty"`
+	// NetworkSecurityGroups - The Azure resource IDs of the effective network security groups that will be updated with the created security rules from the Adaptive Network Hardening rules
+	NetworkSecurityGroups *[]string `json:"networkSecurityGroups,omitempty"`
+}
+
+// AdaptiveNetworkHardeningProperties adaptive Network Hardening resource properties
+type AdaptiveNetworkHardeningProperties struct {
+	// Rules - The security rules which are recommended to be effective on the VM
+	Rules *[]Rule `json:"rules,omitempty"`
+	// RulesCalculationTime - The UTC time on which the rules were calculated
+	RulesCalculationTime *date.Time `json:"rulesCalculationTime,omitempty"`
+	// EffectiveNetworkSecurityGroups - The Network Security Groups effective on the network interfaces of the protected resource
+	EffectiveNetworkSecurityGroups *[]EffectiveNetworkSecurityGroups `json:"effectiveNetworkSecurityGroups,omitempty"`
+}
+
+// AdaptiveNetworkHardeningsEnforceFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AdaptiveNetworkHardeningsEnforceFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AdaptiveNetworkHardeningsEnforceFuture) Result(client AdaptiveNetworkHardeningsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AdaptiveNetworkHardeningsEnforceFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("security.AdaptiveNetworkHardeningsEnforceFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// AdaptiveNetworkHardeningsList response for ListAdaptiveNetworkHardenings API service call
+type AdaptiveNetworkHardeningsList struct {
+	autorest.Response `json:"-"`
+	// Value - A list of Adaptive Network Hardenings resources
+	Value *[]AdaptiveNetworkHardening `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AdaptiveNetworkHardeningsListIterator provides access to a complete listing of AdaptiveNetworkHardening
+// values.
+type AdaptiveNetworkHardeningsListIterator struct {
+	i    int
+	page AdaptiveNetworkHardeningsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AdaptiveNetworkHardeningsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AdaptiveNetworkHardeningsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AdaptiveNetworkHardeningsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AdaptiveNetworkHardeningsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AdaptiveNetworkHardeningsListIterator) Response() AdaptiveNetworkHardeningsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AdaptiveNetworkHardeningsListIterator) Value() AdaptiveNetworkHardening {
+	if !iter.page.NotDone() {
+		return AdaptiveNetworkHardening{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AdaptiveNetworkHardeningsListIterator type.
+func NewAdaptiveNetworkHardeningsListIterator(page AdaptiveNetworkHardeningsListPage) AdaptiveNetworkHardeningsListIterator {
+	return AdaptiveNetworkHardeningsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (anhl AdaptiveNetworkHardeningsList) IsEmpty() bool {
+	return anhl.Value == nil || len(*anhl.Value) == 0
+}
+
+// adaptiveNetworkHardeningsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (anhl AdaptiveNetworkHardeningsList) adaptiveNetworkHardeningsListPreparer(ctx context.Context) (*http.Request, error) {
+	if anhl.NextLink == nil || len(to.String(anhl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(anhl.NextLink)))
+}
+
+// AdaptiveNetworkHardeningsListPage contains a page of AdaptiveNetworkHardening values.
+type AdaptiveNetworkHardeningsListPage struct {
+	fn   func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error)
+	anhl AdaptiveNetworkHardeningsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AdaptiveNetworkHardeningsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AdaptiveNetworkHardeningsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.anhl)
+	if err != nil {
+		return err
+	}
+	page.anhl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AdaptiveNetworkHardeningsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AdaptiveNetworkHardeningsListPage) NotDone() bool {
+	return !page.anhl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AdaptiveNetworkHardeningsListPage) Response() AdaptiveNetworkHardeningsList {
+	return page.anhl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AdaptiveNetworkHardeningsListPage) Values() []AdaptiveNetworkHardening {
+	if page.anhl.IsEmpty() {
+		return nil
+	}
+	return *page.anhl.Value
+}
+
+// Creates a new instance of the AdaptiveNetworkHardeningsListPage type.
+func NewAdaptiveNetworkHardeningsListPage(getNextPage func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error)) AdaptiveNetworkHardeningsListPage {
+	return AdaptiveNetworkHardeningsListPage{fn: getNextPage}
 }
 
 // BasicAdditionalData details of the sub-assessment
@@ -1911,8 +2476,17 @@ type AllowedConnectionsResourceProperties struct {
 	ConnectableResources *[]ConnectableResource `json:"connectableResources,omitempty"`
 }
 
-// AllowlistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type)
-// is allowed.
+// BasicAllowlistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type) is
+// allowed.
+type BasicAllowlistCustomAlertRule interface {
+	AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool)
+	AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool)
+	AsProcessNotAllowed() (*ProcessNotAllowed, bool)
+	AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool)
+}
+
+// AllowlistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type) is
+// allowed.
 type AllowlistCustomAlertRule struct {
 	// AllowlistValues - The values to allow. The format of the values depends on the rule type.
 	AllowlistValues *[]string `json:"allowlistValues,omitempty"`
@@ -1924,8 +2498,792 @@ type AllowlistCustomAlertRule struct {
 	Description *string `json:"description,omitempty"`
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// RuleType - The type of the custom alert rule.
-	RuleType *string `json:"ruleType,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+func unmarshalBasicAllowlistCustomAlertRule(body []byte) (BasicAllowlistCustomAlertRule, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["ruleType"] {
+	case string(RuleTypeConnectionToIPNotAllowed):
+		var ctina ConnectionToIPNotAllowed
+		err := json.Unmarshal(body, &ctina)
+		return ctina, err
+	case string(RuleTypeLocalUserNotAllowed):
+		var luna LocalUserNotAllowed
+		err := json.Unmarshal(body, &luna)
+		return luna, err
+	case string(RuleTypeProcessNotAllowed):
+		var pna ProcessNotAllowed
+		err := json.Unmarshal(body, &pna)
+		return pna, err
+	default:
+		var acar AllowlistCustomAlertRule
+		err := json.Unmarshal(body, &acar)
+		return acar, err
+	}
+}
+func unmarshalBasicAllowlistCustomAlertRuleArray(body []byte) ([]BasicAllowlistCustomAlertRule, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	acarArray := make([]BasicAllowlistCustomAlertRule, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		acar, err := unmarshalBasicAllowlistCustomAlertRule(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		acarArray[index] = acar
+	}
+	return acarArray, nil
+}
+
+// MarshalJSON is the custom marshaler for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) MarshalJSON() ([]byte, error) {
+	acar.RuleType = RuleTypeAllowlistCustomAlertRule
+	objectMap := make(map[string]interface{})
+	if acar.AllowlistValues != nil {
+		objectMap["allowlistValues"] = acar.AllowlistValues
+	}
+	if acar.IsEnabled != nil {
+		objectMap["isEnabled"] = acar.IsEnabled
+	}
+	if acar.RuleType != "" {
+		objectMap["ruleType"] = acar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return &acar, true
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return &acar, true
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return &acar, true
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for AllowlistCustomAlertRule.
+func (acar AllowlistCustomAlertRule) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &acar, true
+}
+
+// AmqpC2DMessagesNotInAllowedRange number of cloud to device messages (AMQP protocol) is not in allowed
+// range.
+type AmqpC2DMessagesNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	acmniar.RuleType = RuleTypeAmqpC2DMessagesNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if acmniar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = acmniar.TimeWindowSize
+	}
+	if acmniar.MinThreshold != nil {
+		objectMap["minThreshold"] = acmniar.MinThreshold
+	}
+	if acmniar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = acmniar.MaxThreshold
+	}
+	if acmniar.IsEnabled != nil {
+		objectMap["isEnabled"] = acmniar.IsEnabled
+	}
+	if acmniar.RuleType != "" {
+		objectMap["ruleType"] = acmniar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &acmniar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &acmniar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return &acmniar, true
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DMessagesNotInAllowedRange.
+func (acmniar AmqpC2DMessagesNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &acmniar, true
+}
+
+// AmqpC2DRejectedMessagesNotInAllowedRange number of rejected cloud to device messages (AMQP protocol) is
+// not in allowed range.
+type AmqpC2DRejectedMessagesNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	acrmniar.RuleType = RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if acrmniar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = acrmniar.TimeWindowSize
+	}
+	if acrmniar.MinThreshold != nil {
+		objectMap["minThreshold"] = acrmniar.MinThreshold
+	}
+	if acrmniar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = acrmniar.MaxThreshold
+	}
+	if acrmniar.IsEnabled != nil {
+		objectMap["isEnabled"] = acrmniar.IsEnabled
+	}
+	if acrmniar.RuleType != "" {
+		objectMap["ruleType"] = acrmniar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &acrmniar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &acrmniar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return &acrmniar, true
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for AmqpC2DRejectedMessagesNotInAllowedRange.
+func (acrmniar AmqpC2DRejectedMessagesNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &acrmniar, true
+}
+
+// AmqpD2CMessagesNotInAllowedRange number of device to cloud messages (AMQP protocol) is not in allowed
+// range.
+type AmqpD2CMessagesNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	admniar.RuleType = RuleTypeAmqpD2CMessagesNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if admniar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = admniar.TimeWindowSize
+	}
+	if admniar.MinThreshold != nil {
+		objectMap["minThreshold"] = admniar.MinThreshold
+	}
+	if admniar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = admniar.MaxThreshold
+	}
+	if admniar.IsEnabled != nil {
+		objectMap["isEnabled"] = admniar.IsEnabled
+	}
+	if admniar.RuleType != "" {
+		objectMap["ruleType"] = admniar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &admniar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &admniar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return &admniar, true
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for AmqpD2CMessagesNotInAllowedRange.
+func (admniar AmqpD2CMessagesNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &admniar, true
 }
 
 // AppWhitelistingGroup ...
@@ -4584,6 +5942,189 @@ type ConnectedWorkspace struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// ConnectionToIPNotAllowed outbound connection to an ip that isn't allowed. Allow list consists of ipv4 or
+// ipv6 range in CIDR notation.
+type ConnectionToIPNotAllowed struct {
+	// AllowlistValues - The values to allow. The format of the values depends on the rule type.
+	AllowlistValues *[]string `json:"allowlistValues,omitempty"`
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) MarshalJSON() ([]byte, error) {
+	ctina.RuleType = RuleTypeConnectionToIPNotAllowed
+	objectMap := make(map[string]interface{})
+	if ctina.AllowlistValues != nil {
+		objectMap["allowlistValues"] = ctina.AllowlistValues
+	}
+	if ctina.IsEnabled != nil {
+		objectMap["isEnabled"] = ctina.IsEnabled
+	}
+	if ctina.RuleType != "" {
+		objectMap["ruleType"] = ctina.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return &ctina, true
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return &ctina, true
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return &ctina, true
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for ConnectionToIPNotAllowed.
+func (ctina ConnectionToIPNotAllowed) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &ctina, true
+}
+
 // Contact contact details for security issues
 type Contact struct {
 	autorest.Response `json:"-"`
@@ -4873,6 +6414,39 @@ func (crvp ContainerRegistryVulnerabilityProperties) AsBasicAdditionalData() (Ba
 	return &crvp, true
 }
 
+// BasicCustomAlertRule a custom alert rule.
+type BasicCustomAlertRule interface {
+	AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool)
+	AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool)
+	AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool)
+	AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool)
+	AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool)
+	AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool)
+	AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool)
+	AsListCustomAlertRule() (*ListCustomAlertRule, bool)
+	AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool)
+	AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool)
+	AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool)
+	AsProcessNotAllowed() (*ProcessNotAllowed, bool)
+	AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool)
+	AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool)
+	AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool)
+	AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool)
+	AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool)
+	AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool)
+	AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool)
+	AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool)
+	AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool)
+	AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool)
+	AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool)
+	AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool)
+	AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool)
+	AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool)
+	AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool)
+	AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool)
+	AsCustomAlertRule() (*CustomAlertRule, bool)
+}
+
 // CustomAlertRule a custom alert rule.
 type CustomAlertRule struct {
 	// DisplayName - READ-ONLY; The display name of the custom alert.
@@ -4881,8 +6455,300 @@ type CustomAlertRule struct {
 	Description *string `json:"description,omitempty"`
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// RuleType - The type of the custom alert rule.
-	RuleType *string `json:"ruleType,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+func unmarshalBasicCustomAlertRule(body []byte) (BasicCustomAlertRule, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["ruleType"] {
+	case string(RuleTypeThresholdCustomAlertRule):
+		var tcar ThresholdCustomAlertRule
+		err := json.Unmarshal(body, &tcar)
+		return tcar, err
+	case string(RuleTypeTimeWindowCustomAlertRule):
+		var twcar TimeWindowCustomAlertRule
+		err := json.Unmarshal(body, &twcar)
+		return twcar, err
+	case string(RuleTypeAllowlistCustomAlertRule):
+		var acar AllowlistCustomAlertRule
+		err := json.Unmarshal(body, &acar)
+		return acar, err
+	case string(RuleTypeDenylistCustomAlertRule):
+		var dcar DenylistCustomAlertRule
+		err := json.Unmarshal(body, &dcar)
+		return dcar, err
+	case string(RuleTypeListCustomAlertRule):
+		var lcar ListCustomAlertRule
+		err := json.Unmarshal(body, &lcar)
+		return lcar, err
+	case string(RuleTypeConnectionToIPNotAllowed):
+		var ctina ConnectionToIPNotAllowed
+		err := json.Unmarshal(body, &ctina)
+		return ctina, err
+	case string(RuleTypeLocalUserNotAllowed):
+		var luna LocalUserNotAllowed
+		err := json.Unmarshal(body, &luna)
+		return luna, err
+	case string(RuleTypeProcessNotAllowed):
+		var pna ProcessNotAllowed
+		err := json.Unmarshal(body, &pna)
+		return pna, err
+	case string(RuleTypeActiveConnectionsNotInAllowedRange):
+		var acniar ActiveConnectionsNotInAllowedRange
+		err := json.Unmarshal(body, &acniar)
+		return acniar, err
+	case string(RuleTypeAmqpC2DMessagesNotInAllowedRange):
+		var acmniar AmqpC2DMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &acmniar)
+		return acmniar, err
+	case string(RuleTypeMqttC2DMessagesNotInAllowedRange):
+		var mcmniar MqttC2DMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &mcmniar)
+		return mcmniar, err
+	case string(RuleTypeHTTPC2DMessagesNotInAllowedRange):
+		var hcmniar HTTPC2DMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &hcmniar)
+		return hcmniar, err
+	case string(RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange):
+		var acrmniar AmqpC2DRejectedMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &acrmniar)
+		return acrmniar, err
+	case string(RuleTypeMqttC2DRejectedMessagesNotInAllowedRange):
+		var mcrmniar MqttC2DRejectedMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &mcrmniar)
+		return mcrmniar, err
+	case string(RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange):
+		var hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &hcrmniar)
+		return hcrmniar, err
+	case string(RuleTypeAmqpD2CMessagesNotInAllowedRange):
+		var admniar AmqpD2CMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &admniar)
+		return admniar, err
+	case string(RuleTypeMqttD2CMessagesNotInAllowedRange):
+		var mdmniar MqttD2CMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &mdmniar)
+		return mdmniar, err
+	case string(RuleTypeHTTPD2CMessagesNotInAllowedRange):
+		var hdmniar HTTPD2CMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &hdmniar)
+		return hdmniar, err
+	case string(RuleTypeDirectMethodInvokesNotInAllowedRange):
+		var dminiar DirectMethodInvokesNotInAllowedRange
+		err := json.Unmarshal(body, &dminiar)
+		return dminiar, err
+	case string(RuleTypeFailedLocalLoginsNotInAllowedRange):
+		var fllniar FailedLocalLoginsNotInAllowedRange
+		err := json.Unmarshal(body, &fllniar)
+		return fllniar, err
+	case string(RuleTypeFileUploadsNotInAllowedRange):
+		var funiar FileUploadsNotInAllowedRange
+		err := json.Unmarshal(body, &funiar)
+		return funiar, err
+	case string(RuleTypeQueuePurgesNotInAllowedRange):
+		var qpniar QueuePurgesNotInAllowedRange
+		err := json.Unmarshal(body, &qpniar)
+		return qpniar, err
+	case string(RuleTypeTwinUpdatesNotInAllowedRange):
+		var tuniar TwinUpdatesNotInAllowedRange
+		err := json.Unmarshal(body, &tuniar)
+		return tuniar, err
+	case string(RuleTypeUnauthorizedOperationsNotInAllowedRange):
+		var uoniar UnauthorizedOperationsNotInAllowedRange
+		err := json.Unmarshal(body, &uoniar)
+		return uoniar, err
+	default:
+		var car CustomAlertRule
+		err := json.Unmarshal(body, &car)
+		return car, err
+	}
+}
+func unmarshalBasicCustomAlertRuleArray(body []byte) ([]BasicCustomAlertRule, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	carArray := make([]BasicCustomAlertRule, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		car, err := unmarshalBasicCustomAlertRule(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		carArray[index] = car
+	}
+	return carArray, nil
+}
+
+// MarshalJSON is the custom marshaler for CustomAlertRule.
+func (car CustomAlertRule) MarshalJSON() ([]byte, error) {
+	car.RuleType = RuleTypeCustomAlertRule
+	objectMap := make(map[string]interface{})
+	if car.IsEnabled != nil {
+		objectMap["isEnabled"] = car.IsEnabled
+	}
+	if car.RuleType != "" {
+		objectMap["ruleType"] = car.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return &car, true
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for CustomAlertRule.
+func (car CustomAlertRule) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &car, true
 }
 
 // CVE CVE details
@@ -5004,8 +6870,174 @@ type DenylistCustomAlertRule struct {
 	Description *string `json:"description,omitempty"`
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// RuleType - The type of the custom alert rule.
-	RuleType *string `json:"ruleType,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) MarshalJSON() ([]byte, error) {
+	dcar.RuleType = RuleTypeDenylistCustomAlertRule
+	objectMap := make(map[string]interface{})
+	if dcar.DenylistValues != nil {
+		objectMap["denylistValues"] = dcar.DenylistValues
+	}
+	if dcar.IsEnabled != nil {
+		objectMap["isEnabled"] = dcar.IsEnabled
+	}
+	if dcar.RuleType != "" {
+		objectMap["ruleType"] = dcar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return &dcar, true
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return &dcar, true
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for DenylistCustomAlertRule.
+func (dcar DenylistCustomAlertRule) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &dcar, true
 }
 
 // DeviceSecurityGroup the device security group resource
@@ -5230,13 +7262,251 @@ func NewDeviceSecurityGroupListPage(getNextPage func(context.Context, DeviceSecu
 // DeviceSecurityGroupProperties describes properties of a security group.
 type DeviceSecurityGroupProperties struct {
 	// ThresholdRules - The list of custom alert threshold rules.
-	ThresholdRules *[]ThresholdCustomAlertRule `json:"thresholdRules,omitempty"`
+	ThresholdRules *[]BasicThresholdCustomAlertRule `json:"thresholdRules,omitempty"`
 	// TimeWindowRules - The list of custom alert time-window rules.
-	TimeWindowRules *[]TimeWindowCustomAlertRule `json:"timeWindowRules,omitempty"`
+	TimeWindowRules *[]BasicTimeWindowCustomAlertRule `json:"timeWindowRules,omitempty"`
 	// AllowlistRules - The allow-list custom alert rules.
-	AllowlistRules *[]AllowlistCustomAlertRule `json:"allowlistRules,omitempty"`
+	AllowlistRules *[]BasicAllowlistCustomAlertRule `json:"allowlistRules,omitempty"`
 	// DenylistRules - The deny-list custom alert rules.
 	DenylistRules *[]DenylistCustomAlertRule `json:"denylistRules,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for DeviceSecurityGroupProperties struct.
+func (dsgp *DeviceSecurityGroupProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "thresholdRules":
+			if v != nil {
+				thresholdRules, err := unmarshalBasicThresholdCustomAlertRuleArray(*v)
+				if err != nil {
+					return err
+				}
+				dsgp.ThresholdRules = &thresholdRules
+			}
+		case "timeWindowRules":
+			if v != nil {
+				timeWindowRules, err := unmarshalBasicTimeWindowCustomAlertRuleArray(*v)
+				if err != nil {
+					return err
+				}
+				dsgp.TimeWindowRules = &timeWindowRules
+			}
+		case "allowlistRules":
+			if v != nil {
+				allowlistRules, err := unmarshalBasicAllowlistCustomAlertRuleArray(*v)
+				if err != nil {
+					return err
+				}
+				dsgp.AllowlistRules = &allowlistRules
+			}
+		case "denylistRules":
+			if v != nil {
+				var denylistRules []DenylistCustomAlertRule
+				err = json.Unmarshal(*v, &denylistRules)
+				if err != nil {
+					return err
+				}
+				dsgp.DenylistRules = &denylistRules
+			}
+		}
+	}
+
+	return nil
+}
+
+// DirectMethodInvokesNotInAllowedRange number of direct method invokes is not in allowed range.
+type DirectMethodInvokesNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	dminiar.RuleType = RuleTypeDirectMethodInvokesNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if dminiar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = dminiar.TimeWindowSize
+	}
+	if dminiar.MinThreshold != nil {
+		objectMap["minThreshold"] = dminiar.MinThreshold
+	}
+	if dminiar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = dminiar.MaxThreshold
+	}
+	if dminiar.IsEnabled != nil {
+		objectMap["isEnabled"] = dminiar.IsEnabled
+	}
+	if dminiar.RuleType != "" {
+		objectMap["ruleType"] = dminiar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &dminiar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &dminiar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return &dminiar, true
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for DirectMethodInvokesNotInAllowedRange.
+func (dminiar DirectMethodInvokesNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &dminiar, true
 }
 
 // DiscoveredSecuritySolution ...
@@ -5478,6 +7748,14 @@ type DiscoveredSecuritySolutionProperties struct {
 	Publisher *string `json:"publisher,omitempty"`
 	// Sku - The security solutions' image sku
 	Sku *string `json:"sku,omitempty"`
+}
+
+// EffectiveNetworkSecurityGroups describes the Network Security Groups effective on a network interface
+type EffectiveNetworkSecurityGroups struct {
+	// NetworkInterface - The Azure resource ID of the network interface
+	NetworkInterface *string `json:"networkInterface,omitempty"`
+	// NetworkSecurityGroups - The Network Security Groups effective on the network interface
+	NetworkSecurityGroups *[]string `json:"networkSecurityGroups,omitempty"`
 }
 
 // ETag entity tag is used for comparing two or more entities from the same requested resource.
@@ -5873,6 +8151,959 @@ func (essp *ExternalSecuritySolutionProperties) UnmarshalJSON(body []byte) error
 	return nil
 }
 
+// FailedLocalLoginsNotInAllowedRange number of failed local logins is not in allowed range.
+type FailedLocalLoginsNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	fllniar.RuleType = RuleTypeFailedLocalLoginsNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if fllniar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = fllniar.TimeWindowSize
+	}
+	if fllniar.MinThreshold != nil {
+		objectMap["minThreshold"] = fllniar.MinThreshold
+	}
+	if fllniar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = fllniar.MaxThreshold
+	}
+	if fllniar.IsEnabled != nil {
+		objectMap["isEnabled"] = fllniar.IsEnabled
+	}
+	if fllniar.RuleType != "" {
+		objectMap["ruleType"] = fllniar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &fllniar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &fllniar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return &fllniar, true
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for FailedLocalLoginsNotInAllowedRange.
+func (fllniar FailedLocalLoginsNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &fllniar, true
+}
+
+// FileUploadsNotInAllowedRange number of file uploads is not in allowed range.
+type FileUploadsNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	funiar.RuleType = RuleTypeFileUploadsNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if funiar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = funiar.TimeWindowSize
+	}
+	if funiar.MinThreshold != nil {
+		objectMap["minThreshold"] = funiar.MinThreshold
+	}
+	if funiar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = funiar.MaxThreshold
+	}
+	if funiar.IsEnabled != nil {
+		objectMap["isEnabled"] = funiar.IsEnabled
+	}
+	if funiar.RuleType != "" {
+		objectMap["ruleType"] = funiar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &funiar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &funiar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return &funiar, true
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for FileUploadsNotInAllowedRange.
+func (funiar FileUploadsNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &funiar, true
+}
+
+// HTTPC2DMessagesNotInAllowedRange number of cloud to device messages (HTTP protocol) is not in allowed
+// range.
+type HTTPC2DMessagesNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	hcmniar.RuleType = RuleTypeHTTPC2DMessagesNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if hcmniar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = hcmniar.TimeWindowSize
+	}
+	if hcmniar.MinThreshold != nil {
+		objectMap["minThreshold"] = hcmniar.MinThreshold
+	}
+	if hcmniar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = hcmniar.MaxThreshold
+	}
+	if hcmniar.IsEnabled != nil {
+		objectMap["isEnabled"] = hcmniar.IsEnabled
+	}
+	if hcmniar.RuleType != "" {
+		objectMap["ruleType"] = hcmniar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &hcmniar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &hcmniar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return &hcmniar, true
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DMessagesNotInAllowedRange.
+func (hcmniar HTTPC2DMessagesNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &hcmniar, true
+}
+
+// HTTPC2DRejectedMessagesNotInAllowedRange number of rejected cloud to device messages (HTTP protocol) is
+// not in allowed range.
+type HTTPC2DRejectedMessagesNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	hcrmniar.RuleType = RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if hcrmniar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = hcrmniar.TimeWindowSize
+	}
+	if hcrmniar.MinThreshold != nil {
+		objectMap["minThreshold"] = hcrmniar.MinThreshold
+	}
+	if hcrmniar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = hcrmniar.MaxThreshold
+	}
+	if hcrmniar.IsEnabled != nil {
+		objectMap["isEnabled"] = hcrmniar.IsEnabled
+	}
+	if hcrmniar.RuleType != "" {
+		objectMap["ruleType"] = hcrmniar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &hcrmniar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &hcrmniar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return &hcrmniar, true
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for HTTPC2DRejectedMessagesNotInAllowedRange.
+func (hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &hcrmniar, true
+}
+
+// HTTPD2CMessagesNotInAllowedRange number of device to cloud messages (HTTP protocol) is not in allowed
+// range.
+type HTTPD2CMessagesNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	hdmniar.RuleType = RuleTypeHTTPD2CMessagesNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if hdmniar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = hdmniar.TimeWindowSize
+	}
+	if hdmniar.MinThreshold != nil {
+		objectMap["minThreshold"] = hdmniar.MinThreshold
+	}
+	if hdmniar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = hdmniar.MaxThreshold
+	}
+	if hdmniar.IsEnabled != nil {
+		objectMap["isEnabled"] = hdmniar.IsEnabled
+	}
+	if hdmniar.RuleType != "" {
+		objectMap["ruleType"] = hdmniar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &hdmniar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &hdmniar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return &hdmniar, true
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for HTTPD2CMessagesNotInAllowedRange.
+func (hdmniar HTTPD2CMessagesNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &hdmniar, true
+}
+
 // InformationProtectionKeyword the information type keyword.
 type InformationProtectionKeyword struct {
 	// Pattern - The keyword pattern.
@@ -6131,6 +9362,8 @@ func (ippp InformationProtectionPolicyProperties) MarshalJSON() ([]byte, error) 
 type InformationType struct {
 	// DisplayName - The name of the information type.
 	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the information type.
+	Description *string `json:"description,omitempty"`
 	// Order - The order of the information type.
 	Order *float64 `json:"order,omitempty"`
 	// RecommendedLabelID - The recommended label id to be associated with this information type.
@@ -7437,6 +10670,17 @@ type Kind struct {
 	Kind *string `json:"kind,omitempty"`
 }
 
+// BasicListCustomAlertRule a List custom alert rule.
+type BasicListCustomAlertRule interface {
+	AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool)
+	AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool)
+	AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool)
+	AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool)
+	AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool)
+	AsProcessNotAllowed() (*ProcessNotAllowed, bool)
+	AsListCustomAlertRule() (*ListCustomAlertRule, bool)
+}
+
 // ListCustomAlertRule a List custom alert rule.
 type ListCustomAlertRule struct {
 	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
@@ -7447,14 +10691,986 @@ type ListCustomAlertRule struct {
 	Description *string `json:"description,omitempty"`
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// RuleType - The type of the custom alert rule.
-	RuleType *string `json:"ruleType,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+func unmarshalBasicListCustomAlertRule(body []byte) (BasicListCustomAlertRule, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["ruleType"] {
+	case string(RuleTypeAllowlistCustomAlertRule):
+		var acar AllowlistCustomAlertRule
+		err := json.Unmarshal(body, &acar)
+		return acar, err
+	case string(RuleTypeDenylistCustomAlertRule):
+		var dcar DenylistCustomAlertRule
+		err := json.Unmarshal(body, &dcar)
+		return dcar, err
+	case string(RuleTypeConnectionToIPNotAllowed):
+		var ctina ConnectionToIPNotAllowed
+		err := json.Unmarshal(body, &ctina)
+		return ctina, err
+	case string(RuleTypeLocalUserNotAllowed):
+		var luna LocalUserNotAllowed
+		err := json.Unmarshal(body, &luna)
+		return luna, err
+	case string(RuleTypeProcessNotAllowed):
+		var pna ProcessNotAllowed
+		err := json.Unmarshal(body, &pna)
+		return pna, err
+	default:
+		var lcar ListCustomAlertRule
+		err := json.Unmarshal(body, &lcar)
+		return lcar, err
+	}
+}
+func unmarshalBasicListCustomAlertRuleArray(body []byte) ([]BasicListCustomAlertRule, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	lcarArray := make([]BasicListCustomAlertRule, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		lcar, err := unmarshalBasicListCustomAlertRule(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		lcarArray[index] = lcar
+	}
+	return lcarArray, nil
+}
+
+// MarshalJSON is the custom marshaler for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) MarshalJSON() ([]byte, error) {
+	lcar.RuleType = RuleTypeListCustomAlertRule
+	objectMap := make(map[string]interface{})
+	if lcar.IsEnabled != nil {
+		objectMap["isEnabled"] = lcar.IsEnabled
+	}
+	if lcar.RuleType != "" {
+		objectMap["ruleType"] = lcar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return &lcar, true
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return &lcar, true
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for ListCustomAlertRule.
+func (lcar ListCustomAlertRule) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &lcar, true
+}
+
+// LocalUserNotAllowed login by a local user that isn't allowed. Allow list consists of login names to
+// allow.
+type LocalUserNotAllowed struct {
+	// AllowlistValues - The values to allow. The format of the values depends on the rule type.
+	AllowlistValues *[]string `json:"allowlistValues,omitempty"`
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) MarshalJSON() ([]byte, error) {
+	luna.RuleType = RuleTypeLocalUserNotAllowed
+	objectMap := make(map[string]interface{})
+	if luna.AllowlistValues != nil {
+		objectMap["allowlistValues"] = luna.AllowlistValues
+	}
+	if luna.IsEnabled != nil {
+		objectMap["isEnabled"] = luna.IsEnabled
+	}
+	if luna.RuleType != "" {
+		objectMap["ruleType"] = luna.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return &luna, true
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return &luna, true
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return &luna, true
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for LocalUserNotAllowed.
+func (luna LocalUserNotAllowed) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &luna, true
 }
 
 // Location describes an Azure resource with location
 type Location struct {
 	// Location - READ-ONLY; Location where the resource is stored
 	Location *string `json:"location,omitempty"`
+}
+
+// MqttC2DMessagesNotInAllowedRange number of cloud to device messages (MQTT protocol) is not in allowed
+// range.
+type MqttC2DMessagesNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	mcmniar.RuleType = RuleTypeMqttC2DMessagesNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if mcmniar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = mcmniar.TimeWindowSize
+	}
+	if mcmniar.MinThreshold != nil {
+		objectMap["minThreshold"] = mcmniar.MinThreshold
+	}
+	if mcmniar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = mcmniar.MaxThreshold
+	}
+	if mcmniar.IsEnabled != nil {
+		objectMap["isEnabled"] = mcmniar.IsEnabled
+	}
+	if mcmniar.RuleType != "" {
+		objectMap["ruleType"] = mcmniar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &mcmniar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &mcmniar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return &mcmniar, true
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DMessagesNotInAllowedRange.
+func (mcmniar MqttC2DMessagesNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &mcmniar, true
+}
+
+// MqttC2DRejectedMessagesNotInAllowedRange number of rejected cloud to device messages (MQTT protocol) is
+// not in allowed range.
+type MqttC2DRejectedMessagesNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	mcrmniar.RuleType = RuleTypeMqttC2DRejectedMessagesNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if mcrmniar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = mcrmniar.TimeWindowSize
+	}
+	if mcrmniar.MinThreshold != nil {
+		objectMap["minThreshold"] = mcrmniar.MinThreshold
+	}
+	if mcrmniar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = mcrmniar.MaxThreshold
+	}
+	if mcrmniar.IsEnabled != nil {
+		objectMap["isEnabled"] = mcrmniar.IsEnabled
+	}
+	if mcrmniar.RuleType != "" {
+		objectMap["ruleType"] = mcrmniar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &mcrmniar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &mcrmniar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return &mcrmniar, true
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for MqttC2DRejectedMessagesNotInAllowedRange.
+func (mcrmniar MqttC2DRejectedMessagesNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &mcrmniar, true
+}
+
+// MqttD2CMessagesNotInAllowedRange number of device to cloud messages (MQTT protocol) is not in allowed
+// range.
+type MqttD2CMessagesNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	mdmniar.RuleType = RuleTypeMqttD2CMessagesNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if mdmniar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = mdmniar.TimeWindowSize
+	}
+	if mdmniar.MinThreshold != nil {
+		objectMap["minThreshold"] = mdmniar.MinThreshold
+	}
+	if mdmniar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = mdmniar.MaxThreshold
+	}
+	if mdmniar.IsEnabled != nil {
+		objectMap["isEnabled"] = mdmniar.IsEnabled
+	}
+	if mdmniar.RuleType != "" {
+		objectMap["ruleType"] = mdmniar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &mdmniar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &mdmniar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return &mdmniar, true
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for MqttD2CMessagesNotInAllowedRange.
+func (mdmniar MqttD2CMessagesNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &mdmniar, true
 }
 
 // OnPremiseResourceDetails details of the On Premise resource that was assessed
@@ -7789,6 +12005,189 @@ type PricingProperties struct {
 	FreeTrialRemainingTime *string `json:"freeTrialRemainingTime,omitempty"`
 }
 
+// ProcessNotAllowed execution of a process that isn't allowed. Allow list consists of process names to
+// allow.
+type ProcessNotAllowed struct {
+	// AllowlistValues - The values to allow. The format of the values depends on the rule type.
+	AllowlistValues *[]string `json:"allowlistValues,omitempty"`
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProcessNotAllowed.
+func (pna ProcessNotAllowed) MarshalJSON() ([]byte, error) {
+	pna.RuleType = RuleTypeProcessNotAllowed
+	objectMap := make(map[string]interface{})
+	if pna.AllowlistValues != nil {
+		objectMap["allowlistValues"] = pna.AllowlistValues
+	}
+	if pna.IsEnabled != nil {
+		objectMap["isEnabled"] = pna.IsEnabled
+	}
+	if pna.RuleType != "" {
+		objectMap["ruleType"] = pna.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return &pna, true
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return &pna, true
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return &pna, true
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for ProcessNotAllowed.
+func (pna ProcessNotAllowed) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &pna, true
+}
+
 // ProtectionMode the protection mode of the collection/file types. Exe/Msi/Script are used for Windows,
 // Executable is used for Linux.
 type ProtectionMode struct {
@@ -7812,6 +12211,196 @@ type PublisherInfo struct {
 	BinaryName *string `json:"binaryName,omitempty"`
 	// Version - The binary file version taken from the file's version resource
 	Version *string `json:"version,omitempty"`
+}
+
+// QueuePurgesNotInAllowedRange number of device queue purges is not in allowed range.
+type QueuePurgesNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	qpniar.RuleType = RuleTypeQueuePurgesNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if qpniar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = qpniar.TimeWindowSize
+	}
+	if qpniar.MinThreshold != nil {
+		objectMap["minThreshold"] = qpniar.MinThreshold
+	}
+	if qpniar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = qpniar.MaxThreshold
+	}
+	if qpniar.IsEnabled != nil {
+		objectMap["isEnabled"] = qpniar.IsEnabled
+	}
+	if qpniar.RuleType != "" {
+		objectMap["ruleType"] = qpniar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &qpniar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &qpniar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return &qpniar, true
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for QueuePurgesNotInAllowedRange.
+func (qpniar QueuePurgesNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &qpniar, true
 }
 
 // RecommendationConfigurationProperties the type of IoT Security recommendation.
@@ -8624,10 +13213,29 @@ func (rd ResourceDetails) AsBasicResourceDetails() (BasicResourceDetails, bool) 
 	return &rd, true
 }
 
+// Rule describes remote addresses that is recommended to communicate with the Azure resource on some
+// (Protocol, Port, Direction). All other remote addresses are recommended to be blocked
+type Rule struct {
+	// Name - The name of the rule
+	Name *string `json:"name,omitempty"`
+	// Direction - The rule's direction. Possible values include: 'Inbound', 'Outbound'
+	Direction Direction `json:"direction,omitempty"`
+	// DestinationPort - The rule's destination port
+	DestinationPort *int32 `json:"destinationPort,omitempty"`
+	// Protocols - The rule's transport protocols
+	Protocols *[]TransportProtocol `json:"protocols,omitempty"`
+	// IPAddresses - The remote IP addresses that should be able to communicate with the Azure resource on the rule's destination port and protocol
+	IPAddresses *[]string `json:"ipAddresses,omitempty"`
+}
+
 // SensitivityLabel the sensitivity label.
 type SensitivityLabel struct {
 	// DisplayName - The name of the sensitivity label.
 	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the sensitivity label.
+	Description *string `json:"description,omitempty"`
+	// Rank - The rank of the sensitivity label. Possible values include: 'RankNone', 'RankLow', 'RankMedium', 'RankHigh', 'RankCritical'
+	Rank Rank `json:"rank,omitempty"`
 	// Order - The order of the sensitivity label.
 	Order *float64 `json:"order,omitempty"`
 	// Enabled - Indicates whether the label is enabled or not.
@@ -9658,8 +14266,32 @@ type TaskProperties struct {
 	SubState *string `json:"subState,omitempty"`
 }
 
-// ThresholdCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type)
-// is within the given range.
+// BasicThresholdCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type) is
+// within the given range.
+type BasicThresholdCustomAlertRule interface {
+	AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool)
+	AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool)
+	AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool)
+	AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool)
+	AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool)
+	AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool)
+	AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool)
+	AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool)
+	AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool)
+	AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool)
+	AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool)
+	AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool)
+	AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool)
+	AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool)
+	AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool)
+	AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool)
+	AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool)
+	AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool)
+	AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool)
+}
+
+// ThresholdCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type) is
+// within the given range.
 type ThresholdCustomAlertRule struct {
 	// MinThreshold - The minimum threshold.
 	MinThreshold *int32 `json:"minThreshold,omitempty"`
@@ -9671,12 +14303,304 @@ type ThresholdCustomAlertRule struct {
 	Description *string `json:"description,omitempty"`
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// RuleType - The type of the custom alert rule.
-	RuleType *string `json:"ruleType,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
 }
 
-// TimeWindowCustomAlertRule a custom alert rule that checks if the number of activities (depends on the
-// custom alert type) in a time window is within the given range.
+func unmarshalBasicThresholdCustomAlertRule(body []byte) (BasicThresholdCustomAlertRule, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["ruleType"] {
+	case string(RuleTypeTimeWindowCustomAlertRule):
+		var twcar TimeWindowCustomAlertRule
+		err := json.Unmarshal(body, &twcar)
+		return twcar, err
+	case string(RuleTypeActiveConnectionsNotInAllowedRange):
+		var acniar ActiveConnectionsNotInAllowedRange
+		err := json.Unmarshal(body, &acniar)
+		return acniar, err
+	case string(RuleTypeAmqpC2DMessagesNotInAllowedRange):
+		var acmniar AmqpC2DMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &acmniar)
+		return acmniar, err
+	case string(RuleTypeMqttC2DMessagesNotInAllowedRange):
+		var mcmniar MqttC2DMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &mcmniar)
+		return mcmniar, err
+	case string(RuleTypeHTTPC2DMessagesNotInAllowedRange):
+		var hcmniar HTTPC2DMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &hcmniar)
+		return hcmniar, err
+	case string(RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange):
+		var acrmniar AmqpC2DRejectedMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &acrmniar)
+		return acrmniar, err
+	case string(RuleTypeMqttC2DRejectedMessagesNotInAllowedRange):
+		var mcrmniar MqttC2DRejectedMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &mcrmniar)
+		return mcrmniar, err
+	case string(RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange):
+		var hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &hcrmniar)
+		return hcrmniar, err
+	case string(RuleTypeAmqpD2CMessagesNotInAllowedRange):
+		var admniar AmqpD2CMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &admniar)
+		return admniar, err
+	case string(RuleTypeMqttD2CMessagesNotInAllowedRange):
+		var mdmniar MqttD2CMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &mdmniar)
+		return mdmniar, err
+	case string(RuleTypeHTTPD2CMessagesNotInAllowedRange):
+		var hdmniar HTTPD2CMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &hdmniar)
+		return hdmniar, err
+	case string(RuleTypeDirectMethodInvokesNotInAllowedRange):
+		var dminiar DirectMethodInvokesNotInAllowedRange
+		err := json.Unmarshal(body, &dminiar)
+		return dminiar, err
+	case string(RuleTypeFailedLocalLoginsNotInAllowedRange):
+		var fllniar FailedLocalLoginsNotInAllowedRange
+		err := json.Unmarshal(body, &fllniar)
+		return fllniar, err
+	case string(RuleTypeFileUploadsNotInAllowedRange):
+		var funiar FileUploadsNotInAllowedRange
+		err := json.Unmarshal(body, &funiar)
+		return funiar, err
+	case string(RuleTypeQueuePurgesNotInAllowedRange):
+		var qpniar QueuePurgesNotInAllowedRange
+		err := json.Unmarshal(body, &qpniar)
+		return qpniar, err
+	case string(RuleTypeTwinUpdatesNotInAllowedRange):
+		var tuniar TwinUpdatesNotInAllowedRange
+		err := json.Unmarshal(body, &tuniar)
+		return tuniar, err
+	case string(RuleTypeUnauthorizedOperationsNotInAllowedRange):
+		var uoniar UnauthorizedOperationsNotInAllowedRange
+		err := json.Unmarshal(body, &uoniar)
+		return uoniar, err
+	default:
+		var tcar ThresholdCustomAlertRule
+		err := json.Unmarshal(body, &tcar)
+		return tcar, err
+	}
+}
+func unmarshalBasicThresholdCustomAlertRuleArray(body []byte) ([]BasicThresholdCustomAlertRule, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	tcarArray := make([]BasicThresholdCustomAlertRule, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		tcar, err := unmarshalBasicThresholdCustomAlertRule(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		tcarArray[index] = tcar
+	}
+	return tcarArray, nil
+}
+
+// MarshalJSON is the custom marshaler for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) MarshalJSON() ([]byte, error) {
+	tcar.RuleType = RuleTypeThresholdCustomAlertRule
+	objectMap := make(map[string]interface{})
+	if tcar.MinThreshold != nil {
+		objectMap["minThreshold"] = tcar.MinThreshold
+	}
+	if tcar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = tcar.MaxThreshold
+	}
+	if tcar.IsEnabled != nil {
+		objectMap["isEnabled"] = tcar.IsEnabled
+	}
+	if tcar.RuleType != "" {
+		objectMap["ruleType"] = tcar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return &tcar, true
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &tcar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for ThresholdCustomAlertRule.
+func (tcar ThresholdCustomAlertRule) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &tcar, true
+}
+
+// BasicTimeWindowCustomAlertRule a custom alert rule that checks if the number of activities (depends on the custom
+// alert type) in a time window is within the given range.
+type BasicTimeWindowCustomAlertRule interface {
+	AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool)
+	AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool)
+	AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool)
+	AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool)
+	AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool)
+	AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool)
+	AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool)
+	AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool)
+	AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool)
+	AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool)
+	AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool)
+	AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool)
+	AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool)
+	AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool)
+	AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool)
+	AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool)
+	AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool)
+}
+
+// TimeWindowCustomAlertRule a custom alert rule that checks if the number of activities (depends on the custom
+// alert type) in a time window is within the given range.
 type TimeWindowCustomAlertRule struct {
 	// TimeWindowSize - The time window size in iso8601 format.
 	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
@@ -9690,8 +14614,277 @@ type TimeWindowCustomAlertRule struct {
 	Description *string `json:"description,omitempty"`
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// RuleType - The type of the custom alert rule.
-	RuleType *string `json:"ruleType,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+func unmarshalBasicTimeWindowCustomAlertRule(body []byte) (BasicTimeWindowCustomAlertRule, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["ruleType"] {
+	case string(RuleTypeActiveConnectionsNotInAllowedRange):
+		var acniar ActiveConnectionsNotInAllowedRange
+		err := json.Unmarshal(body, &acniar)
+		return acniar, err
+	case string(RuleTypeAmqpC2DMessagesNotInAllowedRange):
+		var acmniar AmqpC2DMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &acmniar)
+		return acmniar, err
+	case string(RuleTypeMqttC2DMessagesNotInAllowedRange):
+		var mcmniar MqttC2DMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &mcmniar)
+		return mcmniar, err
+	case string(RuleTypeHTTPC2DMessagesNotInAllowedRange):
+		var hcmniar HTTPC2DMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &hcmniar)
+		return hcmniar, err
+	case string(RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange):
+		var acrmniar AmqpC2DRejectedMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &acrmniar)
+		return acrmniar, err
+	case string(RuleTypeMqttC2DRejectedMessagesNotInAllowedRange):
+		var mcrmniar MqttC2DRejectedMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &mcrmniar)
+		return mcrmniar, err
+	case string(RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange):
+		var hcrmniar HTTPC2DRejectedMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &hcrmniar)
+		return hcrmniar, err
+	case string(RuleTypeAmqpD2CMessagesNotInAllowedRange):
+		var admniar AmqpD2CMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &admniar)
+		return admniar, err
+	case string(RuleTypeMqttD2CMessagesNotInAllowedRange):
+		var mdmniar MqttD2CMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &mdmniar)
+		return mdmniar, err
+	case string(RuleTypeHTTPD2CMessagesNotInAllowedRange):
+		var hdmniar HTTPD2CMessagesNotInAllowedRange
+		err := json.Unmarshal(body, &hdmniar)
+		return hdmniar, err
+	case string(RuleTypeDirectMethodInvokesNotInAllowedRange):
+		var dminiar DirectMethodInvokesNotInAllowedRange
+		err := json.Unmarshal(body, &dminiar)
+		return dminiar, err
+	case string(RuleTypeFailedLocalLoginsNotInAllowedRange):
+		var fllniar FailedLocalLoginsNotInAllowedRange
+		err := json.Unmarshal(body, &fllniar)
+		return fllniar, err
+	case string(RuleTypeFileUploadsNotInAllowedRange):
+		var funiar FileUploadsNotInAllowedRange
+		err := json.Unmarshal(body, &funiar)
+		return funiar, err
+	case string(RuleTypeQueuePurgesNotInAllowedRange):
+		var qpniar QueuePurgesNotInAllowedRange
+		err := json.Unmarshal(body, &qpniar)
+		return qpniar, err
+	case string(RuleTypeTwinUpdatesNotInAllowedRange):
+		var tuniar TwinUpdatesNotInAllowedRange
+		err := json.Unmarshal(body, &tuniar)
+		return tuniar, err
+	case string(RuleTypeUnauthorizedOperationsNotInAllowedRange):
+		var uoniar UnauthorizedOperationsNotInAllowedRange
+		err := json.Unmarshal(body, &uoniar)
+		return uoniar, err
+	default:
+		var twcar TimeWindowCustomAlertRule
+		err := json.Unmarshal(body, &twcar)
+		return twcar, err
+	}
+}
+func unmarshalBasicTimeWindowCustomAlertRuleArray(body []byte) ([]BasicTimeWindowCustomAlertRule, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	twcarArray := make([]BasicTimeWindowCustomAlertRule, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		twcar, err := unmarshalBasicTimeWindowCustomAlertRule(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		twcarArray[index] = twcar
+	}
+	return twcarArray, nil
+}
+
+// MarshalJSON is the custom marshaler for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) MarshalJSON() ([]byte, error) {
+	twcar.RuleType = RuleTypeTimeWindowCustomAlertRule
+	objectMap := make(map[string]interface{})
+	if twcar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = twcar.TimeWindowSize
+	}
+	if twcar.MinThreshold != nil {
+		objectMap["minThreshold"] = twcar.MinThreshold
+	}
+	if twcar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = twcar.MaxThreshold
+	}
+	if twcar.IsEnabled != nil {
+		objectMap["isEnabled"] = twcar.IsEnabled
+	}
+	if twcar.RuleType != "" {
+		objectMap["ruleType"] = twcar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &twcar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return &twcar, true
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &twcar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for TimeWindowCustomAlertRule.
+func (twcar TimeWindowCustomAlertRule) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &twcar, true
 }
 
 // TopologyList ...
@@ -9992,6 +15185,386 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = tr.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// TwinUpdatesNotInAllowedRange number of twin updates is not in allowed range.
+type TwinUpdatesNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	tuniar.RuleType = RuleTypeTwinUpdatesNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if tuniar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = tuniar.TimeWindowSize
+	}
+	if tuniar.MinThreshold != nil {
+		objectMap["minThreshold"] = tuniar.MinThreshold
+	}
+	if tuniar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = tuniar.MaxThreshold
+	}
+	if tuniar.IsEnabled != nil {
+		objectMap["isEnabled"] = tuniar.IsEnabled
+	}
+	if tuniar.RuleType != "" {
+		objectMap["ruleType"] = tuniar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &tuniar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &tuniar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return &tuniar, true
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for TwinUpdatesNotInAllowedRange.
+func (tuniar TwinUpdatesNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &tuniar, true
+}
+
+// UnauthorizedOperationsNotInAllowedRange number of unauthorized operations is not in allowed range.
+type UnauthorizedOperationsNotInAllowedRange struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) MarshalJSON() ([]byte, error) {
+	uoniar.RuleType = RuleTypeUnauthorizedOperationsNotInAllowedRange
+	objectMap := make(map[string]interface{})
+	if uoniar.TimeWindowSize != nil {
+		objectMap["timeWindowSize"] = uoniar.TimeWindowSize
+	}
+	if uoniar.MinThreshold != nil {
+		objectMap["minThreshold"] = uoniar.MinThreshold
+	}
+	if uoniar.MaxThreshold != nil {
+		objectMap["maxThreshold"] = uoniar.MaxThreshold
+	}
+	if uoniar.IsEnabled != nil {
+		objectMap["isEnabled"] = uoniar.IsEnabled
+	}
+	if uoniar.RuleType != "" {
+		objectMap["ruleType"] = uoniar.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsThresholdCustomAlertRule is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsThresholdCustomAlertRule() (*ThresholdCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicThresholdCustomAlertRule is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsBasicThresholdCustomAlertRule() (BasicThresholdCustomAlertRule, bool) {
+	return &uoniar, true
+}
+
+// AsTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsTimeWindowCustomAlertRule() (*TimeWindowCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicTimeWindowCustomAlertRule is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsBasicTimeWindowCustomAlertRule() (BasicTimeWindowCustomAlertRule, bool) {
+	return &uoniar, true
+}
+
+// AsAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsAllowlistCustomAlertRule() (*AllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAllowlistCustomAlertRule is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsBasicAllowlistCustomAlertRule() (BasicAllowlistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsDenylistCustomAlertRule is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsDenylistCustomAlertRule() (*DenylistCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsListCustomAlertRule is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsListCustomAlertRule() (*ListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicListCustomAlertRule is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsBasicListCustomAlertRule() (BasicListCustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsConnectionToIPNotAllowed is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsConnectionToIPNotAllowed() (*ConnectionToIPNotAllowed, bool) {
+	return nil, false
+}
+
+// AsLocalUserNotAllowed is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsLocalUserNotAllowed() (*LocalUserNotAllowed, bool) {
+	return nil, false
+}
+
+// AsProcessNotAllowed is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsProcessNotAllowed() (*ProcessNotAllowed, bool) {
+	return nil, false
+}
+
+// AsActiveConnectionsNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsActiveConnectionsNotInAllowedRange() (*ActiveConnectionsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsAmqpC2DMessagesNotInAllowedRange() (*AmqpC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsMqttC2DMessagesNotInAllowedRange() (*MqttC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsHTTPC2DMessagesNotInAllowedRange() (*HTTPC2DMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsAmqpC2DRejectedMessagesNotInAllowedRange() (*AmqpC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsMqttC2DRejectedMessagesNotInAllowedRange() (*MqttC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPC2DRejectedMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsHTTPC2DRejectedMessagesNotInAllowedRange() (*HTTPC2DRejectedMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsAmqpD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsAmqpD2CMessagesNotInAllowedRange() (*AmqpD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsMqttD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsMqttD2CMessagesNotInAllowedRange() (*MqttD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsHTTPD2CMessagesNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsHTTPD2CMessagesNotInAllowedRange() (*HTTPD2CMessagesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsDirectMethodInvokesNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsDirectMethodInvokesNotInAllowedRange() (*DirectMethodInvokesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFailedLocalLoginsNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsFailedLocalLoginsNotInAllowedRange() (*FailedLocalLoginsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsFileUploadsNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsFileUploadsNotInAllowedRange() (*FileUploadsNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsQueuePurgesNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsQueuePurgesNotInAllowedRange() (*QueuePurgesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsTwinUpdatesNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsTwinUpdatesNotInAllowedRange() (*TwinUpdatesNotInAllowedRange, bool) {
+	return nil, false
+}
+
+// AsUnauthorizedOperationsNotInAllowedRange is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsUnauthorizedOperationsNotInAllowedRange() (*UnauthorizedOperationsNotInAllowedRange, bool) {
+	return &uoniar, true
+}
+
+// AsCustomAlertRule is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsCustomAlertRule() (*CustomAlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicCustomAlertRule is the BasicCustomAlertRule implementation for UnauthorizedOperationsNotInAllowedRange.
+func (uoniar UnauthorizedOperationsNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustomAlertRule, bool) {
+	return &uoniar, true
 }
 
 // UpdateIotSecuritySolutionData ...

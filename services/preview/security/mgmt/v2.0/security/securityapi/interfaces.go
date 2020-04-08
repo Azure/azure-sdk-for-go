@@ -158,7 +158,7 @@ var _ SettingsClientAPI = (*security.SettingsClient)(nil)
 
 // InformationProtectionPoliciesClientAPI contains the set of methods on the InformationProtectionPoliciesClient type.
 type InformationProtectionPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, scope string, informationProtectionPolicyName string) (result security.InformationProtectionPolicy, err error)
+	CreateOrUpdate(ctx context.Context, scope string, informationProtectionPolicyName string, informationProtectionPolicy security.InformationProtectionPolicy) (result security.InformationProtectionPolicy, err error)
 	Get(ctx context.Context, scope string, informationProtectionPolicyName string) (result security.InformationProtectionPolicy, err error)
 	List(ctx context.Context, scope string) (result security.InformationProtectionPolicyListPage, err error)
 	ListComplete(ctx context.Context, scope string) (result security.InformationProtectionPolicyListIterator, err error)
@@ -315,6 +315,7 @@ var _ JitNetworkAccessPoliciesClientAPI = (*security.JitNetworkAccessPoliciesCli
 
 // AdaptiveApplicationControlsClientAPI contains the set of methods on the AdaptiveApplicationControlsClient type.
 type AdaptiveApplicationControlsClientAPI interface {
+	Delete(ctx context.Context, groupName string) (result autorest.Response, err error)
 	Get(ctx context.Context, groupName string) (result security.AppWhitelistingGroup, err error)
 	List(ctx context.Context, includePathRecommendations *bool, summary *bool) (result security.AppWhitelistingGroups, err error)
 	Put(ctx context.Context, groupName string, body security.AppWhitelistingPutGroupData) (result security.AppWhitelistingGroup, err error)

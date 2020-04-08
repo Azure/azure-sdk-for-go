@@ -713,6 +713,25 @@ func PossibleSsisObjectMetadataTypeValues() []SsisObjectMetadataType {
 	return []SsisObjectMetadataType{Environment, Folder, Package, Project}
 }
 
+// Status enumerates the values for status.
+type Status string
+
+const (
+	// StatusApproved ...
+	StatusApproved Status = "Approved"
+	// StatusDisconnected ...
+	StatusDisconnected Status = "Disconnected"
+	// StatusPending ...
+	StatusPending Status = "Pending"
+	// StatusRejected ...
+	StatusRejected Status = "Rejected"
+)
+
+// PossibleStatusValues returns an array of possible values for the Status const type.
+func PossibleStatusValues() []Status {
+	return []Status{StatusApproved, StatusDisconnected, StatusPending, StatusRejected}
+}
+
 // TransparentDataEncryptionStatus enumerates the values for transparent data encryption status.
 type TransparentDataEncryptionStatus string
 
@@ -4511,6 +4530,7 @@ type OperationMetaServiceSpecification struct {
 
 // OperationResource an operation
 type OperationResource struct {
+	autorest.Response `json:"-"`
 	// ID - Operation ID
 	ID *string `json:"id,omitempty"`
 	// Name - Operation name
@@ -4527,6 +4547,480 @@ type OperationResource struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// PercentComplete - Completion percentage of the operation
 	PercentComplete *float64 `json:"percentComplete,omitempty"`
+}
+
+// PrivateEndpoint private endpoint details
+type PrivateEndpoint struct {
+	// ID - READ-ONLY; Resource id of the private endpoint.
+	ID *string `json:"id,omitempty"`
+}
+
+// PrivateEndpointConnection a private endpoint connection
+type PrivateEndpointConnection struct {
+	autorest.Response `json:"-"`
+	// PrivateEndpointConnectionProperties - Private endpoint connection properties.
+	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpointConnection.
+func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pec.PrivateEndpointConnectionProperties != nil {
+		objectMap["properties"] = pec.PrivateEndpointConnectionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PrivateEndpointConnection struct.
+func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var privateEndpointConnectionProperties PrivateEndpointConnectionProperties
+				err = json.Unmarshal(*v, &privateEndpointConnectionProperties)
+				if err != nil {
+					return err
+				}
+				pec.PrivateEndpointConnectionProperties = &privateEndpointConnectionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pec.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pec.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pec.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PrivateEndpointConnectionList a list of private endpoint connections
+type PrivateEndpointConnectionList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]PrivateEndpointConnection `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PrivateEndpointConnectionListIterator provides access to a complete listing of PrivateEndpointConnection
+// values.
+type PrivateEndpointConnectionListIterator struct {
+	i    int
+	page PrivateEndpointConnectionListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PrivateEndpointConnectionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PrivateEndpointConnectionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PrivateEndpointConnectionListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PrivateEndpointConnectionListIterator) Response() PrivateEndpointConnectionList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PrivateEndpointConnectionListIterator) Value() PrivateEndpointConnection {
+	if !iter.page.NotDone() {
+		return PrivateEndpointConnection{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PrivateEndpointConnectionListIterator type.
+func NewPrivateEndpointConnectionListIterator(page PrivateEndpointConnectionListPage) PrivateEndpointConnectionListIterator {
+	return PrivateEndpointConnectionListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (pecl PrivateEndpointConnectionList) IsEmpty() bool {
+	return pecl.Value == nil || len(*pecl.Value) == 0
+}
+
+// privateEndpointConnectionListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (pecl PrivateEndpointConnectionList) privateEndpointConnectionListPreparer(ctx context.Context) (*http.Request, error) {
+	if pecl.NextLink == nil || len(to.String(pecl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(pecl.NextLink)))
+}
+
+// PrivateEndpointConnectionListPage contains a page of PrivateEndpointConnection values.
+type PrivateEndpointConnectionListPage struct {
+	fn   func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error)
+	pecl PrivateEndpointConnectionList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PrivateEndpointConnectionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.pecl)
+	if err != nil {
+		return err
+	}
+	page.pecl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PrivateEndpointConnectionListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PrivateEndpointConnectionListPage) NotDone() bool {
+	return !page.pecl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PrivateEndpointConnectionListPage) Response() PrivateEndpointConnectionList {
+	return page.pecl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PrivateEndpointConnectionListPage) Values() []PrivateEndpointConnection {
+	if page.pecl.IsEmpty() {
+		return nil
+	}
+	return *page.pecl.Value
+}
+
+// Creates a new instance of the PrivateEndpointConnectionListPage type.
+func NewPrivateEndpointConnectionListPage(getNextPage func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error)) PrivateEndpointConnectionListPage {
+	return PrivateEndpointConnectionListPage{fn: getNextPage}
+}
+
+// PrivateEndpointConnectionProperties properties of a private endpoint connection.
+type PrivateEndpointConnectionProperties struct {
+	// PrivateEndpoint - The private endpoint which the connection belongs to.
+	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	// PrivateLinkServiceConnectionState - Connection state of the private endpoint connection.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	// ProvisioningState - READ-ONLY; Provisioning state of the private endpoint connection.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// PrivateEndpointConnectionsCreateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type PrivateEndpointConnectionsCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *PrivateEndpointConnectionsCreateFuture) Result(client PrivateEndpointConnectionsClient) (pec PrivateEndpointConnection, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "synapse.PrivateEndpointConnectionsCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("synapse.PrivateEndpointConnectionsCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if pec.Response.Response, err = future.GetResult(sender); err == nil && pec.Response.Response.StatusCode != http.StatusNoContent {
+		pec, err = client.CreateResponder(pec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "synapse.PrivateEndpointConnectionsCreateFuture", "Result", pec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// PrivateEndpointConnectionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type PrivateEndpointConnectionsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *PrivateEndpointConnectionsDeleteFuture) Result(client PrivateEndpointConnectionsClient) (or OperationResource, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "synapse.PrivateEndpointConnectionsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("synapse.PrivateEndpointConnectionsDeleteFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if or.Response.Response, err = future.GetResult(sender); err == nil && or.Response.Response.StatusCode != http.StatusNoContent {
+		or, err = client.DeleteResponder(or.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "synapse.PrivateEndpointConnectionsDeleteFuture", "Result", or.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// PrivateLinkResource a private link resource
+type PrivateLinkResource struct {
+	autorest.Response `json:"-"`
+	// Properties - READ-ONLY; The private link resource properties.
+	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// PrivateLinkResourceListResult a list of private link resources
+type PrivateLinkResourceListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]PrivateLinkResource `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PrivateLinkResourceListResultIterator provides access to a complete listing of PrivateLinkResource
+// values.
+type PrivateLinkResourceListResultIterator struct {
+	i    int
+	page PrivateLinkResourceListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PrivateLinkResourceListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkResourceListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PrivateLinkResourceListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PrivateLinkResourceListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PrivateLinkResourceListResultIterator) Response() PrivateLinkResourceListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PrivateLinkResourceListResultIterator) Value() PrivateLinkResource {
+	if !iter.page.NotDone() {
+		return PrivateLinkResource{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PrivateLinkResourceListResultIterator type.
+func NewPrivateLinkResourceListResultIterator(page PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator {
+	return PrivateLinkResourceListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (plrlr PrivateLinkResourceListResult) IsEmpty() bool {
+	return plrlr.Value == nil || len(*plrlr.Value) == 0
+}
+
+// privateLinkResourceListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (plrlr PrivateLinkResourceListResult) privateLinkResourceListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if plrlr.NextLink == nil || len(to.String(plrlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(plrlr.NextLink)))
+}
+
+// PrivateLinkResourceListResultPage contains a page of PrivateLinkResource values.
+type PrivateLinkResourceListResultPage struct {
+	fn    func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)
+	plrlr PrivateLinkResourceListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PrivateLinkResourceListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkResourceListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.plrlr)
+	if err != nil {
+		return err
+	}
+	page.plrlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PrivateLinkResourceListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PrivateLinkResourceListResultPage) NotDone() bool {
+	return !page.plrlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PrivateLinkResourceListResultPage) Response() PrivateLinkResourceListResult {
+	return page.plrlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PrivateLinkResourceListResultPage) Values() []PrivateLinkResource {
+	if page.plrlr.IsEmpty() {
+		return nil
+	}
+	return *page.plrlr.Value
+}
+
+// Creates a new instance of the PrivateLinkResourceListResultPage type.
+func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return PrivateLinkResourceListResultPage{fn: getNextPage}
+}
+
+// PrivateLinkResourceProperties properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// GroupID - READ-ONLY; The private link resource group id.
+	GroupID *string `json:"groupId,omitempty"`
+	// RequiredMembers - READ-ONLY; The private link resource required member names.
+	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
+	// RequiredZoneNames - READ-ONLY; Required DNS zone names of the the private link resource.
+	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
+}
+
+// PrivateLinkServiceConnectionState connection state details of the private endpoint
+type PrivateLinkServiceConnectionState struct {
+	// Status - The private link service connection status. Possible values include: 'StatusApproved', 'StatusPending', 'StatusRejected', 'StatusDisconnected'
+	Status Status `json:"status,omitempty"`
+	// Description - The private link service connection description.
+	Description *string `json:"description,omitempty"`
+	// ActionsRequired - READ-ONLY; The actions required for private link service connection.
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
 }
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
@@ -9494,6 +9988,10 @@ type WorkspaceProperties struct {
 	VirtualNetworkProfile *VirtualNetworkProfile `json:"virtualNetworkProfile,omitempty"`
 	// ConnectivityEndpoints - Connectivity endpoints
 	ConnectivityEndpoints map[string]*string `json:"connectivityEndpoints"`
+	// ManagedVirtualNetwork - Setting this to 'default' will ensure that all compute for this workspace is in a virtual network managed on behalf of the user.
+	ManagedVirtualNetwork *string `json:"managedVirtualNetwork,omitempty"`
+	// PrivateEndpointConnections - Private endpoint connections to the workspace
+	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for WorkspaceProperties.
@@ -9513,6 +10011,12 @@ func (wp WorkspaceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if wp.ConnectivityEndpoints != nil {
 		objectMap["connectivityEndpoints"] = wp.ConnectivityEndpoints
+	}
+	if wp.ManagedVirtualNetwork != nil {
+		objectMap["managedVirtualNetwork"] = wp.ManagedVirtualNetwork
+	}
+	if wp.PrivateEndpointConnections != nil {
+		objectMap["privateEndpointConnections"] = wp.PrivateEndpointConnections
 	}
 	return json.Marshal(objectMap)
 }

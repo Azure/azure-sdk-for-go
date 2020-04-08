@@ -351,6 +351,15 @@ const (
 	Project     SsisObjectMetadataType = original.Project
 )
 
+type Status = original.Status
+
+const (
+	StatusApproved     Status = original.StatusApproved
+	StatusDisconnected Status = original.StatusDisconnected
+	StatusPending      Status = original.StatusPending
+	StatusRejected     Status = original.StatusRejected
+)
+
 type TransparentDataEncryptionStatus = original.TransparentDataEncryptionStatus
 
 const (
@@ -532,6 +541,22 @@ type OperationMetaPropertyInfo = original.OperationMetaPropertyInfo
 type OperationMetaServiceSpecification = original.OperationMetaServiceSpecification
 type OperationResource = original.OperationResource
 type OperationsClient = original.OperationsClient
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionList = original.PrivateEndpointConnectionList
+type PrivateEndpointConnectionListIterator = original.PrivateEndpointConnectionListIterator
+type PrivateEndpointConnectionListPage = original.PrivateEndpointConnectionListPage
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsCreateFuture = original.PrivateEndpointConnectionsCreateFuture
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceListResultIterator = original.PrivateLinkResourceListResultIterator
+type PrivateLinkResourceListResultPage = original.PrivateLinkResourceListResultPage
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProxyResource = original.ProxyResource
 type QueryInterval = original.QueryInterval
 type QueryMetric = original.QueryMetric
@@ -769,6 +794,30 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateEndpointConnectionListIterator(page PrivateEndpointConnectionListPage) PrivateEndpointConnectionListIterator {
+	return original.NewPrivateEndpointConnectionListIterator(page)
+}
+func NewPrivateEndpointConnectionListPage(getNextPage func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error)) PrivateEndpointConnectionListPage {
+	return original.NewPrivateEndpointConnectionListPage(getNextPage)
+}
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourceListResultIterator(page PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator {
+	return original.NewPrivateLinkResourceListResultIterator(page)
+}
+func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return original.NewPrivateLinkResourceListResultPage(getNextPage)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewReplicationLinkListResultIterator(page ReplicationLinkListResultPage) ReplicationLinkListResultIterator {
 	return original.NewReplicationLinkListResultIterator(page)
@@ -1084,6 +1133,9 @@ func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrat
 }
 func PossibleSsisObjectMetadataTypeValues() []SsisObjectMetadataType {
 	return original.PossibleSsisObjectMetadataTypeValues()
+}
+func PossibleStatusValues() []Status {
+	return original.PossibleStatusValues()
 }
 func PossibleTransparentDataEncryptionStatusValues() []TransparentDataEncryptionStatus {
 	return original.PossibleTransparentDataEncryptionStatusValues()

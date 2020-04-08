@@ -956,7 +956,7 @@ func (beaf BoolEqualsAdvancedFilter) AsBasicAdvancedFilter() (BasicAdvancedFilte
 	return &beaf, true
 }
 
-// ConnectionState connectionState Information.
+// ConnectionState connectionState information.
 type ConnectionState struct {
 	// Status - Status of the connection. Possible values include: 'Pending', 'Approved', 'Rejected', 'Disconnected'
 	Status PersistedConnectionStatus `json:"status,omitempty"`
@@ -2058,6 +2058,82 @@ type EventChannelDestination struct {
 	PartnerTopicName *string `json:"partnerTopicName,omitempty"`
 }
 
+// EventChannelFilter filter for the Event Channel.
+type EventChannelFilter struct {
+	// SubjectBeginsWith - An optional string to filter events for an event channel based on a resource path prefix.
+	// The format of this depends on the publisher of the events. Wildcard characters are not supported in this path.
+	SubjectBeginsWith *string `json:"subjectBeginsWith,omitempty"`
+	// SubjectEndsWith - An optional string to filter events for an event channel based on a resource path suffix.
+	// Wildcard characters are not supported in this path.
+	SubjectEndsWith *string `json:"subjectEndsWith,omitempty"`
+	// IncludedEventTypes - A list of applicable event types that need to be part of the event channel. If it is desired to subscribe to all default event types, set the IncludedEventTypes to null.
+	IncludedEventTypes *[]string `json:"includedEventTypes,omitempty"`
+	// IsSubjectCaseSensitive - Specifies if the SubjectBeginsWith and SubjectEndsWith properties of the filter
+	// should be compared in a case sensitive manner.
+	IsSubjectCaseSensitive *bool `json:"isSubjectCaseSensitive,omitempty"`
+	// AdvancedFilters - An array of advanced filters that are used for filtering event channels.
+	AdvancedFilters *[]BasicAdvancedFilter `json:"advancedFilters,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for EventChannelFilter struct.
+func (ecf *EventChannelFilter) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "subjectBeginsWith":
+			if v != nil {
+				var subjectBeginsWith string
+				err = json.Unmarshal(*v, &subjectBeginsWith)
+				if err != nil {
+					return err
+				}
+				ecf.SubjectBeginsWith = &subjectBeginsWith
+			}
+		case "subjectEndsWith":
+			if v != nil {
+				var subjectEndsWith string
+				err = json.Unmarshal(*v, &subjectEndsWith)
+				if err != nil {
+					return err
+				}
+				ecf.SubjectEndsWith = &subjectEndsWith
+			}
+		case "includedEventTypes":
+			if v != nil {
+				var includedEventTypes []string
+				err = json.Unmarshal(*v, &includedEventTypes)
+				if err != nil {
+					return err
+				}
+				ecf.IncludedEventTypes = &includedEventTypes
+			}
+		case "isSubjectCaseSensitive":
+			if v != nil {
+				var isSubjectCaseSensitive bool
+				err = json.Unmarshal(*v, &isSubjectCaseSensitive)
+				if err != nil {
+					return err
+				}
+				ecf.IsSubjectCaseSensitive = &isSubjectCaseSensitive
+			}
+		case "advancedFilters":
+			if v != nil {
+				advancedFilters, err := unmarshalBasicAdvancedFilterArray(*v)
+				if err != nil {
+					return err
+				}
+				ecf.AdvancedFilters = &advancedFilters
+			}
+		}
+	}
+
+	return nil
+}
+
 // EventChannelProperties properties of the Event Channel.
 type EventChannelProperties struct {
 	// Source - Source of the event channel. This represents a unique resource in the partner's resource model.
@@ -2066,6 +2142,31 @@ type EventChannelProperties struct {
 	Destination *EventChannelDestination `json:"destination,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of the event channel. Possible values include: 'EventChannelProvisioningStateCreating', 'EventChannelProvisioningStateUpdating', 'EventChannelProvisioningStateDeleting', 'EventChannelProvisioningStateSucceeded', 'EventChannelProvisioningStateCanceled', 'EventChannelProvisioningStateFailed'
 	ProvisioningState EventChannelProvisioningState `json:"provisioningState,omitempty"`
+	// Filter - Information about the filter for the event channel.
+	Filter *EventChannelFilter `json:"filter,omitempty"`
+}
+
+// EventChannelsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type EventChannelsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *EventChannelsDeleteFuture) Result(client EventChannelsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventgrid.EventChannelsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("eventgrid.EventChannelsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // EventChannelsListResult result of the List Event Channels operation
@@ -4880,6 +4981,8 @@ func NewPartnerRegistrationsListResultPage(getNextPage func(context.Context, Par
 
 // PartnerRegistrationUpdateParameters properties of the Partner Registration update.
 type PartnerRegistrationUpdateParameters struct {
+	// Tags - Tags of the partner registration resource.
+	Tags map[string]*string `json:"tags"`
 	// PartnerTopicTypeName - Name of the partner topic type.
 	PartnerTopicTypeName *string `json:"partnerTopicTypeName,omitempty"`
 	// PartnerTopicTypeDisplayName - Display name of the partner topic type.
@@ -4896,6 +4999,33 @@ type PartnerRegistrationUpdateParameters struct {
 	// partner namespaces is always permitted under the same Azure subscription as the one used
 	// for creating the partner registration.
 	AuthorizedAzureSubscriptionIds *[]string `json:"authorizedAzureSubscriptionIds,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PartnerRegistrationUpdateParameters.
+func (prup PartnerRegistrationUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if prup.Tags != nil {
+		objectMap["tags"] = prup.Tags
+	}
+	if prup.PartnerTopicTypeName != nil {
+		objectMap["partnerTopicTypeName"] = prup.PartnerTopicTypeName
+	}
+	if prup.PartnerTopicTypeDisplayName != nil {
+		objectMap["partnerTopicTypeDisplayName"] = prup.PartnerTopicTypeDisplayName
+	}
+	if prup.PartnerTopicTypeDescription != nil {
+		objectMap["partnerTopicTypeDescription"] = prup.PartnerTopicTypeDescription
+	}
+	if prup.SetupURI != nil {
+		objectMap["setupUri"] = prup.SetupURI
+	}
+	if prup.LogoURI != nil {
+		objectMap["logoUri"] = prup.LogoURI
+	}
+	if prup.AuthorizedAzureSubscriptionIds != nil {
+		objectMap["authorizedAzureSubscriptionIds"] = prup.AuthorizedAzureSubscriptionIds
+	}
+	return json.Marshal(objectMap)
 }
 
 // PartnerTopic eventGrid Partner Topic.
@@ -5376,7 +5506,7 @@ type PrivateEndpoint struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// PrivateEndpointConnection privateEndpointConnection resource information.
+// PrivateEndpointConnection ...
 type PrivateEndpointConnection struct {
 	autorest.Response `json:"-"`
 	// PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnection.
@@ -5596,7 +5726,7 @@ func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context
 	return PrivateEndpointConnectionListResultPage{fn: getNextPage}
 }
 
-// PrivateEndpointConnectionProperties properties of the private endpoint connection resource
+// PrivateEndpointConnectionProperties properties of the private endpoint connection resource.
 type PrivateEndpointConnectionProperties struct {
 	// PrivateEndpoint - The Private Endpoint resource for this Connection.
 	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
@@ -6134,22 +6264,6 @@ func (sbtesd *ServiceBusTopicEventSubscriptionDestination) UnmarshalJSON(body []
 type ServiceBusTopicEventSubscriptionDestinationProperties struct {
 	// ResourceID - The Azure Resource Id that represents the endpoint of the Service Bus Topic destination of an event subscription.
 	ResourceID *string `json:"resourceId,omitempty"`
-}
-
-// SkuDefinitionsForResourceType describes an EventGrid Resource Sku Definition.
-type SkuDefinitionsForResourceType struct {
-	// ResourceType - The Resource Type applicable for the Sku.
-	ResourceType *string `json:"resourceType,omitempty"`
-	// Skus - The Sku pricing tiers for the resource type.
-	Skus *[]ResourceSku `json:"skus,omitempty"`
-}
-
-// SkuDefinitionsForResourceTypeListResult list collection of Sku Definitions for each Resource Type.
-type SkuDefinitionsForResourceTypeListResult struct {
-	// Value - A collection of Sku Definitions for each Resource Type.
-	Value *[]SkuDefinitionsForResourceType `json:"value,omitempty"`
-	// NextLink - A link for the next page of Sku Definitions.
-	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // StorageBlobDeadLetterDestination information about the storage blob based dead letter destination.
@@ -7384,7 +7498,6 @@ func (t *Topic) UnmarshalJSON(body []byte) error {
 
 // TopicProperties properties of the Topic
 type TopicProperties struct {
-	// PrivateEndpointConnections - List of private endpoint connections.
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of the topic. Possible values include: 'TopicProvisioningStateCreating', 'TopicProvisioningStateUpdating', 'TopicProvisioningStateDeleting', 'TopicProvisioningStateSucceeded', 'TopicProvisioningStateCanceled', 'TopicProvisioningStateFailed'
 	ProvisioningState TopicProvisioningState `json:"provisioningState,omitempty"`

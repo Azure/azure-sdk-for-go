@@ -37,10 +37,10 @@ type WorkflowsClientAPI interface {
 	ListBySubscriptionComplete(ctx context.Context, top *int32, filter string) (result logic.WorkflowListResultIterator, err error)
 	ListCallbackURL(ctx context.Context, resourceGroupName string, workflowName string, listCallbackURL logic.GetCallbackURLParameters) (result logic.WorkflowTriggerCallbackURL, err error)
 	ListSwagger(ctx context.Context, resourceGroupName string, workflowName string) (result logic.SetObject, err error)
-	Move(ctx context.Context, resourceGroupName string, workflowName string, move logic.Workflow) (result logic.WorkflowsMoveFuture, err error)
+	Move(ctx context.Context, resourceGroupName string, workflowName string, move logic.WorkflowReference) (result logic.WorkflowsMoveFuture, err error)
 	RegenerateAccessKey(ctx context.Context, resourceGroupName string, workflowName string, keyType logic.RegenerateActionParameter) (result autorest.Response, err error)
-	Update(ctx context.Context, resourceGroupName string, workflowName string, workflow logic.Workflow) (result logic.Workflow, err error)
-	ValidateByLocation(ctx context.Context, resourceGroupName string, location string, workflowName string) (result autorest.Response, err error)
+	Update(ctx context.Context, resourceGroupName string, workflowName string) (result logic.Workflow, err error)
+	ValidateByLocation(ctx context.Context, resourceGroupName string, location string, workflowName string, validate logic.Workflow) (result autorest.Response, err error)
 	ValidateByResourceGroup(ctx context.Context, resourceGroupName string, workflowName string, validate logic.Workflow) (result autorest.Response, err error)
 }
 
@@ -63,7 +63,7 @@ type WorkflowTriggersClientAPI interface {
 	ListComplete(ctx context.Context, resourceGroupName string, workflowName string, top *int32, filter string) (result logic.WorkflowTriggerListResultIterator, err error)
 	ListCallbackURL(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result logic.WorkflowTriggerCallbackURL, err error)
 	Reset(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result autorest.Response, err error)
-	Run(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result logic.SetObject, err error)
+	Run(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result autorest.Response, err error)
 	SetState(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, setState logic.SetTriggerStateActionDefinition) (result autorest.Response, err error)
 }
 

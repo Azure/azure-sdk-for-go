@@ -5,8 +5,10 @@ package azidentity
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -44,7 +46,18 @@ func NewClientCertificateCredential(tenantID string, clientID string, clientCert
 // ctx: controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.clientCertificate, opts.Scopes)
+	tk, err := c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.clientCertificate, opts.Scopes)
+	log := azcore.Log()
+	if err != nil {
+		msg := fmt.Sprintf("Azure Identity => ERROR in GetToken() call for %T: %s", c, err.Error())
+		log.Write(azcore.LogError, msg)
+	} else {
+		msg := fmt.Sprintf("Azure Identity => GetToken() result for %T: SUCCESS", c)
+		log.Write(LogCredential, msg)
+		vmsg := fmt.Sprintf("Azure Identity => Scopes: [%s]", strings.Join(opts.Scopes, ", "))
+		log.Write(LogCredential, vmsg)
+	}
+	return tk, err
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.

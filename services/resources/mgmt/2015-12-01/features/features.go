@@ -416,3 +416,79 @@ func (client Client) RegisterResponder(resp *http.Response) (result Result, err 
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// Unregister unregisters the preview feature for the subscription.
+// Parameters:
+// resourceProviderNamespace - the namespace of the resource provider.
+// featureName - the name of the feature to unregister.
+func (client Client) Unregister(ctx context.Context, resourceProviderNamespace string, featureName string) (result Result, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Unregister")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UnregisterPreparer(ctx, resourceProviderNamespace, featureName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "features.Client", "Unregister", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UnregisterSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "features.Client", "Unregister", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UnregisterResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "features.Client", "Unregister", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UnregisterPreparer prepares the Unregister request.
+func (client Client) UnregisterPreparer(ctx context.Context, resourceProviderNamespace string, featureName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"featureName":               autorest.Encode("path", featureName),
+		"resourceProviderNamespace": autorest.Encode("path", resourceProviderNamespace),
+		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-12-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}/unregister", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UnregisterSender sends the Unregister request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) UnregisterSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// UnregisterResponder handles the response to the Unregister request. The method always
+// closes the http.Response Body.
+func (client Client) UnregisterResponder(resp *http.Response) (result Result, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

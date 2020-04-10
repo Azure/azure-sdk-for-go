@@ -35,7 +35,8 @@ func NewPropertyClient(subscriptionID string) PropertyClient {
 	return NewPropertyClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPropertyClientWithBaseURI creates an instance of the PropertyClient client.
+// NewPropertyClientWithBaseURI creates an instance of the PropertyClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPropertyClientWithBaseURI(baseURI string, subscriptionID string) PropertyClient {
 	return PropertyClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -95,8 +96,7 @@ func (client PropertyClient) GetPreparer(ctx context.Context) (*http.Request, er
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PropertyClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always

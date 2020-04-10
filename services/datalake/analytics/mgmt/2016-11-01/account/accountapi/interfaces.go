@@ -30,7 +30,9 @@ type AccountsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string) (result account.AccountsDeleteFutureType, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string) (result account.DataLakeAnalyticsAccount, err error)
 	List(ctx context.Context, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.DataLakeAnalyticsAccountListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.DataLakeAnalyticsAccountListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.DataLakeAnalyticsAccountListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.DataLakeAnalyticsAccountListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, parameters *account.UpdateDataLakeAnalyticsAccountParameters) (result account.AccountsUpdateFutureType, err error)
 }
 
@@ -42,6 +44,7 @@ type DataLakeStoreAccountsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string) (result account.DataLakeStoreAccountInformation, err error)
 	ListByAccount(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.DataLakeStoreAccountInformationListResultPage, err error)
+	ListByAccountComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.DataLakeStoreAccountInformationListResultIterator, err error)
 }
 
 var _ DataLakeStoreAccountsClientAPI = (*account.DataLakeStoreAccountsClient)(nil)
@@ -53,8 +56,11 @@ type StorageAccountsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (result account.StorageAccountInformation, err error)
 	GetStorageContainer(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (result account.StorageContainer, err error)
 	ListByAccount(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.StorageAccountInformationListResultPage, err error)
+	ListByAccountComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.StorageAccountInformationListResultIterator, err error)
 	ListSasTokens(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (result account.SasTokenInformationListResultPage, err error)
+	ListSasTokensComplete(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (result account.SasTokenInformationListResultIterator, err error)
 	ListStorageContainers(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (result account.StorageContainerListResultPage, err error)
+	ListStorageContainersComplete(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (result account.StorageContainerListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, parameters *account.UpdateStorageAccountParameters) (result autorest.Response, err error)
 }
 
@@ -66,6 +72,7 @@ type ComputePoliciesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, computePolicyName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, computePolicyName string) (result account.ComputePolicy, err error)
 	ListByAccount(ctx context.Context, resourceGroupName string, accountName string) (result account.ComputePolicyListResultPage, err error)
+	ListByAccountComplete(ctx context.Context, resourceGroupName string, accountName string) (result account.ComputePolicyListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, computePolicyName string, parameters *account.UpdateComputePolicyParameters) (result account.ComputePolicy, err error)
 }
 
@@ -77,6 +84,7 @@ type FirewallRulesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string) (result account.FirewallRule, err error)
 	ListByAccount(ctx context.Context, resourceGroupName string, accountName string) (result account.FirewallRuleListResultPage, err error)
+	ListByAccountComplete(ctx context.Context, resourceGroupName string, accountName string) (result account.FirewallRuleListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, parameters *account.UpdateFirewallRuleParameters) (result account.FirewallRule, err error)
 }
 

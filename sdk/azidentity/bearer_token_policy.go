@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"net/http"
 	"sync"
 	"time"
 
@@ -100,6 +101,7 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 		b.cond.Broadcast()
 		b.cond.L.Unlock()
 	}
+	req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
 	req.Request.Header.Set(azcore.HeaderAuthorization, header)
 	return req.Next(ctx)
 }

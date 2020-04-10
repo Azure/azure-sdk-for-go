@@ -36,7 +36,8 @@ func NewDataStoreTypesClient(subscriptionID string) DataStoreTypesClient {
 	return NewDataStoreTypesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDataStoreTypesClientWithBaseURI creates an instance of the DataStoreTypesClient client.
+// NewDataStoreTypesClientWithBaseURI creates an instance of the DataStoreTypesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDataStoreTypesClientWithBaseURI(baseURI string, subscriptionID string) DataStoreTypesClient {
 	return DataStoreTypesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -112,8 +113,7 @@ func (client DataStoreTypesClient) GetPreparer(ctx context.Context, dataStoreTyp
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataStoreTypesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -199,8 +199,7 @@ func (client DataStoreTypesClient) ListByDataManagerPreparer(ctx context.Context
 // ListByDataManagerSender sends the ListByDataManager request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataStoreTypesClient) ListByDataManagerSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDataManagerResponder handles the response to the ListByDataManager request. The method always

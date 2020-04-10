@@ -28,6 +28,7 @@ type AvailabilityGroupListenersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, SQLVirtualMachineGroupName string, availabilityGroupListenerName string) (result sqlvirtualmachine.AvailabilityGroupListenersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, SQLVirtualMachineGroupName string, availabilityGroupListenerName string) (result sqlvirtualmachine.AvailabilityGroupListener, err error)
 	ListByGroup(ctx context.Context, resourceGroupName string, SQLVirtualMachineGroupName string) (result sqlvirtualmachine.AvailabilityGroupListenerListResultPage, err error)
+	ListByGroupComplete(ctx context.Context, resourceGroupName string, SQLVirtualMachineGroupName string) (result sqlvirtualmachine.AvailabilityGroupListenerListResultIterator, err error)
 }
 
 var _ AvailabilityGroupListenersClientAPI = (*sqlvirtualmachine.AvailabilityGroupListenersClient)(nil)
@@ -35,6 +36,7 @@ var _ AvailabilityGroupListenersClientAPI = (*sqlvirtualmachine.AvailabilityGrou
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result sqlvirtualmachine.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result sqlvirtualmachine.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*sqlvirtualmachine.OperationsClient)(nil)
@@ -45,7 +47,9 @@ type GroupsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, SQLVirtualMachineGroupName string) (result sqlvirtualmachine.GroupsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, SQLVirtualMachineGroupName string) (result sqlvirtualmachine.Group, err error)
 	List(ctx context.Context) (result sqlvirtualmachine.GroupListResultPage, err error)
+	ListComplete(ctx context.Context) (result sqlvirtualmachine.GroupListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sqlvirtualmachine.GroupListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result sqlvirtualmachine.GroupListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, SQLVirtualMachineGroupName string, parameters sqlvirtualmachine.GroupUpdate) (result sqlvirtualmachine.GroupsUpdateFuture, err error)
 }
 
@@ -57,8 +61,11 @@ type SQLVirtualMachinesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, SQLVirtualMachineName string) (result sqlvirtualmachine.SQLVirtualMachinesDeleteFutureType, err error)
 	Get(ctx context.Context, resourceGroupName string, SQLVirtualMachineName string, expand string) (result sqlvirtualmachine.SQLVirtualMachine, err error)
 	List(ctx context.Context) (result sqlvirtualmachine.ListResultPage, err error)
+	ListComplete(ctx context.Context) (result sqlvirtualmachine.ListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sqlvirtualmachine.ListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result sqlvirtualmachine.ListResultIterator, err error)
 	ListBySQLVMGroup(ctx context.Context, resourceGroupName string, SQLVirtualMachineGroupName string) (result sqlvirtualmachine.ListResultPage, err error)
+	ListBySQLVMGroupComplete(ctx context.Context, resourceGroupName string, SQLVirtualMachineGroupName string) (result sqlvirtualmachine.ListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, SQLVirtualMachineName string, parameters sqlvirtualmachine.Update) (result sqlvirtualmachine.SQLVirtualMachinesUpdateFutureType, err error)
 }
 

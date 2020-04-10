@@ -35,7 +35,9 @@ func NewCanonicalSupportPlanTypesClient(subscriptionID string) CanonicalSupportP
 	return NewCanonicalSupportPlanTypesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCanonicalSupportPlanTypesClientWithBaseURI creates an instance of the CanonicalSupportPlanTypesClient client.
+// NewCanonicalSupportPlanTypesClientWithBaseURI creates an instance of the CanonicalSupportPlanTypesClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewCanonicalSupportPlanTypesClientWithBaseURI(baseURI string, subscriptionID string) CanonicalSupportPlanTypesClient {
 	return CanonicalSupportPlanTypesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -98,8 +100,7 @@ func (client CanonicalSupportPlanTypesClient) GetPreparer(ctx context.Context, p
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client CanonicalSupportPlanTypesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always

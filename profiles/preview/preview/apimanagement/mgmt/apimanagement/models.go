@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ package apimanagement
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2018-06-01-preview/apimanagement"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2019-12-01-preview/apimanagement"
 )
 
 const (
@@ -40,6 +40,15 @@ type AlwaysLog = original.AlwaysLog
 
 const (
 	AllErrors AlwaysLog = original.AllErrors
+)
+
+type ApimIdentityType = original.ApimIdentityType
+
+const (
+	None                       ApimIdentityType = original.None
+	SystemAssigned             ApimIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned ApimIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               ApimIdentityType = original.UserAssigned
 )
 
 type AsyncOperationStatus = original.AsyncOperationStatus
@@ -112,6 +121,7 @@ type ContentFormat = original.ContentFormat
 const (
 	Openapi         ContentFormat = original.Openapi
 	Openapijson     ContentFormat = original.Openapijson
+	OpenapijsonLink ContentFormat = original.OpenapijsonLink
 	OpenapiLink     ContentFormat = original.OpenapiLink
 	SwaggerJSON     ContentFormat = original.SwaggerJSON
 	SwaggerLinkJSON ContentFormat = original.SwaggerLinkJSON
@@ -124,10 +134,20 @@ const (
 type ExportFormat = original.ExportFormat
 
 const (
-	ExportFormatOpenAPI3 ExportFormat = original.ExportFormatOpenAPI3
-	ExportFormatSwagger  ExportFormat = original.ExportFormatSwagger
-	ExportFormatWadl     ExportFormat = original.ExportFormatWadl
-	ExportFormatWsdl     ExportFormat = original.ExportFormatWsdl
+	ExportFormatOpenapi     ExportFormat = original.ExportFormatOpenapi
+	ExportFormatOpenapiJSON ExportFormat = original.ExportFormatOpenapiJSON
+	ExportFormatSwagger     ExportFormat = original.ExportFormatSwagger
+	ExportFormatWadl        ExportFormat = original.ExportFormatWadl
+	ExportFormatWsdl        ExportFormat = original.ExportFormatWsdl
+)
+
+type ExportResultFormat = original.ExportResultFormat
+
+const (
+	ExportResultFormatOpenAPI ExportResultFormat = original.ExportResultFormatOpenAPI
+	ExportResultFormatSwagger ExportResultFormat = original.ExportResultFormatSwagger
+	ExportResultFormatWadl    ExportResultFormat = original.ExportResultFormatWadl
+	ExportResultFormatWsdl    ExportResultFormat = original.ExportResultFormatWsdl
 )
 
 type GrantType = original.GrantType
@@ -147,13 +167,22 @@ const (
 	System   GroupType = original.System
 )
 
+type HTTPCorrelationProtocol = original.HTTPCorrelationProtocol
+
+const (
+	HTTPCorrelationProtocolLegacy HTTPCorrelationProtocol = original.HTTPCorrelationProtocolLegacy
+	HTTPCorrelationProtocolNone   HTTPCorrelationProtocol = original.HTTPCorrelationProtocolNone
+	HTTPCorrelationProtocolW3C    HTTPCorrelationProtocol = original.HTTPCorrelationProtocolW3C
+)
+
 type HostnameType = original.HostnameType
 
 const (
-	Management HostnameType = original.Management
-	Portal     HostnameType = original.Portal
-	Proxy      HostnameType = original.Proxy
-	Scm        HostnameType = original.Scm
+	DeveloperPortal HostnameType = original.DeveloperPortal
+	Management      HostnameType = original.Management
+	Portal          HostnameType = original.Portal
+	Proxy           HostnameType = original.Proxy
+	Scm             HostnameType = original.Scm
 )
 
 type IdentityProviderType = original.IdentityProviderType
@@ -210,6 +239,13 @@ const (
 	XMLLink    PolicyContentFormat = original.XMLLink
 )
 
+type PolicyExportFormat = original.PolicyExportFormat
+
+const (
+	PolicyExportFormatRawxml PolicyExportFormat = original.PolicyExportFormatRawxml
+	PolicyExportFormatXML    PolicyExportFormat = original.PolicyExportFormatXML
+)
+
 type PolicyScopeContract = original.PolicyScopeContract
 
 const (
@@ -237,9 +273,9 @@ const (
 type ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleType
 
 const (
-	Automatic ResourceSkuCapacityScaleType = original.Automatic
-	Manual    ResourceSkuCapacityScaleType = original.Manual
-	None      ResourceSkuCapacityScaleType = original.None
+	ResourceSkuCapacityScaleTypeAutomatic ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeAutomatic
+	ResourceSkuCapacityScaleTypeManual    ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeManual
+	ResourceSkuCapacityScaleTypeNone      ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeNone
 )
 
 type SamplingType = original.SamplingType
@@ -321,6 +357,14 @@ const (
 	UserStatePending UserState = original.UserStatePending
 )
 
+type Verbosity = original.Verbosity
+
+const (
+	Error       Verbosity = original.Error
+	Information Verbosity = original.Information
+	Verbose     Verbosity = original.Verbose
+)
+
 type VersioningScheme = original.VersioningScheme
 
 const (
@@ -360,6 +404,7 @@ type APIDiagnosticClient = original.APIDiagnosticClient
 type APIEntityBaseContract = original.APIEntityBaseContract
 type APIExportClient = original.APIExportClient
 type APIExportResult = original.APIExportResult
+type APIExportResultValue = original.APIExportResultValue
 type APIIssueAttachmentClient = original.APIIssueAttachmentClient
 type APIIssueClient = original.APIIssueClient
 type APIIssueCommentClient = original.APIIssueCommentClient
@@ -373,15 +418,18 @@ type APIReleaseCollectionIterator = original.APIReleaseCollectionIterator
 type APIReleaseCollectionPage = original.APIReleaseCollectionPage
 type APIReleaseContract = original.APIReleaseContract
 type APIReleaseContractProperties = original.APIReleaseContractProperties
+type APIRevisionClient = original.APIRevisionClient
 type APIRevisionCollection = original.APIRevisionCollection
 type APIRevisionCollectionIterator = original.APIRevisionCollectionIterator
 type APIRevisionCollectionPage = original.APIRevisionCollectionPage
 type APIRevisionContract = original.APIRevisionContract
 type APIRevisionInfoContract = original.APIRevisionInfoContract
-type APIRevisionsClient = original.APIRevisionsClient
 type APISchemaClient = original.APISchemaClient
+type APISchemaCreateOrUpdateFuture = original.APISchemaCreateOrUpdateFuture
+type APITagDescriptionClient = original.APITagDescriptionClient
 type APITagResourceContractProperties = original.APITagResourceContractProperties
 type APIUpdateContract = original.APIUpdateContract
+type APIVersionConstraint = original.APIVersionConstraint
 type APIVersionSetClient = original.APIVersionSetClient
 type APIVersionSetCollection = original.APIVersionSetCollection
 type APIVersionSetCollectionIterator = original.APIVersionSetCollectionIterator
@@ -393,6 +441,7 @@ type APIVersionSetEntityBase = original.APIVersionSetEntityBase
 type APIVersionSetUpdateParameters = original.APIVersionSetUpdateParameters
 type APIVersionSetUpdateParametersProperties = original.APIVersionSetUpdateParametersProperties
 type AccessInformationContract = original.AccessInformationContract
+type AccessInformationUpdateParameterProperties = original.AccessInformationUpdateParameterProperties
 type AccessInformationUpdateParameters = original.AccessInformationUpdateParameters
 type AdditionalLocation = original.AdditionalLocation
 type ApimResource = original.ApimResource
@@ -443,9 +492,10 @@ type CertificateContractProperties = original.CertificateContractProperties
 type CertificateCreateOrUpdateParameters = original.CertificateCreateOrUpdateParameters
 type CertificateCreateOrUpdateProperties = original.CertificateCreateOrUpdateProperties
 type CertificateInformation = original.CertificateInformation
+type ClientSecretContract = original.ClientSecretContract
 type ConnectivityStatusContract = original.ConnectivityStatusContract
-type CurrentUserIdentity = original.CurrentUserIdentity
 type DelegationSettingsClient = original.DelegationSettingsClient
+type DeployConfigurationParameterProperties = original.DeployConfigurationParameterProperties
 type DeployConfigurationParameters = original.DeployConfigurationParameters
 type DiagnosticClient = original.DiagnosticClient
 type DiagnosticCollection = original.DiagnosticCollection
@@ -479,7 +529,6 @@ type GroupUpdateParametersProperties = original.GroupUpdateParametersProperties
 type GroupUserClient = original.GroupUserClient
 type HTTPMessageDiagnostic = original.HTTPMessageDiagnostic
 type HostnameConfiguration = original.HostnameConfiguration
-type HostnameConfigurationOld = original.HostnameConfigurationOld
 type IdentityProviderBaseParameters = original.IdentityProviderBaseParameters
 type IdentityProviderClient = original.IdentityProviderClient
 type IdentityProviderContract = original.IdentityProviderContract
@@ -517,6 +566,17 @@ type LoggerContract = original.LoggerContract
 type LoggerContractProperties = original.LoggerContractProperties
 type LoggerUpdateContract = original.LoggerUpdateContract
 type LoggerUpdateParameters = original.LoggerUpdateParameters
+type NamedValueClient = original.NamedValueClient
+type NamedValueCollection = original.NamedValueCollection
+type NamedValueCollectionIterator = original.NamedValueCollectionIterator
+type NamedValueCollectionPage = original.NamedValueCollectionPage
+type NamedValueContract = original.NamedValueContract
+type NamedValueContractProperties = original.NamedValueContractProperties
+type NamedValueCreateOrUpdateFuture = original.NamedValueCreateOrUpdateFuture
+type NamedValueEntityBaseParameters = original.NamedValueEntityBaseParameters
+type NamedValueUpdateFuture = original.NamedValueUpdateFuture
+type NamedValueUpdateParameterProperties = original.NamedValueUpdateParameterProperties
+type NamedValueUpdateParameters = original.NamedValueUpdateParameters
 type NetworkStatusClient = original.NetworkStatusClient
 type NetworkStatusContract = original.NetworkStatusContract
 type NetworkStatusContractByLocation = original.NetworkStatusContractByLocation
@@ -562,9 +622,10 @@ type PolicyClient = original.PolicyClient
 type PolicyCollection = original.PolicyCollection
 type PolicyContract = original.PolicyContract
 type PolicyContractProperties = original.PolicyContractProperties
-type PolicySnippetContract = original.PolicySnippetContract
-type PolicySnippetsClient = original.PolicySnippetsClient
-type PolicySnippetsCollection = original.PolicySnippetsCollection
+type PolicyDescriptionClient = original.PolicyDescriptionClient
+type PolicyDescriptionCollection = original.PolicyDescriptionCollection
+type PolicyDescriptionContract = original.PolicyDescriptionContract
+type PolicyDescriptionContractProperties = original.PolicyDescriptionContractProperties
 type PortalDelegationSettings = original.PortalDelegationSettings
 type PortalDelegationSettingsProperties = original.PortalDelegationSettingsProperties
 type PortalSigninSettingProperties = original.PortalSigninSettingProperties
@@ -585,15 +646,6 @@ type ProductSubscriptionsClient = original.ProductSubscriptionsClient
 type ProductTagResourceContractProperties = original.ProductTagResourceContractProperties
 type ProductUpdateParameters = original.ProductUpdateParameters
 type ProductUpdateProperties = original.ProductUpdateProperties
-type PropertyClient = original.PropertyClient
-type PropertyCollection = original.PropertyCollection
-type PropertyCollectionIterator = original.PropertyCollectionIterator
-type PropertyCollectionPage = original.PropertyCollectionPage
-type PropertyContract = original.PropertyContract
-type PropertyContractProperties = original.PropertyContractProperties
-type PropertyEntityBaseParameters = original.PropertyEntityBaseParameters
-type PropertyUpdateParameterProperties = original.PropertyUpdateParameterProperties
-type PropertyUpdateParameters = original.PropertyUpdateParameters
 type QuotaByCounterKeysClient = original.QuotaByCounterKeysClient
 type QuotaByPeriodKeysClient = original.QuotaByPeriodKeysClient
 type QuotaCounterCollection = original.QuotaCounterCollection
@@ -632,6 +684,7 @@ type ResourceSkuResultsPage = original.ResourceSkuResultsPage
 type ResponseContract = original.ResponseContract
 type SamplingSettings = original.SamplingSettings
 type SaveConfigurationParameter = original.SaveConfigurationParameter
+type SaveConfigurationParameterProperties = original.SaveConfigurationParameterProperties
 type SchemaCollection = original.SchemaCollection
 type SchemaCollectionIterator = original.SchemaCollectionIterator
 type SchemaCollectionPage = original.SchemaCollectionPage
@@ -649,6 +702,7 @@ type ServiceCreateOrUpdateFuture = original.ServiceCreateOrUpdateFuture
 type ServiceDeleteFuture = original.ServiceDeleteFuture
 type ServiceGetSsoTokenResult = original.ServiceGetSsoTokenResult
 type ServiceIdentity = original.ServiceIdentity
+type ServiceIdentityUserAssignedIdentitiesValue = original.ServiceIdentityUserAssignedIdentitiesValue
 type ServiceListResult = original.ServiceListResult
 type ServiceListResultIterator = original.ServiceListResultIterator
 type ServiceListResultPage = original.ServiceListResultPage
@@ -659,11 +713,8 @@ type ServiceRestoreFuture = original.ServiceRestoreFuture
 type ServiceSkuProperties = original.ServiceSkuProperties
 type ServiceSkusClient = original.ServiceSkusClient
 type ServiceUpdateFuture = original.ServiceUpdateFuture
-type ServiceUpdateHostnameFuture = original.ServiceUpdateHostnameFuture
-type ServiceUpdateHostnameParameters = original.ServiceUpdateHostnameParameters
 type ServiceUpdateParameters = original.ServiceUpdateParameters
 type ServiceUpdateProperties = original.ServiceUpdateProperties
-type ServiceUploadCertificateParameters = original.ServiceUploadCertificateParameters
 type SignInSettingsClient = original.SignInSettingsClient
 type SignUpSettingsClient = original.SignUpSettingsClient
 type SubscriptionClient = original.SubscriptionClient
@@ -675,6 +726,7 @@ type SubscriptionContractProperties = original.SubscriptionContractProperties
 type SubscriptionCreateParameterProperties = original.SubscriptionCreateParameterProperties
 type SubscriptionCreateParameters = original.SubscriptionCreateParameters
 type SubscriptionKeyParameterNamesContract = original.SubscriptionKeyParameterNamesContract
+type SubscriptionKeysContract = original.SubscriptionKeysContract
 type SubscriptionUpdateParameterProperties = original.SubscriptionUpdateParameterProperties
 type SubscriptionUpdateParameters = original.SubscriptionUpdateParameters
 type SubscriptionsDelegationSettingsProperties = original.SubscriptionsDelegationSettingsProperties
@@ -686,7 +738,6 @@ type TagContract = original.TagContract
 type TagContractProperties = original.TagContractProperties
 type TagCreateUpdateParameters = original.TagCreateUpdateParameters
 type TagDescriptionBaseProperties = original.TagDescriptionBaseProperties
-type TagDescriptionClient = original.TagDescriptionClient
 type TagDescriptionCollection = original.TagDescriptionCollection
 type TagDescriptionCollectionIterator = original.TagDescriptionCollectionIterator
 type TagDescriptionCollectionPage = original.TagDescriptionCollectionPage
@@ -725,6 +776,7 @@ type UserIdentityCollectionIterator = original.UserIdentityCollectionIterator
 type UserIdentityCollectionPage = original.UserIdentityCollectionPage
 type UserIdentityContract = original.UserIdentityContract
 type UserSubscriptionClient = original.UserSubscriptionClient
+type UserTokenParameterProperties = original.UserTokenParameterProperties
 type UserTokenParameters = original.UserTokenParameters
 type UserTokenResult = original.UserTokenResult
 type UserUpdateParameters = original.UserUpdateParameters
@@ -813,23 +865,29 @@ func NewAPIReleaseCollectionIterator(page APIReleaseCollectionPage) APIReleaseCo
 func NewAPIReleaseCollectionPage(getNextPage func(context.Context, APIReleaseCollection) (APIReleaseCollection, error)) APIReleaseCollectionPage {
 	return original.NewAPIReleaseCollectionPage(getNextPage)
 }
+func NewAPIRevisionClient(subscriptionID string) APIRevisionClient {
+	return original.NewAPIRevisionClient(subscriptionID)
+}
+func NewAPIRevisionClientWithBaseURI(baseURI string, subscriptionID string) APIRevisionClient {
+	return original.NewAPIRevisionClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewAPIRevisionCollectionIterator(page APIRevisionCollectionPage) APIRevisionCollectionIterator {
 	return original.NewAPIRevisionCollectionIterator(page)
 }
 func NewAPIRevisionCollectionPage(getNextPage func(context.Context, APIRevisionCollection) (APIRevisionCollection, error)) APIRevisionCollectionPage {
 	return original.NewAPIRevisionCollectionPage(getNextPage)
 }
-func NewAPIRevisionsClient(subscriptionID string) APIRevisionsClient {
-	return original.NewAPIRevisionsClient(subscriptionID)
-}
-func NewAPIRevisionsClientWithBaseURI(baseURI string, subscriptionID string) APIRevisionsClient {
-	return original.NewAPIRevisionsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewAPISchemaClient(subscriptionID string) APISchemaClient {
 	return original.NewAPISchemaClient(subscriptionID)
 }
 func NewAPISchemaClientWithBaseURI(baseURI string, subscriptionID string) APISchemaClient {
 	return original.NewAPISchemaClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAPITagDescriptionClient(subscriptionID string) APITagDescriptionClient {
+	return original.NewAPITagDescriptionClient(subscriptionID)
+}
+func NewAPITagDescriptionClientWithBaseURI(baseURI string, subscriptionID string) APITagDescriptionClient {
+	return original.NewAPITagDescriptionClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAPIVersionSetClient(subscriptionID string) APIVersionSetClient {
 	return original.NewAPIVersionSetClient(subscriptionID)
@@ -987,6 +1045,18 @@ func NewLoggerCollectionIterator(page LoggerCollectionPage) LoggerCollectionIter
 func NewLoggerCollectionPage(getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
 	return original.NewLoggerCollectionPage(getNextPage)
 }
+func NewNamedValueClient(subscriptionID string) NamedValueClient {
+	return original.NewNamedValueClient(subscriptionID)
+}
+func NewNamedValueClientWithBaseURI(baseURI string, subscriptionID string) NamedValueClient {
+	return original.NewNamedValueClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNamedValueCollectionIterator(page NamedValueCollectionPage) NamedValueCollectionIterator {
+	return original.NewNamedValueCollectionIterator(page)
+}
+func NewNamedValueCollectionPage(getNextPage func(context.Context, NamedValueCollection) (NamedValueCollection, error)) NamedValueCollectionPage {
+	return original.NewNamedValueCollectionPage(getNextPage)
+}
 func NewNetworkStatusClient(subscriptionID string) NetworkStatusClient {
 	return original.NewNetworkStatusClient(subscriptionID)
 }
@@ -1059,11 +1129,11 @@ func NewPolicyClient(subscriptionID string) PolicyClient {
 func NewPolicyClientWithBaseURI(baseURI string, subscriptionID string) PolicyClient {
 	return original.NewPolicyClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPolicySnippetsClient(subscriptionID string) PolicySnippetsClient {
-	return original.NewPolicySnippetsClient(subscriptionID)
+func NewPolicyDescriptionClient(subscriptionID string) PolicyDescriptionClient {
+	return original.NewPolicyDescriptionClient(subscriptionID)
 }
-func NewPolicySnippetsClientWithBaseURI(baseURI string, subscriptionID string) PolicySnippetsClient {
-	return original.NewPolicySnippetsClientWithBaseURI(baseURI, subscriptionID)
+func NewPolicyDescriptionClientWithBaseURI(baseURI string, subscriptionID string) PolicyDescriptionClient {
+	return original.NewPolicyDescriptionClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProductAPIClient(subscriptionID string) ProductAPIClient {
 	return original.NewProductAPIClient(subscriptionID)
@@ -1100,18 +1170,6 @@ func NewProductSubscriptionsClient(subscriptionID string) ProductSubscriptionsCl
 }
 func NewProductSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) ProductSubscriptionsClient {
 	return original.NewProductSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPropertyClient(subscriptionID string) PropertyClient {
-	return original.NewPropertyClient(subscriptionID)
-}
-func NewPropertyClientWithBaseURI(baseURI string, subscriptionID string) PropertyClient {
-	return original.NewPropertyClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPropertyCollectionIterator(page PropertyCollectionPage) PropertyCollectionIterator {
-	return original.NewPropertyCollectionIterator(page)
-}
-func NewPropertyCollectionPage(getNextPage func(context.Context, PropertyCollection) (PropertyCollection, error)) PropertyCollectionPage {
-	return original.NewPropertyCollectionPage(getNextPage)
 }
 func NewQuotaByCounterKeysClient(subscriptionID string) QuotaByCounterKeysClient {
 	return original.NewQuotaByCounterKeysClient(subscriptionID)
@@ -1215,12 +1273,6 @@ func NewTagCollectionIterator(page TagCollectionPage) TagCollectionIterator {
 func NewTagCollectionPage(getNextPage func(context.Context, TagCollection) (TagCollection, error)) TagCollectionPage {
 	return original.NewTagCollectionPage(getNextPage)
 }
-func NewTagDescriptionClient(subscriptionID string) TagDescriptionClient {
-	return original.NewTagDescriptionClient(subscriptionID)
-}
-func NewTagDescriptionClientWithBaseURI(baseURI string, subscriptionID string) TagDescriptionClient {
-	return original.NewTagDescriptionClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewTagDescriptionCollectionIterator(page TagDescriptionCollectionPage) TagDescriptionCollectionIterator {
 	return original.NewTagDescriptionCollectionIterator(page)
 }
@@ -1308,6 +1360,9 @@ func PossibleAPITypeValues() []APIType {
 func PossibleAlwaysLogValues() []AlwaysLog {
 	return original.PossibleAlwaysLogValues()
 }
+func PossibleApimIdentityTypeValues() []ApimIdentityType {
+	return original.PossibleApimIdentityTypeValues()
+}
 func PossibleAsyncOperationStatusValues() []AsyncOperationStatus {
 	return original.PossibleAsyncOperationStatusValues()
 }
@@ -1338,11 +1393,17 @@ func PossibleContentFormatValues() []ContentFormat {
 func PossibleExportFormatValues() []ExportFormat {
 	return original.PossibleExportFormatValues()
 }
+func PossibleExportResultFormatValues() []ExportResultFormat {
+	return original.PossibleExportResultFormatValues()
+}
 func PossibleGrantTypeValues() []GrantType {
 	return original.PossibleGrantTypeValues()
 }
 func PossibleGroupTypeValues() []GroupType {
 	return original.PossibleGroupTypeValues()
+}
+func PossibleHTTPCorrelationProtocolValues() []HTTPCorrelationProtocol {
+	return original.PossibleHTTPCorrelationProtocolValues()
 }
 func PossibleHostnameTypeValues() []HostnameType {
 	return original.PossibleHostnameTypeValues()
@@ -1364,6 +1425,9 @@ func PossibleNotificationNameValues() []NotificationName {
 }
 func PossiblePolicyContentFormatValues() []PolicyContentFormat {
 	return original.PossiblePolicyContentFormatValues()
+}
+func PossiblePolicyExportFormatValues() []PolicyExportFormat {
+	return original.PossiblePolicyExportFormatValues()
 }
 func PossiblePolicyScopeContractValues() []PolicyScopeContract {
 	return original.PossiblePolicyScopeContractValues()
@@ -1400,6 +1464,9 @@ func PossibleTemplateNameValues() []TemplateName {
 }
 func PossibleUserStateValues() []UserState {
 	return original.PossibleUserStateValues()
+}
+func PossibleVerbosityValues() []Verbosity {
+	return original.PossibleVerbosityValues()
 }
 func PossibleVersioningScheme1Values() []VersioningScheme1 {
 	return original.PossibleVersioningScheme1Values()

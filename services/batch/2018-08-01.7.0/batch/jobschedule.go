@@ -38,7 +38,8 @@ func NewJobScheduleClient() JobScheduleClient {
 	return NewJobScheduleClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewJobScheduleClientWithBaseURI creates an instance of the JobScheduleClient client.
+// NewJobScheduleClientWithBaseURI creates an instance of the JobScheduleClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewJobScheduleClientWithBaseURI(baseURI string) JobScheduleClient {
 	return JobScheduleClient{NewWithBaseURI(baseURI)}
 }
@@ -194,8 +195,7 @@ func (client JobScheduleClient) AddPreparer(ctx context.Context, cloudJobSchedul
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) AddSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddResponder handles the response to the Add request. The method always
@@ -324,8 +324,7 @@ func (client JobScheduleClient) DeletePreparer(ctx context.Context, jobScheduleI
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -451,8 +450,7 @@ func (client JobScheduleClient) DisablePreparer(ctx context.Context, jobSchedule
 // DisableSender sends the Disable request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) DisableSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DisableResponder handles the response to the Disable request. The method always
@@ -578,8 +576,7 @@ func (client JobScheduleClient) EnablePreparer(ctx context.Context, jobScheduleI
 // EnableSender sends the Enable request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) EnableSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // EnableResponder handles the response to the Enable request. The method always
@@ -705,8 +702,7 @@ func (client JobScheduleClient) ExistsPreparer(ctx context.Context, jobScheduleI
 // ExistsSender sends the Exists request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) ExistsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ExistsResponder handles the response to the Exists request. The method always
@@ -840,8 +836,7 @@ func (client JobScheduleClient) GetPreparer(ctx context.Context, jobScheduleID s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -966,8 +961,7 @@ func (client JobScheduleClient) ListPreparer(ctx context.Context, filter string,
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -1137,8 +1131,7 @@ func (client JobScheduleClient) PatchPreparer(ctx context.Context, jobScheduleID
 // PatchSender sends the Patch request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) PatchSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // PatchResponder handles the response to the Patch request. The method always
@@ -1264,8 +1257,7 @@ func (client JobScheduleClient) TerminatePreparer(ctx context.Context, jobSchedu
 // TerminateSender sends the Terminate request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) TerminateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // TerminateResponder handles the response to the Terminate request. The method always
@@ -1465,8 +1457,7 @@ func (client JobScheduleClient) UpdatePreparer(ctx context.Context, jobScheduleI
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

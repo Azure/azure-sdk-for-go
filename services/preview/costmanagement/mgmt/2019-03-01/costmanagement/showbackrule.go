@@ -35,7 +35,8 @@ func NewShowbackRuleClient(subscriptionID string) ShowbackRuleClient {
 	return NewShowbackRuleClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewShowbackRuleClientWithBaseURI creates an instance of the ShowbackRuleClient client.
+// NewShowbackRuleClientWithBaseURI creates an instance of the ShowbackRuleClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewShowbackRuleClientWithBaseURI(baseURI string, subscriptionID string) ShowbackRuleClient {
 	return ShowbackRuleClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -105,8 +106,7 @@ func (client ShowbackRuleClient) CreateUpdateRulePreparer(ctx context.Context, b
 // CreateUpdateRuleSender sends the CreateUpdateRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client ShowbackRuleClient) CreateUpdateRuleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateUpdateRuleResponder handles the response to the CreateUpdateRule request. The method always
@@ -181,8 +181,7 @@ func (client ShowbackRuleClient) GetBillingAccountIDPreparer(ctx context.Context
 // GetBillingAccountIDSender sends the GetBillingAccountID request. The method will close the
 // http.Response Body if it receives an error.
 func (client ShowbackRuleClient) GetBillingAccountIDSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetBillingAccountIDResponder handles the response to the GetBillingAccountID request. The method always

@@ -26,6 +26,7 @@ import (
 // ProviderOperationsClientAPI contains the set of methods on the ProviderOperationsClient type.
 type ProviderOperationsClientAPI interface {
 	List(ctx context.Context) (result labservices.ProviderOperationResultPage, err error)
+	ListComplete(ctx context.Context) (result labservices.ProviderOperationResultIterator, err error)
 }
 
 var _ ProviderOperationsClientAPI = (*labservices.ProviderOperationsClient)(nil)
@@ -54,7 +55,9 @@ type LabAccountsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, labAccountName string, expand string) (result labservices.LabAccount, err error)
 	GetRegionalAvailability(ctx context.Context, resourceGroupName string, labAccountName string) (result labservices.GetRegionalAvailabilityResponse, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, expand string, filter string, top *int32, orderby string) (result labservices.ResponseWithContinuationLabAccountPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, expand string, filter string, top *int32, orderby string) (result labservices.ResponseWithContinuationLabAccountIterator, err error)
 	ListBySubscription(ctx context.Context, expand string, filter string, top *int32, orderby string) (result labservices.ResponseWithContinuationLabAccountPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, expand string, filter string, top *int32, orderby string) (result labservices.ResponseWithContinuationLabAccountIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labAccountName string, labAccount labservices.LabAccountFragment) (result labservices.LabAccount, err error)
 }
 
@@ -73,6 +76,7 @@ type GalleryImagesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labAccountName string, galleryImageName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, labAccountName string, galleryImageName string, expand string) (result labservices.GalleryImage, err error)
 	List(ctx context.Context, resourceGroupName string, labAccountName string, expand string, filter string, top *int32, orderby string) (result labservices.ResponseWithContinuationGalleryImagePage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labAccountName string, expand string, filter string, top *int32, orderby string) (result labservices.ResponseWithContinuationGalleryImageIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labAccountName string, galleryImageName string, galleryImage labservices.GalleryImageFragment) (result labservices.GalleryImage, err error)
 }
 
@@ -85,6 +89,7 @@ type LabsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labAccountName string, labName string) (result labservices.LabsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, labAccountName string, labName string, expand string) (result labservices.Lab, err error)
 	List(ctx context.Context, resourceGroupName string, labAccountName string, expand string, filter string, top *int32, orderby string) (result labservices.ResponseWithContinuationLabPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labAccountName string, expand string, filter string, top *int32, orderby string) (result labservices.ResponseWithContinuationLabIterator, err error)
 	Register(ctx context.Context, resourceGroupName string, labAccountName string, labName string) (result autorest.Response, err error)
 	Update(ctx context.Context, resourceGroupName string, labAccountName string, labName string, lab labservices.LabFragment) (result labservices.Lab, err error)
 }
@@ -98,6 +103,7 @@ type EnvironmentSettingsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labAccountName string, labName string, environmentSettingName string) (result labservices.EnvironmentSettingsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, labAccountName string, labName string, environmentSettingName string, expand string) (result labservices.EnvironmentSetting, err error)
 	List(ctx context.Context, resourceGroupName string, labAccountName string, labName string, expand string, filter string, top *int32, orderby string) (result labservices.ResponseWithContinuationEnvironmentSettingPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labAccountName string, labName string, expand string, filter string, top *int32, orderby string) (result labservices.ResponseWithContinuationEnvironmentSettingIterator, err error)
 	Publish(ctx context.Context, resourceGroupName string, labAccountName string, labName string, environmentSettingName string, publishPayload labservices.PublishPayload) (result autorest.Response, err error)
 	Start(ctx context.Context, resourceGroupName string, labAccountName string, labName string, environmentSettingName string) (result labservices.EnvironmentSettingsStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, labAccountName string, labName string, environmentSettingName string) (result labservices.EnvironmentSettingsStopFuture, err error)
@@ -113,6 +119,7 @@ type EnvironmentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labAccountName string, labName string, environmentSettingName string, environmentName string) (result labservices.EnvironmentsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, labAccountName string, labName string, environmentSettingName string, environmentName string, expand string) (result labservices.Environment, err error)
 	List(ctx context.Context, resourceGroupName string, labAccountName string, labName string, environmentSettingName string, expand string, filter string, top *int32, orderby string) (result labservices.ResponseWithContinuationEnvironmentPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labAccountName string, labName string, environmentSettingName string, expand string, filter string, top *int32, orderby string) (result labservices.ResponseWithContinuationEnvironmentIterator, err error)
 	ResetPassword(ctx context.Context, resourceGroupName string, labAccountName string, labName string, environmentSettingName string, environmentName string, resetPasswordPayload labservices.ResetPasswordPayload) (result labservices.EnvironmentsResetPasswordFuture, err error)
 	Start(ctx context.Context, resourceGroupName string, labAccountName string, labName string, environmentSettingName string, environmentName string) (result labservices.EnvironmentsStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, labAccountName string, labName string, environmentSettingName string, environmentName string) (result labservices.EnvironmentsStopFuture, err error)
@@ -127,6 +134,7 @@ type UsersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, labAccountName string, labName string, userName string) (result labservices.UsersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, labAccountName string, labName string, userName string, expand string) (result labservices.User, err error)
 	List(ctx context.Context, resourceGroupName string, labAccountName string, labName string, expand string, filter string, top *int32, orderby string) (result labservices.ResponseWithContinuationUserPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labAccountName string, labName string, expand string, filter string, top *int32, orderby string) (result labservices.ResponseWithContinuationUserIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, labAccountName string, labName string, userName string, userParameter labservices.UserFragment) (result labservices.User, err error)
 }
 

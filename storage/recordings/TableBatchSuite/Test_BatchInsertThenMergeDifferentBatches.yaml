@@ -56,7 +56,7 @@ interactions:
 - request:
     body: "--batch_b8457413-5546-4582-be6a-23ca5f95ef9e\r\nContent-Type: multipart/mixed;
       boundary=changeset_73be3eec-8962-496e-a3ca-d5fd1d6cd971\r\n\r\n\r\n--changeset_73be3eec-8962-496e-a3ca-d5fd1d6cd971\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPUT https://golangrocksonazure.table.core.windows.net/table57tablebatchsuitetestbatchi%28PartitionKey=%27mypartitionkey%27,%20RowKey=%27myrowkey%27%29
+      binary\r\nContent-Type: application/http\r\n\r\nPUT https://golangrocksonazure.table.core.windows.net/table57tablebatchsuitetestbatchi%28PartitionKey=%27mypartitionkey%27,RowKey=%27myrowkey%27%29
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Type:
       application/json\r\nPrefer: return-no-content\r\n\r\n{\"AmountDue\":\"200.23\",\"AmountDue@odata.type\":\"Edm.Double\",\"CustomerCode\":\"c9da6455-213d-42c9-9a79-3e9149a57833\",\"CustomerCode@odata.type\":\"Edm.Guid\",\"CustomerSince\":\"1992-12-20T21:55:00Z\",\"CustomerSince@odata.type\":\"Edm.DateTime\",\"IsActive\":true,\"NumberOfOrders\":\"255\",\"NumberOfOrders@odata.type\":\"Edm.Int64\",\"PartitionKey\":\"mypartitionkey\",\"RowKey\":\"myrowkey\"}\r\n--changeset_73be3eec-8962-496e-a3ca-d5fd1d6cd971--\r\n\r\n--batch_b8457413-5546-4582-be6a-23ca5f95ef9e--\r\n"
     form: {}
@@ -101,7 +101,7 @@ interactions:
 - request:
     body: "--batch_1358b69e-0bc1-49e2-a22d-d91161d812cb\r\nContent-Type: multipart/mixed;
       boundary=changeset_d5ad89eb-06a7-4d68-8a6b-7bbd1cc8e870\r\n\r\n\r\n--changeset_d5ad89eb-06a7-4d68-8a6b-7bbd1cc8e870\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPUT https://golangrocksonazure.table.core.windows.net/table57tablebatchsuitetestbatchi%28PartitionKey=%27mypartitionkey%27,%20RowKey=%27myrowkey%27%29
+      binary\r\nContent-Type: application/http\r\n\r\nPUT https://golangrocksonazure.table.core.windows.net/table57tablebatchsuitetestbatchi%28PartitionKey=%27mypartitionkey%27,RowKey=%27myrowkey%27%29
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Type:
       application/json\r\nPrefer: return-no-content\r\n\r\n{\"AmountDue\":\"200.23\",\"AmountDue@odata.type\":\"Edm.Double\",\"CustomerCode\":\"c9da6455-213d-42c9-9a79-3e9149a57833\",\"CustomerCode@odata.type\":\"Edm.Guid\",\"CustomerSince\":\"1992-12-20T21:55:00Z\",\"CustomerSince@odata.type\":\"Edm.DateTime\",\"DifferentField\":123,\"NumberOfOrders\":\"255\",\"NumberOfOrders@odata.type\":\"Edm.Int64\",\"PartitionKey\":\"mypartitionkey\",\"RowKey\":\"myrowkey\"}\r\n--changeset_d5ad89eb-06a7-4d68-8a6b-7bbd1cc8e870--\r\n\r\n--batch_1358b69e-0bc1-49e2-a22d-d91161d812cb--\r\n"
     form: {}

@@ -31,8 +31,11 @@ type LabClientAPI interface {
 	GenerateUploadURI(ctx context.Context, resourceGroupName string, name string, generateUploadURIParameter dtl.GenerateUploadURIParameter) (result dtl.GenerateUploadURIResponse, err error)
 	GetResource(ctx context.Context, resourceGroupName string, name string) (result dtl.Lab, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationLabPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationLabIterator, err error)
 	ListBySubscription(ctx context.Context, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationLabPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationLabIterator, err error)
 	ListVhds(ctx context.Context, resourceGroupName string, name string) (result dtl.ResponseWithContinuationLabVhdPage, err error)
+	ListVhdsComplete(ctx context.Context, resourceGroupName string, name string) (result dtl.ResponseWithContinuationLabVhdIterator, err error)
 	PatchResource(ctx context.Context, resourceGroupName string, name string, lab dtl.Lab) (result dtl.Lab, err error)
 }
 
@@ -44,6 +47,7 @@ type ArtifactSourceClientAPI interface {
 	DeleteResource(ctx context.Context, resourceGroupName string, labName string, name string) (result autorest.Response, err error)
 	GetResource(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.ArtifactSource, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationArtifactSourcePage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationArtifactSourceIterator, err error)
 	PatchResource(ctx context.Context, resourceGroupName string, labName string, name string, artifactSource dtl.ArtifactSource) (result dtl.ArtifactSource, err error)
 }
 
@@ -54,6 +58,7 @@ type ArtifactClientAPI interface {
 	GenerateArmTemplate(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, name string, generateArmTemplateRequest dtl.GenerateArmTemplateRequest) (result dtl.ArmTemplateInfo, err error)
 	GetResource(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, name string) (result dtl.Artifact, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationArtifactPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationArtifactIterator, err error)
 }
 
 var _ ArtifactClientAPI = (*dtl.ArtifactClient)(nil)
@@ -62,6 +67,7 @@ var _ ArtifactClientAPI = (*dtl.ArtifactClient)(nil)
 type CostInsightClientAPI interface {
 	GetResource(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.CostInsight, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationCostInsightPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationCostInsightIterator, err error)
 	RefreshData(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.CostInsightRefreshDataFuture, err error)
 }
 
@@ -71,6 +77,7 @@ var _ CostInsightClientAPI = (*dtl.CostInsightClient)(nil)
 type CostClientAPI interface {
 	GetResource(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.Cost, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationCostPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationCostIterator, err error)
 	RefreshData(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.CostRefreshDataFuture, err error)
 }
 
@@ -82,6 +89,7 @@ type CustomImageClientAPI interface {
 	DeleteResource(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.CustomImageDeleteResourceFuture, err error)
 	GetResource(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.CustomImage, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationCustomImagePage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationCustomImageIterator, err error)
 }
 
 var _ CustomImageClientAPI = (*dtl.CustomImageClient)(nil)
@@ -92,6 +100,7 @@ type FormulaClientAPI interface {
 	DeleteResource(ctx context.Context, resourceGroupName string, labName string, name string) (result autorest.Response, err error)
 	GetResource(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.Formula, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationFormulaPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationFormulaIterator, err error)
 }
 
 var _ FormulaClientAPI = (*dtl.FormulaClient)(nil)
@@ -99,6 +108,7 @@ var _ FormulaClientAPI = (*dtl.FormulaClient)(nil)
 // GalleryImageClientAPI contains the set of methods on the GalleryImageClient type.
 type GalleryImageClientAPI interface {
 	List(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationGalleryImagePage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationGalleryImageIterator, err error)
 }
 
 var _ GalleryImageClientAPI = (*dtl.GalleryImageClient)(nil)
@@ -116,6 +126,7 @@ type PolicyClientAPI interface {
 	DeleteResource(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string) (result autorest.Response, err error)
 	GetResource(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string) (result dtl.Policy, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, policySetName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationPolicyPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, policySetName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationPolicyIterator, err error)
 	PatchResource(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, policy dtl.Policy) (result dtl.Policy, err error)
 }
 
@@ -128,6 +139,7 @@ type ScheduleClientAPI interface {
 	Execute(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.ScheduleExecuteFuture, err error)
 	GetResource(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.Schedule, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationSchedulePage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationScheduleIterator, err error)
 	PatchResource(ctx context.Context, resourceGroupName string, labName string, name string, schedule dtl.Schedule) (result dtl.Schedule, err error)
 }
 
@@ -140,6 +152,7 @@ type VirtualMachineClientAPI interface {
 	DeleteResource(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.VirtualMachineDeleteResourceFuture, err error)
 	GetResource(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.LabVirtualMachine, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationLabVirtualMachinePage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationLabVirtualMachineIterator, err error)
 	PatchResource(ctx context.Context, resourceGroupName string, labName string, name string, labVirtualMachine dtl.LabVirtualMachine) (result dtl.LabVirtualMachine, err error)
 	Start(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.VirtualMachineStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.VirtualMachineStopFuture, err error)
@@ -153,6 +166,7 @@ type VirtualNetworkClientAPI interface {
 	DeleteResource(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.VirtualNetworkDeleteResourceFuture, err error)
 	GetResource(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.VirtualNetwork, err error)
 	List(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationVirtualNetworkPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderBy string) (result dtl.ResponseWithContinuationVirtualNetworkIterator, err error)
 	PatchResource(ctx context.Context, resourceGroupName string, labName string, name string, virtualNetwork dtl.VirtualNetwork) (result dtl.VirtualNetwork, err error)
 }
 

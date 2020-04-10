@@ -37,7 +37,8 @@ func NewSummariesClient(subscriptionID string) SummariesClient {
 	return NewSummariesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSummariesClientWithBaseURI creates an instance of the SummariesClient client.
+// NewSummariesClientWithBaseURI creates an instance of the SummariesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSummariesClientWithBaseURI(baseURI string, subscriptionID string) SummariesClient {
 	return SummariesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -124,8 +125,7 @@ func (client SummariesClient) GetMachinesPreparer(ctx context.Context, resourceG
 // GetMachinesSender sends the GetMachines request. The method will close the
 // http.Response Body if it receives an error.
 func (client SummariesClient) GetMachinesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMachinesResponder handles the response to the GetMachines request. The method always

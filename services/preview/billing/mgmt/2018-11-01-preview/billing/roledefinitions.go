@@ -35,7 +35,8 @@ func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
 	return NewRoleDefinitionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewRoleDefinitionsClientWithBaseURI creates an instance of the RoleDefinitionsClient client.
+// NewRoleDefinitionsClientWithBaseURI creates an instance of the RoleDefinitionsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
 	return RoleDefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -99,8 +100,7 @@ func (client RoleDefinitionsClient) GetByBillingAccountNamePreparer(ctx context.
 // GetByBillingAccountNameSender sends the GetByBillingAccountName request. The method will close the
 // http.Response Body if it receives an error.
 func (client RoleDefinitionsClient) GetByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByBillingAccountNameResponder handles the response to the GetByBillingAccountName request. The method always
@@ -177,8 +177,7 @@ func (client RoleDefinitionsClient) GetByBillingProfileNamePreparer(ctx context.
 // GetByBillingProfileNameSender sends the GetByBillingProfileName request. The method will close the
 // http.Response Body if it receives an error.
 func (client RoleDefinitionsClient) GetByBillingProfileNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByBillingProfileNameResponder handles the response to the GetByBillingProfileName request. The method always
@@ -255,8 +254,7 @@ func (client RoleDefinitionsClient) GetByInvoiceSectionNamePreparer(ctx context.
 // GetByInvoiceSectionNameSender sends the GetByInvoiceSectionName request. The method will close the
 // http.Response Body if it receives an error.
 func (client RoleDefinitionsClient) GetByInvoiceSectionNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByInvoiceSectionNameResponder handles the response to the GetByInvoiceSectionName request. The method always
@@ -329,8 +327,7 @@ func (client RoleDefinitionsClient) ListByBillingAccountNamePreparer(ctx context
 // ListByBillingAccountNameSender sends the ListByBillingAccountName request. The method will close the
 // http.Response Body if it receives an error.
 func (client RoleDefinitionsClient) ListByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingAccountNameResponder handles the response to the ListByBillingAccountName request. The method always
@@ -405,8 +402,7 @@ func (client RoleDefinitionsClient) ListByBillingProfileNamePreparer(ctx context
 // ListByBillingProfileNameSender sends the ListByBillingProfileName request. The method will close the
 // http.Response Body if it receives an error.
 func (client RoleDefinitionsClient) ListByBillingProfileNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingProfileNameResponder handles the response to the ListByBillingProfileName request. The method always
@@ -481,8 +477,7 @@ func (client RoleDefinitionsClient) ListByInvoiceSectionNamePreparer(ctx context
 // ListByInvoiceSectionNameSender sends the ListByInvoiceSectionName request. The method will close the
 // http.Response Body if it receives an error.
 func (client RoleDefinitionsClient) ListByInvoiceSectionNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByInvoiceSectionNameResponder handles the response to the ListByInvoiceSectionName request. The method always

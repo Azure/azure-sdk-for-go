@@ -36,7 +36,9 @@ func NewBackupScheduleGroupsClient(subscriptionID string) BackupScheduleGroupsCl
 	return NewBackupScheduleGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBackupScheduleGroupsClientWithBaseURI creates an instance of the BackupScheduleGroupsClient client.
+// NewBackupScheduleGroupsClientWithBaseURI creates an instance of the BackupScheduleGroupsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewBackupScheduleGroupsClientWithBaseURI(baseURI string, subscriptionID string) BackupScheduleGroupsClient {
 	return BackupScheduleGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -122,9 +124,8 @@ func (client BackupScheduleGroupsClient) CreateOrUpdatePreparer(ctx context.Cont
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client BackupScheduleGroupsClient) CreateOrUpdateSender(req *http.Request) (future BackupScheduleGroupsCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -210,9 +211,8 @@ func (client BackupScheduleGroupsClient) DeletePreparer(ctx context.Context, dev
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client BackupScheduleGroupsClient) DeleteSender(req *http.Request) (future BackupScheduleGroupsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -303,8 +303,7 @@ func (client BackupScheduleGroupsClient) GetPreparer(ctx context.Context, device
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client BackupScheduleGroupsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -389,8 +388,7 @@ func (client BackupScheduleGroupsClient) ListByDevicePreparer(ctx context.Contex
 // ListByDeviceSender sends the ListByDevice request. The method will close the
 // http.Response Body if it receives an error.
 func (client BackupScheduleGroupsClient) ListByDeviceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDeviceResponder handles the response to the ListByDevice request. The method always

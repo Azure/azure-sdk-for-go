@@ -36,7 +36,8 @@ func NewCloudAppliancesClient(subscriptionID string) CloudAppliancesClient {
 	return NewCloudAppliancesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCloudAppliancesClientWithBaseURI creates an instance of the CloudAppliancesClient client.
+// NewCloudAppliancesClientWithBaseURI creates an instance of the CloudAppliancesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCloudAppliancesClientWithBaseURI(baseURI string, subscriptionID string) CloudAppliancesClient {
 	return CloudAppliancesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -108,8 +109,7 @@ func (client CloudAppliancesClient) ListSupportedConfigurationsPreparer(ctx cont
 // ListSupportedConfigurationsSender sends the ListSupportedConfigurations request. The method will close the
 // http.Response Body if it receives an error.
 func (client CloudAppliancesClient) ListSupportedConfigurationsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSupportedConfigurationsResponder handles the response to the ListSupportedConfigurations request. The method always
@@ -192,9 +192,8 @@ func (client CloudAppliancesClient) ProvisionPreparer(ctx context.Context, param
 // ProvisionSender sends the Provision request. The method will close the
 // http.Response Body if it receives an error.
 func (client CloudAppliancesClient) ProvisionSender(req *http.Request) (future CloudAppliancesProvisionFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,10 +19,12 @@
 
 package kustoapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-09-07/kusto/kustoapi"
+import original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2020-02-15/kusto/kustoapi"
 
 type AttachedDatabaseConfigurationsClientAPI = original.AttachedDatabaseConfigurationsClientAPI
+type ClusterPrincipalAssignmentsClientAPI = original.ClusterPrincipalAssignmentsClientAPI
 type ClustersClientAPI = original.ClustersClientAPI
 type DataConnectionsClientAPI = original.DataConnectionsClientAPI
+type DatabasePrincipalAssignmentsClientAPI = original.DatabasePrincipalAssignmentsClientAPI
 type DatabasesClientAPI = original.DatabasesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

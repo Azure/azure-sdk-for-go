@@ -38,7 +38,8 @@ func NewKpiClient(subscriptionID string) KpiClient {
 	return NewKpiClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewKpiClientWithBaseURI creates an instance of the KpiClient client.
+// NewKpiClientWithBaseURI creates an instance of the KpiClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewKpiClientWithBaseURI(baseURI string, subscriptionID string) KpiClient {
 	return KpiClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -120,9 +121,8 @@ func (client KpiClient) CreateOrUpdatePreparer(ctx context.Context, resourceGrou
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client KpiClient) CreateOrUpdateSender(req *http.Request) (future KpiCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -199,9 +199,8 @@ func (client KpiClient) DeletePreparer(ctx context.Context, resourceGroupName st
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client KpiClient) DeleteSender(req *http.Request) (future KpiDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -283,8 +282,7 @@ func (client KpiClient) GetPreparer(ctx context.Context, resourceGroupName strin
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client KpiClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -361,8 +359,7 @@ func (client KpiClient) ListByHubPreparer(ctx context.Context, resourceGroupName
 // ListByHubSender sends the ListByHub request. The method will close the
 // http.Response Body if it receives an error.
 func (client KpiClient) ListByHubSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByHubResponder handles the response to the ListByHub request. The method always
@@ -477,8 +474,7 @@ func (client KpiClient) ReprocessPreparer(ctx context.Context, resourceGroupName
 // ReprocessSender sends the Reprocess request. The method will close the
 // http.Response Body if it receives an error.
 func (client KpiClient) ReprocessSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ReprocessResponder handles the response to the Reprocess request. The method always

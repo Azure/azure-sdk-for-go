@@ -35,7 +35,9 @@ func NewAddsServicesUserPreferenceClient() AddsServicesUserPreferenceClient {
 	return NewAddsServicesUserPreferenceClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewAddsServicesUserPreferenceClientWithBaseURI creates an instance of the AddsServicesUserPreferenceClient client.
+// NewAddsServicesUserPreferenceClientWithBaseURI creates an instance of the AddsServicesUserPreferenceClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewAddsServicesUserPreferenceClientWithBaseURI(baseURI string) AddsServicesUserPreferenceClient {
 	return AddsServicesUserPreferenceClient{NewWithBaseURI(baseURI)}
 }
@@ -102,8 +104,7 @@ func (client AddsServicesUserPreferenceClient) AddPreparer(ctx context.Context, 
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesUserPreferenceClient) AddSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddResponder handles the response to the Add request. The method always
@@ -177,8 +178,7 @@ func (client AddsServicesUserPreferenceClient) DeletePreparer(ctx context.Contex
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesUserPreferenceClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -252,8 +252,7 @@ func (client AddsServicesUserPreferenceClient) GetPreparer(ctx context.Context, 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesUserPreferenceClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always

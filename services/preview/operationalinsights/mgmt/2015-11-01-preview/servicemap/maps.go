@@ -36,7 +36,8 @@ func NewMapsClient(subscriptionID string) MapsClient {
 	return NewMapsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMapsClientWithBaseURI creates an instance of the MapsClient client.
+// NewMapsClientWithBaseURI creates an instance of the MapsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMapsClientWithBaseURI(baseURI string, subscriptionID string) MapsClient {
 	return MapsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -116,8 +117,7 @@ func (client MapsClient) GeneratePreparer(ctx context.Context, resourceGroupName
 // GenerateSender sends the Generate request. The method will close the
 // http.Response Body if it receives an error.
 func (client MapsClient) GenerateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GenerateResponder handles the response to the Generate request. The method always

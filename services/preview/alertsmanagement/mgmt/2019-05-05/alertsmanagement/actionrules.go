@@ -36,7 +36,8 @@ func NewActionRulesClient(subscriptionID string) ActionRulesClient {
 	return NewActionRulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewActionRulesClientWithBaseURI creates an instance of the ActionRulesClient client.
+// NewActionRulesClientWithBaseURI creates an instance of the ActionRulesClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewActionRulesClientWithBaseURI(baseURI string, subscriptionID string) ActionRulesClient {
 	return ActionRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -110,8 +111,7 @@ func (client ActionRulesClient) CreateUpdatePreparer(ctx context.Context, resour
 // CreateUpdateSender sends the CreateUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ActionRulesClient) CreateUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateUpdateResponder handles the response to the CreateUpdate request. The method always
@@ -193,8 +193,7 @@ func (client ActionRulesClient) DeletePreparer(ctx context.Context, resourceGrou
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ActionRulesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -276,8 +275,7 @@ func (client ActionRulesClient) GetByNamePreparer(ctx context.Context, resourceG
 // GetByNameSender sends the GetByName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ActionRulesClient) GetByNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetByNameResponder handles the response to the GetByName request. The method always
@@ -400,8 +398,7 @@ func (client ActionRulesClient) ListByResourceGroupPreparer(ctx context.Context,
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ActionRulesClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -558,8 +555,7 @@ func (client ActionRulesClient) ListBySubscriptionPreparer(ctx context.Context, 
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client ActionRulesClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
@@ -681,8 +677,7 @@ func (client ActionRulesClient) UpdatePreparer(ctx context.Context, resourceGrou
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client ActionRulesClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

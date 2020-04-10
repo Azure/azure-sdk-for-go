@@ -37,7 +37,9 @@ func NewMarketplacesByDepartmentClient(subscriptionID string) MarketplacesByDepa
 	return NewMarketplacesByDepartmentClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMarketplacesByDepartmentClientWithBaseURI creates an instance of the MarketplacesByDepartmentClient client.
+// NewMarketplacesByDepartmentClientWithBaseURI creates an instance of the MarketplacesByDepartmentClient client using
+// a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewMarketplacesByDepartmentClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesByDepartmentClient {
 	return MarketplacesByDepartmentClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -126,8 +128,7 @@ func (client MarketplacesByDepartmentClient) ListPreparer(ctx context.Context, d
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplacesByDepartmentClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -266,8 +267,7 @@ func (client MarketplacesByDepartmentClient) ListByBillingPeriodPreparer(ctx con
 // ListByBillingPeriodSender sends the ListByBillingPeriod request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplacesByDepartmentClient) ListByBillingPeriodSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingPeriodResponder handles the response to the ListByBillingPeriod request. The method always

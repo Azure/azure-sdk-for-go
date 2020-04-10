@@ -35,7 +35,8 @@ func NewMembersClient(subscriptionID string) MembersClient {
 	return NewMembersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMembersClientWithBaseURI creates an instance of the MembersClient client.
+// NewMembersClientWithBaseURI creates an instance of the MembersClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMembersClientWithBaseURI(baseURI string, subscriptionID string) MembersClient {
 	return MembersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -101,9 +102,8 @@ func (client MembersClient) CreatePreparer(ctx context.Context, blockchainMember
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client MembersClient) CreateSender(req *http.Request) (future MembersCreateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -179,9 +179,8 @@ func (client MembersClient) DeletePreparer(ctx context.Context, blockchainMember
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client MembersClient) DeleteSender(req *http.Request) (future MembersDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -262,8 +261,7 @@ func (client MembersClient) GetPreparer(ctx context.Context, blockchainMemberNam
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client MembersClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -339,8 +337,7 @@ func (client MembersClient) ListPreparer(ctx context.Context, resourceGroupName 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client MembersClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -449,8 +446,7 @@ func (client MembersClient) ListAllPreparer(ctx context.Context) (*http.Request,
 // ListAllSender sends the ListAll request. The method will close the
 // http.Response Body if it receives an error.
 func (client MembersClient) ListAllSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAllResponder handles the response to the ListAll request. The method always
@@ -564,8 +560,7 @@ func (client MembersClient) ListAPIKeysPreparer(ctx context.Context, blockchainM
 // ListAPIKeysSender sends the ListAPIKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client MembersClient) ListAPIKeysSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAPIKeysResponder handles the response to the ListAPIKeys request. The method always
@@ -643,8 +638,7 @@ func (client MembersClient) ListConsortiumMembersPreparer(ctx context.Context, b
 // ListConsortiumMembersSender sends the ListConsortiumMembers request. The method will close the
 // http.Response Body if it receives an error.
 func (client MembersClient) ListConsortiumMembersSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListConsortiumMembersResponder handles the response to the ListConsortiumMembers request. The method always
@@ -764,8 +758,7 @@ func (client MembersClient) ListRegenerateAPIKeysPreparer(ctx context.Context, b
 // ListRegenerateAPIKeysSender sends the ListRegenerateAPIKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client MembersClient) ListRegenerateAPIKeysSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListRegenerateAPIKeysResponder handles the response to the ListRegenerateAPIKeys request. The method always
@@ -848,8 +841,7 @@ func (client MembersClient) UpdatePreparer(ctx context.Context, blockchainMember
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client MembersClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

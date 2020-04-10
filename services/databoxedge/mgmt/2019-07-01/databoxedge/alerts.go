@@ -35,7 +35,8 @@ func NewAlertsClient(subscriptionID string) AlertsClient {
 	return NewAlertsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAlertsClientWithBaseURI creates an instance of the AlertsClient client.
+// NewAlertsClientWithBaseURI creates an instance of the AlertsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
 	return AlertsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -102,8 +103,7 @@ func (client AlertsClient) GetPreparer(ctx context.Context, deviceName string, n
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -180,8 +180,7 @@ func (client AlertsClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, 
 // ListByDataBoxEdgeDeviceSender sends the ListByDataBoxEdgeDevice request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDataBoxEdgeDeviceResponder handles the response to the ListByDataBoxEdgeDevice request. The method always

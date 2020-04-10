@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result servicebus.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result servicebus.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*servicebus.OperationsClient)(nil)
@@ -40,8 +41,11 @@ type NamespacesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.NamespaceResource, err error)
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result servicebus.SharedAccessAuthorizationRuleResource, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.SharedAccessAuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.SharedAccessAuthorizationRuleListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result servicebus.NamespaceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result servicebus.NamespaceListResultIterator, err error)
 	ListBySubscription(ctx context.Context) (result servicebus.NamespaceListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result servicebus.NamespaceListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result servicebus.ResourceListKeys, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters servicebus.RegenerateKeysParameters) (result servicebus.ResourceListKeys, err error)
 	Update(ctx context.Context, resourceGroupName string, namespaceName string, parameters servicebus.NamespaceUpdateParameters) (result servicebus.NamespaceResource, err error)
@@ -58,7 +62,9 @@ type QueuesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, queueName string) (result servicebus.QueueResource, err error)
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string) (result servicebus.SharedAccessAuthorizationRuleResource, err error)
 	ListAll(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.QueueListResultPage, err error)
+	ListAllComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.QueueListResultIterator, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, queueName string) (result servicebus.SharedAccessAuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string, queueName string) (result servicebus.SharedAccessAuthorizationRuleListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string) (result servicebus.ResourceListKeys, err error)
 	PostAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string) (result servicebus.SharedAccessAuthorizationRuleResource, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, parameters servicebus.RegenerateKeysParameters) (result servicebus.ResourceListKeys, err error)
@@ -75,7 +81,9 @@ type TopicsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, topicName string) (result servicebus.TopicResource, err error)
 	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string) (result servicebus.SharedAccessAuthorizationRuleResource, err error)
 	ListAll(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.TopicListResultPage, err error)
+	ListAllComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.TopicListResultIterator, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, topicName string) (result servicebus.SharedAccessAuthorizationRuleListResultPage, err error)
+	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string) (result servicebus.SharedAccessAuthorizationRuleListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string) (result servicebus.ResourceListKeys, err error)
 	PostAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string) (result servicebus.SharedAccessAuthorizationRuleResource, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string, parameters servicebus.RegenerateKeysParameters) (result servicebus.ResourceListKeys, err error)
@@ -89,6 +97,7 @@ type SubscriptionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string) (result servicebus.SubscriptionResource, err error)
 	ListAll(ctx context.Context, resourceGroupName string, namespaceName string, topicName string) (result servicebus.SubscriptionListResultPage, err error)
+	ListAllComplete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string) (result servicebus.SubscriptionListResultIterator, err error)
 }
 
 var _ SubscriptionsClientAPI = (*servicebus.SubscriptionsClient)(nil)

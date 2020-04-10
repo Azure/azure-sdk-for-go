@@ -26,6 +26,7 @@ import (
 type ClientAPI interface {
 	Get(ctx context.Context, expand string, recurse *bool) (result managementgroups.WithHierarchy, err error)
 	List(ctx context.Context, skiptoken string) (result managementgroups.ListResultPage, err error)
+	ListComplete(ctx context.Context, skiptoken string) (result managementgroups.ListResultIterator, err error)
 }
 
 var _ ClientAPI = (*managementgroups.Client)(nil)
@@ -33,6 +34,7 @@ var _ ClientAPI = (*managementgroups.Client)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result managementgroups.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result managementgroups.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*managementgroups.OperationsClient)(nil)

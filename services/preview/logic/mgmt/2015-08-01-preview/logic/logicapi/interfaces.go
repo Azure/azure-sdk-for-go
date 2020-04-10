@@ -29,7 +29,9 @@ type IntegrationAccountsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, integrationAccountName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, integrationAccountName string) (result logic.IntegrationAccount, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, top *int32) (result logic.IntegrationAccountListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, top *int32) (result logic.IntegrationAccountListResultIterator, err error)
 	ListBySubscription(ctx context.Context, top *int32) (result logic.IntegrationAccountListResultPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, top *int32) (result logic.IntegrationAccountListResultIterator, err error)
 	ListCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, parameters logic.ListCallbackURLParameters) (result logic.CallbackURL, err error)
 	Update(ctx context.Context, resourceGroupName string, integrationAccountName string, integrationAccount logic.IntegrationAccount) (result logic.IntegrationAccount, err error)
 }
@@ -42,6 +44,7 @@ type IntegrationAccountSchemasClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string) (result logic.IntegrationAccountSchema, err error)
 	List(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountSchemaListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountSchemaListResultIterator, err error)
 }
 
 var _ IntegrationAccountSchemasClientAPI = (*logic.IntegrationAccountSchemasClient)(nil)
@@ -52,6 +55,7 @@ type IntegrationAccountMapsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string) (result logic.IntegrationAccountMap, err error)
 	List(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountMapListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountMapListResultIterator, err error)
 }
 
 var _ IntegrationAccountMapsClientAPI = (*logic.IntegrationAccountMapsClient)(nil)
@@ -62,6 +66,7 @@ type IntegrationAccountPartnersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string) (result logic.IntegrationAccountPartner, err error)
 	List(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountPartnerListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountPartnerListResultIterator, err error)
 }
 
 var _ IntegrationAccountPartnersClientAPI = (*logic.IntegrationAccountPartnersClient)(nil)
@@ -72,6 +77,7 @@ type IntegrationAccountAgreementsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string) (result logic.IntegrationAccountAgreement, err error)
 	List(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountAgreementListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result logic.IntegrationAccountAgreementListResultIterator, err error)
 }
 
 var _ IntegrationAccountAgreementsClientAPI = (*logic.IntegrationAccountAgreementsClient)(nil)
@@ -82,6 +88,7 @@ type IntegrationAccountCertificatesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string) (result logic.IntegrationAccountCertificate, err error)
 	List(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32) (result logic.IntegrationAccountCertificateListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32) (result logic.IntegrationAccountCertificateListResultIterator, err error)
 }
 
 var _ IntegrationAccountCertificatesClientAPI = (*logic.IntegrationAccountCertificatesClient)(nil)

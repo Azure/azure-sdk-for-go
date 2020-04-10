@@ -26,6 +26,7 @@ import (
 type EnrollmentAccountsClientAPI interface {
 	Get(ctx context.Context, name string) (result billing.EnrollmentAccount, err error)
 	List(ctx context.Context) (result billing.EnrollmentAccountListResultPage, err error)
+	ListComplete(ctx context.Context) (result billing.EnrollmentAccountListResultIterator, err error)
 }
 
 var _ EnrollmentAccountsClientAPI = (*billing.EnrollmentAccountsClient)(nil)
@@ -34,6 +35,7 @@ var _ EnrollmentAccountsClientAPI = (*billing.EnrollmentAccountsClient)(nil)
 type PeriodsClientAPI interface {
 	Get(ctx context.Context, billingPeriodName string) (result billing.Period, err error)
 	List(ctx context.Context, filter string, skiptoken string, top *int32) (result billing.PeriodsListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, skiptoken string, top *int32) (result billing.PeriodsListResultIterator, err error)
 }
 
 var _ PeriodsClientAPI = (*billing.PeriodsClient)(nil)
@@ -43,6 +45,7 @@ type InvoicesClientAPI interface {
 	Get(ctx context.Context, invoiceName string) (result billing.Invoice, err error)
 	GetLatest(ctx context.Context) (result billing.Invoice, err error)
 	List(ctx context.Context, expand string, filter string, skiptoken string, top *int32) (result billing.InvoicesListResultPage, err error)
+	ListComplete(ctx context.Context, expand string, filter string, skiptoken string, top *int32) (result billing.InvoicesListResultIterator, err error)
 }
 
 var _ InvoicesClientAPI = (*billing.InvoicesClient)(nil)
@@ -50,6 +53,7 @@ var _ InvoicesClientAPI = (*billing.InvoicesClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result billing.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result billing.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*billing.OperationsClient)(nil)

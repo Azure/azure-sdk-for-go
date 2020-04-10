@@ -46,7 +46,8 @@ func New(subscriptionID string) BaseClient {
 	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWithBaseURI creates an instance of the BaseClient client.
+// NewWithBaseURI creates an instance of the BaseClient client using a custom endpoint.  Use this when interacting with
+// an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
 		Client:         autorest.NewClientWithUserAgent(UserAgent()),
@@ -116,8 +117,7 @@ func (client BaseClient) CheckFrontDoorNameAvailabilityPreparer(ctx context.Cont
 // CheckFrontDoorNameAvailabilitySender sends the CheckFrontDoorNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CheckFrontDoorNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CheckFrontDoorNameAvailabilityResponder handles the response to the CheckFrontDoorNameAvailability request. The method always
@@ -198,8 +198,7 @@ func (client BaseClient) CheckFrontDoorNameAvailabilityWithSubscriptionPreparer(
 // CheckFrontDoorNameAvailabilityWithSubscriptionSender sends the CheckFrontDoorNameAvailabilityWithSubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CheckFrontDoorNameAvailabilityWithSubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CheckFrontDoorNameAvailabilityWithSubscriptionResponder handles the response to the CheckFrontDoorNameAvailabilityWithSubscription request. The method always

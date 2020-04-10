@@ -37,7 +37,8 @@ func NewComponentsClient(subscriptionID string) ComponentsClient {
 	return NewComponentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewComponentsClientWithBaseURI creates an instance of the ComponentsClient client.
+// NewComponentsClientWithBaseURI creates an instance of the ComponentsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewComponentsClientWithBaseURI(baseURI string, subscriptionID string) ComponentsClient {
 	return ComponentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -126,8 +127,7 @@ func (client ComponentsClient) GetPreparer(ctx context.Context, resourceGroupNam
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComponentsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -246,8 +246,7 @@ func (client ComponentsClient) ListByResourcePreparer(ctx context.Context, resou
 // ListByResourceSender sends the ListByResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComponentsClient) ListByResourceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceResponder handles the response to the ListByResource request. The method always

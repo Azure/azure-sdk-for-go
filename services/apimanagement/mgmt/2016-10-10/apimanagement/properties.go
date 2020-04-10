@@ -36,7 +36,8 @@ func NewPropertiesClient(subscriptionID string) PropertiesClient {
 	return NewPropertiesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPropertiesClientWithBaseURI creates an instance of the PropertiesClient client.
+// NewPropertiesClientWithBaseURI creates an instance of the PropertiesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPropertiesClientWithBaseURI(baseURI string, subscriptionID string) PropertiesClient {
 	return PropertiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

@@ -37,7 +37,8 @@ func NewElasticPoolsClient(subscriptionID string) ElasticPoolsClient {
 	return NewElasticPoolsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewElasticPoolsClientWithBaseURI creates an instance of the ElasticPoolsClient client.
+// NewElasticPoolsClientWithBaseURI creates an instance of the ElasticPoolsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewElasticPoolsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolsClient {
 	return ElasticPoolsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -99,9 +100,8 @@ func (client ElasticPoolsClient) FailoverPreparer(ctx context.Context, resourceG
 // FailoverSender sends the Failover request. The method will close the
 // http.Response Body if it receives an error.
 func (client ElasticPoolsClient) FailoverSender(req *http.Request) (future ElasticPoolsFailoverFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

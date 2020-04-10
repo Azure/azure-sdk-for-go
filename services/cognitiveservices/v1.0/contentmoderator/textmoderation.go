@@ -100,8 +100,7 @@ func (client TextModerationClient) DetectLanguagePreparer(ctx context.Context, t
 // DetectLanguageSender sends the DetectLanguage request. The method will close the
 // http.Response Body if it receives an error.
 func (client TextModerationClient) DetectLanguageSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DetectLanguageResponder handles the response to the DetectLanguage request. The method always
@@ -201,8 +200,7 @@ func (client TextModerationClient) ScreenTextPreparer(ctx context.Context, textC
 // ScreenTextSender sends the ScreenText request. The method will close the
 // http.Response Body if it receives an error.
 func (client TextModerationClient) ScreenTextSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ScreenTextResponder handles the response to the ScreenText request. The method always

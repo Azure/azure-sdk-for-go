@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 package logicapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2019-05-01/logic/logicapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2018-07-01-preview/logic/logicapi"
 
 type IntegrationAccountAgreementsClientAPI = original.IntegrationAccountAgreementsClientAPI
 type IntegrationAccountAssembliesClientAPI = original.IntegrationAccountAssembliesClientAPI
@@ -30,11 +30,6 @@ type IntegrationAccountPartnersClientAPI = original.IntegrationAccountPartnersCl
 type IntegrationAccountSchemasClientAPI = original.IntegrationAccountSchemasClientAPI
 type IntegrationAccountSessionsClientAPI = original.IntegrationAccountSessionsClientAPI
 type IntegrationAccountsClientAPI = original.IntegrationAccountsClientAPI
-type IntegrationServiceEnvironmentManagedAPIOperationsClientAPI = original.IntegrationServiceEnvironmentManagedAPIOperationsClientAPI
-type IntegrationServiceEnvironmentManagedApisClientAPI = original.IntegrationServiceEnvironmentManagedApisClientAPI
-type IntegrationServiceEnvironmentNetworkHealthClientAPI = original.IntegrationServiceEnvironmentNetworkHealthClientAPI
-type IntegrationServiceEnvironmentSkusClientAPI = original.IntegrationServiceEnvironmentSkusClientAPI
-type IntegrationServiceEnvironmentsClientAPI = original.IntegrationServiceEnvironmentsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type WorkflowRunActionRepetitionsClientAPI = original.WorkflowRunActionRepetitionsClientAPI
 type WorkflowRunActionRepetitionsRequestHistoriesClientAPI = original.WorkflowRunActionRepetitionsRequestHistoriesClientAPI

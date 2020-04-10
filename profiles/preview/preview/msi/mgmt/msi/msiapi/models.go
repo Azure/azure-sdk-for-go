@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,4 +22,5 @@ package msiapi
 import original "github.com/Azure/azure-sdk-for-go/services/preview/msi/mgmt/2015-08-31-preview/msi/msiapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
+type SystemAssignedIdentitiesClientAPI = original.SystemAssignedIdentitiesClientAPI
 type UserAssignedIdentitiesClientAPI = original.UserAssignedIdentitiesClientAPI

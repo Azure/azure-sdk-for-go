@@ -35,7 +35,9 @@ func NewRecipientTransfersClient(subscriptionID string) RecipientTransfersClient
 	return NewRecipientTransfersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewRecipientTransfersClientWithBaseURI creates an instance of the RecipientTransfersClient client.
+// NewRecipientTransfersClientWithBaseURI creates an instance of the RecipientTransfersClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewRecipientTransfersClientWithBaseURI(baseURI string, subscriptionID string) RecipientTransfersClient {
 	return RecipientTransfersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -94,8 +96,7 @@ func (client RecipientTransfersClient) AcceptPreparer(ctx context.Context, trans
 // AcceptSender sends the Accept request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecipientTransfersClient) AcceptSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AcceptResponder handles the response to the Accept request. The method always
@@ -162,8 +163,7 @@ func (client RecipientTransfersClient) DeclinePreparer(ctx context.Context, tran
 // DeclineSender sends the Decline request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecipientTransfersClient) DeclineSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeclineResponder handles the response to the Decline request. The method always
@@ -230,8 +230,7 @@ func (client RecipientTransfersClient) GetPreparer(ctx context.Context, transfer
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecipientTransfersClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -293,8 +292,7 @@ func (client RecipientTransfersClient) ListPreparer(ctx context.Context) (*http.
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecipientTransfersClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

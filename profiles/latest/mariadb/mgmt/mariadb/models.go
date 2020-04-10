@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -108,22 +108,30 @@ const (
 	Unknown      VirtualNetworkRuleState = original.Unknown
 )
 
+type Advisor = original.Advisor
+type AdvisorsClient = original.AdvisorsClient
+type AdvisorsResultList = original.AdvisorsResultList
+type AdvisorsResultListIterator = original.AdvisorsResultListIterator
+type AdvisorsResultListPage = original.AdvisorsResultListPage
+type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type BasicServerPropertiesForCreate = original.BasicServerPropertiesForCreate
 type CheckNameAvailabilityClient = original.CheckNameAvailabilityClient
 type CloudError = original.CloudError
-type CloudErrorBody = original.CloudErrorBody
 type Configuration = original.Configuration
 type ConfigurationListResult = original.ConfigurationListResult
 type ConfigurationProperties = original.ConfigurationProperties
 type ConfigurationsClient = original.ConfigurationsClient
 type ConfigurationsCreateOrUpdateFuture = original.ConfigurationsCreateOrUpdateFuture
+type CreateRecommendedActionSessionFuture = original.CreateRecommendedActionSessionFuture
 type Database = original.Database
 type DatabaseListResult = original.DatabaseListResult
 type DatabaseProperties = original.DatabaseProperties
 type DatabasesClient = original.DatabasesClient
 type DatabasesCreateOrUpdateFuture = original.DatabasesCreateOrUpdateFuture
 type DatabasesDeleteFuture = original.DatabasesDeleteFuture
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type ErrorResponse = original.ErrorResponse
 type FirewallRule = original.FirewallRule
 type FirewallRuleListResult = original.FirewallRuleListResult
 type FirewallRuleProperties = original.FirewallRuleProperties
@@ -131,6 +139,8 @@ type FirewallRulesClient = original.FirewallRulesClient
 type FirewallRulesCreateOrUpdateFuture = original.FirewallRulesCreateOrUpdateFuture
 type FirewallRulesDeleteFuture = original.FirewallRulesDeleteFuture
 type LocationBasedPerformanceTierClient = original.LocationBasedPerformanceTierClient
+type LocationBasedRecommendedActionSessionsOperationStatusClient = original.LocationBasedRecommendedActionSessionsOperationStatusClient
+type LocationBasedRecommendedActionSessionsResultClient = original.LocationBasedRecommendedActionSessionsResultClient
 type LogFile = original.LogFile
 type LogFileListResult = original.LogFileListResult
 type LogFileProperties = original.LogFileProperties
@@ -144,8 +154,41 @@ type OperationsClient = original.OperationsClient
 type PerformanceTierListResult = original.PerformanceTierListResult
 type PerformanceTierProperties = original.PerformanceTierProperties
 type PerformanceTierServiceLevelObjectives = original.PerformanceTierServiceLevelObjectives
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
+type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateEndpointConnectionsUpdateTagsFuture = original.PrivateEndpointConnectionsUpdateTagsFuture
+type PrivateEndpointProperty = original.PrivateEndpointProperty
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceListResultIterator = original.PrivateLinkResourceListResultIterator
+type PrivateLinkResourceListResultPage = original.PrivateLinkResourceListResultPage
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
 type ProxyResource = original.ProxyResource
+type QueryStatistic = original.QueryStatistic
+type QueryStatisticProperties = original.QueryStatisticProperties
+type QueryText = original.QueryText
+type QueryTextProperties = original.QueryTextProperties
+type QueryTextsClient = original.QueryTextsClient
+type QueryTextsResultList = original.QueryTextsResultList
+type QueryTextsResultListIterator = original.QueryTextsResultListIterator
+type QueryTextsResultListPage = original.QueryTextsResultListPage
+type RecommendationAction = original.RecommendationAction
+type RecommendationActionProperties = original.RecommendationActionProperties
+type RecommendationActionsResultList = original.RecommendationActionsResultList
+type RecommendationActionsResultListIterator = original.RecommendationActionsResultListIterator
+type RecommendationActionsResultListPage = original.RecommendationActionsResultListPage
+type RecommendedActionSessionsOperationStatus = original.RecommendedActionSessionsOperationStatus
+type RecommendedActionsClient = original.RecommendedActionsClient
 type ReplicasClient = original.ReplicasClient
+type Resource = original.Resource
 type SecurityAlertPolicyProperties = original.SecurityAlertPolicyProperties
 type Server = original.Server
 type ServerForCreate = original.ServerForCreate
@@ -168,6 +211,13 @@ type ServersRestartFuture = original.ServersRestartFuture
 type ServersUpdateFuture = original.ServersUpdateFuture
 type Sku = original.Sku
 type StorageProfile = original.StorageProfile
+type TagsObject = original.TagsObject
+type TopQueryStatisticsClient = original.TopQueryStatisticsClient
+type TopQueryStatisticsInput = original.TopQueryStatisticsInput
+type TopQueryStatisticsInputProperties = original.TopQueryStatisticsInputProperties
+type TopQueryStatisticsResultList = original.TopQueryStatisticsResultList
+type TopQueryStatisticsResultListIterator = original.TopQueryStatisticsResultListIterator
+type TopQueryStatisticsResultListPage = original.TopQueryStatisticsResultListPage
 type TrackedResource = original.TrackedResource
 type VirtualNetworkRule = original.VirtualNetworkRule
 type VirtualNetworkRuleListResult = original.VirtualNetworkRuleListResult
@@ -177,9 +227,29 @@ type VirtualNetworkRuleProperties = original.VirtualNetworkRuleProperties
 type VirtualNetworkRulesClient = original.VirtualNetworkRulesClient
 type VirtualNetworkRulesCreateOrUpdateFuture = original.VirtualNetworkRulesCreateOrUpdateFuture
 type VirtualNetworkRulesDeleteFuture = original.VirtualNetworkRulesDeleteFuture
+type WaitStatistic = original.WaitStatistic
+type WaitStatisticProperties = original.WaitStatisticProperties
+type WaitStatisticsClient = original.WaitStatisticsClient
+type WaitStatisticsInput = original.WaitStatisticsInput
+type WaitStatisticsInputProperties = original.WaitStatisticsInputProperties
+type WaitStatisticsResultList = original.WaitStatisticsResultList
+type WaitStatisticsResultListIterator = original.WaitStatisticsResultListIterator
+type WaitStatisticsResultListPage = original.WaitStatisticsResultListPage
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAdvisorsClient(subscriptionID string) AdvisorsClient {
+	return original.NewAdvisorsClient(subscriptionID)
+}
+func NewAdvisorsClientWithBaseURI(baseURI string, subscriptionID string) AdvisorsClient {
+	return original.NewAdvisorsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAdvisorsResultListIterator(page AdvisorsResultListPage) AdvisorsResultListIterator {
+	return original.NewAdvisorsResultListIterator(page)
+}
+func NewAdvisorsResultListPage(getNextPage func(context.Context, AdvisorsResultList) (AdvisorsResultList, error)) AdvisorsResultListPage {
+	return original.NewAdvisorsResultListPage(getNextPage)
 }
 func NewCheckNameAvailabilityClient(subscriptionID string) CheckNameAvailabilityClient {
 	return original.NewCheckNameAvailabilityClient(subscriptionID)
@@ -211,6 +281,18 @@ func NewLocationBasedPerformanceTierClient(subscriptionID string) LocationBasedP
 func NewLocationBasedPerformanceTierClientWithBaseURI(baseURI string, subscriptionID string) LocationBasedPerformanceTierClient {
 	return original.NewLocationBasedPerformanceTierClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewLocationBasedRecommendedActionSessionsOperationStatusClient(subscriptionID string) LocationBasedRecommendedActionSessionsOperationStatusClient {
+	return original.NewLocationBasedRecommendedActionSessionsOperationStatusClient(subscriptionID)
+}
+func NewLocationBasedRecommendedActionSessionsOperationStatusClientWithBaseURI(baseURI string, subscriptionID string) LocationBasedRecommendedActionSessionsOperationStatusClient {
+	return original.NewLocationBasedRecommendedActionSessionsOperationStatusClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLocationBasedRecommendedActionSessionsResultClient(subscriptionID string) LocationBasedRecommendedActionSessionsResultClient {
+	return original.NewLocationBasedRecommendedActionSessionsResultClient(subscriptionID)
+}
+func NewLocationBasedRecommendedActionSessionsResultClientWithBaseURI(baseURI string, subscriptionID string) LocationBasedRecommendedActionSessionsResultClient {
+	return original.NewLocationBasedRecommendedActionSessionsResultClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewLogFilesClient(subscriptionID string) LogFilesClient {
 	return original.NewLogFilesClient(subscriptionID)
 }
@@ -222,6 +304,54 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return original.NewPrivateEndpointConnectionListResultIterator(page)
+}
+func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(getNextPage)
+}
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourceListResultIterator(page PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator {
+	return original.NewPrivateLinkResourceListResultIterator(page)
+}
+func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return original.NewPrivateLinkResourceListResultPage(getNextPage)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewQueryTextsClient(subscriptionID string) QueryTextsClient {
+	return original.NewQueryTextsClient(subscriptionID)
+}
+func NewQueryTextsClientWithBaseURI(baseURI string, subscriptionID string) QueryTextsClient {
+	return original.NewQueryTextsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewQueryTextsResultListIterator(page QueryTextsResultListPage) QueryTextsResultListIterator {
+	return original.NewQueryTextsResultListIterator(page)
+}
+func NewQueryTextsResultListPage(getNextPage func(context.Context, QueryTextsResultList) (QueryTextsResultList, error)) QueryTextsResultListPage {
+	return original.NewQueryTextsResultListPage(getNextPage)
+}
+func NewRecommendationActionsResultListIterator(page RecommendationActionsResultListPage) RecommendationActionsResultListIterator {
+	return original.NewRecommendationActionsResultListIterator(page)
+}
+func NewRecommendationActionsResultListPage(getNextPage func(context.Context, RecommendationActionsResultList) (RecommendationActionsResultList, error)) RecommendationActionsResultListPage {
+	return original.NewRecommendationActionsResultListPage(getNextPage)
+}
+func NewRecommendedActionsClient(subscriptionID string) RecommendedActionsClient {
+	return original.NewRecommendedActionsClient(subscriptionID)
+}
+func NewRecommendedActionsClientWithBaseURI(baseURI string, subscriptionID string) RecommendedActionsClient {
+	return original.NewRecommendedActionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewReplicasClient(subscriptionID string) ReplicasClient {
 	return original.NewReplicasClient(subscriptionID)
@@ -241,6 +371,18 @@ func NewServersClient(subscriptionID string) ServersClient {
 func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
 	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewTopQueryStatisticsClient(subscriptionID string) TopQueryStatisticsClient {
+	return original.NewTopQueryStatisticsClient(subscriptionID)
+}
+func NewTopQueryStatisticsClientWithBaseURI(baseURI string, subscriptionID string) TopQueryStatisticsClient {
+	return original.NewTopQueryStatisticsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTopQueryStatisticsResultListIterator(page TopQueryStatisticsResultListPage) TopQueryStatisticsResultListIterator {
+	return original.NewTopQueryStatisticsResultListIterator(page)
+}
+func NewTopQueryStatisticsResultListPage(getNextPage func(context.Context, TopQueryStatisticsResultList) (TopQueryStatisticsResultList, error)) TopQueryStatisticsResultListPage {
+	return original.NewTopQueryStatisticsResultListPage(getNextPage)
+}
 func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
 	return original.NewVirtualNetworkRuleListResultIterator(page)
 }
@@ -252,6 +394,18 @@ func NewVirtualNetworkRulesClient(subscriptionID string) VirtualNetworkRulesClie
 }
 func NewVirtualNetworkRulesClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkRulesClient {
 	return original.NewVirtualNetworkRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWaitStatisticsClient(subscriptionID string) WaitStatisticsClient {
+	return original.NewWaitStatisticsClient(subscriptionID)
+}
+func NewWaitStatisticsClientWithBaseURI(baseURI string, subscriptionID string) WaitStatisticsClient {
+	return original.NewWaitStatisticsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWaitStatisticsResultListIterator(page WaitStatisticsResultListPage) WaitStatisticsResultListIterator {
+	return original.NewWaitStatisticsResultListIterator(page)
+}
+func NewWaitStatisticsResultListPage(getNextPage func(context.Context, WaitStatisticsResultList) (WaitStatisticsResultList, error)) WaitStatisticsResultListPage {
+	return original.NewWaitStatisticsResultListPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

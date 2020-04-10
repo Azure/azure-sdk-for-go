@@ -35,7 +35,8 @@ func NewFilesClient(subscriptionID string) FilesClient {
 	return NewFilesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewFilesClientWithBaseURI creates an instance of the FilesClient client.
+// NewFilesClientWithBaseURI creates an instance of the FilesClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewFilesClientWithBaseURI(baseURI string, subscriptionID string) FilesClient {
 	return FilesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -107,8 +108,7 @@ func (client FilesClient) CreateOrUpdatePreparer(ctx context.Context, parameters
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client FilesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -188,8 +188,7 @@ func (client FilesClient) DeletePreparer(ctx context.Context, groupName string, 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client FilesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -269,8 +268,7 @@ func (client FilesClient) GetPreparer(ctx context.Context, groupName string, ser
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client FilesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -350,8 +348,7 @@ func (client FilesClient) ListPreparer(ctx context.Context, groupName string, se
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client FilesClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -468,8 +465,7 @@ func (client FilesClient) ReadPreparer(ctx context.Context, groupName string, se
 // ReadSender sends the Read request. The method will close the
 // http.Response Body if it receives an error.
 func (client FilesClient) ReadSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ReadResponder handles the response to the Read request. The method always
@@ -549,8 +545,7 @@ func (client FilesClient) ReadWritePreparer(ctx context.Context, groupName strin
 // ReadWriteSender sends the ReadWrite request. The method will close the
 // http.Response Body if it receives an error.
 func (client FilesClient) ReadWriteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ReadWriteResponder handles the response to the ReadWrite request. The method always
@@ -633,8 +628,7 @@ func (client FilesClient) UpdatePreparer(ctx context.Context, parameters Project
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client FilesClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

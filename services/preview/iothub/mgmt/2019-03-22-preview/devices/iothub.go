@@ -36,7 +36,8 @@ func NewIotHubClient(subscriptionID string) IotHubClient {
 	return NewIotHubClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewIotHubClientWithBaseURI creates an instance of the IotHubClient client.
+// NewIotHubClientWithBaseURI creates an instance of the IotHubClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewIotHubClientWithBaseURI(baseURI string, subscriptionID string) IotHubClient {
 	return IotHubClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -104,9 +105,8 @@ func (client IotHubClient) ManualFailoverPreparer(ctx context.Context, iotHubNam
 // ManualFailoverSender sends the ManualFailover request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubClient) ManualFailoverSender(req *http.Request) (future IotHubManualFailoverFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

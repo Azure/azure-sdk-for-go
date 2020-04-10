@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -100,6 +100,26 @@ const (
 	None          NetworkRuleBypassOptions = original.None
 )
 
+type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
+
+const (
+	Creating     PrivateEndpointConnectionProvisioningState = original.Creating
+	Deleting     PrivateEndpointConnectionProvisioningState = original.Deleting
+	Disconnected PrivateEndpointConnectionProvisioningState = original.Disconnected
+	Failed       PrivateEndpointConnectionProvisioningState = original.Failed
+	Succeeded    PrivateEndpointConnectionProvisioningState = original.Succeeded
+	Updating     PrivateEndpointConnectionProvisioningState = original.Updating
+)
+
+type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
+
+const (
+	PrivateEndpointServiceConnectionStatusApproved     PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusApproved
+	PrivateEndpointServiceConnectionStatusDisconnected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusDisconnected
+	PrivateEndpointServiceConnectionStatusPending      PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusPending
+	PrivateEndpointServiceConnectionStatusRejected     PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
+)
+
 type Reason = original.Reason
 
 const (
@@ -149,6 +169,8 @@ const (
 type AccessPolicyEntry = original.AccessPolicyEntry
 type BaseClient = original.BaseClient
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
+type CloudError = original.CloudError
+type CloudErrorBody = original.CloudErrorBody
 type DeletedVault = original.DeletedVault
 type DeletedVaultListResult = original.DeletedVaultListResult
 type DeletedVaultListResultIterator = original.DeletedVaultListResultIterator
@@ -165,6 +187,17 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
 type Permissions = original.Permissions
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionItem = original.PrivateEndpointConnectionItem
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type Resource = original.Resource
 type ResourceListResult = original.ResourceListResult
 type ResourceListResultIterator = original.ResourceListResultIterator
@@ -208,6 +241,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewResourceListResultIterator(page ResourceListResultPage) ResourceListResultIterator {
 	return original.NewResourceListResultIterator(page)
 }
@@ -246,6 +291,12 @@ func PossibleNetworkRuleActionValues() []NetworkRuleAction {
 }
 func PossibleNetworkRuleBypassOptionsValues() []NetworkRuleBypassOptions {
 	return original.PossibleNetworkRuleBypassOptionsValues()
+}
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
+}
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
 }
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()

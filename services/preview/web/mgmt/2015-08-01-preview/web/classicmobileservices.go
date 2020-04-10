@@ -35,7 +35,9 @@ func NewClassicMobileServicesClient(subscriptionID string) ClassicMobileServices
 	return NewClassicMobileServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewClassicMobileServicesClientWithBaseURI creates an instance of the ClassicMobileServicesClient client.
+// NewClassicMobileServicesClientWithBaseURI creates an instance of the ClassicMobileServicesClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewClassicMobileServicesClientWithBaseURI(baseURI string, subscriptionID string) ClassicMobileServicesClient {
 	return ClassicMobileServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -100,8 +102,7 @@ func (client ClassicMobileServicesClient) DeleteClassicMobileServicePreparer(ctx
 // DeleteClassicMobileServiceSender sends the DeleteClassicMobileService request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClassicMobileServicesClient) DeleteClassicMobileServiceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteClassicMobileServiceResponder handles the response to the DeleteClassicMobileService request. The method always
@@ -177,8 +178,7 @@ func (client ClassicMobileServicesClient) GetClassicMobileServicePreparer(ctx co
 // GetClassicMobileServiceSender sends the GetClassicMobileService request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClassicMobileServicesClient) GetClassicMobileServiceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetClassicMobileServiceResponder handles the response to the GetClassicMobileService request. The method always
@@ -253,8 +253,7 @@ func (client ClassicMobileServicesClient) GetClassicMobileServicesPreparer(ctx c
 // GetClassicMobileServicesSender sends the GetClassicMobileServices request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClassicMobileServicesClient) GetClassicMobileServicesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetClassicMobileServicesResponder handles the response to the GetClassicMobileServices request. The method always

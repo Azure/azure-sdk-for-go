@@ -37,7 +37,8 @@ func NewImagesClient(subscriptionID string) ImagesClient {
 	return NewImagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewImagesClientWithBaseURI creates an instance of the ImagesClient client.
+// NewImagesClientWithBaseURI creates an instance of the ImagesClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesClient {
 	return ImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -105,8 +106,7 @@ func (client ImagesClient) GetUploadURLForDataPreparer(ctx context.Context, reso
 // GetUploadURLForDataSender sends the GetUploadURLForData request. The method will close the
 // http.Response Body if it receives an error.
 func (client ImagesClient) GetUploadURLForDataSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetUploadURLForDataResponder handles the response to the GetUploadURLForData request. The method always
@@ -185,8 +185,7 @@ func (client ImagesClient) GetUploadURLForEntityTypePreparer(ctx context.Context
 // GetUploadURLForEntityTypeSender sends the GetUploadURLForEntityType request. The method will close the
 // http.Response Body if it receives an error.
 func (client ImagesClient) GetUploadURLForEntityTypeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetUploadURLForEntityTypeResponder handles the response to the GetUploadURLForEntityType request. The method always

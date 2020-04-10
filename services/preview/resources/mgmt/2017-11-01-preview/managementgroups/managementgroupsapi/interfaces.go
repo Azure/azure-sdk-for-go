@@ -29,6 +29,7 @@ type ClientAPI interface {
 	Delete(ctx context.Context, groupID string, cacheControl string) (result autorest.Response, err error)
 	Get(ctx context.Context, groupID string, expand string, recurse *bool, cacheControl string) (result managementgroups.ManagementGroup, err error)
 	List(ctx context.Context, cacheControl string, skiptoken string) (result managementgroups.ListResultPage, err error)
+	ListComplete(ctx context.Context, cacheControl string, skiptoken string) (result managementgroups.ListResultIterator, err error)
 	Update(ctx context.Context, groupID string, createManagementGroupRequest managementgroups.CreateManagementGroupRequest, cacheControl string) (result managementgroups.ManagementGroup, err error)
 }
 
@@ -45,6 +46,7 @@ var _ SubscriptionsClientAPI = (*managementgroups.SubscriptionsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result managementgroups.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result managementgroups.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*managementgroups.OperationsClient)(nil)

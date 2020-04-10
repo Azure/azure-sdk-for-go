@@ -26,6 +26,7 @@ import (
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result databox.OperationListPage, err error)
+	ListComplete(ctx context.Context) (result databox.OperationListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*databox.OperationsClient)(nil)
@@ -38,7 +39,9 @@ type JobsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, jobName string) (result databox.JobsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, jobName string, expand string) (result databox.JobResource, err error)
 	List(ctx context.Context, skipToken string) (result databox.JobResourceListPage, err error)
+	ListComplete(ctx context.Context, skipToken string) (result databox.JobResourceListIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, skipToken string) (result databox.JobResourceListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, skipToken string) (result databox.JobResourceListIterator, err error)
 	ListCredentials(ctx context.Context, resourceGroupName string, jobName string) (result databox.UnencryptedCredentialsList, err error)
 	Update(ctx context.Context, resourceGroupName string, jobName string, jobResourceUpdateParameter databox.JobResourceUpdateParameter, ifMatch string) (result databox.JobsUpdateFuture, err error)
 }
@@ -48,6 +51,7 @@ var _ JobsClientAPI = (*databox.JobsClient)(nil)
 // ServiceClientAPI contains the set of methods on the ServiceClient type.
 type ServiceClientAPI interface {
 	ListAvailableSkus(ctx context.Context, location string, availableSkuRequest databox.AvailableSkuRequest) (result databox.AvailableSkusResultPage, err error)
+	ListAvailableSkusComplete(ctx context.Context, location string, availableSkuRequest databox.AvailableSkuRequest) (result databox.AvailableSkusResultIterator, err error)
 	ValidateAddressMethod(ctx context.Context, location string, validateAddress databox.ValidateAddress) (result databox.AddressValidationOutput, err error)
 }
 

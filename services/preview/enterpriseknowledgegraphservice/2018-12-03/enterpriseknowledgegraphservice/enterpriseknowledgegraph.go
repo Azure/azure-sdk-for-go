@@ -37,7 +37,9 @@ func NewEnterpriseKnowledgeGraphClient(subscriptionID string) EnterpriseKnowledg
 	return NewEnterpriseKnowledgeGraphClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewEnterpriseKnowledgeGraphClientWithBaseURI creates an instance of the EnterpriseKnowledgeGraphClient client.
+// NewEnterpriseKnowledgeGraphClientWithBaseURI creates an instance of the EnterpriseKnowledgeGraphClient client using
+// a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewEnterpriseKnowledgeGraphClientWithBaseURI(baseURI string, subscriptionID string) EnterpriseKnowledgeGraphClient {
 	return EnterpriseKnowledgeGraphClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

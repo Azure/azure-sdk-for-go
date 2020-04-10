@@ -36,7 +36,8 @@ func NewForecastClient(subscriptionID string) ForecastClient {
 	return NewForecastClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewForecastClientWithBaseURI creates an instance of the ForecastClient client.
+// NewForecastClientWithBaseURI creates an instance of the ForecastClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewForecastClientWithBaseURI(baseURI string, subscriptionID string) ForecastClient {
 	return ForecastClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -132,8 +133,7 @@ func (client ForecastClient) UsageByBillingAccountPreparer(ctx context.Context, 
 // UsageByBillingAccountSender sends the UsageByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client ForecastClient) UsageByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UsageByBillingAccountResponder handles the response to the UsageByBillingAccount request. The method always
@@ -242,8 +242,7 @@ func (client ForecastClient) UsageByDepartmentPreparer(ctx context.Context, bill
 // UsageByDepartmentSender sends the UsageByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ForecastClient) UsageByDepartmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UsageByDepartmentResponder handles the response to the UsageByDepartment request. The method always
@@ -352,8 +351,7 @@ func (client ForecastClient) UsageByEnrollmentAccountPreparer(ctx context.Contex
 // UsageByEnrollmentAccountSender sends the UsageByEnrollmentAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client ForecastClient) UsageByEnrollmentAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UsageByEnrollmentAccountResponder handles the response to the UsageByEnrollmentAccount request. The method always
@@ -460,8 +458,7 @@ func (client ForecastClient) UsageByExternalBillingAccountPreparer(ctx context.C
 // UsageByExternalBillingAccountSender sends the UsageByExternalBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client ForecastClient) UsageByExternalBillingAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UsageByExternalBillingAccountResponder handles the response to the UsageByExternalBillingAccount request. The method always
@@ -568,8 +565,7 @@ func (client ForecastClient) UsageByManagementGroupPreparer(ctx context.Context,
 // UsageByManagementGroupSender sends the UsageByManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ForecastClient) UsageByManagementGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UsageByManagementGroupResponder handles the response to the UsageByManagementGroup request. The method always
@@ -677,8 +673,7 @@ func (client ForecastClient) UsageByResourceGroupPreparer(ctx context.Context, r
 // UsageByResourceGroupSender sends the UsageByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ForecastClient) UsageByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UsageByResourceGroupResponder handles the response to the UsageByResourceGroup request. The method always
@@ -784,8 +779,7 @@ func (client ForecastClient) UsageBySubscriptionPreparer(ctx context.Context, pa
 // UsageBySubscriptionSender sends the UsageBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client ForecastClient) UsageBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UsageBySubscriptionResponder handles the response to the UsageBySubscription request. The method always

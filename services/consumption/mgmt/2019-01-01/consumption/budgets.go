@@ -37,7 +37,8 @@ func NewBudgetsClient(subscriptionID string) BudgetsClient {
 	return NewBudgetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBudgetsClientWithBaseURI creates an instance of the BudgetsClient client.
+// NewBudgetsClientWithBaseURI creates an instance of the BudgetsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string) BudgetsClient {
 	return BudgetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -141,8 +142,7 @@ func (client BudgetsClient) CreateOrUpdatePreparer(ctx context.Context, scope st
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client BudgetsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -228,8 +228,7 @@ func (client BudgetsClient) DeletePreparer(ctx context.Context, scope string, bu
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client BudgetsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -314,8 +313,7 @@ func (client BudgetsClient) GetPreparer(ctx context.Context, scope string, budge
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client BudgetsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -400,8 +398,7 @@ func (client BudgetsClient) ListPreparer(ctx context.Context, scope string) (*ht
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client BudgetsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

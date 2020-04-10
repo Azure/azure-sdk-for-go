@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,11 +22,20 @@ package advisor
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2017-04-19/advisor"
+	original "github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2020-01-01/advisor"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type CPUThreshold = original.CPUThreshold
+
+const (
+	Five    CPUThreshold = original.Five
+	OneFive CPUThreshold = original.OneFive
+	OneZero CPUThreshold = original.OneZero
+	TwoZero CPUThreshold = original.TwoZero
 )
 
 type Category = original.Category
@@ -37,6 +46,13 @@ const (
 	OperationalExcellence Category = original.OperationalExcellence
 	Performance           Category = original.Performance
 	Security              Category = original.Security
+)
+
+type DigestConfigState = original.DigestConfigState
+
+const (
+	Active   DigestConfigState = original.Active
+	Disabled DigestConfigState = original.Disabled
 )
 
 type Impact = original.Impact
@@ -62,6 +78,7 @@ const (
 )
 
 type ARMErrorResponseBody = original.ARMErrorResponseBody
+type ArmErrorResponse = original.ArmErrorResponse
 type BaseClient = original.BaseClient
 type ConfigData = original.ConfigData
 type ConfigDataProperties = original.ConfigDataProperties
@@ -69,6 +86,7 @@ type ConfigurationListResult = original.ConfigurationListResult
 type ConfigurationListResultIterator = original.ConfigurationListResultIterator
 type ConfigurationListResultPage = original.ConfigurationListResultPage
 type ConfigurationsClient = original.ConfigurationsClient
+type DigestConfig = original.DigestConfig
 type MetadataEntity = original.MetadataEntity
 type MetadataEntityListResult = original.MetadataEntityListResult
 type MetadataEntityListResultIterator = original.MetadataEntityListResultIterator
@@ -85,6 +103,7 @@ type RecommendationMetadataClient = original.RecommendationMetadataClient
 type RecommendationProperties = original.RecommendationProperties
 type RecommendationsClient = original.RecommendationsClient
 type Resource = original.Resource
+type ResourceMetadata = original.ResourceMetadata
 type ResourceRecommendationBase = original.ResourceRecommendationBase
 type ResourceRecommendationBaseListResult = original.ResourceRecommendationBaseListResult
 type ResourceRecommendationBaseListResultIterator = original.ResourceRecommendationBaseListResultIterator
@@ -164,8 +183,14 @@ func NewSuppressionsClientWithBaseURI(baseURI string, subscriptionID string) Sup
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleCPUThresholdValues() []CPUThreshold {
+	return original.PossibleCPUThresholdValues()
+}
 func PossibleCategoryValues() []Category {
 	return original.PossibleCategoryValues()
+}
+func PossibleDigestConfigStateValues() []DigestConfigState {
+	return original.PossibleDigestConfigStateValues()
 }
 func PossibleImpactValues() []Impact {
 	return original.PossibleImpactValues()

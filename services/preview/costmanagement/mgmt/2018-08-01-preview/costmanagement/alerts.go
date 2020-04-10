@@ -36,7 +36,8 @@ func NewAlertsClient(subscriptionID string) AlertsClient {
 	return NewAlertsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAlertsClientWithBaseURI creates an instance of the AlertsClient client.
+// NewAlertsClientWithBaseURI creates an instance of the AlertsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
 	return AlertsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -100,8 +101,7 @@ func (client AlertsClient) GetAlertByManagementGroupsPreparer(ctx context.Contex
 // GetAlertByManagementGroupsSender sends the GetAlertByManagementGroups request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) GetAlertByManagementGroupsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAlertByManagementGroupsResponder handles the response to the GetAlertByManagementGroups request. The method always
@@ -178,8 +178,7 @@ func (client AlertsClient) GetByAccountPreparer(ctx context.Context, billingAcco
 // GetByAccountSender sends the GetByAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) GetByAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByAccountResponder handles the response to the GetByAccount request. The method always
@@ -256,8 +255,7 @@ func (client AlertsClient) GetByDepartmentPreparer(ctx context.Context, billingA
 // GetByDepartmentSender sends the GetByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) GetByDepartmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByDepartmentResponder handles the response to the GetByDepartment request. The method always
@@ -332,8 +330,7 @@ func (client AlertsClient) GetByEnrollmentPreparer(ctx context.Context, billingA
 // GetByEnrollmentSender sends the GetByEnrollment request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) GetByEnrollmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByEnrollmentResponder handles the response to the GetByEnrollment request. The method always
@@ -409,8 +406,7 @@ func (client AlertsClient) GetByResourceGroupNamePreparer(ctx context.Context, r
 // GetByResourceGroupNameSender sends the GetByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) GetByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetByResourceGroupNameResponder handles the response to the GetByResourceGroupName request. The method always
@@ -484,8 +480,7 @@ func (client AlertsClient) GetBySubscriptionPreparer(ctx context.Context, alertI
 // GetBySubscriptionSender sends the GetBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) GetBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetBySubscriptionResponder handles the response to the GetBySubscription request. The method always
@@ -583,8 +578,7 @@ func (client AlertsClient) ListPreparer(ctx context.Context, filter string, skip
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -722,8 +716,7 @@ func (client AlertsClient) ListByAccountPreparer(ctx context.Context, billingAcc
 // ListByAccountSender sends the ListByAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) ListByAccountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByAccountResponder handles the response to the ListByAccount request. The method always
@@ -861,8 +854,7 @@ func (client AlertsClient) ListByDepartmentPreparer(ctx context.Context, billing
 // ListByDepartmentSender sends the ListByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) ListByDepartmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByDepartmentResponder handles the response to the ListByDepartment request. The method always
@@ -998,8 +990,7 @@ func (client AlertsClient) ListByEnrollmentPreparer(ctx context.Context, billing
 // ListByEnrollmentSender sends the ListByEnrollment request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) ListByEnrollmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByEnrollmentResponder handles the response to the ListByEnrollment request. The method always
@@ -1135,8 +1126,7 @@ func (client AlertsClient) ListByManagementGroupsPreparer(ctx context.Context, m
 // ListByManagementGroupsSender sends the ListByManagementGroups request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) ListByManagementGroupsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByManagementGroupsResponder handles the response to the ListByManagementGroups request. The method always
@@ -1273,8 +1263,7 @@ func (client AlertsClient) ListByResourceGroupNamePreparer(ctx context.Context, 
 // ListByResourceGroupNameSender sends the ListByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) ListByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupNameResponder handles the response to the ListByResourceGroupName request. The method always
@@ -1392,8 +1381,7 @@ func (client AlertsClient) UpdateBillingAccountAlertStatusPreparer(ctx context.C
 // UpdateBillingAccountAlertStatusSender sends the UpdateBillingAccountAlertStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) UpdateBillingAccountAlertStatusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateBillingAccountAlertStatusResponder handles the response to the UpdateBillingAccountAlertStatus request. The method always
@@ -1476,8 +1464,7 @@ func (client AlertsClient) UpdateDepartmentsAlertStatusPreparer(ctx context.Cont
 // UpdateDepartmentsAlertStatusSender sends the UpdateDepartmentsAlertStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) UpdateDepartmentsAlertStatusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateDepartmentsAlertStatusResponder handles the response to the UpdateDepartmentsAlertStatus request. The method always
@@ -1560,8 +1547,7 @@ func (client AlertsClient) UpdateEnrollmentAccountAlertStatusPreparer(ctx contex
 // UpdateEnrollmentAccountAlertStatusSender sends the UpdateEnrollmentAccountAlertStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) UpdateEnrollmentAccountAlertStatusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateEnrollmentAccountAlertStatusResponder handles the response to the UpdateEnrollmentAccountAlertStatus request. The method always
@@ -1642,8 +1628,7 @@ func (client AlertsClient) UpdateManagementGroupAlertStatusPreparer(ctx context.
 // UpdateManagementGroupAlertStatusSender sends the UpdateManagementGroupAlertStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) UpdateManagementGroupAlertStatusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateManagementGroupAlertStatusResponder handles the response to the UpdateManagementGroupAlertStatus request. The method always
@@ -1725,8 +1710,7 @@ func (client AlertsClient) UpdateResourceGroupNameAlertStatusPreparer(ctx contex
 // UpdateResourceGroupNameAlertStatusSender sends the UpdateResourceGroupNameAlertStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) UpdateResourceGroupNameAlertStatusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResourceGroupNameAlertStatusResponder handles the response to the UpdateResourceGroupNameAlertStatus request. The method always
@@ -1806,8 +1790,7 @@ func (client AlertsClient) UpdateSubscriptionAlertStatusPreparer(ctx context.Con
 // UpdateSubscriptionAlertStatusSender sends the UpdateSubscriptionAlertStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) UpdateSubscriptionAlertStatusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateSubscriptionAlertStatusResponder handles the response to the UpdateSubscriptionAlertStatus request. The method always

@@ -36,7 +36,8 @@ func NewManagersClient(subscriptionID string) ManagersClient {
 	return NewManagersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewManagersClientWithBaseURI creates an instance of the ManagersClient client.
+// NewManagersClientWithBaseURI creates an instance of the ManagersClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewManagersClientWithBaseURI(baseURI string, subscriptionID string) ManagersClient {
 	return ManagersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -116,8 +117,7 @@ func (client ManagersClient) CreateExtendedInfoPreparer(ctx context.Context, par
 // CreateExtendedInfoSender sends the CreateExtendedInfo request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) CreateExtendedInfoSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateExtendedInfoResponder handles the response to the CreateExtendedInfo request. The method always
@@ -208,8 +208,7 @@ func (client ManagersClient) CreateOrUpdatePreparer(ctx context.Context, paramet
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -292,8 +291,7 @@ func (client ManagersClient) DeletePreparer(ctx context.Context, resourceGroupNa
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -375,8 +373,7 @@ func (client ManagersClient) DeleteExtendedInfoPreparer(ctx context.Context, res
 // DeleteExtendedInfoSender sends the DeleteExtendedInfo request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) DeleteExtendedInfoSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteExtendedInfoResponder handles the response to the DeleteExtendedInfo request. The method always
@@ -458,8 +455,7 @@ func (client ManagersClient) GetPreparer(ctx context.Context, resourceGroupName 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -542,8 +538,7 @@ func (client ManagersClient) GetActivationKeyPreparer(ctx context.Context, resou
 // GetActivationKeySender sends the GetActivationKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) GetActivationKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetActivationKeyResponder handles the response to the GetActivationKey request. The method always
@@ -628,8 +623,7 @@ func (client ManagersClient) GetDevicePublicEncryptionKeyPreparer(ctx context.Co
 // GetDevicePublicEncryptionKeySender sends the GetDevicePublicEncryptionKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) GetDevicePublicEncryptionKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDevicePublicEncryptionKeyResponder handles the response to the GetDevicePublicEncryptionKey request. The method always
@@ -712,8 +706,7 @@ func (client ManagersClient) GetEncryptionSettingsPreparer(ctx context.Context, 
 // GetEncryptionSettingsSender sends the GetEncryptionSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) GetEncryptionSettingsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetEncryptionSettingsResponder handles the response to the GetEncryptionSettings request. The method always
@@ -796,8 +789,7 @@ func (client ManagersClient) GetExtendedInfoPreparer(ctx context.Context, resour
 // GetExtendedInfoSender sends the GetExtendedInfo request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) GetExtendedInfoSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetExtendedInfoResponder handles the response to the GetExtendedInfo request. The method always
@@ -880,8 +872,7 @@ func (client ManagersClient) GetPublicEncryptionKeyPreparer(ctx context.Context,
 // GetPublicEncryptionKeySender sends the GetPublicEncryptionKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) GetPublicEncryptionKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetPublicEncryptionKeyResponder handles the response to the GetPublicEncryptionKey request. The method always
@@ -952,8 +943,7 @@ func (client ManagersClient) ListPreparer(ctx context.Context) (*http.Request, e
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -1027,8 +1017,7 @@ func (client ManagersClient) ListByResourceGroupPreparer(ctx context.Context, re
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -1115,8 +1104,7 @@ func (client ManagersClient) ListFeatureSupportStatusPreparer(ctx context.Contex
 // ListFeatureSupportStatusSender sends the ListFeatureSupportStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) ListFeatureSupportStatusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListFeatureSupportStatusResponder handles the response to the ListFeatureSupportStatus request. The method always
@@ -1199,8 +1187,7 @@ func (client ManagersClient) ListMetricDefinitionPreparer(ctx context.Context, r
 // ListMetricDefinitionSender sends the ListMetricDefinition request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) ListMetricDefinitionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricDefinitionResponder handles the response to the ListMetricDefinition request. The method always
@@ -1285,8 +1272,7 @@ func (client ManagersClient) ListMetricsPreparer(ctx context.Context, resourceGr
 // ListMetricsSender sends the ListMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) ListMetricsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricsResponder handles the response to the ListMetrics request. The method always
@@ -1369,8 +1355,7 @@ func (client ManagersClient) RegenerateActivationKeyPreparer(ctx context.Context
 // RegenerateActivationKeySender sends the RegenerateActivationKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) RegenerateActivationKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RegenerateActivationKeyResponder handles the response to the RegenerateActivationKey request. The method always
@@ -1456,8 +1441,7 @@ func (client ManagersClient) UpdatePreparer(ctx context.Context, parameters Mana
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
@@ -1545,8 +1529,7 @@ func (client ManagersClient) UpdateExtendedInfoPreparer(ctx context.Context, par
 // UpdateExtendedInfoSender sends the UpdateExtendedInfo request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagersClient) UpdateExtendedInfoSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateExtendedInfoResponder handles the response to the UpdateExtendedInfo request. The method always

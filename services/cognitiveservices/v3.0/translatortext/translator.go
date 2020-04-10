@@ -255,8 +255,7 @@ func (client TranslatorClient) BreakSentencePreparer(ctx context.Context, textPa
 // BreakSentenceSender sends the BreakSentence request. The method will close the
 // http.Response Body if it receives an error.
 func (client TranslatorClient) BreakSentenceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // BreakSentenceResponder handles the response to the BreakSentence request. The method always
@@ -365,8 +364,7 @@ func (client TranslatorClient) DetectPreparer(ctx context.Context, textParameter
 // DetectSender sends the Detect request. The method will close the
 // http.Response Body if it receives an error.
 func (client TranslatorClient) DetectSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DetectResponder handles the response to the Detect request. The method always
@@ -497,8 +495,7 @@ func (client TranslatorClient) DictionaryExamplesPreparer(ctx context.Context, f
 // DictionaryExamplesSender sends the DictionaryExamples request. The method will close the
 // http.Response Body if it receives an error.
 func (client TranslatorClient) DictionaryExamplesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DictionaryExamplesResponder handles the response to the DictionaryExamples request. The method always
@@ -665,8 +662,7 @@ func (client TranslatorClient) DictionaryLookupPreparer(ctx context.Context, fro
 // DictionaryLookupSender sends the DictionaryLookup request. The method will close the
 // http.Response Body if it receives an error.
 func (client TranslatorClient) DictionaryLookupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DictionaryLookupResponder handles the response to the DictionaryLookup request. The method always
@@ -910,8 +906,7 @@ func (client TranslatorClient) LanguagesPreparer(ctx context.Context, scope []st
 // LanguagesSender sends the Languages request. The method will close the
 // http.Response Body if it receives an error.
 func (client TranslatorClient) LanguagesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // LanguagesResponder handles the response to the Languages request. The method always
@@ -1128,8 +1123,7 @@ func (client TranslatorClient) TranslatePreparer(ctx context.Context, toParamete
 // TranslateSender sends the Translate request. The method will close the
 // http.Response Body if it receives an error.
 func (client TranslatorClient) TranslateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // TranslateResponder handles the response to the Translate request. The method always
@@ -1239,8 +1233,7 @@ func (client TranslatorClient) TransliteratePreparer(ctx context.Context, langua
 // TransliterateSender sends the Transliterate request. The method will close the
 // http.Response Body if it receives an error.
 func (client TranslatorClient) TransliterateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // TransliterateResponder handles the response to the Transliterate request. The method always

@@ -35,7 +35,8 @@ func NewConnectionsClient(subscriptionID string) ConnectionsClient {
 	return NewConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewConnectionsClientWithBaseURI creates an instance of the ConnectionsClient client.
+// NewConnectionsClientWithBaseURI creates an instance of the ConnectionsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewConnectionsClientWithBaseURI(baseURI string, subscriptionID string) ConnectionsClient {
 	return ConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -103,8 +104,7 @@ func (client ConnectionsClient) ConfirmConsentCodePreparer(ctx context.Context, 
 // ConfirmConsentCodeSender sends the ConfirmConsentCode request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) ConfirmConsentCodeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ConfirmConsentCodeResponder handles the response to the ConfirmConsentCode request. The method always
@@ -183,8 +183,7 @@ func (client ConnectionsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -260,8 +259,7 @@ func (client ConnectionsClient) DeletePreparer(ctx context.Context, resourceGrou
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -336,8 +334,7 @@ func (client ConnectionsClient) GetPreparer(ctx context.Context, resourceGroupNa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -420,8 +417,7 @@ func (client ConnectionsClient) ListPreparer(ctx context.Context, resourceGroupN
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -537,8 +533,7 @@ func (client ConnectionsClient) ListConnectionKeysPreparer(ctx context.Context, 
 // ListConnectionKeysSender sends the ListConnectionKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) ListConnectionKeysSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListConnectionKeysResponder handles the response to the ListConnectionKeys request. The method always
@@ -617,8 +612,7 @@ func (client ConnectionsClient) ListConsentLinksPreparer(ctx context.Context, re
 // ListConsentLinksSender sends the ListConsentLinks request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) ListConsentLinksSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListConsentLinksResponder handles the response to the ListConsentLinks request. The method always

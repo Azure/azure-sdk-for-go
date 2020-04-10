@@ -35,7 +35,8 @@ func NewJobsClient(subscriptionID string) JobsClient {
 	return NewJobsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewJobsClientWithBaseURI creates an instance of the JobsClient client.
+// NewJobsClientWithBaseURI creates an instance of the JobsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
 	return JobsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -108,8 +109,7 @@ func (client JobsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGro
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -187,8 +187,7 @@ func (client JobsClient) DeletePreparer(ctx context.Context, resourceGroupName s
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -265,8 +264,7 @@ func (client JobsClient) GetPreparer(ctx context.Context, resourceGroupName stri
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -355,8 +353,7 @@ func (client JobsClient) ListPreparer(ctx context.Context, resourceGroupName str
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -484,8 +481,7 @@ func (client JobsClient) ListJobHistoryPreparer(ctx context.Context, resourceGro
 // ListJobHistorySender sends the ListJobHistory request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) ListJobHistorySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListJobHistoryResponder handles the response to the ListJobHistory request. The method always
@@ -606,8 +602,7 @@ func (client JobsClient) PatchPreparer(ctx context.Context, resourceGroupName st
 // PatchSender sends the Patch request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) PatchSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // PatchResponder handles the response to the Patch request. The method always
@@ -685,8 +680,7 @@ func (client JobsClient) RunPreparer(ctx context.Context, resourceGroupName stri
 // RunSender sends the Run request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) RunSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RunResponder handles the response to the Run request. The method always

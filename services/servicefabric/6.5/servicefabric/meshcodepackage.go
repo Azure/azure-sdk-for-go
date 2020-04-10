@@ -36,7 +36,8 @@ func NewMeshCodePackageClient() MeshCodePackageClient {
 	return NewMeshCodePackageClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewMeshCodePackageClientWithBaseURI creates an instance of the MeshCodePackageClient client.
+// NewMeshCodePackageClientWithBaseURI creates an instance of the MeshCodePackageClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMeshCodePackageClientWithBaseURI(baseURI string) MeshCodePackageClient {
 	return MeshCodePackageClient{NewWithBaseURI(baseURI)}
 }
@@ -108,8 +109,7 @@ func (client MeshCodePackageClient) GetContainerLogsPreparer(ctx context.Context
 // GetContainerLogsSender sends the GetContainerLogs request. The method will close the
 // http.Response Body if it receives an error.
 func (client MeshCodePackageClient) GetContainerLogsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetContainerLogsResponder handles the response to the GetContainerLogs request. The method always

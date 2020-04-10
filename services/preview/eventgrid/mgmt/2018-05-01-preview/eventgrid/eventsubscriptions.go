@@ -35,7 +35,9 @@ func NewEventSubscriptionsClient(subscriptionID string) EventSubscriptionsClient
 	return NewEventSubscriptionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewEventSubscriptionsClientWithBaseURI creates an instance of the EventSubscriptionsClient client.
+// NewEventSubscriptionsClientWithBaseURI creates an instance of the EventSubscriptionsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) EventSubscriptionsClient {
 	return EventSubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -105,9 +107,8 @@ func (client EventSubscriptionsClient) CreateOrUpdatePreparer(ctx context.Contex
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) CreateOrUpdateSender(req *http.Request) (future EventSubscriptionsCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
 	}
@@ -188,9 +189,8 @@ func (client EventSubscriptionsClient) DeletePreparer(ctx context.Context, scope
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) DeleteSender(req *http.Request) (future EventSubscriptionsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
 	}
@@ -276,8 +276,7 @@ func (client EventSubscriptionsClient) GetPreparer(ctx context.Context, scope st
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -359,8 +358,7 @@ func (client EventSubscriptionsClient) GetFullURLPreparer(ctx context.Context, s
 // GetFullURLSender sends the GetFullURL request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) GetFullURLSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetFullURLResponder handles the response to the GetFullURL request. The method always
@@ -440,8 +438,7 @@ func (client EventSubscriptionsClient) ListByResourcePreparer(ctx context.Contex
 // ListByResourceSender sends the ListByResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) ListByResourceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceResponder handles the response to the ListByResource request. The method always
@@ -515,8 +512,7 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupPreparer(ctx con
 // ListGlobalByResourceGroupSender sends the ListGlobalByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) ListGlobalByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListGlobalByResourceGroupResponder handles the response to the ListGlobalByResourceGroup request. The method always
@@ -593,8 +589,7 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupForTopicTypePrep
 // ListGlobalByResourceGroupForTopicTypeSender sends the ListGlobalByResourceGroupForTopicType request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) ListGlobalByResourceGroupForTopicTypeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListGlobalByResourceGroupForTopicTypeResponder handles the response to the ListGlobalByResourceGroupForTopicType request. The method always
@@ -665,8 +660,7 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionPreparer(ctx cont
 // ListGlobalBySubscriptionSender sends the ListGlobalBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) ListGlobalBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListGlobalBySubscriptionResponder handles the response to the ListGlobalBySubscription request. The method always
@@ -741,8 +735,7 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionForTopicTypePrepa
 // ListGlobalBySubscriptionForTopicTypeSender sends the ListGlobalBySubscriptionForTopicType request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) ListGlobalBySubscriptionForTopicTypeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListGlobalBySubscriptionForTopicTypeResponder handles the response to the ListGlobalBySubscriptionForTopicType request. The method always
@@ -819,8 +812,7 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupPreparer(ctx c
 // ListRegionalByResourceGroupSender sends the ListRegionalByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) ListRegionalByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListRegionalByResourceGroupResponder handles the response to the ListRegionalByResourceGroup request. The method always
@@ -899,8 +891,7 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupForTopicTypePr
 // ListRegionalByResourceGroupForTopicTypeSender sends the ListRegionalByResourceGroupForTopicType request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) ListRegionalByResourceGroupForTopicTypeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListRegionalByResourceGroupForTopicTypeResponder handles the response to the ListRegionalByResourceGroupForTopicType request. The method always
@@ -974,8 +965,7 @@ func (client EventSubscriptionsClient) ListRegionalBySubscriptionPreparer(ctx co
 // ListRegionalBySubscriptionSender sends the ListRegionalBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) ListRegionalBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListRegionalBySubscriptionResponder handles the response to the ListRegionalBySubscription request. The method always
@@ -1052,8 +1042,7 @@ func (client EventSubscriptionsClient) ListRegionalBySubscriptionForTopicTypePre
 // ListRegionalBySubscriptionForTopicTypeSender sends the ListRegionalBySubscriptionForTopicType request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) ListRegionalBySubscriptionForTopicTypeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListRegionalBySubscriptionForTopicTypeResponder handles the response to the ListRegionalBySubscriptionForTopicType request. The method always
@@ -1132,9 +1121,8 @@ func (client EventSubscriptionsClient) UpdatePreparer(ctx context.Context, scope
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) UpdateSender(req *http.Request) (future EventSubscriptionsUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
 	}

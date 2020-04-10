@@ -36,7 +36,8 @@ func NewAlertsClient(subscriptionID string) AlertsClient {
 	return NewAlertsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAlertsClientWithBaseURI creates an instance of the AlertsClient client.
+// NewAlertsClientWithBaseURI creates an instance of the AlertsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
 	return AlertsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -113,8 +114,7 @@ func (client AlertsClient) ClearPreparer(ctx context.Context, request ClearAlert
 // ClearSender sends the Clear request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) ClearSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ClearResponder handles the response to the Clear request. The method always
@@ -201,8 +201,7 @@ func (client AlertsClient) ListByManagerPreparer(ctx context.Context, resourceGr
 // ListByManagerSender sends the ListByManager request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) ListByManagerSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByManagerResponder handles the response to the ListByManager request. The method always
@@ -329,8 +328,7 @@ func (client AlertsClient) SendTestEmailPreparer(ctx context.Context, deviceName
 // SendTestEmailSender sends the SendTestEmail request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) SendTestEmailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // SendTestEmailResponder handles the response to the SendTestEmail request. The method always

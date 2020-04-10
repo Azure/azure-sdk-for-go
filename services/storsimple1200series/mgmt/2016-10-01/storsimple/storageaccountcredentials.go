@@ -36,7 +36,9 @@ func NewStorageAccountCredentialsClient(subscriptionID string) StorageAccountCre
 	return NewStorageAccountCredentialsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewStorageAccountCredentialsClientWithBaseURI creates an instance of the StorageAccountCredentialsClient client.
+// NewStorageAccountCredentialsClientWithBaseURI creates an instance of the StorageAccountCredentialsClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewStorageAccountCredentialsClientWithBaseURI(baseURI string, subscriptionID string) StorageAccountCredentialsClient {
 	return StorageAccountCredentialsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -114,9 +116,8 @@ func (client StorageAccountCredentialsClient) CreateOrUpdatePreparer(ctx context
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client StorageAccountCredentialsClient) CreateOrUpdateSender(req *http.Request) (future StorageAccountCredentialsCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -200,9 +201,8 @@ func (client StorageAccountCredentialsClient) DeletePreparer(ctx context.Context
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client StorageAccountCredentialsClient) DeleteSender(req *http.Request) (future StorageAccountCredentialsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -291,8 +291,7 @@ func (client StorageAccountCredentialsClient) GetPreparer(ctx context.Context, c
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client StorageAccountCredentialsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -375,8 +374,7 @@ func (client StorageAccountCredentialsClient) ListByManagerPreparer(ctx context.
 // ListByManagerSender sends the ListByManager request. The method will close the
 // http.Response Body if it receives an error.
 func (client StorageAccountCredentialsClient) ListByManagerSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByManagerResponder handles the response to the ListByManager request. The method always

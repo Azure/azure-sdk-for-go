@@ -37,7 +37,9 @@ func NewManagedInstanceOperationsClient(subscriptionID string) ManagedInstanceOp
 	return NewManagedInstanceOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewManagedInstanceOperationsClientWithBaseURI creates an instance of the ManagedInstanceOperationsClient client.
+// NewManagedInstanceOperationsClientWithBaseURI creates an instance of the ManagedInstanceOperationsClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewManagedInstanceOperationsClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceOperationsClient {
 	return ManagedInstanceOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -104,8 +106,7 @@ func (client ManagedInstanceOperationsClient) ListByManagedInstancePreparer(ctx 
 // ListByManagedInstanceSender sends the ListByManagedInstance request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedInstanceOperationsClient) ListByManagedInstanceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByManagedInstanceResponder handles the response to the ListByManagedInstance request. The method always

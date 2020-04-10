@@ -35,7 +35,8 @@ func NewProjectsClient(subscriptionID string, acceptLanguage string) ProjectsCli
 	return NewProjectsClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
-// NewProjectsClientWithBaseURI creates an instance of the ProjectsClient client.
+// NewProjectsClientWithBaseURI creates an instance of the ProjectsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) ProjectsClient {
 	return ProjectsClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
@@ -104,8 +105,7 @@ func (client ProjectsClient) DeleteMigrateProjectPreparer(ctx context.Context, r
 // DeleteMigrateProjectSender sends the DeleteMigrateProject request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProjectsClient) DeleteMigrateProjectSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteMigrateProjectResponder handles the response to the DeleteMigrateProject request. The method always
@@ -180,8 +180,7 @@ func (client ProjectsClient) GetMigrateProjectPreparer(ctx context.Context, reso
 // GetMigrateProjectSender sends the GetMigrateProject request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProjectsClient) GetMigrateProjectSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMigrateProjectResponder handles the response to the GetMigrateProject request. The method always
@@ -268,8 +267,7 @@ func (client ProjectsClient) PatchMigrateProjectPreparer(ctx context.Context, re
 // PatchMigrateProjectSender sends the PatchMigrateProject request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProjectsClient) PatchMigrateProjectSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // PatchMigrateProjectResponder handles the response to the PatchMigrateProject request. The method always
@@ -355,8 +353,7 @@ func (client ProjectsClient) PutMigrateProjectPreparer(ctx context.Context, reso
 // PutMigrateProjectSender sends the PutMigrateProject request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProjectsClient) PutMigrateProjectSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // PutMigrateProjectResponder handles the response to the PutMigrateProject request. The method always
@@ -435,8 +432,7 @@ func (client ProjectsClient) RefreshMigrateProjectSummaryPreparer(ctx context.Co
 // RefreshMigrateProjectSummarySender sends the RefreshMigrateProjectSummary request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProjectsClient) RefreshMigrateProjectSummarySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RefreshMigrateProjectSummaryResponder handles the response to the RefreshMigrateProjectSummary request. The method always
@@ -519,8 +515,7 @@ func (client ProjectsClient) RegisterToolPreparer(ctx context.Context, resourceG
 // RegisterToolSender sends the RegisterTool request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProjectsClient) RegisterToolSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RegisterToolResponder handles the response to the RegisterTool request. The method always

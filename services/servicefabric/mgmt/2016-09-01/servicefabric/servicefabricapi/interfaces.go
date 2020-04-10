@@ -29,7 +29,9 @@ type ClustersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, clusterName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, clusterName string) (result servicefabric.Cluster, err error)
 	List(ctx context.Context) (result servicefabric.ClusterListResultPage, err error)
+	ListComplete(ctx context.Context) (result servicefabric.ClusterListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result servicefabric.ClusterListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result servicefabric.ClusterListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, clusterName string, parameters servicefabric.ClusterUpdateParameters) (result servicefabric.ClustersUpdateFuture, err error)
 }
 
@@ -39,8 +41,11 @@ var _ ClustersClientAPI = (*servicefabric.ClustersClient)(nil)
 type ClusterVersionsClientAPI interface {
 	Get(ctx context.Context, location string, environment string, clusterVersion string) (result servicefabric.ClusterCodeVersionsResult, err error)
 	List(ctx context.Context, location string) (result servicefabric.ClusterCodeVersionsListResultPage, err error)
+	ListComplete(ctx context.Context, location string) (result servicefabric.ClusterCodeVersionsListResultIterator, err error)
 	ListByEnvironment(ctx context.Context, location string, environment string) (result servicefabric.ClusterCodeVersionsListResultPage, err error)
+	ListByEnvironmentComplete(ctx context.Context, location string, environment string) (result servicefabric.ClusterCodeVersionsListResultIterator, err error)
 	ListByVersion(ctx context.Context, location string, clusterVersion string) (result servicefabric.ClusterCodeVersionsListResultPage, err error)
+	ListByVersionComplete(ctx context.Context, location string, clusterVersion string) (result servicefabric.ClusterCodeVersionsListResultIterator, err error)
 }
 
 var _ ClusterVersionsClientAPI = (*servicefabric.ClusterVersionsClient)(nil)
@@ -48,6 +53,7 @@ var _ ClusterVersionsClientAPI = (*servicefabric.ClusterVersionsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result servicefabric.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result servicefabric.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*servicefabric.OperationsClient)(nil)

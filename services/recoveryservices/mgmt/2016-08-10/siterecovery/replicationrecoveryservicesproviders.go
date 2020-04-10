@@ -38,7 +38,8 @@ func NewReplicationRecoveryServicesProvidersClient(subscriptionID string, resour
 }
 
 // NewReplicationRecoveryServicesProvidersClientWithBaseURI creates an instance of the
-// ReplicationRecoveryServicesProvidersClient client.
+// ReplicationRecoveryServicesProvidersClient client using a custom endpoint.  Use this when interacting with an Azure
+// cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewReplicationRecoveryServicesProvidersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationRecoveryServicesProvidersClient {
 	return ReplicationRecoveryServicesProvidersClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
@@ -99,9 +100,8 @@ func (client ReplicationRecoveryServicesProvidersClient) DeletePreparer(ctx cont
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationRecoveryServicesProvidersClient) DeleteSender(req *http.Request) (future ReplicationRecoveryServicesProvidersDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -183,8 +183,7 @@ func (client ReplicationRecoveryServicesProvidersClient) GetPreparer(ctx context
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationRecoveryServicesProvidersClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -258,8 +257,7 @@ func (client ReplicationRecoveryServicesProvidersClient) ListPreparer(ctx contex
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationRecoveryServicesProvidersClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -373,8 +371,7 @@ func (client ReplicationRecoveryServicesProvidersClient) ListByReplicationFabric
 // ListByReplicationFabricsSender sends the ListByReplicationFabrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationRecoveryServicesProvidersClient) ListByReplicationFabricsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByReplicationFabricsResponder handles the response to the ListByReplicationFabrics request. The method always
@@ -483,9 +480,8 @@ func (client ReplicationRecoveryServicesProvidersClient) PurgePreparer(ctx conte
 // PurgeSender sends the Purge request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationRecoveryServicesProvidersClient) PurgeSender(req *http.Request) (future ReplicationRecoveryServicesProvidersPurgeFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -561,9 +557,8 @@ func (client ReplicationRecoveryServicesProvidersClient) RefreshProviderPreparer
 // RefreshProviderSender sends the RefreshProvider request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationRecoveryServicesProvidersClient) RefreshProviderSender(req *http.Request) (future ReplicationRecoveryServicesProvidersRefreshProviderFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

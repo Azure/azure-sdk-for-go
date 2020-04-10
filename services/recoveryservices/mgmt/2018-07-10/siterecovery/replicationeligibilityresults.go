@@ -37,7 +37,8 @@ func NewReplicationEligibilityResultsClient(subscriptionID string, resourceGroup
 }
 
 // NewReplicationEligibilityResultsClientWithBaseURI creates an instance of the ReplicationEligibilityResultsClient
-// client.
+// client using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI
+// (sovereign clouds, Azure stack).
 func NewReplicationEligibilityResultsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationEligibilityResultsClient {
 	return ReplicationEligibilityResultsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
@@ -95,9 +96,8 @@ func (client ReplicationEligibilityResultsClient) GetPreparer(ctx context.Contex
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationEligibilityResultsClient) GetSender(req *http.Request) (future ReplicationEligibilityResultsGetFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -171,9 +171,8 @@ func (client ReplicationEligibilityResultsClient) ListPreparer(ctx context.Conte
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReplicationEligibilityResultsClient) ListSender(req *http.Request) (future ReplicationEligibilityResultsListFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

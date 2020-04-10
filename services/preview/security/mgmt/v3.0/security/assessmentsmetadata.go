@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -35,9 +36,182 @@ func NewAssessmentsMetadataClient(subscriptionID string, ascLocation string) Ass
 	return NewAssessmentsMetadataClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
-// NewAssessmentsMetadataClientWithBaseURI creates an instance of the AssessmentsMetadataClient client.
+// NewAssessmentsMetadataClientWithBaseURI creates an instance of the AssessmentsMetadataClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewAssessmentsMetadataClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsMetadataClient {
 	return AssessmentsMetadataClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+}
+
+// CreateInSubscription create metadata information on an assessment type in a specific subscription
+// Parameters:
+// assessmentMetadataName - the Assessment Key - Unique key for the assessment type
+// assessmentMetadata - assessmentMetadata object
+func (client AssessmentsMetadataClient) CreateInSubscription(ctx context.Context, assessmentMetadataName string, assessmentMetadata AssessmentMetadata) (result AssessmentMetadata, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentsMetadataClient.CreateInSubscription")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: assessmentMetadata,
+			Constraints: []validation.Constraint{{Target: "assessmentMetadata.AssessmentMetadataProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "assessmentMetadata.AssessmentMetadataProperties.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "assessmentMetadata.AssessmentMetadataProperties.PartnerData", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "assessmentMetadata.AssessmentMetadataProperties.PartnerData.PartnerName", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "assessmentMetadata.AssessmentMetadataProperties.PartnerData.Secret", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+				}}}}}); err != nil {
+		return result, validation.NewError("security.AssessmentsMetadataClient", "CreateInSubscription", err.Error())
+	}
+
+	req, err := client.CreateInSubscriptionPreparer(ctx, assessmentMetadataName, assessmentMetadata)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "CreateInSubscription", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateInSubscriptionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "CreateInSubscription", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateInSubscriptionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "CreateInSubscription", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateInSubscriptionPreparer prepares the CreateInSubscription request.
+func (client AssessmentsMetadataClient) CreateInSubscriptionPreparer(ctx context.Context, assessmentMetadataName string, assessmentMetadata AssessmentMetadata) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"assessmentMetadataName": autorest.Encode("path", assessmentMetadataName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}", pathParameters),
+		autorest.WithJSON(assessmentMetadata),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateInSubscriptionSender sends the CreateInSubscription request. The method will close the
+// http.Response Body if it receives an error.
+func (client AssessmentsMetadataClient) CreateInSubscriptionSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// CreateInSubscriptionResponder handles the response to the CreateInSubscription request. The method always
+// closes the http.Response Body.
+func (client AssessmentsMetadataClient) CreateInSubscriptionResponder(resp *http.Response) (result AssessmentMetadata, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// DeleteInSubscription delete metadata information on an assessment type in a specific subscription, will cause the
+// deletion of all the assessments of that type in that subscription
+// Parameters:
+// assessmentMetadataName - the Assessment Key - Unique key for the assessment type
+func (client AssessmentsMetadataClient) DeleteInSubscription(ctx context.Context, assessmentMetadataName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentsMetadataClient.DeleteInSubscription")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("security.AssessmentsMetadataClient", "DeleteInSubscription", err.Error())
+	}
+
+	req, err := client.DeleteInSubscriptionPreparer(ctx, assessmentMetadataName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "DeleteInSubscription", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteInSubscriptionSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "DeleteInSubscription", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteInSubscriptionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "DeleteInSubscription", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteInSubscriptionPreparer prepares the DeleteInSubscription request.
+func (client AssessmentsMetadataClient) DeleteInSubscriptionPreparer(ctx context.Context, assessmentMetadataName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"assessmentMetadataName": autorest.Encode("path", assessmentMetadataName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteInSubscriptionSender sends the DeleteInSubscription request. The method will close the
+// http.Response Body if it receives an error.
+func (client AssessmentsMetadataClient) DeleteInSubscriptionSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteInSubscriptionResponder handles the response to the DeleteInSubscription request. The method always
+// closes the http.Response Body.
+func (client AssessmentsMetadataClient) DeleteInSubscriptionResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Get get metadata information on an assessment type
@@ -81,7 +255,7 @@ func (client AssessmentsMetadataClient) GetPreparer(ctx context.Context, assessm
 		"assessmentMetadataName": autorest.Encode("path", assessmentMetadataName),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -97,13 +271,92 @@ func (client AssessmentsMetadataClient) GetPreparer(ctx context.Context, assessm
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssessmentsMetadataClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client AssessmentsMetadataClient) GetResponder(resp *http.Response) (result AssessmentMetadata, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetInSubscription get metadata information on an assessment type in a specific subscription
+// Parameters:
+// assessmentMetadataName - the Assessment Key - Unique key for the assessment type
+func (client AssessmentsMetadataClient) GetInSubscription(ctx context.Context, assessmentMetadataName string) (result AssessmentMetadata, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentsMetadataClient.GetInSubscription")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("security.AssessmentsMetadataClient", "GetInSubscription", err.Error())
+	}
+
+	req, err := client.GetInSubscriptionPreparer(ctx, assessmentMetadataName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "GetInSubscription", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetInSubscriptionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "GetInSubscription", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetInSubscriptionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "GetInSubscription", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetInSubscriptionPreparer prepares the GetInSubscription request.
+func (client AssessmentsMetadataClient) GetInSubscriptionPreparer(ctx context.Context, assessmentMetadataName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"assessmentMetadataName": autorest.Encode("path", assessmentMetadataName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetInSubscriptionSender sends the GetInSubscription request. The method will close the
+// http.Response Body if it receives an error.
+func (client AssessmentsMetadataClient) GetInSubscriptionSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetInSubscriptionResponder handles the response to the GetInSubscription request. The method always
+// closes the http.Response Body.
+func (client AssessmentsMetadataClient) GetInSubscriptionResponder(resp *http.Response) (result AssessmentMetadata, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -150,7 +403,7 @@ func (client AssessmentsMetadataClient) List(ctx context.Context) (result Assess
 
 // ListPreparer prepares the List request.
 func (client AssessmentsMetadataClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -166,8 +419,7 @@ func (client AssessmentsMetadataClient) ListPreparer(ctx context.Context) (*http
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssessmentsMetadataClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -217,5 +469,120 @@ func (client AssessmentsMetadataClient) ListComplete(ctx context.Context) (resul
 		}()
 	}
 	result.page, err = client.List(ctx)
+	return
+}
+
+// ListBySubscription get metadata information on all assessment types in a specific subscription
+func (client AssessmentsMetadataClient) ListBySubscription(ctx context.Context) (result AssessmentMetadataListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentsMetadataClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.aml.Response.Response != nil {
+				sc = result.aml.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("security.AssessmentsMetadataClient", "ListBySubscription", err.Error())
+	}
+
+	result.fn = client.listBySubscriptionNextResults
+	req, err := client.ListBySubscriptionPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "ListBySubscription", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListBySubscriptionSender(req)
+	if err != nil {
+		result.aml.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "ListBySubscription", resp, "Failure sending request")
+		return
+	}
+
+	result.aml, err = client.ListBySubscriptionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListBySubscriptionPreparer prepares the ListBySubscription request.
+func (client AssessmentsMetadataClient) ListBySubscriptionPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListBySubscriptionSender sends the ListBySubscription request. The method will close the
+// http.Response Body if it receives an error.
+func (client AssessmentsMetadataClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
+// closes the http.Response Body.
+func (client AssessmentsMetadataClient) ListBySubscriptionResponder(resp *http.Response) (result AssessmentMetadataList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listBySubscriptionNextResults retrieves the next set of results, if any.
+func (client AssessmentsMetadataClient) listBySubscriptionNextResults(ctx context.Context, lastResults AssessmentMetadataList) (result AssessmentMetadataList, err error) {
+	req, err := lastResults.assessmentMetadataListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "listBySubscriptionNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListBySubscriptionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "listBySubscriptionNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListBySubscriptionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListBySubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AssessmentsMetadataClient) ListBySubscriptionComplete(ctx context.Context) (result AssessmentMetadataListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentsMetadataClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListBySubscription(ctx)
 	return
 }

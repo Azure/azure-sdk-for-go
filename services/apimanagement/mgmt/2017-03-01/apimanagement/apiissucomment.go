@@ -36,7 +36,8 @@ func NewAPIIssuCommentClient(subscriptionID string) APIIssuCommentClient {
 	return NewAPIIssuCommentClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAPIIssuCommentClientWithBaseURI creates an instance of the APIIssuCommentClient client.
+// NewAPIIssuCommentClientWithBaseURI creates an instance of the APIIssuCommentClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAPIIssuCommentClientWithBaseURI(baseURI string, subscriptionID string) APIIssuCommentClient {
 	return APIIssuCommentClient{NewWithBaseURI(baseURI, subscriptionID)}
 }

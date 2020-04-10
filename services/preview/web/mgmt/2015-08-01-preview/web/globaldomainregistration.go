@@ -35,7 +35,9 @@ func NewGlobalDomainRegistrationClient(subscriptionID string) GlobalDomainRegist
 	return NewGlobalDomainRegistrationClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewGlobalDomainRegistrationClientWithBaseURI creates an instance of the GlobalDomainRegistrationClient client.
+// NewGlobalDomainRegistrationClientWithBaseURI creates an instance of the GlobalDomainRegistrationClient client using
+// a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewGlobalDomainRegistrationClientWithBaseURI(baseURI string, subscriptionID string) GlobalDomainRegistrationClient {
 	return GlobalDomainRegistrationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -99,8 +101,7 @@ func (client GlobalDomainRegistrationClient) CheckDomainAvailabilityPreparer(ctx
 // CheckDomainAvailabilitySender sends the CheckDomainAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) CheckDomainAvailabilitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CheckDomainAvailabilityResponder handles the response to the CheckDomainAvailability request. The method always
@@ -172,8 +173,7 @@ func (client GlobalDomainRegistrationClient) GetAllDomainsPreparer(ctx context.C
 // GetAllDomainsSender sends the GetAllDomains request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) GetAllDomainsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetAllDomainsResponder handles the response to the GetAllDomains request. The method always
@@ -281,8 +281,7 @@ func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestPre
 // GetDomainControlCenterSsoRequestSender sends the GetDomainControlCenterSsoRequest request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDomainControlCenterSsoRequestResponder handles the response to the GetDomainControlCenterSsoRequest request. The method always
@@ -358,8 +357,7 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendationsPreparer(c
 // ListDomainRecommendationsSender sends the ListDomainRecommendations request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) ListDomainRecommendationsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListDomainRecommendationsResponder handles the response to the ListDomainRecommendations request. The method always
@@ -471,8 +469,7 @@ func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationPr
 // ValidateDomainPurchaseInformationSender sends the ValidateDomainPurchaseInformation request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ValidateDomainPurchaseInformationResponder handles the response to the ValidateDomainPurchaseInformation request. The method always

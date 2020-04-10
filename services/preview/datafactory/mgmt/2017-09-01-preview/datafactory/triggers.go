@@ -38,7 +38,8 @@ func NewTriggersClient(subscriptionID string) TriggersClient {
 	return NewTriggersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewTriggersClientWithBaseURI creates an instance of the TriggersClient client.
+// NewTriggersClientWithBaseURI creates an instance of the TriggersClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewTriggersClientWithBaseURI(baseURI string, subscriptionID string) TriggersClient {
 	return TriggersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -132,8 +133,7 @@ func (client TriggersClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client TriggersClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -227,8 +227,7 @@ func (client TriggersClient) DeletePreparer(ctx context.Context, resourceGroupNa
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client TriggersClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -321,8 +320,7 @@ func (client TriggersClient) GetPreparer(ctx context.Context, resourceGroupName 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TriggersClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -411,8 +409,7 @@ func (client TriggersClient) ListByFactoryPreparer(ctx context.Context, resource
 // ListByFactorySender sends the ListByFactory request. The method will close the
 // http.Response Body if it receives an error.
 func (client TriggersClient) ListByFactorySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByFactoryResponder handles the response to the ListByFactory request. The method always
@@ -548,8 +545,7 @@ func (client TriggersClient) ListRunsPreparer(ctx context.Context, resourceGroup
 // ListRunsSender sends the ListRuns request. The method will close the
 // http.Response Body if it receives an error.
 func (client TriggersClient) ListRunsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListRunsResponder handles the response to the ListRuns request. The method always
@@ -674,9 +670,8 @@ func (client TriggersClient) StartPreparer(ctx context.Context, resourceGroupNam
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
 func (client TriggersClient) StartSender(req *http.Request) (future TriggersStartFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -768,9 +763,8 @@ func (client TriggersClient) StopPreparer(ctx context.Context, resourceGroupName
 // StopSender sends the Stop request. The method will close the
 // http.Response Body if it receives an error.
 func (client TriggersClient) StopSender(req *http.Request) (future TriggersStopFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

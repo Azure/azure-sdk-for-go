@@ -39,7 +39,8 @@ func NewAttachedDatabaseConfigurationsClient(subscriptionID string) AttachedData
 }
 
 // NewAttachedDatabaseConfigurationsClientWithBaseURI creates an instance of the AttachedDatabaseConfigurationsClient
-// client.
+// client using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI
+// (sovereign clouds, Azure stack).
 func NewAttachedDatabaseConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) AttachedDatabaseConfigurationsClient {
 	return AttachedDatabaseConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -112,9 +113,8 @@ func (client AttachedDatabaseConfigurationsClient) CreateOrUpdatePreparer(ctx co
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client AttachedDatabaseConfigurationsClient) CreateOrUpdateSender(req *http.Request) (future AttachedDatabaseConfigurationsCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -191,9 +191,8 @@ func (client AttachedDatabaseConfigurationsClient) DeletePreparer(ctx context.Co
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client AttachedDatabaseConfigurationsClient) DeleteSender(req *http.Request) (future AttachedDatabaseConfigurationsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -275,8 +274,7 @@ func (client AttachedDatabaseConfigurationsClient) GetPreparer(ctx context.Conte
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AttachedDatabaseConfigurationsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -352,8 +350,7 @@ func (client AttachedDatabaseConfigurationsClient) ListByClusterPreparer(ctx con
 // ListByClusterSender sends the ListByCluster request. The method will close the
 // http.Response Body if it receives an error.
 func (client AttachedDatabaseConfigurationsClient) ListByClusterSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByClusterResponder handles the response to the ListByCluster request. The method always

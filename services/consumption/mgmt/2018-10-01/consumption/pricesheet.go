@@ -37,7 +37,8 @@ func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
 	return NewPriceSheetClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPriceSheetClientWithBaseURI creates an instance of the PriceSheetClient client.
+// NewPriceSheetClientWithBaseURI creates an instance of the PriceSheetClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
 	return PriceSheetClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -123,8 +124,7 @@ func (client PriceSheetClient) GetPreparer(ctx context.Context, expand string, s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PriceSheetClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -223,8 +223,7 @@ func (client PriceSheetClient) GetByBillingPeriodPreparer(ctx context.Context, b
 // GetByBillingPeriodSender sends the GetByBillingPeriod request. The method will close the
 // http.Response Body if it receives an error.
 func (client PriceSheetClient) GetByBillingPeriodSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetByBillingPeriodResponder handles the response to the GetByBillingPeriod request. The method always

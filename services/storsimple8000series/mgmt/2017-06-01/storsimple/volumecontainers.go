@@ -36,7 +36,9 @@ func NewVolumeContainersClient(subscriptionID string) VolumeContainersClient {
 	return NewVolumeContainersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewVolumeContainersClientWithBaseURI creates an instance of the VolumeContainersClient client.
+// NewVolumeContainersClientWithBaseURI creates an instance of the VolumeContainersClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewVolumeContainersClientWithBaseURI(baseURI string, subscriptionID string) VolumeContainersClient {
 	return VolumeContainersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -115,9 +117,8 @@ func (client VolumeContainersClient) CreateOrUpdatePreparer(ctx context.Context,
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client VolumeContainersClient) CreateOrUpdateSender(req *http.Request) (future VolumeContainersCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -203,9 +204,8 @@ func (client VolumeContainersClient) DeletePreparer(ctx context.Context, deviceN
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client VolumeContainersClient) DeleteSender(req *http.Request) (future VolumeContainersDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -296,8 +296,7 @@ func (client VolumeContainersClient) GetPreparer(ctx context.Context, deviceName
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client VolumeContainersClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -382,8 +381,7 @@ func (client VolumeContainersClient) ListByDevicePreparer(ctx context.Context, d
 // ListByDeviceSender sends the ListByDevice request. The method will close the
 // http.Response Body if it receives an error.
 func (client VolumeContainersClient) ListByDeviceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDeviceResponder handles the response to the ListByDevice request. The method always
@@ -470,8 +468,7 @@ func (client VolumeContainersClient) ListMetricDefinitionPreparer(ctx context.Co
 // ListMetricDefinitionSender sends the ListMetricDefinition request. The method will close the
 // http.Response Body if it receives an error.
 func (client VolumeContainersClient) ListMetricDefinitionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricDefinitionResponder handles the response to the ListMetricDefinition request. The method always
@@ -560,8 +557,7 @@ func (client VolumeContainersClient) ListMetricsPreparer(ctx context.Context, de
 // ListMetricsSender sends the ListMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client VolumeContainersClient) ListMetricsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricsResponder handles the response to the ListMetrics request. The method always

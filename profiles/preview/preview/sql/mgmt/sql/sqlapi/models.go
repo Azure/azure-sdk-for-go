@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,9 +25,11 @@ type DatabaseSecurityAlertPoliciesClientAPI = original.DatabaseSecurityAlertPoli
 type DatabasesClientAPI = original.DatabasesClientAPI
 type ElasticPoolsClientAPI = original.ElasticPoolsClientAPI
 type InstancePoolsClientAPI = original.InstancePoolsClientAPI
+type LongTermRetentionManagedInstanceBackupsClientAPI = original.LongTermRetentionManagedInstanceBackupsClientAPI
 type ManagedDatabaseRestoreDetailsClientAPI = original.ManagedDatabaseRestoreDetailsClientAPI
 type ManagedDatabaseSensitivityLabelsClientAPI = original.ManagedDatabaseSensitivityLabelsClientAPI
 type ManagedDatabasesClientAPI = original.ManagedDatabasesClientAPI
+type ManagedInstanceLongTermRetentionPoliciesClientAPI = original.ManagedInstanceLongTermRetentionPoliciesClientAPI
 type ManagedInstanceOperationsClientAPI = original.ManagedInstanceOperationsClientAPI
 type ManagedInstanceVulnerabilityAssessmentsClientAPI = original.ManagedInstanceVulnerabilityAssessmentsClientAPI
 type ManagedInstancesClientAPI = original.ManagedInstancesClientAPI

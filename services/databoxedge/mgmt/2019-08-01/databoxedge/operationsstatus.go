@@ -35,7 +35,9 @@ func NewOperationsStatusClient(subscriptionID string) OperationsStatusClient {
 	return NewOperationsStatusClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewOperationsStatusClientWithBaseURI creates an instance of the OperationsStatusClient client.
+// NewOperationsStatusClientWithBaseURI creates an instance of the OperationsStatusClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewOperationsStatusClientWithBaseURI(baseURI string, subscriptionID string) OperationsStatusClient {
 	return OperationsStatusClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -102,8 +104,7 @@ func (client OperationsStatusClient) GetPreparer(ctx context.Context, deviceName
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client OperationsStatusClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always

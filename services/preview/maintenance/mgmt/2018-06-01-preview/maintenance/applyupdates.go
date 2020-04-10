@@ -35,7 +35,8 @@ func NewApplyUpdatesClient(subscriptionID string) ApplyUpdatesClient {
 	return NewApplyUpdatesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewApplyUpdatesClientWithBaseURI creates an instance of the ApplyUpdatesClient client.
+// NewApplyUpdatesClientWithBaseURI creates an instance of the ApplyUpdatesClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewApplyUpdatesClientWithBaseURI(baseURI string, subscriptionID string) ApplyUpdatesClient {
 	return ApplyUpdatesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -104,8 +105,7 @@ func (client ApplyUpdatesClient) CreateOrUpdatePreparer(ctx context.Context, res
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplyUpdatesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -189,8 +189,7 @@ func (client ApplyUpdatesClient) CreateOrUpdateParentPreparer(ctx context.Contex
 // CreateOrUpdateParentSender sends the CreateOrUpdateParent request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplyUpdatesClient) CreateOrUpdateParentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateParentResponder handles the response to the CreateOrUpdateParent request. The method always
@@ -272,8 +271,7 @@ func (client ApplyUpdatesClient) GetPreparer(ctx context.Context, resourceGroupN
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplyUpdatesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -359,8 +357,7 @@ func (client ApplyUpdatesClient) GetParentPreparer(ctx context.Context, resource
 // GetParentSender sends the GetParent request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplyUpdatesClient) GetParentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetParentResponder handles the response to the GetParent request. The method always

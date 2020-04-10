@@ -44,6 +44,7 @@ type QueryKeysClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, searchServiceName string, name string, clientRequestID *uuid.UUID) (result search.QueryKey, err error)
 	Delete(ctx context.Context, resourceGroupName string, searchServiceName string, key string, clientRequestID *uuid.UUID) (result autorest.Response, err error)
 	ListBySearchService(ctx context.Context, resourceGroupName string, searchServiceName string, clientRequestID *uuid.UUID) (result search.ListQueryKeysResult, err error)
+	ListBySearchServiceGet(ctx context.Context, resourceGroupName string, searchServiceName string, clientRequestID *uuid.UUID) (result search.ListQueryKeysResult, err error)
 }
 
 var _ QueryKeysClientAPI = (*search.QueryKeysClient)(nil)

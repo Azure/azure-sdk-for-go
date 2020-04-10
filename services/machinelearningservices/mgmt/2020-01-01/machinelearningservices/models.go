@@ -133,6 +133,21 @@ func PossibleComputeTypeBasicComputeSecretsValues() []ComputeTypeBasicComputeSec
 	return []ComputeTypeBasicComputeSecrets{ComputeTypeBasicComputeSecretsComputeTypeAKS, ComputeTypeBasicComputeSecretsComputeTypeComputeSecrets, ComputeTypeBasicComputeSecretsComputeTypeDatabricks, ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine}
 }
 
+// EncryptionStatus enumerates the values for encryption status.
+type EncryptionStatus string
+
+const (
+	// Disabled ...
+	Disabled EncryptionStatus = "Disabled"
+	// Enabled ...
+	Enabled EncryptionStatus = "Enabled"
+)
+
+// PossibleEncryptionStatusValues returns an array of possible values for the EncryptionStatus const type.
+func PossibleEncryptionStatusValues() []EncryptionStatus {
+	return []EncryptionStatus{Disabled, Enabled}
+}
+
 // NodeState enumerates the values for node state.
 type NodeState string
 
@@ -309,15 +324,15 @@ func PossibleStatusValues() []Status {
 type Status1 string
 
 const (
-	// Disabled ...
-	Disabled Status1 = "Disabled"
-	// Enabled ...
-	Enabled Status1 = "Enabled"
+	// Status1Disabled ...
+	Status1Disabled Status1 = "Disabled"
+	// Status1Enabled ...
+	Status1Enabled Status1 = "Enabled"
 )
 
 // PossibleStatus1Values returns an array of possible values for the Status1 const type.
 func PossibleStatus1Values() []Status1 {
-	return []Status1{Disabled, Enabled}
+	return []Status1{Status1Disabled, Status1Enabled}
 }
 
 // UnderlyingResourceAction enumerates the values for underlying resource action.
@@ -1560,6 +1575,14 @@ type DataLakeAnalyticsProperties struct {
 	DataLakeStoreAccountName *string `json:"dataLakeStoreAccountName,omitempty"`
 }
 
+// EncryptionProperty ...
+type EncryptionProperty struct {
+	// Status - Indicates whether or not the encryption is enabled for the workspace. Possible values include: 'Enabled', 'Disabled'
+	Status EncryptionStatus `json:"status,omitempty"`
+	// KeyVaultProperties - Customer Key vault properties.
+	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+}
+
 // Error wrapper for error response to follow ARM guidelines.
 type Error struct {
 	// Error - READ-ONLY; The error response.
@@ -1692,6 +1715,16 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The identity type. Possible values include: 'SystemAssigned'
 	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// KeyVaultProperties ...
+type KeyVaultProperties struct {
+	// KeyVaultArmID - The ArmId of the keyVault where the customer owned encryption key is present.
+	KeyVaultArmID *string `json:"keyVaultArmId,omitempty"`
+	// KeyIdentifier - Key vault uri to access the encryption key.
+	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
+	// IdentityClientID - For future use - The client id of the identity which will be used to access key vault.
+	IdentityClientID *string `json:"identityClientId,omitempty"`
 }
 
 // ListAmlUserFeatureResult the List Aml user feature operation response.
@@ -3016,7 +3049,7 @@ func NewSkuListResultPage(getNextPage func(context.Context, SkuListResult) (SkuL
 
 // SslConfiguration the ssl configuration for scoring
 type SslConfiguration struct {
-	// Status - Enable or disable ssl for scoring. Possible values include: 'Disabled', 'Enabled'
+	// Status - Enable or disable ssl for scoring. Possible values include: 'Status1Disabled', 'Status1Enabled'
 	Status Status1 `json:"status,omitempty"`
 	// Cert - Cert data
 	Cert *string `json:"cert,omitempty"`
@@ -3576,6 +3609,12 @@ type WorkspaceProperties struct {
 	DiscoveryURL *string `json:"discoveryUrl,omitempty"`
 	// ProvisioningState - READ-ONLY; The current deployment state of workspace resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateUpdating', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// Encryption - The encryption settings of Azure ML workspace.
+	Encryption *EncryptionProperty `json:"encryption,omitempty"`
+	// HbiWorkspace - The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service
+	HbiWorkspace *bool `json:"hbiWorkspace,omitempty"`
+	// ServiceProvisionedResourceGroup - READ-ONLY; The name of the managed resource group created by workspace RP in customer subscription if the workspace is CMK workspace
+	ServiceProvisionedResourceGroup *string `json:"serviceProvisionedResourceGroup,omitempty"`
 }
 
 // WorkspacePropertiesUpdateParameters the parameters for updating the properties of a machine learning
@@ -3585,6 +3624,35 @@ type WorkspacePropertiesUpdateParameters struct {
 	Description *string `json:"description,omitempty"`
 	// FriendlyName - The friendly name for this workspace.
 	FriendlyName *string `json:"friendlyName,omitempty"`
+}
+
+// WorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type WorkspacesCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *WorkspacesCreateOrUpdateFuture) Result(client WorkspacesClient) (w Workspace, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("machinelearningservices.WorkspacesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if w.Response.Response, err = future.GetResult(sender); err == nil && w.Response.Response.StatusCode != http.StatusNoContent {
+		w, err = client.CreateOrUpdateResponder(w.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesCreateOrUpdateFuture", "Result", w.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // WorkspaceSku describes Workspace Sku details and features

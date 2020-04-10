@@ -35,7 +35,9 @@ func NewSupportedOperatingSystemsClient(subscriptionID string, resourceGroupName
 	return NewSupportedOperatingSystemsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, resourceName)
 }
 
-// NewSupportedOperatingSystemsClientWithBaseURI creates an instance of the SupportedOperatingSystemsClient client.
+// NewSupportedOperatingSystemsClientWithBaseURI creates an instance of the SupportedOperatingSystemsClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
 func NewSupportedOperatingSystemsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) SupportedOperatingSystemsClient {
 	return SupportedOperatingSystemsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
@@ -97,8 +99,7 @@ func (client SupportedOperatingSystemsClient) GetPreparer(ctx context.Context) (
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportedOperatingSystemsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always

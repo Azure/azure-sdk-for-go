@@ -36,7 +36,9 @@ func NewMonitorInstancesSummaryClient(subscriptionID string) MonitorInstancesSum
 	return NewMonitorInstancesSummaryClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMonitorInstancesSummaryClientWithBaseURI creates an instance of the MonitorInstancesSummaryClient client.
+// NewMonitorInstancesSummaryClientWithBaseURI creates an instance of the MonitorInstancesSummaryClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewMonitorInstancesSummaryClientWithBaseURI(baseURI string, subscriptionID string) MonitorInstancesSummaryClient {
 	return MonitorInstancesSummaryClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -132,8 +134,7 @@ func (client MonitorInstancesSummaryClient) ListPreparer(ctx context.Context, se
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client MonitorInstancesSummaryClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always

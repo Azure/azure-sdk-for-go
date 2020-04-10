@@ -36,7 +36,9 @@ func NewRegistrationAssignmentsClient() RegistrationAssignmentsClient {
 	return NewRegistrationAssignmentsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewRegistrationAssignmentsClientWithBaseURI creates an instance of the RegistrationAssignmentsClient client.
+// NewRegistrationAssignmentsClientWithBaseURI creates an instance of the RegistrationAssignmentsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewRegistrationAssignmentsClientWithBaseURI(baseURI string) RegistrationAssignmentsClient {
 	return RegistrationAssignmentsClient{NewWithBaseURI(baseURI)}
 }
@@ -116,9 +118,8 @@ func (client RegistrationAssignmentsClient) CreateOrUpdatePreparer(ctx context.C
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client RegistrationAssignmentsClient) CreateOrUpdateSender(req *http.Request) (future RegistrationAssignmentsCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
 	}
@@ -192,9 +193,8 @@ func (client RegistrationAssignmentsClient) DeletePreparer(ctx context.Context, 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client RegistrationAssignmentsClient) DeleteSender(req *http.Request) (future RegistrationAssignmentsDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
 	}
@@ -278,8 +278,7 @@ func (client RegistrationAssignmentsClient) GetPreparer(ctx context.Context, sco
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client RegistrationAssignmentsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -358,8 +357,7 @@ func (client RegistrationAssignmentsClient) ListPreparer(ctx context.Context, sc
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client RegistrationAssignmentsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

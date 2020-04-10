@@ -35,7 +35,8 @@ func NewNodesClient(subscriptionID string) NodesClient {
 	return NewNodesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewNodesClientWithBaseURI creates an instance of the NodesClient client.
+// NewNodesClientWithBaseURI creates an instance of the NodesClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewNodesClientWithBaseURI(baseURI string, subscriptionID string) NodesClient {
 	return NodesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -100,8 +101,7 @@ func (client NodesClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, d
 // ListByDataBoxEdgeDeviceSender sends the ListByDataBoxEdgeDevice request. The method will close the
 // http.Response Body if it receives an error.
 func (client NodesClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDataBoxEdgeDeviceResponder handles the response to the ListByDataBoxEdgeDevice request. The method always

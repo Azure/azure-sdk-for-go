@@ -36,7 +36,9 @@ func NewServiceFabricSchedulesClient(subscriptionID string) ServiceFabricSchedul
 	return NewServiceFabricSchedulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewServiceFabricSchedulesClientWithBaseURI creates an instance of the ServiceFabricSchedulesClient client.
+// NewServiceFabricSchedulesClientWithBaseURI creates an instance of the ServiceFabricSchedulesClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewServiceFabricSchedulesClientWithBaseURI(baseURI string, subscriptionID string) ServiceFabricSchedulesClient {
 	return ServiceFabricSchedulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -116,8 +118,7 @@ func (client ServiceFabricSchedulesClient) CreateOrUpdatePreparer(ctx context.Co
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceFabricSchedulesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -199,8 +200,7 @@ func (client ServiceFabricSchedulesClient) DeletePreparer(ctx context.Context, r
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceFabricSchedulesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -275,9 +275,8 @@ func (client ServiceFabricSchedulesClient) ExecutePreparer(ctx context.Context, 
 // ExecuteSender sends the Execute request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceFabricSchedulesClient) ExecuteSender(req *http.Request) (future ServiceFabricSchedulesExecuteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -367,8 +366,7 @@ func (client ServiceFabricSchedulesClient) GetPreparer(ctx context.Context, reso
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceFabricSchedulesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -465,8 +463,7 @@ func (client ServiceFabricSchedulesClient) ListPreparer(ctx context.Context, res
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceFabricSchedulesClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -588,8 +585,7 @@ func (client ServiceFabricSchedulesClient) UpdatePreparer(ctx context.Context, r
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceFabricSchedulesClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

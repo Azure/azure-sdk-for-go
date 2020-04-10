@@ -35,7 +35,8 @@ func NewLocationsClient(subscriptionID string, acceptLanguage string) LocationsC
 	return NewLocationsClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
-// NewLocationsClientWithBaseURI creates an instance of the LocationsClient client.
+// NewLocationsClientWithBaseURI creates an instance of the LocationsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) LocationsClient {
 	return LocationsClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
@@ -102,8 +103,7 @@ func (client LocationsClient) GetPreparer(ctx context.Context, locationName stri
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client LocationsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -175,8 +175,7 @@ func (client LocationsClient) ListPreparer(ctx context.Context) (*http.Request, 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client LocationsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

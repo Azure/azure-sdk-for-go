@@ -36,7 +36,8 @@ func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
 	return NewCustomDomainsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCustomDomainsClientWithBaseURI creates an instance of the CustomDomainsClient client.
+// NewCustomDomainsClientWithBaseURI creates an instance of the CustomDomainsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) CustomDomainsClient {
 	return CustomDomainsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -109,9 +110,8 @@ func (client CustomDomainsClient) CreatePreparer(ctx context.Context, customDoma
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client CustomDomainsClient) CreateSender(req *http.Request) (future CustomDomainsCreateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -190,9 +190,8 @@ func (client CustomDomainsClient) DeleteIfExistsPreparer(ctx context.Context, cu
 // DeleteIfExistsSender sends the DeleteIfExists request. The method will close the
 // http.Response Body if it receives an error.
 func (client CustomDomainsClient) DeleteIfExistsSender(req *http.Request) (future CustomDomainsDeleteIfExistsFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -277,8 +276,7 @@ func (client CustomDomainsClient) GetPreparer(ctx context.Context, customDomainN
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client CustomDomainsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -356,8 +354,7 @@ func (client CustomDomainsClient) ListByEndpointPreparer(ctx context.Context, en
 // ListByEndpointSender sends the ListByEndpoint request. The method will close the
 // http.Response Body if it receives an error.
 func (client CustomDomainsClient) ListByEndpointSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByEndpointResponder handles the response to the ListByEndpoint request. The method always
@@ -440,8 +437,7 @@ func (client CustomDomainsClient) UpdatePreparer(ctx context.Context, customDoma
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client CustomDomainsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

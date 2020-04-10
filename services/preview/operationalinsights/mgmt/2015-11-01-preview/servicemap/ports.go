@@ -37,7 +37,8 @@ func NewPortsClient(subscriptionID string) PortsClient {
 	return NewPortsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPortsClientWithBaseURI creates an instance of the PortsClient client.
+// NewPortsClientWithBaseURI creates an instance of the PortsClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPortsClientWithBaseURI(baseURI string, subscriptionID string) PortsClient {
 	return PortsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -135,8 +136,7 @@ func (client PortsClient) GetPreparer(ctx context.Context, resourceGroupName str
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PortsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -244,8 +244,7 @@ func (client PortsClient) GetLivenessPreparer(ctx context.Context, resourceGroup
 // GetLivenessSender sends the GetLiveness request. The method will close the
 // http.Response Body if it receives an error.
 func (client PortsClient) GetLivenessSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetLivenessResponder handles the response to the GetLiveness request. The method always
@@ -354,8 +353,7 @@ func (client PortsClient) ListAcceptingProcessesPreparer(ctx context.Context, re
 // ListAcceptingProcessesSender sends the ListAcceptingProcesses request. The method will close the
 // http.Response Body if it receives an error.
 func (client PortsClient) ListAcceptingProcessesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAcceptingProcessesResponder handles the response to the ListAcceptingProcesses request. The method always
@@ -501,8 +499,7 @@ func (client PortsClient) ListConnectionsPreparer(ctx context.Context, resourceG
 // ListConnectionsSender sends the ListConnections request. The method will close the
 // http.Response Body if it receives an error.
 func (client PortsClient) ListConnectionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListConnectionsResponder handles the response to the ListConnections request. The method always

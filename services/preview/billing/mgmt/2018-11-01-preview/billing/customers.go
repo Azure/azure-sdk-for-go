@@ -35,7 +35,8 @@ func NewCustomersClient(subscriptionID string) CustomersClient {
 	return NewCustomersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCustomersClientWithBaseURI creates an instance of the CustomersClient client.
+// NewCustomersClientWithBaseURI creates an instance of the CustomersClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCustomersClientWithBaseURI(baseURI string, subscriptionID string) CustomersClient {
 	return CustomersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -103,8 +104,7 @@ func (client CustomersClient) GetPreparer(ctx context.Context, billingAccountNam
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client CustomersClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -189,8 +189,7 @@ func (client CustomersClient) ListByBillingAccountNamePreparer(ctx context.Conte
 // ListByBillingAccountNameSender sends the ListByBillingAccountName request. The method will close the
 // http.Response Body if it receives an error.
 func (client CustomersClient) ListByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingAccountNameResponder handles the response to the ListByBillingAccountName request. The method always

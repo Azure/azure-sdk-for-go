@@ -37,7 +37,9 @@ func NewScopeAssignmentsClient(subscriptionID string) ScopeAssignmentsClient {
 	return NewScopeAssignmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewScopeAssignmentsClientWithBaseURI creates an instance of the ScopeAssignmentsClient client.
+// NewScopeAssignmentsClientWithBaseURI creates an instance of the ScopeAssignmentsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewScopeAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) ScopeAssignmentsClient {
 	return ScopeAssignmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -108,8 +110,7 @@ func (client ScopeAssignmentsClient) CreateOrUpdatePreparer(ctx context.Context,
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScopeAssignmentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -184,8 +185,7 @@ func (client ScopeAssignmentsClient) DeletePreparer(ctx context.Context, scope s
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScopeAssignmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -259,8 +259,7 @@ func (client ScopeAssignmentsClient) GetPreparer(ctx context.Context, scope stri
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScopeAssignmentsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -334,8 +333,7 @@ func (client ScopeAssignmentsClient) ListPreparer(ctx context.Context, scope str
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScopeAssignmentsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

@@ -36,7 +36,9 @@ func NewRegisteredServersClient(subscriptionID string) RegisteredServersClient {
 	return NewRegisteredServersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewRegisteredServersClientWithBaseURI creates an instance of the RegisteredServersClient client.
+// NewRegisteredServersClientWithBaseURI creates an instance of the RegisteredServersClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewRegisteredServersClientWithBaseURI(baseURI string, subscriptionID string) RegisteredServersClient {
 	return RegisteredServersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -110,9 +112,8 @@ func (client RegisteredServersClient) CreatePreparer(ctx context.Context, resour
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client RegisteredServersClient) CreateSender(req *http.Request) (future RegisteredServersCreateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -199,9 +200,8 @@ func (client RegisteredServersClient) DeletePreparer(ctx context.Context, resour
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client RegisteredServersClient) DeleteSender(req *http.Request) (future RegisteredServersDeleteFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -293,8 +293,7 @@ func (client RegisteredServersClient) GetPreparer(ctx context.Context, resourceG
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client RegisteredServersClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -380,8 +379,7 @@ func (client RegisteredServersClient) ListByStorageSyncServicePreparer(ctx conte
 // ListByStorageSyncServiceSender sends the ListByStorageSyncService request. The method will close the
 // http.Response Body if it receives an error.
 func (client RegisteredServersClient) ListByStorageSyncServiceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByStorageSyncServiceResponder handles the response to the ListByStorageSyncService request. The method always
@@ -466,9 +464,8 @@ func (client RegisteredServersClient) TriggerRolloverPreparer(ctx context.Contex
 // TriggerRolloverSender sends the TriggerRollover request. The method will close the
 // http.Response Body if it receives an error.
 func (client RegisteredServersClient) TriggerRolloverSender(req *http.Request) (future RegisteredServersTriggerRolloverFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

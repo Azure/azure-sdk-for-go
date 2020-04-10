@@ -98,8 +98,7 @@ func (client FeaturesClient) AddPhraseListPreparer(ctx context.Context, appID uu
 // AddPhraseListSender sends the AddPhraseList request. The method will close the
 // http.Response Body if it receives an error.
 func (client FeaturesClient) AddPhraseListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddPhraseListResponder handles the response to the AddPhraseList request. The method always
@@ -174,8 +173,7 @@ func (client FeaturesClient) DeletePhraseListPreparer(ctx context.Context, appID
 // DeletePhraseListSender sends the DeletePhraseList request. The method will close the
 // http.Response Body if it receives an error.
 func (client FeaturesClient) DeletePhraseListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeletePhraseListResponder handles the response to the DeletePhraseList request. The method always
@@ -250,8 +248,7 @@ func (client FeaturesClient) GetPhraseListPreparer(ctx context.Context, appID uu
 // GetPhraseListSender sends the GetPhraseList request. The method will close the
 // http.Response Body if it receives an error.
 func (client FeaturesClient) GetPhraseListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetPhraseListResponder handles the response to the GetPhraseList request. The method always
@@ -351,8 +348,7 @@ func (client FeaturesClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client FeaturesClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -453,8 +449,7 @@ func (client FeaturesClient) ListApplicationVersionPatternFeaturesPreparer(ctx c
 // ListApplicationVersionPatternFeaturesSender sends the ListApplicationVersionPatternFeatures request. The method will close the
 // http.Response Body if it receives an error.
 func (client FeaturesClient) ListApplicationVersionPatternFeaturesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListApplicationVersionPatternFeaturesResponder handles the response to the ListApplicationVersionPatternFeatures request. The method always
@@ -554,8 +549,7 @@ func (client FeaturesClient) ListPhraseListsPreparer(ctx context.Context, appID 
 // ListPhraseListsSender sends the ListPhraseLists request. The method will close the
 // http.Response Body if it receives an error.
 func (client FeaturesClient) ListPhraseListsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListPhraseListsResponder handles the response to the ListPhraseLists request. The method always
@@ -638,8 +632,7 @@ func (client FeaturesClient) UpdatePhraseListPreparer(ctx context.Context, appID
 // UpdatePhraseListSender sends the UpdatePhraseList request. The method will close the
 // http.Response Body if it receives an error.
 func (client FeaturesClient) UpdatePhraseListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdatePhraseListResponder handles the response to the UpdatePhraseList request. The method always

@@ -36,7 +36,9 @@ func NewHardwareComponentGroupsClient(subscriptionID string) HardwareComponentGr
 	return NewHardwareComponentGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewHardwareComponentGroupsClientWithBaseURI creates an instance of the HardwareComponentGroupsClient client.
+// NewHardwareComponentGroupsClientWithBaseURI creates an instance of the HardwareComponentGroupsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewHardwareComponentGroupsClientWithBaseURI(baseURI string, subscriptionID string) HardwareComponentGroupsClient {
 	return HardwareComponentGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -111,9 +113,8 @@ func (client HardwareComponentGroupsClient) ChangeControllerPowerStatePreparer(c
 // ChangeControllerPowerStateSender sends the ChangeControllerPowerState request. The method will close the
 // http.Response Body if it receives an error.
 func (client HardwareComponentGroupsClient) ChangeControllerPowerStateSender(req *http.Request) (future HardwareComponentGroupsChangeControllerPowerStateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -202,8 +203,7 @@ func (client HardwareComponentGroupsClient) ListByDevicePreparer(ctx context.Con
 // ListByDeviceSender sends the ListByDevice request. The method will close the
 // http.Response Body if it receives an error.
 func (client HardwareComponentGroupsClient) ListByDeviceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDeviceResponder handles the response to the ListByDevice request. The method always

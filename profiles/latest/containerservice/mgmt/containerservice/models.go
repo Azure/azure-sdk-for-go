@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-11-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-02-01/containerservice"
 )
 
 const (
@@ -48,6 +48,13 @@ type LoadBalancerSku = original.LoadBalancerSku
 const (
 	Basic    LoadBalancerSku = original.Basic
 	Standard LoadBalancerSku = original.Standard
+)
+
+type NetworkMode = original.NetworkMode
+
+const (
+	Bridge      NetworkMode = original.Bridge
+	Transparent NetworkMode = original.Transparent
 )
 
 type NetworkPlugin = original.NetworkPlugin
@@ -152,6 +159,7 @@ type ScaleSetPriority = original.ScaleSetPriority
 const (
 	Low     ScaleSetPriority = original.Low
 	Regular ScaleSetPriority = original.Regular
+	Spot    ScaleSetPriority = original.Spot
 )
 
 type StorageProfileTypes = original.StorageProfileTypes
@@ -391,6 +399,7 @@ type ManagedClusterLoadBalancerProfileOutboundIPs = original.ManagedClusterLoadB
 type ManagedClusterPoolUpgradeProfile = original.ManagedClusterPoolUpgradeProfile
 type ManagedClusterPoolUpgradeProfileUpgradesItem = original.ManagedClusterPoolUpgradeProfileUpgradesItem
 type ManagedClusterProperties = original.ManagedClusterProperties
+type ManagedClusterPropertiesAutoScalerProfile = original.ManagedClusterPropertiesAutoScalerProfile
 type ManagedClusterPropertiesIdentityProfileValue = original.ManagedClusterPropertiesIdentityProfileValue
 type ManagedClusterServicePrincipalProfile = original.ManagedClusterServicePrincipalProfile
 type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
@@ -512,6 +521,9 @@ func PossibleKindValues() []Kind {
 }
 func PossibleLoadBalancerSkuValues() []LoadBalancerSku {
 	return original.PossibleLoadBalancerSkuValues()
+}
+func PossibleNetworkModeValues() []NetworkMode {
+	return original.PossibleNetworkModeValues()
 }
 func PossibleNetworkPluginValues() []NetworkPlugin {
 	return original.PossibleNetworkPluginValues()

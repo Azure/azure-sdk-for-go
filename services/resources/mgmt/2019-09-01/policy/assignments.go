@@ -37,7 +37,8 @@ func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
 	return NewAssignmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAssignmentsClientWithBaseURI creates an instance of the AssignmentsClient client.
+// NewAssignmentsClientWithBaseURI creates an instance of the AssignmentsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
 	return AssignmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -120,8 +121,7 @@ func (client AssignmentsClient) CreatePreparer(ctx context.Context, scope string
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -215,8 +215,7 @@ func (client AssignmentsClient) CreateByIDPreparer(ctx context.Context, policyAs
 // CreateByIDSender sends the CreateByID request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) CreateByIDSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateByIDResponder handles the response to the CreateByID request. The method always
@@ -297,8 +296,7 @@ func (client AssignmentsClient) DeletePreparer(ctx context.Context, scope string
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -378,8 +376,7 @@ func (client AssignmentsClient) DeleteByIDPreparer(ctx context.Context, policyAs
 // DeleteByIDSender sends the DeleteByID request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) DeleteByIDSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteByIDResponder handles the response to the DeleteByID request. The method always
@@ -458,8 +455,7 @@ func (client AssignmentsClient) GetPreparer(ctx context.Context, scope string, p
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -538,8 +534,7 @@ func (client AssignmentsClient) GetByIDPreparer(ctx context.Context, policyAssig
 // GetByIDSender sends the GetByID request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) GetByIDSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByIDResponder handles the response to the GetByID request. The method always
@@ -624,8 +619,7 @@ func (client AssignmentsClient) ListPreparer(ctx context.Context, filter string)
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -675,6 +669,126 @@ func (client AssignmentsClient) ListComplete(ctx context.Context, filter string)
 		}()
 	}
 	result.page, err = client.List(ctx, filter)
+	return
+}
+
+// ListForManagementGroup this operation retrieves the list of all policy assignments applicable to the management
+// group that match the given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''.
+// If $filter=atScope() is provided, the returned list includes all policy assignments that are assigned to the
+// management group or the management group's ancestors. If $filter=policyDefinitionId eq '{value}' is provided, the
+// returned list includes all policy assignments of the policy definition whose id is {value} that apply to the
+// management group.
+// Parameters:
+// managementGroupID - the ID of the management group.
+// filter - the filter to apply on the operation. Valid values for $filter are: 'atScope()' or
+// 'policyDefinitionId eq '{value}''. A filter is required when listing policy assignments at management group
+// scope.
+func (client AssignmentsClient) ListForManagementGroup(ctx context.Context, managementGroupID string, filter string) (result AssignmentListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.ListForManagementGroup")
+		defer func() {
+			sc := -1
+			if result.alr.Response.Response != nil {
+				sc = result.alr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listForManagementGroupNextResults
+	req, err := client.ListForManagementGroupPreparer(ctx, managementGroupID, filter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForManagementGroup", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListForManagementGroupSender(req)
+	if err != nil {
+		result.alr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForManagementGroup", resp, "Failure sending request")
+		return
+	}
+
+	result.alr, err = client.ListForManagementGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForManagementGroup", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListForManagementGroupPreparer prepares the ListForManagementGroup request.
+func (client AssignmentsClient) ListForManagementGroupPreparer(ctx context.Context, managementGroupID string, filter string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"managementGroupId": autorest.Encode("path", managementGroupID),
+	}
+
+	const APIVersion = "2019-09-01"
+	queryParameters := map[string]interface{}{
+		"$filter":     filter,
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers/Microsoft.Authorization/policyAssignments", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListForManagementGroupSender sends the ListForManagementGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client AssignmentsClient) ListForManagementGroupSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListForManagementGroupResponder handles the response to the ListForManagementGroup request. The method always
+// closes the http.Response Body.
+func (client AssignmentsClient) ListForManagementGroupResponder(resp *http.Response) (result AssignmentListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listForManagementGroupNextResults retrieves the next set of results, if any.
+func (client AssignmentsClient) listForManagementGroupNextResults(ctx context.Context, lastResults AssignmentListResult) (result AssignmentListResult, err error) {
+	req, err := lastResults.assignmentListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForManagementGroupNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListForManagementGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForManagementGroupNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListForManagementGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForManagementGroupNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListForManagementGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AssignmentsClient) ListForManagementGroupComplete(ctx context.Context, managementGroupID string, filter string) (result AssignmentListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.ListForManagementGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListForManagementGroup(ctx, managementGroupID, filter)
 	return
 }
 
@@ -777,8 +891,7 @@ func (client AssignmentsClient) ListForResourcePreparer(ctx context.Context, res
 // ListForResourceSender sends the ListForResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) ListForResourceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListForResourceResponder handles the response to the ListForResource request. The method always
@@ -911,8 +1024,7 @@ func (client AssignmentsClient) ListForResourceGroupPreparer(ctx context.Context
 // ListForResourceGroupSender sends the ListForResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) ListForResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListForResourceGroupResponder handles the response to the ListForResourceGroup request. The method always

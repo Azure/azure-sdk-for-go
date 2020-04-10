@@ -37,7 +37,9 @@ func NewHybridUseBenefitClient(subscriptionID string) HybridUseBenefitClient {
 	return NewHybridUseBenefitClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewHybridUseBenefitClientWithBaseURI creates an instance of the HybridUseBenefitClient client.
+// NewHybridUseBenefitClientWithBaseURI creates an instance of the HybridUseBenefitClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewHybridUseBenefitClientWithBaseURI(baseURI string, subscriptionID string) HybridUseBenefitClient {
 	return HybridUseBenefitClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -112,8 +114,7 @@ func (client HybridUseBenefitClient) CreatePreparer(ctx context.Context, scope s
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridUseBenefitClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -189,8 +190,7 @@ func (client HybridUseBenefitClient) DeletePreparer(ctx context.Context, scope s
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridUseBenefitClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -265,8 +265,7 @@ func (client HybridUseBenefitClient) GetPreparer(ctx context.Context, scope stri
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridUseBenefitClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -345,8 +344,7 @@ func (client HybridUseBenefitClient) ListPreparer(ctx context.Context, scope str
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridUseBenefitClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -463,8 +461,7 @@ func (client HybridUseBenefitClient) UpdatePreparer(ctx context.Context, scope s
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client HybridUseBenefitClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

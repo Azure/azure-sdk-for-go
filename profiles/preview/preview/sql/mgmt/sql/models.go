@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,6 +36,14 @@ const (
 	SQLLatin1GeneralCP1CIAS CatalogCollationType = original.SQLLatin1GeneralCP1CIAS
 )
 
+type DatabaseState = original.DatabaseState
+
+const (
+	All     DatabaseState = original.All
+	Deleted DatabaseState = original.Deleted
+	Live    DatabaseState = original.Live
+)
+
 type IdentityType = original.IdentityType
 
 const (
@@ -52,10 +60,11 @@ const (
 type ManagedDatabaseCreateMode = original.ManagedDatabaseCreateMode
 
 const (
-	Default               ManagedDatabaseCreateMode = original.Default
-	PointInTimeRestore    ManagedDatabaseCreateMode = original.PointInTimeRestore
-	Recovery              ManagedDatabaseCreateMode = original.Recovery
-	RestoreExternalBackup ManagedDatabaseCreateMode = original.RestoreExternalBackup
+	Default                        ManagedDatabaseCreateMode = original.Default
+	PointInTimeRestore             ManagedDatabaseCreateMode = original.PointInTimeRestore
+	Recovery                       ManagedDatabaseCreateMode = original.Recovery
+	RestoreExternalBackup          ManagedDatabaseCreateMode = original.RestoreExternalBackup
+	RestoreLongTermRetentionBackup ManagedDatabaseCreateMode = original.RestoreLongTermRetentionBackup
 )
 
 type ManagedDatabaseStatus = original.ManagedDatabaseStatus
@@ -118,6 +127,16 @@ const (
 	SecurityAlertPolicyStateNew      SecurityAlertPolicyState = original.SecurityAlertPolicyStateNew
 )
 
+type SensitivityLabelRank = original.SensitivityLabelRank
+
+const (
+	Critical SensitivityLabelRank = original.Critical
+	High     SensitivityLabelRank = original.High
+	Low      SensitivityLabelRank = original.Low
+	Medium   SensitivityLabelRank = original.Medium
+	None     SensitivityLabelRank = original.None
+)
+
 type SensitivityLabelSource = original.SensitivityLabelSource
 
 const (
@@ -130,6 +149,7 @@ type AdministratorListResultIterator = original.AdministratorListResultIterator
 type AdministratorListResultPage = original.AdministratorListResultPage
 type AdministratorProperties = original.AdministratorProperties
 type BaseClient = original.BaseClient
+type BaseLongTermRetentionPolicyProperties = original.BaseLongTermRetentionPolicyProperties
 type CompleteDatabaseRestoreDefinition = original.CompleteDatabaseRestoreDefinition
 type DatabaseSecurityAlertListResult = original.DatabaseSecurityAlertListResult
 type DatabaseSecurityAlertListResultIterator = original.DatabaseSecurityAlertListResultIterator
@@ -150,6 +170,9 @@ type InstancePoolsClient = original.InstancePoolsClient
 type InstancePoolsCreateOrUpdateFuture = original.InstancePoolsCreateOrUpdateFuture
 type InstancePoolsDeleteFuture = original.InstancePoolsDeleteFuture
 type InstancePoolsUpdateFuture = original.InstancePoolsUpdateFuture
+type LongTermRetentionManagedInstanceBackupsClient = original.LongTermRetentionManagedInstanceBackupsClient
+type LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture = original.LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture
+type LongTermRetentionManagedInstanceBackupsDeleteFuture = original.LongTermRetentionManagedInstanceBackupsDeleteFuture
 type ManagedDatabase = original.ManagedDatabase
 type ManagedDatabaseListResult = original.ManagedDatabaseListResult
 type ManagedDatabaseListResultIterator = original.ManagedDatabaseListResultIterator
@@ -169,6 +192,17 @@ type ManagedInstance = original.ManagedInstance
 type ManagedInstanceListResult = original.ManagedInstanceListResult
 type ManagedInstanceListResultIterator = original.ManagedInstanceListResultIterator
 type ManagedInstanceListResultPage = original.ManagedInstanceListResultPage
+type ManagedInstanceLongTermRetentionBackup = original.ManagedInstanceLongTermRetentionBackup
+type ManagedInstanceLongTermRetentionBackupListResult = original.ManagedInstanceLongTermRetentionBackupListResult
+type ManagedInstanceLongTermRetentionBackupListResultIterator = original.ManagedInstanceLongTermRetentionBackupListResultIterator
+type ManagedInstanceLongTermRetentionBackupListResultPage = original.ManagedInstanceLongTermRetentionBackupListResultPage
+type ManagedInstanceLongTermRetentionBackupProperties = original.ManagedInstanceLongTermRetentionBackupProperties
+type ManagedInstanceLongTermRetentionPoliciesClient = original.ManagedInstanceLongTermRetentionPoliciesClient
+type ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture = original.ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture
+type ManagedInstanceLongTermRetentionPolicy = original.ManagedInstanceLongTermRetentionPolicy
+type ManagedInstanceLongTermRetentionPolicyListResult = original.ManagedInstanceLongTermRetentionPolicyListResult
+type ManagedInstanceLongTermRetentionPolicyListResultIterator = original.ManagedInstanceLongTermRetentionPolicyListResultIterator
+type ManagedInstanceLongTermRetentionPolicyListResultPage = original.ManagedInstanceLongTermRetentionPolicyListResultPage
 type ManagedInstanceOperation = original.ManagedInstanceOperation
 type ManagedInstanceOperationListResult = original.ManagedInstanceOperationListResult
 type ManagedInstanceOperationListResultIterator = original.ManagedInstanceOperationListResultIterator
@@ -271,6 +305,12 @@ func NewInstancePoolsClient(subscriptionID string) InstancePoolsClient {
 func NewInstancePoolsClientWithBaseURI(baseURI string, subscriptionID string) InstancePoolsClient {
 	return original.NewInstancePoolsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewLongTermRetentionManagedInstanceBackupsClient(subscriptionID string) LongTermRetentionManagedInstanceBackupsClient {
+	return original.NewLongTermRetentionManagedInstanceBackupsClient(subscriptionID)
+}
+func NewLongTermRetentionManagedInstanceBackupsClientWithBaseURI(baseURI string, subscriptionID string) LongTermRetentionManagedInstanceBackupsClient {
+	return original.NewLongTermRetentionManagedInstanceBackupsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewManagedDatabaseListResultIterator(page ManagedDatabaseListResultPage) ManagedDatabaseListResultIterator {
 	return original.NewManagedDatabaseListResultIterator(page)
 }
@@ -300,6 +340,24 @@ func NewManagedInstanceListResultIterator(page ManagedInstanceListResultPage) Ma
 }
 func NewManagedInstanceListResultPage(getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
 	return original.NewManagedInstanceListResultPage(getNextPage)
+}
+func NewManagedInstanceLongTermRetentionBackupListResultIterator(page ManagedInstanceLongTermRetentionBackupListResultPage) ManagedInstanceLongTermRetentionBackupListResultIterator {
+	return original.NewManagedInstanceLongTermRetentionBackupListResultIterator(page)
+}
+func NewManagedInstanceLongTermRetentionBackupListResultPage(getNextPage func(context.Context, ManagedInstanceLongTermRetentionBackupListResult) (ManagedInstanceLongTermRetentionBackupListResult, error)) ManagedInstanceLongTermRetentionBackupListResultPage {
+	return original.NewManagedInstanceLongTermRetentionBackupListResultPage(getNextPage)
+}
+func NewManagedInstanceLongTermRetentionPoliciesClient(subscriptionID string) ManagedInstanceLongTermRetentionPoliciesClient {
+	return original.NewManagedInstanceLongTermRetentionPoliciesClient(subscriptionID)
+}
+func NewManagedInstanceLongTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceLongTermRetentionPoliciesClient {
+	return original.NewManagedInstanceLongTermRetentionPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewManagedInstanceLongTermRetentionPolicyListResultIterator(page ManagedInstanceLongTermRetentionPolicyListResultPage) ManagedInstanceLongTermRetentionPolicyListResultIterator {
+	return original.NewManagedInstanceLongTermRetentionPolicyListResultIterator(page)
+}
+func NewManagedInstanceLongTermRetentionPolicyListResultPage(getNextPage func(context.Context, ManagedInstanceLongTermRetentionPolicyListResult) (ManagedInstanceLongTermRetentionPolicyListResult, error)) ManagedInstanceLongTermRetentionPolicyListResultPage {
+	return original.NewManagedInstanceLongTermRetentionPolicyListResultPage(getNextPage)
 }
 func NewManagedInstanceOperationListResultIterator(page ManagedInstanceOperationListResultPage) ManagedInstanceOperationListResultIterator {
 	return original.NewManagedInstanceOperationListResultIterator(page)
@@ -385,6 +443,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleCatalogCollationTypeValues() []CatalogCollationType {
 	return original.PossibleCatalogCollationTypeValues()
 }
+func PossibleDatabaseStateValues() []DatabaseState {
+	return original.PossibleDatabaseStateValues()
+}
 func PossibleIdentityTypeValues() []IdentityType {
 	return original.PossibleIdentityTypeValues()
 }
@@ -414,6 +475,9 @@ func PossibleReplicaTypeValues() []ReplicaType {
 }
 func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
 	return original.PossibleSecurityAlertPolicyStateValues()
+}
+func PossibleSensitivityLabelRankValues() []SensitivityLabelRank {
+	return original.PossibleSensitivityLabelRankValues()
 }
 func PossibleSensitivityLabelSourceValues() []SensitivityLabelSource {
 	return original.PossibleSensitivityLabelSourceValues()

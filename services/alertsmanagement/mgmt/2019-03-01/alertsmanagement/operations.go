@@ -35,7 +35,8 @@ func NewOperationsClient(scope string, subscriptionID string, subscriptionID1 st
 	return NewOperationsClientWithBaseURI(DefaultBaseURI, scope, subscriptionID, subscriptionID1)
 }
 
-// NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
+// NewOperationsClientWithBaseURI creates an instance of the OperationsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewOperationsClientWithBaseURI(baseURI string, scope string, subscriptionID string, subscriptionID1 string) OperationsClient {
 	return OperationsClient{NewWithBaseURI(baseURI, scope, subscriptionID, subscriptionID1)}
 }
@@ -92,8 +93,7 @@ func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request,
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client OperationsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

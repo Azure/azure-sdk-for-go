@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ const (
 type AccountExpand = original.AccountExpand
 
 const (
+	AccountExpandBlobRestoreStatus   AccountExpand = original.AccountExpandBlobRestoreStatus
 	AccountExpandGeoReplicationStats AccountExpand = original.AccountExpandGeoReplicationStats
 )
 
@@ -65,6 +66,14 @@ const (
 	Renew   Action1 = original.Renew
 )
 
+type BlobRestoreProgressStatus = original.BlobRestoreProgressStatus
+
+const (
+	Complete   BlobRestoreProgressStatus = original.Complete
+	Failed     BlobRestoreProgressStatus = original.Failed
+	InProgress BlobRestoreProgressStatus = original.InProgress
+)
+
 type Bypass = original.Bypass
 
 const (
@@ -87,6 +96,20 @@ const (
 	DirectoryServiceOptionsAADDS DirectoryServiceOptions = original.DirectoryServiceOptionsAADDS
 	DirectoryServiceOptionsAD    DirectoryServiceOptions = original.DirectoryServiceOptionsAD
 	DirectoryServiceOptionsNone  DirectoryServiceOptions = original.DirectoryServiceOptionsNone
+)
+
+type EncryptionScopeSource = original.EncryptionScopeSource
+
+const (
+	MicrosoftKeyVault EncryptionScopeSource = original.MicrosoftKeyVault
+	MicrosoftStorage  EncryptionScopeSource = original.MicrosoftStorage
+)
+
+type EncryptionScopeState = original.EncryptionScopeState
+
+const (
+	Disabled EncryptionScopeState = original.Disabled
+	Enabled  EncryptionScopeState = original.Enabled
 )
 
 type GeoReplicationStatus = original.GeoReplicationStatus
@@ -129,8 +152,15 @@ const (
 type KeySource = original.KeySource
 
 const (
-	MicrosoftKeyvault KeySource = original.MicrosoftKeyvault
-	MicrosoftStorage  KeySource = original.MicrosoftStorage
+	KeySourceMicrosoftKeyvault KeySource = original.KeySourceMicrosoftKeyvault
+	KeySourceMicrosoftStorage  KeySource = original.KeySourceMicrosoftStorage
+)
+
+type KeyType = original.KeyType
+
+const (
+	KeyTypeAccount KeyType = original.KeyTypeAccount
+	KeyTypeService KeyType = original.KeyTypeService
 )
 
 type Kind = original.Kind
@@ -146,8 +176,8 @@ const (
 type LargeFileSharesState = original.LargeFileSharesState
 
 const (
-	Disabled LargeFileSharesState = original.Disabled
-	Enabled  LargeFileSharesState = original.Enabled
+	LargeFileSharesStateDisabled LargeFileSharesState = original.LargeFileSharesStateDisabled
+	LargeFileSharesStateEnabled  LargeFileSharesState = original.LargeFileSharesStateEnabled
 )
 
 type LeaseDuration = original.LeaseDuration
@@ -196,10 +226,10 @@ const (
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
 
 const (
-	Creating  PrivateEndpointConnectionProvisioningState = original.Creating
-	Deleting  PrivateEndpointConnectionProvisioningState = original.Deleting
-	Failed    PrivateEndpointConnectionProvisioningState = original.Failed
-	Succeeded PrivateEndpointConnectionProvisioningState = original.Succeeded
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateCreating
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateDeleting
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateFailed
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
 )
 
 type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
@@ -213,9 +243,9 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	ProvisioningStateCreating     ProvisioningState = original.ProvisioningStateCreating
-	ProvisioningStateResolvingDNS ProvisioningState = original.ProvisioningStateResolvingDNS
-	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
+	Creating     ProvisioningState = original.Creating
+	ResolvingDNS ProvisioningState = original.ResolvingDNS
+	Succeeded    ProvisioningState = original.Succeeded
 )
 
 type PublicAccess = original.PublicAccess
@@ -333,12 +363,16 @@ type AccountUpdateParameters = original.AccountUpdateParameters
 type AccountsClient = original.AccountsClient
 type AccountsCreateFuture = original.AccountsCreateFuture
 type AccountsFailoverFuture = original.AccountsFailoverFuture
+type AccountsRestoreBlobRangesFuture = original.AccountsRestoreBlobRangesFuture
 type ActiveDirectoryProperties = original.ActiveDirectoryProperties
 type AzureEntityResource = original.AzureEntityResource
 type AzureFilesIdentityBasedAuthentication = original.AzureFilesIdentityBasedAuthentication
 type BaseClient = original.BaseClient
 type BlobContainer = original.BlobContainer
 type BlobContainersClient = original.BlobContainersClient
+type BlobRestoreParameters = original.BlobRestoreParameters
+type BlobRestoreRange = original.BlobRestoreRange
+type BlobRestoreStatus = original.BlobRestoreStatus
 type BlobServiceItems = original.BlobServiceItems
 type BlobServiceProperties = original.BlobServiceProperties
 type BlobServicePropertiesProperties = original.BlobServicePropertiesProperties
@@ -356,6 +390,13 @@ type DateAfterModification = original.DateAfterModification
 type DeleteRetentionPolicy = original.DeleteRetentionPolicy
 type Dimension = original.Dimension
 type Encryption = original.Encryption
+type EncryptionScope = original.EncryptionScope
+type EncryptionScopeKeyVaultProperties = original.EncryptionScopeKeyVaultProperties
+type EncryptionScopeListResult = original.EncryptionScopeListResult
+type EncryptionScopeListResultIterator = original.EncryptionScopeListResultIterator
+type EncryptionScopeListResultPage = original.EncryptionScopeListResultPage
+type EncryptionScopeProperties = original.EncryptionScopeProperties
+type EncryptionScopesClient = original.EncryptionScopesClient
 type EncryptionService = original.EncryptionService
 type EncryptionServices = original.EncryptionServices
 type Endpoints = original.Endpoints
@@ -416,6 +457,7 @@ type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type RestorePolicyProperties = original.RestorePolicyProperties
 type Restriction = original.Restriction
 type RoutingPreference = original.RoutingPreference
 type SKUCapability = original.SKUCapability
@@ -460,6 +502,18 @@ func NewBlobServicesClient(subscriptionID string) BlobServicesClient {
 }
 func NewBlobServicesClientWithBaseURI(baseURI string, subscriptionID string) BlobServicesClient {
 	return original.NewBlobServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewEncryptionScopeListResultIterator(page EncryptionScopeListResultPage) EncryptionScopeListResultIterator {
+	return original.NewEncryptionScopeListResultIterator(page)
+}
+func NewEncryptionScopeListResultPage(getNextPage func(context.Context, EncryptionScopeListResult) (EncryptionScopeListResult, error)) EncryptionScopeListResultPage {
+	return original.NewEncryptionScopeListResultPage(getNextPage)
+}
+func NewEncryptionScopesClient(subscriptionID string) EncryptionScopesClient {
+	return original.NewEncryptionScopesClient(subscriptionID)
+}
+func NewEncryptionScopesClientWithBaseURI(baseURI string, subscriptionID string) EncryptionScopesClient {
+	return original.NewEncryptionScopesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewFileServicesClient(subscriptionID string) FileServicesClient {
 	return original.NewFileServicesClient(subscriptionID)
@@ -539,6 +593,9 @@ func PossibleAction1Values() []Action1 {
 func PossibleActionValues() []Action {
 	return original.PossibleActionValues()
 }
+func PossibleBlobRestoreProgressStatusValues() []BlobRestoreProgressStatus {
+	return original.PossibleBlobRestoreProgressStatusValues()
+}
 func PossibleBypassValues() []Bypass {
 	return original.PossibleBypassValues()
 }
@@ -547,6 +604,12 @@ func PossibleDefaultActionValues() []DefaultAction {
 }
 func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
 	return original.PossibleDirectoryServiceOptionsValues()
+}
+func PossibleEncryptionScopeSourceValues() []EncryptionScopeSource {
+	return original.PossibleEncryptionScopeSourceValues()
+}
+func PossibleEncryptionScopeStateValues() []EncryptionScopeState {
+	return original.PossibleEncryptionScopeStateValues()
 }
 func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 	return original.PossibleGeoReplicationStatusValues()
@@ -565,6 +628,9 @@ func PossibleKeyPermissionValues() []KeyPermission {
 }
 func PossibleKeySourceValues() []KeySource {
 	return original.PossibleKeySourceValues()
+}
+func PossibleKeyTypeValues() []KeyType {
+	return original.PossibleKeyTypeValues()
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()

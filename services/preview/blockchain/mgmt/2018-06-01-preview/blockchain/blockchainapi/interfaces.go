@@ -28,9 +28,12 @@ type MembersClientAPI interface {
 	Delete(ctx context.Context, blockchainMemberName string, resourceGroupName string) (result blockchain.MembersDeleteFuture, err error)
 	Get(ctx context.Context, blockchainMemberName string, resourceGroupName string) (result blockchain.Member, err error)
 	List(ctx context.Context, resourceGroupName string) (result blockchain.MemberCollectionPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result blockchain.MemberCollectionIterator, err error)
 	ListAll(ctx context.Context) (result blockchain.MemberCollectionPage, err error)
+	ListAllComplete(ctx context.Context) (result blockchain.MemberCollectionIterator, err error)
 	ListAPIKeys(ctx context.Context, blockchainMemberName string, resourceGroupName string) (result blockchain.APIKeyCollection, err error)
 	ListConsortiumMembers(ctx context.Context, blockchainMemberName string, resourceGroupName string) (result blockchain.ConsortiumMemberCollectionPage, err error)
+	ListConsortiumMembersComplete(ctx context.Context, blockchainMemberName string, resourceGroupName string) (result blockchain.ConsortiumMemberCollectionIterator, err error)
 	ListRegenerateAPIKeys(ctx context.Context, blockchainMemberName string, resourceGroupName string, APIKey *blockchain.APIKey) (result blockchain.APIKeyCollection, err error)
 	Update(ctx context.Context, blockchainMemberName string, resourceGroupName string, blockchainMember *blockchain.MemberUpdate) (result blockchain.Member, err error)
 }
@@ -55,6 +58,7 @@ var _ LocationsClientAPI = (*blockchain.LocationsClient)(nil)
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result blockchain.ResourceProviderOperationCollectionPage, err error)
+	ListComplete(ctx context.Context) (result blockchain.ResourceProviderOperationCollectionIterator, err error)
 }
 
 var _ OperationsClientAPI = (*blockchain.OperationsClient)(nil)
@@ -72,6 +76,7 @@ type TransactionNodesClientAPI interface {
 	Delete(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string) (result blockchain.TransactionNodesDeleteFuture, err error)
 	Get(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string) (result blockchain.TransactionNode, err error)
 	List(ctx context.Context, blockchainMemberName string, resourceGroupName string) (result blockchain.TransactionNodeCollectionPage, err error)
+	ListComplete(ctx context.Context, blockchainMemberName string, resourceGroupName string) (result blockchain.TransactionNodeCollectionIterator, err error)
 	ListAPIKeys(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string) (result blockchain.APIKeyCollection, err error)
 	ListRegenerateAPIKeys(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, APIKey *blockchain.APIKey) (result blockchain.APIKeyCollection, err error)
 	Update(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, transactionNode *blockchain.TransactionNodeUpdate) (result blockchain.TransactionNode, err error)

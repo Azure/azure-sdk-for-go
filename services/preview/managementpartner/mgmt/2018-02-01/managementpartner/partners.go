@@ -35,7 +35,8 @@ func NewPartnersClient() PartnersClient {
 	return NewPartnersClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewPartnersClientWithBaseURI creates an instance of the PartnersClient client.
+// NewPartnersClientWithBaseURI creates an instance of the PartnersClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPartnersClientWithBaseURI(baseURI string) PartnersClient {
 	return PartnersClient{NewWithBaseURI(baseURI)}
 }
@@ -91,8 +92,7 @@ func (client PartnersClient) GetPreparer(ctx context.Context) (*http.Request, er
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PartnersClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always

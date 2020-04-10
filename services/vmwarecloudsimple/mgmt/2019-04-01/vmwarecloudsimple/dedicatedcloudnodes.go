@@ -36,7 +36,9 @@ func NewDedicatedCloudNodesClient(subscriptionID string, referer string) Dedicat
 	return NewDedicatedCloudNodesClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
-// NewDedicatedCloudNodesClientWithBaseURI creates an instance of the DedicatedCloudNodesClient client.
+// NewDedicatedCloudNodesClientWithBaseURI creates an instance of the DedicatedCloudNodesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewDedicatedCloudNodesClientWithBaseURI(baseURI string, subscriptionID string, referer string) DedicatedCloudNodesClient {
 	return DedicatedCloudNodesClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
@@ -124,9 +126,8 @@ func (client DedicatedCloudNodesClient) CreateOrUpdatePreparer(ctx context.Conte
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DedicatedCloudNodesClient) CreateOrUpdateSender(req *http.Request) (future DedicatedCloudNodesCreateOrUpdateFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -213,8 +214,7 @@ func (client DedicatedCloudNodesClient) DeletePreparer(ctx context.Context, reso
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client DedicatedCloudNodesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -295,8 +295,7 @@ func (client DedicatedCloudNodesClient) GetPreparer(ctx context.Context, resourc
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DedicatedCloudNodesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -383,8 +382,7 @@ func (client DedicatedCloudNodesClient) ListByResourceGroupPreparer(ctx context.
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client DedicatedCloudNodesClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -506,8 +504,7 @@ func (client DedicatedCloudNodesClient) ListBySubscriptionPreparer(ctx context.C
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client DedicatedCloudNodesClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
@@ -629,8 +626,7 @@ func (client DedicatedCloudNodesClient) UpdatePreparer(ctx context.Context, reso
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client DedicatedCloudNodesClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

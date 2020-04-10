@@ -4,9 +4,9 @@
 package azidentity
 
 import (
-	"encoding/json"
 	"net/http"
 	"net/url"
+	"os"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -72,7 +72,7 @@ func (e *AuthenticationFailedError) Error() string {
 
 func newAADAuthenticationFailedError(resp *azcore.Response) error {
 	authFailed := &AADAuthenticationFailedError{}
-	err := json.Unmarshal(resp.Payload, authFailed)
+	err := resp.UnmarshalAsJSON(authFailed)
 	if err != nil {
 		authFailed.Message = resp.Status
 		authFailed.Description = "Failed to unmarshal response: " + err.Error()
@@ -109,7 +109,7 @@ type TokenCredentialOptions struct {
 	LogOptions azcore.RequestLogOptions
 
 	// Retry configures the built-in retry policy behavior.
-	Retry azcore.RetryOptions
+	Retry *azcore.RetryOptions
 
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry azcore.TelemetryOptions
@@ -118,8 +118,13 @@ type TokenCredentialOptions struct {
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
 func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, error) {
+	authorityHost := defaultAuthorityHost
+	if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
+		authorityHost = envAuthorityHost
+	}
+
 	if c == nil {
-		defaultAuthorityHostURL, err := url.Parse(defaultAuthorityHost)
+		defaultAuthorityHostURL, err := url.Parse(authorityHost)
 		if err != nil {
 			return nil, err
 		}
@@ -127,7 +132,7 @@ func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, er
 	}
 
 	if c.AuthorityHost == nil {
-		defaultAuthorityHostURL, err := url.Parse(defaultAuthorityHost)
+		defaultAuthorityHostURL, err := url.Parse(authorityHost)
 		if err != nil {
 			return nil, err
 		}
@@ -164,8 +169,9 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 	var statusCodes []int
 	// retry policy for MSI is not end-user configurable
 	retryOpts := azcore.RetryOptions{
-		MaxTries:   5,
+		MaxRetries: 4,
 		RetryDelay: 2 * time.Second,
+		TryTimeout: 1 * time.Minute,
 		StatusCodes: append(statusCodes,
 			// The following status codes are a subset of those found in azcore.StatusCodesForRetry, these are the only ones specifically needed for MSI scenarios
 			http.StatusRequestTimeout,      // 408
@@ -189,6 +195,6 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 		o.HTTPClient,
 		azcore.NewTelemetryPolicy(o.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(retryOpts),
+		azcore.NewRetryPolicy(&retryOpts),
 		azcore.NewRequestLogPolicy(o.LogOptions))
 }

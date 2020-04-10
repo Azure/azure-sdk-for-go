@@ -36,7 +36,8 @@ func NewCostTagsClient(subscriptionID string) CostTagsClient {
 	return NewCostTagsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCostTagsClientWithBaseURI creates an instance of the CostTagsClient client.
+// NewCostTagsClientWithBaseURI creates an instance of the CostTagsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCostTagsClientWithBaseURI(baseURI string, subscriptionID string) CostTagsClient {
 	return CostTagsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -103,8 +104,7 @@ func (client CostTagsClient) CreateOrUpdatePreparer(ctx context.Context, billing
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CostTagsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -177,8 +177,7 @@ func (client CostTagsClient) GetPreparer(ctx context.Context, billingAccountID s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client CostTagsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always

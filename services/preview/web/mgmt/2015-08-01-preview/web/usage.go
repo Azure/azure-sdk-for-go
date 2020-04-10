@@ -35,7 +35,8 @@ func NewUsageClient(subscriptionID string) UsageClient {
 	return NewUsageClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewUsageClientWithBaseURI creates an instance of the UsageClient client.
+// NewUsageClientWithBaseURI creates an instance of the UsageClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
 	return UsageClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -104,8 +105,7 @@ func (client UsageClient) GetUsagePreparer(ctx context.Context, resourceGroupNam
 // GetUsageSender sends the GetUsage request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsageClient) GetUsageSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetUsageResponder handles the response to the GetUsage request. The method always

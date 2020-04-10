@@ -35,7 +35,8 @@ func NewMachinesClient(subscriptionID string, acceptLanguage string) MachinesCli
 	return NewMachinesClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
-// NewMachinesClientWithBaseURI creates an instance of the MachinesClient client.
+// NewMachinesClientWithBaseURI creates an instance of the MachinesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) MachinesClient {
 	return MachinesClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
@@ -106,8 +107,7 @@ func (client MachinesClient) GetPreparer(ctx context.Context, resourceGroupName 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachinesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -188,8 +188,7 @@ func (client MachinesClient) ListByProjectPreparer(ctx context.Context, resource
 // ListByProjectSender sends the ListByProject request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachinesClient) ListByProjectSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByProjectResponder handles the response to the ListByProject request. The method always

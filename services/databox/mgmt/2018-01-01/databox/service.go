@@ -36,7 +36,8 @@ func NewServiceClient(subscriptionID string) ServiceClient {
 	return NewServiceClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewServiceClientWithBaseURI creates an instance of the ServiceClient client.
+// NewServiceClientWithBaseURI creates an instance of the ServiceClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceClient {
 	return ServiceClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -111,8 +112,7 @@ func (client ServiceClient) ListAvailableSkusPreparer(ctx context.Context, locat
 // ListAvailableSkusSender sends the ListAvailableSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceClient) ListAvailableSkusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAvailableSkusResponder handles the response to the ListAvailableSkus request. The method always
@@ -236,8 +236,7 @@ func (client ServiceClient) ValidateAddressMethodPreparer(ctx context.Context, l
 // ValidateAddressMethodSender sends the ValidateAddressMethod request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceClient) ValidateAddressMethodSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ValidateAddressMethodResponder handles the response to the ValidateAddressMethod request. The method always

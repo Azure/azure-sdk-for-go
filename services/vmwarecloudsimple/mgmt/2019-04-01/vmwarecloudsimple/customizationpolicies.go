@@ -35,7 +35,9 @@ func NewCustomizationPoliciesClient(subscriptionID string, referer string) Custo
 	return NewCustomizationPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
-// NewCustomizationPoliciesClientWithBaseURI creates an instance of the CustomizationPoliciesClient client.
+// NewCustomizationPoliciesClientWithBaseURI creates an instance of the CustomizationPoliciesClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewCustomizationPoliciesClientWithBaseURI(baseURI string, subscriptionID string, referer string) CustomizationPoliciesClient {
 	return CustomizationPoliciesClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
@@ -102,8 +104,7 @@ func (client CustomizationPoliciesClient) GetPreparer(ctx context.Context, regio
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client CustomizationPoliciesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -185,8 +186,7 @@ func (client CustomizationPoliciesClient) ListPreparer(ctx context.Context, regi
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client CustomizationPoliciesClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always

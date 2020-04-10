@@ -29,8 +29,11 @@ type VirtualMachineImageTemplateClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, imageTemplateName string) (result virtualmachineimagebuilder.ImageTemplate, err error)
 	GetRunOutput(ctx context.Context, resourceGroupName string, imageTemplateName string, runOutputName string) (result virtualmachineimagebuilder.RunOutput, err error)
 	List(ctx context.Context) (result virtualmachineimagebuilder.ImageTemplateListResultPage, err error)
+	ListComplete(ctx context.Context) (result virtualmachineimagebuilder.ImageTemplateListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result virtualmachineimagebuilder.ImageTemplateListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result virtualmachineimagebuilder.ImageTemplateListResultIterator, err error)
 	ListRunOutputs(ctx context.Context, resourceGroupName string, imageTemplateName string) (result virtualmachineimagebuilder.RunOutputCollectionPage, err error)
+	ListRunOutputsComplete(ctx context.Context, resourceGroupName string, imageTemplateName string) (result virtualmachineimagebuilder.RunOutputCollectionIterator, err error)
 	Run(ctx context.Context, resourceGroupName string, imageTemplateName string) (result virtualmachineimagebuilder.VirtualMachineImageTemplateRunFuture, err error)
 	Update(ctx context.Context, parameters virtualmachineimagebuilder.ImageTemplateUpdateParameters, resourceGroupName string, imageTemplateName string) (result virtualmachineimagebuilder.ImageTemplate, err error)
 }
@@ -40,6 +43,7 @@ var _ VirtualMachineImageTemplateClientAPI = (*virtualmachineimagebuilder.Virtua
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result virtualmachineimagebuilder.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result virtualmachineimagebuilder.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*virtualmachineimagebuilder.OperationsClient)(nil)

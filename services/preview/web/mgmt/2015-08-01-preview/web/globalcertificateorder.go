@@ -35,7 +35,9 @@ func NewGlobalCertificateOrderClient(subscriptionID string) GlobalCertificateOrd
 	return NewGlobalCertificateOrderClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewGlobalCertificateOrderClientWithBaseURI creates an instance of the GlobalCertificateOrderClient client.
+// NewGlobalCertificateOrderClientWithBaseURI creates an instance of the GlobalCertificateOrderClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewGlobalCertificateOrderClientWithBaseURI(baseURI string, subscriptionID string) GlobalCertificateOrderClient {
 	return GlobalCertificateOrderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -96,8 +98,7 @@ func (client GlobalCertificateOrderClient) GetAllCertificateOrdersPreparer(ctx c
 // GetAllCertificateOrdersSender sends the GetAllCertificateOrders request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalCertificateOrderClient) GetAllCertificateOrdersSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetAllCertificateOrdersResponder handles the response to the GetAllCertificateOrders request. The method always
@@ -209,8 +210,7 @@ func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformatio
 // ValidateCertificatePurchaseInformationSender sends the ValidateCertificatePurchaseInformation request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ValidateCertificatePurchaseInformationResponder handles the response to the ValidateCertificatePurchaseInformation request. The method always

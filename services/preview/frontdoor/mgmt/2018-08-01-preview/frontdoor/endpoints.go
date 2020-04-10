@@ -36,7 +36,8 @@ func NewEndpointsClient(subscriptionID string) EndpointsClient {
 	return NewEndpointsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewEndpointsClientWithBaseURI creates an instance of the EndpointsClient client.
+// NewEndpointsClientWithBaseURI creates an instance of the EndpointsClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
 	return EndpointsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -114,9 +115,8 @@ func (client EndpointsClient) PurgeContentPreparer(ctx context.Context, resource
 // PurgeContentSender sends the PurgeContent request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) PurgeContentSender(req *http.Request) (future EndpointsPurgeContentFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}

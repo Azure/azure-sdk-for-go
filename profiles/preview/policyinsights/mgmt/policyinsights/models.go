@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -71,6 +71,8 @@ type PolicyMetadataSlimProperties = original.PolicyMetadataSlimProperties
 type PolicyState = original.PolicyState
 type PolicyStatesClient = original.PolicyStatesClient
 type PolicyStatesQueryResults = original.PolicyStatesQueryResults
+type PolicyStatesTriggerResourceGroupEvaluationFuture = original.PolicyStatesTriggerResourceGroupEvaluationFuture
+type PolicyStatesTriggerSubscriptionEvaluationFuture = original.PolicyStatesTriggerSubscriptionEvaluationFuture
 type PolicyTrackedResource = original.PolicyTrackedResource
 type PolicyTrackedResourcesClient = original.PolicyTrackedResourcesClient
 type PolicyTrackedResourcesQueryResults = original.PolicyTrackedResourcesQueryResults

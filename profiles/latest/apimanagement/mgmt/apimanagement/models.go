@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ package apimanagement
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2019-01-01/apimanagement"
+	original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2019-12-01/apimanagement"
 )
 
 const (
@@ -40,6 +40,21 @@ type AlwaysLog = original.AlwaysLog
 
 const (
 	AllErrors AlwaysLog = original.AllErrors
+)
+
+type ApimIdentityType = original.ApimIdentityType
+
+const (
+	None                       ApimIdentityType = original.None
+	SystemAssigned             ApimIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned ApimIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               ApimIdentityType = original.UserAssigned
+)
+
+type AppType = original.AppType
+
+const (
+	DeveloperPortal AppType = original.DeveloperPortal
 )
 
 type AsyncOperationStatus = original.AsyncOperationStatus
@@ -112,6 +127,7 @@ type ContentFormat = original.ContentFormat
 const (
 	Openapi         ContentFormat = original.Openapi
 	Openapijson     ContentFormat = original.Openapijson
+	OpenapijsonLink ContentFormat = original.OpenapijsonLink
 	OpenapiLink     ContentFormat = original.OpenapiLink
 	SwaggerJSON     ContentFormat = original.SwaggerJSON
 	SwaggerLinkJSON ContentFormat = original.SwaggerLinkJSON
@@ -124,10 +140,11 @@ const (
 type ExportFormat = original.ExportFormat
 
 const (
-	ExportFormatOpenapi ExportFormat = original.ExportFormatOpenapi
-	ExportFormatSwagger ExportFormat = original.ExportFormatSwagger
-	ExportFormatWadl    ExportFormat = original.ExportFormatWadl
-	ExportFormatWsdl    ExportFormat = original.ExportFormatWsdl
+	ExportFormatOpenapi     ExportFormat = original.ExportFormatOpenapi
+	ExportFormatOpenapiJSON ExportFormat = original.ExportFormatOpenapiJSON
+	ExportFormatSwagger     ExportFormat = original.ExportFormatSwagger
+	ExportFormatWadl        ExportFormat = original.ExportFormatWadl
+	ExportFormatWsdl        ExportFormat = original.ExportFormatWsdl
 )
 
 type ExportResultFormat = original.ExportResultFormat
@@ -156,14 +173,22 @@ const (
 	System   GroupType = original.System
 )
 
+type HTTPCorrelationProtocol = original.HTTPCorrelationProtocol
+
+const (
+	HTTPCorrelationProtocolLegacy HTTPCorrelationProtocol = original.HTTPCorrelationProtocolLegacy
+	HTTPCorrelationProtocolNone   HTTPCorrelationProtocol = original.HTTPCorrelationProtocolNone
+	HTTPCorrelationProtocolW3C    HTTPCorrelationProtocol = original.HTTPCorrelationProtocolW3C
+)
+
 type HostnameType = original.HostnameType
 
 const (
-	DeveloperPortal HostnameType = original.DeveloperPortal
-	Management      HostnameType = original.Management
-	Portal          HostnameType = original.Portal
-	Proxy           HostnameType = original.Proxy
-	Scm             HostnameType = original.Scm
+	HostnameTypeDeveloperPortal HostnameType = original.HostnameTypeDeveloperPortal
+	HostnameTypeManagement      HostnameType = original.HostnameTypeManagement
+	HostnameTypePortal          HostnameType = original.HostnameTypePortal
+	HostnameTypeProxy           HostnameType = original.HostnameTypeProxy
+	HostnameTypeScm             HostnameType = original.HostnameTypeScm
 )
 
 type IdentityProviderType = original.IdentityProviderType
@@ -251,12 +276,18 @@ const (
 	ProtocolHTTPS Protocol = original.ProtocolHTTPS
 )
 
+type ProvisioningState = original.ProvisioningState
+
+const (
+	Created ProvisioningState = original.Created
+)
+
 type ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleType
 
 const (
-	Automatic ResourceSkuCapacityScaleType = original.Automatic
-	Manual    ResourceSkuCapacityScaleType = original.Manual
-	None      ResourceSkuCapacityScaleType = original.None
+	ResourceSkuCapacityScaleTypeAutomatic ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeAutomatic
+	ResourceSkuCapacityScaleTypeManual    ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeManual
+	ResourceSkuCapacityScaleTypeNone      ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeNone
 )
 
 type SamplingType = original.SamplingType
@@ -338,6 +369,14 @@ const (
 	UserStatePending UserState = original.UserStatePending
 )
 
+type Verbosity = original.Verbosity
+
+const (
+	Error       Verbosity = original.Error
+	Information Verbosity = original.Information
+	Verbose     Verbosity = original.Verbose
+)
+
 type VersioningScheme = original.VersioningScheme
 
 const (
@@ -398,9 +437,11 @@ type APIRevisionCollectionPage = original.APIRevisionCollectionPage
 type APIRevisionContract = original.APIRevisionContract
 type APIRevisionInfoContract = original.APIRevisionInfoContract
 type APISchemaClient = original.APISchemaClient
+type APISchemaCreateOrUpdateFuture = original.APISchemaCreateOrUpdateFuture
 type APITagDescriptionClient = original.APITagDescriptionClient
 type APITagResourceContractProperties = original.APITagResourceContractProperties
 type APIUpdateContract = original.APIUpdateContract
+type APIVersionConstraint = original.APIVersionConstraint
 type APIVersionSetClient = original.APIVersionSetClient
 type APIVersionSetCollection = original.APIVersionSetCollection
 type APIVersionSetCollectionIterator = original.APIVersionSetCollectionIterator
@@ -416,6 +457,8 @@ type AccessInformationUpdateParameterProperties = original.AccessInformationUpda
 type AccessInformationUpdateParameters = original.AccessInformationUpdateParameters
 type AdditionalLocation = original.AdditionalLocation
 type ApimResource = original.ApimResource
+type AssociationContract = original.AssociationContract
+type AssociationContractProperties = original.AssociationContractProperties
 type AuthenticationSettingsContract = original.AuthenticationSettingsContract
 type AuthorizationServerClient = original.AuthorizationServerClient
 type AuthorizationServerCollection = original.AuthorizationServerCollection
@@ -463,6 +506,7 @@ type CertificateContractProperties = original.CertificateContractProperties
 type CertificateCreateOrUpdateParameters = original.CertificateCreateOrUpdateParameters
 type CertificateCreateOrUpdateProperties = original.CertificateCreateOrUpdateProperties
 type CertificateInformation = original.CertificateInformation
+type ClientSecretContract = original.ClientSecretContract
 type ConnectivityStatusContract = original.ConnectivityStatusContract
 type DelegationSettingsClient = original.DelegationSettingsClient
 type DeployConfigurationParameterProperties = original.DeployConfigurationParameterProperties
@@ -485,6 +529,23 @@ type EmailTemplateUpdateParameters = original.EmailTemplateUpdateParameters
 type ErrorFieldContract = original.ErrorFieldContract
 type ErrorResponse = original.ErrorResponse
 type ErrorResponseBody = original.ErrorResponseBody
+type GatewayAPIClient = original.GatewayAPIClient
+type GatewayClient = original.GatewayClient
+type GatewayCollection = original.GatewayCollection
+type GatewayCollectionIterator = original.GatewayCollectionIterator
+type GatewayCollectionPage = original.GatewayCollectionPage
+type GatewayContract = original.GatewayContract
+type GatewayContractProperties = original.GatewayContractProperties
+type GatewayHostnameConfigurationClient = original.GatewayHostnameConfigurationClient
+type GatewayHostnameConfigurationCollection = original.GatewayHostnameConfigurationCollection
+type GatewayHostnameConfigurationCollectionIterator = original.GatewayHostnameConfigurationCollectionIterator
+type GatewayHostnameConfigurationCollectionPage = original.GatewayHostnameConfigurationCollectionPage
+type GatewayHostnameConfigurationContract = original.GatewayHostnameConfigurationContract
+type GatewayHostnameConfigurationContractProperties = original.GatewayHostnameConfigurationContractProperties
+type GatewayKeyRegenerationRequestContract = original.GatewayKeyRegenerationRequestContract
+type GatewayKeysContract = original.GatewayKeysContract
+type GatewayTokenContract = original.GatewayTokenContract
+type GatewayTokenRequestContract = original.GatewayTokenRequestContract
 type GenerateSsoURLResult = original.GenerateSsoURLResult
 type GroupClient = original.GroupClient
 type GroupCollection = original.GroupCollection
@@ -503,6 +564,8 @@ type IdentityProviderBaseParameters = original.IdentityProviderBaseParameters
 type IdentityProviderClient = original.IdentityProviderClient
 type IdentityProviderContract = original.IdentityProviderContract
 type IdentityProviderContractProperties = original.IdentityProviderContractProperties
+type IdentityProviderCreateContract = original.IdentityProviderCreateContract
+type IdentityProviderCreateContractProperties = original.IdentityProviderCreateContractProperties
 type IdentityProviderList = original.IdentityProviderList
 type IdentityProviderListIterator = original.IdentityProviderListIterator
 type IdentityProviderListPage = original.IdentityProviderListPage
@@ -536,6 +599,19 @@ type LoggerContract = original.LoggerContract
 type LoggerContractProperties = original.LoggerContractProperties
 type LoggerUpdateContract = original.LoggerUpdateContract
 type LoggerUpdateParameters = original.LoggerUpdateParameters
+type NamedValueClient = original.NamedValueClient
+type NamedValueCollection = original.NamedValueCollection
+type NamedValueCollectionIterator = original.NamedValueCollectionIterator
+type NamedValueCollectionPage = original.NamedValueCollectionPage
+type NamedValueContract = original.NamedValueContract
+type NamedValueContractProperties = original.NamedValueContractProperties
+type NamedValueCreateContract = original.NamedValueCreateContract
+type NamedValueCreateContractProperties = original.NamedValueCreateContractProperties
+type NamedValueCreateOrUpdateFuture = original.NamedValueCreateOrUpdateFuture
+type NamedValueEntityBaseParameters = original.NamedValueEntityBaseParameters
+type NamedValueUpdateFuture = original.NamedValueUpdateFuture
+type NamedValueUpdateParameterProperties = original.NamedValueUpdateParameterProperties
+type NamedValueUpdateParameters = original.NamedValueUpdateParameters
 type NetworkStatusClient = original.NetworkStatusClient
 type NetworkStatusContract = original.NetworkStatusContract
 type NetworkStatusContractByLocation = original.NetworkStatusContractByLocation
@@ -581,11 +657,13 @@ type PolicyClient = original.PolicyClient
 type PolicyCollection = original.PolicyCollection
 type PolicyContract = original.PolicyContract
 type PolicyContractProperties = original.PolicyContractProperties
-type PolicySnippetClient = original.PolicySnippetClient
-type PolicySnippetContract = original.PolicySnippetContract
-type PolicySnippetsCollection = original.PolicySnippetsCollection
+type PolicyDescriptionClient = original.PolicyDescriptionClient
+type PolicyDescriptionCollection = original.PolicyDescriptionCollection
+type PolicyDescriptionContract = original.PolicyDescriptionContract
+type PolicyDescriptionContractProperties = original.PolicyDescriptionContractProperties
 type PortalDelegationSettings = original.PortalDelegationSettings
 type PortalDelegationSettingsProperties = original.PortalDelegationSettingsProperties
+type PortalSettingValidationKeyContract = original.PortalSettingValidationKeyContract
 type PortalSigninSettingProperties = original.PortalSigninSettingProperties
 type PortalSigninSettings = original.PortalSigninSettings
 type PortalSignupSettings = original.PortalSignupSettings
@@ -604,15 +682,7 @@ type ProductSubscriptionsClient = original.ProductSubscriptionsClient
 type ProductTagResourceContractProperties = original.ProductTagResourceContractProperties
 type ProductUpdateParameters = original.ProductUpdateParameters
 type ProductUpdateProperties = original.ProductUpdateProperties
-type PropertyClient = original.PropertyClient
-type PropertyCollection = original.PropertyCollection
-type PropertyCollectionIterator = original.PropertyCollectionIterator
-type PropertyCollectionPage = original.PropertyCollectionPage
-type PropertyContract = original.PropertyContract
-type PropertyContractProperties = original.PropertyContractProperties
-type PropertyEntityBaseParameters = original.PropertyEntityBaseParameters
-type PropertyUpdateParameterProperties = original.PropertyUpdateParameterProperties
-type PropertyUpdateParameters = original.PropertyUpdateParameters
+type PropertyValueContract = original.PropertyValueContract
 type QuotaByCounterKeysClient = original.QuotaByCounterKeysClient
 type QuotaByPeriodKeysClient = original.QuotaByPeriodKeysClient
 type QuotaCounterCollection = original.QuotaCounterCollection
@@ -642,6 +712,7 @@ type RequestContract = original.RequestContract
 type RequestReportCollection = original.RequestReportCollection
 type RequestReportRecordContract = original.RequestReportRecordContract
 type Resource = original.Resource
+type ResourceLocationDataContract = original.ResourceLocationDataContract
 type ResourceSku = original.ResourceSku
 type ResourceSkuCapacity = original.ResourceSkuCapacity
 type ResourceSkuResult = original.ResourceSkuResult
@@ -657,8 +728,6 @@ type SchemaCollectionIterator = original.SchemaCollectionIterator
 type SchemaCollectionPage = original.SchemaCollectionPage
 type SchemaContract = original.SchemaContract
 type SchemaContractProperties = original.SchemaContractProperties
-type SchemaCreateOrUpdateContract = original.SchemaCreateOrUpdateContract
-type SchemaCreateOrUpdateProperties = original.SchemaCreateOrUpdateProperties
 type SchemaDocumentProperties = original.SchemaDocumentProperties
 type ServiceApplyNetworkConfigurationParameters = original.ServiceApplyNetworkConfigurationParameters
 type ServiceApplyNetworkConfigurationUpdatesFuture = original.ServiceApplyNetworkConfigurationUpdatesFuture
@@ -694,6 +763,7 @@ type SubscriptionContractProperties = original.SubscriptionContractProperties
 type SubscriptionCreateParameterProperties = original.SubscriptionCreateParameterProperties
 type SubscriptionCreateParameters = original.SubscriptionCreateParameters
 type SubscriptionKeyParameterNamesContract = original.SubscriptionKeyParameterNamesContract
+type SubscriptionKeysContract = original.SubscriptionKeysContract
 type SubscriptionUpdateParameterProperties = original.SubscriptionUpdateParameterProperties
 type SubscriptionUpdateParameters = original.SubscriptionUpdateParameters
 type SubscriptionsDelegationSettingsProperties = original.SubscriptionsDelegationSettingsProperties
@@ -742,6 +812,7 @@ type UserIdentityCollection = original.UserIdentityCollection
 type UserIdentityCollectionIterator = original.UserIdentityCollectionIterator
 type UserIdentityCollectionPage = original.UserIdentityCollectionPage
 type UserIdentityContract = original.UserIdentityContract
+type UserIdentityProperties = original.UserIdentityProperties
 type UserSubscriptionClient = original.UserSubscriptionClient
 type UserTokenParameterProperties = original.UserTokenParameterProperties
 type UserTokenParameters = original.UserTokenParameters
@@ -946,6 +1017,36 @@ func NewEmailTemplateCollectionIterator(page EmailTemplateCollectionPage) EmailT
 func NewEmailTemplateCollectionPage(getNextPage func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error)) EmailTemplateCollectionPage {
 	return original.NewEmailTemplateCollectionPage(getNextPage)
 }
+func NewGatewayAPIClient(subscriptionID string) GatewayAPIClient {
+	return original.NewGatewayAPIClient(subscriptionID)
+}
+func NewGatewayAPIClientWithBaseURI(baseURI string, subscriptionID string) GatewayAPIClient {
+	return original.NewGatewayAPIClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGatewayClient(subscriptionID string) GatewayClient {
+	return original.NewGatewayClient(subscriptionID)
+}
+func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayClient {
+	return original.NewGatewayClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGatewayCollectionIterator(page GatewayCollectionPage) GatewayCollectionIterator {
+	return original.NewGatewayCollectionIterator(page)
+}
+func NewGatewayCollectionPage(getNextPage func(context.Context, GatewayCollection) (GatewayCollection, error)) GatewayCollectionPage {
+	return original.NewGatewayCollectionPage(getNextPage)
+}
+func NewGatewayHostnameConfigurationClient(subscriptionID string) GatewayHostnameConfigurationClient {
+	return original.NewGatewayHostnameConfigurationClient(subscriptionID)
+}
+func NewGatewayHostnameConfigurationClientWithBaseURI(baseURI string, subscriptionID string) GatewayHostnameConfigurationClient {
+	return original.NewGatewayHostnameConfigurationClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGatewayHostnameConfigurationCollectionIterator(page GatewayHostnameConfigurationCollectionPage) GatewayHostnameConfigurationCollectionIterator {
+	return original.NewGatewayHostnameConfigurationCollectionIterator(page)
+}
+func NewGatewayHostnameConfigurationCollectionPage(getNextPage func(context.Context, GatewayHostnameConfigurationCollection) (GatewayHostnameConfigurationCollection, error)) GatewayHostnameConfigurationCollectionPage {
+	return original.NewGatewayHostnameConfigurationCollectionPage(getNextPage)
+}
 func NewGroupClient(subscriptionID string) GroupClient {
 	return original.NewGroupClient(subscriptionID)
 }
@@ -1011,6 +1112,18 @@ func NewLoggerCollectionIterator(page LoggerCollectionPage) LoggerCollectionIter
 }
 func NewLoggerCollectionPage(getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
 	return original.NewLoggerCollectionPage(getNextPage)
+}
+func NewNamedValueClient(subscriptionID string) NamedValueClient {
+	return original.NewNamedValueClient(subscriptionID)
+}
+func NewNamedValueClientWithBaseURI(baseURI string, subscriptionID string) NamedValueClient {
+	return original.NewNamedValueClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNamedValueCollectionIterator(page NamedValueCollectionPage) NamedValueCollectionIterator {
+	return original.NewNamedValueCollectionIterator(page)
+}
+func NewNamedValueCollectionPage(getNextPage func(context.Context, NamedValueCollection) (NamedValueCollection, error)) NamedValueCollectionPage {
+	return original.NewNamedValueCollectionPage(getNextPage)
 }
 func NewNetworkStatusClient(subscriptionID string) NetworkStatusClient {
 	return original.NewNetworkStatusClient(subscriptionID)
@@ -1084,11 +1197,11 @@ func NewPolicyClient(subscriptionID string) PolicyClient {
 func NewPolicyClientWithBaseURI(baseURI string, subscriptionID string) PolicyClient {
 	return original.NewPolicyClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPolicySnippetClient(subscriptionID string) PolicySnippetClient {
-	return original.NewPolicySnippetClient(subscriptionID)
+func NewPolicyDescriptionClient(subscriptionID string) PolicyDescriptionClient {
+	return original.NewPolicyDescriptionClient(subscriptionID)
 }
-func NewPolicySnippetClientWithBaseURI(baseURI string, subscriptionID string) PolicySnippetClient {
-	return original.NewPolicySnippetClientWithBaseURI(baseURI, subscriptionID)
+func NewPolicyDescriptionClientWithBaseURI(baseURI string, subscriptionID string) PolicyDescriptionClient {
+	return original.NewPolicyDescriptionClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProductAPIClient(subscriptionID string) ProductAPIClient {
 	return original.NewProductAPIClient(subscriptionID)
@@ -1125,18 +1238,6 @@ func NewProductSubscriptionsClient(subscriptionID string) ProductSubscriptionsCl
 }
 func NewProductSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) ProductSubscriptionsClient {
 	return original.NewProductSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPropertyClient(subscriptionID string) PropertyClient {
-	return original.NewPropertyClient(subscriptionID)
-}
-func NewPropertyClientWithBaseURI(baseURI string, subscriptionID string) PropertyClient {
-	return original.NewPropertyClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPropertyCollectionIterator(page PropertyCollectionPage) PropertyCollectionIterator {
-	return original.NewPropertyCollectionIterator(page)
-}
-func NewPropertyCollectionPage(getNextPage func(context.Context, PropertyCollection) (PropertyCollection, error)) PropertyCollectionPage {
-	return original.NewPropertyCollectionPage(getNextPage)
 }
 func NewQuotaByCounterKeysClient(subscriptionID string) QuotaByCounterKeysClient {
 	return original.NewQuotaByCounterKeysClient(subscriptionID)
@@ -1327,6 +1428,12 @@ func PossibleAPITypeValues() []APIType {
 func PossibleAlwaysLogValues() []AlwaysLog {
 	return original.PossibleAlwaysLogValues()
 }
+func PossibleApimIdentityTypeValues() []ApimIdentityType {
+	return original.PossibleApimIdentityTypeValues()
+}
+func PossibleAppTypeValues() []AppType {
+	return original.PossibleAppTypeValues()
+}
 func PossibleAsyncOperationStatusValues() []AsyncOperationStatus {
 	return original.PossibleAsyncOperationStatusValues()
 }
@@ -1366,6 +1473,9 @@ func PossibleGrantTypeValues() []GrantType {
 func PossibleGroupTypeValues() []GroupType {
 	return original.PossibleGroupTypeValues()
 }
+func PossibleHTTPCorrelationProtocolValues() []HTTPCorrelationProtocol {
+	return original.PossibleHTTPCorrelationProtocolValues()
+}
 func PossibleHostnameTypeValues() []HostnameType {
 	return original.PossibleHostnameTypeValues()
 }
@@ -1399,6 +1509,9 @@ func PossibleProductStateValues() []ProductState {
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
 }
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
 func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
 	return original.PossibleResourceSkuCapacityScaleTypeValues()
 }
@@ -1425,6 +1538,9 @@ func PossibleTemplateNameValues() []TemplateName {
 }
 func PossibleUserStateValues() []UserState {
 	return original.PossibleUserStateValues()
+}
+func PossibleVerbosityValues() []Verbosity {
+	return original.PossibleVerbosityValues()
 }
 func PossibleVersioningScheme1Values() []VersioningScheme1 {
 	return original.PossibleVersioningScheme1Values()

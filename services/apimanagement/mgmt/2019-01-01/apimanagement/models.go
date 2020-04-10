@@ -207,6 +207,8 @@ const (
 	Openapi ContentFormat = "openapi"
 	// Openapijson The contents are inline and Content Type is a OpenApi 3.0 Document in JSON format.
 	Openapijson ContentFormat = "openapi+json"
+	// OpenapijsonLink The Open Api 3.0 Json document is hosted on a publicly accessible internet address.
+	OpenapijsonLink ContentFormat = "openapi+json-link"
 	// OpenapiLink The Open Api 3.0 document is hosted on a publicly accessible internet address.
 	OpenapiLink ContentFormat = "openapi-link"
 	// SwaggerJSON The contents are inline and Content Type is a OpenApi 2.0 Document.
@@ -225,7 +227,7 @@ const (
 
 // PossibleContentFormatValues returns an array of possible values for the ContentFormat const type.
 func PossibleContentFormatValues() []ContentFormat {
-	return []ContentFormat{Openapi, Openapijson, OpenapiLink, SwaggerJSON, SwaggerLinkJSON, WadlLinkJSON, WadlXML, Wsdl, WsdlLink}
+	return []ContentFormat{Openapi, Openapijson, OpenapijsonLink, OpenapiLink, SwaggerJSON, SwaggerLinkJSON, WadlLinkJSON, WadlXML, Wsdl, WsdlLink}
 }
 
 // ExportFormat enumerates the values for export format.
@@ -327,6 +329,24 @@ const (
 // PossibleHostnameTypeValues returns an array of possible values for the HostnameType const type.
 func PossibleHostnameTypeValues() []HostnameType {
 	return []HostnameType{DeveloperPortal, Management, Portal, Proxy, Scm}
+}
+
+// HTTPCorrelationProtocol enumerates the values for http correlation protocol.
+type HTTPCorrelationProtocol string
+
+const (
+	// Legacy Inject Request-Id and Request-Context headers with request correlation data. See
+	// https://github.com/dotnet/corefx/blob/master/src/System.Diagnostics.DiagnosticSource/src/HttpCorrelationProtocol.md.
+	Legacy HTTPCorrelationProtocol = "Legacy"
+	// None Do not read and inject correlation headers.
+	None HTTPCorrelationProtocol = "None"
+	// W3C Inject Trace Context headers. See https://w3c.github.io/trace-context.
+	W3C HTTPCorrelationProtocol = "W3C"
+)
+
+// PossibleHTTPCorrelationProtocolValues returns an array of possible values for the HTTPCorrelationProtocol const type.
+func PossibleHTTPCorrelationProtocolValues() []HTTPCorrelationProtocol {
+	return []HTTPCorrelationProtocol{Legacy, None, W3C}
 }
 
 // IdentityProviderType enumerates the values for identity provider type.
@@ -520,17 +540,17 @@ func PossibleProtocolValues() []Protocol {
 type ResourceSkuCapacityScaleType string
 
 const (
-	// Automatic Supported scale type automatic.
-	Automatic ResourceSkuCapacityScaleType = "automatic"
-	// Manual Supported scale type manual.
-	Manual ResourceSkuCapacityScaleType = "manual"
-	// None Scaling not supported.
-	None ResourceSkuCapacityScaleType = "none"
+	// ResourceSkuCapacityScaleTypeAutomatic Supported scale type automatic.
+	ResourceSkuCapacityScaleTypeAutomatic ResourceSkuCapacityScaleType = "automatic"
+	// ResourceSkuCapacityScaleTypeManual Supported scale type manual.
+	ResourceSkuCapacityScaleTypeManual ResourceSkuCapacityScaleType = "manual"
+	// ResourceSkuCapacityScaleTypeNone Scaling not supported.
+	ResourceSkuCapacityScaleTypeNone ResourceSkuCapacityScaleType = "none"
 )
 
 // PossibleResourceSkuCapacityScaleTypeValues returns an array of possible values for the ResourceSkuCapacityScaleType const type.
 func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
-	return []ResourceSkuCapacityScaleType{Automatic, Manual, None}
+	return []ResourceSkuCapacityScaleType{ResourceSkuCapacityScaleTypeAutomatic, ResourceSkuCapacityScaleTypeManual, ResourceSkuCapacityScaleTypeNone}
 }
 
 // SamplingType enumerates the values for sampling type.
@@ -697,6 +717,26 @@ const (
 // PossibleUserStateValues returns an array of possible values for the UserState const type.
 func PossibleUserStateValues() []UserState {
 	return []UserState{UserStateActive, UserStateBlocked, UserStateDeleted, UserStatePending}
+}
+
+// Verbosity enumerates the values for verbosity.
+type Verbosity string
+
+const (
+	// Error Only traces with 'severity' set to 'error' will be sent to the logger attached to this diagnostic
+	// instance.
+	Error Verbosity = "error"
+	// Information Traces with 'severity' set to 'information' and 'error' will be sent to the logger attached
+	// to this diagnostic instance.
+	Information Verbosity = "information"
+	// Verbose All the traces emitted by trace policies will be sent to the logger attached to this diagnostic
+	// instance.
+	Verbose Verbosity = "verbose"
+)
+
+// PossibleVerbosityValues returns an array of possible values for the Verbosity const type.
+func PossibleVerbosityValues() []Verbosity {
+	return []Verbosity{Error, Information, Verbose}
 }
 
 // VersioningScheme enumerates the values for versioning scheme.
@@ -1193,7 +1233,7 @@ func (acoup *APICreateOrUpdateParameter) UnmarshalJSON(body []byte) error {
 type APICreateOrUpdateProperties struct {
 	// Value - Content value when Importing an API.
 	Value *string `json:"value,omitempty"`
-	// Format - Format of the Content in which the API is getting imported. Possible values include: 'WadlXML', 'WadlLinkJSON', 'SwaggerJSON', 'SwaggerLinkJSON', 'Wsdl', 'WsdlLink', 'Openapi', 'Openapijson', 'OpenapiLink'
+	// Format - Format of the Content in which the API is getting imported. Possible values include: 'WadlXML', 'WadlLinkJSON', 'SwaggerJSON', 'SwaggerLinkJSON', 'Wsdl', 'WsdlLink', 'Openapi', 'Openapijson', 'OpenapiLink', 'OpenapijsonLink'
 	Format ContentFormat `json:"format,omitempty"`
 	// WsdlSelector - Criteria to limit import of WSDL to a subset of the document.
 	WsdlSelector *APICreateOrUpdatePropertiesWsdlSelector `json:"wsdlSelector,omitempty"`
@@ -3863,8 +3903,10 @@ type DiagnosticContractProperties struct {
 	Frontend *PipelineDiagnosticSettings `json:"frontend,omitempty"`
 	// Backend - Diagnostic settings for incoming/outgoing HTTP messages to the Backend
 	Backend *PipelineDiagnosticSettings `json:"backend,omitempty"`
-	// EnableHTTPCorrelationHeaders - Whether to process Correlation Headers coming to Api Management Service. Only applicable to Application Insights diagnostics. Default is true.
-	EnableHTTPCorrelationHeaders *bool `json:"enableHttpCorrelationHeaders,omitempty"`
+	// HTTPCorrelationProtocol - Sets correlation protocol to use for Application Insights diagnostics. Possible values include: 'None', 'Legacy', 'W3C'
+	HTTPCorrelationProtocol HTTPCorrelationProtocol `json:"httpCorrelationProtocol,omitempty"`
+	// Verbosity - The verbosity level applied to traces emitted by trace policies. Possible values include: 'Verbose', 'Information', 'Error'
+	Verbosity Verbosity `json:"verbosity,omitempty"`
 }
 
 // EmailTemplateCollection paged email template list representation.
@@ -8819,7 +8861,7 @@ type ResourceSkuCapacity struct {
 	Maximum *int32 `json:"maximum,omitempty"`
 	// Default - READ-ONLY; The default capacity.
 	Default *int32 `json:"default,omitempty"`
-	// ScaleType - READ-ONLY; The scale type applicable to the sku. Possible values include: 'Automatic', 'Manual', 'None'
+	// ScaleType - READ-ONLY; The scale type applicable to the sku. Possible values include: 'ResourceSkuCapacityScaleTypeAutomatic', 'ResourceSkuCapacityScaleTypeManual', 'ResourceSkuCapacityScaleTypeNone'
 	ScaleType ResourceSkuCapacityScaleType `json:"scaleType,omitempty"`
 }
 

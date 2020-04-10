@@ -35,7 +35,9 @@ func NewHostingEnvironmentsClient(subscriptionID string) HostingEnvironmentsClie
 	return NewHostingEnvironmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewHostingEnvironmentsClientWithBaseURI creates an instance of the HostingEnvironmentsClient client.
+// NewHostingEnvironmentsClientWithBaseURI creates an instance of the HostingEnvironmentsClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewHostingEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) HostingEnvironmentsClient {
 	return HostingEnvironmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -97,9 +99,8 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentPreparer
 // CreateOrUpdateHostingEnvironmentSender sends the CreateOrUpdateHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentSender(req *http.Request) (future HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -177,9 +178,8 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolPreparer(ctx 
 // CreateOrUpdateMultiRolePoolSender sends the CreateOrUpdateMultiRolePool request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req *http.Request) (future HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -259,9 +259,8 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolPreparer(ctx con
 // CreateOrUpdateWorkerPoolSender sends the CreateOrUpdateWorkerPool request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *http.Request) (future HostingEnvironmentsCreateOrUpdateWorkerPoolFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -340,9 +339,8 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentPreparer(ctx con
 // DeleteHostingEnvironmentSender sends the DeleteHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) DeleteHostingEnvironmentSender(req *http.Request) (future HostingEnvironmentsDeleteHostingEnvironmentFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -423,8 +421,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentPreparer(ctx contex
 // GetHostingEnvironmentSender sends the GetHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentResponder handles the response to the GetHostingEnvironment request. The method always
@@ -501,8 +498,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesPreparer(
 // GetHostingEnvironmentCapacitiesSender sends the GetHostingEnvironmentCapacities request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentCapacitiesResponder handles the response to the GetHostingEnvironmentCapacities request. The method always
@@ -615,8 +611,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsPreparer
 // GetHostingEnvironmentDiagnosticsSender sends the GetHostingEnvironmentDiagnostics request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentDiagnosticsResponder handles the response to the GetHostingEnvironmentDiagnostics request. The method always
@@ -694,8 +689,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemPrep
 // GetHostingEnvironmentDiagnosticsItemSender sends the GetHostingEnvironmentDiagnosticsItem request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentDiagnosticsItemResponder handles the response to the GetHostingEnvironmentDiagnosticsItem request. The method always
@@ -771,8 +765,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsPr
 // GetHostingEnvironmentMetricDefinitionsSender sends the GetHostingEnvironmentMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentMetricDefinitionsResponder handles the response to the GetHostingEnvironmentMetricDefinitions request. The method always
@@ -859,8 +852,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsPreparer(ctx
 // GetHostingEnvironmentMetricsSender sends the GetHostingEnvironmentMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentMetricsResponder handles the response to the GetHostingEnvironmentMetrics request. The method always
@@ -975,8 +967,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefi
 // GetHostingEnvironmentMultiRoleMetricDefinitionsSender sends the GetHostingEnvironmentMultiRoleMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentMultiRoleMetricDefinitionsResponder handles the response to the GetHostingEnvironmentMultiRoleMetricDefinitions request. The method always
@@ -1112,8 +1103,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsPre
 // GetHostingEnvironmentMultiRoleMetricsSender sends the GetHostingEnvironmentMultiRoleMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentMultiRoleMetricsResponder handles the response to the GetHostingEnvironmentMultiRoleMetrics request. The method always
@@ -1227,8 +1217,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesPrep
 // GetHostingEnvironmentMultiRoleUsagesSender sends the GetHostingEnvironmentMultiRoleUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentMultiRoleUsagesResponder handles the response to the GetHostingEnvironmentMultiRoleUsages request. The method always
@@ -1343,8 +1332,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationPreparer(c
 // GetHostingEnvironmentOperationSender sends the GetHostingEnvironmentOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentOperationResponder handles the response to the GetHostingEnvironmentOperation request. The method always
@@ -1420,8 +1408,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsPreparer(
 // GetHostingEnvironmentOperationsSender sends the GetHostingEnvironmentOperations request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentOperationsResponder handles the response to the GetHostingEnvironmentOperations request. The method always
@@ -1496,8 +1483,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentsPreparer(ctx conte
 // GetHostingEnvironmentsSender sends the GetHostingEnvironments request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentsResponder handles the response to the GetHostingEnvironments request. The method always
@@ -1611,8 +1597,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsPreparer
 // GetHostingEnvironmentServerFarmsSender sends the GetHostingEnvironmentServerFarms request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentServerFarmsResponder handles the response to the GetHostingEnvironmentServerFarms request. The method always
@@ -1730,8 +1715,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesPreparer(ctx c
 // GetHostingEnvironmentSitesSender sends the GetHostingEnvironmentSites request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentSitesResponder handles the response to the GetHostingEnvironmentSites request. The method always
@@ -1851,8 +1835,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesPreparer(ctx 
 // GetHostingEnvironmentUsagesSender sends the GetHostingEnvironmentUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentUsagesResponder handles the response to the GetHostingEnvironmentUsages request. The method always
@@ -1965,8 +1948,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsPreparer(ctx co
 // GetHostingEnvironmentVipsSender sends the GetHostingEnvironmentVips request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentVipsResponder handles the response to the GetHostingEnvironmentVips request. The method always
@@ -2043,8 +2025,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansPrep
 // GetHostingEnvironmentWebHostingPlansSender sends the GetHostingEnvironmentWebHostingPlans request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentWebHostingPlansResponder handles the response to the GetHostingEnvironmentWebHostingPlans request. The method always
@@ -2161,8 +2142,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefi
 // GetHostingEnvironmentWebWorkerMetricDefinitionsSender sends the GetHostingEnvironmentWebWorkerMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentWebWorkerMetricDefinitionsResponder handles the response to the GetHostingEnvironmentWebWorkerMetricDefinitions request. The method always
@@ -2288,8 +2268,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsPre
 // GetHostingEnvironmentWebWorkerMetricsSender sends the GetHostingEnvironmentWebWorkerMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentWebWorkerMetricsResponder handles the response to the GetHostingEnvironmentWebWorkerMetrics request. The method always
@@ -2405,8 +2384,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesPrep
 // GetHostingEnvironmentWebWorkerUsagesSender sends the GetHostingEnvironmentWebWorkerUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostingEnvironmentWebWorkerUsagesResponder handles the response to the GetHostingEnvironmentWebWorkerUsages request. The method always
@@ -2519,8 +2497,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolPreparer(ctx context.Con
 // GetMultiRolePoolSender sends the GetMultiRolePool request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetMultiRolePoolSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMultiRolePoolResponder handles the response to the GetMultiRolePool request. The method always
@@ -2598,8 +2575,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinition
 // GetMultiRolePoolInstanceMetricDefinitionsSender sends the GetMultiRolePoolInstanceMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMultiRolePoolInstanceMetricDefinitionsResponder handles the response to the GetMultiRolePoolInstanceMetricDefinitions request. The method always
@@ -2681,8 +2657,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsPreparer(
 // GetMultiRolePoolInstanceMetricsSender sends the GetMultiRolePoolInstanceMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMultiRolePoolInstanceMetricsResponder handles the response to the GetMultiRolePoolInstanceMetrics request. The method always
@@ -2759,8 +2734,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolsPreparer(ctx context.Co
 // GetMultiRolePoolsSender sends the GetMultiRolePools request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetMultiRolePoolsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMultiRolePoolsResponder handles the response to the GetMultiRolePools request. The method always
@@ -2874,8 +2848,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolSkusPreparer(ctx context
 // GetMultiRolePoolSkusSender sends the GetMultiRolePoolSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetMultiRolePoolSkusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMultiRolePoolSkusResponder handles the response to the GetMultiRolePoolSkus request. The method always
@@ -2990,8 +2963,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolPreparer(ctx context.Contex
 // GetWorkerPoolSender sends the GetWorkerPool request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetWorkerPoolSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetWorkerPoolResponder handles the response to the GetWorkerPool request. The method always
@@ -3071,8 +3043,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsPr
 // GetWorkerPoolInstanceMetricDefinitionsSender sends the GetWorkerPoolInstanceMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetWorkerPoolInstanceMetricDefinitionsResponder handles the response to the GetWorkerPoolInstanceMetricDefinitions request. The method always
@@ -3162,8 +3133,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsPreparer(ctx
 // GetWorkerPoolInstanceMetricsSender sends the GetWorkerPoolInstanceMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetWorkerPoolInstanceMetricsResponder handles the response to the GetWorkerPoolInstanceMetrics request. The method always
@@ -3240,8 +3210,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolsPreparer(ctx context.Conte
 // GetWorkerPoolsSender sends the GetWorkerPools request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetWorkerPoolsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetWorkerPoolsResponder handles the response to the GetWorkerPools request. The method always
@@ -3357,8 +3326,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSkusPreparer(ctx context.Co
 // GetWorkerPoolSkusSender sends the GetWorkerPoolSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetWorkerPoolSkusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetWorkerPoolSkusResponder handles the response to the GetWorkerPoolSkus request. The method always
@@ -3471,8 +3439,7 @@ func (client HostingEnvironmentsClient) RebootHostingEnvironmentPreparer(ctx con
 // RebootHostingEnvironmentSender sends the RebootHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) RebootHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RebootHostingEnvironmentResponder handles the response to the RebootHostingEnvironment request. The method always
@@ -3542,9 +3509,8 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentPreparer(ctx con
 // ResumeHostingEnvironmentSender sends the ResumeHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) ResumeHostingEnvironmentSender(req *http.Request) (future HostingEnvironmentsResumeHostingEnvironmentFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -3581,8 +3547,7 @@ func (client HostingEnvironmentsClient) resumeHostingEnvironmentNextResults(ctx 
 		return
 	}
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "resumeHostingEnvironmentNextResults", resp, "Failure sending next results request")
 	}
@@ -3661,9 +3626,8 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironmentPreparer(ctx co
 // SuspendHostingEnvironmentSender sends the SuspendHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) SuspendHostingEnvironmentSender(req *http.Request) (future HostingEnvironmentsSuspendHostingEnvironmentFuture, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
@@ -3700,8 +3664,7 @@ func (client HostingEnvironmentsClient) suspendHostingEnvironmentNextResults(ctx
 		return
 	}
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "suspendHostingEnvironmentNextResults", resp, "Failure sending next results request")
 	}

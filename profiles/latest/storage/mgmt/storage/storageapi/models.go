@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2019 Microsoft Corporation
+// Copyright 2020 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2019-06
 type AccountsClientAPI = original.AccountsClientAPI
 type BlobContainersClientAPI = original.BlobContainersClientAPI
 type BlobServicesClientAPI = original.BlobServicesClientAPI
+type EncryptionScopesClientAPI = original.EncryptionScopesClientAPI
 type FileServicesClientAPI = original.FileServicesClientAPI
 type FileSharesClientAPI = original.FileSharesClientAPI
 type ManagementPoliciesClientAPI = original.ManagementPoliciesClientAPI

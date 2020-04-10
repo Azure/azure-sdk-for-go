@@ -35,7 +35,8 @@ func NewDatabasesClient(subscriptionID string, acceptLanguage string) DatabasesC
 	return NewDatabasesClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
-// NewDatabasesClientWithBaseURI creates an instance of the DatabasesClient client.
+// NewDatabasesClientWithBaseURI creates an instance of the DatabasesClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) DatabasesClient {
 	return DatabasesClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
@@ -113,8 +114,7 @@ func (client DatabasesClient) EnumerateDatabasesPreparer(ctx context.Context, re
 // EnumerateDatabasesSender sends the EnumerateDatabases request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) EnumerateDatabasesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // EnumerateDatabasesResponder handles the response to the EnumerateDatabases request. The method always
@@ -196,8 +196,7 @@ func (client DatabasesClient) GetDatabasePreparer(ctx context.Context, resourceG
 // GetDatabaseSender sends the GetDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) GetDatabaseSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDatabaseResponder handles the response to the GetDatabase request. The method always

@@ -35,7 +35,9 @@ func NewAssessedMachinesClient(subscriptionID string, acceptLanguage string) Ass
 	return NewAssessedMachinesClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
-// NewAssessedMachinesClientWithBaseURI creates an instance of the AssessedMachinesClient client.
+// NewAssessedMachinesClientWithBaseURI creates an instance of the AssessedMachinesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewAssessedMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) AssessedMachinesClient {
 	return AssessedMachinesClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
@@ -110,8 +112,7 @@ func (client AssessedMachinesClient) GetPreparer(ctx context.Context, resourceGr
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssessedMachinesClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -201,8 +202,7 @@ func (client AssessedMachinesClient) ListByAssessmentPreparer(ctx context.Contex
 // ListByAssessmentSender sends the ListByAssessment request. The method will close the
 // http.Response Body if it receives an error.
 func (client AssessedMachinesClient) ListByAssessmentSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByAssessmentResponder handles the response to the ListByAssessment request. The method always

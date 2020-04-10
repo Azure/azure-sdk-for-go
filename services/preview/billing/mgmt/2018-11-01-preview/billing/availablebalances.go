@@ -35,7 +35,9 @@ func NewAvailableBalancesClient(subscriptionID string) AvailableBalancesClient {
 	return NewAvailableBalancesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAvailableBalancesClientWithBaseURI creates an instance of the AvailableBalancesClient client.
+// NewAvailableBalancesClientWithBaseURI creates an instance of the AvailableBalancesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewAvailableBalancesClientWithBaseURI(baseURI string, subscriptionID string) AvailableBalancesClient {
 	return AvailableBalancesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
@@ -99,8 +101,7 @@ func (client AvailableBalancesClient) GetByBillingProfilePreparer(ctx context.Co
 // GetByBillingProfileSender sends the GetByBillingProfile request. The method will close the
 // http.Response Body if it receives an error.
 func (client AvailableBalancesClient) GetByBillingProfileSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByBillingProfileResponder handles the response to the GetByBillingProfile request. The method always

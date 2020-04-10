@@ -66,7 +66,6 @@ func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
 
 func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 	l := azcore.Log()
-	// l.SetClassifications(CredentialClassification)
 	l.SetListener(func(c azcore.LogClassification, s string) {
 		fmt.Println(s)
 	})
@@ -86,7 +85,8 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 
 func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	l := azcore.Log()
-	l.SetClassifications(CredentialClassification, CredentialClassificationVerbose)
+	defer l.SetClassifications()
+	l.SetClassifications(LogCredential, LogCredentialVerbose)
 	l.SetListener(func(c azcore.LogClassification, s string) {
 		fmt.Println(s)
 	})

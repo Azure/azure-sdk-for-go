@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
@@ -65,7 +66,31 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 // scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls, or a default AccessToken if no managed identity is available.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return c.client.authenticate(ctx, c.clientID, opts.Scopes)
+	tk, err := c.client.authenticate(ctx, c.clientID, opts.Scopes)
+	log := azcore.Log()
+	if err != nil {
+		msg := fmt.Sprintf("Azure Identity => ERROR in GetToken() call for %T: %s", c, err.Error())
+		log.Write(azcore.LogError, msg)
+	} else {
+		msg := fmt.Sprintf("Azure Identity => GetToken() result for %T: SUCCESS", c)
+		log.Write(LogCredential, msg)
+		vmsg := fmt.Sprintf("Azure Identity => Scopes: [%s]", strings.Join(opts.Scopes, ", "))
+		log.Write(LogCredential, vmsg)
+		switch c.client.msiType {
+		case 1:
+			log.Write(LogCredential, "Azure Identity => Managed Identity environment: IMDS")
+		case 2:
+			log.Write(LogCredential, "Azure Identity => Managed Identity environment: Azure App Service")
+		case 3:
+			log.Write(LogCredential, "Azure Identity => Managed Identity environment: Azure Cloud Shell")
+		case 4:
+			log.Write(LogCredential, "Azure Identity => Managed Identity environment: Unavailable")
+		default:
+			log.Write(LogCredential, "Azure Identity => Managed Identity environment: Unknown")
+		}
+
+	}
+	return tk, err
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on ManagedIdentityCredential.

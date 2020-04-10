@@ -45,7 +45,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 				authErr := &AuthenticationFailedError{msg: "Received an AuthenticationFailedError, there is an invalid credential in the chain. " + createChainedErrorMessage(errList), inner: err}
 				log := azcore.Log()
 				msg := fmt.Sprintf("Azure Identity => ERROR in GetToken() call for %T: %s", cred, authErr.Error())
-				log.Write(LogCredential, msg)
+				log.Write(azcore.LogError, msg)
 				return nil, authErr
 			}
 			return nil, fmt.Errorf("Received an unexpected error: %w", err) // if we receive some other error type this is unexpected and we simple return the unexpected error

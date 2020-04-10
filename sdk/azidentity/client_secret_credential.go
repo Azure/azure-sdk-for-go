@@ -49,11 +49,8 @@ func (c *ClientSecretCredential) GetToken(ctx context.Context, opts azcore.Token
 	} else {
 		msg := fmt.Sprintf("Azure Identity => GetToken() result for %T: SUCCESS", c)
 		log.Write(LogCredential, msg)
-
-	}
-	if log.Should(LogCredentialVerbose) {
 		vmsg := fmt.Sprintf("Azure Identity => Scopes: [%s]", strings.Join(opts.Scopes, ", "))
-		log.Write(LogCredentialVerbose, vmsg)
+		log.Write(LogCredential, vmsg)
 	}
 	return tk, err
 }

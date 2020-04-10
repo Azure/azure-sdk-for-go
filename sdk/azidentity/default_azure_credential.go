@@ -3,7 +3,11 @@
 
 package azidentity
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+import (
+	"fmt"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+)
 
 const (
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
@@ -24,7 +28,8 @@ type DefaultAzureCredentialOptions struct {
 // - EnvironmentCredential
 // - ManagedIdentityCredential
 // Consult the documentation for these credential types for more information on how they attempt authentication.
-func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*ChainedTokenCredential, error) {
+func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*ChainedTokenCredential, error) {
+	log := azcore.Log()
 	var creds []azcore.TokenCredential
 	errMsg := ""
 
@@ -51,7 +56,11 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 	}
 	// if no credentials are added to the slice of TokenCredentials then return a CredentialUnavailableError
 	if len(creds) == 0 {
-		return nil, &CredentialUnavailableError{CredentialType: "Default Token Credential", Message: errMsg}
+		err := &CredentialUnavailableError{CredentialType: "Default Token Credential", Message: errMsg}
+		msg := fmt.Sprintf("Azure Identity => ERROR in GetToken() call for NewDefaultTokenCredential(): %s", err.Error())
+		log.Write(azcore.LogError, msg)
+		return nil, err
 	}
+	log.Write(LogCredential, "Azure Identity => NewDefaultTokenCredential() invoking NewChainedTokenCredential()")
 	return NewChainedTokenCredential(creds...)
 }

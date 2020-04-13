@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -26,73 +27,62 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 	"github.com/Masterminds/semver"
 	"github.com/spf13/cobra"
 )
 
-var rootCmd = &cobra.Command{
-	Use:   "versioner <staging dir> [initial module version]",
+var unstageCmd = &cobra.Command{
+	Use:   "unstage <staging dir> [initial module version]",
 	Short: "Creates or updates the latest major version for a package from staged content.",
 	Long: `This tool will compare a staged package against its latest major version to detect
 breaking changes.  If there are no breaking changes the latest major version is updated
 with the staged content.  If there are breaking changes the staged content becomes the
-next latest major vesion and the go.mod file is updated.
-The default version for new modules is v1.0.0 or the value specified for [initial module version].
+next latest major version and the go.mod file is updated.
+The default version for new stable modules is v1.0.0 or the value specified for [initial module version].
+The default version for new preview modules is v0.0.0.
 `,
-	Args: func(cmd *cobra.Command, args []string) error {
-		if err := cobra.MinimumNArgs(1)(cmd, args); err != nil {
-			return err
-		}
-		if err := cobra.MaximumNArgs(2)(cmd, args); err != nil {
-			return err
-		}
-		return nil
-	},
+	Args: cobra.RangeArgs(1, 2),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		cmd.SilenceUsage = true
-		return theCommand(args)
+		_, err := theUnstageCommand(args)
+		return err
 	},
 }
 
 var (
 	semverRegex    = regexp.MustCompile(`v\d+\.\d+\.\d+$`)
-	goverRegex     = regexp.MustCompile(`\d+\.\d+$`)
 	versionGoRegex = regexp.MustCompile(`\d+\.\d+\.\d+`)
-	// this is used so tests can hook getTags() to return whatever tags
-	getTagsHook func(string, string) ([]string, error)
 	// default version to start a module at if not specified
 	startingModVer = "v1.0.0"
-	quietFlag      bool
-	verboseFlag    bool
+	// default version for a new preview module
+	startingModVerPreview = "v0.0.0"
+	// this is used so tests can hook getTags() to return whatever tags
+	getTagsHook TagsHookFunc
 )
+
+const changeLogName = "CHANGELOG.md"
+
+// TagsHookFunc is a func used for get tags from remote
+type TagsHookFunc func(string, string) ([]string, error)
 
 func init() {
 	// default to the real version
 	getTagsHook = getTags
-	rootCmd.PersistentFlags().BoolVarP(&verboseFlag, "verbose", "v", false, "verbose output")
-	rootCmd.PersistentFlags().BoolVarP(&quietFlag, "quiet", "q", false, "quiet output")
+	rootCmd.AddCommand(unstageCmd)
 }
 
-// Execute executes the specified command.
-func Execute() {
-	if err := rootCmd.Execute(); err != nil {
-		os.Exit(1)
+// ExecuteUnstageCommand is used for programmatically call in other tools
+func ExecuteUnstageCommand(stage string, tagsHook TagsHookFunc) (string, error) {
+	if tagsHook != nil {
+		getTagsHook = tagsHook
 	}
+	return theUnstageCommand([]string{stage})
 }
 
-// wrapper for cobra, prints tag to stdout
-func theCommand(args []string) error {
-	_, err := theCommandImpl(args)
-	return err
-}
-
-// does the actual work
-func theCommandImpl(args []string) (string, error) {
+func theUnstageCommand(args []string) (string, error) {
 	stage, err := filepath.Abs(args[0])
 	if err != nil {
-		return "", fmt.Errorf("failed to get absolute path from %s: %v", args[0], err)
+		return "", fmt.Errorf("failed to get absolute path from '%s': %v", args[0], err)
 	}
 	if len(args) == 2 {
 		if !modinfo.IsValidModuleVersion(args[1]) {
@@ -100,20 +90,22 @@ func theCommandImpl(args []string) (string, error) {
 		}
 		startingModVer = args[1]
 	}
+	// format stage folder first to avoid unnecessary changes detected by apidiff
+	if err := formatCode(stage); err != nil {
+		return "", fmt.Errorf("failed to format stage folder: %v", err)
+	}
 	lmv, err := findLatestMajorVersion(stage)
 	if err != nil {
-		return "", fmt.Errorf("failed to find latest major version: %v", err)
+		return "", fmt.Errorf("failed to find latest major version in '%s': %v", stage, err)
 	}
 	vprintf("Latest major version path: %v\n", lmv)
 	mod, err := modinfo.GetModuleInfo(lmv, stage)
 	if err != nil {
 		return "", fmt.Errorf("failed to create module info: %v", err)
 	}
-	if err = writeChangelog(stage, mod); err != nil {
-		return "", fmt.Errorf("failed to write changelog: %v", err)
-	}
+	// preview packages do not do side by side update, they always get updated inplaced.
 	var tag string
-	if mod.BreakingChanges() {
+	if !mod.IsPreviewPackage() && mod.BreakingChanges() {
 		tag, err = forSideBySideRelease(stage, mod)
 	} else {
 		tag, err = forInplaceUpdate(lmv, stage, mod)
@@ -130,27 +122,34 @@ func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to open for read '%s': %v", goMod, err)
 	}
-	ver := modinfo.FindVersionSuffix(mod.DestDir())
+	dest := mod.DestDir()
+	ver := modinfo.FindVersionSuffix(dest)
 	if err = updateGoModVer(file, ver); err != nil {
 		file.Close()
 		return "", fmt.Errorf("failed to update go.mod file: %v", err)
 	}
 	// must close file before renaming directory
 	file.Close()
+	// calculate tags
 	var tag string
 	if tag, err = calculateModuleTag(nil, mod); err != nil {
 		return "", fmt.Errorf("failed to calculate module tag: %v", err)
 	}
+	// update import statement
+	if err := updateImportStatement(stage, dest, ver); err != nil {
+		return "", fmt.Errorf("failed to update import statements: %v", err)
+	}
+	// change version.go file
 	if err := updateVersion(stage, tag); err != nil {
 		return "", fmt.Errorf("failed to update version.go: %v", err)
+	}
+	// write changelog
+	if err := writeChangelog(stage, mod); err != nil {
+		return "", fmt.Errorf("failed to write changelog: %v", err)
 	}
 	// move staging to new LMV directory
 	if err = os.Rename(stage, mod.DestDir()); err != nil {
 		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", stage, mod.DestDir(), err)
-	}
-	// format code
-	if err = formatCode(mod.DestDir()); err != nil {
-		return "", fmt.Errorf("failed to format code: %v", err)
 	}
 	return tag, nil
 }
@@ -182,48 +181,64 @@ func forInplaceUpdate(lmv, stage string, mod modinfo.Provider) (string, error) {
 	if tag, err = calculateModuleTag(tags, mod); err != nil {
 		return "", fmt.Errorf("failed to calculate module tag: %v", err)
 	}
-	if err := updateVersion(stage, tag); err != nil {
-		return "", fmt.Errorf("failed to update version.go: %v", err)
-	}
 	// move staging directory over the LMV by first deleting LMV then renaming stage
-	if modinfo.HasVersionSuffix(lmv) {
-		if err := os.RemoveAll(lmv); err != nil {
-			return "", fmt.Errorf("failed to delete '%s': %v", lmv, err)
-		}
-		if err := os.Rename(stage, mod.DestDir()); err != nil {
-			return "", fmt.Errorf("failed to rename '%s' toi '%s': %v", stage, lmv, err)
+	if err := moveStageFolderOverLmvFolder(lmv, stage, mod); err != nil {
+		return "", err
+	}
+	// check if identical
+	if same, err := checkIdentical(lmv, stage); err != nil {
+		return "", fmt.Errorf("failed to check identical: %v", err)
+	} else if same {
+		// no change
+		tag = tags[len(tags)-1] // discard new tag
+		if err := updateVersion(lmv, tag); err != nil {
+			return "", fmt.Errorf("failed to update version.go: %v", err)
 		}
 		return tag, nil
-	}
-	// for v1 it's a bit more complicated since stage is a subdir of LMV.
-	// first move stage to a temp dir outside of LMV, then remove LMV, then move temp to LMV
-	dest := filepath.Dir(stage)
-	temp := dest + "1temp"
-	if err := os.Rename(stage, temp); err != nil {
-		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", stage, temp, err)
-	}
-	if err := os.RemoveAll(dest); err != nil {
-		return "", fmt.Errorf("failed to delete '%s': %v", dest, err)
-	}
-	if err := os.Rename(temp, dest); err != nil {
-		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", temp, dest, err)
-	}
-	// format code
-	if err = formatCode(mod.DestDir()); err != nil {
-		return "", fmt.Errorf("failed to format code: %v", err)
+	} else {
+		// there are changes
+		if err := updateVersion(lmv, tag); err != nil {
+			return "", fmt.Errorf("failed to update version.go: %v", err)
+		}
+		// write changelog
+		if err := writeChangelog(lmv, mod); err != nil {
+			return "", fmt.Errorf("failed to write changelog: %v", err)
+		}
 	}
 	return tag, nil
 }
 
-func formatCode(path string) error {
-	vprintf("Formatting in %s\n", path)
-	cmd := exec.Command("gofmt", "-w", path)
-	if output, err := cmd.CombinedOutput(); err != nil {
-		return fmt.Errorf("failed to execute gofmt: %s", string(output))
+// move stage folder over lmv folder
+func moveStageFolderOverLmvFolder(lmv, stage string, mod modinfo.Provider) error {
+	if modinfo.HasVersionSuffix(lmv) {
+		// for v2 or more modules, just override the v2 (for instance) folder using the stage folder
+		if err := os.RemoveAll(lmv); err != nil {
+			return fmt.Errorf("failed to delete '%s': %v", lmv, err)
+		}
+		if err := os.Rename(stage, mod.DestDir()); err != nil {
+			return fmt.Errorf("failed to rename '%s' toi '%s': %v", stage, lmv, err)
+		}
+	} else {
+		// for v1 it's a bit more complicated since stage is a subdir of LMV.
+		// first move stage to a temp dir outside of LMV, then remove LMV, then move temp to LMV
+		dest := filepath.Dir(stage)
+		vprintln(dest == lmv) // dest should be the same as lmv
+		temp := dest + "1temp"
+		if err := os.Rename(stage, temp); err != nil {
+			return fmt.Errorf("failed to rename '%s' to '%s': %v", stage, temp, err)
+		}
+		if err := os.RemoveAll(dest); err != nil {
+			return fmt.Errorf("failed to delete '%s': %v", dest, err)
+		}
+		if err := os.Rename(temp, dest); err != nil {
+			return fmt.Errorf("failed to rename '%s' to '%s': %v", temp, dest, err)
+		}
 	}
 	return nil
 }
 
+// here we only update the version number in version.go, the api-version in User-Agent method will be taken care of
+// when this file is generated by autorest
 func updateVersion(path, tag string) error {
 	version := semverRegex.FindString(tag)
 	vprintf("Updating version.go file in %s with version %s\n", path, version)
@@ -303,7 +318,7 @@ func updateGoModVer(goMod io.ReadWriteSeeker, newVer string) error {
 	}
 	scanner := bufio.NewScanner(goMod)
 	scanner.Split(bufio.ScanLines)
-	lines := []string{}
+	lines := make([]string, 0)
 	for scanner.Scan() {
 		lines = append(lines, scanner.Text())
 	}
@@ -324,12 +339,102 @@ func updateGoModVer(goMod io.ReadWriteSeeker, newVer string) error {
 	return nil
 }
 
+// traversal all go source files in the stage folder, and replace the import statement with new ones
+func updateImportStatement(stage, currentPath, ver string) error {
+	index := strings.Index(currentPath, "github.com")
+	if index < 0 {
+		return fmt.Errorf("github.com does not find in path '%s', this should never happen", currentPath)
+	}
+	newImport := strings.ReplaceAll(currentPath[index:], "\\", "/")
+	oldImport := newImport[:strings.LastIndex(newImport, "/"+ver)]
+	printf("Attempting to replace import statement from '%s' to '%s'\n", oldImport, newImport)
+	files, err := findAllFilesContainImportStatement(stage, oldImport)
+	if err != nil {
+		return err
+	}
+	printf("Found %d files with import statement of '%s'\n", len(files), oldImport)
+	vprintf("Files: \n%s", strings.Join(files, "\n"))
+	err = replaceImportStatement(files, oldImport, newImport)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func findAllFilesContainImportStatement(path, importStatement string) ([]string, error) {
+	files := make([]string, 0) // files stores filenames for those content contained the given import statements
+	err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() && strings.HasSuffix(info.Name(), ".go") {
+			// read every line of this file
+			file, err := os.Open(path)
+			defer file.Close()
+			if err != nil {
+				return fmt.Errorf("failed to open file '%s': %v", path, err)
+			}
+			scanner := bufio.NewScanner(file)
+			scanner.Split(bufio.ScanLines)
+			for scanner.Scan() {
+				line := scanner.Text()
+				if strings.Index(line, importStatement) > -1 {
+					files = append(files, path)
+				}
+			}
+			return nil
+		}
+		return nil
+	})
+	return files, err
+}
+
+func replaceImportStatement(files []string, oldImport, newImport string) error {
+	for _, file := range files {
+		err := replaceImportInFile(file, oldImport, newImport)
+		if err != nil {
+			return fmt.Errorf("failed to preform replace in file '%s'", file)
+		}
+	}
+	return nil
+}
+
+func replaceImportInFile(filepath, oldContent, newContent string) error {
+	bytes, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		return fmt.Errorf("failed to open file '%s': %v", filepath, err)
+	}
+	content := string(bytes)
+	importStatements, err := findImportStatements(content)
+	if err != nil {
+		return err
+	}
+	newImportStatements := strings.ReplaceAll(importStatements, oldContent, newContent)
+	newFileContent := strings.ReplaceAll(content, importStatements, newImportStatements)
+	if err := ioutil.WriteFile(filepath, []byte(newFileContent), 0755); err != nil {
+		return err
+	}
+	return nil
+}
+
+func findImportStatements(content string) (string, error) {
+	oneLineImport := regexp.MustCompile(`import ".*"`)
+	if oneLineImport.MatchString(content) {
+		return oneLineImport.FindString(content), nil
+	}
+	multiLineRegex := `import \(\r?\n(\s*\".*\"\r?\n)+\s*\)`
+	multiLineImport := regexp.MustCompile(multiLineRegex)
+	if multiLineImport.MatchString(content) {
+		return multiLineImport.FindString(content), nil
+	}
+	return "", fmt.Errorf("failed to match import statement")
+}
+
 func writeChangelog(stage string, mod modinfo.Provider) error {
 	// don't write a changelog for a new module
 	if mod.NewModule() {
 		return nil
 	}
-	const changeLogName = "CHANGELOG.md"
 	rpt := mod.GenerateReport()
 	log, err := os.Create(filepath.Join(stage, changeLogName))
 	if err != nil {
@@ -344,70 +449,10 @@ func writeChangelog(stage string, mod modinfo.Provider) error {
 	return err
 }
 
-// returns a slice of tags for the specified repo and tag prefix
-func getTags(repoPath, tagPrefix string) ([]string, error) {
-	wt, err := repo.Get(repoPath)
-	if err != nil {
-		return nil, err
+func formatCode(folder string) error {
+	c := exec.Command("gofmt", "-w", folder)
+	if output, err := c.CombinedOutput(); err != nil {
+		return errors.New(string(output))
 	}
-	return wt.ListTags(tagPrefix + "*")
-}
-
-// returns the tag prefix for the specified package.
-// assumes repo root of github.com/Azure/azure-sdk-for-go/
-func getTagPrefix(pkgDir string) (string, error) {
-	// e.g. /work/src/github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis/v2
-	// would return services/redis/mgmt/2018-03-01/redis/v2.0.0
-	repoRoot := filepath.Join("github.com", "Azure", "azure-sdk-for-go")
-	i := strings.Index(pkgDir, repoRoot)
-	if i < 0 {
-		return "", fmt.Errorf("didn't find '%s' in '%s'", repoRoot, pkgDir)
-	}
-	return strings.Replace(pkgDir[i+len(repoRoot)+1:], "\\", "/", -1), nil
-}
-
-// returns the appropriate module tag based on the package version info
-// tags - list of all current tags for the module
-func calculateModuleTag(tags []string, mod modinfo.Provider) (string, error) {
-	if mod.BreakingChanges() && !mod.VersionSuffix() {
-		return "", errors.New("package has breaking changes but directory has no version suffix")
-	}
-	tagPrefix, err := getTagPrefix(mod.DestDir())
-	if err != nil {
-		return "", err
-	}
-	// if this has breaking changes then it's simply the prefix as a new major version
-	if mod.BreakingChanges() {
-		return tagPrefix + ".0.0", nil
-	}
-	if len(tags) == 0 {
-		if mod.VersionSuffix() {
-			panic("module contains a version suffix but no tags were found")
-		}
-		// this is the first module version
-		return tagPrefix + "/" + startingModVer, nil
-	}
-	if !mod.VersionSuffix() {
-		tagPrefix = tagPrefix + "/v1"
-	}
-	tag := tags[len(tags)-1]
-	v := semverRegex.FindString(tag)
-	if v == "" {
-		return "", fmt.Errorf("didn't find semver in tag '%s'", tag)
-	}
-	sv, err := semver.NewVersion(v)
-	if err != nil {
-		return "", fmt.Errorf("failed to parse semver: %v", err)
-	}
-	// for non-breaking changes determine if this is a minor or patch update.
-	if mod.NewExports() {
-		// new exports, this is a minor update so bump minor version
-		n := sv.IncMinor()
-		sv = &n
-	} else {
-		// no new exports, this is a patch update
-		n := sv.IncPatch()
-		sv = &n
-	}
-	return strings.Replace(tag, v, "v"+sv.String(), 1), nil
+	return nil
 }

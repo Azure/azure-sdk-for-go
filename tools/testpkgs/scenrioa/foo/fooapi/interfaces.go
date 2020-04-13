@@ -2,6 +2,7 @@ package fooapi
 
 import (
 	"context"
+
 	"github.com/Azure/azure-sdk-for-go/tools/testpkgs/scenrioa/foo"
 )
 

@@ -1,0 +1,15 @@
+/classic/management/affinitygroup
+/classic/management/hostedservice
+/classic/management/location
+/classic/management/networksecuritygroup
+/classic/management/osimage
+/classic/management/sql
+/classic/management/storageservice
+/classic/management/testutils
+/classic/management/virtualmachine
+/classic/management/virtualmachinedisk
+/classic/management/virtualmachineimage
+/classic/management/virtualnetwork
+/classic/management/vmutils
+/keyvault/auth
+/cosmos-db/mongodb

@@ -106,6 +106,8 @@ func CreateModuleNameFromPath(pkgDir string) (string, error) {
 // Provider provides information about a module staged for release.
 type Provider interface {
 	DestDir() string
+	IsARMPackage() bool
+	IsPreviewPackage() bool
 	NewExports() bool
 	BreakingChanges() bool
 	VersionSuffix() bool
@@ -142,7 +144,8 @@ func GetModuleInfo(baseline, staged string) (Provider, error) {
 	}
 	// calculate the destination directory
 	// if there are breaking changes calculate the new directory
-	if mod.BreakingChanges() {
+	// preview packages do not need a new directory
+	if mod.BreakingChanges() && !mod.IsPreviewPackage() {
 		dest := filepath.Dir(staged)
 		v := 2
 		if verSuffixRegex.MatchString(baseline) {
@@ -162,6 +165,14 @@ func GetModuleInfo(baseline, staged string) (Provider, error) {
 // DestDir returns the fully qualified module destination directory.
 func (m module) DestDir() string {
 	return m.dest
+}
+
+func (m module) IsARMPackage() bool {
+	return strings.Index(m.dest, "mgmt/") > -1
+}
+
+func (m module) IsPreviewPackage() bool {
+	return strings.Index(m.dest, "preview") > -1
 }
 
 // NewExports returns true if the module contains any additive changes.

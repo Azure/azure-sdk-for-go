@@ -253,6 +253,7 @@ type ReplicationLinksClientAPI interface {
 	FailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string) (result sql.ReplicationLinksFailoverAllowDataLossFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string) (result sql.ReplicationLink, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.ReplicationLinkListResult, err error)
+	Unlink(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters sql.UnlinkParameters) (result sql.ReplicationLinksUnlinkFuture, err error)
 }
 
 var _ ReplicationLinksClientAPI = (*sql.ReplicationLinksClient)(nil)

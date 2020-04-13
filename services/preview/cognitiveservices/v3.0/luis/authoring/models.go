@@ -1040,6 +1040,14 @@ type HierarchicalModel struct {
 	Inherits *PrebuiltDomainObject          `json:"inherits,omitempty"`
 }
 
+// HierarchicalModelV2 ...
+type HierarchicalModelV2 struct {
+	Name     *string               `json:"name,omitempty"`
+	Children *[]string             `json:"children,omitempty"`
+	Inherits *PrebuiltDomainObject `json:"inherits,omitempty"`
+	Roles    *[]string             `json:"roles,omitempty"`
+}
+
 // Int32 ...
 type Int32 struct {
 	autorest.Response `json:"-"`
@@ -1633,6 +1641,272 @@ func (la *LuisApp) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				la.Utterances = &utterances
+			}
+		}
+	}
+
+	return nil
+}
+
+// LuisAppV2 exported Model - An exported LUIS Application.
+type LuisAppV2 struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// LuisSchemaVersion - Luis schema deserialization version.
+	LuisSchemaVersion *string `json:"luis_schema_version,omitempty"`
+	// Name - The name of the application.
+	Name *string `json:"name,omitempty"`
+	// VersionID - The version ID of the application that was exported.
+	VersionID *string `json:"versionId,omitempty"`
+	// Desc - The description of the application.
+	Desc *string `json:"desc,omitempty"`
+	// Culture - The culture of the application. E.g.: en-us.
+	Culture *string `json:"culture,omitempty"`
+	// Intents - List of intents.
+	Intents *[]HierarchicalModelV2 `json:"intents,omitempty"`
+	// Entities - List of entities.
+	Entities *[]HierarchicalModelV2 `json:"entities,omitempty"`
+	// ClosedLists - List of list entities.
+	ClosedLists *[]ClosedList `json:"closedLists,omitempty"`
+	// Composites - List of composite entities.
+	Composites *[]HierarchicalModelV2 `json:"composites,omitempty"`
+	// PatternAnyEntities - List of Pattern.Any entities.
+	PatternAnyEntities *[]PatternAny `json:"patternAnyEntities,omitempty"`
+	// RegexEntities - List of regular expression entities.
+	RegexEntities *[]RegexEntity `json:"regex_entities,omitempty"`
+	// PrebuiltEntities - List of prebuilt entities.
+	PrebuiltEntities *[]PrebuiltEntity `json:"prebuiltEntities,omitempty"`
+	// RegexFeatures - List of pattern features.
+	RegexFeatures *[]JSONRegexFeature `json:"regex_features,omitempty"`
+	// ModelFeatures - List of model features.
+	ModelFeatures *[]JSONModelFeature `json:"model_features,omitempty"`
+	// Patterns - List of patterns.
+	Patterns *[]PatternRule `json:"patterns,omitempty"`
+	// Utterances - List of example utterances.
+	Utterances *[]JSONUtterance `json:"utterances,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LuisAppV2.
+func (lav LuisAppV2) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lav.LuisSchemaVersion != nil {
+		objectMap["luis_schema_version"] = lav.LuisSchemaVersion
+	}
+	if lav.Name != nil {
+		objectMap["name"] = lav.Name
+	}
+	if lav.VersionID != nil {
+		objectMap["versionId"] = lav.VersionID
+	}
+	if lav.Desc != nil {
+		objectMap["desc"] = lav.Desc
+	}
+	if lav.Culture != nil {
+		objectMap["culture"] = lav.Culture
+	}
+	if lav.Intents != nil {
+		objectMap["intents"] = lav.Intents
+	}
+	if lav.Entities != nil {
+		objectMap["entities"] = lav.Entities
+	}
+	if lav.ClosedLists != nil {
+		objectMap["closedLists"] = lav.ClosedLists
+	}
+	if lav.Composites != nil {
+		objectMap["composites"] = lav.Composites
+	}
+	if lav.PatternAnyEntities != nil {
+		objectMap["patternAnyEntities"] = lav.PatternAnyEntities
+	}
+	if lav.RegexEntities != nil {
+		objectMap["regex_entities"] = lav.RegexEntities
+	}
+	if lav.PrebuiltEntities != nil {
+		objectMap["prebuiltEntities"] = lav.PrebuiltEntities
+	}
+	if lav.RegexFeatures != nil {
+		objectMap["regex_features"] = lav.RegexFeatures
+	}
+	if lav.ModelFeatures != nil {
+		objectMap["model_features"] = lav.ModelFeatures
+	}
+	if lav.Patterns != nil {
+		objectMap["patterns"] = lav.Patterns
+	}
+	if lav.Utterances != nil {
+		objectMap["utterances"] = lav.Utterances
+	}
+	for k, v := range lav.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for LuisAppV2 struct.
+func (lav *LuisAppV2) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if lav.AdditionalProperties == nil {
+					lav.AdditionalProperties = make(map[string]interface{})
+				}
+				lav.AdditionalProperties[k] = additionalProperties
+			}
+		case "luis_schema_version":
+			if v != nil {
+				var luisSchemaVersion string
+				err = json.Unmarshal(*v, &luisSchemaVersion)
+				if err != nil {
+					return err
+				}
+				lav.LuisSchemaVersion = &luisSchemaVersion
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				lav.Name = &name
+			}
+		case "versionId":
+			if v != nil {
+				var versionID string
+				err = json.Unmarshal(*v, &versionID)
+				if err != nil {
+					return err
+				}
+				lav.VersionID = &versionID
+			}
+		case "desc":
+			if v != nil {
+				var desc string
+				err = json.Unmarshal(*v, &desc)
+				if err != nil {
+					return err
+				}
+				lav.Desc = &desc
+			}
+		case "culture":
+			if v != nil {
+				var culture string
+				err = json.Unmarshal(*v, &culture)
+				if err != nil {
+					return err
+				}
+				lav.Culture = &culture
+			}
+		case "intents":
+			if v != nil {
+				var intents []HierarchicalModelV2
+				err = json.Unmarshal(*v, &intents)
+				if err != nil {
+					return err
+				}
+				lav.Intents = &intents
+			}
+		case "entities":
+			if v != nil {
+				var entities []HierarchicalModelV2
+				err = json.Unmarshal(*v, &entities)
+				if err != nil {
+					return err
+				}
+				lav.Entities = &entities
+			}
+		case "closedLists":
+			if v != nil {
+				var closedLists []ClosedList
+				err = json.Unmarshal(*v, &closedLists)
+				if err != nil {
+					return err
+				}
+				lav.ClosedLists = &closedLists
+			}
+		case "composites":
+			if v != nil {
+				var composites []HierarchicalModelV2
+				err = json.Unmarshal(*v, &composites)
+				if err != nil {
+					return err
+				}
+				lav.Composites = &composites
+			}
+		case "patternAnyEntities":
+			if v != nil {
+				var patternAnyEntities []PatternAny
+				err = json.Unmarshal(*v, &patternAnyEntities)
+				if err != nil {
+					return err
+				}
+				lav.PatternAnyEntities = &patternAnyEntities
+			}
+		case "regex_entities":
+			if v != nil {
+				var regexEntities []RegexEntity
+				err = json.Unmarshal(*v, &regexEntities)
+				if err != nil {
+					return err
+				}
+				lav.RegexEntities = &regexEntities
+			}
+		case "prebuiltEntities":
+			if v != nil {
+				var prebuiltEntities []PrebuiltEntity
+				err = json.Unmarshal(*v, &prebuiltEntities)
+				if err != nil {
+					return err
+				}
+				lav.PrebuiltEntities = &prebuiltEntities
+			}
+		case "regex_features":
+			if v != nil {
+				var regexFeatures []JSONRegexFeature
+				err = json.Unmarshal(*v, &regexFeatures)
+				if err != nil {
+					return err
+				}
+				lav.RegexFeatures = &regexFeatures
+			}
+		case "model_features":
+			if v != nil {
+				var modelFeatures []JSONModelFeature
+				err = json.Unmarshal(*v, &modelFeatures)
+				if err != nil {
+					return err
+				}
+				lav.ModelFeatures = &modelFeatures
+			}
+		case "patterns":
+			if v != nil {
+				var patterns []PatternRule
+				err = json.Unmarshal(*v, &patterns)
+				if err != nil {
+					return err
+				}
+				lav.Patterns = &patterns
+			}
+		case "utterances":
+			if v != nil {
+				var utterances []JSONUtterance
+				err = json.Unmarshal(*v, &utterances)
+				if err != nil {
+					return err
+				}
+				lav.Utterances = &utterances
 			}
 		}
 	}

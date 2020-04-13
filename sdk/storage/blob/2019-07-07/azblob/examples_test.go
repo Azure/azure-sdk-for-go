@@ -139,7 +139,10 @@ func ExampleBlobOperations_Download() {
 		panic(err)
 	}
 	fmt.Println(b.RawResponse.StatusCode)
-	// Output: 200
+	fmt.Println(string(*b.BlobType))
+	// Output:
+	// 200
+	// BlockBlob
 }
 
 func ExampleAppendBlobOperations_Create() {

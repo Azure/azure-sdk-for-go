@@ -127,6 +127,24 @@ func ExampleBlockBlobOperations_Upload() {
 	// Output: 201
 }
 
+func ExampleBlobOperations_Download() {
+	endpoint := pathJoin(getEndpoint(), containerName, blockBlobName)
+	client, err := NewClient(endpoint, getCredential(), nil)
+	if err != nil {
+		panic(err)
+	}
+	blobClient := client.BlobOperations(nil)
+	b, err := blobClient.Download(context.Background(), nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(b.RawResponse.StatusCode)
+	fmt.Println(string(*b.BlobType))
+	// Output:
+	// 200
+	// BlockBlob
+}
+
 func ExampleAppendBlobOperations_Create() {
 	endpoint := pathJoin(getEndpoint(), containerName, appendBlobName)
 	client, err := NewClient(endpoint, getCredential(), nil)

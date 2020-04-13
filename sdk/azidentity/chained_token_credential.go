@@ -54,7 +54,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 			msg := fmt.Sprintf("Azure Identity => GetToken() result for %T: SUCCESS", cred)
 			log.Write(LogCredential, msg)
 			vmsg := fmt.Sprintf("Azure Identity => Scopes: [%s]", strings.Join(opts.Scopes, ", "))
-			log.Write(LogCredentialVerbose, vmsg)
+			log.Write(LogCredential, vmsg)
 			return token, nil // if we did not receive an error then we return the token
 		}
 	}

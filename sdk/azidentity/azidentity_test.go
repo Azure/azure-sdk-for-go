@@ -17,7 +17,7 @@ const (
 )
 
 func Test_AuthorityHost_Parse(t *testing.T) {
-	_, err := url.Parse(defaultAuthorityHost)
+	_, err := url.Parse(AzurePublicCloud)
 	if err != nil {
 		t.Fatalf("Failed to parse default authority host: %v", err)
 	}
@@ -80,7 +80,7 @@ func Test_CustomAuthorityHost(t *testing.T) {
 func Test_DefaultAuthorityHost(t *testing.T) {
 	opts := &TokenCredentialOptions{}
 	opts, err := opts.setDefaultValues()
-	if opts.AuthorityHost.String() != defaultAuthorityHost {
+	if opts.AuthorityHost.String() != AzurePublicCloud {
 		t.Fatalf("Unexpected error when set default AuthorityHost: %v", err)
 	}
 }

@@ -184,7 +184,7 @@ func getLatestModVer(profileDir string) (string, error) {
 // generate a go.mod file in the specified module major version directory (e.g. "profiles/foo/v2")
 // the provided module directory is used to calculate the module name.
 func generateGoMod(modDir string) error {
-	const gomodFormat = "module %s\n\ngo 1.12\n"
+	const gomodFormat = "module %s\n\ngo 1.13\n"
 	err := os.Mkdir(modDir, os.ModeDir|0644)
 	if err != nil {
 		return err

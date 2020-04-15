@@ -16,92 +16,133 @@ package cmd
 
 import (
 	"fmt"
-	"os"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 	"path/filepath"
-	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/tools/internal/dirs"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/log"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-var rootCmd = &cobra.Command{
-	Use:   "versioner <searching dir> [initial module version]",
-	Short: "Creates or updates the latest major version for a package from staged content.",
-	Long: `This tool will compare a staged package against its latest major version to detect
-breaking changes.  If there are no breaking changes the latest major version is updated
+func Command() *cobra.Command {
+	// the root command
+	root := &cobra.Command{
+		Use:   "versioner <searching dir> [initial module version]",
+		Short: "Creates or updates the latest version for a package from the staged content.",
+		Long: `This tool will compare a staged package against its latest version to detect
+breaking changes.  If there are no breaking changes, the latest version is updated
 with the staged content.  If there are breaking changes the staged content becomes the
 next latest major vesion and the go.mod file is updated.
 The default version for new modules is v1.0.0 or the value specified for [initial module version].
 `,
-	Args: cobra.RangeArgs(1, 2),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		cmd.SilenceUsage = true
-		_, err := theCommand(args)
-		return err
-	},
-}
+		Args: cobra.RangeArgs(1, 2),
 
-var (
-	quietFlag   bool
-	verboseFlag bool
-)
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			log.SetLevel("warn")
+			if verbose := viper.GetBool("verbose"); verbose {
+				log.SetLevel("info")
+			}
+			if quiet := viper.GetBool("quiet"); quiet {
+				log.SetLevel("error")
+			}
+			if debug := viper.GetBool("debug"); debug {
+				log.SetLevel("debug")
+			}
+		},
+
+		RunE: func(cmd *cobra.Command, args []string) error {
+			root := args[0]
+			versionSetting, err := parseVersionSetting(args[1:]...)
+			if err != nil {
+				return err
+			}
+			_, err = ExecuteVersioner(root, versionSetting, getTags)
+			return err
+		},
+	}
+	// register flags
+	pFlags := root.PersistentFlags()
+	pFlags.Bool("verbose", false, "verbose output")
+	if err := viper.BindPFlag("verbose", pFlags.Lookup("verbose")); err != nil {
+		log.Fatalf("failed to bind flag: %+v", err)
+	}
+	pFlags.Bool("quiet", false, "suppress all outputs")
+	if err := viper.BindPFlag("quiet", pFlags.Lookup("quiet")); err != nil {
+		log.Fatalf("failed to bind flag: %+v", err)
+	}
+	pFlags.Bool("debug", false, "debug output")
+	if err := viper.BindPFlag("debug", pFlags.Lookup("debug")); err != nil {
+		log.Fatalf("failed to bind flag: %+v", err)
+	}
+
+	// other sub-commands
+	root.AddCommand(unstageCommand())
+
+	return root
+}
 
 const (
 	stageName = "stage"
+	// default version to start a module at if not specified
+	startingModVer = "v1.0.0"
+	// default version for a new preview module
+	startingModVerPreview = "v0.0.0"
+
+	repoOrg = "Azure"
+	repoName = "azure-sdk-for-go"
 )
 
-func init() {
-	rootCmd.PersistentFlags().BoolVarP(&verboseFlag, "verbose", "v", false, "verbose output")
-	rootCmd.PersistentFlags().BoolVarP(&quietFlag, "quiet", "q", false, "quiet output")
+type versionSetting struct {
+	initialVersion string
+	initialVersionPreview string
 }
 
-// Execute executes the specified command.
-func Execute() {
-	if err := rootCmd.Execute(); err != nil {
-		os.Exit(1)
+func parseVersionSetting(args ...string) (*versionSetting, error) {
+	initialVersion := startingModVer
+	if len(args) > 0 {
+		if !modinfo.IsValidModuleVersion(args[0]) {
+			return nil, fmt.Errorf("the string '%s' is not a valid module version", args[0])
+		}
+		initialVersion = args[1]
 	}
-}
-
-// ExecuteVersioner is used for programmatically call in other tools
-func ExecuteVersioner(root string, tagsHook TagsHookFunc) ([]string, error) {
-	if tagsHook != nil {
-		getTagsHook = tagsHook
+	initialPreviewVersion := startingModVerPreview
+	if len(args) > 1 {
+		if !modinfo.IsValidModuleVersion(args[1]) {
+			return nil, fmt.Errorf("the string '%s' is not a valid module version", args[1])
+		}
+		initialPreviewVersion = args[1]
 	}
-	return theCommand([]string{root})
+	return &versionSetting{
+		initialVersion:        initialVersion,
+		initialVersionPreview: initialPreviewVersion,
+	}, nil
 }
 
 // wrapper for cobra, prints tag to stdout
-func theCommand(args []string) ([]string, error) {
-	root, err := filepath.Abs(args[0])
+func ExecuteVersioner(r string, versionSetting *versionSetting, hookFunc TagsHookFunc) ([]string, error) {
+	root, err := filepath.Abs(r)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get absolute path from '%s': %v", args[0], err)
+		return nil, fmt.Errorf("failed to get absolute path from '%s': %v", root, err)
 	}
-	stages, err := findAllSubDirectories(root, stageName)
-	printf("Found %d stage folder(s)", len(stages))
-	vprintf("Stage folders: \n%s\n", strings.Join(stages, "\n"))
+	subDirectories, err := dirs.GetSubdirs(root)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list all sub-directories under '%s': %+v", root, err)
+	}
+
 	tags := make([]string, 0)
-	for _, stage := range stages {
-		args[0] = stage
-		tag, err := theUnstageCommand(args)
+	for _, dir := range subDirectories {
+		// first test if this sub-directory is a stage directory
+		baseName := filepath.Base(dir)
+		if baseName != stageName {
+			// if this directory is not a stage directory, skip it
+			continue
+		}
+		_, tag, err := ExecuteUnstage(dir, versionSetting, hookFunc)
 		if err != nil {
-			return tags, fmt.Errorf("failed to get tag in stage folder '%s': %v", stage, err)
+			return tags, fmt.Errorf("failed to get tag in stage folder '%s': %v", dir, err)
 		}
 		tags = append(tags, tag)
 	}
 	return tags, nil
-}
-
-func findAllSubDirectories(root, target string) ([]string, error) {
-	// check if root exists
-	if _, err := os.Stat(root); os.IsNotExist(err) {
-		return nil, fmt.Errorf("the root path '%s' does not exist", root)
-	}
-	stages := make([]string, 0)
-	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() && info.Name() == target {
-			stages = append(stages, path)
-			return nil
-		}
-		return nil
-	})
-	return stages, err
 }

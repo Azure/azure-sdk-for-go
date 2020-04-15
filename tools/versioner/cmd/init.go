@@ -22,22 +22,36 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/tools/internal/log"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/pkgs"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-var initCmd = &cobra.Command{
-	Use:   "init <searching dir>",
-	Short: "Initialize a package into go module with initial version",
-	Long: `This tool will detect every possible service under the searching directory, 
+func initCommand() *cobra.Command {
+	init := &cobra.Command{
+		Use:   "init <searching dir>",
+		Short: "Initialize a package into go module with initial version",
+		Long: `This tool will detect every possible service under the searching directory, 
 and make them as module with initial version. 
 The default version for new stable modules is v1.0.0 and for new preview modules is v0.0.0.
 NOTE: This command is only used on local and only for initial release.
 `,
-	Args: cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return theInitCommand(args)
-	},
+		Args: cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			root := args[0]
+			classicalFile := viper.GetString("classical")
+			return ExecuteInit(root, classicalFile)
+		},
+	}
+	// register flags
+	flags := init.Flags()
+	flags.StringP("classical", "c", "", "file for classical package list, these packages will be skipped")
+	if err := viper.BindPFlag("classical", flags.Lookup("classical")); err != nil {
+		log.Fatalf("failed to bind flag: %+v", err)
+	}
+
+	return init
 }
 
 const (
@@ -78,22 +92,13 @@ func Version() string {
 %s
 `
 
-	goVersion = `go 1.12`
+	goVersion = `go 1.13`
 )
 
-var classicalFile string
-var skipClassical bool
-
-func init() {
-	rootCmd.AddCommand(initCmd)
-	initCmd.PersistentFlags().StringVarP(&classicalFile, "classical", "c", "", "file for classical package list")
-	initCmd.PersistentFlags().BoolVarP(&skipClassical, "skip-classical", "s", false, "skip classical packages")
-}
-
-func theInitCommand(args []string) error {
-	root, err := filepath.Abs(args[0])
+func ExecuteInit(r, classicalFile string) error {
+	root, err := filepath.Abs(r)
 	if err != nil {
-		return fmt.Errorf("failed to get absolute path from '%s': %+v", args[0], err)
+		return fmt.Errorf("failed to get absolute path from '%s': %+v", r, err)
 	}
 	classicalPackages, err := loadClassicalPackages(classicalFile)
 	if err != nil {
@@ -107,8 +112,8 @@ func theInitCommand(args []string) error {
 	for _, p := range ps {
 		// test if this is a classical package
 		_, classical := classicalPackages[p.Dest]
-		if classical && skipClassical {
-			vprintf("Skipping classical package: %s\n", p.Dest)
+		if classical {
+			log.Infof("Skipping classical package: %s", p.Dest)
 			continue
 		}
 		path := filepath.Join(root, p.Dest)
@@ -128,7 +133,7 @@ func theInitCommand(args []string) error {
 		if err := createGoModFile(root, p); err != nil {
 			errs = append(errs, err)
 		}
-		vprintf("Created module: %s\n", tag)
+		log.Infof("Created module: %s", tag)
 	}
 	// handle errors
 	if len(errs) == 0 {

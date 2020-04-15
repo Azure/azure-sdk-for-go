@@ -27,7 +27,7 @@ func GetSubdirs(current string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	dirs := []string{}
+	var dirs []string
 	for _, info := range children {
 		if info.IsDir() {
 			dirs = append(dirs, info.Name())

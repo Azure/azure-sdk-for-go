@@ -14,8 +14,14 @@
 
 package main
 
-import "github.com/Azure/azure-sdk-for-go/tools/versioner/cmd"
+import (
+	"os"
+
+	"github.com/Azure/azure-sdk-for-go/tools/versioner/cmd"
+)
 
 func main() {
-	cmd.Execute()
+	if err := cmd.Command().Execute(); err != nil {
+		os.Exit(1)
+	}
 }

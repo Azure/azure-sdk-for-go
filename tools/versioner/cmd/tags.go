@@ -17,70 +17,66 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"path/filepath"
+	"sort"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 	"github.com/Masterminds/semver"
-	"path/filepath"
-	"strings"
 )
 
 // returns the appropriate module tag based on the package version info
 // tags - list of all current tags for the module
-func calculateModuleTag(tags []string, mod modinfo.Provider) (string, error) {
+func calculateModuleTag(baseline string, versionSetting *versionSetting, mod modinfo.Provider, hookFunc TagsHookFunc) (string, error) {
 	if mod.IsPreviewPackage() {
-		return calculateTagForPreview(tags, mod)
+		return calculateTagForPreview(baseline, versionSetting.initialVersionPreview, mod, hookFunc)
 	}
-	return calculateTagForStable(tags, mod)
+	return calculateTagForStable(baseline, versionSetting.initialVersion, mod, hookFunc)
 }
 
-func calculateTagForStable(tags []string, mod modinfo.Provider) (string, error) {
+func calculateTagForStable(baseline, initialStartVersion string, mod modinfo.Provider, hookFunc TagsHookFunc) (string, error) {
 	if mod.IsPreviewPackage() {
 		return "", errors.New("package is not stable package and should not reach this function")
 	}
 	if mod.BreakingChanges() && !mod.VersionSuffix() {
 		return "", errors.New("package has breaking changes but directory has no version suffix")
 	}
-	tagPrefix, err := getTagPrefix(mod.DestDir())
+	tagPrefix, err := getTagPrefix(baseline)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to get tag prefix: %+v", err)
 	}
+	tags, err := hookFunc(baseline, tagPrefix)
+	if err != nil {
+		return "", fmt.Errorf("failed to list tags: %+v", err)
+	}
+
+	latestVersion, err := getLatestSemver(tags, tagPrefix)
+	if err != nil {
+		return "", fmt.Errorf("failed to get latest version: %+v", err)
+	}
+
+	if latestVersion == nil {
+		// this is the first module version
+		if !mod.NewModule() {
+			return "", fmt.Errorf("module is a not new module but no tags were found")
+		}
+		return fmt.Sprintf("%s/%s", tagPrefix, initialStartVersion), nil
+	}
+
 	// if this has breaking changes then it's simply the prefix as a new major version
 	if mod.BreakingChanges() {
-		return tagPrefix + ".0.0", nil
+		return fmt.Sprintf("%s/v%s", tagPrefix, latestVersion.IncMajor().String()), nil
 	}
-	if len(tags) == 0 {
-		if mod.VersionSuffix() {
-			panic("module contains a version suffix but no tags were found")
-		}
-		// this is the first module version
-		return tagPrefix + "/" + startingModVer, nil
-	}
-	if !mod.VersionSuffix() {
-		tagPrefix = tagPrefix + "/v1"
-	}
-	tag := tags[len(tags)-1]
-	v := semverRegex.FindString(tag)
-	if v == "" {
-		return "", fmt.Errorf("didn't find semver in tag '%s'", tag)
-	}
-	sv, err := semver.NewVersion(v)
-	if err != nil {
-		return "", fmt.Errorf("failed to parse semver: %v", err)
-	}
-	// for non-breaking changes determine if this is a minor or patch update.
+
 	if mod.NewExports() {
-		// new exports, this is a minor update so bump minor version
-		n := sv.IncMinor()
-		sv = &n
-	} else {
-		// no new exports and has changes, this is a patch update
-		n := sv.IncPatch()
-		sv = &n
+		return fmt.Sprintf("%s/v%s", tagPrefix, latestVersion.IncMinor().String()), nil
 	}
-	return strings.Replace(tag, v, "v"+sv.String(), 1), nil
+
+	return fmt.Sprintf("%s/v%s", tagPrefix, latestVersion.IncPatch().String()), nil
 }
 
-func calculateTagForPreview(tags []string, mod modinfo.Provider) (string, error) {
+func calculateTagForPreview(baseline, initialStartVersion string, mod modinfo.Provider, hookFunc TagsHookFunc) (string, error) {
 	if !mod.IsPreviewPackage() {
 		return "", errors.New("package is not preview package and should not reach this function")
 	}
@@ -88,41 +84,68 @@ func calculateTagForPreview(tags []string, mod modinfo.Provider) (string, error)
 	if mod.VersionSuffix() {
 		return "", errors.New("preview module should not have version suffix")
 	}
-	tagPrefix, err := getTagPrefix(mod.DestDir())
+	tagPrefix, err := getTagPrefix(baseline)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to get tag prefix: %+v", err)
 	}
-	// preview package do not bump major version even receiving breaking changes
-	//if mod.BreakingChanges() {
-	//	return tagPrefix + ".0.0", nil
-	//}
-	if len(tags) == 0 {
+	tags, err := hookFunc(baseline, tagPrefix)
+	if err != nil {
+		return "", fmt.Errorf("failed to list tags: %+v", err)
+	}
+
+	latestVersion, err := getLatestSemver(tags, tagPrefix)
+	if err != nil {
+		return "", fmt.Errorf("failed to get latest version: %+v", err)
+	}
+
+	if latestVersion == nil {
 		// this is the first module version
-		return tagPrefix + "/" + startingModVerPreview, nil
+		if !mod.NewModule() {
+			return "", fmt.Errorf("module is not a new module but no tags were found")
+		}
+		return fmt.Sprintf("%s/%s", tagPrefix, initialStartVersion), nil
 	}
-	//if !mod.VersionSuffix() {
-	//	tagPrefix = tagPrefix + "/v1"
-	//}
-	tag := tags[len(tags)-1]
-	v := semverRegex.FindString(tag)
-	if v == "" {
-		return "", fmt.Errorf("didn't find semver in tag '%s'", tag)
-	}
-	sv, err := semver.NewVersion(v)
-	if err != nil {
-		return "", fmt.Errorf("failed to parse semver: %v", err)
-	}
-	// for any changes determine if this is a minor or patch update.
+
+	// preview package does not bump major version even receiving breaking changes
 	if mod.BreakingChanges() || mod.NewExports() {
-		// breaking changes or new exports, this is a minor update so bump minor version
-		n := sv.IncMinor()
-		sv = &n
-	} else {
-		// no new exports and has changes, this is a patch update
-		n := sv.IncPatch()
-		sv = &n
+		return fmt.Sprintf("%s/v%s", tagPrefix, latestVersion.IncMinor().String()), nil
 	}
-	return strings.Replace(tag, v, "v"+sv.String(), 1), nil
+
+	return fmt.Sprintf("%s/v%s", tagPrefix, latestVersion.IncPatch().String()), nil
+}
+
+func getLatestSemver(tags []string, tagPrefix string) (*semver.Version, error) {
+	var versions []*semver.Version
+	for _, tag := range tags {
+		index := strings.Index(tag, tagPrefix)
+		if index < 0 {
+			return nil, fmt.Errorf("do not find '%s' in tag '%s'", tagPrefix, tag)
+		}
+		verString := strings.Trim(tag[index + len(tagPrefix):], "/")
+		ver, err := semver.NewVersion(verString)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse semver %s: %+v", verString, err)
+		}
+		versions = append(versions, ver)
+	}
+
+	sort.Sort(semver.Collection(versions))
+	if len(versions) == 0 {
+		return nil, nil
+	}
+ 	return versions[len(versions) - 1], nil
+}
+
+func findVersionSuffixInTag(tag string) string {
+	r := verSuffixRegex.FindAllString(tag, -1)
+	if len(r) == 0 {
+		return ""
+	}
+	suffix := r[len(r) - 1]
+	if suffix == "v1" {
+		return ""
+	}
+	return suffix
 }
 
 // returns a slice of tags for the specified repo and tag prefix
@@ -138,8 +161,8 @@ func getTags(repoPath, tagPrefix string) ([]string, error) {
 // assumes repo root of github.com/Azure/azure-sdk-for-go/
 func getTagPrefix(pkgDir string) (string, error) {
 	// e.g. /work/src/github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis/v2
-	// would return services/redis/mgmt/2018-03-01/redis/v2.0.0
-	repoRoot := filepath.Join("github.com", "Azure", "azure-sdk-for-go")
+	// would return services/redis/mgmt/2018-03-01/redis/v2
+	repoRoot := filepath.Join("github.com", repoOrg, repoName)
 	i := strings.Index(pkgDir, repoRoot)
 	if i < 0 {
 		return "", fmt.Errorf("didn't find '%s' in '%s'", repoRoot, pkgDir)

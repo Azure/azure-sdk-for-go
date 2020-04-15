@@ -998,8 +998,8 @@ func (client CassandraResourcesClient) UpdateCassandraKeyspaceThroughput(ctx con
 		{TargetValue: updateThroughputParameters,
 			Constraints: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource.AutopilotSettings", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource.AutopilotSettings.MaxThroughput", Name: validation.Null, Rule: true, Chain: nil}}},
+					Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource.ProvisionedThroughputSettings", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource.ProvisionedThroughputSettings.MaxThroughput", Name: validation.Null, Rule: true, Chain: nil}}},
 					}},
 				}}}}}); err != nil {
 		return result, validation.NewError("documentdb.CassandraResourcesClient", "UpdateCassandraKeyspaceThroughput", err.Error())
@@ -1100,8 +1100,8 @@ func (client CassandraResourcesClient) UpdateCassandraTableThroughput(ctx contex
 		{TargetValue: updateThroughputParameters,
 			Constraints: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource.AutopilotSettings", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource.AutopilotSettings.MaxThroughput", Name: validation.Null, Rule: true, Chain: nil}}},
+					Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource.ProvisionedThroughputSettings", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource.ProvisionedThroughputSettings.MaxThroughput", Name: validation.Null, Rule: true, Chain: nil}}},
 					}},
 				}}}}}); err != nil {
 		return result, validation.NewError("documentdb.CassandraResourcesClient", "UpdateCassandraTableThroughput", err.Error())

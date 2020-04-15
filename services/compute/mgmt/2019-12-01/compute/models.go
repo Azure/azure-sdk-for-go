@@ -266,6 +266,21 @@ func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
 	return []DiffDiskOptions{Local}
 }
 
+// DiffDiskPlacement enumerates the values for diff disk placement.
+type DiffDiskPlacement string
+
+const (
+	// CacheDisk ...
+	CacheDisk DiffDiskPlacement = "CacheDisk"
+	// ResourceDisk ...
+	ResourceDisk DiffDiskPlacement = "ResourceDisk"
+)
+
+// PossibleDiffDiskPlacementValues returns an array of possible values for the DiffDiskPlacement const type.
+func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
+	return []DiffDiskPlacement{CacheDisk, ResourceDisk}
+}
+
 // DiskCreateOption enumerates the values for disk create option.
 type DiskCreateOption string
 
@@ -543,6 +558,51 @@ const (
 // PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
 func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
 	return []OperatingSystemTypes{Linux, Windows}
+}
+
+// OrchestrationServiceNames enumerates the values for orchestration service names.
+type OrchestrationServiceNames string
+
+const (
+	// AutomaticRepairs ...
+	AutomaticRepairs OrchestrationServiceNames = "AutomaticRepairs"
+)
+
+// PossibleOrchestrationServiceNamesValues returns an array of possible values for the OrchestrationServiceNames const type.
+func PossibleOrchestrationServiceNamesValues() []OrchestrationServiceNames {
+	return []OrchestrationServiceNames{AutomaticRepairs}
+}
+
+// OrchestrationServiceState enumerates the values for orchestration service state.
+type OrchestrationServiceState string
+
+const (
+	// NotRunning ...
+	NotRunning OrchestrationServiceState = "NotRunning"
+	// Running ...
+	Running OrchestrationServiceState = "Running"
+	// Suspended ...
+	Suspended OrchestrationServiceState = "Suspended"
+)
+
+// PossibleOrchestrationServiceStateValues returns an array of possible values for the OrchestrationServiceState const type.
+func PossibleOrchestrationServiceStateValues() []OrchestrationServiceState {
+	return []OrchestrationServiceState{NotRunning, Running, Suspended}
+}
+
+// OrchestrationServiceStateAction enumerates the values for orchestration service state action.
+type OrchestrationServiceStateAction string
+
+const (
+	// Resume ...
+	Resume OrchestrationServiceStateAction = "Resume"
+	// Suspend ...
+	Suspend OrchestrationServiceStateAction = "Suspend"
+)
+
+// PossibleOrchestrationServiceStateActionValues returns an array of possible values for the OrchestrationServiceStateAction const type.
+func PossibleOrchestrationServiceStateActionValues() []OrchestrationServiceStateAction {
+	return []OrchestrationServiceStateAction{Resume, Suspend}
 }
 
 // PassNames enumerates the values for pass names.
@@ -1432,7 +1492,7 @@ type AutomaticOSUpgradeProperties struct {
 type AutomaticRepairsPolicy struct {
 	// Enabled - Specifies whether automatic repairs should be enabled on the virtual machine scale set. The default value is false.
 	Enabled *bool `json:"enabled,omitempty"`
-	// GracePeriod - The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 30 minutes (PT30M), which is also the default value.
+	// GracePeriod - The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 30 minutes (PT30M), which is also the default value. The maximum allowed grace period is 90 minutes (PT90M).
 	GracePeriod *string `json:"gracePeriod,omitempty"`
 }
 
@@ -3075,6 +3135,8 @@ type DiagnosticsProfile struct {
 type DiffDiskSettings struct {
 	// Option - Specifies the ephemeral disk settings for operating system disk. Possible values include: 'Local'
 	Option DiffDiskOptions `json:"option,omitempty"`
+	// Placement - Specifies the ephemeral disk placement for operating system disk.<br><br> Possible values are: <br><br> **CacheDisk** <br><br> **ResourceDisk** <br><br> Default: **CacheDisk** if one is configured for the VM size otherwise **ResourceDisk** is used.<br><br> Refer to VM size documentation for Windows VM at https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes and Linux VM at https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes to check which VM sizes exposes a cache disk. Possible values include: 'CacheDisk', 'ResourceDisk'
+	Placement DiffDiskPlacement `json:"placement,omitempty"`
 }
 
 // Disallowed describes the disallowed disk types.
@@ -7385,6 +7447,22 @@ type OperationValueDisplay struct {
 	Provider *string `json:"provider,omitempty"`
 }
 
+// OrchestrationServiceStateInput the input for OrchestrationServiceState
+type OrchestrationServiceStateInput struct {
+	// ServiceName - The name of the service. Possible values include: 'AutomaticRepairs'
+	ServiceName OrchestrationServiceNames `json:"serviceName,omitempty"`
+	// Action - The action to be performed. Possible values include: 'Resume', 'Suspend'
+	Action OrchestrationServiceStateAction `json:"action,omitempty"`
+}
+
+// OrchestrationServiceSummary summary for an orchestration service of a virtual machine scale set.
+type OrchestrationServiceSummary struct {
+	// ServiceName - READ-ONLY; The name of the service. Possible values include: 'AutomaticRepairs', 'DummyOrchestrationServiceName'
+	ServiceName OrchestrationServiceNames `json:"serviceName,omitempty"`
+	// ServiceState - READ-ONLY; The current state of the service. Possible values include: 'NotRunning', 'Running', 'Suspended'
+	ServiceState OrchestrationServiceState `json:"serviceState,omitempty"`
+}
+
 // OSDisk specifies information about the operating system disk used by the virtual machine. <br><br> For
 // more information about disks, see [About disks and VHDs for Azure virtual
 // machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
@@ -7399,7 +7477,7 @@ type OSDisk struct {
 	Vhd *VirtualHardDisk `json:"vhd,omitempty"`
 	// Image - The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not exist.
 	Image *VirtualHardDisk `json:"image,omitempty"`
-	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'CachingTypesNone', 'CachingTypesReadOnly', 'CachingTypesReadWrite'
+	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None** for Standard storage. **ReadOnly** for Premium storage. Possible values include: 'CachingTypesNone', 'CachingTypesReadOnly', 'CachingTypesReadWrite'
 	Caching CachingTypes `json:"caching,omitempty"`
 	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
@@ -9020,6 +9098,324 @@ type SSHPublicKey struct {
 	Path *string `json:"path,omitempty"`
 	// KeyData - SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit and in ssh-rsa format. <br><br> For creating ssh keys, see [Create SSH keys on Linux and Mac for Linux VMs in Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-mac-create-ssh-keys?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
 	KeyData *string `json:"keyData,omitempty"`
+}
+
+// SSHPublicKeyGenerateKeyPairResult response from generation of an SSH key pair.
+type SSHPublicKeyGenerateKeyPairResult struct {
+	autorest.Response `json:"-"`
+	// PrivateKey - Private key portion of the key pair used to authenticate to a virtual machine through ssh. The private key is returned in RFC3447 format and should be treated as a secret.
+	PrivateKey *string `json:"privateKey,omitempty"`
+	// PublicKey - Public key portion of the key pair used to authenticate to a virtual machine through ssh. The public key is in ssh-rsa format.
+	PublicKey *string `json:"publicKey,omitempty"`
+	// ID - The ARM resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{SshPublicKeyName}
+	ID *string `json:"id,omitempty"`
+}
+
+// SSHPublicKeyResource specifies information about the SSH public key.
+type SSHPublicKeyResource struct {
+	autorest.Response `json:"-"`
+	// SSHPublicKeyResourceProperties - Properties of the SSH public key.
+	*SSHPublicKeyResourceProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for SSHPublicKeyResource.
+func (spkr SSHPublicKeyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if spkr.SSHPublicKeyResourceProperties != nil {
+		objectMap["properties"] = spkr.SSHPublicKeyResourceProperties
+	}
+	if spkr.Location != nil {
+		objectMap["location"] = spkr.Location
+	}
+	if spkr.Tags != nil {
+		objectMap["tags"] = spkr.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SSHPublicKeyResource struct.
+func (spkr *SSHPublicKeyResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var SSHPublicKeyResourceProperties SSHPublicKeyResourceProperties
+				err = json.Unmarshal(*v, &SSHPublicKeyResourceProperties)
+				if err != nil {
+					return err
+				}
+				spkr.SSHPublicKeyResourceProperties = &SSHPublicKeyResourceProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				spkr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				spkr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				spkr.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				spkr.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				spkr.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// SSHPublicKeyResourceProperties properties of the SSH public key.
+type SSHPublicKeyResourceProperties struct {
+	// PublicKey - SSH public key used to authenticate to a virtual machine through ssh. If this property is not initially provided when the resource is created, the publicKey property will be populated when generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to be at least 2048-bit and in ssh-rsa format.
+	PublicKey *string `json:"publicKey,omitempty"`
+}
+
+// SSHPublicKeysGroupListResult the list SSH public keys operation response.
+type SSHPublicKeysGroupListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of SSH public keys
+	Value *[]SSHPublicKeyResource `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page of SSH public keys. Call ListNext() with this URI to fetch the next page of SSH public keys.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// SSHPublicKeysGroupListResultIterator provides access to a complete listing of SSHPublicKeyResource
+// values.
+type SSHPublicKeysGroupListResultIterator struct {
+	i    int
+	page SSHPublicKeysGroupListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SSHPublicKeysGroupListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SSHPublicKeysGroupListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *SSHPublicKeysGroupListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SSHPublicKeysGroupListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SSHPublicKeysGroupListResultIterator) Response() SSHPublicKeysGroupListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SSHPublicKeysGroupListResultIterator) Value() SSHPublicKeyResource {
+	if !iter.page.NotDone() {
+		return SSHPublicKeyResource{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the SSHPublicKeysGroupListResultIterator type.
+func NewSSHPublicKeysGroupListResultIterator(page SSHPublicKeysGroupListResultPage) SSHPublicKeysGroupListResultIterator {
+	return SSHPublicKeysGroupListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (spkglr SSHPublicKeysGroupListResult) IsEmpty() bool {
+	return spkglr.Value == nil || len(*spkglr.Value) == 0
+}
+
+// sSHPublicKeysGroupListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (spkglr SSHPublicKeysGroupListResult) sSHPublicKeysGroupListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if spkglr.NextLink == nil || len(to.String(spkglr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(spkglr.NextLink)))
+}
+
+// SSHPublicKeysGroupListResultPage contains a page of SSHPublicKeyResource values.
+type SSHPublicKeysGroupListResultPage struct {
+	fn     func(context.Context, SSHPublicKeysGroupListResult) (SSHPublicKeysGroupListResult, error)
+	spkglr SSHPublicKeysGroupListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SSHPublicKeysGroupListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SSHPublicKeysGroupListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.spkglr)
+	if err != nil {
+		return err
+	}
+	page.spkglr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *SSHPublicKeysGroupListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SSHPublicKeysGroupListResultPage) NotDone() bool {
+	return !page.spkglr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SSHPublicKeysGroupListResultPage) Response() SSHPublicKeysGroupListResult {
+	return page.spkglr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SSHPublicKeysGroupListResultPage) Values() []SSHPublicKeyResource {
+	if page.spkglr.IsEmpty() {
+		return nil
+	}
+	return *page.spkglr.Value
+}
+
+// Creates a new instance of the SSHPublicKeysGroupListResultPage type.
+func NewSSHPublicKeysGroupListResultPage(getNextPage func(context.Context, SSHPublicKeysGroupListResult) (SSHPublicKeysGroupListResult, error)) SSHPublicKeysGroupListResultPage {
+	return SSHPublicKeysGroupListResultPage{fn: getNextPage}
+}
+
+// SSHPublicKeyUpdateResource specifies information about the SSH public key.
+type SSHPublicKeyUpdateResource struct {
+	// SSHPublicKeyResourceProperties - Properties of the SSH public key.
+	*SSHPublicKeyResourceProperties `json:"properties,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for SSHPublicKeyUpdateResource.
+func (spkur SSHPublicKeyUpdateResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if spkur.SSHPublicKeyResourceProperties != nil {
+		objectMap["properties"] = spkur.SSHPublicKeyResourceProperties
+	}
+	if spkur.Tags != nil {
+		objectMap["tags"] = spkur.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SSHPublicKeyUpdateResource struct.
+func (spkur *SSHPublicKeyUpdateResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var SSHPublicKeyResourceProperties SSHPublicKeyResourceProperties
+				err = json.Unmarshal(*v, &SSHPublicKeyResourceProperties)
+				if err != nil {
+					return err
+				}
+				spkur.SSHPublicKeyResourceProperties = &SSHPublicKeyResourceProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				spkur.Tags = tags
+			}
+		}
+	}
+
+	return nil
 }
 
 // StorageProfile specifies the storage settings for the virtual machine disks.
@@ -10844,6 +11240,8 @@ type VirtualMachineScaleSetInstanceView struct {
 	Extensions *[]VirtualMachineScaleSetVMExtensionsSummary `json:"extensions,omitempty"`
 	// Statuses - The resource status information.
 	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`
+	// OrchestrationServices - READ-ONLY; The orchestration services information.
+	OrchestrationServices *[]OrchestrationServiceSummary `json:"orchestrationServices,omitempty"`
 }
 
 // VirtualMachineScaleSetInstanceViewStatusesSummary instance view statuses summary for virtual machines of
@@ -12122,6 +12520,29 @@ func (future *VirtualMachineScaleSetsRestartFuture) Result(client VirtualMachine
 	}
 	if !done {
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsRestartFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// VirtualMachineScaleSetsSetOrchestrationServiceStateFuture an abstraction for monitoring and retrieving
+// the results of a long-running operation.
+type VirtualMachineScaleSetsSetOrchestrationServiceStateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualMachineScaleSetsSetOrchestrationServiceStateFuture) Result(client VirtualMachineScaleSetsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsSetOrchestrationServiceStateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsSetOrchestrationServiceStateFuture")
 		return
 	}
 	ar.Response = future.Response()

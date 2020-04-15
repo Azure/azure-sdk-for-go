@@ -140,7 +140,7 @@ func ExecuteInit(r, classicalFile string) error {
 		return nil
 	}
 	for _, err := range errs {
-		println(err.Error())
+		log.Errorln(err.Error())
 	}
 	return fmt.Errorf("execution failed with %d errors", len(errs))
 }

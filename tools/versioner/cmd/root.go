@@ -79,6 +79,8 @@ The default version for new modules is v1.0.0 or the value specified for [initia
 	// other sub-commands
 	root.AddCommand(unstageCommand())
 
+	root.AddCommand(initCommand())
+
 	return root
 }
 

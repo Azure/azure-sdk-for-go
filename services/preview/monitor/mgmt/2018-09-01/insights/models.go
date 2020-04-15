@@ -165,6 +165,40 @@ func PossibleCriterionTypeValues() []CriterionType {
 	return []CriterionType{CriterionTypeDynamicThresholdCriterion, CriterionTypeMultiMetricCriteria, CriterionTypeStaticThresholdCriterion}
 }
 
+// DynamicThresholdOperator enumerates the values for dynamic threshold operator.
+type DynamicThresholdOperator string
+
+const (
+	// DynamicThresholdOperatorGreaterOrLessThan ...
+	DynamicThresholdOperatorGreaterOrLessThan DynamicThresholdOperator = "GreaterOrLessThan"
+	// DynamicThresholdOperatorGreaterThan ...
+	DynamicThresholdOperatorGreaterThan DynamicThresholdOperator = "GreaterThan"
+	// DynamicThresholdOperatorLessThan ...
+	DynamicThresholdOperatorLessThan DynamicThresholdOperator = "LessThan"
+)
+
+// PossibleDynamicThresholdOperatorValues returns an array of possible values for the DynamicThresholdOperator const type.
+func PossibleDynamicThresholdOperatorValues() []DynamicThresholdOperator {
+	return []DynamicThresholdOperator{DynamicThresholdOperatorGreaterOrLessThan, DynamicThresholdOperatorGreaterThan, DynamicThresholdOperatorLessThan}
+}
+
+// DynamicThresholdSensitivity enumerates the values for dynamic threshold sensitivity.
+type DynamicThresholdSensitivity string
+
+const (
+	// High ...
+	High DynamicThresholdSensitivity = "High"
+	// Low ...
+	Low DynamicThresholdSensitivity = "Low"
+	// Medium ...
+	Medium DynamicThresholdSensitivity = "Medium"
+)
+
+// PossibleDynamicThresholdSensitivityValues returns an array of possible values for the DynamicThresholdSensitivity const type.
+func PossibleDynamicThresholdSensitivityValues() []DynamicThresholdSensitivity {
+	return []DynamicThresholdSensitivity{High, Low, Medium}
+}
+
 // Enabled enumerates the values for enabled.
 type Enabled string
 
@@ -322,6 +356,29 @@ func PossibleOdataTypeBasicRuleConditionValues() []OdataTypeBasicRuleCondition {
 	return []OdataTypeBasicRuleCondition{OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition, OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition, OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition, OdataTypeRuleCondition}
 }
 
+// Operator enumerates the values for operator.
+type Operator string
+
+const (
+	// OperatorEquals ...
+	OperatorEquals Operator = "Equals"
+	// OperatorGreaterThan ...
+	OperatorGreaterThan Operator = "GreaterThan"
+	// OperatorGreaterThanOrEqual ...
+	OperatorGreaterThanOrEqual Operator = "GreaterThanOrEqual"
+	// OperatorLessThan ...
+	OperatorLessThan Operator = "LessThan"
+	// OperatorLessThanOrEqual ...
+	OperatorLessThanOrEqual Operator = "LessThanOrEqual"
+	// OperatorNotEquals ...
+	OperatorNotEquals Operator = "NotEquals"
+)
+
+// PossibleOperatorValues returns an array of possible values for the Operator const type.
+func PossibleOperatorValues() []Operator {
+	return []Operator{OperatorEquals, OperatorGreaterThan, OperatorGreaterThanOrEqual, OperatorLessThan, OperatorLessThanOrEqual, OperatorNotEquals}
+}
+
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -451,17 +508,17 @@ func PossibleScaleTypeValues() []ScaleType {
 type Sensitivity string
 
 const (
-	// High ...
-	High Sensitivity = "High"
-	// Low ...
-	Low Sensitivity = "Low"
-	// Medium ...
-	Medium Sensitivity = "Medium"
+	// SensitivityHigh ...
+	SensitivityHigh Sensitivity = "High"
+	// SensitivityLow ...
+	SensitivityLow Sensitivity = "Low"
+	// SensitivityMedium ...
+	SensitivityMedium Sensitivity = "Medium"
 )
 
 // PossibleSensitivityValues returns an array of possible values for the Sensitivity const type.
 func PossibleSensitivityValues() []Sensitivity {
-	return []Sensitivity{High, Low, Medium}
+	return []Sensitivity{SensitivityHigh, SensitivityLow, SensitivityMedium}
 }
 
 // TimeAggregationOperator enumerates the values for time aggregation operator.
@@ -1747,7 +1804,7 @@ type AzureFunctionReceiver struct {
 
 // Baseline the baseline values for a single sensitivity value.
 type Baseline struct {
-	// Sensitivity - the sensitivity of the baseline. Possible values include: 'Low', 'Medium', 'High'
+	// Sensitivity - the sensitivity of the baseline. Possible values include: 'SensitivityLow', 'SensitivityMedium', 'SensitivityHigh'
 	Sensitivity Sensitivity `json:"sensitivity,omitempty"`
 	// LowThresholds - The low thresholds of the baseline.
 	LowThresholds *[]float64 `json:"lowThresholds,omitempty"`
@@ -2070,10 +2127,10 @@ type Dimension struct {
 
 // DynamicMetricCriteria criterion for dynamic threshold.
 type DynamicMetricCriteria struct {
-	// Operator - The operator used to compare the metric value against the threshold.
-	Operator interface{} `json:"operator,omitempty"`
-	// AlertSensitivity - The extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric series pattern.
-	AlertSensitivity interface{} `json:"alertSensitivity,omitempty"`
+	// Operator - The operator used to compare the metric value against the threshold. Possible values include: 'DynamicThresholdOperatorGreaterThan', 'DynamicThresholdOperatorLessThan', 'DynamicThresholdOperatorGreaterOrLessThan'
+	Operator DynamicThresholdOperator `json:"operator,omitempty"`
+	// AlertSensitivity - The extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric series pattern. Possible values include: 'Low', 'Medium', 'High'
+	AlertSensitivity DynamicThresholdSensitivity `json:"alertSensitivity,omitempty"`
 	// FailingPeriods - The minimum number of violations required within the selected lookback time window required to raise an alert.
 	FailingPeriods *DynamicThresholdFailingPeriods `json:"failingPeriods,omitempty"`
 	// IgnoreDataBefore - Use this option to set the date from which to start learning the metric historical data and calculate the dynamic thresholds (in ISO8601 format)
@@ -2098,10 +2155,10 @@ type DynamicMetricCriteria struct {
 func (dmc DynamicMetricCriteria) MarshalJSON() ([]byte, error) {
 	dmc.CriterionType = CriterionTypeDynamicThresholdCriterion
 	objectMap := make(map[string]interface{})
-	if dmc.Operator != nil {
+	if dmc.Operator != "" {
 		objectMap["operator"] = dmc.Operator
 	}
-	if dmc.AlertSensitivity != nil {
+	if dmc.AlertSensitivity != "" {
 		objectMap["alertSensitivity"] = dmc.AlertSensitivity
 	}
 	if dmc.FailingPeriods != nil {
@@ -2165,7 +2222,7 @@ func (dmc *DynamicMetricCriteria) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "operator":
 			if v != nil {
-				var operator interface{}
+				var operator DynamicThresholdOperator
 				err = json.Unmarshal(*v, &operator)
 				if err != nil {
 					return err
@@ -2174,7 +2231,7 @@ func (dmc *DynamicMetricCriteria) UnmarshalJSON(body []byte) error {
 			}
 		case "alertSensitivity":
 			if v != nil {
-				var alertSensitivity interface{}
+				var alertSensitivity DynamicThresholdSensitivity
 				err = json.Unmarshal(*v, &alertSensitivity)
 				if err != nil {
 					return err
@@ -3574,7 +3631,7 @@ type MetricAlertProperties struct {
 	TargetResourceRegion *string `json:"targetResourceRegion,omitempty"`
 	// Criteria - defines the specific alert criteria information.
 	Criteria BasicMetricAlertCriteria `json:"criteria,omitempty"`
-	// AutoMitigate - the flag that indicates whether the alert should be auto resolved or not.
+	// AutoMitigate - the flag that indicates whether the alert should be auto resolved or not. The default is true.
 	AutoMitigate *bool `json:"autoMitigate,omitempty"`
 	// Actions - the array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved.
 	Actions *[]MetricAlertAction `json:"actions,omitempty"`
@@ -4012,8 +4069,8 @@ type MetricAvailability struct {
 
 // MetricCriteria criterion to filter metrics.
 type MetricCriteria struct {
-	// Operator - the criteria operator.
-	Operator interface{} `json:"operator,omitempty"`
+	// Operator - the criteria operator. Possible values include: 'OperatorEquals', 'OperatorNotEquals', 'OperatorGreaterThan', 'OperatorGreaterThanOrEqual', 'OperatorLessThan', 'OperatorLessThanOrEqual'
+	Operator Operator `json:"operator,omitempty"`
 	// Threshold - the criteria threshold value that activates the alert.
 	Threshold *float64 `json:"threshold,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
@@ -4036,7 +4093,7 @@ type MetricCriteria struct {
 func (mc MetricCriteria) MarshalJSON() ([]byte, error) {
 	mc.CriterionType = CriterionTypeStaticThresholdCriterion
 	objectMap := make(map[string]interface{})
-	if mc.Operator != nil {
+	if mc.Operator != "" {
 		objectMap["operator"] = mc.Operator
 	}
 	if mc.Threshold != nil {
@@ -4097,7 +4154,7 @@ func (mc *MetricCriteria) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "operator":
 			if v != nil {
-				var operator interface{}
+				var operator Operator
 				err = json.Unmarshal(*v, &operator)
 				if err != nil {
 					return err
@@ -5422,4 +5479,14 @@ type WebhookReceiver struct {
 	Name *string `json:"name,omitempty"`
 	// ServiceURI - The URI where webhooks should be sent.
 	ServiceURI *string `json:"serviceUri,omitempty"`
+}
+
+// WebtestLocationAvailabilityCriteria specifies the metric alert rule criteria for a web test resource.
+type WebtestLocationAvailabilityCriteria struct {
+	// WebTestID - The Application Insights web test Id.
+	WebTestID *string `json:"webTestId,omitempty"`
+	// ComponentID - The Application Insights resource Id.
+	ComponentID *string `json:"componentId,omitempty"`
+	// FailedLocationCount - The number of failed locations.
+	FailedLocationCount *float64 `json:"failedLocationCount,omitempty"`
 }

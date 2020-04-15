@@ -62,7 +62,7 @@ func NewQueryClientWithBaseURI(baseURI string, subscriptionID string) QueryClien
 // account and 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountId}' for
 // consolidated account
 // parameters - parameters supplied to the CreateOrUpdate Query Config operation.
-func (client QueryClient) Usage(ctx context.Context, scope string, parameters QueryDefinition) (result QueryResult, err error) {
+func (client QueryClient) Usage(ctx context.Context, scope string, skiptoken string, top *int32, parameters QueryDefinition) (result QueryResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/QueryClient.Usage")
 		defer func() {
@@ -106,7 +106,7 @@ func (client QueryClient) Usage(ctx context.Context, scope string, parameters Qu
 		return result, validation.NewError("costmanagement.QueryClient", "Usage", err.Error())
 	}
 
-	req, err := client.UsagePreparer(ctx, scope, parameters)
+	req, err := client.UsagePreparer(ctx, scope, skiptoken, top, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.QueryClient", "Usage", nil, "Failure preparing request")
 		return
@@ -128,16 +128,24 @@ func (client QueryClient) Usage(ctx context.Context, scope string, parameters Qu
 }
 
 // UsagePreparer prepares the Usage request.
-func (client QueryClient) UsagePreparer(ctx context.Context, scope string, parameters QueryDefinition) (*http.Request, error) {
+func (client QueryClient) UsagePreparer(ctx context.Context, scope string, skiptoken string, top *int32, parameters QueryDefinition) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"scope": scope,
 	}
 
-	const APIVersion = "2019-10-01"
+	const APIVersion = "2019-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
+	}
+	
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),

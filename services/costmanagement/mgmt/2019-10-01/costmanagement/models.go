@@ -105,7 +105,7 @@ const (
 	// QueryColumnTypeDimension ...
 	QueryColumnTypeDimension QueryColumnType = "Dimension"
 	// QueryColumnTypeTag ...
-	QueryColumnTypeTag QueryColumnType = "Tag"
+	QueryColumnTypeTag QueryColumnType = "TagKey"
 )
 
 // PossibleQueryColumnTypeValues returns an array of possible values for the QueryColumnType const type.

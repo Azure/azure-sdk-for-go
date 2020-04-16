@@ -26,3 +26,5 @@ func UserAgent() string {
 func Version() string {
 	return "v1.1.2"
 }
+
+// tag: tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.2

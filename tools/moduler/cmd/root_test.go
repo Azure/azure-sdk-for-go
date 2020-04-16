@@ -79,7 +79,7 @@ var (
 	}
 
 	defaultVersion = &cmd.VersionSetting{
-		InitialVersion: "v1.0.0",
+		InitialVersion:        "v1.0.0",
 		InitialVersionPreview: "v0.0.0",
 	}
 )
@@ -223,7 +223,9 @@ func Test_readNewTags(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to get absolute path of root: %+v", err)
 	}
-	newTags, err := readNewTags(root)
+	newTags, err := readNewTags(root, func(root string) ([]string, error) {
+		return nil, nil
+	})
 	if err != nil {
 		t.Fatalf("failed to read new tags: %+v", err)
 	}

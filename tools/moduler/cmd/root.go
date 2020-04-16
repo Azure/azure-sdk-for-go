@@ -18,6 +18,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"github.com/spf13/viper"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -33,48 +34,63 @@ const (
 	versionFile = "version.go"
 )
 
-var rootCmd = &cobra.Command{
-	Use:   "moduler <searching dir>",
-	Short: "Release a new module by pushing new tags to github",
-	Long: `This tool search the whole SDK folder for tags in version.go files 
+func Command() *cobra.Command {
+	// the root command
+	root := &cobra.Command{
+		Use: "moduler <searching dir>",
+		Short: "Release a new module by pushing new tags to github",
+		Long: `This tool search the whole SDK folder for tags in version.go files 
 which are produced by the versioner tool, and push the new tags to github.`,
-	Args: cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return theCommand(args)
-	},
-}
+		Args: cobra.ExactArgs(1),
 
-var (
-	getTagsHook func(string) ([]string, error)
-	dryRunFlag  bool
-	verboseFlag bool
-)
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			log.SetLevel("warn")
+			if verbose := viper.GetBool("verbose"); verbose {
+				log.SetLevel("debug")
+			}
+		},
 
-func init() {
-	getTagsHook = getTags
-	rootCmd.PersistentFlags().BoolVarP(&dryRunFlag, "dry-run", "d", false, "dry run, only list the detected tags, do not add or push them")
-	rootCmd.PersistentFlags().BoolVarP(&verboseFlag, "verbose", "v", false, "verbose output")
-}
-
-// Execute the tool
-func Execute() {
-	if err := rootCmd.Execute(); err != nil {
-		os.Exit(1)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			flags := flags{
+				dryRunFlag: viper.GetBool("dry-run"),
+			}
+			return ExecuteModuler(args[0], flags, getTags)
+		},
 	}
+	// register flags
+	pFlags := root.PersistentFlags()
+	pFlags.Bool("verbose", false, "verbose output")
+	if err := viper.BindPFlag("verbose", pFlags.Lookup("verbose")); err != nil {
+		log.Fatalf("failed to bind flag: %+v", err)
+	}
+	flags := root.Flags()
+	flags.BoolP("dry-run", "d", false, "dry run, only list the detected tags, do not add or push them")
+	if err := viper.BindPFlag("dry-run", pFlags.Lookup("dry-run")); err != nil {
+		log.Fatalf("failed to bind flag: %+v", err)
+	}
+
+	return root
 }
 
-func theCommand(args []string) error {
-	root, err := filepath.Abs(args[0])
+type flags struct {
+	dryRunFlag bool
+}
+
+// TagsHookFunc is a func used for get tags from remote
+type TagsHookFunc func(root string) ([]string, error)
+
+func ExecuteModuler(r string, flags flags, getTagsHook TagsHookFunc) error {
+	root, err := filepath.Abs(r)
 	if err != nil {
 		return fmt.Errorf("failed to get absolute root: %v", err)
 	}
-	newTags, err := readNewTags(root)
+	newTags, err := readNewTags(root, getTagsHook)
 	if err != nil {
 		return err
 	}
-	println("Found new tags:")
-	println(strings.Join(newTags, "\n"))
-	if !dryRunFlag {
+	log.Infoln("Found new tags: ")
+	log.Infoln(strings.Join(newTags, "\n"))
+	if !flags.dryRunFlag {
 		// push new tags
 		if err := pushNewTags(newTags); err != nil {
 			return fmt.Errorf("failed to push tags: %v", err)
@@ -83,7 +99,7 @@ func theCommand(args []string) error {
 	return nil
 }
 
-func readNewTags(root string) ([]string, error) {
+func readNewTags(root string, getTagsHook TagsHookFunc) ([]string, error) {
 	// get list of all existing tags
 	tags, err := getTagsHook(root)
 	if err != nil {

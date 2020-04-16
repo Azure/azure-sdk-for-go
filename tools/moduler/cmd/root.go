@@ -53,6 +53,7 @@ which are produced by the versioner tool, and push the new tags to github.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			flags := flags{
 				dryRunFlag: viper.GetBool("dry-run"),
+				addOnly: viper.GetBool("add-only"),
 			}
 			return ExecuteModuler(args[0], flags, getTags)
 		},
@@ -68,12 +69,17 @@ which are produced by the versioner tool, and push the new tags to github.`,
 	if err := viper.BindPFlag("dry-run", pFlags.Lookup("dry-run")); err != nil {
 		log.Fatalf("failed to bind flag: %+v", err)
 	}
+	flags.BoolP("add-only", "a", false, "only add tags but do not push them")
+	if err := viper.BindPFlag("add-only", pFlags.Lookup("add-only")); err != nil {
+		log.Fatalf("failed to bind flag: %+v", err)
+	}
 
 	return root
 }
 
 type flags struct {
 	dryRunFlag bool
+	addOnly bool
 }
 
 // TagsHookFunc is a func used for get tags from remote
@@ -91,9 +97,17 @@ func ExecuteModuler(r string, flags flags, getTagsHook TagsHookFunc) error {
 	log.Infoln("Found new tags: ")
 	log.Infoln(strings.Join(newTags, "\n"))
 	if !flags.dryRunFlag {
+		// add new tags
+		for _, tag := range newTags {
+			if err := addNewTag(tag); err != nil {
+				return err
+			}
+		}
 		// push new tags
-		if err := pushNewTags(newTags); err != nil {
-			return fmt.Errorf("failed to push tags: %v", err)
+		if !flags.addOnly {
+			if err := pushTags(); err != nil {
+				return fmt.Errorf("failed to push tags: %v", err)
+			}
 		}
 	}
 	return nil
@@ -176,10 +190,10 @@ func readTags(tags []string, files []string) ([]string, error) {
 
 func readNewTagInFile(path string) (string, error) {
 	file, err := os.OpenFile(path, os.O_RDWR, 0666)
-	defer file.Close()
 	if err != nil {
 		return "", err
 	}
+	defer file.Close()
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
 	tag := ""
@@ -201,13 +215,8 @@ func addNewTag(newTag string) error {
 	return nil
 }
 
-func pushNewTags(newTags []string) error {
+func pushTags() error {
 	log.Debugln("Pushing new tags")
-	for _, tag := range newTags {
-		if err := addNewTag(tag); err != nil {
-			return err
-		}
-	}
 	return executeCommand("git", "push", "origin", "--tags")
 }
 

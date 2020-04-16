@@ -114,7 +114,7 @@ func ExecuteInit(r, classicalFile string) error {
 }
 
 func modifyVersionFile(root string, p pkgs.Pkg, tag, ver string) error {
-	verFilePath := filepath.Join(root, p.Dest, "version.go")
+	verFilePath := filepath.Join(root, p.Dest, versionFilename)
 	b, err := ioutil.ReadFile(verFilePath)
 	if err != nil {
 		return fmt.Errorf("failed to read version file '%s': %+v", verFilePath, err)
@@ -134,7 +134,7 @@ func modifyVersionFile(root string, p pkgs.Pkg, tag, ver string) error {
 }
 
 func createGoModFile(root string, p pkgs.Pkg) error {
-	modFilePath := filepath.Join(root, p.Dest, "go.mod")
+	modFilePath := filepath.Join(root, p.Dest, goModFilename)
 	fullPath := filepath.Join(root, p.Dest)
 	index := strings.Index(fullPath, "github.com")
 	if index < 0 {

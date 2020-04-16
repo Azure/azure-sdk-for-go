@@ -19,5 +19,5 @@ type Gateway struct {
 	// Name ...
 	Name *string
 	// ID ...
-	ID *int
+	ID *string
 }

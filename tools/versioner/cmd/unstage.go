@@ -18,6 +18,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/files"
 	"io"
 	"io/ioutil"
 	"os"
@@ -62,7 +63,12 @@ var (
 	verSuffixRegex = regexp.MustCompile(`v\d+`)
 )
 
-const changeLogName = "CHANGELOG.md"
+const (
+	goModFilename = "go.mod"
+	changeLogName   = "CHANGELOG.md"
+	versionFilename = "version.go"
+	interfacesName = "interfaces.go"
+)
 
 // TagsHookFunc is a func used for get tags from remote
 type TagsHookFunc func(root string, tagPrefix string) ([]string, error)
@@ -72,16 +78,30 @@ func ExecuteUnstage(s string, versionSetting *VersionSetting, getTagsHook TagsHo
 	if err != nil {
 		return "", "", fmt.Errorf("failed to get absolute path from '%s': %+v", s, err)
 	}
-	// format stage folder first to avoid unnecessary changes detected by apidiff
-	if err := formatCode(stage); err != nil {
-		return "", "", fmt.Errorf("failed to format stage folder: %v", err)
-	}
 	// find target directory, which should just be the parent of the stage directory
 	baseline := filepath.Dir(stage)
+	// format stage folder first to avoid unnecessary changes detected by apidiff
+	if err := formatCode(baseline); err != nil {
+		return "", "", fmt.Errorf("failed to format baseline directory: %v", err)
+	}
+	if err := formatCode(stage); err != nil {
+		return "", "", fmt.Errorf("failed to format stage directory: %v", err)
+	}
 	log.Infof("Target directory path of stage '%s': %s", stage, baseline)
 	log.Infof("Checking if '%s' and '%s' are identical", baseline, stage)
 	// first we need to check if the baseline and stage is identical, if no change, we just remove the stage directory and return empty tag
-	// TODO
+	identical, err := checkIdentical(baseline, stage)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to check identical: %+v", err)
+	}
+	if identical {
+		// directly remove the stage directory
+		log.Infof("Stage '%s' is identical to '%s', removing stage", stage, baseline)
+		if err := os.RemoveAll(stage); err != nil {
+			return "", "", err
+		}
+		return baseline, "", nil
+	}
 	log.Infof("Generating changes between '%s' and '%s'", baseline, stage)
 	mod, err := modinfo.GetModuleInfo(baseline, stage)
 	if err != nil {
@@ -93,6 +113,76 @@ func ExecuteUnstage(s string, versionSetting *VersionSetting, getTagsHook TagsHo
 	return baseline, tag, err
 }
 
+func checkIdentical(baseline, stage string) (bool, error) {
+	// first list all the files and directories in baseline and stage
+	// and since stage should be a subdirectory of baseline, we need to escape stage when list all file and directories
+	fileListInBaseline, err := listAllFiles(baseline)
+	if err != nil {
+		return false, err
+	}
+	// strip out those are in stage directory
+	fileListInBaseline = escapeStage(fileListInBaseline, stage)
+	fileListInBaseline = escapeSpecialFiles(fileListInBaseline)
+	fileListInStage, err := listAllFiles(stage)
+	if err != nil {
+		return false, err
+	}
+	fileListInStage = escapeSpecialFiles(fileListInStage)
+	if len(fileListInBaseline) != len(fileListInStage) {
+		return false, nil
+	}
+	// filepath.Walk follows the lexical order, therefore the two lists should all be in lexical order
+	for i, file := range fileListInBaseline {
+		fileInStage := fileListInStage[i]
+		same, err := files.DeepCompare(file, fileInStage)
+		if err != nil {
+			return false, err
+		}
+		if !same {
+			return false, nil
+		}
+	}
+	return true, nil
+}
+
+func listAllFiles(root string) ([]string, error) {
+	if _, err := os.Stat(root); os.IsNotExist(err) {
+		return nil, fmt.Errorf("the root path '%s' does not exist", root)
+	}
+	var results []string
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() {
+			results = append(results, path)
+		}
+		return nil
+	})
+	return results, err
+}
+
+func escapeStage(fileList []string, stage string) []string {
+	var result []string
+	for _, path := range fileList {
+		if !strings.HasPrefix(path, stage) {
+			result = append(result, path)
+		}
+	}
+	return result
+}
+
+func escapeSpecialFiles(fileList []string) []string {
+	var result []string
+	for _, path := range fileList {
+		base := filepath.Base(path)
+		if base != goModFilename && base != changeLogName && base != versionFilename && base != interfacesName {
+			result = append(result, path)
+		}
+	}
+	return result
+}
+
 // updatePackage updates the code in lmv directory from the stage directory, and returns the tag of this new module
 func updatePackage(baseline, stage string, versionSetting *VersionSetting, mod modinfo.Provider, getTagsHook TagsHookFunc) (string, error) {
 	log.Infof("Updating code base in '%s' from stage '%s'", baseline, stage)
@@ -101,7 +191,7 @@ func updatePackage(baseline, stage string, versionSetting *VersionSetting, mod m
 	if err != nil {
 		return "", fmt.Errorf("failed to calculate module tag: %+v", err)
 	}
-	goModPath := filepath.Join(stage, "go.mod")
+	goModPath := filepath.Join(stage, goModFilename)
 	// find if the new module will have a major version suffix (/v2, /v3 etc)
 	ver := findVersionSuffixInTag(tag)
 	// use the major version suffix to update the go.mod file
@@ -157,7 +247,7 @@ func updateVersion(path, tag string) error {
 	version := semverRegex.FindString(tag)
 	log.Infof("Updating version.go file in %s with version %s", path, version)
 	// version.go file must exists
-	file := filepath.Join(path, "version.go")
+	file := filepath.Join(path, versionFilename)
 	if _, err := os.Stat(file); os.IsNotExist(err) {
 		return errors.New("version.go file does not exist")
 	}

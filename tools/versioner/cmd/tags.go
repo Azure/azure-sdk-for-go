@@ -142,7 +142,7 @@ func findVersionSuffixInTag(tag string) string {
 		return ""
 	}
 	suffix := r[len(r) - 1]
-	if suffix == "v1" {
+	if suffix == "v0" || suffix == "v1" {
 		return ""
 	}
 	return suffix

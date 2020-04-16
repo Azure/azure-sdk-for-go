@@ -19,12 +19,12 @@ package foo
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/0.1.2 foo/2019-04-01"
+	return "Azure-SDK-For-Go/v0.1.2 foo/2019-04-01"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.
 func Version() string {
-	return "0.1.2"
+	return "v0.1.2"
 }
 
 // tag: tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.1.2

@@ -3919,6 +3919,10 @@ type PrivateEndpointConnectionProperties struct {
 	PrivateEndpoint *PrivateEndpointProperty `json:"privateEndpoint,omitempty"`
 	// PrivateLinkServiceConnectionState - Connection State of the Private Endpoint Connection.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty `json:"privateLinkServiceConnectionState,omitempty"`
+	// GroupID - Group id of the private endpoint.
+	GroupID *string `json:"groupId,omitempty"`
+	// ProvisioningState - Provisioning state of the private endpoint.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
 // PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
@@ -4065,6 +4069,8 @@ type PrivateLinkResourceProperties struct {
 	GroupID *string `json:"groupId,omitempty"`
 	// RequiredMembers - READ-ONLY; The private link resource required member names.
 	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
+	// RequiredZoneNames - READ-ONLY; The private link resource required zone names.
+	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
 }
 
 // PrivateLinkServiceConnectionStateProperty connection State of the Private Endpoint Connection.

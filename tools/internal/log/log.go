@@ -1,8 +1,13 @@
 package log
 
 import (
-	"github.com/sirupsen/logrus"
+	"fmt"
 	"os"
+	"path"
+	"runtime"
+
+	"github.com/sirupsen/logrus"
+	"github.com/zput/zxcTool/ztLog/zt_formatter"
 )
 
 var Logger = makeLogger()
@@ -14,10 +19,13 @@ func makeLogger() *logrus.Logger {
 
 	l.SetOutput(os.Stderr)
 
-	customFormatter := new(logrus.TextFormatter)
-	customFormatter.TimestampFormat = "2020-04-13 18:00:00"
-	customFormatter.FullTimestamp = true
-	l.SetFormatter(customFormatter)
+	exampleFormatter := &zt_formatter.ZtFormatter{
+		CallerPrettyfier: func(f *runtime.Frame) (string, string) {
+			filename := path.Base(f.File)
+			return fmt.Sprintf("%s()", f.Function), fmt.Sprintf("%s:%d", filename, f.Line)
+		},
+	}
+	l.SetFormatter(exampleFormatter)
 
 	l.SetLevel(defaultLevel)
 

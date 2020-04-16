@@ -29,6 +29,14 @@
   version = "v3.0.3"
 
 [[projects]]
+  digest = "1:c6d6eb8733a70b627025838612959d8b45f8c4b56c68a6c8b5d09925545015ec"
+  name = "github.com/antonfisher/nested-logrus-formatter"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "ab9dbe7e28dfce0c656a609ff557842e01a89a71"
+  version = "v1.0.3"
+
+[[projects]]
   digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
   name = "github.com/dgrijalva/jwt-go"
   packages = ["."]
@@ -244,6 +252,14 @@
   version = "v1.2.0"
 
 [[projects]]
+  digest = "1:5712c254e127b200c446e6782d57eb32cae08c4c779bf28a59c4de53957bbec1"
+  name = "github.com/zput/zxcTool"
+  packages = ["ztLog/zt_formatter"]
+  pruneopts = "UT"
+  revision = "8f67aa582724eaf4227bf97fc57034d52c5bc667"
+  version = "v1.3.6"
+
+[[projects]]
   branch = "master"
   digest = "1:f604f5e2ee721b6757d962dfe7bab4f28aae50c456e39cfb2f3819762a44a6ae"
   name = "golang.org/x/crypto"
@@ -358,6 +374,7 @@
     "github.com/sirupsen/logrus",
     "github.com/spf13/cobra",
     "github.com/spf13/viper",
+    "github.com/zput/zxcTool/ztLog/zt_formatter",
     "golang.org/x/crypto/pkcs12",
     "golang.org/x/tools/imports",
     "gopkg.in/check.v1",

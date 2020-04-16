@@ -1,3 +1,3 @@
-module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariod/foo
+module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariod/foo/v2
 
 go 1.13

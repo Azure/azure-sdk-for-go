@@ -212,7 +212,6 @@ func Test_readNewTags(t *testing.T) {
 		"tools/testdata/scenariog/foo/mgmt/2019-10-11/foo/v2.0.0",
 		"tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v2.0.0",
 		"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.2",
-		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.2",
 		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2.0.0",
 		"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.2.0",
 		"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.2.0",

@@ -232,9 +232,9 @@ func fileContentEquals(expected, content string) bool {
 	return strings.EqualFold(replacedContent, expected)
 }
 
-var defaultVersionSetting = &versionSetting{
-	initialVersion:        startingModVer,
-	initialVersionPreview: startingModVerPreview,
+var defaultVersionSetting = &VersionSetting{
+	InitialVersion:        startingModVer,
+	InitialVersionPreview: startingModVerPreview,
 }
 
 func TestExecuteUnstage(t *testing.T) {

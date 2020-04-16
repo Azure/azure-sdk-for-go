@@ -68,7 +68,7 @@ const changeLogName = "CHANGELOG.md"
 // TagsHookFunc is a func used for get tags from remote
 type TagsHookFunc func(root string, tagPrefix string) ([]string, error)
 
-func ExecuteUnstage(s string, versionSetting *versionSetting, getTagsHook TagsHookFunc) (string, string, error) {
+func ExecuteUnstage(s string, versionSetting *VersionSetting, getTagsHook TagsHookFunc) (string, string, error) {
 	stage, err := filepath.Abs(s)
 	if err != nil {
 		return "", "", fmt.Errorf("failed to get absolute path from '%s': %+v", s, err)
@@ -95,7 +95,7 @@ func ExecuteUnstage(s string, versionSetting *versionSetting, getTagsHook TagsHo
 }
 
 // updatePackage updates the code in lmv directory from the stage directory, and returns the tag of this new module
-func updatePackage(baseline, stage string, versionSetting *versionSetting, mod modinfo.Provider, getTagsHook TagsHookFunc) (string, error) {
+func updatePackage(baseline, stage string, versionSetting *VersionSetting, mod modinfo.Provider, getTagsHook TagsHookFunc) (string, error) {
 	log.Infof("Updating code base in '%s' from stage '%s'", baseline, stage)
 	// get the tag for this module
 	tag, err := calculateModuleTag(baseline, versionSetting, mod, getTagsHook)

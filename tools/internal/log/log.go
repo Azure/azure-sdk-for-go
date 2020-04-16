@@ -12,7 +12,7 @@ import (
 
 var Logger = makeLogger()
 
-const defaultLevel = logrus.WarnLevel
+const defaultLevel = logrus.InfoLevel
 
 func makeLogger() *logrus.Logger {
 	l := logrus.New()

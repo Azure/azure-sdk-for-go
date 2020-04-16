@@ -28,11 +28,11 @@ import (
 
 // returns the appropriate module tag based on the package version info
 // tags - list of all current tags for the module
-func calculateModuleTag(baseline string, versionSetting *versionSetting, mod modinfo.Provider, hookFunc TagsHookFunc) (string, error) {
+func calculateModuleTag(baseline string, versionSetting *VersionSetting, mod modinfo.Provider, hookFunc TagsHookFunc) (string, error) {
 	if mod.IsPreviewPackage() {
-		return calculateTagForPreview(baseline, versionSetting.initialVersionPreview, mod, hookFunc)
+		return calculateTagForPreview(baseline, versionSetting.InitialVersionPreview, mod, hookFunc)
 	}
-	return calculateTagForStable(baseline, versionSetting.initialVersion, mod, hookFunc)
+	return calculateTagForStable(baseline, versionSetting.InitialVersion, mod, hookFunc)
 }
 
 func calculateTagForStable(baseline, initialStartVersion string, mod modinfo.Provider, hookFunc TagsHookFunc) (string, error) {

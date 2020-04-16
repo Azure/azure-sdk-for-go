@@ -17,9 +17,9 @@ package cmd
 import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
+	"os"
 	"path/filepath"
 
-	"github.com/Azure/azure-sdk-for-go/tools/internal/dirs"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -41,13 +41,10 @@ The default version for new modules is v1.0.0 or the value specified for [initia
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			log.SetLevel("warn")
 			if verbose := viper.GetBool("verbose"); verbose {
-				log.SetLevel("info")
+				log.SetLevel("debug")
 			}
 			if quiet := viper.GetBool("quiet"); quiet {
 				log.SetLevel("error")
-			}
-			if debug := viper.GetBool("debug"); debug {
-				log.SetLevel("debug")
 			}
 		},
 
@@ -71,10 +68,6 @@ The default version for new modules is v1.0.0 or the value specified for [initia
 	if err := viper.BindPFlag("quiet", pFlags.Lookup("quiet")); err != nil {
 		log.Fatalf("failed to bind flag: %+v", err)
 	}
-	pFlags.Bool("debug", false, "debug output")
-	if err := viper.BindPFlag("debug", pFlags.Lookup("debug")); err != nil {
-		log.Fatalf("failed to bind flag: %+v", err)
-	}
 
 	// other sub-commands
 	root.AddCommand(unstageCommand())
@@ -95,12 +88,12 @@ const (
 	repoName = "azure-sdk-for-go"
 )
 
-type versionSetting struct {
-	initialVersion string
-	initialVersionPreview string
+type VersionSetting struct {
+	InitialVersion        string
+	InitialVersionPreview string
 }
 
-func parseVersionSetting(args ...string) (*versionSetting, error) {
+func parseVersionSetting(args ...string) (*VersionSetting, error) {
 	initialVersion := startingModVer
 	if len(args) > 0 {
 		if !modinfo.IsValidModuleVersion(args[0]) {
@@ -115,31 +108,26 @@ func parseVersionSetting(args ...string) (*versionSetting, error) {
 		}
 		initialPreviewVersion = args[1]
 	}
-	return &versionSetting{
-		initialVersion:        initialVersion,
-		initialVersionPreview: initialPreviewVersion,
+	return &VersionSetting{
+		InitialVersion:        initialVersion,
+		InitialVersionPreview: initialPreviewVersion,
 	}, nil
 }
 
 // wrapper for cobra, prints tag to stdout
-func ExecuteVersioner(r string, versionSetting *versionSetting, hookFunc TagsHookFunc) ([]string, error) {
+func ExecuteVersioner(r string, versionSetting *VersionSetting, hookFunc TagsHookFunc) ([]string, error) {
 	root, err := filepath.Abs(r)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get absolute path from '%s': %v", root, err)
 	}
-	subDirectories, err := dirs.GetSubdirs(root)
+	// get all the stage sub-directories
+	subDirectories, err := findAllSubDirectories(root, stageName)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list all sub-directories under '%s': %+v", root, err)
 	}
 
 	tags := make([]string, 0)
 	for _, dir := range subDirectories {
-		// first test if this sub-directory is a stage directory
-		baseName := filepath.Base(dir)
-		if baseName != stageName {
-			// if this directory is not a stage directory, skip it
-			continue
-		}
 		_, tag, err := ExecuteUnstage(dir, versionSetting, hookFunc)
 		if err != nil {
 			return tags, fmt.Errorf("failed to get tag in stage folder '%s': %v", dir, err)
@@ -147,4 +135,20 @@ func ExecuteVersioner(r string, versionSetting *versionSetting, hookFunc TagsHoo
 		tags = append(tags, tag)
 	}
 	return tags, nil
+}
+
+func findAllSubDirectories(root, target string) ([]string, error) {
+	// check if root exists
+	if _, err := os.Stat(root); os.IsNotExist(err) {
+		return nil, fmt.Errorf("the root path '%s' does not exist", root)
+	}
+	stages := make([]string, 0)
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() && info.Name() == target {
+			stages = append(stages, path)
+			return nil
+		}
+		return nil
+	})
+	return stages, err
 }

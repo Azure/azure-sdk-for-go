@@ -6799,7 +6799,7 @@ type ImagePurchasePlan struct {
 // ImageReference specifies information about the image to use. You can specify information about platform
 // images, marketplace images, or virtual machine images. This element is required when you want to use a
 // platform image, marketplace image, or virtual machine image, but is not used in other creation
-// operations.
+// operations. NOTE: Image reference publisher and offer can only be set when you create the scale set.
 type ImageReference struct {
 	// Publisher - The image publisher.
 	Publisher *string `json:"publisher,omitempty"`
@@ -8554,7 +8554,9 @@ type ShareInfoElement struct {
 	VMURI *string `json:"vmUri,omitempty"`
 }
 
-// Sku describes a virtual machine scale set sku.
+// Sku describes a virtual machine scale set sku. NOTE: If the new VM SKU is not supported on the hardware
+// the scale set is currently on, you need to deallocate the VMs in the scale set before you modify the SKU
+// name.
 type Sku struct {
 	// Name - The sku name.
 	Name *string `json:"name,omitempty"`
@@ -10628,7 +10630,7 @@ type VirtualMachineScaleSet struct {
 	*VirtualMachineScaleSetProperties `json:"properties,omitempty"`
 	// Identity - The identity of the virtual machine scale set, if configured.
 	Identity *VirtualMachineScaleSetIdentity `json:"identity,omitempty"`
-	// Zones - The virtual machine scale set zones.
+	// Zones - The virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set
 	Zones *[]string `json:"zones,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
@@ -12102,7 +12104,7 @@ type VirtualMachineScaleSetProperties struct {
 	DoNotRunExtensionsOnOverprovisionedVMs *bool `json:"doNotRunExtensionsOnOverprovisionedVMs,omitempty"`
 	// UniqueID - READ-ONLY; Specifies the ID which uniquely identifies a Virtual Machine Scale Set.
 	UniqueID *string `json:"uniqueId,omitempty"`
-	// SinglePlacementGroup - When true this limits the scale set to a single placement group, of max size 100 virtual machines.
+	// SinglePlacementGroup - When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true.
 	SinglePlacementGroup *bool `json:"singlePlacementGroup,omitempty"`
 	// ZoneBalance - Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage.
 	ZoneBalance *bool `json:"zoneBalance,omitempty"`
@@ -12729,7 +12731,8 @@ func (vmssu *VirtualMachineScaleSetUpdate) UnmarshalJSON(body []byte) error {
 }
 
 // VirtualMachineScaleSetUpdateIPConfiguration describes a virtual machine scale set network profile's IP
-// configuration.
+// configuration. NOTE: The subnet of a scale set may be modified as long as the original subnet and the
+// new subnet are in the same virtual network
 type VirtualMachineScaleSetUpdateIPConfiguration struct {
 	// Name - The IP configuration name.
 	Name                                                   *string `json:"name,omitempty"`
@@ -12950,7 +12953,7 @@ type VirtualMachineScaleSetUpdateProperties struct {
 	Overprovision *bool `json:"overprovision,omitempty"`
 	// DoNotRunExtensionsOnOverprovisionedVMs - When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally kept. This property will hence ensure that the extensions do not run on the extra overprovisioned VMs.
 	DoNotRunExtensionsOnOverprovisionedVMs *bool `json:"doNotRunExtensionsOnOverprovisionedVMs,omitempty"`
-	// SinglePlacementGroup - When true this limits the scale set to a single placement group, of max size 100 virtual machines.
+	// SinglePlacementGroup - When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true.
 	SinglePlacementGroup *bool `json:"singlePlacementGroup,omitempty"`
 	// AdditionalCapabilities - Specifies additional capabilities enabled or disabled on the Virtual Machines in the Virtual Machine Scale Set. For instance: whether the Virtual Machines have the capability to support attaching managed data disks with UltraSSD_LRS storage account type.
 	AdditionalCapabilities *AdditionalCapabilities `json:"additionalCapabilities,omitempty"`

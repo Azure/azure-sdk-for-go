@@ -18,7 +18,6 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/log"
 	"io"
 	"io/ioutil"
 	"os"
@@ -28,8 +27,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/tools/internal/log"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
-	"github.com/Masterminds/semver"
 	"github.com/spf13/cobra"
 )
 
@@ -157,11 +156,6 @@ func updateGoModFile(path, ver string) error {
 func updateVersion(path, tag string) error {
 	version := semverRegex.FindString(tag)
 	log.Infof("Updating version.go file in %s with version %s", path, version)
-	v, err := semver.NewVersion(version)
-	if err != nil {
-		return err
-	}
-	version = v.String()
 	// version.go file must exists
 	file := filepath.Join(path, "version.go")
 	if _, err := os.Stat(file); os.IsNotExist(err) {

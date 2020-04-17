@@ -81,11 +81,12 @@ func ExecuteUnstage(s string, versionSetting *VersionSetting, getTagsHook TagsHo
 	// find target directory, which should just be the parent of the stage directory
 	baseline := filepath.Dir(stage)
 	// format stage folder first to avoid unnecessary changes detected by apidiff
+	// and gofmt will automatically convert CRLF to LF, therefore we have to do the same to both baseline and stage to avoid any differences caused by the line separators
 	if err := formatCode(baseline); err != nil {
-		return "", "", fmt.Errorf("failed to format baseline directory: %v", err)
+		return "", "", fmt.Errorf("failed to format baseline directory: %+v", err)
 	}
 	if err := formatCode(stage); err != nil {
-		return "", "", fmt.Errorf("failed to format stage directory: %v", err)
+		return "", "", fmt.Errorf("failed to format stage directory: %+v", err)
 	}
 	log.Infof("Target directory path of stage '%s': %s", stage, baseline)
 	log.Infof("Checking if '%s' and '%s' are identical", baseline, stage)
@@ -97,10 +98,11 @@ func ExecuteUnstage(s string, versionSetting *VersionSetting, getTagsHook TagsHo
 	if identical {
 		// directly remove the stage directory
 		log.Infof("Stage '%s' is identical to '%s', removing stage", stage, baseline)
-		if err := os.RemoveAll(stage); err != nil {
-			return "", "", err
+		tag, err := updateIdenticalPackage(baseline, stage, getTagsHook)
+		if err != nil {
+			return "", "", fmt.Errorf("failed to update identical package: %+v", err)
 		}
-		return baseline, "", nil
+		return baseline, tag, nil
 	}
 	log.Infof("Generating changes between '%s' and '%s'", baseline, stage)
 	mod, err := modinfo.GetModuleInfo(baseline, stage)
@@ -183,7 +185,51 @@ func escapeSpecialFiles(fileList []string) []string {
 	return result
 }
 
-// updatePackage updates the code in lmv directory from the stage directory, and returns the tag of this new module
+// updateIdenticalPackage will update the code in baseline directory
+// (mainly the version.go, since the version.go might be changed in a legacy version release)
+func updateIdenticalPackage(baseline, stage string, getTagsHook TagsHookFunc) (string, error) {
+	tagPrefix, err := getTagPrefix(baseline)
+	if err != nil {
+		return "", fmt.Errorf("failed to get tag prefix: %+v", err)
+	}
+	tags, err := getTagsHook(baseline, tagPrefix)
+	if err != nil {
+		return "", fmt.Errorf("failed to list tags: %+v", err)
+	}
+	latestVersion, err := getLatestSemver(tags, tagPrefix)
+	if err != nil {
+		return "", fmt.Errorf("failed to get latest version: %+v", err)
+	}
+
+	if latestVersion == nil {
+		return "", fmt.Errorf("baseline and stage are identical, but do not find any latest version of this module")
+	}
+
+	tag := fmt.Sprintf("%s/v%s", tagPrefix, latestVersion.String())
+	log.Info("Update mod.go")
+	if err := updateGoModFile(stage, tag); err != nil {
+		return "", fmt.Errorf("failed to update go.mod file: %+v", err)
+	}
+	log.Info("Update version.go")
+	if err := updateVersionFile(stage, tag); err != nil {
+		return "", fmt.Errorf("failed to update version.go file: %+v", err)
+	}
+	// override the go.mod and version.go in baseline, since the go.mod and version.go file may get overridden by the legacy version release
+	if err := os.Rename(filepath.Join(stage, goModFilename), filepath.Join(baseline, goModFilename)); err != nil {
+		return "", fmt.Errorf("failed to override go.mod file: %+v", err)
+	}
+	if err := os.Rename(filepath.Join(stage, versionFilename), filepath.Join(baseline, versionFilename)); err != nil {
+		return "", fmt.Errorf("failed to override version.go file: %+v", err)
+	}
+	// remove the stage directory
+	if err := os.RemoveAll(stage); err != nil {
+		return "", fmt.Errorf("failed to remove stage directory: %+v", err)
+	}
+
+	return tag, nil
+}
+
+// updatePackage updates the code in baseline directory from the stage directory, and returns the tag of this new module
 func updatePackage(baseline, stage string, versionSetting *VersionSetting, mod modinfo.Provider, getTagsHook TagsHookFunc) (string, error) {
 	log.Infof("Updating code base in '%s' from stage '%s'", baseline, stage)
 	// get the tag for this module
@@ -191,24 +237,24 @@ func updatePackage(baseline, stage string, versionSetting *VersionSetting, mod m
 	if err != nil {
 		return "", fmt.Errorf("failed to calculate module tag: %+v", err)
 	}
-	goModPath := filepath.Join(stage, goModFilename)
-	// find if the new module will have a major version suffix (/v2, /v3 etc)
-	ver := findVersionSuffixInTag(tag)
+	log.Infof("Tag for stage '%s': %s", stage, tag)
 	// use the major version suffix to update the go.mod file
-	if err := updateGoModFile(goModPath, ver); err != nil {
+	log.Info("Update mod.go")
+	if err := updateGoModFile(stage, tag); err != nil {
 		return "", fmt.Errorf("failed to update go.mod file: %+v", err)
 	}
-	log.Infof("Tag for stage '%s': %s", stage, tag)
-	if err := overrideLMVFromStageDirectory(baseline, stage); err != nil {
-		return "", fmt.Errorf("failed to override '%s' from stage '%s': %+v", baseline, stage, err)
-	}
+	// use the tag to update version.go file
 	log.Info("Update version.go")
-	if err := updateVersion(baseline, tag); err != nil {
+	if err := updateVersionFile(stage, tag); err != nil {
 		return "", fmt.Errorf("failed to update version.go: %v", err)
 	}
+	// generate CHANGELOG.md
 	log.Info("Write CHANGELOG file")
-	if err := writeChangelog(baseline, mod); err != nil {
+	if err := writeChangelog(stage, mod); err != nil {
 		return "", fmt.Errorf("failed to write changelog: %v", err)
+	}
+	if err := overrideLMVFromStageDirectory(baseline, stage); err != nil {
+		return "", fmt.Errorf("failed to override '%s' from stage '%s': %+v", baseline, stage, err)
 	}
 	return tag, nil
 }
@@ -216,7 +262,7 @@ func updatePackage(baseline, stage string, versionSetting *VersionSetting, mod m
 func overrideLMVFromStageDirectory(baseline, stage string) error {
 	// in our case, stage should always be a child of baseline
 	// first move stage to a temp directory outside of baseline, then remove the whole baseline directory, and finally move temp back to baseline
-	temp := baseline + "1temp"
+	temp := filepath.Join(filepath.Dir(baseline), "temp")
 	if err := os.Rename(stage, temp); err != nil {
 		return fmt.Errorf("failed to rename '%s' to '%s': %+v", stage, temp, err)
 	}
@@ -229,12 +275,15 @@ func overrideLMVFromStageDirectory(baseline, stage string) error {
 	return nil
 }
 
-func updateGoModFile(path, ver string) error {
+func updateGoModFile(directory, tag string) error {
+	path := filepath.Join(directory, goModFilename)
 	file, err := os.OpenFile(path, os.O_RDWR, 0666)
 	if err != nil {
-		return fmt.Errorf("failed to open for read '%s': %+v", path, err)
+		return fmt.Errorf("failed to open for read '%s': %+v", directory, err)
 	}
 	defer file.Close()
+	// find if the new module will have a major version suffix (/v2, /v3 etc)
+	ver := findVersionSuffixInTag(tag)
 	if err := updateGoMod(file, ver); err != nil {
 		return fmt.Errorf("failed to update go.mod file: %+v", err)
 	}
@@ -243,19 +292,19 @@ func updateGoModFile(path, ver string) error {
 
 // here we only update the version number in version.go, the api-version in User-Agent method will be taken care of
 // when this file is generated by autorest
-func updateVersion(path, tag string) error {
+func updateVersionFile(directory, tag string) error {
 	version := semverRegex.FindString(tag)
-	log.Infof("Updating version.go file in %s with version %s", path, version)
+	log.Infof("Updating version.go file in %s with version %s", directory, version)
 	// version.go file must exists
-	file := filepath.Join(path, versionFilename)
+	file := filepath.Join(directory, versionFilename)
 	if _, err := os.Stat(file); os.IsNotExist(err) {
 		return errors.New("version.go file does not exist")
 	}
 	verFile, err := os.OpenFile(file, os.O_RDWR, 0666)
-	defer verFile.Close()
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to version.go file: %+v", err)
 	}
+	defer verFile.Close()
 	scanner := bufio.NewScanner(verFile)
 	scanner.Split(bufio.ScanLines)
 	lines := make([]string, 0)
@@ -264,7 +313,7 @@ func updateVersion(path, tag string) error {
 	}
 	_, err = verFile.Seek(0, io.SeekStart) // set pointer to start of the file
 	if err != nil {
-		return fmt.Errorf("failed to seek to start: %v", err)
+		return fmt.Errorf("failed to update version.go file: %+v", err)
 	}
 	hasTag := false
 	for _, line := range lines {

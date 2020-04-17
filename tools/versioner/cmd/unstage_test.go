@@ -435,7 +435,7 @@ func TestExecuteUnstage(t *testing.T) {
 			stage: "../../testdata/scenarioi/foo/mgmt/2019-10-23/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenarioi/foo/mgmt/2019-10-23/foo",
-				tag:       "",
+				tag:       "tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.2",
 				mod:       fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo\n\n%s\n", goVersion),
 				version:   "v1.1.2",
 				changelog: false,
@@ -444,7 +444,7 @@ func TestExecuteUnstage(t *testing.T) {
 		{
 			name: "scenario j: identical v2, should have no update",
 			getTagsHook:func(root string, prefix string) ([]string, error) {
-				if !strings.HasSuffix(prefix, "testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2") {
+				if !strings.HasSuffix(prefix, "testdata/scenarioj/foo/mgmt/2019-10-23/foo") {
 					return nil, fmt.Errorf("bad prefix '%s'", prefix)
 				}
 				return []string{
@@ -459,7 +459,7 @@ func TestExecuteUnstage(t *testing.T) {
 			stage: "../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenarioj/foo/mgmt/2019-10-23/foo",
-				tag:       "",
+				tag:       "tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2.0.0",
 				mod:       fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2\n\n%s\n", goVersion),
 				version:   "v2.0.0",
 				changelog: false,
@@ -486,6 +486,92 @@ func TestExecuteUnstage(t *testing.T) {
 				mod:       fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo\n\n%s\n", goVersion),
 				version:   "v0.2.0",
 				changelog: true,
+			},
+		},
+		{
+			name: "scenario l: breaking changes in preview package",
+			getTagsHook: func(root string, prefix string) ([]string, error) {
+				if !strings.HasSuffix(prefix, "testdata/scenariol/foo/mgmt/2019-11-01-preview/foo") {
+					return nil, fmt.Errorf("bad prefix '%s'", prefix)
+				}
+				return []string{
+					"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
+					"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
+					"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
+					"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
+					"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
+				}, nil
+			},
+			stage: "../../testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/stage",
+			expected: expected{
+				dest:      "../../testdata/scenariol/foo/mgmt/2019-11-01-preview/foo",
+				tag:       "tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.2.0",
+				mod:       fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo\n\n%s\n", goVersion),
+				version:   "v0.2.0",
+				changelog: true,
+			},
+		},
+		{
+			name: "scenario m: new preview module",
+			getTagsHook: func(root string, prefix string) ([]string, error) {
+				if !strings.HasSuffix(prefix, "testdata/scenariom/foo/mgmt/2019-11-01-preview/foo") {
+					return nil, fmt.Errorf("bad prefix '%s'", prefix)
+				}
+				return []string{}, nil
+			},
+			stage: "../../testdata/scenariom/foo/mgmt/2019-11-01-preview/foo/stage",
+			expected: expected{
+				dest:      "../../testdata/scenariom/foo/mgmt/2019-11-01-preview/foo",
+				tag:       "tools/testdata/scenariom/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
+				mod:       fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariom/foo/mgmt/2019-11-01-preview/foo\n\n%s\n", goVersion),
+				version:   "v0.0.0",
+				changelog: false,
+			},
+		},
+		{
+			name: "scenario n: patch version for preview module",
+			getTagsHook: func(root string, prefix string) ([]string, error) {
+				if !strings.HasSuffix(prefix, "testdata/scenarion/foo/mgmt/2019-11-01-preview/foo") {
+					return nil, fmt.Errorf("bad prefix '%s'", prefix)
+				}
+				return []string{
+					"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
+					"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
+					"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
+					"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
+					"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
+				}, nil
+			},
+			stage: "../../testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/stage",
+			expected: expected{
+				dest:      "../../testdata/scenarion/foo/mgmt/2019-11-01-preview/foo",
+				tag:       "tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.3",
+				mod:       fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo\n\n%s\n", goVersion),
+				version:   "v0.1.3",
+				changelog: true,
+			},
+		},
+		{
+			name: "scenario o: no change in preview module",
+			getTagsHook: func(root string, prefix string) ([]string, error) {
+				if !strings.HasSuffix(prefix, "testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo") {
+					return nil, fmt.Errorf("bad prefix '%s'", prefix)
+				}
+				return []string{
+					"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
+					"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
+					"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
+					"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
+					"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
+				}, nil
+			},
+			stage: "../../testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/stage",
+			expected: expected{
+				dest:      "../../testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo",
+				tag:       "tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
+				mod:       fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo\n\n%s\n", goVersion),
+				version:   "v0.1.2",
+				changelog: false,
 			},
 		},
 	}
@@ -523,140 +609,6 @@ func TestExecuteUnstage(t *testing.T) {
 		}
 		verifyGoVet(t, filepath.Dir(c.stage))
 	}
-}
-
-// scenariol
-func Test_theCommandPreviewBreakingChange(t *testing.T) {
-	cleanTestData()
-	defer cleanTestData()
-	getTagsHook := func(root string, prefix string) ([]string, error) {
-		if !strings.HasSuffix(prefix, "testdata/scenariol/foo/mgmt/2019-11-01-preview/foo") {
-			return nil, fmt.Errorf("bad prefix '%s'", prefix)
-		}
-		return []string{
-			"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
-			"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
-			"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
-			"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
-			"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
-		}, nil
-	}
-	stage, err := filepath.Abs("../../testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/stage")
-	if err != nil {
-		t.Fatalf("failed: %v", err)
-	}
-	_, tag, err := ExecuteUnstage(stage, defaultVersionSetting, getTagsHook)
-	if err != nil {
-		t.Fatalf("failed: %v", err)
-	}
-	const expectedTag = "tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.2.0"
-	if tag != expectedTag {
-		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
-	}
-	expectedMod := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo\n\n%s\n", goVersion)
-	verifyGoMod(t, "../../testdata/scenariol/foo/mgmt/2019-11-01-preview/foo", expectedMod)
-	verifyVersion(t, "../../testdata/scenariol/foo/mgmt/2019-11-01-preview/foo", "0.2.0", tag)
-	verifyChangelog(t, "../../testdata/scenariol/foo/mgmt/2019-11-01-preview/foo")
-	verifyGoVet(t, "../../testdata/scenariol/foo/mgmt/2019-11-01-preview/foo")
-}
-
-// scenariom
-func Test_theCommandPreviewNewMod(t *testing.T) {
-	cleanTestData()
-	defer cleanTestData()
-	getTagsHook := func(root string, prefix string) ([]string, error) {
-		if !strings.HasSuffix(prefix, "testdata/scenariom/foo/mgmt/2019-11-01-preview/foo") {
-			return nil, fmt.Errorf("bad prefix '%s'", prefix)
-		}
-		return []string{}, nil
-	}
-	stage, err := filepath.Abs("../../testdata/scenariom/foo/mgmt/2019-11-01-preview/foo/stage")
-	if err != nil {
-		t.Fatalf("failed: %v", err)
-	}
-	_, tag, err := ExecuteUnstage(stage, defaultVersionSetting, getTagsHook)
-	if err != nil {
-		t.Fatalf("failed: %v", err)
-	}
-	const expectedTag = "tools/testdata/scenariom/foo/mgmt/2019-11-01-preview/foo/v0.0.0"
-	if tag != expectedTag {
-		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
-	}
-	expectedMod := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariom/foo/mgmt/2019-11-01-preview/foo\n\n%s\n", goVersion)
-	verifyGoMod(t, "../../testdata/scenariom/foo/mgmt/2019-11-01-preview/foo", expectedMod)
-	verifyVersion(t, "../../testdata/scenariom/foo/mgmt/2019-11-01-preview/foo", "0.0.0", tag)
-	verifyNoChangelog(t, "../../testdata/scenariom/foo/mgmt/2019-11-01-preview/foo")
-	verifyGoVet(t, "../../testdata/scenariom/foo/mgmt/2019-11-01-preview/foo")
-}
-
-// scenarion
-func Test_theCommandPreviewPatch(t *testing.T) {
-	cleanTestData()
-	defer cleanTestData()
-	getTagsHook := func(root string, prefix string) ([]string, error) {
-		if !strings.HasSuffix(prefix, "testdata/scenarion/foo/mgmt/2019-11-01-preview/foo") {
-			return nil, fmt.Errorf("bad prefix '%s'", prefix)
-		}
-		return []string{
-			"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
-			"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
-			"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
-			"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
-			"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
-		}, nil
-	}
-	stage, err := filepath.Abs("../../testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/stage")
-	if err != nil {
-		t.Fatalf("failed: %v", err)
-	}
-	_, tag, err := ExecuteUnstage(stage, defaultVersionSetting, getTagsHook)
-	if err != nil {
-		t.Fatalf("failed: %v", err)
-	}
-	const expectedTag = "tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.3"
-	if tag != expectedTag {
-		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
-	}
-	expectedMod := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo\n\n%s\n", goVersion)
-	verifyGoMod(t, "../../testdata/scenarion/foo/mgmt/2019-11-01-preview/foo", expectedMod)
-	verifyVersion(t, "../../testdata/scenarion/foo/mgmt/2019-11-01-preview/foo", "0.1.3", tag)
-	verifyChangelog(t, "../../testdata/scenarion/foo/mgmt/2019-11-01-preview/foo")
-	verifyGoVet(t, "../../testdata/scenarion/foo/mgmt/2019-11-01-preview/foo")
-}
-
-// scenarioo
-func Test_theCommandPreviewNoChange(t *testing.T) {
-	cleanTestData()
-	defer cleanTestData()
-	getTagsHook := func(root string, prefix string) ([]string, error) {
-		if !strings.HasSuffix(prefix, "testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo") {
-			return nil, fmt.Errorf("bad prefix '%s'", prefix)
-		}
-		return []string{
-			"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
-			"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
-			"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
-			"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
-			"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
-		}, nil
-	}
-	stage, err := filepath.Abs("../../testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/stage")
-	if err != nil {
-		t.Fatalf("failed: %v", err)
-	}
-	_, tag, err := ExecuteUnstage(stage, defaultVersionSetting, getTagsHook)
-	if err != nil {
-		t.Fatalf("failed: %v", err)
-	}
-	const expectedTag = "tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.2"
-	if tag != expectedTag {
-		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
-	}
-	expectedMod := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo\n\n%s\n", goVersion)
-	verifyGoMod(t, "../../testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo", expectedMod)
-	verifyVersion(t, "../../testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo", "0.1.2", tag)
-	verifyNoChangelog(t, "../../testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo")
-	verifyGoVet(t, "../../testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo")
 }
 
 func TestCheckIdentical(t *testing.T) {

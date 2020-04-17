@@ -66,11 +66,11 @@ which are produced by the versioner tool, and push the new tags to github.`,
 	}
 	flags := root.Flags()
 	flags.BoolP("dry-run", "d", false, "dry run, only list the detected tags, do not add or push them")
-	if err := viper.BindPFlag("dry-run", pFlags.Lookup("dry-run")); err != nil {
+	if err := viper.BindPFlag("dry-run", flags.Lookup("dry-run")); err != nil {
 		log.Fatalf("failed to bind flag: %+v", err)
 	}
 	flags.BoolP("add-only", "a", false, "only add tags but do not push them")
-	if err := viper.BindPFlag("add-only", pFlags.Lookup("add-only")); err != nil {
+	if err := viper.BindPFlag("add-only", flags.Lookup("add-only")); err != nil {
 		log.Fatalf("failed to bind flag: %+v", err)
 	}
 

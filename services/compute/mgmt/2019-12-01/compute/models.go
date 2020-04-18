@@ -925,6 +925,8 @@ func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 type StorageAccountType string
 
 const (
+	// StorageAccountTypePremiumLRS ...
+	StorageAccountTypePremiumLRS StorageAccountType = "Premium_LRS"
 	// StorageAccountTypeStandardLRS ...
 	StorageAccountTypeStandardLRS StorageAccountType = "Standard_LRS"
 	// StorageAccountTypeStandardZRS ...
@@ -933,7 +935,7 @@ const (
 
 // PossibleStorageAccountTypeValues returns an array of possible values for the StorageAccountType const type.
 func PossibleStorageAccountTypeValues() []StorageAccountType {
-	return []StorageAccountType{StorageAccountTypeStandardLRS, StorageAccountTypeStandardZRS}
+	return []StorageAccountType{StorageAccountTypePremiumLRS, StorageAccountTypeStandardLRS, StorageAccountTypeStandardZRS}
 }
 
 // StorageAccountTypes enumerates the values for storage account types.
@@ -5075,7 +5077,7 @@ type GalleryApplicationVersionPublishingProfile struct {
 	PublishedDate *date.Time `json:"publishedDate,omitempty"`
 	// EndOfLifeDate - The end of life date of the gallery Image Version. This property can be used for decommissioning purposes. This property is updatable.
 	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
-	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
+	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS', 'StorageAccountTypePremiumLRS'
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 }
 
@@ -5258,7 +5260,7 @@ type GalleryArtifactPublishingProfileBase struct {
 	PublishedDate *date.Time `json:"publishedDate,omitempty"`
 	// EndOfLifeDate - The end of life date of the gallery Image Version. This property can be used for decommissioning purposes. This property is updatable.
 	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
-	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
+	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS', 'StorageAccountTypePremiumLRS'
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 }
 
@@ -6016,7 +6018,7 @@ type GalleryImageVersionPublishingProfile struct {
 	PublishedDate *date.Time `json:"publishedDate,omitempty"`
 	// EndOfLifeDate - The end of life date of the gallery Image Version. This property can be used for decommissioning purposes. This property is updatable.
 	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
-	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
+	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS', 'StorageAccountTypePremiumLRS'
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 }
 
@@ -9456,7 +9458,7 @@ type TargetRegion struct {
 	Name *string `json:"name,omitempty"`
 	// RegionalReplicaCount - The number of replicas of the Image Version to be created per region. This property is updatable.
 	RegionalReplicaCount *int32 `json:"regionalReplicaCount,omitempty"`
-	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
+	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS', 'StorageAccountTypePremiumLRS'
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 	Encryption         *EncryptionImages  `json:"encryption,omitempty"`
 }

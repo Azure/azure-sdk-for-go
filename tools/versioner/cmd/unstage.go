@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/files"
+	"github.com/spf13/viper"
 	"io"
 	"io/ioutil"
 	"os"
@@ -51,7 +52,8 @@ The default version for new preview modules is v0.0.0 or the value specified for
 			if err != nil {
 				return err
 			}
-			_, _, err = ExecuteUnstage(root, versionSetting, getTags)
+			repoRoot := viper.GetString("gomod-root")
+			_, _, err = ExecuteUnstage(root, repoRoot, versionSetting, getTags)
 			return err
 		},
 	}
@@ -73,7 +75,7 @@ const (
 // TagsHookFunc is a func used for get tags from remote
 type TagsHookFunc func(root string, tagPrefix string) ([]string, error)
 
-func ExecuteUnstage(s string, versionSetting *VersionSetting, getTagsHook TagsHookFunc) (string, string, error) {
+func ExecuteUnstage(s, repoRoot string, versionSetting *VersionSetting, getTagsHook TagsHookFunc) (string, string, error) {
 	stage, err := filepath.Abs(s)
 	if err != nil {
 		return "", "", fmt.Errorf("failed to get absolute path from '%s': %+v", s, err)
@@ -98,7 +100,7 @@ func ExecuteUnstage(s string, versionSetting *VersionSetting, getTagsHook TagsHo
 	if identical {
 		// directly remove the stage directory
 		log.Infof("Stage '%s' is identical to '%s', removing stage", stage, baseline)
-		tag, err := updateIdenticalPackage(baseline, stage, getTagsHook)
+		tag, err := updateIdenticalPackage(baseline, stage, repoRoot, getTagsHook)
 		if err != nil {
 			return "", "", fmt.Errorf("failed to update identical package: %+v", err)
 		}
@@ -111,7 +113,7 @@ func ExecuteUnstage(s string, versionSetting *VersionSetting, getTagsHook TagsHo
 	}
 	// despite that to have a major version directory for those major version greater than 1 would have better compatibility,
 	// consider that now go 1.12 is not in the supporting list of golang version, we just simply do all the update inplace to reduce complexity
-	tag, err := updatePackage(baseline, stage, versionSetting, mod, getTagsHook)
+	tag, err := updatePackage(baseline, stage, repoRoot, versionSetting, mod, getTagsHook)
 	return baseline, tag, err
 }
 
@@ -187,8 +189,8 @@ func escapeSpecialFiles(fileList []string) []string {
 
 // updateIdenticalPackage will update the code in baseline directory
 // (mainly the version.go, since the version.go might be changed in a legacy version release)
-func updateIdenticalPackage(baseline, stage string, getTagsHook TagsHookFunc) (string, error) {
-	tagPrefix, err := getTagPrefix(baseline)
+func updateIdenticalPackage(baseline, stage, repoRoot string, getTagsHook TagsHookFunc) (string, error) {
+	tagPrefix, err := getTagPrefix(baseline, repoRoot)
 	if err != nil {
 		return "", fmt.Errorf("failed to get tag prefix: %+v", err)
 	}
@@ -230,10 +232,10 @@ func updateIdenticalPackage(baseline, stage string, getTagsHook TagsHookFunc) (s
 }
 
 // updatePackage updates the code in baseline directory from the stage directory, and returns the tag of this new module
-func updatePackage(baseline, stage string, versionSetting *VersionSetting, mod modinfo.Provider, getTagsHook TagsHookFunc) (string, error) {
+func updatePackage(baseline, stage, repoRoot string, versionSetting *VersionSetting, mod modinfo.Provider, getTagsHook TagsHookFunc) (string, error) {
 	log.Infof("Updating code base in '%s' from stage '%s'", baseline, stage)
 	// get the tag for this module
-	tag, err := calculateModuleTag(baseline, versionSetting, mod, getTagsHook)
+	tag, err := calculateModuleTag(baseline, versionSetting, repoRoot, mod, getTagsHook)
 	if err != nil {
 		return "", fmt.Errorf("failed to calculate module tag: %+v", err)
 	}

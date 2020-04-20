@@ -85,7 +85,8 @@ var (
 )
 
 func prepareTestData(root string, tagsHook cmd.TagsHookFunc) error {
-	if _, err := cmd.ExecuteVersioner(root, defaultVersion, tagsHook); err != nil {
+	const repoRoot = "github.com/Azure/azure-sdk-for-go"
+	if _, err := cmd.ExecuteVersioner(root, repoRoot, defaultVersion, tagsHook); err != nil {
 		return fmt.Errorf("failed to prepare test data: %+v", err)
 	}
 	return nil

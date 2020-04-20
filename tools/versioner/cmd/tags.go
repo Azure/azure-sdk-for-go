@@ -17,7 +17,6 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"path/filepath"
 	"sort"
 	"strings"
 
@@ -28,21 +27,21 @@ import (
 
 // returns the appropriate module tag based on the package version info
 // tags - list of all current tags for the module
-func calculateModuleTag(baseline string, versionSetting *VersionSetting, mod modinfo.Provider, hookFunc TagsHookFunc) (string, error) {
+func calculateModuleTag(baseline string, versionSetting *VersionSetting, repoRoot string, mod modinfo.Provider, hookFunc TagsHookFunc) (string, error) {
 	if mod.IsPreviewPackage() {
-		return calculateTagForPreview(baseline, versionSetting.InitialVersionPreview, mod, hookFunc)
+		return calculateTagForPreview(baseline, versionSetting.InitialVersionPreview, repoRoot, mod, hookFunc)
 	}
-	return calculateTagForStable(baseline, versionSetting.InitialVersion, mod, hookFunc)
+	return calculateTagForStable(baseline, versionSetting.InitialVersion, repoRoot, mod, hookFunc)
 }
 
-func calculateTagForStable(baseline, initialStartVersion string, mod modinfo.Provider, hookFunc TagsHookFunc) (string, error) {
+func calculateTagForStable(baseline, initialStartVersion, repoRoot string, mod modinfo.Provider, hookFunc TagsHookFunc) (string, error) {
 	if mod.IsPreviewPackage() {
 		return "", errors.New("package is not stable package and should not reach this function")
 	}
 	if mod.BreakingChanges() && !mod.VersionSuffix() {
 		return "", errors.New("package has breaking changes but directory has no version suffix")
 	}
-	tagPrefix, err := getTagPrefix(baseline)
+	tagPrefix, err := getTagPrefix(baseline, repoRoot)
 	if err != nil {
 		return "", fmt.Errorf("failed to get tag prefix: %+v", err)
 	}
@@ -76,7 +75,7 @@ func calculateTagForStable(baseline, initialStartVersion string, mod modinfo.Pro
 	return fmt.Sprintf("%s/v%s", tagPrefix, latestVersion.IncPatch().String()), nil
 }
 
-func calculateTagForPreview(baseline, initialStartVersion string, mod modinfo.Provider, hookFunc TagsHookFunc) (string, error) {
+func calculateTagForPreview(baseline, initialStartVersion, repoRoot string, mod modinfo.Provider, hookFunc TagsHookFunc) (string, error) {
 	if !mod.IsPreviewPackage() {
 		return "", errors.New("package is not preview package and should not reach this function")
 	}
@@ -84,7 +83,7 @@ func calculateTagForPreview(baseline, initialStartVersion string, mod modinfo.Pr
 	if mod.VersionSuffix() {
 		return "", errors.New("preview module should not have version suffix")
 	}
-	tagPrefix, err := getTagPrefix(baseline)
+	tagPrefix, err := getTagPrefix(baseline, repoRoot)
 	if err != nil {
 		return "", fmt.Errorf("failed to get tag prefix: %+v", err)
 	}
@@ -159,13 +158,13 @@ func getTags(repoPath, tagPrefix string) ([]string, error) {
 
 // returns the tag prefix for the specified package.
 // assumes repo root of github.com/Azure/azure-sdk-for-go/
-func getTagPrefix(pkgDir string) (string, error) {
+func getTagPrefix(pkgDir, repoRoot string) (string, error) {
 	// e.g. /work/src/github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis/v2
 	// would return services/redis/mgmt/2018-03-01/redis/v2
-	repoRoot := filepath.Join("github.com", repoOrg, repoName)
+	pkgDir = strings.ReplaceAll(pkgDir, "\\", "/")
 	i := strings.Index(pkgDir, repoRoot)
 	if i < 0 {
 		return "", fmt.Errorf("didn't find '%s' in '%s'", repoRoot, pkgDir)
 	}
-	return strings.Replace(pkgDir[i+len(repoRoot)+1:], "\\", "/", -1), nil
+	return pkgDir[i+len(repoRoot)+1:], nil
 }

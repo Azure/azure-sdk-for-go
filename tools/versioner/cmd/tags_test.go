@@ -66,8 +66,11 @@ func Test_getTagPrefix(t *testing.T) {
 			errored: true,
 		},
 	}
+
+	const repoRoot = "github.com/Azure/azure-sdk-for-go"
+
 	for _, c := range testData {
-		p, err := getTagPrefix(c.dir)
+		p, err := getTagPrefix(c.dir, repoRoot)
 		if err != nil && !c.errored {
 			t.Fatalf("unexpected error for case '%s': %+v", c.dir, err)
 		}
@@ -261,10 +264,12 @@ func TestCalculateModuleTag(t *testing.T) {
 		},
 	}
 
+	const repoRoot = "github.com/Azure/azure-sdk-for-go"
+
 	for _, c := range testData {
 		t.Logf("Testing %s", c.name)
 		versionSetting, _ := parseVersionSetting()
-		tag, err := calculateModuleTag(c.baseline, versionSetting, c.pkg, c.hookFunc)
+		tag, err := calculateModuleTag(c.baseline, versionSetting, repoRoot, c.pkg, c.hookFunc)
 		if err != nil && !c.errored {
 			t.Fatalf("unexpected error: %+v", err)
 		}

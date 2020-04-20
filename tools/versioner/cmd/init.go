@@ -40,8 +40,9 @@ NOTE: This command is only used on local and only for initial release.
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			root := args[0]
+			repoRoot := viper.GetString("gomod-root")
 			classicalFile := viper.GetString("classical")
-			return ExecuteInit(root, classicalFile)
+			return ExecuteInit(root, repoRoot, classicalFile)
 		},
 	}
 	// register flags
@@ -63,7 +64,7 @@ const (
 	goVersion = `go 1.13`
 )
 
-func ExecuteInit(r, classicalFile string) error {
+func ExecuteInit(r, repoRoot, classicalFile string) error {
 	root, err := filepath.Abs(r)
 	if err != nil {
 		return fmt.Errorf("failed to get absolute path from '%s': %+v", r, err)
@@ -85,7 +86,7 @@ func ExecuteInit(r, classicalFile string) error {
 			continue
 		}
 		path := filepath.Join(root, p.Dest)
-		tagPrefix, err := getTagPrefix(path)
+		tagPrefix, err := getTagPrefix(path, repoRoot)
 		if err != nil {
 			return fmt.Errorf("failed to get tag prefix: %+v", err)
 		}

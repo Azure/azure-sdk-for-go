@@ -46,7 +46,7 @@ const versionGoFormat = `package foo
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/%s foo/2019-04-01"
+	return "Azure-SDK-For-Go/" + Version() + " foo/2019-04-01"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.
@@ -68,7 +68,7 @@ func Test_findLatestMajorVersion(t *testing.T) {
 		},
 		{
 			stage:    "../../testdata/scenariod/foo/stage",
-			expected: filepath.Join("..", "..", "testdata", "scenariod", "foo", "v2"),
+			expected: filepath.Join("..", "..", "testdata", "scenariod", "foo"),
 		},
 		{
 			stage:    "../../testdata/scenariof/foo/stage",
@@ -171,7 +171,7 @@ func verifyVersion(t *testing.T, path, version, tag string) {
 	if err != nil {
 		t.Fatalf("failed to read version.go file: %v", err)
 	}
-	expected := fmt.Sprintf(versionGoFormat, version, version, tag)
+	expected := fmt.Sprintf(versionGoFormat, version, tag)
 	if !fileContentEquals(expected, string(b)) {
 		t.Fatalf("bad version.go file, expected '%s' got '%s'", expected, string(b))
 	}
@@ -579,9 +579,11 @@ func TestExecuteUnstage(t *testing.T) {
 	cleanTestData()
 	defer cleanTestData()
 
+	const repoRoot = "github.com/Azure/azure-sdk-for-go"
+
 	for _, c := range testData {
 		t.Logf("Testing %s", c.name)
-		dest, tag, err := ExecuteUnstage(c.stage, defaultVersionSetting, c.getTagsHook)
+		dest, tag, err := ExecuteUnstage(c.stage, repoRoot, defaultVersionSetting, c.getTagsHook)
 		if err != nil {
 			t.Fatalf("unexpected error: %+v", err)
 		}

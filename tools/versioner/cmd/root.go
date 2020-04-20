@@ -54,7 +54,8 @@ The default version for new modules is v1.0.0 or the value specified for [initia
 			if err != nil {
 				return err
 			}
-			_, err = ExecuteVersioner(root, versionSetting, getTags)
+			repoRoot := viper.GetString("gomod-root")
+			_, err = ExecuteVersioner(root, repoRoot, versionSetting, getTags)
 			return err
 		},
 	}
@@ -66,6 +67,10 @@ The default version for new modules is v1.0.0 or the value specified for [initia
 	}
 	pFlags.Bool("quiet", false, "suppress all outputs")
 	if err := viper.BindPFlag("quiet", pFlags.Lookup("quiet")); err != nil {
+		log.Fatalf("failed to bind flag: %+v", err)
+	}
+	pFlags.String("gomod-root", "github.com/Azure/azure-sdk-for-go", "root path of the modules")
+	if err := viper.BindPFlag("gomod-root", pFlags.Lookup("gomod-root")); err != nil {
 		log.Fatalf("failed to bind flag: %+v", err)
 	}
 
@@ -115,7 +120,7 @@ func parseVersionSetting(args ...string) (*VersionSetting, error) {
 }
 
 // wrapper for cobra, prints tag to stdout
-func ExecuteVersioner(r string, versionSetting *VersionSetting, hookFunc TagsHookFunc) ([]string, error) {
+func ExecuteVersioner(r, repoRoot string, versionSetting *VersionSetting, hookFunc TagsHookFunc) ([]string, error) {
 	root, err := filepath.Abs(r)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get absolute path from '%s': %v", root, err)
@@ -128,7 +133,7 @@ func ExecuteVersioner(r string, versionSetting *VersionSetting, hookFunc TagsHoo
 
 	tags := make([]string, 0)
 	for _, dir := range subDirectories {
-		_, tag, err := ExecuteUnstage(dir, versionSetting, hookFunc)
+		_, tag, err := ExecuteUnstage(dir, repoRoot, versionSetting, hookFunc)
 		if err != nil {
 			return tags, fmt.Errorf("failed to get tag in stage folder '%s': %v", dir, err)
 		}

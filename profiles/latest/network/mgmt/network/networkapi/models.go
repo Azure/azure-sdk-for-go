@@ -19,7 +19,7 @@
 
 package networkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-12-01/network/networkapi"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-03-01/network/networkapi"
 
 type ApplicationGatewaysClientAPI = original.ApplicationGatewaysClientAPI
 type ApplicationSecurityGroupsClientAPI = original.ApplicationSecurityGroupsClientAPI
@@ -53,6 +53,7 @@ type FirewallPoliciesClientAPI = original.FirewallPoliciesClientAPI
 type FirewallPolicyRuleGroupsClientAPI = original.FirewallPolicyRuleGroupsClientAPI
 type FlowLogsClientAPI = original.FlowLogsClientAPI
 type HubVirtualNetworkConnectionsClientAPI = original.HubVirtualNetworkConnectionsClientAPI
+type IPAllocationsClientAPI = original.IPAllocationsClientAPI
 type IPGroupsClientAPI = original.IPGroupsClientAPI
 type InboundNatRulesClientAPI = original.InboundNatRulesClientAPI
 type InterfaceIPConfigurationsClientAPI = original.InterfaceIPConfigurationsClientAPI
@@ -72,6 +73,7 @@ type OperationsClientAPI = original.OperationsClientAPI
 type P2sVpnGatewaysClientAPI = original.P2sVpnGatewaysClientAPI
 type PacketCapturesClientAPI = original.PacketCapturesClientAPI
 type PeerExpressRouteCircuitConnectionsClientAPI = original.PeerExpressRouteCircuitConnectionsClientAPI
+type PrivateDNSZoneGroupsClientAPI = original.PrivateDNSZoneGroupsClientAPI
 type PrivateEndpointsClientAPI = original.PrivateEndpointsClientAPI
 type PrivateLinkServicesClientAPI = original.PrivateLinkServicesClientAPI
 type ProfilesClientAPI = original.ProfilesClientAPI
@@ -83,6 +85,7 @@ type RouteFiltersClientAPI = original.RouteFiltersClientAPI
 type RouteTablesClientAPI = original.RouteTablesClientAPI
 type RoutesClientAPI = original.RoutesClientAPI
 type SecurityGroupsClientAPI = original.SecurityGroupsClientAPI
+type SecurityPartnerProvidersClientAPI = original.SecurityPartnerProvidersClientAPI
 type SecurityRulesClientAPI = original.SecurityRulesClientAPI
 type ServiceAssociationLinksClientAPI = original.ServiceAssociationLinksClientAPI
 type ServiceEndpointPoliciesClientAPI = original.ServiceEndpointPoliciesClientAPI

@@ -19,7 +19,7 @@
 
 package training
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.1/customvision/training"
+import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.2/customvision/training"
 
 type Classifier = original.Classifier
 
@@ -46,6 +46,7 @@ const (
 	BadRequestExportAlreadyInProgress                           CustomVisionErrorCodes = original.BadRequestExportAlreadyInProgress
 	BadRequestExportPlatformNotSupportedForAdvancedTraining     CustomVisionErrorCodes = original.BadRequestExportPlatformNotSupportedForAdvancedTraining
 	BadRequestExportValidationFailed                            CustomVisionErrorCodes = original.BadRequestExportValidationFailed
+	BadRequestExportWhileTraining                               CustomVisionErrorCodes = original.BadRequestExportWhileTraining
 	BadRequestImageBatch                                        CustomVisionErrorCodes = original.BadRequestImageBatch
 	BadRequestImageExceededCount                                CustomVisionErrorCodes = original.BadRequestImageExceededCount
 	BadRequestImageFormat                                       CustomVisionErrorCodes = original.BadRequestImageFormat
@@ -57,6 +58,7 @@ const (
 	BadRequestInvalid                                           CustomVisionErrorCodes = original.BadRequestInvalid
 	BadRequestInvalidEmailAddress                               CustomVisionErrorCodes = original.BadRequestInvalidEmailAddress
 	BadRequestInvalidIds                                        CustomVisionErrorCodes = original.BadRequestInvalidIds
+	BadRequestInvalidImportToken                                CustomVisionErrorCodes = original.BadRequestInvalidImportToken
 	BadRequestInvalidPublishName                                CustomVisionErrorCodes = original.BadRequestInvalidPublishName
 	BadRequestInvalidPublishTarget                              CustomVisionErrorCodes = original.BadRequestInvalidPublishTarget
 	BadRequestIterationDescription                              CustomVisionErrorCodes = original.BadRequestIterationDescription
@@ -65,6 +67,7 @@ const (
 	BadRequestIterationName                                     CustomVisionErrorCodes = original.BadRequestIterationName
 	BadRequestIterationNameNotUnique                            CustomVisionErrorCodes = original.BadRequestIterationNameNotUnique
 	BadRequestIterationNotPublished                             CustomVisionErrorCodes = original.BadRequestIterationNotPublished
+	BadRequestIterationValidationFailed                         CustomVisionErrorCodes = original.BadRequestIterationValidationFailed
 	BadRequestMultiClassClassificationTrainingValidationFailed  CustomVisionErrorCodes = original.BadRequestMultiClassClassificationTrainingValidationFailed
 	BadRequestMultiLabelClassificationTrainingValidationFailed  CustomVisionErrorCodes = original.BadRequestMultiLabelClassificationTrainingValidationFailed
 	BadRequestMultipleNegativeTag                               CustomVisionErrorCodes = original.BadRequestMultipleNegativeTag
@@ -78,6 +81,7 @@ const (
 	BadRequestPredictionResultsExceededCount                    CustomVisionErrorCodes = original.BadRequestPredictionResultsExceededCount
 	BadRequestPredictionTagsExceededCount                       CustomVisionErrorCodes = original.BadRequestPredictionTagsExceededCount
 	BadRequestProjectDescription                                CustomVisionErrorCodes = original.BadRequestProjectDescription
+	BadRequestProjectDuplicated                                 CustomVisionErrorCodes = original.BadRequestProjectDuplicated
 	BadRequestProjectImagePreprocessingSettings                 CustomVisionErrorCodes = original.BadRequestProjectImagePreprocessingSettings
 	BadRequestProjectName                                       CustomVisionErrorCodes = original.BadRequestProjectName
 	BadRequestProjectNameNotUnique                              CustomVisionErrorCodes = original.BadRequestProjectNameNotUnique
@@ -111,12 +115,15 @@ const (
 	ErrorFeaturizationServiceUnavailable                        CustomVisionErrorCodes = original.ErrorFeaturizationServiceUnavailable
 	ErrorFeaturizationUnrecognizedJob                           CustomVisionErrorCodes = original.ErrorFeaturizationUnrecognizedJob
 	ErrorInvalid                                                CustomVisionErrorCodes = original.ErrorInvalid
+	ErrorIterationCopyFailed                                    CustomVisionErrorCodes = original.ErrorIterationCopyFailed
 	ErrorPrediction                                             CustomVisionErrorCodes = original.ErrorPrediction
 	ErrorPredictionModelNotCached                               CustomVisionErrorCodes = original.ErrorPredictionModelNotCached
 	ErrorPredictionModelNotFound                                CustomVisionErrorCodes = original.ErrorPredictionModelNotFound
 	ErrorPredictionServiceUnavailable                           CustomVisionErrorCodes = original.ErrorPredictionServiceUnavailable
 	ErrorPredictionStorage                                      CustomVisionErrorCodes = original.ErrorPredictionStorage
+	ErrorPreparePerformanceMigrationFailed                      CustomVisionErrorCodes = original.ErrorPreparePerformanceMigrationFailed
 	ErrorProjectExportRequestFailed                             CustomVisionErrorCodes = original.ErrorProjectExportRequestFailed
+	ErrorProjectImportRequestFailed                             CustomVisionErrorCodes = original.ErrorProjectImportRequestFailed
 	ErrorProjectInvalidDomain                                   CustomVisionErrorCodes = original.ErrorProjectInvalidDomain
 	ErrorProjectInvalidPipelineConfiguration                    CustomVisionErrorCodes = original.ErrorProjectInvalidPipelineConfiguration
 	ErrorProjectInvalidWorkspace                                CustomVisionErrorCodes = original.ErrorProjectInvalidWorkspace
@@ -208,6 +215,14 @@ const (
 	Suggested OrderBy = original.Suggested
 )
 
+type ProjectStatus = original.ProjectStatus
+
+const (
+	ProjectStatusFailed    ProjectStatus = original.ProjectStatusFailed
+	ProjectStatusImporting ProjectStatus = original.ProjectStatusImporting
+	ProjectStatusSucceeded ProjectStatus = original.ProjectStatusSucceeded
+)
+
 type SortBy = original.SortBy
 
 const (
@@ -269,11 +284,13 @@ type ListIteration = original.ListIteration
 type ListProject = original.ListProject
 type ListSuggestedTagAndRegion = original.ListSuggestedTagAndRegion
 type ListTag = original.ListTag
+type Parameters = original.Parameters
 type Prediction = original.Prediction
 type PredictionQueryResult = original.PredictionQueryResult
 type PredictionQueryTag = original.PredictionQueryTag
 type PredictionQueryToken = original.PredictionQueryToken
 type Project = original.Project
+type ProjectExport = original.ProjectExport
 type ProjectSettings = original.ProjectSettings
 type Region = original.Region
 type RegionProposal = original.RegionProposal
@@ -287,11 +304,11 @@ type Tag = original.Tag
 type TagFilter = original.TagFilter
 type TagPerformance = original.TagPerformance
 
-func New(aPIKey string, endpoint string) BaseClient {
-	return original.New(aPIKey, endpoint)
+func New(endpoint string) BaseClient {
+	return original.New(endpoint)
 }
-func NewWithoutDefaults(aPIKey string, endpoint string) BaseClient {
-	return original.NewWithoutDefaults(aPIKey, endpoint)
+func NewWithoutDefaults(endpoint string) BaseClient {
+	return original.NewWithoutDefaults(endpoint)
 }
 func PossibleClassifierValues() []Classifier {
 	return original.PossibleClassifierValues()
@@ -316,6 +333,9 @@ func PossibleImageCreateStatusValues() []ImageCreateStatus {
 }
 func PossibleOrderByValues() []OrderBy {
 	return original.PossibleOrderByValues()
+}
+func PossibleProjectStatusValues() []ProjectStatus {
+	return original.PossibleProjectStatusValues()
 }
 func PossibleSortByValues() []SortBy {
 	return original.PossibleSortByValues()

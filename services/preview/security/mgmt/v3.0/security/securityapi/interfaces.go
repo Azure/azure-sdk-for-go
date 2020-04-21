@@ -153,16 +153,6 @@ type ExternalSecuritySolutionsClientAPI interface {
 
 var _ ExternalSecuritySolutionsClientAPI = (*security.ExternalSecuritySolutionsClient)(nil)
 
-// AdaptiveApplicationControlsClientAPI contains the set of methods on the AdaptiveApplicationControlsClient type.
-type AdaptiveApplicationControlsClientAPI interface {
-	Delete(ctx context.Context, groupName string) (result autorest.Response, err error)
-	Get(ctx context.Context, groupName string) (result security.AppWhitelistingGroup, err error)
-	List(ctx context.Context, includePathRecommendations *bool, summary *bool) (result security.AppWhitelistingGroups, err error)
-	Put(ctx context.Context, groupName string, body security.AppWhitelistingPutGroupData) (result security.AppWhitelistingGroup, err error)
-}
-
-var _ AdaptiveApplicationControlsClientAPI = (*security.AdaptiveApplicationControlsClient)(nil)
-
 // LocationsClientAPI contains the set of methods on the LocationsClient type.
 type LocationsClientAPI interface {
 	Get(ctx context.Context) (result security.AscLocation, err error)
@@ -335,6 +325,16 @@ type AssessmentsClientAPI interface {
 }
 
 var _ AssessmentsClientAPI = (*security.AssessmentsClient)(nil)
+
+// AdaptiveApplicationControlsClientAPI contains the set of methods on the AdaptiveApplicationControlsClient type.
+type AdaptiveApplicationControlsClientAPI interface {
+	Delete(ctx context.Context, groupName string) (result autorest.Response, err error)
+	Get(ctx context.Context, groupName string) (result security.AppWhitelistingGroup, err error)
+	List(ctx context.Context, includePathRecommendations *bool, summary *bool) (result security.AppWhitelistingGroups, err error)
+	Put(ctx context.Context, groupName string, body security.AppWhitelistingGroup) (result security.AppWhitelistingGroup, err error)
+}
+
+var _ AdaptiveApplicationControlsClientAPI = (*security.AdaptiveApplicationControlsClient)(nil)
 
 // AdaptiveNetworkHardeningsClientAPI contains the set of methods on the AdaptiveNetworkHardeningsClient type.
 type AdaptiveNetworkHardeningsClientAPI interface {

@@ -331,23 +331,6 @@ func PossibleEnforcementModeValues() []EnforcementMode {
 	return []EnforcementMode{Audit, Enforce, None}
 }
 
-// EnforcementMode1 enumerates the values for enforcement mode 1.
-type EnforcementMode1 string
-
-const (
-	// EnforcementMode1Audit ...
-	EnforcementMode1Audit EnforcementMode1 = "Audit"
-	// EnforcementMode1Enforce ...
-	EnforcementMode1Enforce EnforcementMode1 = "Enforce"
-	// EnforcementMode1None ...
-	EnforcementMode1None EnforcementMode1 = "None"
-)
-
-// PossibleEnforcementMode1Values returns an array of possible values for the EnforcementMode1 const type.
-func PossibleEnforcementMode1Values() []EnforcementMode1 {
-	return []EnforcementMode1{EnforcementMode1Audit, EnforcementMode1Enforce, EnforcementMode1None}
-}
-
 // EnforcementSupport enumerates the values for enforcement support.
 type EnforcementSupport string
 
@@ -3369,18 +3352,19 @@ func (awg *AppWhitelistingGroup) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AppWhitelistingGroupData represents a VM/server group and set of rules that are Recommended by Azure
-// Security Center to be allowed
+// AppWhitelistingGroupData represents a VM/server group and set of rules to be allowed running on a
+// machine
 type AppWhitelistingGroupData struct {
 	// EnforcementMode - Possible values include: 'Audit', 'Enforce', 'None'
 	EnforcementMode EnforcementMode `json:"enforcementMode,omitempty"`
 	ProtectionMode  *ProtectionMode `json:"protectionMode,omitempty"`
-	// ConfigurationStatus - Possible values include: 'ConfigurationStatus2Configured', 'ConfigurationStatus2NotConfigured', 'ConfigurationStatus2InProgress', 'ConfigurationStatus2Failed', 'ConfigurationStatus2NoStatus'
+	// ConfigurationStatus - READ-ONLY; Possible values include: 'ConfigurationStatus2Configured', 'ConfigurationStatus2NotConfigured', 'ConfigurationStatus2InProgress', 'ConfigurationStatus2Failed', 'ConfigurationStatus2NoStatus'
 	ConfigurationStatus ConfigurationStatus2 `json:"configurationStatus,omitempty"`
-	// RecommendationStatus - Possible values include: 'RecommendationStatusRecommended', 'RecommendationStatusNotRecommended', 'RecommendationStatusNotAvailable', 'RecommendationStatusNoStatus'
-	RecommendationStatus RecommendationStatus           `json:"recommendationStatus,omitempty"`
-	Issues               *[]AppWhitelistingIssueSummary `json:"issues,omitempty"`
-	// SourceSystem - Possible values include: 'SourceSystemAzureAppLocker', 'SourceSystemAzureAuditD', 'SourceSystemNonAzureAppLocker', 'SourceSystemNonAzureAuditD', 'SourceSystemNone'
+	// RecommendationStatus - READ-ONLY; Possible values include: 'RecommendationStatusRecommended', 'RecommendationStatusNotRecommended', 'RecommendationStatusNotAvailable', 'RecommendationStatusNoStatus'
+	RecommendationStatus RecommendationStatus `json:"recommendationStatus,omitempty"`
+	// Issues - READ-ONLY
+	Issues *[]AppWhitelistingIssueSummary `json:"issues,omitempty"`
+	// SourceSystem - READ-ONLY; Possible values include: 'SourceSystemAzureAppLocker', 'SourceSystemAzureAuditD', 'SourceSystemNonAzureAppLocker', 'SourceSystemNonAzureAuditD', 'SourceSystemNone'
 	SourceSystem        SourceSystem          `json:"sourceSystem,omitempty"`
 	VMRecommendations   *[]VMRecommendation   `json:"vmRecommendations,omitempty"`
 	PathRecommendations *[]PathRecommendation `json:"pathRecommendations,omitempty"`
@@ -3399,16 +3383,6 @@ type AppWhitelistingIssueSummary struct {
 	Issue Issue `json:"issue,omitempty"`
 	// NumberOfVms - The number of machines in the VM/server group that have this alert
 	NumberOfVms *float64 `json:"numberOfVms,omitempty"`
-}
-
-// AppWhitelistingPutGroupData the altered data of the recommended VM/server group policy
-type AppWhitelistingPutGroupData struct {
-	// EnforcementMode - The enforcement mode of the group. Can also be defined per collection type by using ProtectionMode. Possible values include: 'EnforcementMode1Audit', 'EnforcementMode1Enforce', 'EnforcementMode1None'
-	EnforcementMode EnforcementMode1 `json:"enforcementMode,omitempty"`
-	// ProtectionMode - The protection mode of the group per collection type. Can also be defined for all collection types by using EnforcementMode
-	ProtectionMode      *ProtectionMode       `json:"protectionMode,omitempty"`
-	VMRecommendations   *[]VMRecommendation   `json:"vmRecommendations,omitempty"`
-	PathRecommendations *[]PathRecommendation `json:"pathRecommendations,omitempty"`
 }
 
 // AscLocation the ASC location of the subscription is in the "name" field

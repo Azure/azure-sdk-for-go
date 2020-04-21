@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## v41.3.0
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| kubernetesconfiguration | 2019-11-01-preview |
+| network | 2020-03-01 |
+| training | customvision |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| storage | 2019-06-01 |
+
 ## v41.2.0
 
 ### Updated Packages

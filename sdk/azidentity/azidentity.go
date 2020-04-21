@@ -13,7 +13,14 @@ import (
 )
 
 const (
-	defaultAuthorityHost = "https://login.microsoftonline.com/"
+	// AzureChina is a global constant to use in order to access the Azure China cloud
+	AzureChina = "https://login.chinacloudapi.cn/"
+	// AzureGermany is a global constant to use in order to access the Azure Germany cloud
+	AzureGermany = "https://login.microsoftonline.de/"
+	// AzureGovernment is a global constant to use in order to access the Azure Government cloud
+	AzureGovernment = "https://login.microsoftonline.us/"
+	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud
+	AzurePublicCloud = "https://login.microsoftonline.com/"
 )
 
 var (
@@ -118,7 +125,7 @@ type TokenCredentialOptions struct {
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
 func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, error) {
-	authorityHost := defaultAuthorityHost
+	authorityHost := AzurePublicCloud
 	if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
 		authorityHost = envAuthorityHost
 	}

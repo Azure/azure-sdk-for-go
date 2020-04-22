@@ -18,8 +18,6 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/files"
-	"github.com/spf13/viper"
 	"io"
 	"io/ioutil"
 	"os"
@@ -29,9 +27,11 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/tools/internal/files"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/log"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 func unstageCommand() *cobra.Command {
@@ -66,10 +66,10 @@ var (
 )
 
 const (
-	goModFilename = "go.mod"
+	goModFilename   = "go.mod"
 	changeLogName   = "CHANGELOG.md"
 	versionFilename = "version.go"
-	interfacesName = "interfaces.go"
+	interfacesName  = "interfaces.go"
 )
 
 // TagsHookFunc is a func used for get tags from remote
@@ -365,14 +365,9 @@ func updateGoMod(goMod io.ReadWriteSeeker, newVer string) error {
 	if newVer == "" {
 		return nil
 	}
-	scanner := bufio.NewScanner(goMod)
-	scanner.Split(bufio.ScanLines)
-	lines := make([]string, 0)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	_, err := goMod.Seek(0, io.SeekStart)
-	if err != nil {
+	lines := files.GetLines(goMod)
+
+	if _, err := goMod.Seek(0, io.SeekStart); err != nil {
 		return fmt.Errorf("failed to seek to start: %v", err)
 	}
 	for _, line := range lines {
@@ -383,7 +378,9 @@ func updateGoMod(goMod io.ReadWriteSeeker, newVer string) error {
 				line = line + "/" + newVer
 			}
 		}
-		fmt.Fprintln(goMod, line)
+		if _, err := fmt.Fprintln(goMod, line); err != nil {
+			return fmt.Errorf("failed to write line: %s", line)
+		}
 	}
 	return nil
 }
@@ -411,7 +408,7 @@ func updateImportStatement(stage, currentPath, ver string) error {
 }
 
 func findAllFilesContainImportStatement(path, importStatement string) ([]string, error) {
-	files := make([]string, 0) // files stores filenames for those content contained the given import statements
+	var fileList []string // fileList stores filenames for those content contained the given import statements
 	err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -428,14 +425,14 @@ func findAllFilesContainImportStatement(path, importStatement string) ([]string,
 			for scanner.Scan() {
 				line := scanner.Text()
 				if strings.Index(line, importStatement) > -1 {
-					files = append(files, path)
+					fileList = append(fileList, path)
 				}
 			}
 			return nil
 		}
 		return nil
 	})
-	return files, err
+	return fileList, err
 }
 
 func replaceImportStatement(files []string, oldImport, newImport string) error {

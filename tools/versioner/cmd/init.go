@@ -126,7 +126,7 @@ func modifyVersionFile(root string, p pkgs.Pkg, tag, ver string) error {
 	// replace the first `version.Number` to `Version()`
 	content = strings.Replace(content, "version.Number", "Version()", 1)
 	// replace the second `version.Number` to the value of ver
-	content = strings.Replace(content, "version.Number", fmt.Sprintf(`"%s"`, ver), 1)
+	content = strings.Replace(content, "version.Number", fmt.Sprintf(`"v%s"`, ver), 1)
 	content = content + fmt.Sprintf("\n// tag: %s\n", tag)
 	if err := ioutil.WriteFile(verFilePath, []byte(content), 0666); err != nil {
 		return fmt.Errorf("failed to write version file '%s': %+v", verFilePath, err)

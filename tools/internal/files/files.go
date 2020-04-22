@@ -1,6 +1,7 @@
 package files
 
 import (
+	"bufio"
 	"bytes"
 	"io"
 	"log"
@@ -44,4 +45,15 @@ func DeepCompare(file1, file2 string) (bool, error) {
 			return false, nil
 		}
 	}
+}
+
+func GetLines(file io.Reader) []string {
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+	var lines []string
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	return lines
 }

@@ -17,7 +17,7 @@ package main
 import (
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/tools/moduler/cmd"
+	"github.com/Azure/azure-sdk-for-go/tools/releaser/cmd"
 )
 
 func main() {

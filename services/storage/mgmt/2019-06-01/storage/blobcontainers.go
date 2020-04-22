@@ -181,13 +181,6 @@ func (client BlobContainersClient) Create(ctx context.Context, resourceGroupName
 		{TargetValue: containerName,
 			Constraints: []validation.Constraint{{Target: "containerName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "containerName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
-		{TargetValue: blobContainer,
-			Constraints: []validation.Constraint{{Target: "blobContainer.ContainerProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "blobContainer.ContainerProperties.ImmutabilityPolicy", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "blobContainer.ContainerProperties.ImmutabilityPolicy.ImmutabilityPolicyProperty", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "blobContainer.ContainerProperties.ImmutabilityPolicy.ImmutabilityPolicyProperty.ImmutabilityPeriodSinceCreationInDays", Name: validation.Null, Rule: true, Chain: nil}}},
-					}},
-				}}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storage.BlobContainersClient", "Create", err.Error())
@@ -297,9 +290,7 @@ func (client BlobContainersClient) CreateOrUpdateImmutabilityPolicy(ctx context.
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.ImmutabilityPolicyProperty", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "parameters.ImmutabilityPolicyProperty.ImmutabilityPeriodSinceCreationInDays", Name: validation.Null, Rule: true, Chain: nil}}},
-				}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "parameters.ImmutabilityPolicyProperty", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("storage.BlobContainersClient", "CreateOrUpdateImmutabilityPolicy", err.Error())
 	}
 
@@ -618,9 +609,7 @@ func (client BlobContainersClient) ExtendImmutabilityPolicy(ctx context.Context,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.ImmutabilityPolicyProperty", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "parameters.ImmutabilityPolicyProperty.ImmutabilityPeriodSinceCreationInDays", Name: validation.Null, Rule: true, Chain: nil}}},
-				}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "parameters.ImmutabilityPolicyProperty", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("storage.BlobContainersClient", "ExtendImmutabilityPolicy", err.Error())
 	}
 

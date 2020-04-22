@@ -178,6 +178,21 @@ func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
 	return []DirectoryServiceOptions{DirectoryServiceOptionsAADDS, DirectoryServiceOptionsAD, DirectoryServiceOptionsNone}
 }
 
+// EnabledProtocols enumerates the values for enabled protocols.
+type EnabledProtocols string
+
+const (
+	// NFS ...
+	NFS EnabledProtocols = "NFS"
+	// SMB ...
+	SMB EnabledProtocols = "SMB"
+)
+
+// PossibleEnabledProtocolsValues returns an array of possible values for the EnabledProtocols const type.
+func PossibleEnabledProtocolsValues() []EnabledProtocols {
+	return []EnabledProtocols{NFS, SMB}
+}
+
 // EncryptionScopeSource enumerates the values for encryption scope source.
 type EncryptionScopeSource string
 
@@ -223,6 +238,19 @@ const (
 // PossibleGeoReplicationStatusValues returns an array of possible values for the GeoReplicationStatus const type.
 func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 	return []GeoReplicationStatus{GeoReplicationStatusBootstrap, GeoReplicationStatusLive, GeoReplicationStatusUnavailable}
+}
+
+// GetShareExpand enumerates the values for get share expand.
+type GetShareExpand string
+
+const (
+	// Stats ...
+	Stats GetShareExpand = "stats"
+)
+
+// PossibleGetShareExpandValues returns an array of possible values for the GetShareExpand const type.
+func PossibleGetShareExpandValues() []GetShareExpand {
+	return []GetShareExpand{Stats}
 }
 
 // HTTPProtocol enumerates the values for http protocol.
@@ -417,6 +445,19 @@ func PossibleListKeyExpandValues() []ListKeyExpand {
 	return []ListKeyExpand{Kerb}
 }
 
+// ListSharesExpand enumerates the values for list shares expand.
+type ListSharesExpand string
+
+const (
+	// Deleted ...
+	Deleted ListSharesExpand = "deleted"
+)
+
+// PossibleListSharesExpandValues returns an array of possible values for the ListSharesExpand const type.
+func PossibleListSharesExpandValues() []ListSharesExpand {
+	return []ListSharesExpand{Deleted}
+}
+
 // Permissions enumerates the values for permissions.
 type Permissions string
 
@@ -545,6 +586,23 @@ func PossibleReasonCodeValues() []ReasonCode {
 	return []ReasonCode{NotAvailableForSubscription, QuotaID}
 }
 
+// RootSquashType enumerates the values for root squash type.
+type RootSquashType string
+
+const (
+	// AllSquash ...
+	AllSquash RootSquashType = "AllSquash"
+	// NoRootSquash ...
+	NoRootSquash RootSquashType = "NoRootSquash"
+	// RootSquash ...
+	RootSquash RootSquashType = "RootSquash"
+)
+
+// PossibleRootSquashTypeValues returns an array of possible values for the RootSquashType const type.
+func PossibleRootSquashTypeValues() []RootSquashType {
+	return []RootSquashType{AllSquash, NoRootSquash, RootSquash}
+}
+
 // RoutingChoice enumerates the values for routing choice.
 type RoutingChoice string
 
@@ -577,6 +635,25 @@ const (
 // PossibleServicesValues returns an array of possible values for the Services const type.
 func PossibleServicesValues() []Services {
 	return []Services{B, F, Q, T}
+}
+
+// ShareAccessTier enumerates the values for share access tier.
+type ShareAccessTier string
+
+const (
+	// ShareAccessTierCool ...
+	ShareAccessTierCool ShareAccessTier = "Cool"
+	// ShareAccessTierHot ...
+	ShareAccessTierHot ShareAccessTier = "Hot"
+	// ShareAccessTierPremium ...
+	ShareAccessTierPremium ShareAccessTier = "Premium"
+	// ShareAccessTierTransactionOptimized ...
+	ShareAccessTierTransactionOptimized ShareAccessTier = "TransactionOptimized"
+)
+
+// PossibleShareAccessTierValues returns an array of possible values for the ShareAccessTier const type.
+func PossibleShareAccessTierValues() []ShareAccessTier {
+	return []ShareAccessTier{ShareAccessTierCool, ShareAccessTierHot, ShareAccessTierPremium, ShareAccessTierTransactionOptimized}
 }
 
 // SignedResource enumerates the values for signed resource.
@@ -1572,9 +1649,9 @@ type BlobRestoreParameters struct {
 
 // BlobRestoreRange blob range
 type BlobRestoreRange struct {
-	// StartRange - Blob start range. Empty means account start.
+	// StartRange - Blob start range. This is inclusive. Empty means account start.
 	StartRange *string `json:"startRange,omitempty"`
-	// EndRange - Blob end range. Empty means account end.
+	// EndRange - Blob end range. This is exclusive. Empty means account end.
 	EndRange *string `json:"endRange,omitempty"`
 }
 
@@ -1698,6 +1775,8 @@ type BlobServicePropertiesProperties struct {
 	ChangeFeed *ChangeFeed `json:"changeFeed,omitempty"`
 	// RestorePolicy - The blob service properties for blob restore policy.
 	RestorePolicy *RestorePolicyProperties `json:"restorePolicy,omitempty"`
+	// ContainerDeleteRetentionPolicy - The blob service properties for container soft delete.
+	ContainerDeleteRetentionPolicy *DeleteRetentionPolicy `json:"containerDeleteRetentionPolicy,omitempty"`
 }
 
 // ChangeFeed the blob service properties for change feed events.
@@ -1736,6 +1815,10 @@ type CloudErrorBody struct {
 
 // ContainerProperties the properties of a container.
 type ContainerProperties struct {
+	// DefaultEncryptionScope - Default the container to use specified encryption scope for all writes.
+	DefaultEncryptionScope *string `json:"defaultEncryptionScope,omitempty"`
+	// DenyEncryptionScopeOverride - Block override of encryption scope from the container default.
+	DenyEncryptionScopeOverride *bool `json:"denyEncryptionScopeOverride,omitempty"`
 	// PublicAccess - Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'PublicAccessContainer', 'PublicAccessBlob', 'PublicAccessNone'
 	PublicAccess PublicAccess `json:"publicAccess,omitempty"`
 	// LastModifiedTime - READ-ONLY; Returns the date and time the container was last modified.
@@ -1761,6 +1844,12 @@ type ContainerProperties struct {
 // MarshalJSON is the custom marshaler for ContainerProperties.
 func (cp ContainerProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if cp.DefaultEncryptionScope != nil {
+		objectMap["defaultEncryptionScope"] = cp.DefaultEncryptionScope
+	}
+	if cp.DenyEncryptionScopeOverride != nil {
+		objectMap["denyEncryptionScopeOverride"] = cp.DenyEncryptionScopeOverride
+	}
 	if cp.PublicAccess != "" {
 		objectMap["publicAccess"] = cp.PublicAccess
 	}
@@ -1808,6 +1897,14 @@ type DateAfterCreation struct {
 type DateAfterModification struct {
 	// DaysAfterModificationGreaterThan - Value indicating the age in days after last modification
 	DaysAfterModificationGreaterThan *float64 `json:"daysAfterModificationGreaterThan,omitempty"`
+}
+
+// DeletedShare the deleted share to be restored.
+type DeletedShare struct {
+	// DeletedShareName - Required. Identify the name of the deleted share that will be restored.
+	DeletedShareName *string `json:"deletedShareName,omitempty"`
+	// DeletedShareVersion - Required. Identify the version of the deleted share that will be restored.
+	DeletedShareVersion *string `json:"deletedShareVersion,omitempty"`
 }
 
 // DeleteRetentionPolicy the service properties for soft delete.
@@ -2549,6 +2646,26 @@ type FileShareProperties struct {
 	Metadata map[string]*string `json:"metadata"`
 	// ShareQuota - The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
 	ShareQuota *int32 `json:"shareQuota,omitempty"`
+	// EnabledProtocols - The authentication protocol that is used for the file share. Can only be specified when creating a share. Possible values include: 'SMB', 'NFS'
+	EnabledProtocols EnabledProtocols `json:"enabledProtocols,omitempty"`
+	// RootSquash - The property is for NFS share only. The default is NoRootSquash. Possible values include: 'NoRootSquash', 'RootSquash', 'AllSquash'
+	RootSquash RootSquashType `json:"rootSquash,omitempty"`
+	// Version - READ-ONLY; The version of the share.
+	Version *string `json:"version,omitempty"`
+	// Deleted - READ-ONLY; Indicates whether the share was deleted.
+	Deleted *bool `json:"deleted,omitempty"`
+	// DeletedTime - READ-ONLY; The deleted time if the share was deleted.
+	DeletedTime *date.Time `json:"deletedTime,omitempty"`
+	// RemainingRetentionDays - READ-ONLY; Remaining retention days for share that was soft deleted.
+	RemainingRetentionDays *int32 `json:"remainingRetentionDays,omitempty"`
+	// AccessTier - Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool. FileStorage account can choose Premium. Possible values include: 'ShareAccessTierTransactionOptimized', 'ShareAccessTierHot', 'ShareAccessTierCool', 'ShareAccessTierPremium'
+	AccessTier ShareAccessTier `json:"accessTier,omitempty"`
+	// AccessTierChangeTime - READ-ONLY; Indicates the last modification time for share access tier.
+	AccessTierChangeTime *date.Time `json:"accessTierChangeTime,omitempty"`
+	// AccessTierStatus - READ-ONLY; Indicates if there is a pending transition for access tier.
+	AccessTierStatus *string `json:"accessTierStatus,omitempty"`
+	// ShareUsageBytes - READ-ONLY; The approximate size of the data stored on the share. Note that this value may not include all recently created or recently resized files.
+	ShareUsageBytes *int32 `json:"shareUsageBytes,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FileShareProperties.
@@ -2559,6 +2676,15 @@ func (fsp FileShareProperties) MarshalJSON() ([]byte, error) {
 	}
 	if fsp.ShareQuota != nil {
 		objectMap["shareQuota"] = fsp.ShareQuota
+	}
+	if fsp.EnabledProtocols != "" {
+		objectMap["enabledProtocols"] = fsp.EnabledProtocols
+	}
+	if fsp.RootSquash != "" {
+		objectMap["rootSquash"] = fsp.RootSquash
+	}
+	if fsp.AccessTier != "" {
+		objectMap["accessTier"] = fsp.AccessTier
 	}
 	return json.Marshal(objectMap)
 }
@@ -2736,6 +2862,8 @@ type ImmutabilityPolicyProperty struct {
 	ImmutabilityPeriodSinceCreationInDays *int32 `json:"immutabilityPeriodSinceCreationInDays,omitempty"`
 	// State - READ-ONLY; The ImmutabilityPolicy state of a blob container, possible values include: Locked and Unlocked. Possible values include: 'Locked', 'Unlocked'
 	State ImmutabilityPolicyState `json:"state,omitempty"`
+	// AllowProtectedAppendWrites - This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API
+	AllowProtectedAppendWrites *bool `json:"allowProtectedAppendWrites,omitempty"`
 }
 
 // IPRule IP rule with specific IP or IP range in CIDR format.
@@ -2754,6 +2882,10 @@ type KeyVaultProperties struct {
 	KeyVersion *string `json:"keyversion,omitempty"`
 	// KeyVaultURI - The Uri of KeyVault.
 	KeyVaultURI *string `json:"keyvaulturi,omitempty"`
+	// CurrentVersionedKeyIdentifier - READ-ONLY; The object identifier of the current versioned Key Vault Key in use.
+	CurrentVersionedKeyIdentifier *string `json:"currentVersionedKeyIdentifier,omitempty"`
+	// LastKeyRotationTimestamp - READ-ONLY; Timestamp of last rotation of the Key Vault Key.
+	LastKeyRotationTimestamp *date.Time `json:"lastKeyRotationTimestamp,omitempty"`
 }
 
 // LeaseContainerRequest lease Container request schema.
@@ -3147,6 +3279,8 @@ type ManagementPolicyFilter struct {
 	PrefixMatch *[]string `json:"prefixMatch,omitempty"`
 	// BlobTypes - An array of predefined enum values. Only blockBlob is supported.
 	BlobTypes *[]string `json:"blobTypes,omitempty"`
+	// BlobIndexMatch - An array of blob index tag based filters, there can be at most 10 tag filters
+	BlobIndexMatch *[]TagFilter `json:"blobIndexMatch,omitempty"`
 }
 
 // ManagementPolicyProperties the Storage Account ManagementPolicy properties.
@@ -3214,6 +3348,123 @@ type NetworkRuleSet struct {
 	IPRules *[]IPRule `json:"ipRules,omitempty"`
 	// DefaultAction - Specifies the default action of allow or deny when no other rules match. Possible values include: 'DefaultActionAllow', 'DefaultActionDeny'
 	DefaultAction DefaultAction `json:"defaultAction,omitempty"`
+}
+
+// ObjectReplicationPolicies list storage account object replication policies.
+type ObjectReplicationPolicies struct {
+	autorest.Response `json:"-"`
+	// Value - The replication policy between two storage accounts.
+	Value *[]ObjectReplicationPolicy `json:"value,omitempty"`
+}
+
+// ObjectReplicationPolicy the replication policy between two storage accounts. Multiple rules can be
+// defined in one policy.
+type ObjectReplicationPolicy struct {
+	autorest.Response `json:"-"`
+	// ObjectReplicationPolicyProperties - Returns the Storage Account Object Replication Policy.
+	*ObjectReplicationPolicyProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ObjectReplicationPolicy.
+func (orp ObjectReplicationPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if orp.ObjectReplicationPolicyProperties != nil {
+		objectMap["properties"] = orp.ObjectReplicationPolicyProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ObjectReplicationPolicy struct.
+func (orp *ObjectReplicationPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var objectReplicationPolicyProperties ObjectReplicationPolicyProperties
+				err = json.Unmarshal(*v, &objectReplicationPolicyProperties)
+				if err != nil {
+					return err
+				}
+				orp.ObjectReplicationPolicyProperties = &objectReplicationPolicyProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				orp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				orp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				orp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ObjectReplicationPolicyFilter filters limit replication to a subset of blobs within the storage account.
+// A logical OR is performed on values in the filter. If multiple filters are defined, a logical AND is
+// performed on all filters.
+type ObjectReplicationPolicyFilter struct {
+	// PrefixMatch - Optional. Filters the results to replicate only blobs whose names begin with the specified prefix.
+	PrefixMatch *[]string `json:"prefixMatch,omitempty"`
+	// MinCreationTime - Blobs created after the time will be replicated to the destination. It must be in datetime format 'yyyy-MM-ddTHH:mm:ssZ'. Example: 2020-02-19T16:05:00Z
+	MinCreationTime *string `json:"minCreationTime,omitempty"`
+}
+
+// ObjectReplicationPolicyProperties the Storage Account ObjectReplicationPolicy properties.
+type ObjectReplicationPolicyProperties struct {
+	// PolicyID - READ-ONLY; A unique id for object replication policy.
+	PolicyID *string `json:"policyId,omitempty"`
+	// EnabledTime - READ-ONLY; Indicates when the policy is enabled on the source account.
+	EnabledTime *date.Time `json:"enabledTime,omitempty"`
+	// SourceAccount - Required. Source account name.
+	SourceAccount *string `json:"sourceAccount,omitempty"`
+	// DestinationAccount - Required. Destination account name.
+	DestinationAccount *string `json:"destinationAccount,omitempty"`
+	// Rules - The storage account object replication rules.
+	Rules *[]ObjectReplicationPolicyRule `json:"rules,omitempty"`
+}
+
+// ObjectReplicationPolicyRule the replication policy rule between two containers.
+type ObjectReplicationPolicyRule struct {
+	// RuleID - Rule Id is auto-generated for each new rule on destination account. It is required for put policy on source account.
+	RuleID *string `json:"ruleId,omitempty"`
+	// SourceContainer - Required. Source container name.
+	SourceContainer *string `json:"sourceContainer,omitempty"`
+	// DestinationContainer - Required. Destination container name.
+	DestinationContainer *string `json:"destinationContainer,omitempty"`
+	// Filters - Optional. An object that defines the filter set.
+	Filters *ObjectReplicationPolicyFilter `json:"filters,omitempty"`
 }
 
 // Operation storage REST API operation definition.
@@ -3539,6 +3790,8 @@ type RestorePolicyProperties struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// Days - how long this blob can be restored. It should be great than zero and less than DeleteRetentionPolicy.days.
 	Days *int32 `json:"days,omitempty"`
+	// LastEnabledTime - READ-ONLY; Returns the date and time the restore policy was last enabled.
+	LastEnabledTime *date.Time `json:"lastEnabledTime,omitempty"`
 }
 
 // Restriction the restriction because of which SKU cannot be used.
@@ -3648,6 +3901,16 @@ type SkuListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Get the list result of storage SKUs and their properties.
 	Value *[]SkuInformation `json:"value,omitempty"`
+}
+
+// TagFilter blob index tag based filtering for blob objects
+type TagFilter struct {
+	// Name - This is the filter tag name, it can have 1 - 128 characters
+	Name *string `json:"name,omitempty"`
+	// Op - This is the comparison operator which is used for object comparison and filtering. Only == (equality operator) is currently supported
+	Op *string `json:"op,omitempty"`
+	// Value - This is the filter tag value field used for tag based filtering, it can have 0 - 256 characters
+	Value *string `json:"value,omitempty"`
 }
 
 // TagProperty a tag of the LegalHold of a blob container.

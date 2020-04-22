@@ -1706,8 +1706,8 @@ type NameAvailabilityParameters struct {
 type OperationDetail struct {
 	// Name - Name of the operation
 	Name *string `json:"name,omitempty"`
-	// DataAction - Indicates whether the operation is a data action
-	DataAction *bool `json:"dataAction,omitempty"`
+	// IsDataAction - Indicates whether the operation is a data action
+	IsDataAction *bool `json:"isDataAction,omitempty"`
 	// Display - Display of the operation
 	Display *OperationDisplay `json:"display,omitempty"`
 	// Origin - Origin of the operation

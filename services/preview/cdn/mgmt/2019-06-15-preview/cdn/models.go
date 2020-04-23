@@ -304,8 +304,6 @@ type MatchVariable string
 const (
 	// Cookies ...
 	Cookies MatchVariable = "Cookies"
-	// Country ...
-	Country MatchVariable = "Country"
 	// PostArgs ...
 	PostArgs MatchVariable = "PostArgs"
 	// QueryString ...
@@ -320,11 +318,13 @@ const (
 	RequestMethod MatchVariable = "RequestMethod"
 	// RequestURI ...
 	RequestURI MatchVariable = "RequestUri"
+	// SocketAddr ...
+	SocketAddr MatchVariable = "SocketAddr"
 )
 
 // PossibleMatchVariableValues returns an array of possible values for the MatchVariable const type.
 func PossibleMatchVariableValues() []MatchVariable {
-	return []MatchVariable{Cookies, Country, PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, RequestURI}
+	return []MatchVariable{Cookies, PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, RequestURI, SocketAddr}
 }
 
 // MinimumTLSVersion enumerates the values for minimum tls version.
@@ -4921,9 +4921,9 @@ type ManagedRuleSetList struct {
 
 // MatchCondition define match conditions
 type MatchCondition struct {
-	// MatchVariable - Match variable to compare against. Possible values include: 'RemoteAddr', 'Country', 'RequestMethod', 'RequestHeader', 'RequestURI', 'QueryString', 'RequestBody', 'Cookies', 'PostArgs'
+	// MatchVariable - Match variable to compare against. Possible values include: 'RemoteAddr', 'SocketAddr', 'RequestMethod', 'RequestHeader', 'RequestURI', 'QueryString', 'RequestBody', 'Cookies', 'PostArgs'
 	MatchVariable MatchVariable `json:"matchVariable,omitempty"`
-	// Selector - Selector can used to match a specific key for QueryString, RequestUri, RequestHeaders or RequestBody.
+	// Selector - Selector can used to match a specific key for QueryString, Cookies, RequestHeader or PostArgs.
 	Selector *string `json:"selector,omitempty"`
 	// Operator - Describes operator to be matched. Possible values include: 'OperatorAny', 'OperatorIPMatch', 'OperatorGeoMatch', 'OperatorEqual', 'OperatorContains', 'OperatorLessThan', 'OperatorGreaterThan', 'OperatorLessThanOrEqual', 'OperatorGreaterThanOrEqual', 'OperatorBeginsWith', 'OperatorEndsWith', 'OperatorRegEx'
 	Operator Operator `json:"operator,omitempty"`

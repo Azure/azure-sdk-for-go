@@ -271,6 +271,7 @@ type VirtualMachineScaleSetVMsClientAPI interface {
 	ReimageAll(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string) (result compute.VirtualMachineScaleSetVMsReimageAllFuture, err error)
 	Restart(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string) (result compute.VirtualMachineScaleSetVMsRestartFuture, err error)
 	RunCommand(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, parameters compute.RunCommandInput) (result compute.VirtualMachineScaleSetVMsRunCommandFuture, err error)
+	SimulateEviction(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string) (result autorest.Response, err error)
 	Start(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string) (result compute.VirtualMachineScaleSetVMsStartFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, parameters compute.VirtualMachineScaleSetVM) (result compute.VirtualMachineScaleSetVMsUpdateFuture, err error)
 }

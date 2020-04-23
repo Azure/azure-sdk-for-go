@@ -1666,7 +1666,8 @@ func (client VirtualMachinesClient) RunCommandResponder(resp *http.Response) (re
 	return
 }
 
-// SimulateEviction the operation to simulate the eviction of spot virtual machine
+// SimulateEviction the operation to simulate the eviction of spot virtual machine. The eviction will occur within 30
+// minutes of calling the API
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
@@ -1718,7 +1719,7 @@ func (client VirtualMachinesClient) SimulateEvictionPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/SimulateEviction", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/simulateEviction", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

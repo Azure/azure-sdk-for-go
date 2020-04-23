@@ -1362,6 +1362,8 @@ type DatabaseAccountGetProperties struct {
 	FailoverPolicies *[]FailoverPolicy `json:"failoverPolicies,omitempty"`
 	// VirtualNetworkRules - List of Virtual Network ACL rules configured for the Cosmos DB account.
 	VirtualNetworkRules *[]VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
+	// PrivateEndpointConnections - READ-ONLY; List of Private Endpoint Connections configured for the Cosmos DB account.
+	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// EnableMultipleWriteLocations - Enables the account to write in multiple locations
 	EnableMultipleWriteLocations *bool `json:"enableMultipleWriteLocations,omitempty"`
 	// EnableCassandraConnector - Enables the cassandra connector on the Cosmos DB C* account
@@ -4077,10 +4079,10 @@ type PrivateLinkResourceProperties struct {
 type PrivateLinkServiceConnectionStateProperty struct {
 	// Status - The private link service connection status.
 	Status *string `json:"status,omitempty"`
-	// Description - The private link service connection description.
-	Description *string `json:"description,omitempty"`
 	// ActionsRequired - READ-ONLY; Any action that is required beyond basic workflow (approve/ reject/ disconnect)
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	// Description - The private link service connection description.
+	Description *string `json:"description,omitempty"`
 }
 
 // ProvisionedThroughputSettingsResource cosmos DB provisioned throughput settings object

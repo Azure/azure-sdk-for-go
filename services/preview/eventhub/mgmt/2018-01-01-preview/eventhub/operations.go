@@ -25,8 +25,7 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the azure Event Hubs client for managing Event Hubs Cluster, IPFilter Rules and
-// VirtualNetworkRules resources.
+// OperationsClient is the client for the Operations methods of the Eventhub service.
 type OperationsClient struct {
 	BaseClient
 }

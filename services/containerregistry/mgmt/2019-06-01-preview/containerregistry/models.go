@@ -617,6 +617,415 @@ type Actor struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// AgentPool the agentpool that has the ARM resource and properties.
+// The agentpool will have all information to create an agent pool.
+type AgentPool struct {
+	autorest.Response `json:"-"`
+	// AgentPoolProperties - The properties associated with the agent pool
+	*AgentPoolProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+	// Location - The location of the resource. This cannot be changed after the resource is created.
+	Location *string `json:"location,omitempty"`
+	// Tags - The tags of the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for AgentPool.
+func (ap AgentPool) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.AgentPoolProperties != nil {
+		objectMap["properties"] = ap.AgentPoolProperties
+	}
+	if ap.Location != nil {
+		objectMap["location"] = ap.Location
+	}
+	if ap.Tags != nil {
+		objectMap["tags"] = ap.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AgentPool struct.
+func (ap *AgentPool) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var agentPoolProperties AgentPoolProperties
+				err = json.Unmarshal(*v, &agentPoolProperties)
+				if err != nil {
+					return err
+				}
+				ap.AgentPoolProperties = &agentPoolProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ap.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ap.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ap.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ap.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ap.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// AgentPoolListResult the collection of agent pools.
+type AgentPoolListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The collection value.
+	Value *[]AgentPool `json:"value,omitempty"`
+	// NextLink - The URI that can be used to request the next set of paged results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AgentPoolListResultIterator provides access to a complete listing of AgentPool values.
+type AgentPoolListResultIterator struct {
+	i    int
+	page AgentPoolListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AgentPoolListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AgentPoolListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AgentPoolListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AgentPoolListResultIterator) Response() AgentPoolListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AgentPoolListResultIterator) Value() AgentPool {
+	if !iter.page.NotDone() {
+		return AgentPool{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AgentPoolListResultIterator type.
+func NewAgentPoolListResultIterator(page AgentPoolListResultPage) AgentPoolListResultIterator {
+	return AgentPoolListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (aplr AgentPoolListResult) IsEmpty() bool {
+	return aplr.Value == nil || len(*aplr.Value) == 0
+}
+
+// agentPoolListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (aplr AgentPoolListResult) agentPoolListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if aplr.NextLink == nil || len(to.String(aplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(aplr.NextLink)))
+}
+
+// AgentPoolListResultPage contains a page of AgentPool values.
+type AgentPoolListResultPage struct {
+	fn   func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)
+	aplr AgentPoolListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AgentPoolListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.aplr)
+	if err != nil {
+		return err
+	}
+	page.aplr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AgentPoolListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AgentPoolListResultPage) NotDone() bool {
+	return !page.aplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AgentPoolListResultPage) Response() AgentPoolListResult {
+	return page.aplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AgentPoolListResultPage) Values() []AgentPool {
+	if page.aplr.IsEmpty() {
+		return nil
+	}
+	return *page.aplr.Value
+}
+
+// Creates a new instance of the AgentPoolListResultPage type.
+func NewAgentPoolListResultPage(getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
+	return AgentPoolListResultPage{fn: getNextPage}
+}
+
+// AgentPoolProperties the properties of agent pool.
+type AgentPoolProperties struct {
+	// Count - The count of agent machine
+	Count *int32 `json:"count,omitempty"`
+	// Tier - The Tier of agent machine
+	Tier *string `json:"tier,omitempty"`
+	// Os - The OS of agent machine. Possible values include: 'Windows', 'Linux'
+	Os OS `json:"os,omitempty"`
+	// VirtualNetworkSubnetResourceID - The Virtual Network Subnet Resource Id of the agent machine
+	VirtualNetworkSubnetResourceID *string `json:"virtualNetworkSubnetResourceId,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state of this agent pool. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// AgentPoolPropertiesUpdateParameters ...
+type AgentPoolPropertiesUpdateParameters struct {
+	// Count - The count of agent machine
+	Count *int32 `json:"count,omitempty"`
+}
+
+// AgentPoolQueueStatus the QueueStatus of Agent Pool
+type AgentPoolQueueStatus struct {
+	autorest.Response `json:"-"`
+	// Count - The number of pending runs in the queue
+	Count *int32 `json:"count,omitempty"`
+}
+
+// AgentPoolsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AgentPoolsCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AgentPoolsCreateFuture) Result(client AgentPoolsClient) (ap AgentPool, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.AgentPoolsCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.AgentPoolsCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ap.Response.Response, err = future.GetResult(sender); err == nil && ap.Response.Response.StatusCode != http.StatusNoContent {
+		ap, err = client.CreateResponder(ap.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.AgentPoolsCreateFuture", "Result", ap.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AgentPoolsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AgentPoolsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AgentPoolsDeleteFuture) Result(client AgentPoolsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.AgentPoolsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.AgentPoolsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// AgentPoolsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AgentPoolsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AgentPoolsUpdateFuture) Result(client AgentPoolsClient) (ap AgentPool, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.AgentPoolsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.AgentPoolsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ap.Response.Response, err = future.GetResult(sender); err == nil && ap.Response.Response.StatusCode != http.StatusNoContent {
+		ap, err = client.UpdateResponder(ap.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.AgentPoolsUpdateFuture", "Result", ap.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AgentPoolUpdateParameters the parameters for updating an agent pool.
+type AgentPoolUpdateParameters struct {
+	// AgentPoolPropertiesUpdateParameters - The properties associated with the agent pool
+	*AgentPoolPropertiesUpdateParameters `json:"properties,omitempty"`
+	// Tags - The ARM resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for AgentPoolUpdateParameters.
+func (apup AgentPoolUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if apup.AgentPoolPropertiesUpdateParameters != nil {
+		objectMap["properties"] = apup.AgentPoolPropertiesUpdateParameters
+	}
+	if apup.Tags != nil {
+		objectMap["tags"] = apup.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AgentPoolUpdateParameters struct.
+func (apup *AgentPoolUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var agentPoolPropertiesUpdateParameters AgentPoolPropertiesUpdateParameters
+				err = json.Unmarshal(*v, &agentPoolPropertiesUpdateParameters)
+				if err != nil {
+					return err
+				}
+				apup.AgentPoolPropertiesUpdateParameters = &agentPoolPropertiesUpdateParameters
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				apup.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
 // AgentProperties the properties that determine the run agent configuration.
 type AgentProperties struct {
 	// CPU - The CPU configuration in terms of number of cores required for the run.
@@ -789,6 +1198,8 @@ type DockerBuildRequest struct {
 	Credentials *Credentials `json:"credentials,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the run.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
 	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
 	Type Type `json:"type,omitempty"`
 }
@@ -832,6 +1243,9 @@ func (dbr DockerBuildRequest) MarshalJSON() ([]byte, error) {
 	}
 	if dbr.IsArchiveEnabled != nil {
 		objectMap["isArchiveEnabled"] = dbr.IsArchiveEnabled
+	}
+	if dbr.AgentPoolName != nil {
+		objectMap["agentPoolName"] = dbr.AgentPoolName
 	}
 	if dbr.Type != "" {
 		objectMap["type"] = dbr.Type
@@ -1054,6 +1468,8 @@ type EncodedTaskRunRequest struct {
 	Credentials *Credentials `json:"credentials,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the run.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
 	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
 	Type Type `json:"type,omitempty"`
 }
@@ -1088,6 +1504,9 @@ func (etrr EncodedTaskRunRequest) MarshalJSON() ([]byte, error) {
 	}
 	if etrr.IsArchiveEnabled != nil {
 		objectMap["isArchiveEnabled"] = etrr.IsArchiveEnabled
+	}
+	if etrr.AgentPoolName != nil {
+		objectMap["agentPoolName"] = etrr.AgentPoolName
 	}
 	if etrr.Type != "" {
 		objectMap["type"] = etrr.Type
@@ -1259,18 +1678,22 @@ func (etsup EncodedTaskStepUpdateParameters) AsBasicTaskStepUpdateParameters() (
 	return &etsup, true
 }
 
-// Error an error response from the Azure Container Registry service.
-type Error struct {
+// ErrorResponse an error response from the Azure Container Registry service.
+type ErrorResponse struct {
+	// Error - Azure container registry build API error body.
+	Error *ErrorResponseBody `json:"error,omitempty"`
+}
+
+// ErrorResponseBody an error response from the Azure Container Registry service.
+type ErrorResponseBody struct {
 	// Code - error code.
 	Code *string `json:"code,omitempty"`
 	// Message - error message.
 	Message *string `json:"message,omitempty"`
-}
-
-// ErrorSchema an error response from the Azure Container Registry service.
-type ErrorSchema struct {
-	// Error - Azure container registry build API error body.
-	Error *Error `json:"error,omitempty"`
+	// Target - target of the particular error.
+	Target *string `json:"target,omitempty"`
+	// Details - an array of additional nested error response info objects, as described by this contract.
+	Details *InnerErrorDescription `json:"details,omitempty"`
 }
 
 // Event the event for a webhook.
@@ -1545,6 +1968,8 @@ type FileTaskRunRequest struct {
 	Credentials *Credentials `json:"credentials,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the run.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
 	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
 	Type Type `json:"type,omitempty"`
 }
@@ -1579,6 +2004,9 @@ func (ftrr FileTaskRunRequest) MarshalJSON() ([]byte, error) {
 	}
 	if ftrr.IsArchiveEnabled != nil {
 		objectMap["isArchiveEnabled"] = ftrr.IsArchiveEnabled
+	}
+	if ftrr.AgentPoolName != nil {
+		objectMap["agentPoolName"] = ftrr.AgentPoolName
 	}
 	if ftrr.Type != "" {
 		objectMap["type"] = ftrr.Type
@@ -1858,6 +2286,16 @@ type ImportSourceCredentials struct {
 	Username *string `json:"username,omitempty"`
 	// Password - The password used to authenticate with the source registry.
 	Password *string `json:"password,omitempty"`
+}
+
+// InnerErrorDescription inner error.
+type InnerErrorDescription struct {
+	// Code - error code.
+	Code *string `json:"code,omitempty"`
+	// Message - error message.
+	Message *string `json:"message,omitempty"`
+	// Target - target of the particular error.
+	Target *string `json:"target,omitempty"`
 }
 
 // IPRule IP rule with specific IP or IP range in CIDR format.
@@ -3283,6 +3721,8 @@ type RunFilter struct {
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
 	// TaskName - The name of the task that the run corresponds to.
 	TaskName *string `json:"taskName,omitempty"`
+	// AgentPoolName - The name of the agent pool that the run corresponds to.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
 }
 
 // RunGetLogResult the result of get log link operation.
@@ -3448,6 +3888,8 @@ type RunProperties struct {
 	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
 	// RunType - The type of run. Possible values include: 'QuickBuild', 'QuickRun', 'AutoBuild', 'AutoRun'
 	RunType RunType `json:"runType,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the run.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
 	// CreateTime - The time the run was scheduled.
 	CreateTime *date.Time `json:"createTime,omitempty"`
 	// StartTime - The time the run started.
@@ -3495,6 +3937,8 @@ type BasicRunRequest interface {
 type RunRequest struct {
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the run.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
 	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
 	Type Type `json:"type,omitempty"`
 }
@@ -3554,6 +3998,9 @@ func (rr RunRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rr.IsArchiveEnabled != nil {
 		objectMap["isArchiveEnabled"] = rr.IsArchiveEnabled
+	}
+	if rr.AgentPoolName != nil {
+		objectMap["agentPoolName"] = rr.AgentPoolName
 	}
 	if rr.Type != "" {
 		objectMap["type"] = rr.Type
@@ -4448,6 +4895,8 @@ type TaskProperties struct {
 	Platform *PlatformProperties `json:"platform,omitempty"`
 	// AgentConfiguration - The machine configuration of the run agent.
 	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the task.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
 	// Timeout - Run timeout in seconds.
 	Timeout *int32 `json:"timeout,omitempty"`
 	// Step - The properties of a task step.
@@ -4512,6 +4961,15 @@ func (tp *TaskProperties) UnmarshalJSON(body []byte) error {
 				}
 				tp.AgentConfiguration = &agentConfiguration
 			}
+		case "agentPoolName":
+			if v != nil {
+				var agentPoolName string
+				err = json.Unmarshal(*v, &agentPoolName)
+				if err != nil {
+					return err
+				}
+				tp.AgentPoolName = &agentPoolName
+			}
 		case "timeout":
 			if v != nil {
 				var timeout int32
@@ -4561,6 +5019,8 @@ type TaskPropertiesUpdateParameters struct {
 	Platform *PlatformUpdateParameters `json:"platform,omitempty"`
 	// AgentConfiguration - The machine configuration of the run agent.
 	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the task.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
 	// Timeout - Run timeout in seconds.
 	Timeout *int32 `json:"timeout,omitempty"`
 	// Step - The properties for updating a task step.
@@ -4606,6 +5066,15 @@ func (tpup *TaskPropertiesUpdateParameters) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				tpup.AgentConfiguration = &agentConfiguration
+			}
+		case "agentPoolName":
+			if v != nil {
+				var agentPoolName string
+				err = json.Unmarshal(*v, &agentPoolName)
+				if err != nil {
+					return err
+				}
+				tpup.AgentPoolName = &agentPoolName
 			}
 		case "timeout":
 			if v != nil {
@@ -5020,6 +5489,8 @@ type TaskRunRequest struct {
 	OverrideTaskStepProperties *OverrideTaskStepProperties `json:"overrideTaskStepProperties,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	// AgentPoolName - The dedicated agent pool for the run.
+	AgentPoolName *string `json:"agentPoolName,omitempty"`
 	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
 	Type Type `json:"type,omitempty"`
 }
@@ -5036,6 +5507,9 @@ func (trr TaskRunRequest) MarshalJSON() ([]byte, error) {
 	}
 	if trr.IsArchiveEnabled != nil {
 		objectMap["isArchiveEnabled"] = trr.IsArchiveEnabled
+	}
+	if trr.AgentPoolName != nil {
+		objectMap["agentPoolName"] = trr.AgentPoolName
 	}
 	if trr.Type != "" {
 		objectMap["type"] = trr.Type

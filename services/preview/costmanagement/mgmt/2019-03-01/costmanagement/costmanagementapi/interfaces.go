@@ -71,6 +71,13 @@ type CloudConnectorClientAPI interface {
 
 var _ CloudConnectorClientAPI = (*costmanagement.CloudConnectorClient)(nil)
 
+// ConnectorClientAPI contains the set of methods on the ConnectorClient type.
+type ConnectorClientAPI interface {
+	CheckEligibility(ctx context.Context, connectorCredentials costmanagement.CheckEligibilityDefinition) (result costmanagement.ConnectorDefinition, err error)
+}
+
+var _ ConnectorClientAPI = (*costmanagement.ConnectorClient)(nil)
+
 // ExternalBillingAccountClientAPI contains the set of methods on the ExternalBillingAccountClient type.
 type ExternalBillingAccountClientAPI interface {
 	Get(ctx context.Context, externalBillingAccountName string, expand string) (result costmanagement.ExternalBillingAccountDefinition, err error)

@@ -2,7 +2,7 @@
   "$schema": "https://openapistorageprod.blob.core.windows.net/sdkautomation/prod/schemas/swagger_to_sdk_config.schema.json",
   "meta": {
     "after_scripts": [
-      "go run ./tools/versioner/main.go ./services -v",
+      "go run ./tools/versioner/main.go ./services -v"
     ],
     "autorest_options": {
       "use": "@microsoft.azure/autorest.go@~2.1.144",

@@ -153,34 +153,6 @@ type ExternalSecuritySolutionsClientAPI interface {
 
 var _ ExternalSecuritySolutionsClientAPI = (*security.ExternalSecuritySolutionsClient)(nil)
 
-// JitNetworkAccessPoliciesClientAPI contains the set of methods on the JitNetworkAccessPoliciesClient type.
-type JitNetworkAccessPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, body security.JitNetworkAccessPolicy) (result security.JitNetworkAccessPolicy, err error)
-	Delete(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string) (result security.JitNetworkAccessPolicy, err error)
-	Initiate(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, body security.JitNetworkAccessPolicyInitiateRequest) (result security.JitNetworkAccessRequest, err error)
-	List(ctx context.Context) (result security.JitNetworkAccessPoliciesListPage, err error)
-	ListComplete(ctx context.Context) (result security.JitNetworkAccessPoliciesListIterator, err error)
-	ListByRegion(ctx context.Context) (result security.JitNetworkAccessPoliciesListPage, err error)
-	ListByRegionComplete(ctx context.Context) (result security.JitNetworkAccessPoliciesListIterator, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.JitNetworkAccessPoliciesListPage, err error)
-	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result security.JitNetworkAccessPoliciesListIterator, err error)
-	ListByResourceGroupAndRegion(ctx context.Context, resourceGroupName string) (result security.JitNetworkAccessPoliciesListPage, err error)
-	ListByResourceGroupAndRegionComplete(ctx context.Context, resourceGroupName string) (result security.JitNetworkAccessPoliciesListIterator, err error)
-}
-
-var _ JitNetworkAccessPoliciesClientAPI = (*security.JitNetworkAccessPoliciesClient)(nil)
-
-// AdaptiveApplicationControlsClientAPI contains the set of methods on the AdaptiveApplicationControlsClient type.
-type AdaptiveApplicationControlsClientAPI interface {
-	Delete(ctx context.Context, groupName string) (result autorest.Response, err error)
-	Get(ctx context.Context, groupName string) (result security.AppWhitelistingGroup, err error)
-	List(ctx context.Context, includePathRecommendations *bool, summary *bool) (result security.AppWhitelistingGroups, err error)
-	Put(ctx context.Context, groupName string, body security.AppWhitelistingPutGroupData) (result security.AppWhitelistingGroup, err error)
-}
-
-var _ AdaptiveApplicationControlsClientAPI = (*security.AdaptiveApplicationControlsClient)(nil)
-
 // LocationsClientAPI contains the set of methods on the LocationsClient type.
 type LocationsClientAPI interface {
 	Get(ctx context.Context) (result security.AscLocation, err error)
@@ -354,6 +326,16 @@ type AssessmentsClientAPI interface {
 
 var _ AssessmentsClientAPI = (*security.AssessmentsClient)(nil)
 
+// AdaptiveApplicationControlsClientAPI contains the set of methods on the AdaptiveApplicationControlsClient type.
+type AdaptiveApplicationControlsClientAPI interface {
+	Delete(ctx context.Context, groupName string) (result autorest.Response, err error)
+	Get(ctx context.Context, groupName string) (result security.AppWhitelistingGroup, err error)
+	List(ctx context.Context, includePathRecommendations *bool, summary *bool) (result security.AppWhitelistingGroups, err error)
+	Put(ctx context.Context, groupName string, body security.AppWhitelistingGroup) (result security.AppWhitelistingGroup, err error)
+}
+
+var _ AdaptiveApplicationControlsClientAPI = (*security.AdaptiveApplicationControlsClient)(nil)
+
 // AdaptiveNetworkHardeningsClientAPI contains the set of methods on the AdaptiveNetworkHardeningsClient type.
 type AdaptiveNetworkHardeningsClientAPI interface {
 	Enforce(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, body security.AdaptiveNetworkHardeningEnforceRequest) (result security.AdaptiveNetworkHardeningsEnforceFuture, err error)
@@ -385,3 +367,21 @@ type TopologyClientAPI interface {
 }
 
 var _ TopologyClientAPI = (*security.TopologyClient)(nil)
+
+// JitNetworkAccessPoliciesClientAPI contains the set of methods on the JitNetworkAccessPoliciesClient type.
+type JitNetworkAccessPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, body security.JitNetworkAccessPolicy) (result security.JitNetworkAccessPolicy, err error)
+	Delete(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string) (result security.JitNetworkAccessPolicy, err error)
+	Initiate(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, body security.JitNetworkAccessPolicyInitiateRequest) (result security.JitNetworkAccessRequest, err error)
+	List(ctx context.Context) (result security.JitNetworkAccessPoliciesListPage, err error)
+	ListComplete(ctx context.Context) (result security.JitNetworkAccessPoliciesListIterator, err error)
+	ListByRegion(ctx context.Context) (result security.JitNetworkAccessPoliciesListPage, err error)
+	ListByRegionComplete(ctx context.Context) (result security.JitNetworkAccessPoliciesListIterator, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.JitNetworkAccessPoliciesListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result security.JitNetworkAccessPoliciesListIterator, err error)
+	ListByResourceGroupAndRegion(ctx context.Context, resourceGroupName string) (result security.JitNetworkAccessPoliciesListPage, err error)
+	ListByResourceGroupAndRegionComplete(ctx context.Context, resourceGroupName string) (result security.JitNetworkAccessPoliciesListIterator, err error)
+}
+
+var _ JitNetworkAccessPoliciesClientAPI = (*security.JitNetworkAccessPoliciesClient)(nil)

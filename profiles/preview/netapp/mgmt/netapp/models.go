@@ -98,7 +98,6 @@ type Dimension = original.Dimension
 type ExportPolicyRule = original.ExportPolicyRule
 type MetricSpecification = original.MetricSpecification
 type MountTarget = original.MountTarget
-type MountTargetList = original.MountTargetList
 type MountTargetProperties = original.MountTargetProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay

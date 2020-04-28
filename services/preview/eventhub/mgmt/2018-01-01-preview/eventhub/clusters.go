@@ -26,8 +26,7 @@ import (
 	"net/http"
 )
 
-// ClustersClient is the azure Event Hubs client for managing Event Hubs Cluster, IPFilter Rules and
-// VirtualNetworkRules resources.
+// ClustersClient is the client for the Clusters methods of the Eventhub service.
 type ClustersClient struct {
 	BaseClient
 }
@@ -45,7 +44,7 @@ func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) Cluster
 
 // Delete deletes an existing Event Hubs Cluster. This operation is idempotent.
 // Parameters:
-// resourceGroupName - name of the resource group within the Azure subscription.
+// resourceGroupName - name of the resource group within the azure subscription.
 // clusterName - the name of the Event Hubs Cluster.
 func (client ClustersClient) Delete(ctx context.Context, resourceGroupName string, clusterName string) (result ClustersDeleteFuture, err error) {
 	if tracing.IsEnabled() {
@@ -130,7 +129,7 @@ func (client ClustersClient) DeleteResponder(resp *http.Response) (result autore
 
 // Get gets the resource description of the specified Event Hubs Cluster.
 // Parameters:
-// resourceGroupName - name of the resource group within the Azure subscription.
+// resourceGroupName - name of the resource group within the azure subscription.
 // clusterName - the name of the Event Hubs Cluster.
 func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, clusterName string) (result Cluster, err error) {
 	if tracing.IsEnabled() {
@@ -287,7 +286,7 @@ func (client ClustersClient) ListAvailableClustersResponder(resp *http.Response)
 
 // ListByResourceGroup lists the available Event Hubs Clusters within an ARM resource group.
 // Parameters:
-// resourceGroupName - name of the resource group within the Azure subscription.
+// resourceGroupName - name of the resource group within the azure subscription.
 func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ClusterListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.ListByResourceGroup")
@@ -406,7 +405,7 @@ func (client ClustersClient) ListByResourceGroupComplete(ctx context.Context, re
 
 // ListNamespaces list all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
 // Parameters:
-// resourceGroupName - name of the resource group within the Azure subscription.
+// resourceGroupName - name of the resource group within the azure subscription.
 // clusterName - the name of the Event Hubs Cluster.
 func (client ClustersClient) ListNamespaces(ctx context.Context, resourceGroupName string, clusterName string) (result EHNamespaceIDListResult, err error) {
 	if tracing.IsEnabled() {
@@ -492,7 +491,7 @@ func (client ClustersClient) ListNamespacesResponder(resp *http.Response) (resul
 
 // Patch modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
 // Parameters:
-// resourceGroupName - name of the resource group within the Azure subscription.
+// resourceGroupName - name of the resource group within the azure subscription.
 // clusterName - the name of the Event Hubs Cluster.
 // parameters - the properties of the Event Hubs Cluster which should be updated.
 func (client ClustersClient) Patch(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster) (result ClustersPatchFuture, err error) {
@@ -581,7 +580,7 @@ func (client ClustersClient) PatchResponder(resp *http.Response) (result Cluster
 
 // Put creates or updates an instance of an Event Hubs Cluster.
 // Parameters:
-// resourceGroupName - name of the resource group within the Azure subscription.
+// resourceGroupName - name of the resource group within the azure subscription.
 // clusterName - the name of the Event Hubs Cluster.
 func (client ClustersClient) Put(ctx context.Context, resourceGroupName string, clusterName string) (result ClustersPutFuture, err error) {
 	if tracing.IsEnabled() {

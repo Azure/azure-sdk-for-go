@@ -22,11 +22,18 @@ package storagecache
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2019-11-01/storagecache"
+	original "github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2020-03-01/storagecache"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type CacheIdentityType = original.CacheIdentityType
+
+const (
+	None           CacheIdentityType = original.None
+	SystemAssigned CacheIdentityType = original.SystemAssigned
 )
 
 type FirmwareStatusType = original.FirmwareStatusType
@@ -76,15 +83,29 @@ const (
 	StorageTargetTypeUnknown StorageTargetType = original.StorageTargetTypeUnknown
 )
 
+type TargetBaseType = original.TargetBaseType
+
+const (
+	TargetBaseTypeClfs                    TargetBaseType = original.TargetBaseTypeClfs
+	TargetBaseTypeNfs3                    TargetBaseType = original.TargetBaseTypeNfs3
+	TargetBaseTypeStorageTargetProperties TargetBaseType = original.TargetBaseTypeStorageTargetProperties
+	TargetBaseTypeUnknown                 TargetBaseType = original.TargetBaseTypeUnknown
+)
+
 type APIOperation = original.APIOperation
 type APIOperationDisplay = original.APIOperationDisplay
 type APIOperationListResult = original.APIOperationListResult
 type APIOperationListResultIterator = original.APIOperationListResultIterator
 type APIOperationListResultPage = original.APIOperationListResultPage
 type BaseClient = original.BaseClient
+type BasicStorageTargetProperties = original.BasicStorageTargetProperties
 type Cache = original.Cache
+type CacheEncryptionSettings = original.CacheEncryptionSettings
 type CacheHealth = original.CacheHealth
+type CacheIdentity = original.CacheIdentity
+type CacheNetworkSettings = original.CacheNetworkSettings
 type CacheProperties = original.CacheProperties
+type CacheSecuritySettings = original.CacheSecuritySettings
 type CacheSku = original.CacheSku
 type CacheUpgradeStatus = original.CacheUpgradeStatus
 type CachesClient = original.CachesClient
@@ -98,10 +119,14 @@ type CachesStartFuture = original.CachesStartFuture
 type CachesStopFuture = original.CachesStopFuture
 type CachesUpgradeFirmwareFuture = original.CachesUpgradeFirmwareFuture
 type ClfsTarget = original.ClfsTarget
+type ClfsTargetProperties = original.ClfsTargetProperties
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type KeyVaultKeyReference = original.KeyVaultKeyReference
+type KeyVaultKeyReferenceSourceVault = original.KeyVaultKeyReferenceSourceVault
 type NamespaceJunction = original.NamespaceJunction
 type Nfs3Target = original.Nfs3Target
+type Nfs3TargetProperties = original.Nfs3TargetProperties
 type OperationsClient = original.OperationsClient
 type ResourceSku = original.ResourceSku
 type ResourceSkuCapabilities = original.ResourceSkuCapabilities
@@ -114,6 +139,7 @@ type SetObject = original.SetObject
 type SkusClient = original.SkusClient
 type StorageTarget = original.StorageTarget
 type StorageTargetProperties = original.StorageTargetProperties
+type StorageTargetResource = original.StorageTargetResource
 type StorageTargetsClient = original.StorageTargetsClient
 type StorageTargetsCreateOrUpdateFuture = original.StorageTargetsCreateOrUpdateFuture
 type StorageTargetsDeleteFuture = original.StorageTargetsDeleteFuture
@@ -121,6 +147,7 @@ type StorageTargetsResult = original.StorageTargetsResult
 type StorageTargetsResultIterator = original.StorageTargetsResultIterator
 type StorageTargetsResultPage = original.StorageTargetsResultPage
 type UnknownTarget = original.UnknownTarget
+type UnknownTargetProperties = original.UnknownTargetProperties
 type UsageModel = original.UsageModel
 type UsageModelDisplay = original.UsageModelDisplay
 type UsageModelsClient = original.UsageModelsClient
@@ -194,6 +221,9 @@ func NewUsageModelsResultPage(getNextPage func(context.Context, UsageModelsResul
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleCacheIdentityTypeValues() []CacheIdentityType {
+	return original.PossibleCacheIdentityTypeValues()
+}
 func PossibleFirmwareStatusTypeValues() []FirmwareStatusType {
 	return original.PossibleFirmwareStatusTypeValues()
 }
@@ -208,6 +238,9 @@ func PossibleReasonCodeValues() []ReasonCode {
 }
 func PossibleStorageTargetTypeValues() []StorageTargetType {
 	return original.PossibleStorageTargetTypeValues()
+}
+func PossibleTargetBaseTypeValues() []TargetBaseType {
+	return original.PossibleTargetBaseTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

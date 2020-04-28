@@ -266,6 +266,21 @@ func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
 	return []DiffDiskOptions{Local}
 }
 
+// DiffDiskPlacement enumerates the values for diff disk placement.
+type DiffDiskPlacement string
+
+const (
+	// CacheDisk ...
+	CacheDisk DiffDiskPlacement = "CacheDisk"
+	// ResourceDisk ...
+	ResourceDisk DiffDiskPlacement = "ResourceDisk"
+)
+
+// PossibleDiffDiskPlacementValues returns an array of possible values for the DiffDiskPlacement const type.
+func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
+	return []DiffDiskPlacement{CacheDisk, ResourceDisk}
+}
+
 // DiskCreateOption enumerates the values for disk create option.
 type DiskCreateOption string
 
@@ -910,6 +925,8 @@ func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 type StorageAccountType string
 
 const (
+	// StorageAccountTypePremiumLRS ...
+	StorageAccountTypePremiumLRS StorageAccountType = "Premium_LRS"
 	// StorageAccountTypeStandardLRS ...
 	StorageAccountTypeStandardLRS StorageAccountType = "Standard_LRS"
 	// StorageAccountTypeStandardZRS ...
@@ -918,7 +935,7 @@ const (
 
 // PossibleStorageAccountTypeValues returns an array of possible values for the StorageAccountType const type.
 func PossibleStorageAccountTypeValues() []StorageAccountType {
-	return []StorageAccountType{StorageAccountTypeStandardLRS, StorageAccountTypeStandardZRS}
+	return []StorageAccountType{StorageAccountTypePremiumLRS, StorageAccountTypeStandardLRS, StorageAccountTypeStandardZRS}
 }
 
 // StorageAccountTypes enumerates the values for storage account types.
@@ -1477,7 +1494,7 @@ type AutomaticOSUpgradeProperties struct {
 type AutomaticRepairsPolicy struct {
 	// Enabled - Specifies whether automatic repairs should be enabled on the virtual machine scale set. The default value is false.
 	Enabled *bool `json:"enabled,omitempty"`
-	// GracePeriod - The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 30 minutes (PT30M), which is also the default value.
+	// GracePeriod - The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 30 minutes (PT30M), which is also the default value. The maximum allowed grace period is 90 minutes (PT90M).
 	GracePeriod *string `json:"gracePeriod,omitempty"`
 }
 
@@ -3120,6 +3137,8 @@ type DiagnosticsProfile struct {
 type DiffDiskSettings struct {
 	// Option - Specifies the ephemeral disk settings for operating system disk. Possible values include: 'Local'
 	Option DiffDiskOptions `json:"option,omitempty"`
+	// Placement - Specifies the ephemeral disk placement for operating system disk.<br><br> Possible values are: <br><br> **CacheDisk** <br><br> **ResourceDisk** <br><br> Default: **CacheDisk** if one is configured for the VM size otherwise **ResourceDisk** is used.<br><br> Refer to VM size documentation for Windows VM at https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes and Linux VM at https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes to check which VM sizes exposes a cache disk. Possible values include: 'CacheDisk', 'ResourceDisk'
+	Placement DiffDiskPlacement `json:"placement,omitempty"`
 }
 
 // Disallowed describes the disallowed disk types.
@@ -5058,7 +5077,7 @@ type GalleryApplicationVersionPublishingProfile struct {
 	PublishedDate *date.Time `json:"publishedDate,omitempty"`
 	// EndOfLifeDate - The end of life date of the gallery Image Version. This property can be used for decommissioning purposes. This property is updatable.
 	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
-	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
+	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS', 'StorageAccountTypePremiumLRS'
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 }
 
@@ -5241,7 +5260,7 @@ type GalleryArtifactPublishingProfileBase struct {
 	PublishedDate *date.Time `json:"publishedDate,omitempty"`
 	// EndOfLifeDate - The end of life date of the gallery Image Version. This property can be used for decommissioning purposes. This property is updatable.
 	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
-	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
+	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS', 'StorageAccountTypePremiumLRS'
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 }
 
@@ -5999,7 +6018,7 @@ type GalleryImageVersionPublishingProfile struct {
 	PublishedDate *date.Time `json:"publishedDate,omitempty"`
 	// EndOfLifeDate - The end of life date of the gallery Image Version. This property can be used for decommissioning purposes. This property is updatable.
 	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
-	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
+	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS', 'StorageAccountTypePremiumLRS'
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 }
 
@@ -6782,7 +6801,7 @@ type ImagePurchasePlan struct {
 // ImageReference specifies information about the image to use. You can specify information about platform
 // images, marketplace images, or virtual machine images. This element is required when you want to use a
 // platform image, marketplace image, or virtual machine image, but is not used in other creation
-// operations.
+// operations. NOTE: Image reference publisher and offer can only be set when you create the scale set.
 type ImageReference struct {
 	// Publisher - The image publisher.
 	Publisher *string `json:"publisher,omitempty"`
@@ -7432,15 +7451,15 @@ type OperationValueDisplay struct {
 
 // OrchestrationServiceStateInput the input for OrchestrationServiceState
 type OrchestrationServiceStateInput struct {
-	// ServiceName - The name of the service.
-	ServiceName *string `json:"serviceName,omitempty"`
+	// ServiceName - The name of the service. Possible values include: 'AutomaticRepairs'
+	ServiceName OrchestrationServiceNames `json:"serviceName,omitempty"`
 	// Action - The action to be performed. Possible values include: 'Resume', 'Suspend'
 	Action OrchestrationServiceStateAction `json:"action,omitempty"`
 }
 
 // OrchestrationServiceSummary summary for an orchestration service of a virtual machine scale set.
 type OrchestrationServiceSummary struct {
-	// ServiceName - READ-ONLY; The name of the service. Possible values include: 'AutomaticRepairs'
+	// ServiceName - READ-ONLY; The name of the service. Possible values include: 'AutomaticRepairs', 'DummyOrchestrationServiceName'
 	ServiceName OrchestrationServiceNames `json:"serviceName,omitempty"`
 	// ServiceState - READ-ONLY; The current state of the service. Possible values include: 'NotRunning', 'Running', 'Suspended'
 	ServiceState OrchestrationServiceState `json:"serviceState,omitempty"`
@@ -7460,7 +7479,7 @@ type OSDisk struct {
 	Vhd *VirtualHardDisk `json:"vhd,omitempty"`
 	// Image - The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not exist.
 	Image *VirtualHardDisk `json:"image,omitempty"`
-	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'CachingTypesNone', 'CachingTypesReadOnly', 'CachingTypesReadWrite'
+	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None** for Standard storage. **ReadOnly** for Premium storage. Possible values include: 'CachingTypesNone', 'CachingTypesReadOnly', 'CachingTypesReadWrite'
 	Caching CachingTypes `json:"caching,omitempty"`
 	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
@@ -8537,7 +8556,9 @@ type ShareInfoElement struct {
 	VMURI *string `json:"vmUri,omitempty"`
 }
 
-// Sku describes a virtual machine scale set sku.
+// Sku describes a virtual machine scale set sku. NOTE: If the new VM SKU is not supported on the hardware
+// the scale set is currently on, you need to deallocate the VMs in the scale set before you modify the SKU
+// name.
 type Sku struct {
 	// Name - The sku name.
 	Name *string `json:"name,omitempty"`
@@ -9437,7 +9458,7 @@ type TargetRegion struct {
 	Name *string `json:"name,omitempty"`
 	// RegionalReplicaCount - The number of replicas of the Image Version to be created per region. This property is updatable.
 	RegionalReplicaCount *int32 `json:"regionalReplicaCount,omitempty"`
-	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
+	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS', 'StorageAccountTypePremiumLRS'
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 	Encryption         *EncryptionImages  `json:"encryption,omitempty"`
 }
@@ -10611,7 +10632,7 @@ type VirtualMachineScaleSet struct {
 	*VirtualMachineScaleSetProperties `json:"properties,omitempty"`
 	// Identity - The identity of the virtual machine scale set, if configured.
 	Identity *VirtualMachineScaleSetIdentity `json:"identity,omitempty"`
-	// Zones - The virtual machine scale set zones.
+	// Zones - The virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set
 	Zones *[]string `json:"zones,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
@@ -12085,7 +12106,7 @@ type VirtualMachineScaleSetProperties struct {
 	DoNotRunExtensionsOnOverprovisionedVMs *bool `json:"doNotRunExtensionsOnOverprovisionedVMs,omitempty"`
 	// UniqueID - READ-ONLY; Specifies the ID which uniquely identifies a Virtual Machine Scale Set.
 	UniqueID *string `json:"uniqueId,omitempty"`
-	// SinglePlacementGroup - When true this limits the scale set to a single placement group, of max size 100 virtual machines.
+	// SinglePlacementGroup - When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true.
 	SinglePlacementGroup *bool `json:"singlePlacementGroup,omitempty"`
 	// ZoneBalance - Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage.
 	ZoneBalance *bool `json:"zoneBalance,omitempty"`
@@ -12712,7 +12733,8 @@ func (vmssu *VirtualMachineScaleSetUpdate) UnmarshalJSON(body []byte) error {
 }
 
 // VirtualMachineScaleSetUpdateIPConfiguration describes a virtual machine scale set network profile's IP
-// configuration.
+// configuration. NOTE: The subnet of a scale set may be modified as long as the original subnet and the
+// new subnet are in the same virtual network
 type VirtualMachineScaleSetUpdateIPConfiguration struct {
 	// Name - The IP configuration name.
 	Name                                                   *string `json:"name,omitempty"`
@@ -12933,7 +12955,7 @@ type VirtualMachineScaleSetUpdateProperties struct {
 	Overprovision *bool `json:"overprovision,omitempty"`
 	// DoNotRunExtensionsOnOverprovisionedVMs - When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally kept. This property will hence ensure that the extensions do not run on the extra overprovisioned VMs.
 	DoNotRunExtensionsOnOverprovisionedVMs *bool `json:"doNotRunExtensionsOnOverprovisionedVMs,omitempty"`
-	// SinglePlacementGroup - When true this limits the scale set to a single placement group, of max size 100 virtual machines.
+	// SinglePlacementGroup - When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true.
 	SinglePlacementGroup *bool `json:"singlePlacementGroup,omitempty"`
 	// AdditionalCapabilities - Specifies additional capabilities enabled or disabled on the Virtual Machines in the Virtual Machine Scale Set. For instance: whether the Virtual Machines have the capability to support attaching managed data disks with UltraSSD_LRS storage account type.
 	AdditionalCapabilities *AdditionalCapabilities `json:"additionalCapabilities,omitempty"`

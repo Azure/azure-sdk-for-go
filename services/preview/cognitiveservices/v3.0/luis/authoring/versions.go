@@ -335,6 +335,83 @@ func (client VersionsClient) ExportResponder(resp *http.Response) (result LuisAp
 	return
 }
 
+// ExportLuFormat exports a LUIS application to text format.
+// Parameters:
+// appID - the application ID.
+// versionID - the version ID.
+func (client VersionsClient) ExportLuFormat(ctx context.Context, appID uuid.UUID, versionID string) (result ReadCloser, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.ExportLuFormat")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ExportLuFormatPreparer(ctx, appID, versionID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "ExportLuFormat", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ExportLuFormatSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "ExportLuFormat", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ExportLuFormatResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "ExportLuFormat", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ExportLuFormatPreparer prepares the ExportLuFormat request.
+func (client VersionsClient) ExportLuFormatPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId":     autorest.Encode("path", appID),
+		"versionId": autorest.Encode("path", versionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"format": autorest.Encode("query", "lu"),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/export", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ExportLuFormatSender sends the ExportLuFormat request. The method will close the
+// http.Response Body if it receives an error.
+func (client VersionsClient) ExportLuFormatSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ExportLuFormatResponder handles the response to the ExportLuFormat request. The method always
+// closes the http.Response Body.
+func (client VersionsClient) ExportLuFormatResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Get gets the version information such as date created, last modified date, endpoint URL, count of intents and
 // entities, training and publishing status.
 // Parameters:
@@ -481,6 +558,170 @@ func (client VersionsClient) ImportSender(req *http.Request) (*http.Response, er
 // ImportResponder handles the response to the Import request. The method always
 // closes the http.Response Body.
 func (client VersionsClient) ImportResponder(resp *http.Response) (result String, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ImportLuFormat imports a new version into a LUIS application.
+// Parameters:
+// appID - the application ID.
+// luisAppLu - an LU representing the LUIS application structure.
+// versionID - the new versionId to import. If not specified, the versionId will be read from the imported
+// object.
+func (client VersionsClient) ImportLuFormat(ctx context.Context, appID uuid.UUID, luisAppLu string, versionID string) (result String, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.ImportLuFormat")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ImportLuFormatPreparer(ctx, appID, luisAppLu, versionID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "ImportLuFormat", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ImportLuFormatSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "ImportLuFormat", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ImportLuFormatResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "ImportLuFormat", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ImportLuFormatPreparer prepares the ImportLuFormat request.
+func (client VersionsClient) ImportLuFormatPreparer(ctx context.Context, appID uuid.UUID, luisAppLu string, versionID string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId": autorest.Encode("path", appID),
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(versionID) > 0 {
+		queryParameters["versionId"] = autorest.Encode("query", versionID)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("text/plain"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
+		autorest.WithPathParameters("/apps/{appId}/versions/import", pathParameters),
+		autorest.WithJSON(luisAppLu),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ImportLuFormatSender sends the ImportLuFormat request. The method will close the
+// http.Response Body if it receives an error.
+func (client VersionsClient) ImportLuFormatSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ImportLuFormatResponder handles the response to the ImportLuFormat request. The method always
+// closes the http.Response Body.
+func (client VersionsClient) ImportLuFormatResponder(resp *http.Response) (result String, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ImportV2App imports a new version into a LUIS application.
+// Parameters:
+// appID - the application ID.
+// luisAppV2 - a LUIS application structure.
+// versionID - the new versionId to import. If not specified, the versionId will be read from the imported
+// object.
+func (client VersionsClient) ImportV2App(ctx context.Context, appID uuid.UUID, luisAppV2 LuisAppV2, versionID string) (result String, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.ImportV2App")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ImportV2AppPreparer(ctx, appID, luisAppV2, versionID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "ImportV2App", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ImportV2AppSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "ImportV2App", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ImportV2AppResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "ImportV2App", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ImportV2AppPreparer prepares the ImportV2App request.
+func (client VersionsClient) ImportV2AppPreparer(ctx context.Context, appID uuid.UUID, luisAppV2 LuisAppV2, versionID string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId": autorest.Encode("path", appID),
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(versionID) > 0 {
+		queryParameters["versionId"] = autorest.Encode("query", versionID)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
+		autorest.WithPathParameters("/apps/{appId}/versions/import", pathParameters),
+		autorest.WithJSON(luisAppV2),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ImportV2AppSender sends the ImportV2App request. The method will close the
+// http.Response Body if it receives an error.
+func (client VersionsClient) ImportV2AppSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ImportV2AppResponder handles the response to the ImportV2App request. The method always
+// closes the http.Response Body.
+func (client VersionsClient) ImportV2AppResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

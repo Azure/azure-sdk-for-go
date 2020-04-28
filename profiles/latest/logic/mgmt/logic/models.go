@@ -262,6 +262,12 @@ const (
 	MessageFilterTypeNotSpecified MessageFilterType = original.MessageFilterTypeNotSpecified
 )
 
+type OpenAuthenticationProviderType = original.OpenAuthenticationProviderType
+
+const (
+	AAD OpenAuthenticationProviderType = original.AAD
+)
+
 type ParameterType = original.ParameterType
 
 const (
@@ -413,16 +419,20 @@ const (
 	WorkflowProvisioningStateDeleted       WorkflowProvisioningState = original.WorkflowProvisioningStateDeleted
 	WorkflowProvisioningStateDeleting      WorkflowProvisioningState = original.WorkflowProvisioningStateDeleting
 	WorkflowProvisioningStateFailed        WorkflowProvisioningState = original.WorkflowProvisioningStateFailed
+	WorkflowProvisioningStateInProgress    WorkflowProvisioningState = original.WorkflowProvisioningStateInProgress
 	WorkflowProvisioningStateMoving        WorkflowProvisioningState = original.WorkflowProvisioningStateMoving
 	WorkflowProvisioningStateNotSpecified  WorkflowProvisioningState = original.WorkflowProvisioningStateNotSpecified
+	WorkflowProvisioningStatePending       WorkflowProvisioningState = original.WorkflowProvisioningStatePending
 	WorkflowProvisioningStateReady         WorkflowProvisioningState = original.WorkflowProvisioningStateReady
 	WorkflowProvisioningStateRegistered    WorkflowProvisioningState = original.WorkflowProvisioningStateRegistered
 	WorkflowProvisioningStateRegistering   WorkflowProvisioningState = original.WorkflowProvisioningStateRegistering
+	WorkflowProvisioningStateRenewing      WorkflowProvisioningState = original.WorkflowProvisioningStateRenewing
 	WorkflowProvisioningStateRunning       WorkflowProvisioningState = original.WorkflowProvisioningStateRunning
 	WorkflowProvisioningStateSucceeded     WorkflowProvisioningState = original.WorkflowProvisioningStateSucceeded
 	WorkflowProvisioningStateUnregistered  WorkflowProvisioningState = original.WorkflowProvisioningStateUnregistered
 	WorkflowProvisioningStateUnregistering WorkflowProvisioningState = original.WorkflowProvisioningStateUnregistering
 	WorkflowProvisioningStateUpdating      WorkflowProvisioningState = original.WorkflowProvisioningStateUpdating
+	WorkflowProvisioningStateWaiting       WorkflowProvisioningState = original.WorkflowProvisioningStateWaiting
 )
 
 type WorkflowState = original.WorkflowState
@@ -576,11 +586,14 @@ type Expression = original.Expression
 type ExpressionRoot = original.ExpressionRoot
 type ExpressionTraces = original.ExpressionTraces
 type ExtendedErrorInfo = original.ExtendedErrorInfo
+type FlowAccessControlConfiguration = original.FlowAccessControlConfiguration
+type FlowAccessControlConfigurationPolicy = original.FlowAccessControlConfigurationPolicy
 type FlowEndpoints = original.FlowEndpoints
 type FlowEndpointsConfiguration = original.FlowEndpointsConfiguration
 type GenerateUpgradedDefinitionParameters = original.GenerateUpgradedDefinitionParameters
 type GetCallbackURLParameters = original.GetCallbackURLParameters
 type IPAddress = original.IPAddress
+type IPAddressRange = original.IPAddressRange
 type IntegrationAccount = original.IntegrationAccount
 type IntegrationAccountAgreement = original.IntegrationAccountAgreement
 type IntegrationAccountAgreementFilter = original.IntegrationAccountAgreementFilter
@@ -671,6 +684,9 @@ type ManagedAPIListResult = original.ManagedAPIListResult
 type ManagedAPIListResultIterator = original.ManagedAPIListResultIterator
 type ManagedAPIListResultPage = original.ManagedAPIListResultPage
 type NetworkConfiguration = original.NetworkConfiguration
+type OpenAuthenticationAccessPolicies = original.OpenAuthenticationAccessPolicies
+type OpenAuthenticationAccessPolicy = original.OpenAuthenticationAccessPolicy
+type OpenAuthenticationPolicyClaim = original.OpenAuthenticationPolicyClaim
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -722,6 +738,7 @@ type WorkflowListResultPage = original.WorkflowListResultPage
 type WorkflowOutputParameter = original.WorkflowOutputParameter
 type WorkflowParameter = original.WorkflowParameter
 type WorkflowProperties = original.WorkflowProperties
+type WorkflowReference = original.WorkflowReference
 type WorkflowRun = original.WorkflowRun
 type WorkflowRunAction = original.WorkflowRunAction
 type WorkflowRunActionFilter = original.WorkflowRunActionFilter
@@ -761,6 +778,7 @@ type WorkflowTriggerListResultIterator = original.WorkflowTriggerListResultItera
 type WorkflowTriggerListResultPage = original.WorkflowTriggerListResultPage
 type WorkflowTriggerProperties = original.WorkflowTriggerProperties
 type WorkflowTriggerRecurrence = original.WorkflowTriggerRecurrence
+type WorkflowTriggerReference = original.WorkflowTriggerReference
 type WorkflowTriggersClient = original.WorkflowTriggersClient
 type WorkflowVersion = original.WorkflowVersion
 type WorkflowVersionListResult = original.WorkflowVersionListResult
@@ -1138,6 +1156,9 @@ func PossibleMapTypeValues() []MapType {
 }
 func PossibleMessageFilterTypeValues() []MessageFilterType {
 	return original.PossibleMessageFilterTypeValues()
+}
+func PossibleOpenAuthenticationProviderTypeValues() []OpenAuthenticationProviderType {
+	return original.PossibleOpenAuthenticationProviderTypeValues()
 }
 func PossibleParameterTypeValues() []ParameterType {
 	return original.PossibleParameterTypeValues()

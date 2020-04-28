@@ -153,9 +153,10 @@ var _ FileServicesClientAPI = (*storage.FileServicesClient)(nil)
 type FileSharesClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare storage.FileShare) (result storage.FileShare, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, accountName string, shareName string) (result storage.FileShare, err error)
-	List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (result storage.FileShareItemsPage, err error)
-	ListComplete(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (result storage.FileShareItemsIterator, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, expand storage.GetShareExpand) (result storage.FileShare, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, expand storage.ListSharesExpand) (result storage.FileShareItemsPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, expand storage.ListSharesExpand) (result storage.FileShareItemsIterator, err error)
+	Restore(ctx context.Context, resourceGroupName string, accountName string, shareName string, deletedShare storage.DeletedShare) (result autorest.Response, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare storage.FileShare) (result storage.FileShare, err error)
 }
 

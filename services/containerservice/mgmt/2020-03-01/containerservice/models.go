@@ -2399,7 +2399,7 @@ func (mcp ManagedClusterProperties) MarshalJSON() ([]byte, error) {
 // ManagedClusterPropertiesAutoScalerProfile parameters to be applied to the cluster-autoscaler when
 // enabled
 type ManagedClusterPropertiesAutoScalerProfile struct {
-	BalanceSimilarNodeGroups      *bool   `json:"balance-similar-node-groups,omitempty"`
+	BalanceSimilarNodeGroups      *string `json:"balance-similar-node-groups,omitempty"`
 	ScanInterval                  *string `json:"scan-interval,omitempty"`
 	ScaleDownDelayAfterAdd        *string `json:"scale-down-delay-after-add,omitempty"`
 	ScaleDownDelayAfterDelete     *string `json:"scale-down-delay-after-delete,omitempty"`

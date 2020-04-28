@@ -23,5 +23,9 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgm
 
 type ClustersClientAPI = original.ClustersClientAPI
 type ConfigurationClientAPI = original.ConfigurationClientAPI
+type ConsumerGroupsClientAPI = original.ConsumerGroupsClientAPI
+type DisasterRecoveryConfigsClientAPI = original.DisasterRecoveryConfigsClientAPI
+type EventHubsClientAPI = original.EventHubsClientAPI
 type NamespacesClientAPI = original.NamespacesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type RegionsClientAPI = original.RegionsClientAPI

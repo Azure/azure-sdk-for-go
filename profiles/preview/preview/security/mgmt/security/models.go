@@ -169,14 +169,6 @@ const (
 	None    EnforcementMode = original.None
 )
 
-type EnforcementMode1 = original.EnforcementMode1
-
-const (
-	EnforcementMode1Audit   EnforcementMode1 = original.EnforcementMode1Audit
-	EnforcementMode1Enforce EnforcementMode1 = original.EnforcementMode1Enforce
-	EnforcementMode1None    EnforcementMode1 = original.EnforcementMode1None
-)
-
 type EnforcementSupport = original.EnforcementSupport
 
 const (
@@ -414,6 +406,36 @@ const (
 	ResourceStatusOffByPolicy   ResourceStatus = original.ResourceStatusOffByPolicy
 )
 
+type RuleType = original.RuleType
+
+const (
+	RuleTypeActiveConnectionsNotInAllowedRange       RuleType = original.RuleTypeActiveConnectionsNotInAllowedRange
+	RuleTypeAllowlistCustomAlertRule                 RuleType = original.RuleTypeAllowlistCustomAlertRule
+	RuleTypeAmqpC2DMessagesNotInAllowedRange         RuleType = original.RuleTypeAmqpC2DMessagesNotInAllowedRange
+	RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange RuleType = original.RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange
+	RuleTypeAmqpD2CMessagesNotInAllowedRange         RuleType = original.RuleTypeAmqpD2CMessagesNotInAllowedRange
+	RuleTypeConnectionToIPNotAllowed                 RuleType = original.RuleTypeConnectionToIPNotAllowed
+	RuleTypeCustomAlertRule                          RuleType = original.RuleTypeCustomAlertRule
+	RuleTypeDenylistCustomAlertRule                  RuleType = original.RuleTypeDenylistCustomAlertRule
+	RuleTypeDirectMethodInvokesNotInAllowedRange     RuleType = original.RuleTypeDirectMethodInvokesNotInAllowedRange
+	RuleTypeFailedLocalLoginsNotInAllowedRange       RuleType = original.RuleTypeFailedLocalLoginsNotInAllowedRange
+	RuleTypeFileUploadsNotInAllowedRange             RuleType = original.RuleTypeFileUploadsNotInAllowedRange
+	RuleTypeHTTPC2DMessagesNotInAllowedRange         RuleType = original.RuleTypeHTTPC2DMessagesNotInAllowedRange
+	RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange RuleType = original.RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange
+	RuleTypeHTTPD2CMessagesNotInAllowedRange         RuleType = original.RuleTypeHTTPD2CMessagesNotInAllowedRange
+	RuleTypeListCustomAlertRule                      RuleType = original.RuleTypeListCustomAlertRule
+	RuleTypeLocalUserNotAllowed                      RuleType = original.RuleTypeLocalUserNotAllowed
+	RuleTypeMqttC2DMessagesNotInAllowedRange         RuleType = original.RuleTypeMqttC2DMessagesNotInAllowedRange
+	RuleTypeMqttC2DRejectedMessagesNotInAllowedRange RuleType = original.RuleTypeMqttC2DRejectedMessagesNotInAllowedRange
+	RuleTypeMqttD2CMessagesNotInAllowedRange         RuleType = original.RuleTypeMqttD2CMessagesNotInAllowedRange
+	RuleTypeProcessNotAllowed                        RuleType = original.RuleTypeProcessNotAllowed
+	RuleTypeQueuePurgesNotInAllowedRange             RuleType = original.RuleTypeQueuePurgesNotInAllowedRange
+	RuleTypeThresholdCustomAlertRule                 RuleType = original.RuleTypeThresholdCustomAlertRule
+	RuleTypeTimeWindowCustomAlertRule                RuleType = original.RuleTypeTimeWindowCustomAlertRule
+	RuleTypeTwinUpdatesNotInAllowedRange             RuleType = original.RuleTypeTwinUpdatesNotInAllowedRange
+	RuleTypeUnauthorizedOperationsNotInAllowedRange  RuleType = original.RuleTypeUnauthorizedOperationsNotInAllowedRange
+)
+
 type Script = original.Script
 
 const (
@@ -550,6 +572,7 @@ const (
 type AadConnectivityState1 = original.AadConnectivityState1
 type AadExternalSecuritySolution = original.AadExternalSecuritySolution
 type AadSolutionProperties = original.AadSolutionProperties
+type ActiveConnectionsNotInAllowedRange = original.ActiveConnectionsNotInAllowedRange
 type AdaptiveApplicationControlsClient = original.AdaptiveApplicationControlsClient
 type AdaptiveNetworkHardening = original.AdaptiveNetworkHardening
 type AdaptiveNetworkHardeningEnforceRequest = original.AdaptiveNetworkHardeningEnforceRequest
@@ -578,11 +601,13 @@ type AllowedConnectionsListPage = original.AllowedConnectionsListPage
 type AllowedConnectionsResource = original.AllowedConnectionsResource
 type AllowedConnectionsResourceProperties = original.AllowedConnectionsResourceProperties
 type AllowlistCustomAlertRule = original.AllowlistCustomAlertRule
+type AmqpC2DMessagesNotInAllowedRange = original.AmqpC2DMessagesNotInAllowedRange
+type AmqpC2DRejectedMessagesNotInAllowedRange = original.AmqpC2DRejectedMessagesNotInAllowedRange
+type AmqpD2CMessagesNotInAllowedRange = original.AmqpD2CMessagesNotInAllowedRange
 type AppWhitelistingGroup = original.AppWhitelistingGroup
 type AppWhitelistingGroupData = original.AppWhitelistingGroupData
 type AppWhitelistingGroups = original.AppWhitelistingGroups
 type AppWhitelistingIssueSummary = original.AppWhitelistingIssueSummary
-type AppWhitelistingPutGroupData = original.AppWhitelistingPutGroupData
 type AscLocation = original.AscLocation
 type AscLocationList = original.AscLocationList
 type AscLocationListIterator = original.AscLocationListIterator
@@ -629,9 +654,14 @@ type AutomationsClient = original.AutomationsClient
 type AzureResourceDetails = original.AzureResourceDetails
 type BaseClient = original.BaseClient
 type BasicAdditionalData = original.BasicAdditionalData
+type BasicAllowlistCustomAlertRule = original.BasicAllowlistCustomAlertRule
 type BasicAutomationAction = original.BasicAutomationAction
+type BasicCustomAlertRule = original.BasicCustomAlertRule
 type BasicExternalSecuritySolution = original.BasicExternalSecuritySolution
+type BasicListCustomAlertRule = original.BasicListCustomAlertRule
 type BasicResourceDetails = original.BasicResourceDetails
+type BasicThresholdCustomAlertRule = original.BasicThresholdCustomAlertRule
+type BasicTimeWindowCustomAlertRule = original.BasicTimeWindowCustomAlertRule
 type CVE = original.CVE
 type CVSS = original.CVSS
 type CefExternalSecuritySolution = original.CefExternalSecuritySolution
@@ -654,6 +684,7 @@ type CompliancesClient = original.CompliancesClient
 type ConnectableResource = original.ConnectableResource
 type ConnectedResource = original.ConnectedResource
 type ConnectedWorkspace = original.ConnectedWorkspace
+type ConnectionToIPNotAllowed = original.ConnectionToIPNotAllowed
 type Contact = original.Contact
 type ContactList = original.ContactList
 type ContactListIterator = original.ContactListIterator
@@ -671,6 +702,7 @@ type DeviceSecurityGroupListIterator = original.DeviceSecurityGroupListIterator
 type DeviceSecurityGroupListPage = original.DeviceSecurityGroupListPage
 type DeviceSecurityGroupProperties = original.DeviceSecurityGroupProperties
 type DeviceSecurityGroupsClient = original.DeviceSecurityGroupsClient
+type DirectMethodInvokesNotInAllowedRange = original.DirectMethodInvokesNotInAllowedRange
 type DiscoveredSecuritySolution = original.DiscoveredSecuritySolution
 type DiscoveredSecuritySolutionList = original.DiscoveredSecuritySolutionList
 type DiscoveredSecuritySolutionListIterator = original.DiscoveredSecuritySolutionListIterator
@@ -687,6 +719,11 @@ type ExternalSecuritySolutionListPage = original.ExternalSecuritySolutionListPag
 type ExternalSecuritySolutionModel = original.ExternalSecuritySolutionModel
 type ExternalSecuritySolutionProperties = original.ExternalSecuritySolutionProperties
 type ExternalSecuritySolutionsClient = original.ExternalSecuritySolutionsClient
+type FailedLocalLoginsNotInAllowedRange = original.FailedLocalLoginsNotInAllowedRange
+type FileUploadsNotInAllowedRange = original.FileUploadsNotInAllowedRange
+type HTTPC2DMessagesNotInAllowedRange = original.HTTPC2DMessagesNotInAllowedRange
+type HTTPC2DRejectedMessagesNotInAllowedRange = original.HTTPC2DRejectedMessagesNotInAllowedRange
+type HTTPD2CMessagesNotInAllowedRange = original.HTTPD2CMessagesNotInAllowedRange
 type InformationProtectionKeyword = original.InformationProtectionKeyword
 type InformationProtectionPoliciesClient = original.InformationProtectionPoliciesClient
 type InformationProtectionPolicy = original.InformationProtectionPolicy
@@ -739,8 +776,12 @@ type JitNetworkAccessRequestPort = original.JitNetworkAccessRequestPort
 type JitNetworkAccessRequestVirtualMachine = original.JitNetworkAccessRequestVirtualMachine
 type Kind = original.Kind
 type ListCustomAlertRule = original.ListCustomAlertRule
+type LocalUserNotAllowed = original.LocalUserNotAllowed
 type Location = original.Location
 type LocationsClient = original.LocationsClient
+type MqttC2DMessagesNotInAllowedRange = original.MqttC2DMessagesNotInAllowedRange
+type MqttC2DRejectedMessagesNotInAllowedRange = original.MqttC2DRejectedMessagesNotInAllowedRange
+type MqttD2CMessagesNotInAllowedRange = original.MqttD2CMessagesNotInAllowedRange
 type OnPremiseResourceDetails = original.OnPremiseResourceDetails
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -753,8 +794,10 @@ type Pricing = original.Pricing
 type PricingList = original.PricingList
 type PricingProperties = original.PricingProperties
 type PricingsClient = original.PricingsClient
+type ProcessNotAllowed = original.ProcessNotAllowed
 type ProtectionMode = original.ProtectionMode
 type PublisherInfo = original.PublisherInfo
+type QueuePurgesNotInAllowedRange = original.QueuePurgesNotInAllowedRange
 type RecommendationConfigurationProperties = original.RecommendationConfigurationProperties
 type RegulatoryComplianceAssessment = original.RegulatoryComplianceAssessment
 type RegulatoryComplianceAssessmentList = original.RegulatoryComplianceAssessmentList
@@ -818,6 +861,8 @@ type TopologySingleResource = original.TopologySingleResource
 type TopologySingleResourceChild = original.TopologySingleResourceChild
 type TopologySingleResourceParent = original.TopologySingleResourceParent
 type TrackedResource = original.TrackedResource
+type TwinUpdatesNotInAllowedRange = original.TwinUpdatesNotInAllowedRange
+type UnauthorizedOperationsNotInAllowedRange = original.UnauthorizedOperationsNotInAllowedRange
 type UpdateIoTSecuritySolutionProperties = original.UpdateIoTSecuritySolutionProperties
 type UpdateIotSecuritySolutionData = original.UpdateIotSecuritySolutionData
 type UserDefinedResourcesProperties = original.UserDefinedResourcesProperties
@@ -1251,9 +1296,6 @@ func PossibleDataSourceValues() []DataSource {
 func PossibleDirectionValues() []Direction {
 	return original.PossibleDirectionValues()
 }
-func PossibleEnforcementMode1Values() []EnforcementMode1 {
-	return original.PossibleEnforcementMode1Values()
-}
 func PossibleEnforcementModeValues() []EnforcementMode {
 	return original.PossibleEnforcementModeValues()
 }
@@ -1334,6 +1376,9 @@ func PossibleReportedSeverityValues() []ReportedSeverity {
 }
 func PossibleResourceStatusValues() []ResourceStatus {
 	return original.PossibleResourceStatusValues()
+}
+func PossibleRuleTypeValues() []RuleType {
+	return original.PossibleRuleTypeValues()
 }
 func PossibleScriptValues() []Script {
 	return original.PossibleScriptValues()

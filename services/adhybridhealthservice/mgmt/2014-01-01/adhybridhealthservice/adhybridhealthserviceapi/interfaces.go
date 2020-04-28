@@ -211,3 +211,19 @@ type ServiceMembersClientAPI interface {
 }
 
 var _ ServiceMembersClientAPI = (*adhybridhealthservice.ServiceMembersClient)(nil)
+
+// ListClientAPI contains the set of methods on the ListClient type.
+type ListClientAPI interface {
+	IPAddressAggregatesByService(ctx context.Context, serviceName string, skiptoken string) (result adhybridhealthservice.IPAddressAggregatesPage, err error)
+	IPAddressAggregatesByServiceComplete(ctx context.Context, serviceName string, skiptoken string) (result adhybridhealthservice.IPAddressAggregatesIterator, err error)
+	IPAddressAggregateSettings(ctx context.Context, serviceName string) (result adhybridhealthservice.IPAddressAggregateSetting, err error)
+}
+
+var _ ListClientAPI = (*adhybridhealthservice.ListClient)(nil)
+
+// UpdateClientAPI contains the set of methods on the UpdateClient type.
+type UpdateClientAPI interface {
+	IPAddressAggregateSettings(ctx context.Context, serviceName string, IPAddressAggregateSetting adhybridhealthservice.IPAddressAggregateSetting) (result adhybridhealthservice.IPAddressAggregateSetting, err error)
+}
+
+var _ UpdateClientAPI = (*adhybridhealthservice.UpdateClient)(nil)

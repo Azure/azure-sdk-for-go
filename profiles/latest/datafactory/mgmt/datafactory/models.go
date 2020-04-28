@@ -727,6 +727,13 @@ const (
 	TypeWebHook                  TypeBasicActivity = original.TypeWebHook
 )
 
+type TypeBasicCompressionReadSettings = original.TypeBasicCompressionReadSettings
+
+const (
+	TypeCompressionReadSettings TypeBasicCompressionReadSettings = original.TypeCompressionReadSettings
+	TypeZipDeflateReadSettings  TypeBasicCompressionReadSettings = original.TypeZipDeflateReadSettings
+)
+
 type TypeBasicCopySink = original.TypeBasicCopySink
 
 const (
@@ -1039,8 +1046,10 @@ const (
 type TypeBasicFormatReadSettings = original.TypeBasicFormatReadSettings
 
 const (
+	TypeBinaryReadSettings        TypeBasicFormatReadSettings = original.TypeBinaryReadSettings
 	TypeDelimitedTextReadSettings TypeBasicFormatReadSettings = original.TypeDelimitedTextReadSettings
 	TypeFormatReadSettings        TypeBasicFormatReadSettings = original.TypeFormatReadSettings
+	TypeJSONReadSettings          TypeBasicFormatReadSettings = original.TypeJSONReadSettings
 )
 
 type TypeBasicFormatWriteSettings = original.TypeBasicFormatWriteSettings
@@ -1389,6 +1398,7 @@ type AzureTableSource = original.AzureTableSource
 type AzureTableStorageLinkedService = original.AzureTableStorageLinkedService
 type BaseClient = original.BaseClient
 type BasicActivity = original.BasicActivity
+type BasicCompressionReadSettings = original.BasicCompressionReadSettings
 type BasicControlActivity = original.BasicControlActivity
 type BasicCopySink = original.BasicCopySink
 type BasicCopySource = original.BasicCopySource
@@ -1420,6 +1430,7 @@ type BasicTriggerDependencyReference = original.BasicTriggerDependencyReference
 type BasicWebLinkedServiceTypeProperties = original.BasicWebLinkedServiceTypeProperties
 type BinaryDataset = original.BinaryDataset
 type BinaryDatasetTypeProperties = original.BinaryDatasetTypeProperties
+type BinaryReadSettings = original.BinaryReadSettings
 type BinarySink = original.BinarySink
 type BinarySource = original.BinarySource
 type BlobEventsTrigger = original.BlobEventsTrigger
@@ -1446,6 +1457,7 @@ type CommonDataServiceForAppsLinkedServiceTypeProperties = original.CommonDataSe
 type CommonDataServiceForAppsSink = original.CommonDataServiceForAppsSink
 type CommonDataServiceForAppsSource = original.CommonDataServiceForAppsSource
 type ComponentSetup = original.ComponentSetup
+type CompressionReadSettings = original.CompressionReadSettings
 type ConcurLinkedService = original.ConcurLinkedService
 type ConcurLinkedServiceTypeProperties = original.ConcurLinkedServiceTypeProperties
 type ConcurObjectDataset = original.ConcurObjectDataset
@@ -1732,6 +1744,7 @@ type IntegrationRuntimesStopFuture = original.IntegrationRuntimesStopFuture
 type JSONDataset = original.JSONDataset
 type JSONDatasetTypeProperties = original.JSONDatasetTypeProperties
 type JSONFormat = original.JSONFormat
+type JSONReadSettings = original.JSONReadSettings
 type JSONSink = original.JSONSink
 type JSONSource = original.JSONSource
 type JSONWriteSettings = original.JSONWriteSettings
@@ -2128,6 +2141,7 @@ type XeroLinkedService = original.XeroLinkedService
 type XeroLinkedServiceTypeProperties = original.XeroLinkedServiceTypeProperties
 type XeroObjectDataset = original.XeroObjectDataset
 type XeroSource = original.XeroSource
+type ZipDeflateReadSettings = original.ZipDeflateReadSettings
 type ZohoLinkedService = original.ZohoLinkedService
 type ZohoLinkedServiceTypeProperties = original.ZohoLinkedServiceTypeProperties
 type ZohoObjectDataset = original.ZohoObjectDataset
@@ -2510,6 +2524,9 @@ func PossibleTumblingWindowFrequencyValues() []TumblingWindowFrequency {
 }
 func PossibleTypeBasicActivityValues() []TypeBasicActivity {
 	return original.PossibleTypeBasicActivityValues()
+}
+func PossibleTypeBasicCompressionReadSettingsValues() []TypeBasicCompressionReadSettings {
+	return original.PossibleTypeBasicCompressionReadSettingsValues()
 }
 func PossibleTypeBasicCopySinkValues() []TypeBasicCopySink {
 	return original.PossibleTypeBasicCopySinkValues()

@@ -353,6 +353,7 @@ type ImageUpdateTrigger = original.ImageUpdateTrigger
 type ImportImageParameters = original.ImportImageParameters
 type ImportSource = original.ImportSource
 type ImportSourceCredentials = original.ImportSourceCredentials
+type InnerErrorDescription = original.InnerErrorDescription
 type NetworkRuleSet = original.NetworkRuleSet
 type OperationDefinition = original.OperationDefinition
 type OperationDisplayDefinition = original.OperationDisplayDefinition

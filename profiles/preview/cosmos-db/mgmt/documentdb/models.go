@@ -22,7 +22,7 @@ package documentdb
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2019-12-12/documentdb"
+	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2020-03-01/documentdb"
 )
 
 const (
@@ -127,6 +127,13 @@ const (
 	PrimaryAggregationTypeTotal   PrimaryAggregationType = original.PrimaryAggregationTypeTotal
 )
 
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	Disabled PublicNetworkAccess = original.Disabled
+	Enabled  PublicNetworkAccess = original.Enabled
+)
+
 type SpatialType = original.SpatialType
 
 const (
@@ -174,6 +181,7 @@ type Capability = original.Capability
 type CassandraKeyspaceCreateUpdateParameters = original.CassandraKeyspaceCreateUpdateParameters
 type CassandraKeyspaceCreateUpdateProperties = original.CassandraKeyspaceCreateUpdateProperties
 type CassandraKeyspaceGetProperties = original.CassandraKeyspaceGetProperties
+type CassandraKeyspaceGetPropertiesOptions = original.CassandraKeyspaceGetPropertiesOptions
 type CassandraKeyspaceGetPropertiesResource = original.CassandraKeyspaceGetPropertiesResource
 type CassandraKeyspaceGetResults = original.CassandraKeyspaceGetResults
 type CassandraKeyspaceListResult = original.CassandraKeyspaceListResult
@@ -190,6 +198,7 @@ type CassandraSchema = original.CassandraSchema
 type CassandraTableCreateUpdateParameters = original.CassandraTableCreateUpdateParameters
 type CassandraTableCreateUpdateProperties = original.CassandraTableCreateUpdateProperties
 type CassandraTableGetProperties = original.CassandraTableGetProperties
+type CassandraTableGetPropertiesOptions = original.CassandraTableGetPropertiesOptions
 type CassandraTableGetPropertiesResource = original.CassandraTableGetPropertiesResource
 type CassandraTableGetResults = original.CassandraTableGetResults
 type CassandraTableListResult = original.CassandraTableListResult
@@ -235,6 +244,7 @@ type FailoverPolicy = original.FailoverPolicy
 type GremlinDatabaseCreateUpdateParameters = original.GremlinDatabaseCreateUpdateParameters
 type GremlinDatabaseCreateUpdateProperties = original.GremlinDatabaseCreateUpdateProperties
 type GremlinDatabaseGetProperties = original.GremlinDatabaseGetProperties
+type GremlinDatabaseGetPropertiesOptions = original.GremlinDatabaseGetPropertiesOptions
 type GremlinDatabaseGetPropertiesResource = original.GremlinDatabaseGetPropertiesResource
 type GremlinDatabaseGetResults = original.GremlinDatabaseGetResults
 type GremlinDatabaseListResult = original.GremlinDatabaseListResult
@@ -242,6 +252,7 @@ type GremlinDatabaseResource = original.GremlinDatabaseResource
 type GremlinGraphCreateUpdateParameters = original.GremlinGraphCreateUpdateParameters
 type GremlinGraphCreateUpdateProperties = original.GremlinGraphCreateUpdateProperties
 type GremlinGraphGetProperties = original.GremlinGraphGetProperties
+type GremlinGraphGetPropertiesOptions = original.GremlinGraphGetPropertiesOptions
 type GremlinGraphGetPropertiesResource = original.GremlinGraphGetPropertiesResource
 type GremlinGraphGetResults = original.GremlinGraphGetResults
 type GremlinGraphListResult = original.GremlinGraphListResult
@@ -267,6 +278,7 @@ type MetricValue = original.MetricValue
 type MongoDBCollectionCreateUpdateParameters = original.MongoDBCollectionCreateUpdateParameters
 type MongoDBCollectionCreateUpdateProperties = original.MongoDBCollectionCreateUpdateProperties
 type MongoDBCollectionGetProperties = original.MongoDBCollectionGetProperties
+type MongoDBCollectionGetPropertiesOptions = original.MongoDBCollectionGetPropertiesOptions
 type MongoDBCollectionGetPropertiesResource = original.MongoDBCollectionGetPropertiesResource
 type MongoDBCollectionGetResults = original.MongoDBCollectionGetResults
 type MongoDBCollectionListResult = original.MongoDBCollectionListResult
@@ -274,6 +286,7 @@ type MongoDBCollectionResource = original.MongoDBCollectionResource
 type MongoDBDatabaseCreateUpdateParameters = original.MongoDBDatabaseCreateUpdateParameters
 type MongoDBDatabaseCreateUpdateProperties = original.MongoDBDatabaseCreateUpdateProperties
 type MongoDBDatabaseGetProperties = original.MongoDBDatabaseGetProperties
+type MongoDBDatabaseGetPropertiesOptions = original.MongoDBDatabaseGetPropertiesOptions
 type MongoDBDatabaseGetPropertiesResource = original.MongoDBDatabaseGetPropertiesResource
 type MongoDBDatabaseGetResults = original.MongoDBDatabaseGetResults
 type MongoDBDatabaseListResult = original.MongoDBDatabaseListResult
@@ -304,6 +317,7 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type OptionsResource = original.OptionsResource
 type PartitionKeyRangeIDClient = original.PartitionKeyRangeIDClient
 type PartitionKeyRangeIDRegionClient = original.PartitionKeyRangeIDRegionClient
 type PartitionMetric = original.PartitionMetric
@@ -335,6 +349,7 @@ type Resource = original.Resource
 type SQLContainerCreateUpdateParameters = original.SQLContainerCreateUpdateParameters
 type SQLContainerCreateUpdateProperties = original.SQLContainerCreateUpdateProperties
 type SQLContainerGetProperties = original.SQLContainerGetProperties
+type SQLContainerGetPropertiesOptions = original.SQLContainerGetPropertiesOptions
 type SQLContainerGetPropertiesResource = original.SQLContainerGetPropertiesResource
 type SQLContainerGetResults = original.SQLContainerGetResults
 type SQLContainerListResult = original.SQLContainerListResult
@@ -342,6 +357,7 @@ type SQLContainerResource = original.SQLContainerResource
 type SQLDatabaseCreateUpdateParameters = original.SQLDatabaseCreateUpdateParameters
 type SQLDatabaseCreateUpdateProperties = original.SQLDatabaseCreateUpdateProperties
 type SQLDatabaseGetProperties = original.SQLDatabaseGetProperties
+type SQLDatabaseGetPropertiesOptions = original.SQLDatabaseGetPropertiesOptions
 type SQLDatabaseGetPropertiesResource = original.SQLDatabaseGetPropertiesResource
 type SQLDatabaseGetResults = original.SQLDatabaseGetResults
 type SQLDatabaseListResult = original.SQLDatabaseListResult
@@ -384,6 +400,7 @@ type SpatialSpec = original.SpatialSpec
 type TableCreateUpdateParameters = original.TableCreateUpdateParameters
 type TableCreateUpdateProperties = original.TableCreateUpdateProperties
 type TableGetProperties = original.TableGetProperties
+type TableGetPropertiesOptions = original.TableGetPropertiesOptions
 type TableGetPropertiesResource = original.TableGetPropertiesResource
 type TableGetResults = original.TableGetResults
 type TableListResult = original.TableListResult
@@ -579,6 +596,9 @@ func PossiblePartitionKindValues() []PartitionKind {
 }
 func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 	return original.PossiblePrimaryAggregationTypeValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func PossibleSpatialTypeValues() []SpatialType {
 	return original.PossibleSpatialTypeValues()

@@ -528,21 +528,14 @@ func (future *EndpointDeleteFuture) Result(client EndpointClient) (er EndpointRe
 // EndpointResource digitalTwinsInstance endpoint resource.
 type EndpointResource struct {
 	autorest.Response `json:"-"`
-	// BasicEndpointResourceProperties - DigitalTwinsInstance endpoint resource properties.
-	BasicEndpointResourceProperties `json:"properties,omitempty"`
+	// Properties - DigitalTwinsInstance endpoint resource properties.
+	Properties BasicEndpointResourceProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Extension resource name.
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for EndpointResource.
-func (er EndpointResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["properties"] = er.BasicEndpointResourceProperties
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for EndpointResource struct.
@@ -556,11 +549,11 @@ func (er *EndpointResource) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				basicEndpointResourceProperties, err := unmarshalBasicEndpointResourceProperties(*v)
+				properties, err := unmarshalBasicEndpointResourceProperties(*v)
 				if err != nil {
 					return err
 				}
-				er.BasicEndpointResourceProperties = basicEndpointResourceProperties
+				er.Properties = properties
 			}
 		case "id":
 			if v != nil {

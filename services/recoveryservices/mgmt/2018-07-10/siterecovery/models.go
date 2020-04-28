@@ -1579,6 +1579,8 @@ type A2AEnableProtectionInput struct {
 	RecoveryCloudServiceID *string `json:"recoveryCloudServiceId,omitempty"`
 	// RecoveryAvailabilitySetID - The recovery availability set Id.
 	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
+	// RecoveryProximityPlacementGroupID - The recovery proximity placement group Id.
+	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
 	// VMDisks - The list of vm disk details.
 	VMDisks *[]A2AVMDiskInputDetails `json:"vmDisks,omitempty"`
 	// VMManagedDisks - The list of vm managed disk details.
@@ -1617,6 +1619,9 @@ func (aepi A2AEnableProtectionInput) MarshalJSON() ([]byte, error) {
 	}
 	if aepi.RecoveryAvailabilitySetID != nil {
 		objectMap["recoveryAvailabilitySetId"] = aepi.RecoveryAvailabilitySetID
+	}
+	if aepi.RecoveryProximityPlacementGroupID != nil {
+		objectMap["recoveryProximityPlacementGroupId"] = aepi.RecoveryProximityPlacementGroupID
 	}
 	if aepi.VMDisks != nil {
 		objectMap["vmDisks"] = aepi.VMDisks
@@ -2335,6 +2340,8 @@ type A2AReplicationDetails struct {
 	VMEncryptionType VMEncryptionType `json:"vmEncryptionType,omitempty"`
 	// TfoAzureVMName - The test failover VM name.
 	TfoAzureVMName *string `json:"tfoAzureVMName,omitempty"`
+	// RecoveryProximityPlacementGroupID - The recovery proximity placement group Id.
+	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
 	InstanceType InstanceTypeBasicReplicationProviderSpecificSettings `json:"instanceType,omitempty"`
 }
@@ -2447,6 +2454,9 @@ func (ard A2AReplicationDetails) MarshalJSON() ([]byte, error) {
 	}
 	if ard.TfoAzureVMName != nil {
 		objectMap["tfoAzureVMName"] = ard.TfoAzureVMName
+	}
+	if ard.RecoveryProximityPlacementGroupID != nil {
+		objectMap["recoveryProximityPlacementGroupId"] = ard.RecoveryProximityPlacementGroupID
 	}
 	if ard.InstanceType != "" {
 		objectMap["instanceType"] = ard.InstanceType
@@ -2589,6 +2599,8 @@ type A2ASwitchProtectionInput struct {
 	RecoveryCloudServiceID *string `json:"recoveryCloudServiceId,omitempty"`
 	// RecoveryAvailabilitySetID - The recovery availability set.
 	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
+	// RecoveryProximityPlacementGroupID - The recovery proximity placement group Id.
+	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
 	// PolicyID - The Policy Id.
 	PolicyID *string `json:"policyId,omitempty"`
 	// RecoveryBootDiagStorageAccountID - The boot diagnostic storage account.
@@ -2620,6 +2632,9 @@ func (aspi A2ASwitchProtectionInput) MarshalJSON() ([]byte, error) {
 	}
 	if aspi.RecoveryAvailabilitySetID != nil {
 		objectMap["recoveryAvailabilitySetId"] = aspi.RecoveryAvailabilitySetID
+	}
+	if aspi.RecoveryProximityPlacementGroupID != nil {
+		objectMap["recoveryProximityPlacementGroupId"] = aspi.RecoveryProximityPlacementGroupID
 	}
 	if aspi.PolicyID != nil {
 		objectMap["policyId"] = aspi.PolicyID
@@ -2710,6 +2725,8 @@ type A2AUpdateReplicationProtectedItemInput struct {
 	RecoveryBootDiagStorageAccountID *string `json:"recoveryBootDiagStorageAccountId,omitempty"`
 	// DiskEncryptionInfo - The recovery os disk encryption information.
 	DiskEncryptionInfo *DiskEncryptionInfo `json:"diskEncryptionInfo,omitempty"`
+	// RecoveryProximityPlacementGroupID - The recovery proximity placement group Id.
+	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
 	// TfoAzureVMName - The user given name for test failover VM.
 	TfoAzureVMName *string `json:"tfoAzureVMName,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2'
@@ -2734,6 +2751,9 @@ func (aurpii A2AUpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, erro
 	}
 	if aurpii.DiskEncryptionInfo != nil {
 		objectMap["diskEncryptionInfo"] = aurpii.DiskEncryptionInfo
+	}
+	if aurpii.RecoveryProximityPlacementGroupID != nil {
+		objectMap["recoveryProximityPlacementGroupId"] = aurpii.RecoveryProximityPlacementGroupID
 	}
 	if aurpii.TfoAzureVMName != nil {
 		objectMap["tfoAzureVMName"] = aurpii.TfoAzureVMName

@@ -179,6 +179,7 @@ const (
 	OdataTypeMetricAlertCriteria                                         OdataTypeBasicMetricAlertCriteria = original.OdataTypeMetricAlertCriteria
 	OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria
 	OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria   OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria
+	OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria    OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria
 )
 
 type OdataTypeBasicRuleAction = original.OdataTypeBasicRuleAction

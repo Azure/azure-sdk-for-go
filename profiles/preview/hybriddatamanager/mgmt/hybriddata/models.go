@@ -22,7 +22,7 @@ package hybriddata
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/hybriddatamanager/mgmt/2016-06-01/hybriddata"
+	original "github.com/Azure/azure-sdk-for-go/services/hybriddatamanager/mgmt/2019-06-01/hybriddata"
 )
 
 const (
@@ -39,13 +39,14 @@ const (
 type JobStatus = original.JobStatus
 
 const (
-	Cancelled        JobStatus = original.Cancelled
-	Cancelling       JobStatus = original.Cancelling
-	Failed           JobStatus = original.Failed
-	InProgress       JobStatus = original.InProgress
-	None             JobStatus = original.None
-	Succeeded        JobStatus = original.Succeeded
-	WaitingForAction JobStatus = original.WaitingForAction
+	Cancelled          JobStatus = original.Cancelled
+	Cancelling         JobStatus = original.Cancelling
+	Failed             JobStatus = original.Failed
+	InProgress         JobStatus = original.InProgress
+	None               JobStatus = original.None
+	PartiallySucceeded JobStatus = original.PartiallySucceeded
+	Succeeded          JobStatus = original.Succeeded
+	WaitingForAction   JobStatus = original.WaitingForAction
 )
 
 type RunLocation = original.RunLocation

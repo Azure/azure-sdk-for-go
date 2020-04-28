@@ -131,12 +131,26 @@ type BindingResourceCollectionIterator = original.BindingResourceCollectionItera
 type BindingResourceCollectionPage = original.BindingResourceCollectionPage
 type BindingResourceProperties = original.BindingResourceProperties
 type BindingsClient = original.BindingsClient
+type CertificateProperties = original.CertificateProperties
+type CertificateResource = original.CertificateResource
+type CertificateResourceCollection = original.CertificateResourceCollection
+type CertificateResourceCollectionIterator = original.CertificateResourceCollectionIterator
+type CertificateResourceCollectionPage = original.CertificateResourceCollectionPage
+type CertificatesClient = original.CertificatesClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type ClusterResourceProperties = original.ClusterResourceProperties
 type ConfigServerGitProperty = original.ConfigServerGitProperty
 type ConfigServerProperties = original.ConfigServerProperties
 type ConfigServerSettings = original.ConfigServerSettings
+type CustomDomainProperties = original.CustomDomainProperties
+type CustomDomainResource = original.CustomDomainResource
+type CustomDomainResourceCollection = original.CustomDomainResourceCollection
+type CustomDomainResourceCollectionIterator = original.CustomDomainResourceCollectionIterator
+type CustomDomainResourceCollectionPage = original.CustomDomainResourceCollectionPage
+type CustomDomainValidatePayload = original.CustomDomainValidatePayload
+type CustomDomainValidateResult = original.CustomDomainValidateResult
+type CustomDomainsClient = original.CustomDomainsClient
 type DeploymentInstance = original.DeploymentInstance
 type DeploymentResource = original.DeploymentResource
 type DeploymentResourceCollection = original.DeploymentResourceCollection
@@ -214,6 +228,30 @@ func NewBindingsClient(subscriptionID string) BindingsClient {
 }
 func NewBindingsClientWithBaseURI(baseURI string, subscriptionID string) BindingsClient {
 	return original.NewBindingsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCertificateResourceCollectionIterator(page CertificateResourceCollectionPage) CertificateResourceCollectionIterator {
+	return original.NewCertificateResourceCollectionIterator(page)
+}
+func NewCertificateResourceCollectionPage(getNextPage func(context.Context, CertificateResourceCollection) (CertificateResourceCollection, error)) CertificateResourceCollectionPage {
+	return original.NewCertificateResourceCollectionPage(getNextPage)
+}
+func NewCertificatesClient(subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClient(subscriptionID)
+}
+func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCustomDomainResourceCollectionIterator(page CustomDomainResourceCollectionPage) CustomDomainResourceCollectionIterator {
+	return original.NewCustomDomainResourceCollectionIterator(page)
+}
+func NewCustomDomainResourceCollectionPage(getNextPage func(context.Context, CustomDomainResourceCollection) (CustomDomainResourceCollection, error)) CustomDomainResourceCollectionPage {
+	return original.NewCustomDomainResourceCollectionPage(getNextPage)
+}
+func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
+	return original.NewCustomDomainsClient(subscriptionID)
+}
+func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) CustomDomainsClient {
+	return original.NewCustomDomainsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDeploymentResourceCollectionIterator(page DeploymentResourceCollectionPage) DeploymentResourceCollectionIterator {
 	return original.NewDeploymentResourceCollectionIterator(page)

@@ -54,6 +54,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type CreatedBy = original.CreatedBy
 type ErrorDetail = original.ErrorDetail
 type ErrorInfo = original.ErrorInfo
 type ErrorResponse = original.ErrorResponse

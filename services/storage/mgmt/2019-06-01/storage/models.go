@@ -178,6 +178,21 @@ func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
 	return []DirectoryServiceOptions{DirectoryServiceOptionsAADDS, DirectoryServiceOptionsAD, DirectoryServiceOptionsNone}
 }
 
+// EnabledProtocols enumerates the values for enabled protocols.
+type EnabledProtocols string
+
+const (
+	// NFS ...
+	NFS EnabledProtocols = "NFS"
+	// SMB ...
+	SMB EnabledProtocols = "SMB"
+)
+
+// PossibleEnabledProtocolsValues returns an array of possible values for the EnabledProtocols const type.
+func PossibleEnabledProtocolsValues() []EnabledProtocols {
+	return []EnabledProtocols{NFS, SMB}
+}
+
 // EncryptionScopeSource enumerates the values for encryption scope source.
 type EncryptionScopeSource string
 
@@ -223,6 +238,19 @@ const (
 // PossibleGeoReplicationStatusValues returns an array of possible values for the GeoReplicationStatus const type.
 func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 	return []GeoReplicationStatus{GeoReplicationStatusBootstrap, GeoReplicationStatusLive, GeoReplicationStatusUnavailable}
+}
+
+// GetShareExpand enumerates the values for get share expand.
+type GetShareExpand string
+
+const (
+	// Stats ...
+	Stats GetShareExpand = "stats"
+)
+
+// PossibleGetShareExpandValues returns an array of possible values for the GetShareExpand const type.
+func PossibleGetShareExpandValues() []GetShareExpand {
+	return []GetShareExpand{Stats}
 }
 
 // HTTPProtocol enumerates the values for http protocol.
@@ -417,6 +445,19 @@ func PossibleListKeyExpandValues() []ListKeyExpand {
 	return []ListKeyExpand{Kerb}
 }
 
+// ListSharesExpand enumerates the values for list shares expand.
+type ListSharesExpand string
+
+const (
+	// Deleted ...
+	Deleted ListSharesExpand = "deleted"
+)
+
+// PossibleListSharesExpandValues returns an array of possible values for the ListSharesExpand const type.
+func PossibleListSharesExpandValues() []ListSharesExpand {
+	return []ListSharesExpand{Deleted}
+}
+
 // Permissions enumerates the values for permissions.
 type Permissions string
 
@@ -545,6 +586,23 @@ func PossibleReasonCodeValues() []ReasonCode {
 	return []ReasonCode{NotAvailableForSubscription, QuotaID}
 }
 
+// RootSquashType enumerates the values for root squash type.
+type RootSquashType string
+
+const (
+	// AllSquash ...
+	AllSquash RootSquashType = "AllSquash"
+	// NoRootSquash ...
+	NoRootSquash RootSquashType = "NoRootSquash"
+	// RootSquash ...
+	RootSquash RootSquashType = "RootSquash"
+)
+
+// PossibleRootSquashTypeValues returns an array of possible values for the RootSquashType const type.
+func PossibleRootSquashTypeValues() []RootSquashType {
+	return []RootSquashType{AllSquash, NoRootSquash, RootSquash}
+}
+
 // RoutingChoice enumerates the values for routing choice.
 type RoutingChoice string
 
@@ -577,6 +635,25 @@ const (
 // PossibleServicesValues returns an array of possible values for the Services const type.
 func PossibleServicesValues() []Services {
 	return []Services{B, F, Q, T}
+}
+
+// ShareAccessTier enumerates the values for share access tier.
+type ShareAccessTier string
+
+const (
+	// ShareAccessTierCool ...
+	ShareAccessTierCool ShareAccessTier = "Cool"
+	// ShareAccessTierHot ...
+	ShareAccessTierHot ShareAccessTier = "Hot"
+	// ShareAccessTierPremium ...
+	ShareAccessTierPremium ShareAccessTier = "Premium"
+	// ShareAccessTierTransactionOptimized ...
+	ShareAccessTierTransactionOptimized ShareAccessTier = "TransactionOptimized"
+)
+
+// PossibleShareAccessTierValues returns an array of possible values for the ShareAccessTier const type.
+func PossibleShareAccessTierValues() []ShareAccessTier {
+	return []ShareAccessTier{ShareAccessTierCool, ShareAccessTierHot, ShareAccessTierPremium, ShareAccessTierTransactionOptimized}
 }
 
 // SignedResource enumerates the values for signed resource.
@@ -1822,6 +1899,14 @@ type DateAfterModification struct {
 	DaysAfterModificationGreaterThan *float64 `json:"daysAfterModificationGreaterThan,omitempty"`
 }
 
+// DeletedShare the deleted share to be restored.
+type DeletedShare struct {
+	// DeletedShareName - Required. Identify the name of the deleted share that will be restored.
+	DeletedShareName *string `json:"deletedShareName,omitempty"`
+	// DeletedShareVersion - Required. Identify the version of the deleted share that will be restored.
+	DeletedShareVersion *string `json:"deletedShareVersion,omitempty"`
+}
+
 // DeleteRetentionPolicy the service properties for soft delete.
 type DeleteRetentionPolicy struct {
 	// Enabled - Indicates whether DeleteRetentionPolicy is enabled.
@@ -2561,6 +2646,26 @@ type FileShareProperties struct {
 	Metadata map[string]*string `json:"metadata"`
 	// ShareQuota - The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
 	ShareQuota *int32 `json:"shareQuota,omitempty"`
+	// EnabledProtocols - The authentication protocol that is used for the file share. Can only be specified when creating a share. Possible values include: 'SMB', 'NFS'
+	EnabledProtocols EnabledProtocols `json:"enabledProtocols,omitempty"`
+	// RootSquash - The property is for NFS share only. The default is NoRootSquash. Possible values include: 'NoRootSquash', 'RootSquash', 'AllSquash'
+	RootSquash RootSquashType `json:"rootSquash,omitempty"`
+	// Version - READ-ONLY; The version of the share.
+	Version *string `json:"version,omitempty"`
+	// Deleted - READ-ONLY; Indicates whether the share was deleted.
+	Deleted *bool `json:"deleted,omitempty"`
+	// DeletedTime - READ-ONLY; The deleted time if the share was deleted.
+	DeletedTime *date.Time `json:"deletedTime,omitempty"`
+	// RemainingRetentionDays - READ-ONLY; Remaining retention days for share that was soft deleted.
+	RemainingRetentionDays *int32 `json:"remainingRetentionDays,omitempty"`
+	// AccessTier - Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool. FileStorage account can choose Premium. Possible values include: 'ShareAccessTierTransactionOptimized', 'ShareAccessTierHot', 'ShareAccessTierCool', 'ShareAccessTierPremium'
+	AccessTier ShareAccessTier `json:"accessTier,omitempty"`
+	// AccessTierChangeTime - READ-ONLY; Indicates the last modification time for share access tier.
+	AccessTierChangeTime *date.Time `json:"accessTierChangeTime,omitempty"`
+	// AccessTierStatus - READ-ONLY; Indicates if there is a pending transition for access tier.
+	AccessTierStatus *string `json:"accessTierStatus,omitempty"`
+	// ShareUsageBytes - READ-ONLY; The approximate size of the data stored on the share. Note that this value may not include all recently created or recently resized files.
+	ShareUsageBytes *int32 `json:"shareUsageBytes,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FileShareProperties.
@@ -2571,6 +2676,15 @@ func (fsp FileShareProperties) MarshalJSON() ([]byte, error) {
 	}
 	if fsp.ShareQuota != nil {
 		objectMap["shareQuota"] = fsp.ShareQuota
+	}
+	if fsp.EnabledProtocols != "" {
+		objectMap["enabledProtocols"] = fsp.EnabledProtocols
+	}
+	if fsp.RootSquash != "" {
+		objectMap["rootSquash"] = fsp.RootSquash
+	}
+	if fsp.AccessTier != "" {
+		objectMap["accessTier"] = fsp.AccessTier
 	}
 	return json.Marshal(objectMap)
 }
@@ -3165,6 +3279,8 @@ type ManagementPolicyFilter struct {
 	PrefixMatch *[]string `json:"prefixMatch,omitempty"`
 	// BlobTypes - An array of predefined enum values. Only blockBlob is supported.
 	BlobTypes *[]string `json:"blobTypes,omitempty"`
+	// BlobIndexMatch - An array of blob index tag based filters, there can be at most 10 tag filters
+	BlobIndexMatch *[]TagFilter `json:"blobIndexMatch,omitempty"`
 }
 
 // ManagementPolicyProperties the Storage Account ManagementPolicy properties.
@@ -3785,6 +3901,16 @@ type SkuListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Get the list result of storage SKUs and their properties.
 	Value *[]SkuInformation `json:"value,omitempty"`
+}
+
+// TagFilter blob index tag based filtering for blob objects
+type TagFilter struct {
+	// Name - This is the filter tag name, it can have 1 - 128 characters
+	Name *string `json:"name,omitempty"`
+	// Op - This is the comparison operator which is used for object comparison and filtering. Only == (equality operator) is currently supported
+	Op *string `json:"op,omitempty"`
+	// Value - This is the filter tag value field used for tag based filtering, it can have 0 - 256 characters
+	Value *string `json:"value,omitempty"`
 }
 
 // TagProperty a tag of the LegalHold of a blob container.

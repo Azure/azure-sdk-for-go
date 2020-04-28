@@ -23,6 +23,8 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/
 
 type AppsClientAPI = original.AppsClientAPI
 type BindingsClientAPI = original.BindingsClientAPI
+type CertificatesClientAPI = original.CertificatesClientAPI
+type CustomDomainsClientAPI = original.CustomDomainsClientAPI
 type DeploymentsClientAPI = original.DeploymentsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type ServicesClientAPI = original.ServicesClientAPI

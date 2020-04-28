@@ -45,6 +45,8 @@ const (
 
 type BaseClient = original.BaseClient
 type ComplianceDetail = original.ComplianceDetail
+type ComponentEventDetails = original.ComponentEventDetails
+type ComponentStateDetails = original.ComponentStateDetails
 type ErrorDefinition = original.ErrorDefinition
 type ErrorResponse = original.ErrorResponse
 type ExpressionEvaluationDetails = original.ExpressionEvaluationDetails

@@ -142,6 +142,13 @@ const (
 	Local DiffDiskOptions = original.Local
 )
 
+type DiffDiskPlacement = original.DiffDiskPlacement
+
+const (
+	CacheDisk    DiffDiskPlacement = original.CacheDisk
+	ResourceDisk DiffDiskPlacement = original.ResourceDisk
+)
+
 type DiskCreateOption = original.DiskCreateOption
 
 const (
@@ -442,6 +449,7 @@ const (
 type StorageAccountType = original.StorageAccountType
 
 const (
+	StorageAccountTypePremiumLRS  StorageAccountType = original.StorageAccountTypePremiumLRS
 	StorageAccountTypeStandardLRS StorageAccountType = original.StorageAccountTypeStandardLRS
 	StorageAccountTypeStandardZRS StorageAccountType = original.StorageAccountTypeStandardZRS
 )
@@ -1515,6 +1523,9 @@ func PossibleDedicatedHostLicenseTypesValues() []DedicatedHostLicenseTypes {
 }
 func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
 	return original.PossibleDiffDiskOptionsValues()
+}
+func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
+	return original.PossibleDiffDiskPlacementValues()
 }
 func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	return original.PossibleDiskCreateOptionTypesValues()

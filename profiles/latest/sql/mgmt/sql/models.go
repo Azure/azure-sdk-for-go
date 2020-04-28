@@ -614,6 +614,7 @@ type ReplicationLinkProperties = original.ReplicationLinkProperties
 type ReplicationLinksClient = original.ReplicationLinksClient
 type ReplicationLinksFailoverAllowDataLossFuture = original.ReplicationLinksFailoverAllowDataLossFuture
 type ReplicationLinksFailoverFuture = original.ReplicationLinksFailoverFuture
+type ReplicationLinksUnlinkFuture = original.ReplicationLinksUnlinkFuture
 type Resource = original.Resource
 type RestorableDroppedDatabase = original.RestorableDroppedDatabase
 type RestorableDroppedDatabaseListResult = original.RestorableDroppedDatabaseListResult
@@ -674,6 +675,7 @@ type TransparentDataEncryptionConfigurationsClient = original.TransparentDataEnc
 type TransparentDataEncryptionListResult = original.TransparentDataEncryptionListResult
 type TransparentDataEncryptionProperties = original.TransparentDataEncryptionProperties
 type TransparentDataEncryptionsClient = original.TransparentDataEncryptionsClient
+type UnlinkParameters = original.UnlinkParameters
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

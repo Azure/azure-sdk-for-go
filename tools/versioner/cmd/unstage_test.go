@@ -362,7 +362,7 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario f: new module",
-			getTagsHook:func(root, prefix string) ([]string, error) {
+			getTagsHook: func(root, prefix string) ([]string, error) {
 				// root doesn't matter
 				if !strings.HasSuffix(prefix, "/testdata/scenariof/foo") {
 					return nil, fmt.Errorf("bad prefix '%s'", prefix)
@@ -380,7 +380,7 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario g: new management plane major v2",
-			getTagsHook:func(root string, prefix string) ([]string, error) {
+			getTagsHook: func(root string, prefix string) ([]string, error) {
 				if !strings.HasSuffix(prefix, "testdata/scenariog/foo/mgmt/2019-10-11/foo") {
 					return nil, fmt.Errorf("bad prefix '%s'", prefix)
 				}
@@ -399,7 +399,7 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario h: major version v2 (import need changes)",
-			getTagsHook:func(root string, prefix string) ([]string, error) {
+			getTagsHook: func(root string, prefix string) ([]string, error) {
 				if !strings.HasSuffix(prefix, "testdata/scenarioh/foo/mgmt/2019-10-11/foo") {
 					return nil, fmt.Errorf("bad prefix '%s'", prefix)
 				}
@@ -443,7 +443,7 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario j: identical v2, should have no update",
-			getTagsHook:func(root string, prefix string) ([]string, error) {
+			getTagsHook: func(root string, prefix string) ([]string, error) {
 				if !strings.HasSuffix(prefix, "testdata/scenarioj/foo/mgmt/2019-10-23/foo") {
 					return nil, fmt.Errorf("bad prefix '%s'", prefix)
 				}
@@ -479,7 +479,7 @@ func TestExecuteUnstage(t *testing.T) {
 					"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
 				}, nil
 			},
-			stage:"../../testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/stage",
+			stage: "../../testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenariok/foo/mgmt/2019-11-01-preview/foo",
 				tag:       "tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.2.0",
@@ -615,27 +615,27 @@ func TestExecuteUnstage(t *testing.T) {
 
 func TestCheckIdentical(t *testing.T) {
 	testData := []struct {
-		name string
-		baseline string
-		stage string
+		name      string
+		baseline  string
+		stage     string
 		identical bool
 	}{
 		{
-			name: "scenario a",
-			baseline: "../../testdata/scenarioa/foo",
-			stage: "../../testdata/scenarioa/foo/stage",
+			name:      "scenario a",
+			baseline:  "../../testdata/scenarioa/foo",
+			stage:     "../../testdata/scenarioa/foo/stage",
 			identical: false,
 		},
 		{
-			name: "scenario i",
-			baseline: "../../testdata/scenarioi/foo/mgmt/2019-10-23/foo",
-			stage: "../../testdata/scenarioi/foo/mgmt/2019-10-23/foo/stage",
+			name:      "scenario i",
+			baseline:  "../../testdata/scenarioi/foo/mgmt/2019-10-23/foo",
+			stage:     "../../testdata/scenarioi/foo/mgmt/2019-10-23/foo/stage",
 			identical: true,
 		},
 		{
-			name: "scenario j",
-			baseline: "../../testdata/scenarioj/foo/mgmt/2019-10-23/foo",
-			stage: "../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/stage",
+			name:      "scenario j",
+			baseline:  "../../testdata/scenarioj/foo/mgmt/2019-10-23/foo",
+			stage:     "../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/stage",
 			identical: true,
 		},
 	}

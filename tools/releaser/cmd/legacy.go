@@ -42,6 +42,7 @@ to use the one version number (version.Number) instead of using their own module
 	return legacyCommand
 }
 
+// LegacyFlags assembles all the flags for the legacy command
 type LegacyFlags struct {
 	RepoRoot string
 }
@@ -56,6 +57,7 @@ var (
 	versionStatementRegex = regexp.MustCompile(`^[\t ]*return "v?\d+\.\d+\.\d+"[\t ]*$`)
 )
 
+// ExecuteLegacy executes the legacy command
 func ExecuteLegacy(r string, flags LegacyFlags) error {
 	flags.apply()
 	root, err := filepath.Abs(r)

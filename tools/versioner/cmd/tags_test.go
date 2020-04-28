@@ -185,7 +185,7 @@ func TestCalculateModuleTag(t *testing.T) {
 			expected: "services/foo/v2.0.1",
 		},
 		{
-			name: "major v3",
+			name:     "major v3",
 			baseline: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo"),
 			pkg: mockModInfo{
 				exports: false,
@@ -202,25 +202,25 @@ func TestCalculateModuleTag(t *testing.T) {
 			expected: "services/foo/v3.0.0",
 		},
 		{
-			name: "new preview package",
-			baseline:filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo"),
+			name:     "new preview package",
+			baseline: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo"),
 			pkg: mockModInfo{
 				isPreview: true,
 				exports:   true,
-				breaks:   true,
+				breaks:    true,
 				newModule: true,
 			},
-			hookFunc: func(root string, tagPrefix string) (	[]string, error) {
+			hookFunc: func(root string, tagPrefix string) ([]string, error) {
 				return []string{}, nil
 			},
 			expected: "services/foo/v0.0.0",
 		},
 		{
-			name: "preview package breaking change",
-			baseline:filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo"),
+			name:     "preview package breaking change",
+			baseline: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo"),
 			pkg: mockModInfo{
 				isPreview: true,
-				breaks: true,
+				breaks:    true,
 			},
 			hookFunc: func(root string, tagPrefix string) ([]string, error) {
 				return []string{
@@ -232,11 +232,11 @@ func TestCalculateModuleTag(t *testing.T) {
 			expected: "services/foo/v0.2.0",
 		},
 		{
-			name: "preview package incremental change",
-			baseline:filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo"),
+			name:     "preview package incremental change",
+			baseline: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo"),
 			pkg: mockModInfo{
 				isPreview: true,
-				exports: true,
+				exports:   true,
 			},
 			hookFunc: func(root string, tagPrefix string) ([]string, error) {
 				return []string{
@@ -248,8 +248,8 @@ func TestCalculateModuleTag(t *testing.T) {
 			expected: "services/foo/v0.2.0",
 		},
 		{
-			name: "preview package patch",
-			baseline:filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo"),
+			name:     "preview package patch",
+			baseline: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo"),
 			pkg: mockModInfo{
 				isPreview: true,
 			},
@@ -286,13 +286,13 @@ func TestCalculateModuleTag(t *testing.T) {
 }
 
 func TestGetLatestSemver(t *testing.T) {
-	testData := []struct{
-		tags []string
+	testData := []struct {
+		tags      []string
 		tagPrefix string
-		expected string
+		expected  string
 	}{
 		{
-			tags: []string{},
+			tags:     []string{},
 			expected: "",
 		},
 		{
@@ -300,7 +300,7 @@ func TestGetLatestSemver(t *testing.T) {
 				"github.com/Azure/azure-sdk-for-go/services/foo/v1.0.0",
 			},
 			tagPrefix: "services/foo",
-			expected: "1.0.0",
+			expected:  "1.0.0",
 		},
 		{
 			tags: []string{
@@ -308,7 +308,7 @@ func TestGetLatestSemver(t *testing.T) {
 				"github.com/Azure/azure-sdk-for-go/services/foo/v1.1.0",
 			},
 			tagPrefix: "services/foo",
-			expected: "1.1.0",
+			expected:  "1.1.0",
 		},
 		{
 			tags: []string{
@@ -317,7 +317,7 @@ func TestGetLatestSemver(t *testing.T) {
 				"github.com/Azure/azure-sdk-for-go/services/foo/v2.0.0",
 			},
 			tagPrefix: "services/foo",
-			expected: "2.0.0",
+			expected:  "2.0.0",
 		},
 		{
 			tags: []string{
@@ -327,7 +327,7 @@ func TestGetLatestSemver(t *testing.T) {
 				"github.com/Azure/azure-sdk-for-go/services/foo/v2.0.1",
 			},
 			tagPrefix: "services/foo",
-			expected: "2.0.1",
+			expected:  "2.0.1",
 		},
 		{
 			tags: []string{
@@ -338,7 +338,7 @@ func TestGetLatestSemver(t *testing.T) {
 				"github.com/Azure/azure-sdk-for-go/services/foo/v2.1.0",
 			},
 			tagPrefix: "services/foo",
-			expected: "2.1.0",
+			expected:  "2.1.0",
 		},
 		{
 			tags: []string{
@@ -350,7 +350,7 @@ func TestGetLatestSemver(t *testing.T) {
 				"github.com/Azure/azure-sdk-for-go/services/foo/v3.0.0",
 			},
 			tagPrefix: "services/foo",
-			expected: "3.0.0",
+			expected:  "3.0.0",
 		},
 	}
 
@@ -372,32 +372,32 @@ func TestGetLatestSemver(t *testing.T) {
 }
 
 func TestFindVersionSuffixInTag(t *testing.T) {
-	testData := []struct{
-		tag string
+	testData := []struct {
+		tag      string
 		expected string
 	}{
 		{
-			tag: "services/foo/v1.0.0",
+			tag:      "services/foo/v1.0.0",
 			expected: "",
 		},
 		{
-			tag: "services/foo/v1.2.100",
+			tag:      "services/foo/v1.2.100",
 			expected: "",
 		},
 		{
-			tag: "services/foo/v2.0.0",
+			tag:      "services/foo/v2.0.0",
 			expected: "v2",
 		},
 		{
-			tag: "services/foo/v1000.60.100",
+			tag:      "services/foo/v1000.60.100",
 			expected: "v1000",
 		},
 		{
-			tag: "services/foov1999/v3.0.1",
+			tag:      "services/foov1999/v3.0.1",
 			expected: "v3",
 		},
 		{
-			tag: "services/foo/v1999/v3.0.1",
+			tag:      "services/foo/v1999/v3.0.1",
 			expected: "v3",
 		},
 	}

@@ -18,7 +18,7 @@ import "github.com/spf13/cobra"
 
 func profilerCommand() *cobra.Command {
 	profile := &cobra.Command{
-		Use: "profile <profiles directory>",
+		Use:   "profile <profiles directory>",
 		Short: "Release new modules",
 		// skip if identical, otherwise bump minor version
 	}

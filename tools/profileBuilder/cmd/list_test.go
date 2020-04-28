@@ -22,18 +22,19 @@ import (
 )
 
 func Test_updateModuleVersions(t *testing.T) {
+	// current module implementation is without major sub-directories
 	ld := model.ListDefinition{
 		Include: []string{
 			"../../testdata/scenarioa/foo",
 			"../../testdata/scenariod/foo",
-			"../../testdata/scenarioe/foo/v2",
+			"../../testdata/scenarioe/foo",
 		},
 	}
 	updateModuleVersions(&ld)
 	expected := []string{
 		"../../testdata/scenarioa/foo",
-		"../../testdata/scenariod/foo/v2",
-		"../../testdata/scenarioe/foo/v2",
+		"../../testdata/scenariod/foo",
+		"../../testdata/scenarioe/foo",
 	}
 	if !reflect.DeepEqual(ld.Include, expected) {
 		t.Fatalf("expected '%v' got '%v'", expected, ld.Include)
@@ -41,6 +42,7 @@ func Test_updateModuleVersions(t *testing.T) {
 }
 
 func Test_getLatestModVer(t *testing.T) {
+	// current module implementation is without major sub-directories, therefore we cannot get the module version just by the directory structure here
 	d, err := getLatestModVer("../../testdata/scenarioa/foo")
 	if err != nil {
 		t.Fatalf("failed: %v", err)
@@ -52,7 +54,7 @@ func Test_getLatestModVer(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed: %v", err)
 	}
-	if d != "v2" {
-		t.Fatalf("expected 'v2' string got '%s'", d)
+	if d != "" {
+		t.Fatalf("expected empty string got '%s'", d)
 	}
 }

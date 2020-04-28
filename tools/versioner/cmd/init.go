@@ -64,6 +64,7 @@ const (
 	goVersion = `go 1.13`
 )
 
+// ExecuteInit executes the init command
 func ExecuteInit(r, repoRoot, classicalFile string) error {
 	root, err := filepath.Abs(r)
 	if err != nil {

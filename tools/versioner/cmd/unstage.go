@@ -44,7 +44,7 @@ with the staged content.  If there are breaking changes the staged content becom
 next latest major version and the go.mod file is updated.
 The default version for new modules is v1.0.0, and for preview modules is v0.0.0.
 `,
-		Args: cobra.RangeArgs(1, 3),
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			root := args[0]
 			startingVer := viper.GetString("starting-version")
@@ -82,6 +82,7 @@ const (
 // TagsHookFunc is a func used for get tags from remote
 type TagsHookFunc func(root string, tagPrefix string) ([]string, error)
 
+// ExecuteUnstage executes the unstage command
 func ExecuteUnstage(s, repoRoot string, versionSetting *VersionSetting, getTagsHook TagsHookFunc) (string, string, error) {
 	stage, err := filepath.Abs(s)
 	if err != nil {

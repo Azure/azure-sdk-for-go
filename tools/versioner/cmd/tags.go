@@ -120,7 +120,7 @@ func getLatestSemver(tags []string, tagPrefix string) (*semver.Version, error) {
 		if index < 0 {
 			return nil, fmt.Errorf("do not find '%s' in tag '%s'", tagPrefix, tag)
 		}
-		verString := strings.Trim(tag[index + len(tagPrefix):], "/")
+		verString := strings.Trim(tag[index+len(tagPrefix):], "/")
 		ver, err := semver.NewVersion(verString)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse semver %s: %+v", verString, err)
@@ -132,7 +132,7 @@ func getLatestSemver(tags []string, tagPrefix string) (*semver.Version, error) {
 	if len(versions) == 0 {
 		return nil, nil
 	}
- 	return versions[len(versions) - 1], nil
+	return versions[len(versions)-1], nil
 }
 
 func findVersionSuffixInTag(tag string) string {
@@ -140,7 +140,7 @@ func findVersionSuffixInTag(tag string) string {
 	if len(r) == 0 {
 		return ""
 	}
-	suffix := r[len(r) - 1]
+	suffix := r[len(r)-1]
 	if suffix == "v0" || suffix == "v1" {
 		return ""
 	}

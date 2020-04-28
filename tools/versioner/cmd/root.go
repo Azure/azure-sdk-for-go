@@ -25,6 +25,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Command returns the root command for this cli tool
 func Command() *cobra.Command {
 	// the root command
 	root := &cobra.Command{
@@ -36,7 +37,7 @@ with the staged content.  If there are breaking changes the staged content becom
 next latest major vesion and the go.mod file is updated.
 The default version for new modules is v1.0.0, and for preview modules is v0.0.0.
 `,
-		Args: cobra.RangeArgs(1, 2),
+		Args: cobra.ExactArgs(1),
 
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			log.SetLevel("warn")
@@ -106,12 +107,13 @@ const (
 	startingModVerPreview = "v0.0.0"
 )
 
+// VersionSetting assembles the settings on starting versions
 type VersionSetting struct {
 	InitialVersion        string
 	InitialVersionPreview string
 }
 
-// wrapper for cobra, prints tag to stdout
+// ExecuteVersioner execute the versioner command, print the tags to stdout
 func ExecuteVersioner(r, repoRoot string, versionSetting *VersionSetting, hookFunc TagsHookFunc) ([]string, error) {
 	root, err := filepath.Abs(r)
 	if err != nil {

@@ -25,6 +25,7 @@ const (
 	versionFile = "version.go"
 )
 
+// Command returns the root command for this tool
 func Command() *cobra.Command {
 	// the root command
 	root := &cobra.Command{

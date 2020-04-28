@@ -40,10 +40,10 @@ to release the corresponding modules.`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			flags := TaggerFlags{
-				DryRunFlag: viper.GetBool("dry-run"),
-				AddOnly:    viper.GetBool("add-only"),
+				DryRun:  viper.GetBool("dry-run"),
+				AddOnly: viper.GetBool("add-only"),
 			}
-			return ExecuteReleaser(args[0], flags, getTags)
+			return ExecuteTagger(args[0], flags, getTags)
 		},
 	}
 	// flags
@@ -60,15 +60,19 @@ to release the corresponding modules.`,
 	return tagCommand
 }
 
+// TaggerFlags assembles all the flags for tagger command
 type TaggerFlags struct {
-	DryRunFlag bool
+	// DryRun indicates whether this run will only output the action without taking it
+	DryRun bool
+	// AddOnly indicates whether this run will only add the new tags to git without pushing them
 	AddOnly    bool
 }
 
 // TagsHookFunc is a func used for get tags from remote
 type TagsHookFunc func(root string) ([]string, error)
 
-func ExecuteReleaser(r string, flags TaggerFlags, getTagsHook TagsHookFunc) error {
+// ExecuteTagger executes the releaser command
+func ExecuteTagger(r string, flags TaggerFlags, getTagsHook TagsHookFunc) error {
 	root, err := filepath.Abs(r)
 	if err != nil {
 		return fmt.Errorf("failed to get absolute root: %v", err)
@@ -79,7 +83,7 @@ func ExecuteReleaser(r string, flags TaggerFlags, getTagsHook TagsHookFunc) erro
 	}
 	log.Infoln("Found new tags: ")
 	log.Infoln(strings.Join(newTags, "\n"))
-	if !flags.DryRunFlag {
+	if !flags.DryRun {
 		// add new tags
 		for _, tag := range newTags {
 			if err := addNewTag(tag); err != nil {

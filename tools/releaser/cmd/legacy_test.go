@@ -160,8 +160,8 @@ return version.Number
 `,
 		},
 		{
-				name: "moduled version.go",
-				content: `package privatedns
+			name: "moduled version.go",
+			content: `package privatedns
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -190,7 +190,7 @@ func Version() string {
 	return "v1.2.3"
 }
 `,
-				expected: `package privatedns
+			expected: `package privatedns
 
 import "github.com/Azure/azure-sdk-for-go/version"
 // Copyright (c) Microsoft and contributors.  All rights reserved.

@@ -86,7 +86,7 @@ func Test_ScenarioC(t *testing.T) {
 
 func Test_ScenarioD(t *testing.T) {
 	// scenario D has a breaking change on top of a v2 release
-	mod, err := GetModuleInfo("../../testdata/scenariod/foo/v2", "../../testdata/scenariod/foo/stage")
+	mod, err := GetModuleInfo("../../testdata/scenariod/foo", "../../testdata/scenariod/foo/stage")
 	if err != nil {
 		t.Fatalf("failed to get module info: %v", err)
 	}
@@ -99,7 +99,8 @@ func Test_ScenarioD(t *testing.T) {
 	if !mod.VersionSuffix() {
 		t.Fatalf("expected version suffix in scenario D")
 	}
-	regex := regexp.MustCompile(`testdata[/\\]scenariod[/\\]foo[/\\]v3$`)
+	// currently the versioner tool is not implementing the major sub-directories, therefore the DestDir will only return at most v2
+	regex := regexp.MustCompile(`testdata[/\\]scenariod[/\\]foo[/\\]v2$`)
 	if !regex.MatchString(mod.DestDir()) {
 		t.Fatalf("bad destination dir: %s", mod.DestDir())
 	}
@@ -107,7 +108,7 @@ func Test_ScenarioD(t *testing.T) {
 
 func Test_ScenarioE(t *testing.T) {
 	// scenario E has a new export on top of a v2 release
-	mod, err := GetModuleInfo("../../testdata/scenarioe/foo/v2", "../../testdata/scenarioe/foo/stage")
+	mod, err := GetModuleInfo("../../testdata/scenarioe/foo", "../../testdata/scenarioe/foo/stage")
 	if err != nil {
 		t.Fatalf("failed to get module info: %v", err)
 	}
@@ -117,10 +118,11 @@ func Test_ScenarioE(t *testing.T) {
 	if !mod.NewExports() {
 		t.Fatal("expected new exports in scenario E")
 	}
-	if !mod.VersionSuffix() {
-		t.Fatalf("expected version suffix in scenario E")
+	// despite the module is v2, but the stage content has no breaking changes, therefore the staged module does not have version suffix
+	if mod.VersionSuffix() {
+		t.Fatalf("unexpected version suffix in scenario E")
 	}
-	regex := regexp.MustCompile(`testdata/scenarioe/foo/v2$`)
+	regex := regexp.MustCompile(`testdata/scenarioe/foo$`)
 	if !regex.MatchString(mod.DestDir()) {
 		t.Fatalf("bad destination dir: %s", mod.DestDir())
 	}

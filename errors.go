@@ -35,6 +35,9 @@ type (
 	ErrNotFound struct {
 		EntityPath string
 	}
+
+	// ErrConnectionClosed indicates that the connection has been closed.
+	ErrConnectionClosed string
 )
 
 func (e ErrMissingField) Error() string {
@@ -79,4 +82,8 @@ func (e ErrNotFound) Error() string {
 func IsErrNotFound(err error) bool {
 	_, ok := err.(ErrNotFound)
 	return ok
+}
+
+func (e ErrConnectionClosed) Error() string {
+	return fmt.Sprintf("the connection has been closed: %s", string(e))
 }

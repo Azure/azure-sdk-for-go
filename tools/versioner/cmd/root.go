@@ -28,13 +28,13 @@ import (
 func Command() *cobra.Command {
 	// the root command
 	root := &cobra.Command{
-		Use:   "versioner <searching dir> [initial module version]",
+		Use:   "versioner <searching dir>",
 		Short: "Creates or updates the latest version for a package from the staged content.",
 		Long: `This tool will compare a staged package against its latest version to detect
 breaking changes.  If there are no breaking changes, the latest version is updated
 with the staged content.  If there are breaking changes the staged content becomes the
 next latest major vesion and the go.mod file is updated.
-The default version for new modules is v1.0.0 or the value specified for [initial module version].
+The default version for new modules is v1.0.0, and for preview modules is v0.0.0.
 `,
 		Args: cobra.RangeArgs(1, 2),
 
@@ -50,12 +50,20 @@ The default version for new modules is v1.0.0 or the value specified for [initia
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			root := args[0]
-			versionSetting, err := parseVersionSetting(args[1:]...)
-			if err != nil {
-				return err
+			startingVer := viper.GetString("starting-version")
+			if !modinfo.IsValidModuleVersion(startingVer) {
+				return fmt.Errorf("the string '%s' is not a valid module version", startingVer)
+			}
+			startingVerPreview := viper.GetString("starting-preview-version")
+			if !modinfo.IsValidModuleVersion(startingVerPreview) {
+				return fmt.Errorf("the string '%s' is not a valid module version", startingVerPreview)
+			}
+			versionSetting := &VersionSetting{
+				InitialVersion:        startingVer,
+				InitialVersionPreview: startingVerPreview,
 			}
 			repoRoot := viper.GetString("gomod-root")
-			_, err = ExecuteVersioner(root, repoRoot, versionSetting, getTags)
+			_, err := ExecuteVersioner(root, repoRoot, versionSetting, getTags)
 			return err
 		},
 	}
@@ -73,6 +81,14 @@ The default version for new modules is v1.0.0 or the value specified for [initia
 	if err := viper.BindPFlag("gomod-root", pFlags.Lookup("gomod-root")); err != nil {
 		log.Fatalf("failed to bind flag: %+v", err)
 	}
+	pFlags.String("starting-version", startingModVer, "starting module version of stable modules")
+	if err := viper.BindPFlag("starting-version", pFlags.Lookup("starting-version")); err != nil {
+		log.Fatalf("failed to bind flag: %+v", err)
+	}
+	pFlags.String("starting-preview-version", startingModVerPreview, "starting module version of preview modules")
+	if err := viper.BindPFlag("starting-preview-version", pFlags.Lookup("starting-preview-version")); err != nil {
+		log.Fatalf("failed to bind flag: %+v", err)
+	}
 
 	// other sub-commands
 	root.AddCommand(unstageCommand())
@@ -88,35 +104,11 @@ const (
 	startingModVer = "v1.0.0"
 	// default version for a new preview module
 	startingModVerPreview = "v0.0.0"
-
-	repoOrg = "Azure"
-	repoName = "azure-sdk-for-go"
 )
 
 type VersionSetting struct {
 	InitialVersion        string
 	InitialVersionPreview string
-}
-
-func parseVersionSetting(args ...string) (*VersionSetting, error) {
-	initialVersion := startingModVer
-	if len(args) > 0 {
-		if !modinfo.IsValidModuleVersion(args[0]) {
-			return nil, fmt.Errorf("the string '%s' is not a valid module version", args[0])
-		}
-		initialVersion = args[1]
-	}
-	initialPreviewVersion := startingModVerPreview
-	if len(args) > 1 {
-		if !modinfo.IsValidModuleVersion(args[1]) {
-			return nil, fmt.Errorf("the string '%s' is not a valid module version", args[1])
-		}
-		initialPreviewVersion = args[1]
-	}
-	return &VersionSetting{
-		InitialVersion:        initialVersion,
-		InitialVersionPreview: initialPreviewVersion,
-	}, nil
 }
 
 // wrapper for cobra, prints tag to stdout

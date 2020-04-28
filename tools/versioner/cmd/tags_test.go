@@ -268,7 +268,10 @@ func TestCalculateModuleTag(t *testing.T) {
 
 	for _, c := range testData {
 		t.Logf("Testing %s", c.name)
-		versionSetting, _ := parseVersionSetting()
+		versionSetting := &VersionSetting{
+			InitialVersion:        startingModVer,
+			InitialVersionPreview: startingModVerPreview,
+		}
 		tag, err := calculateModuleTag(c.baseline, versionSetting, repoRoot, c.pkg, c.hookFunc)
 		if err != nil && !c.errored {
 			t.Fatalf("unexpected error: %+v", err)

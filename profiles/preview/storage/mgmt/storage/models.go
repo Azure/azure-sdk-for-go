@@ -98,6 +98,13 @@ const (
 	DirectoryServiceOptionsNone  DirectoryServiceOptions = original.DirectoryServiceOptionsNone
 )
 
+type EnabledProtocols = original.EnabledProtocols
+
+const (
+	NFS EnabledProtocols = original.NFS
+	SMB EnabledProtocols = original.SMB
+)
+
 type EncryptionScopeSource = original.EncryptionScopeSource
 
 const (
@@ -118,6 +125,12 @@ const (
 	GeoReplicationStatusBootstrap   GeoReplicationStatus = original.GeoReplicationStatusBootstrap
 	GeoReplicationStatusLive        GeoReplicationStatus = original.GeoReplicationStatusLive
 	GeoReplicationStatusUnavailable GeoReplicationStatus = original.GeoReplicationStatusUnavailable
+)
+
+type GetShareExpand = original.GetShareExpand
+
+const (
+	Stats GetShareExpand = original.Stats
 )
 
 type HTTPProtocol = original.HTTPProtocol
@@ -210,6 +223,12 @@ const (
 	Kerb ListKeyExpand = original.Kerb
 )
 
+type ListSharesExpand = original.ListSharesExpand
+
+const (
+	Deleted ListSharesExpand = original.Deleted
+)
+
 type Permissions = original.Permissions
 
 const (
@@ -270,6 +289,14 @@ const (
 	QuotaID                     ReasonCode = original.QuotaID
 )
 
+type RootSquashType = original.RootSquashType
+
+const (
+	AllSquash    RootSquashType = original.AllSquash
+	NoRootSquash RootSquashType = original.NoRootSquash
+	RootSquash   RootSquashType = original.RootSquash
+)
+
 type RoutingChoice = original.RoutingChoice
 
 const (
@@ -284,6 +311,15 @@ const (
 	F Services = original.F
 	Q Services = original.Q
 	T Services = original.T
+)
+
+type ShareAccessTier = original.ShareAccessTier
+
+const (
+	ShareAccessTierCool                 ShareAccessTier = original.ShareAccessTierCool
+	ShareAccessTierHot                  ShareAccessTier = original.ShareAccessTierHot
+	ShareAccessTierPremium              ShareAccessTier = original.ShareAccessTierPremium
+	ShareAccessTierTransactionOptimized ShareAccessTier = original.ShareAccessTierTransactionOptimized
 )
 
 type SignedResource = original.SignedResource
@@ -388,6 +424,7 @@ type CustomDomain = original.CustomDomain
 type DateAfterCreation = original.DateAfterCreation
 type DateAfterModification = original.DateAfterModification
 type DeleteRetentionPolicy = original.DeleteRetentionPolicy
+type DeletedShare = original.DeletedShare
 type Dimension = original.Dimension
 type Encryption = original.Encryption
 type EncryptionScope = original.EncryptionScope
@@ -473,6 +510,7 @@ type Sku = original.Sku
 type SkuInformation = original.SkuInformation
 type SkuListResult = original.SkuListResult
 type SkusClient = original.SkusClient
+type TagFilter = original.TagFilter
 type TagProperty = original.TagProperty
 type TrackedResource = original.TrackedResource
 type UpdateHistoryProperty = original.UpdateHistoryProperty
@@ -617,6 +655,9 @@ func PossibleDefaultActionValues() []DefaultAction {
 func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
 	return original.PossibleDirectoryServiceOptionsValues()
 }
+func PossibleEnabledProtocolsValues() []EnabledProtocols {
+	return original.PossibleEnabledProtocolsValues()
+}
 func PossibleEncryptionScopeSourceValues() []EncryptionScopeSource {
 	return original.PossibleEncryptionScopeSourceValues()
 }
@@ -625,6 +666,9 @@ func PossibleEncryptionScopeStateValues() []EncryptionScopeState {
 }
 func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 	return original.PossibleGeoReplicationStatusValues()
+}
+func PossibleGetShareExpandValues() []GetShareExpand {
+	return original.PossibleGetShareExpandValues()
 }
 func PossibleHTTPProtocolValues() []HTTPProtocol {
 	return original.PossibleHTTPProtocolValues()
@@ -662,6 +706,9 @@ func PossibleLeaseStatusValues() []LeaseStatus {
 func PossibleListKeyExpandValues() []ListKeyExpand {
 	return original.PossibleListKeyExpandValues()
 }
+func PossibleListSharesExpandValues() []ListSharesExpand {
+	return original.PossibleListSharesExpandValues()
+}
 func PossiblePermissionsValues() []Permissions {
 	return original.PossiblePermissionsValues()
 }
@@ -683,11 +730,17 @@ func PossibleReasonCodeValues() []ReasonCode {
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()
 }
+func PossibleRootSquashTypeValues() []RootSquashType {
+	return original.PossibleRootSquashTypeValues()
+}
 func PossibleRoutingChoiceValues() []RoutingChoice {
 	return original.PossibleRoutingChoiceValues()
 }
 func PossibleServicesValues() []Services {
 	return original.PossibleServicesValues()
+}
+func PossibleShareAccessTierValues() []ShareAccessTier {
+	return original.PossibleShareAccessTierValues()
 }
 func PossibleSignedResourceTypesValues() []SignedResourceTypes {
 	return original.PossibleSignedResourceTypesValues()

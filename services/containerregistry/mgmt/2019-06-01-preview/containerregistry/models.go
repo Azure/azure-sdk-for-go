@@ -1690,6 +1690,10 @@ type ErrorResponseBody struct {
 	Code *string `json:"code,omitempty"`
 	// Message - error message.
 	Message *string `json:"message,omitempty"`
+	// Target - target of the particular error.
+	Target *string `json:"target,omitempty"`
+	// Details - an array of additional nested error response info objects, as described by this contract.
+	Details *InnerErrorDescription `json:"details,omitempty"`
 }
 
 // Event the event for a webhook.
@@ -2282,6 +2286,16 @@ type ImportSourceCredentials struct {
 	Username *string `json:"username,omitempty"`
 	// Password - The password used to authenticate with the source registry.
 	Password *string `json:"password,omitempty"`
+}
+
+// InnerErrorDescription inner error.
+type InnerErrorDescription struct {
+	// Code - error code.
+	Code *string `json:"code,omitempty"`
+	// Message - error message.
+	Message *string `json:"message,omitempty"`
+	// Target - target of the particular error.
+	Target *string `json:"target,omitempty"`
 }
 
 // IPRule IP rule with specific IP or IP range in CIDR format.

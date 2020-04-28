@@ -173,6 +173,8 @@ type AppsClientAPI interface {
 	GetPublishSettings(ctx context.Context, appID uuid.UUID) (result authoring.PublishSettings, err error)
 	GetSettings(ctx context.Context, appID uuid.UUID) (result authoring.ApplicationSettings, err error)
 	Import(ctx context.Context, luisApp authoring.LuisApp, appName string) (result authoring.UUID, err error)
+	ImportLuFormat(ctx context.Context, luisAppLu string, appName string) (result authoring.UUID, err error)
+	ImportV2App(ctx context.Context, luisAppV2 authoring.LuisAppV2, appName string) (result authoring.UUID, err error)
 	List(ctx context.Context, skip *int32, take *int32) (result authoring.ListApplicationInfoResponse, err error)
 	ListAvailableCustomPrebuiltDomains(ctx context.Context) (result authoring.ListPrebuiltDomain, err error)
 	ListAvailableCustomPrebuiltDomainsForCulture(ctx context.Context, culture string) (result authoring.ListPrebuiltDomain, err error)
@@ -197,8 +199,11 @@ type VersionsClientAPI interface {
 	Delete(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.OperationStatus, err error)
 	DeleteUnlabelledUtterance(ctx context.Context, appID uuid.UUID, versionID string, utterance string) (result authoring.OperationStatus, err error)
 	Export(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.LuisApp, err error)
+	ExportLuFormat(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.ReadCloser, err error)
 	Get(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.VersionInfo, err error)
 	Import(ctx context.Context, appID uuid.UUID, luisApp authoring.LuisApp, versionID string) (result authoring.String, err error)
+	ImportLuFormat(ctx context.Context, appID uuid.UUID, luisAppLu string, versionID string) (result authoring.String, err error)
+	ImportV2App(ctx context.Context, appID uuid.UUID, luisAppV2 authoring.LuisAppV2, versionID string) (result authoring.String, err error)
 	List(ctx context.Context, appID uuid.UUID, skip *int32, take *int32) (result authoring.ListVersionInfo, err error)
 	Update(ctx context.Context, appID uuid.UUID, versionID string, versionUpdateObject authoring.TaskUpdateObject) (result authoring.OperationStatus, err error)
 }
@@ -247,10 +252,10 @@ var _ SettingsClientAPI = (*authoring.SettingsClient)(nil)
 
 // AzureAccountsClientAPI contains the set of methods on the AzureAccountsClient type.
 type AzureAccountsClientAPI interface {
-	AssignToApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.OperationStatus, err error)
-	GetAssigned(ctx context.Context, appID uuid.UUID) (result authoring.ListAzureAccountInfoObject, err error)
-	ListUserLUISAccounts(ctx context.Context) (result authoring.ListAzureAccountInfoObject, err error)
-	RemoveFromApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.OperationStatus, err error)
+	AssignToApp(ctx context.Context, appID uuid.UUID, armToken string, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.OperationStatus, err error)
+	GetAssigned(ctx context.Context, appID uuid.UUID, armToken string) (result authoring.ListAzureAccountInfoObject, err error)
+	ListUserLUISAccounts(ctx context.Context, armToken string) (result authoring.ListAzureAccountInfoObject, err error)
+	RemoveFromApp(ctx context.Context, appID uuid.UUID, armToken string, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.OperationStatus, err error)
 }
 
 var _ AzureAccountsClientAPI = (*authoring.AzureAccountsClient)(nil)

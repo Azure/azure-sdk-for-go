@@ -92,7 +92,7 @@ func (client AdaptiveApplicationControlsClient) DeletePreparer(ctx context.Conte
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -172,7 +172,7 @@ func (client AdaptiveApplicationControlsClient) GetPreparer(ctx context.Context,
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -252,7 +252,7 @@ func (client AdaptiveApplicationControlsClient) ListPreparer(ctx context.Context
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -293,8 +293,7 @@ func (client AdaptiveApplicationControlsClient) ListResponder(resp *http.Respons
 // Put update an application control VM/server group
 // Parameters:
 // groupName - name of an application control VM/server group
-// body - the updated VM/server group data
-func (client AdaptiveApplicationControlsClient) Put(ctx context.Context, groupName string, body AppWhitelistingPutGroupData) (result AppWhitelistingGroup, err error) {
+func (client AdaptiveApplicationControlsClient) Put(ctx context.Context, groupName string, body AppWhitelistingGroup) (result AppWhitelistingGroup, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AdaptiveApplicationControlsClient.Put")
 		defer func() {
@@ -307,7 +306,9 @@ func (client AdaptiveApplicationControlsClient) Put(ctx context.Context, groupNa
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: body,
+			Constraints: []validation.Constraint{{Target: "body.AppWhitelistingGroupData", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("security.AdaptiveApplicationControlsClient", "Put", err.Error())
 	}
 
@@ -333,18 +334,22 @@ func (client AdaptiveApplicationControlsClient) Put(ctx context.Context, groupNa
 }
 
 // PutPreparer prepares the Put request.
-func (client AdaptiveApplicationControlsClient) PutPreparer(ctx context.Context, groupName string, body AppWhitelistingPutGroupData) (*http.Request, error) {
+func (client AdaptiveApplicationControlsClient) PutPreparer(ctx context.Context, groupName string, body AppWhitelistingGroup) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"ascLocation":    autorest.Encode("path", client.AscLocation),
 		"groupName":      autorest.Encode("path", groupName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
+	body.ID = nil
+	body.Name = nil
+	body.Type = nil
+	body.Location = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

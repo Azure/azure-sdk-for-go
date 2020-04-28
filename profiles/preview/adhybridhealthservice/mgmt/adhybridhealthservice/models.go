@@ -210,12 +210,18 @@ type GlobalConfigurations = original.GlobalConfigurations
 type HelpLink = original.HelpLink
 type Hotfix = original.Hotfix
 type Hotfixes = original.Hotfixes
+type IPAddressAggregate = original.IPAddressAggregate
+type IPAddressAggregateSetting = original.IPAddressAggregateSetting
+type IPAddressAggregates = original.IPAddressAggregates
+type IPAddressAggregatesIterator = original.IPAddressAggregatesIterator
+type IPAddressAggregatesPage = original.IPAddressAggregatesPage
 type ImportError = original.ImportError
 type ImportErrors = original.ImportErrors
 type InboundReplicationNeighbor = original.InboundReplicationNeighbor
 type InboundReplicationNeighbors = original.InboundReplicationNeighbors
 type Item = original.Item
 type Items = original.Items
+type ListClient = original.ListClient
 type MergedExportError = original.MergedExportError
 type MergedExportErrors = original.MergedExportErrors
 type MetricGroup = original.MetricGroup
@@ -267,6 +273,7 @@ type ServicesPage = original.ServicesPage
 type TabularExportError = original.TabularExportError
 type Tenant = original.Tenant
 type TenantOnboardingDetails = original.TenantOnboardingDetails
+type UpdateClient = original.UpdateClient
 type UserPreference = original.UserPreference
 type ValueDelta = original.ValueDelta
 
@@ -363,6 +370,18 @@ func NewExportStatusesIterator(page ExportStatusesPage) ExportStatusesIterator {
 func NewExportStatusesPage(getNextPage func(context.Context, ExportStatuses) (ExportStatuses, error)) ExportStatusesPage {
 	return original.NewExportStatusesPage(getNextPage)
 }
+func NewIPAddressAggregatesIterator(page IPAddressAggregatesPage) IPAddressAggregatesIterator {
+	return original.NewIPAddressAggregatesIterator(page)
+}
+func NewIPAddressAggregatesPage(getNextPage func(context.Context, IPAddressAggregates) (IPAddressAggregates, error)) IPAddressAggregatesPage {
+	return original.NewIPAddressAggregatesPage(getNextPage)
+}
+func NewListClient() ListClient {
+	return original.NewListClient()
+}
+func NewListClientWithBaseURI(baseURI string) ListClient {
+	return original.NewListClientWithBaseURI(baseURI)
+}
 func NewMetricMetadataListIterator(page MetricMetadataListPage) MetricMetadataListIterator {
 	return original.NewMetricMetadataListIterator(page)
 }
@@ -422,6 +441,12 @@ func NewServicesIterator(page ServicesPage) ServicesIterator {
 }
 func NewServicesPage(getNextPage func(context.Context, Services) (Services, error)) ServicesPage {
 	return original.NewServicesPage(getNextPage)
+}
+func NewUpdateClient() UpdateClient {
+	return original.NewUpdateClient()
+}
+func NewUpdateClientWithBaseURI(baseURI string) UpdateClient {
+	return original.NewUpdateClientWithBaseURI(baseURI)
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)

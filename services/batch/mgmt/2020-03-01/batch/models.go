@@ -716,7 +716,7 @@ type AccountCreateProperties struct {
 	PoolAllocationMode PoolAllocationMode `json:"poolAllocationMode,omitempty"`
 	// KeyVaultReference - A reference to the Azure key vault associated with the Batch account.
 	KeyVaultReference *KeyVaultReference `json:"keyVaultReference,omitempty"`
-	// PublicNetworkAccess - Possible values include: 'PublicNetworkAccessTypeEnabled', 'PublicNetworkAccessTypeDisabled'
+	// PublicNetworkAccess - If not specified, the default value is 'enabled'. Possible values include: 'PublicNetworkAccessTypeEnabled', 'PublicNetworkAccessTypeDisabled'
 	PublicNetworkAccess PublicNetworkAccessType `json:"publicNetworkAccess,omitempty"`
 	Encryption          *EncryptionProperties   `json:"encryption,omitempty"`
 }
@@ -913,6 +913,8 @@ type AccountProperties struct {
 	KeyVaultReference *KeyVaultReference `json:"keyVaultReference,omitempty"`
 	// PublicNetworkAccess - READ-ONLY; If not specified, the default value is 'enabled'. Possible values include: 'PublicNetworkAccessTypeEnabled', 'PublicNetworkAccessTypeDisabled'
 	PublicNetworkAccess PublicNetworkAccessType `json:"publicNetworkAccess,omitempty"`
+	// PrivateEndpointConnections - READ-ONLY; List of private endpoint connections associated with the Batch account
+	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// AutoStorage - READ-ONLY
 	AutoStorage *AutoStorageProperties `json:"autoStorage,omitempty"`
 	// Encryption - READ-ONLY
@@ -1686,9 +1688,9 @@ type EnvironmentSetting struct {
 type FixedScaleSettings struct {
 	// ResizeTimeout - The default value is 15 minutes. Timeout values use ISO 8601 format. For example, use PT10M for 10 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	ResizeTimeout *string `json:"resizeTimeout,omitempty"`
-	// TargetDedicatedNodes - At least one of targetDedicatedNodes, targetLowPriority nodes must be set.
+	// TargetDedicatedNodes - At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
 	TargetDedicatedNodes *int32 `json:"targetDedicatedNodes,omitempty"`
-	// TargetLowPriorityNodes - At least one of targetDedicatedNodes, targetLowPriority nodes must be set.
+	// TargetLowPriorityNodes - At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
 	TargetLowPriorityNodes *int32 `json:"targetLowPriorityNodes,omitempty"`
 	// NodeDeallocationOption - If omitted, the default value is Requeue. Possible values include: 'Requeue', 'Terminate', 'TaskCompletion', 'RetainedData'
 	NodeDeallocationOption ComputeNodeDeallocationOption `json:"nodeDeallocationOption,omitempty"`
@@ -3225,6 +3227,8 @@ type PrivateLinkResourceProperties struct {
 	GroupID *string `json:"groupId,omitempty"`
 	// RequiredMembers - READ-ONLY
 	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
+	// RequiredZoneNames - READ-ONLY
+	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
 }
 
 // PrivateLinkServiceConnectionState the private link service connection state of the private endpoint

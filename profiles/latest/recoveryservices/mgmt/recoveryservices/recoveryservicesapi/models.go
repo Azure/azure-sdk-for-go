@@ -23,6 +23,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgm
 
 type ClientAPI = original.ClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type RegisteredIdentitiesClientAPI = original.RegisteredIdentitiesClientAPI
 type ReplicationUsagesClientAPI = original.ReplicationUsagesClientAPI
 type UsagesClientAPI = original.UsagesClientAPI

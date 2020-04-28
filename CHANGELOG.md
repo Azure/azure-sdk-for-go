@@ -1,6 +1,64 @@
 # CHANGELOG
 
-## v41.3.0
+## `v42.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| desktopvirtualization | 2019-01-23-preview |
+| documentdb | 2020-03-01 |
+| hybriddata | 2019-06-01 |
+| hybridkubernetes | 2020-01-01-preview |
+| maintenance | 2020-04-01 |
+| search | 2020-03-13 |
+| securityinsight | 2019-01-01-preview<br/>v1.0 |
+| storagecache | 2020-03-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| adhybridhealthservice | 2014-01-01 |
+| batch | 2020-03-01 |
+| containerregistry | 2019-06-01-preview<br/>2019-12-01-preview |
+| costmanagement | 2019-03-01 |
+| datafactory | 2018-06-01 |
+| documentdb | 2019-08-01-preview<br/>2019-12-12 |
+| healthcareapis | 2019-09-16 |
+| insights | 2018-03-01<br/>2018-09-01<br/>2018-11-01-preview<br/>2019-03-01<br/>2019-06-01 |
+| siterecovery | 2018-07-10 |
+| sql | 2014-04-01<br/>2015-05-01-preview<br/>2017-03-01-preview<br/>v3.0 |
+| web | 2019-08-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| appplatform | 2019-05-01-preview |
+| authoring | luis |
+| compute | 2019-12-01 |
+| containerservice | 2020-03-01 |
+| databricks | 2018-04-01 |
+| digitaltwins | 2020-03-01-preview |
+| eventhub | 2018-01-01-preview |
+| graphrbac | 1.6 |
+| logic | 2019-05-01 |
+| managedapplications | 2019-07-01 |
+| netapp | 2019-05-01<br/>2019-06-01<br/>2019-07-01<br/>2019-08-01<br/>2019-10-01<br/>2019-11-01 |
+| policyinsights | 2019-10-01 |
+| portal | 2015-08-01-preview<br/>2018-10-01-preview<br/>2019-01-01-preview |
+| recoveryservices | 2016-06-01 |
+| security | v1.0<br/>v2.0<br/>v3.0 |
+| storage | 2019-06-01 |
+
+### Removed Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| securityinsight | 2017-08-01-preview |
+
+## `v41.3.0`
 
 ### New Packages
 
@@ -16,7 +74,7 @@
 | -----------: | :---------: |
 | storage | 2019-06-01 |
 
-## v41.2.0
+## `v41.2.0`
 
 ### Updated Packages
 

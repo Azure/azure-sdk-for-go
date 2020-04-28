@@ -1029,7 +1029,7 @@ type ComputeResource struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Identity - READ-ONLY; The identity of the resource.
+	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -1045,6 +1045,9 @@ type ComputeResource struct {
 func (cr ComputeResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = cr.Properties
+	if cr.Identity != nil {
+		objectMap["identity"] = cr.Identity
+	}
 	if cr.Location != nil {
 		objectMap["location"] = cr.Location
 	}
@@ -2476,7 +2479,7 @@ type PrivateEndpointConnection struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Identity - READ-ONLY; The identity of the resource.
+	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -2493,6 +2496,9 @@ func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pec.PrivateEndpointConnectionProperties != nil {
 		objectMap["properties"] = pec.PrivateEndpointConnectionProperties
+	}
+	if pec.Identity != nil {
+		objectMap["identity"] = pec.Identity
 	}
 	if pec.Location != nil {
 		objectMap["location"] = pec.Location
@@ -2611,7 +2617,7 @@ type PrivateLinkResource struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Identity - READ-ONLY; The identity of the resource.
+	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -2628,6 +2634,9 @@ func (plr PrivateLinkResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if plr.PrivateLinkResourceProperties != nil {
 		objectMap["properties"] = plr.PrivateLinkResourceProperties
+	}
+	if plr.Identity != nil {
+		objectMap["identity"] = plr.Identity
 	}
 	if plr.Location != nil {
 		objectMap["location"] = plr.Location
@@ -2789,7 +2798,7 @@ type Resource struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Identity - READ-ONLY; The identity of the resource.
+	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -2804,6 +2813,9 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if r.Identity != nil {
+		objectMap["identity"] = r.Identity
+	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -3393,7 +3405,7 @@ type Workspace struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Identity - READ-ONLY; The identity of the resource.
+	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -3410,6 +3422,9 @@ func (w Workspace) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if w.WorkspaceProperties != nil {
 		objectMap["properties"] = w.WorkspaceProperties
+	}
+	if w.Identity != nil {
+		objectMap["identity"] = w.Identity
 	}
 	if w.Location != nil {
 		objectMap["location"] = w.Location

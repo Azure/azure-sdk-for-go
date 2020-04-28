@@ -2433,6 +2433,7 @@ func NewManagedInstanceLongTermRetentionPolicyListResultPage(getNextPage func(co
 
 // ManagedInstanceOperation a managed instance operation.
 type ManagedInstanceOperation struct {
+	autorest.Response `json:"-"`
 	// ManagedInstanceOperationProperties - Resource properties.
 	*ManagedInstanceOperationProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource ID.
@@ -2727,6 +2728,8 @@ type ManagedInstanceProperties struct {
 	TimezoneID *string `json:"timezoneId,omitempty"`
 	// InstancePoolID - The Id of the instance pool this managed server belongs to.
 	InstancePoolID *string `json:"instancePoolId,omitempty"`
+	// MinimalTLSVersion - Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
+	MinimalTLSVersion *string `json:"minimalTlsVersion,omitempty"`
 }
 
 // ManagedInstancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a

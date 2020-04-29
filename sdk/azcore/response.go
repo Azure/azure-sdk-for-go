@@ -96,7 +96,7 @@ func (r *Response) removeBOM() {
 	}
 }
 
-// RetryAfter returns (non-zero, true) if the response contains a Retry-After header value.
+// RetryAfter returns non-zero if the response contains a Retry-After header value.
 func (r *Response) RetryAfter() time.Duration {
 	if r == nil {
 		return 0

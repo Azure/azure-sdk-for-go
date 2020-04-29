@@ -96,23 +96,23 @@ func (r *Response) removeBOM() {
 	}
 }
 
-// RetryAfter returns (non-zero, true) if the response contains a Retry-After header value.
-func (r *Response) RetryAfter() (time.Duration, bool) {
+// RetryAfter returns non-zero if the response contains a Retry-After header value.
+func (r *Response) RetryAfter() time.Duration {
 	if r == nil {
-		return 0, false
+		return 0
 	}
 	ra := r.Header.Get(HeaderRetryAfter)
 	if ra == "" {
-		return 0, false
+		return 0
 	}
 	// retry-after values are expressed in either number of
 	// seconds or an HTTP-date indicating when to try again
 	if retryAfter, _ := strconv.Atoi(ra); retryAfter > 0 {
-		return time.Duration(retryAfter) * time.Second, true
+		return time.Duration(retryAfter) * time.Second
 	} else if t, err := time.Parse(time.RFC1123, ra); err == nil {
-		return t.Sub(time.Now()), true
+		return t.Sub(time.Now())
 	}
-	return 0, false
+	return 0
 }
 
 // WriteRequestWithResponse appends a formatted HTTP request into a Buffer. If request and/or err are

@@ -182,8 +182,8 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		}
 
 		// use the delay from retry-after if available
-		delay, ok := resp.RetryAfter()
-		if !ok {
+		delay := resp.RetryAfter()
+		if delay <= 0 {
 			delay = options.calcDelay(try)
 		}
 		if shouldLog {

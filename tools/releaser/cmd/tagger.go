@@ -65,7 +65,7 @@ type TaggerFlags struct {
 	// DryRun indicates whether this run will only output the action without taking it
 	DryRun bool
 	// AddOnly indicates whether this run will only add the new tags to git without pushing them
-	AddOnly    bool
+	AddOnly bool
 }
 
 // TagsHookFunc is a func used for get tags from remote

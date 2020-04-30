@@ -95,17 +95,34 @@ func (c *Content) addConst(pkg Package, g *ast.GenDecl) {
 		// Type is nil for untyped consts
 		if vs.Type != nil {
 			co.Type = vs.Type.(*ast.Ident).Name
-			v = vs.Values[0].(*ast.BasicLit).Value
+			switch n := vs.Values[0].(type) {
+			case *ast.BasicLit:
+				// const FooConst Type = "something"
+				v = n.Value
+			case *ast.SelectorExpr:
+				// const FooConst Type = original.Something
+				// this will only happen in profiles
+				v = pkg.getText(n.Pos(), n.End())
+			default:
+				panic("unhandled case for adding constant")
+			}
 		} else {
-			// get the type from the token type
-			if bl, ok := vs.Values[0].(*ast.BasicLit); ok {
-				co.Type = strings.ToLower(bl.Kind.String())
-				v = bl.Value
-			} else if ce, ok := vs.Values[0].(*ast.CallExpr); ok {
+			switch n := vs.Values[0].(type) {
+			case *ast.BasicLit:
+				// plain const definition
+				// const FooConst = "something"
+				co.Type = strings.ToLower(n.Kind.String())
+				v = n.Value
+			case *ast.CallExpr:
 				// const FooConst = FooType("value")
-				co.Type = pkg.getText(ce.Fun.Pos(), ce.Fun.End())
-				v = pkg.getText(ce.Args[0].Pos(), ce.Args[0].End())
-			} else {
+				co.Type = pkg.getText(n.Fun.Pos(), n.Fun.End())
+				v = pkg.getText(n.Args[0].Pos(), n.Args[0].End())
+			case *ast.SelectorExpr:
+				// const FooConst = original.Something
+				// this will only happen in profiles
+				co.Type = "Reference"
+				v = pkg.getText(n.Pos(), n.End())
+			default:
 				panic("unhandled case for adding constant")
 			}
 		}

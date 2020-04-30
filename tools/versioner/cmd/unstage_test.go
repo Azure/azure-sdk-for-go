@@ -23,6 +23,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/tools/internal/files"
 )
 
 const versionGoFormat = `package foo
@@ -156,16 +158,6 @@ func TestUpdateGoMod(t *testing.T) {
 	}
 }
 
-func fileExists(path string) bool {
-	_, err := os.Stat(path)
-	if err == nil {
-		return true
-	} else if os.IsNotExist(err) {
-		return false
-	}
-	panic(err)
-}
-
 func verifyVersion(t *testing.T, path, version, tag string) {
 	b, err := ioutil.ReadFile(filepath.Join(path, versionFilename))
 	if err != nil {
@@ -188,13 +180,17 @@ func verifyGoMod(t *testing.T, path, expected string) {
 }
 
 func verifyChangelog(t *testing.T, path string) {
-	if !fileExists(filepath.Join(path, "CHANGELOG.md")) {
+	if exists, err := files.Exists(filepath.Join(path, "CHANGELOG.md")); err != nil {
+		t.Fatalf("unexpected error: %+v", err)
+	} else if !exists {
 		t.Fatalf("expected changelog in %s", path)
 	}
 }
 
 func verifyNoChangelog(t *testing.T, path string) {
-	if fileExists(filepath.Join(path, "CHANGELOG.md")) {
+	if exists, err := files.Exists(filepath.Join(path, "CHANGELOG.md")); err != nil {
+		t.Fatalf("unexpected error: %+v", err)
+	} else if exists {
 		t.Fatalf("unexpected changelog in %s", path)
 	}
 }

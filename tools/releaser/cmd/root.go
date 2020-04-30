@@ -53,5 +53,7 @@ func Command() *cobra.Command {
 
 	root.AddCommand(taggerCommand())
 
+	root.AddCommand(profilesCommand())
+
 	return root
 }

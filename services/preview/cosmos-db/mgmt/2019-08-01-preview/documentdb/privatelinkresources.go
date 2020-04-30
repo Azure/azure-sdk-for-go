@@ -45,7 +45,7 @@ func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID str
 
 // Get gets the private link resources that need to be created for a Cosmos DB account.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // groupName - the name of the private link resource.
 func (client PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, accountName string, groupName string) (result PrivateLinkResource, err error) {
@@ -60,6 +60,8 @@ func (client PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupN
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -135,7 +137,7 @@ func (client PrivateLinkResourcesClient) GetResponder(resp *http.Response) (resu
 
 // ListByDatabaseAccount gets the private link resources that need to be created for a Cosmos DB account.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 func (client PrivateLinkResourcesClient) ListByDatabaseAccount(ctx context.Context, resourceGroupName string, accountName string) (result PrivateLinkResourceListResult, err error) {
 	if tracing.IsEnabled() {
@@ -149,6 +151,8 @@ func (client PrivateLinkResourcesClient) ListByDatabaseAccount(ctx context.Conte
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},

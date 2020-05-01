@@ -800,12 +800,6 @@ func (mt *MountTarget) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// MountTargetList list of Mount Targets
-type MountTargetList struct {
-	// Value - A list of Mount targets
-	Value *[]MountTarget `json:"value,omitempty"`
-}
-
 // MountTargetProperties mount target properties
 type MountTargetProperties struct {
 	// MountTargetID - READ-ONLY; UUID v4 used to identify the MountTarget
@@ -814,6 +808,16 @@ type MountTargetProperties struct {
 	FileSystemID *string `json:"fileSystemId,omitempty"`
 	// IPAddress - READ-ONLY; The mount target's IPv4 address
 	IPAddress *string `json:"ipAddress,omitempty"`
+	// Subnet - The subnet
+	Subnet *string `json:"subnet,omitempty"`
+	// StartIP - The start of IPv4 address range to use when creating a new mount target
+	StartIP *string `json:"startIp,omitempty"`
+	// EndIP - The end of IPv4 address range to use when creating a new mount target
+	EndIP *string `json:"endIp,omitempty"`
+	// Gateway - The gateway of the IPv4 address range to use when creating a new mount target
+	Gateway *string `json:"gateway,omitempty"`
+	// Netmask - The netmask of the IPv4 address range to use when creating a new mount target
+	Netmask *string `json:"netmask,omitempty"`
 	// SmbServerFqdn - The SMB server's Fully Qualified Domain Name, FQDN
 	SmbServerFqdn *string `json:"smbServerFqdn,omitempty"`
 }
@@ -1514,7 +1518,7 @@ type VolumeProperties struct {
 	// SubnetID - The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
 	SubnetID *string `json:"subnetId,omitempty"`
 	// MountTargets - List of mount targets
-	MountTargets interface{} `json:"mountTargets,omitempty"`
+	MountTargets *[]MountTarget `json:"mountTargets,omitempty"`
 	// VolumeType - What type of volume is this
 	VolumeType *string `json:"volumeType,omitempty"`
 	// DataProtection - DataProtection type volumes include an object containing details of the replication

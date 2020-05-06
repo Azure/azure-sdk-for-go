@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v42.1.0`
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| databricks | 2018-04-01 |
+
 ## `v42.0.0`
 
 ### New Packages

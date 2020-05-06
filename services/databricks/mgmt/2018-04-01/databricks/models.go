@@ -468,6 +468,8 @@ type WorkspaceCustomParameters struct {
 	CustomPublicSubnetName *WorkspaceCustomStringParameter `json:"customPublicSubnetName,omitempty"`
 	// CustomPrivateSubnetName - The name of the Private Subnet within the Virtual Network
 	CustomPrivateSubnetName *WorkspaceCustomStringParameter `json:"customPrivateSubnetName,omitempty"`
+	// EnableNoPublicIP - Should the Public IP be Disabled?
+	EnableNoPublicIP *WorkspaceCustomBooleanParameter `json:"enableNoPublicIp,omitempty"`
 }
 
 // WorkspaceCustomStringParameter the Value.

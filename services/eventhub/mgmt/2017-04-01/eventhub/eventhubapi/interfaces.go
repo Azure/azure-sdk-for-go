@@ -23,14 +23,6 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// OperationsClientAPI contains the set of methods on the OperationsClient type.
-type OperationsClientAPI interface {
-	List(ctx context.Context) (result eventhub.OperationListResultPage, err error)
-	ListComplete(ctx context.Context) (result eventhub.OperationListResultIterator, err error)
-}
-
-var _ OperationsClientAPI = (*eventhub.OperationsClient)(nil)
-
 // NamespacesClientAPI contains the set of methods on the NamespacesClient type.
 type NamespacesClientAPI interface {
 	CheckNameAvailability(ctx context.Context, parameters eventhub.CheckNameAvailabilityParameter) (result eventhub.CheckNameAvailabilityResult, err error)
@@ -104,6 +96,14 @@ type ConsumerGroupsClientAPI interface {
 }
 
 var _ ConsumerGroupsClientAPI = (*eventhub.ConsumerGroupsClient)(nil)
+
+// OperationsClientAPI contains the set of methods on the OperationsClient type.
+type OperationsClientAPI interface {
+	List(ctx context.Context) (result eventhub.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result eventhub.OperationListResultIterator, err error)
+}
+
+var _ OperationsClientAPI = (*eventhub.OperationsClient)(nil)
 
 // RegionsClientAPI contains the set of methods on the RegionsClient type.
 type RegionsClientAPI interface {

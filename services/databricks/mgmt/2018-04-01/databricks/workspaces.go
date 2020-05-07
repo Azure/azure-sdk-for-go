@@ -69,6 +69,8 @@ func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, parameters Wo
 								Chain: []validation.Constraint{{Target: "parameters.WorkspaceProperties.Parameters.CustomPublicSubnetName.Value", Name: validation.Null, Rule: true, Chain: nil}}},
 							{Target: "parameters.WorkspaceProperties.Parameters.CustomPrivateSubnetName", Name: validation.Null, Rule: false,
 								Chain: []validation.Constraint{{Target: "parameters.WorkspaceProperties.Parameters.CustomPrivateSubnetName.Value", Name: validation.Null, Rule: true, Chain: nil}}},
+							{Target: "parameters.WorkspaceProperties.Parameters.EnableNoPublicIP", Name: validation.Null, Rule: false,
+								Chain: []validation.Constraint{{Target: "parameters.WorkspaceProperties.Parameters.EnableNoPublicIP.Value", Name: validation.Null, Rule: true, Chain: nil}}},
 						}},
 				}},
 				{Target: "parameters.Sku", Name: validation.Null, Rule: false,

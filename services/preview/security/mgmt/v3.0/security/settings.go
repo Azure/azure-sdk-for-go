@@ -241,7 +241,7 @@ func (client SettingsClient) ListComplete(ctx context.Context) (result SettingsL
 // Parameters:
 // settingName - name of setting: (MCAS/WDATP)
 // setting - setting object
-func (client SettingsClient) Update(ctx context.Context, settingName string, setting Setting) (result Setting, err error) {
+func (client SettingsClient) Update(ctx context.Context, settingName string, setting BasicSetting) (result Setting, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SettingsClient.Update")
 		defer func() {
@@ -280,7 +280,7 @@ func (client SettingsClient) Update(ctx context.Context, settingName string, set
 }
 
 // UpdatePreparer prepares the Update request.
-func (client SettingsClient) UpdatePreparer(ctx context.Context, settingName string, setting Setting) (*http.Request, error) {
+func (client SettingsClient) UpdatePreparer(ctx context.Context, settingName string, setting BasicSetting) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"settingName":    autorest.Encode("path", settingName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),

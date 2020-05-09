@@ -1321,7 +1321,7 @@ type DatabaseProperties struct {
 	CatalogCollation CatalogCollationType `json:"catalogCollation,omitempty"`
 	// ZoneRedundant - Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple availability zones.
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
-	// LicenseType - The license type to apply for this database. Possible values include: 'LicenseIncluded', 'BasePrice'
+	// LicenseType - The license type to apply for this database. `LicenseIncluded` if you need a license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit. Possible values include: 'LicenseIncluded', 'BasePrice'
 	LicenseType DatabaseLicenseType `json:"licenseType,omitempty"`
 	// MaxLogSizeBytes - READ-ONLY; The max log size for this database.
 	MaxLogSizeBytes *int64 `json:"maxLogSizeBytes,omitempty"`

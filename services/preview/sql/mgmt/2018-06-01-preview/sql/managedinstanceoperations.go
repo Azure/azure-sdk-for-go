@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -42,6 +43,84 @@ func NewManagedInstanceOperationsClient(subscriptionID string) ManagedInstanceOp
 // clouds, Azure stack).
 func NewManagedInstanceOperationsClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceOperationsClient {
 	return ManagedInstanceOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
+
+// Get gets a management operation on a managed instance.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// managedInstanceName - the name of the managed instance.
+func (client ManagedInstanceOperationsClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID uuid.UUID) (result ManagedInstanceOperation, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedInstanceOperationsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetPreparer(ctx, resourceGroupName, managedInstanceName, operationID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceOperationsClient", "Get", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceOperationsClient", "Get", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceOperationsClient", "Get", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPreparer prepares the Get request.
+func (client ManagedInstanceOperationsClient) GetPreparer(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID uuid.UUID) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"managedInstanceName": autorest.Encode("path", managedInstanceName),
+		"operationId":         autorest.Encode("path", operationID),
+		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
+		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/operations/{operationId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client ManagedInstanceOperationsClient) GetSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client ManagedInstanceOperationsClient) GetResponder(resp *http.Response) (result ManagedInstanceOperation, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListByManagedInstance gets a list of operations performed on the managed instance.

@@ -21,7 +21,12 @@ package storage
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
+	"net/http"
 )
 
 const (
@@ -49,4 +54,1241 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 		BaseURI:        baseURI,
 		SubscriptionID: subscriptionID,
 	}
+}
+
+// DeleteQueue deletes the queue with the specified queue name, under the specified account if it exists.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// accountName - the name of the storage account within the specified resource group. Storage account names
+// must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+// queueName - a queue name must be unique within a storage account and must be between 3 and 63 characters.The
+// name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
+// alphanumeric character and it cannot have two consecutive dash(-) characters.
+func (client BaseClient) DeleteQueue(ctx context.Context, resourceGroupName string, accountName string, queueName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DeleteQueue")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: queueName,
+			Constraints: []validation.Constraint{{Target: "queueName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "queueName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storage.BaseClient", "DeleteQueue", err.Error())
+	}
+
+	req, err := client.DeleteQueuePreparer(ctx, resourceGroupName, accountName, queueName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "DeleteQueue", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteQueueSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "DeleteQueue", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteQueueResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "DeleteQueue", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteQueuePreparer prepares the DeleteQueue request.
+func (client BaseClient) DeleteQueuePreparer(ctx context.Context, resourceGroupName string, accountName string, queueName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"queueName":         autorest.Encode("path", queueName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues/{queueName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteQueueSender sends the DeleteQueue request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) DeleteQueueSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteQueueResponder handles the response to the DeleteQueue request. The method always
+// closes the http.Response Body.
+func (client BaseClient) DeleteQueueResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// DeleteTable deletes the table with the specified table name, under the specified account if it exists.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// accountName - the name of the storage account within the specified resource group. Storage account names
+// must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+// tableName - a table name must be unique within a storage account and must be between 3 and 63 characters.The
+// name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+func (client BaseClient) DeleteTable(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DeleteTable")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: tableName,
+			Constraints: []validation.Constraint{{Target: "tableName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "tableName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "tableName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]{2,62}$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storage.BaseClient", "DeleteTable", err.Error())
+	}
+
+	req, err := client.DeleteTablePreparer(ctx, resourceGroupName, accountName, tableName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "DeleteTable", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteTableSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "DeleteTable", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteTableResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "DeleteTable", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteTablePreparer prepares the DeleteTable request.
+func (client BaseClient) DeleteTablePreparer(ctx context.Context, resourceGroupName string, accountName string, tableName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"tableName":         autorest.Encode("path", tableName),
+	}
+
+	const APIVersion = "2019-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables/{tableName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteTableSender sends the DeleteTable request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) DeleteTableSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteTableResponder handles the response to the DeleteTable request. The method always
+// closes the http.Response Body.
+func (client BaseClient) DeleteTableResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// GetQueue gets the queue with the specified queue name, under the specified account if it exists.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// accountName - the name of the storage account within the specified resource group. Storage account names
+// must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+// queueName - a queue name must be unique within a storage account and must be between 3 and 63 characters.The
+// name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
+// alphanumeric character and it cannot have two consecutive dash(-) characters.
+func (client BaseClient) GetQueue(ctx context.Context, resourceGroupName string, accountName string, queueName string) (result Queue, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetQueue")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: queueName,
+			Constraints: []validation.Constraint{{Target: "queueName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "queueName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storage.BaseClient", "GetQueue", err.Error())
+	}
+
+	req, err := client.GetQueuePreparer(ctx, resourceGroupName, accountName, queueName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "GetQueue", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetQueueSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "GetQueue", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetQueueResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "GetQueue", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetQueuePreparer prepares the GetQueue request.
+func (client BaseClient) GetQueuePreparer(ctx context.Context, resourceGroupName string, accountName string, queueName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"queueName":         autorest.Encode("path", queueName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues/{queueName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetQueueSender sends the GetQueue request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetQueueSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetQueueResponder handles the response to the GetQueue request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetQueueResponder(resp *http.Response) (result Queue, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetTable gets the table with the specified table name, under the specified account if it exists.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// accountName - the name of the storage account within the specified resource group. Storage account names
+// must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+// tableName - a table name must be unique within a storage account and must be between 3 and 63 characters.The
+// name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+func (client BaseClient) GetTable(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result Table, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetTable")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: tableName,
+			Constraints: []validation.Constraint{{Target: "tableName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "tableName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "tableName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]{2,62}$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storage.BaseClient", "GetTable", err.Error())
+	}
+
+	req, err := client.GetTablePreparer(ctx, resourceGroupName, accountName, tableName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "GetTable", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetTableSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "GetTable", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetTableResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "GetTable", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetTablePreparer prepares the GetTable request.
+func (client BaseClient) GetTablePreparer(ctx context.Context, resourceGroupName string, accountName string, tableName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"tableName":         autorest.Encode("path", tableName),
+	}
+
+	const APIVersion = "2019-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables/{tableName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetTableSender sends the GetTable request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetTableSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetTableResponder handles the response to the GetTable request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetTableResponder(resp *http.Response) (result Table, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListQueueMethod gets a list of all the queues under the specified storage account
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// accountName - the name of the storage account within the specified resource group. Storage account names
+// must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+// maxpagesize - optional, a maximum number of queues that should be included in a list queue response
+// filter - optional, When specified, only the queues with a name starting with the given filter will be
+// listed.
+func (client BaseClient) ListQueueMethod(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (result ListQueueResourcePage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ListQueueMethod")
+		defer func() {
+			sc := -1
+			if result.lqr.Response.Response != nil {
+				sc = result.lqr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storage.BaseClient", "ListQueueMethod", err.Error())
+	}
+
+	result.fn = client.listQueueMethodNextResults
+	req, err := client.ListQueueMethodPreparer(ctx, resourceGroupName, accountName, maxpagesize, filter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "ListQueueMethod", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListQueueMethodSender(req)
+	if err != nil {
+		result.lqr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "ListQueueMethod", resp, "Failure sending request")
+		return
+	}
+
+	result.lqr, err = client.ListQueueMethodResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "ListQueueMethod", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListQueueMethodPreparer prepares the ListQueueMethod request.
+func (client BaseClient) ListQueueMethodPreparer(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(maxpagesize) > 0 {
+		queryParameters["$maxpagesize"] = autorest.Encode("query", maxpagesize)
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListQueueMethodSender sends the ListQueueMethod request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) ListQueueMethodSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListQueueMethodResponder handles the response to the ListQueueMethod request. The method always
+// closes the http.Response Body.
+func (client BaseClient) ListQueueMethodResponder(resp *http.Response) (result ListQueueResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listQueueMethodNextResults retrieves the next set of results, if any.
+func (client BaseClient) listQueueMethodNextResults(ctx context.Context, lastResults ListQueueResource) (result ListQueueResource, err error) {
+	req, err := lastResults.listQueueResourcePreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "storage.BaseClient", "listQueueMethodNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListQueueMethodSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "storage.BaseClient", "listQueueMethodNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListQueueMethodResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "listQueueMethodNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListQueueMethodComplete enumerates all values, automatically crossing page boundaries as required.
+func (client BaseClient) ListQueueMethodComplete(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (result ListQueueResourceIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ListQueueMethod")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListQueueMethod(ctx, resourceGroupName, accountName, maxpagesize, filter)
+	return
+}
+
+// ListQueueService list all queue services for the storage account
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// accountName - the name of the storage account within the specified resource group. Storage account names
+// must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+func (client BaseClient) ListQueueService(ctx context.Context, resourceGroupName string, accountName string) (result ListQueueServices, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ListQueueService")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storage.BaseClient", "ListQueueService", err.Error())
+	}
+
+	req, err := client.ListQueueServicePreparer(ctx, resourceGroupName, accountName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "ListQueueService", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListQueueServiceSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "ListQueueService", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListQueueServiceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "ListQueueService", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListQueueServicePreparer prepares the ListQueueService request.
+func (client BaseClient) ListQueueServicePreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListQueueServiceSender sends the ListQueueService request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) ListQueueServiceSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListQueueServiceResponder handles the response to the ListQueueService request. The method always
+// closes the http.Response Body.
+func (client BaseClient) ListQueueServiceResponder(resp *http.Response) (result ListQueueServices, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListTableService list all table services for the storage account.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// accountName - the name of the storage account within the specified resource group. Storage account names
+// must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+func (client BaseClient) ListTableService(ctx context.Context, resourceGroupName string, accountName string) (result ListTableServices, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ListTableService")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storage.BaseClient", "ListTableService", err.Error())
+	}
+
+	req, err := client.ListTableServicePreparer(ctx, resourceGroupName, accountName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "ListTableService", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListTableServiceSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "ListTableService", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListTableServiceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "ListTableService", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListTableServicePreparer prepares the ListTableService request.
+func (client BaseClient) ListTableServicePreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListTableServiceSender sends the ListTableService request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) ListTableServiceSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListTableServiceResponder handles the response to the ListTableService request. The method always
+// closes the http.Response Body.
+func (client BaseClient) ListTableServiceResponder(resp *http.Response) (result ListTableServices, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// PatchQueue creates a new queue with the specified queue name, under the specified account.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// accountName - the name of the storage account within the specified resource group. Storage account names
+// must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+// queueName - a queue name must be unique within a storage account and must be between 3 and 63 characters.The
+// name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
+// alphanumeric character and it cannot have two consecutive dash(-) characters.
+// queue - queue properties and metadata to be created with
+func (client BaseClient) PatchQueue(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue Queue) (result Queue, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.PatchQueue")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: queueName,
+			Constraints: []validation.Constraint{{Target: "queueName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "queueName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storage.BaseClient", "PatchQueue", err.Error())
+	}
+
+	req, err := client.PatchQueuePreparer(ctx, resourceGroupName, accountName, queueName, queue)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "PatchQueue", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.PatchQueueSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "PatchQueue", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.PatchQueueResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "PatchQueue", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// PatchQueuePreparer prepares the PatchQueue request.
+func (client BaseClient) PatchQueuePreparer(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue Queue) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"queueName":         autorest.Encode("path", queueName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues/{queueName}", pathParameters),
+		autorest.WithJSON(queue),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PatchQueueSender sends the PatchQueue request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) PatchQueueSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// PatchQueueResponder handles the response to the PatchQueue request. The method always
+// closes the http.Response Body.
+func (client BaseClient) PatchQueueResponder(resp *http.Response) (result Queue, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// PatchTable creates a new table with the specified table name, under the specified account.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// accountName - the name of the storage account within the specified resource group. Storage account names
+// must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+// tableName - a table name must be unique within a storage account and must be between 3 and 63 characters.The
+// name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+func (client BaseClient) PatchTable(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result Table, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.PatchTable")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: tableName,
+			Constraints: []validation.Constraint{{Target: "tableName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "tableName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "tableName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]{2,62}$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storage.BaseClient", "PatchTable", err.Error())
+	}
+
+	req, err := client.PatchTablePreparer(ctx, resourceGroupName, accountName, tableName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "PatchTable", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.PatchTableSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "PatchTable", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.PatchTableResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "PatchTable", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// PatchTablePreparer prepares the PatchTable request.
+func (client BaseClient) PatchTablePreparer(ctx context.Context, resourceGroupName string, accountName string, tableName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"tableName":         autorest.Encode("path", tableName),
+	}
+
+	const APIVersion = "2019-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables/{tableName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PatchTableSender sends the PatchTable request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) PatchTableSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// PatchTableResponder handles the response to the PatchTable request. The method always
+// closes the http.Response Body.
+func (client BaseClient) PatchTableResponder(resp *http.Response) (result Table, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// PutQueue creates a new queue with the specified queue name, under the specified account.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// accountName - the name of the storage account within the specified resource group. Storage account names
+// must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+// queueName - a queue name must be unique within a storage account and must be between 3 and 63 characters.The
+// name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
+// alphanumeric character and it cannot have two consecutive dash(-) characters.
+// queue - queue properties and metadata to be created with
+func (client BaseClient) PutQueue(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue Queue) (result Queue, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.PutQueue")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: queueName,
+			Constraints: []validation.Constraint{{Target: "queueName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "queueName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storage.BaseClient", "PutQueue", err.Error())
+	}
+
+	req, err := client.PutQueuePreparer(ctx, resourceGroupName, accountName, queueName, queue)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "PutQueue", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.PutQueueSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "PutQueue", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.PutQueueResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "PutQueue", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// PutQueuePreparer prepares the PutQueue request.
+func (client BaseClient) PutQueuePreparer(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue Queue) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"queueName":         autorest.Encode("path", queueName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues/{queueName}", pathParameters),
+		autorest.WithJSON(queue),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PutQueueSender sends the PutQueue request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) PutQueueSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// PutQueueResponder handles the response to the PutQueue request. The method always
+// closes the http.Response Body.
+func (client BaseClient) PutQueueResponder(resp *http.Response) (result Queue, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// PutTable creates a new table with the specified table name, under the specified account.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// accountName - the name of the storage account within the specified resource group. Storage account names
+// must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+// tableName - a table name must be unique within a storage account and must be between 3 and 63 characters.The
+// name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+func (client BaseClient) PutTable(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result Table, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.PutTable")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: tableName,
+			Constraints: []validation.Constraint{{Target: "tableName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "tableName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "tableName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]{2,62}$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storage.BaseClient", "PutTable", err.Error())
+	}
+
+	req, err := client.PutTablePreparer(ctx, resourceGroupName, accountName, tableName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "PutTable", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.PutTableSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "PutTable", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.PutTableResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "PutTable", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// PutTablePreparer prepares the PutTable request.
+func (client BaseClient) PutTablePreparer(ctx context.Context, resourceGroupName string, accountName string, tableName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"tableName":         autorest.Encode("path", tableName),
+	}
+
+	const APIVersion = "2019-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables/{tableName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PutTableSender sends the PutTable request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) PutTableSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// PutTableResponder handles the response to the PutTable request. The method always
+// closes the http.Response Body.
+func (client BaseClient) PutTableResponder(resp *http.Response) (result Table, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// QueryTable gets a list of all the tables under the specified storage account
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// accountName - the name of the storage account within the specified resource group. Storage account names
+// must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+func (client BaseClient) QueryTable(ctx context.Context, resourceGroupName string, accountName string) (result ListTableResourcePage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.QueryTable")
+		defer func() {
+			sc := -1
+			if result.ltr.Response.Response != nil {
+				sc = result.ltr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storage.BaseClient", "QueryTable", err.Error())
+	}
+
+	result.fn = client.queryTableNextResults
+	req, err := client.QueryTablePreparer(ctx, resourceGroupName, accountName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "QueryTable", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.QueryTableSender(req)
+	if err != nil {
+		result.ltr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "QueryTable", resp, "Failure sending request")
+		return
+	}
+
+	result.ltr, err = client.QueryTableResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "QueryTable", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// QueryTablePreparer prepares the QueryTable request.
+func (client BaseClient) QueryTablePreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// QueryTableSender sends the QueryTable request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) QueryTableSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// QueryTableResponder handles the response to the QueryTable request. The method always
+// closes the http.Response Body.
+func (client BaseClient) QueryTableResponder(resp *http.Response) (result ListTableResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// queryTableNextResults retrieves the next set of results, if any.
+func (client BaseClient) queryTableNextResults(ctx context.Context, lastResults ListTableResource) (result ListTableResource, err error) {
+	req, err := lastResults.listTableResourcePreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "storage.BaseClient", "queryTableNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.QueryTableSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "storage.BaseClient", "queryTableNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.QueryTableResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.BaseClient", "queryTableNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// QueryTableComplete enumerates all values, automatically crossing page boundaries as required.
+func (client BaseClient) QueryTableComplete(ctx context.Context, resourceGroupName string, accountName string) (result ListTableResourceIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.QueryTable")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.QueryTable(ctx, resourceGroupName, accountName)
+	return
 }

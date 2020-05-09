@@ -1720,7 +1720,12 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	State BlobAuditingPolicyState `json:"state,omitempty"`
 	// StorageEndpoint - Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled is required.
 	StorageEndpoint *string `json:"storageEndpoint,omitempty"`
-	// StorageAccountAccessKey - Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is specified, storageAccountAccessKey is required.
+	// StorageAccountAccessKey - Specifies the identifier key of the auditing storage account.
+	// If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server system-assigned managed identity to access the storage.
+	// Prerequisites for using managed identity authentication:
+	// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server identity.
+	// For more information, see [Auditing to storage using Managed Identity authentication](https://go.microsoft.com/fwlink/?linkid=2114355)
 	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
 	// RetentionDays - Specifies the number of days to keep in the audit logs in the storage account.
 	RetentionDays *int32 `json:"retentionDays,omitempty"`
@@ -5539,6 +5544,29 @@ func (future *ReplicationLinksFailoverFuture) Result(client ReplicationLinksClie
 	}
 	if !done {
 		err = azure.NewAsyncOpIncompleteError("sql.ReplicationLinksFailoverFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ReplicationLinksUnlinkFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ReplicationLinksUnlinkFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ReplicationLinksUnlinkFuture) Result(client ReplicationLinksClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksUnlinkFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ReplicationLinksUnlinkFuture")
 		return
 	}
 	ar.Response = future.Response()
@@ -9371,6 +9399,12 @@ type TransparentDataEncryptionActivityProperties struct {
 type TransparentDataEncryptionProperties struct {
 	// Status - The status of the database transparent data encryption. Possible values include: 'TransparentDataEncryptionStatusEnabled', 'TransparentDataEncryptionStatusDisabled'
 	Status TransparentDataEncryptionStatus `json:"status,omitempty"`
+}
+
+// UnlinkParameters represents the parameters for Unlink Replication Link request.
+type UnlinkParameters struct {
+	// ForcedTermination - Determines whether link will be terminated in a forced or a friendly way.
+	ForcedTermination *bool `json:"forcedTermination,omitempty"`
 }
 
 // VirtualCluster an Azure SQL virtual cluster.

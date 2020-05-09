@@ -23,6 +23,26 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
+	DeleteQueue(ctx context.Context, resourceGroupName string, accountName string, queueName string) (result autorest.Response, err error)
+	DeleteTable(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result autorest.Response, err error)
+	GetQueue(ctx context.Context, resourceGroupName string, accountName string, queueName string) (result storage.Queue, err error)
+	GetTable(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result storage.Table, err error)
+	ListQueueMethod(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (result storage.ListQueueResourcePage, err error)
+	ListQueueMethodComplete(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (result storage.ListQueueResourceIterator, err error)
+	ListQueueService(ctx context.Context, resourceGroupName string, accountName string) (result storage.ListQueueServices, err error)
+	ListTableService(ctx context.Context, resourceGroupName string, accountName string) (result storage.ListTableServices, err error)
+	PatchQueue(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue storage.Queue) (result storage.Queue, err error)
+	PatchTable(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result storage.Table, err error)
+	PutQueue(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue storage.Queue) (result storage.Queue, err error)
+	PutTable(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result storage.Table, err error)
+	QueryTable(ctx context.Context, resourceGroupName string, accountName string) (result storage.ListTableResourcePage, err error)
+	QueryTableComplete(ctx context.Context, resourceGroupName string, accountName string) (result storage.ListTableResourceIterator, err error)
+}
+
+var _ BaseClientAPI = (*storage.BaseClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result storage.OperationListResult, err error)
@@ -78,6 +98,7 @@ var _ ManagementPoliciesClientAPI = (*storage.ManagementPoliciesClient)(nil)
 type PrivateEndpointConnectionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result storage.PrivateEndpointConnection, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.PrivateEndpointConnectionListResult, err error)
 	Put(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties storage.PrivateEndpointConnection) (result storage.PrivateEndpointConnection, err error)
 }
 
@@ -89,6 +110,16 @@ type PrivateLinkResourcesClientAPI interface {
 }
 
 var _ PrivateLinkResourcesClientAPI = (*storage.PrivateLinkResourcesClient)(nil)
+
+// ObjectReplicationPoliciesClientAPI contains the set of methods on the ObjectReplicationPoliciesClient type.
+type ObjectReplicationPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyID string, properties storage.ObjectReplicationPolicy) (result storage.ObjectReplicationPolicy, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyID string) (result storage.ObjectReplicationPolicy, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.ObjectReplicationPolicies, err error)
+}
+
+var _ ObjectReplicationPoliciesClientAPI = (*storage.ObjectReplicationPoliciesClient)(nil)
 
 // EncryptionScopesClientAPI contains the set of methods on the EncryptionScopesClient type.
 type EncryptionScopesClientAPI interface {
@@ -143,10 +174,27 @@ var _ FileServicesClientAPI = (*storage.FileServicesClient)(nil)
 type FileSharesClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare storage.FileShare) (result storage.FileShare, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, accountName string, shareName string) (result storage.FileShare, err error)
-	List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (result storage.FileShareItemsPage, err error)
-	ListComplete(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (result storage.FileShareItemsIterator, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, expand storage.GetShareExpand) (result storage.FileShare, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, expand storage.ListSharesExpand) (result storage.FileShareItemsPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, expand storage.ListSharesExpand) (result storage.FileShareItemsIterator, err error)
+	Restore(ctx context.Context, resourceGroupName string, accountName string, shareName string, deletedShare storage.DeletedShare) (result autorest.Response, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare storage.FileShare) (result storage.FileShare, err error)
 }
 
 var _ FileSharesClientAPI = (*storage.FileSharesClient)(nil)
+
+// QueueServicesClientAPI contains the set of methods on the QueueServicesClient type.
+type QueueServicesClientAPI interface {
+	GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (result storage.QueueServiceProperties, err error)
+	SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters storage.QueueServiceProperties) (result storage.QueueServiceProperties, err error)
+}
+
+var _ QueueServicesClientAPI = (*storage.QueueServicesClient)(nil)
+
+// TableServicesClientAPI contains the set of methods on the TableServicesClient type.
+type TableServicesClientAPI interface {
+	GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (result storage.TableServiceProperties, err error)
+	SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters storage.TableServiceProperties) (result storage.TableServiceProperties, err error)
+}
+
+var _ TableServicesClientAPI = (*storage.TableServicesClient)(nil)

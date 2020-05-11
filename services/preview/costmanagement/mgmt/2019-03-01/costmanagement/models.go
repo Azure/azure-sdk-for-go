@@ -215,6 +215,18 @@ func PossibleTimeframeTypeValues() []TimeframeType {
 	return []TimeframeType{Custom, MonthToDate, WeekToDate, YearToDate}
 }
 
+// CheckEligibilityDefinition the check eligibility Connector credentials definition
+type CheckEligibilityDefinition struct {
+	// Kind - Connector kind (eg aws)
+	Kind *string `json:"kind,omitempty"`
+	// CredentialsKey - Credentials authentication key (eg AWS ARN)
+	CredentialsKey *string `json:"credentialsKey,omitempty"`
+	// CredentialsSecret - Credentials secret (eg AWS ExternalId)
+	CredentialsSecret *string `json:"credentialsSecret,omitempty"`
+	// ReportID - Identifying source report. (For AWS this is a CUR report name, defined with Daily and with Resources)
+	ReportID *string `json:"reportId,omitempty"`
+}
+
 // ConnectorCollectionErrorInfo details of any error encountered on last collection attempt
 type ConnectorCollectionErrorInfo struct {
 	// ErrorMessage - READ-ONLY; Detailed error message

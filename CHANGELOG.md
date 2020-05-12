@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## `v42.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| mysql | 2020-01-01 |
+| network | 2020-04-01 |
+| postgresql | 2020-01-01 |
+| virtualmachineimagebuilder | 2020-02-01 |
+
 ## `v42.1.0`
 
 ### Updated Packages

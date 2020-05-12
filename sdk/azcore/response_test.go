@@ -110,11 +110,11 @@ func TestRetryAfter(t *testing.T) {
 		Header: http.Header{},
 	}
 	resp := Response{raw}
-	if d := resp.RetryAfter(); d > 0 {
+	if d := resp.retryAfter(); d > 0 {
 		t.Fatalf("unexpected retry-after value %d", d)
 	}
 	raw.Header.Set(HeaderRetryAfter, "300")
-	d := resp.RetryAfter()
+	d := resp.retryAfter()
 	if d <= 0 {
 		t.Fatal("expected retry-after value from seconds")
 	}
@@ -123,7 +123,7 @@ func TestRetryAfter(t *testing.T) {
 	}
 	atDate := time.Now().Add(600 * time.Second)
 	raw.Header.Set(HeaderRetryAfter, atDate.Format(time.RFC1123))
-	d = resp.RetryAfter()
+	d = resp.retryAfter()
 	if d <= 0 {
 		t.Fatal("expected retry-after value from date")
 	}

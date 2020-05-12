@@ -96,12 +96,20 @@ func (r *Response) removeBOM() {
 	}
 }
 
-// RetryAfter returns non-zero if the response contains a Retry-After header value.
-func (r *Response) RetryAfter() time.Duration {
+// helper to reduce nil Response checks
+func (r *Response) retryAfter() time.Duration {
 	if r == nil {
 		return 0
 	}
-	ra := r.Header.Get(HeaderRetryAfter)
+	return RetryAfter(r.Response)
+}
+
+// RetryAfter returns non-zero if the response contains a Retry-After header value.
+func RetryAfter(resp *http.Response) time.Duration {
+	if resp == nil {
+		return 0
+	}
+	ra := resp.Header.Get(HeaderRetryAfter)
 	if ra == "" {
 		return 0
 	}

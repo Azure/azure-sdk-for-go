@@ -54,12 +54,15 @@ The default version for new modules is v1.0.0, and for preview modules is v0.0.0
 			if !modinfo.IsValidModuleVersion(startingVerPreview) {
 				return fmt.Errorf("the string '%s' is not a valid module version", startingVerPreview)
 			}
-			versionSetting = &VersionSetting{
-				InitialVersion:        startingVer,
-				InitialVersionPreview: startingVerPreview,
-			}
 			repoRoot = viper.GetString("gomod-root")
-			_, _, err := ExecuteUnstage(root)
+			_, _, err := ExecuteUnstage(root, Flags{
+				RepoRoot:       viper.GetString("gomod-root"),
+				VersionSetting: &VersionSetting{
+					InitialVersion:        startingVer,
+					InitialVersionPreview: startingVerPreview,
+				},
+				GetTagsHook:    getTags,
+			})
 			return err
 		},
 	}
@@ -82,13 +85,12 @@ const (
 type TagsHookFunc func(root string, tagPrefix string) ([]string, error)
 
 // ExecuteUnstage executes the unstage command
-func ExecuteUnstage(s string) (string, string, error) {
+func ExecuteUnstage(s string, flags Flags) (string, string, error) {
+	flags.apply()
 	stage, err := filepath.Abs(s)
 	if err != nil {
 		return "", "", fmt.Errorf("failed to get absolute path from '%s': %+v", s, err)
 	}
-	// find target directory, which should just be the parent of the stage directory
-	baseline := filepath.Dir(stage)
 	// format the stage directory to avoid unexpected diff
 	if err := formatCode(stage); err != nil {
 		return "", "", fmt.Errorf("failed to format directory '%s': %+v", stage, err)
@@ -107,28 +109,31 @@ func ExecuteUnstage(s string) (string, string, error) {
 	// preview packages do not do side by side update, they always get updated in-placed
 	var tag string
 	if !mod.IsPreviewPackage() && mod.BreakingChanges() {
-		tag, err = forSideBySideRelease(baseline, stage, mod)
+		tag, err = forSideBySideRelease(stage, mod)
 	} else {
 		// check if lmv and stage are identical
 		log.Debugf("Checking if '%s' and '%s' are identical...", lmv, stage)
+		if err := formatCode(lmv); err != nil {
+			return "", "", fmt.Errorf("failed to format directory '%s': %+v", lmv, err)
+		}
 		identical, err2 := checkIdentical(lmv, stage)
 		if err2 != nil {
 			return "", "", fmt.Errorf("failed to check identical: %+v", err2)
 		}
 		if identical {
-			//tag, err = updateIdenticalPackage()
+			tag, err = forIdenticalPackage(stage)
 		} else {
-			tag, err = forInPlaceUpdate(baseline, lmv, stage, mod)
+			tag, err = forInPlaceUpdate(lmv, stage, mod)
 		}
 	}
 
 	return mod.DestDir(), tag, err
 }
 
-func forSideBySideRelease(baseline, stage string, mod modinfo.Provider) (string, error) {
+func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
 	log.Debug("This is a side by side update")
 	// calculate module tag
-	tag, err := calculateModuleTag(baseline, versionSetting, repoRoot, mod, getTagsHook)
+	tag, err := calculateModuleTag(filepath.Dir(stage), versionSetting, repoRoot, mod, getTagsHook)
 	if err != nil {
 		return "", fmt.Errorf("failed to calculate module tag: %+v", err)
 	}
@@ -156,10 +161,10 @@ func forSideBySideRelease(baseline, stage string, mod modinfo.Provider) (string,
 	return tag, nil
 }
 
-func forInPlaceUpdate(baseline, lmv, stage string, mod modinfo.Provider) (string, error) {
+func forInPlaceUpdate(lmv, stage string, mod modinfo.Provider) (string, error) {
 	log.Debug("This is a in-placed update")
 	// calculate module tag
-	tag, err := calculateModuleTag(baseline, versionSetting, repoRoot, mod, getTagsHook)
+	tag, err := calculateModuleTag(filepath.Dir(stage), versionSetting, repoRoot, mod, getTagsHook)
 	if err != nil {
 		return "", fmt.Errorf("failed to calculate module tag: %+v", err)
 	}
@@ -187,6 +192,36 @@ func forInPlaceUpdate(baseline, lmv, stage string, mod modinfo.Provider) (string
 	return tag, nil
 }
 
+// forIdenticalPackage will update the code in baseline directory
+func forIdenticalPackage(stage string) (string, error) {
+	log.Debug("Latest major version and stage content are identical")
+	baseline := filepath.Dir(stage)
+	tagPrefix, err := getTagPrefix(baseline, repoRoot)
+	if err != nil {
+		return "", fmt.Errorf("failed to get tag prefix: %+v", err)
+	}
+	tags, err := getTagsHook(baseline, tagPrefix)
+	if err != nil {
+		return "", fmt.Errorf("failed to list tags: %+v", err)
+	}
+	latestVersion, err := getLatestSemver(tags)
+	if err != nil {
+		return "", fmt.Errorf("failed to get latest version: %+v", err)
+	}
+
+	if latestVersion == nil {
+		return "", fmt.Errorf("lmv and stage are identical, but do not find any latest version of this module")
+	}
+
+	tag := fmt.Sprintf("%s/v%s", tagPrefix, latestVersion.String())
+	// remove the stage directory
+	if err := os.RemoveAll(stage); err != nil {
+		return "", fmt.Errorf("failed to remove stage directory: %+v", err)
+	}
+
+	return tag, nil
+}
+
 func checkIdentical(baseline, stage string) (bool, error) {
 	// first list all the files and directories in baseline and stage
 	// and since stage should be a subdirectory of baseline, we need to escape stage when list all file and directories
@@ -194,10 +229,11 @@ func checkIdentical(baseline, stage string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	// strip out those are in stage directory
+	// strip out the stage directory and all its children
 	fileListInBaseline = escapeStage(fileListInBaseline, stage)
-	fileListInBaseline = escapeMajorSubDirectories(fileListInBaseline)
 	fileListInBaseline = escapeSpecialFiles(fileListInBaseline)
+	// no need to escape the major sub-directories. if we are comparing the v1 and stage, there must not be any major sub-directories.
+	// on the other hand, if we are comparing one major sub-directory to stage, the other sub-directories should not be in this directory.
 	fileListInStage, err := listAllFiles(stage)
 	if err != nil {
 		return false, err
@@ -248,10 +284,6 @@ func escapeStage(fileList []string, stage string) []string {
 	return result
 }
 
-func escapeMajorSubDirectories(fileList []string) []string {
-	return fileList
-}
-
 // escape the special files -- go.mod, changelog and version.go
 func escapeSpecialFiles(fileList []string) []string {
 	var result []string
@@ -262,80 +294,6 @@ func escapeSpecialFiles(fileList []string) []string {
 		}
 	}
 	return result
-}
-
-// updateIdenticalPackage will update the code in baseline directory
-// (mainly the version.go, since the version.go might be changed in a legacy version release)
-func updateIdenticalPackage(baseline, stage, repoRoot string, getTagsHook TagsHookFunc) (string, error) {
-	tagPrefix, err := getTagPrefix(baseline, repoRoot)
-	if err != nil {
-		return "", fmt.Errorf("failed to get tag prefix: %+v", err)
-	}
-	tags, err := getTagsHook(baseline, tagPrefix)
-	if err != nil {
-		return "", fmt.Errorf("failed to list tags: %+v", err)
-	}
-	latestVersion, err := getLatestSemver(tags, tagPrefix)
-	if err != nil {
-		return "", fmt.Errorf("failed to get latest version: %+v", err)
-	}
-
-	if latestVersion == nil {
-		return "", fmt.Errorf("baseline and stage are identical, but do not find any latest version of this module")
-	}
-
-	tag := fmt.Sprintf("%s/v%s", tagPrefix, latestVersion.String())
-	log.Info("Update mod.go")
-	if err := updateGoModFile(stage, tag); err != nil {
-		return "", fmt.Errorf("failed to update go.mod file: %+v", err)
-	}
-	log.Info("Update version.go")
-	if err := updateVersionFile(stage, tag); err != nil {
-		return "", fmt.Errorf("failed to update version.go file: %+v", err)
-	}
-	// override the go.mod and version.go in baseline, since the go.mod and version.go file may get overridden by the legacy version release
-	if err := os.Rename(filepath.Join(stage, goModFilename), filepath.Join(baseline, goModFilename)); err != nil {
-		return "", fmt.Errorf("failed to override go.mod file: %+v", err)
-	}
-	if err := os.Rename(filepath.Join(stage, versionFilename), filepath.Join(baseline, versionFilename)); err != nil {
-		return "", fmt.Errorf("failed to override version.go file: %+v", err)
-	}
-	// remove the stage directory
-	if err := os.RemoveAll(stage); err != nil {
-		return "", fmt.Errorf("failed to remove stage directory: %+v", err)
-	}
-
-	return tag, nil
-}
-
-// updatePackage updates the code in baseline directory from the stage directory, and returns the tag of this new module
-func updatePackage(baseline, stage, repoRoot string, versionSetting *VersionSetting, mod modinfo.Provider, getTagsHook TagsHookFunc) (string, error) {
-	log.Infof("Updating code base in '%s' from stage '%s'", baseline, stage)
-	// get the tag for this module
-	tag, err := calculateModuleTag(baseline, versionSetting, repoRoot, mod, getTagsHook)
-	if err != nil {
-		return "", fmt.Errorf("failed to calculate module tag: %+v", err)
-	}
-	log.Infof("Tag for stage '%s': %s", stage, tag)
-	// use the major version suffix to update the go.mod file
-	log.Info("Update mod.go")
-	if err := updateGoModFile(stage, tag); err != nil {
-		return "", fmt.Errorf("failed to update go.mod file: %+v", err)
-	}
-	// use the tag to update version.go file
-	log.Info("Update version.go")
-	if err := updateVersionFile(stage, tag); err != nil {
-		return "", fmt.Errorf("failed to update version.go: %v", err)
-	}
-	// generate CHANGELOG.md
-	log.Info("Write CHANGELOG file")
-	if err := writeChangelog(stage, mod); err != nil {
-		return "", fmt.Errorf("failed to write changelog: %v", err)
-	}
-	if err := overrideLMVFromStageDirectory(baseline, stage); err != nil {
-		return "", fmt.Errorf("failed to override '%s' from stage '%s': %+v", baseline, stage, err)
-	}
-	return tag, nil
 }
 
 func overrideLMVFromStageDirectory(baseline, stage string) error {

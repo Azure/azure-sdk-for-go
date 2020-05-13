@@ -17,138 +17,116 @@ package modinfo
 import (
 	"path/filepath"
 	"reflect"
-	"regexp"
 	"testing"
 )
 
-func Test_ScenarioA(t *testing.T) {
-	// scenario A has no breaking changes, additive only
-	mod, err := GetModuleInfo("../../testdata/scenarioa/foo", "../../testdata/scenarioa/foo/stage")
-	if err != nil {
-		t.Fatalf("failed to get module info: %v", err)
+func TestGetModuleInfo(t *testing.T) {
+	type expected struct {
+		breakingChange bool
+		newExports     bool
+		versionSuffix  bool
+		destDir        string
 	}
-	if mod.BreakingChanges() {
-		t.Fatal("no breaking changes in scenario A")
+	testData := []struct {
+		name string
+		baseline string
+		stage string
+		expected
+	}{
+		{
+			name: "scenario a",
+			baseline: "../../testdata/scenarioa/foo",
+			stage: "../../testdata/scenarioa/foo/stage",
+			expected: expected{
+				breakingChange: false,
+				newExports:     true,
+				versionSuffix:  false,
+				destDir:        "../../testdata/scenarioa/foo",
+			},
+		},
+		{
+			name: "scenario b",
+			baseline: "../../testdata/scenariob/foo",
+			stage: "../../testdata/scenariob/foo/stage",
+			expected: expected{
+				breakingChange: true,
+				newExports:     true,
+				versionSuffix:  true,
+				destDir:        "../../testdata/scenariob/foo/v2",
+			},
+		},
+		{
+			name: "scenario c",
+			baseline: "../../testdata/scenarioc/foo",
+			stage: "../../testdata/scenarioc/foo/stage",
+			expected: expected{
+				breakingChange: false,
+				newExports:     false,
+				versionSuffix:  false,
+				destDir:        "../../testdata/scenarioc/foo",
+			},
+		},
+		{
+			name: "scenario d",
+			baseline: "../../testdata/scenariod/foo",
+			stage: "../../testdata/scenariod/foo/stage",
+			expected: expected{
+				breakingChange: true,
+				newExports:     false,
+				versionSuffix:  true,
+				destDir:        "../../testdata/scenariod/foo/v2",
+			},
+		},
+		{
+			name: "scenario e",
+			baseline: "../../testdata/scenarioe/foo/v2",
+			stage: "../../testdata/scenarioe/foo/stage",
+			expected: expected{
+				breakingChange: false,
+				newExports:     true,
+				versionSuffix:  true,
+				destDir:        "../../testdata/scenarioe/foo/v2",
+			},
+		},
+		{
+			name: "scenario f",
+			baseline: "../../testdata/scenariof/foo",
+			stage: "../../testdata/scenariof/foo/stage",
+			expected: expected{
+				breakingChange: false,
+				newExports:     true,
+				versionSuffix:  false,
+				destDir:        "../../testdata/scenariof/foo",
+			},
+		},
 	}
-	if !mod.NewExports() {
-		t.Fatal("expected new exports in scenario A")
-	}
-	if mod.VersionSuffix() {
-		t.Fatalf("unexpected version suffix in scenario A")
-	}
-	regex := regexp.MustCompile(`testdata/scenarioa/foo$`)
-	if !regex.MatchString(mod.DestDir()) {
-		t.Fatalf("bad destination dir: %s", mod.DestDir())
-	}
-}
 
-func Test_ScenarioB(t *testing.T) {
-	// scenario B has a breaking change
-	mod, err := GetModuleInfo("../../testdata/scenariob/foo", "../../testdata/scenariob/foo/stage")
-	if err != nil {
-		t.Fatalf("failed to get module info: %v", err)
-	}
-	if !mod.BreakingChanges() {
-		t.Fatal("expected breaking changes in scenario B")
-	}
-	if !mod.NewExports() {
-		t.Fatal("expected new exports in scenario B")
-	}
-	if !mod.VersionSuffix() {
-		t.Fatalf("expected version suffix in scenario B")
-	}
-	regex := regexp.MustCompile(`testdata[/\\]scenariob[/\\]foo[/\\]v2$`)
-	if !regex.MatchString(mod.DestDir()) {
-		t.Fatalf("bad destination dir: %s", mod.DestDir())
-	}
-}
-
-func Test_ScenarioC(t *testing.T) {
-	// scenario C has no new exports or breaking changes (function body/doc changes only)
-	mod, err := GetModuleInfo("../../testdata/scenarioc/foo", "../../testdata/scenarioc/foo/stage")
-	if err != nil {
-		t.Fatalf("failed to get module info: %v", err)
-	}
-	if mod.BreakingChanges() {
-		t.Fatal("unexpected breaking changes in scenario C")
-	}
-	if mod.NewExports() {
-		t.Fatal("unexpected new exports in scenario C")
-	}
-	if mod.VersionSuffix() {
-		t.Fatalf("unexpected version suffix in scenario C")
-	}
-	regex := regexp.MustCompile(`testdata/scenarioc/foo$`)
-	if !regex.MatchString(mod.DestDir()) {
-		t.Fatalf("bad destination dir: %s", mod.DestDir())
-	}
-}
-
-func Test_ScenarioD(t *testing.T) {
-	// scenario D has a breaking change on top of a v2 release
-	mod, err := GetModuleInfo("../../testdata/scenariod/foo", "../../testdata/scenariod/foo/stage")
-	if err != nil {
-		t.Fatalf("failed to get module info: %v", err)
-	}
-	if !mod.BreakingChanges() {
-		t.Fatal("expected breaking changes in scenario D")
-	}
-	if mod.NewExports() {
-		t.Fatal("unexpected new exports in scenario D")
-	}
-	if !mod.VersionSuffix() {
-		t.Fatalf("expected version suffix in scenario D")
-	}
-	// currently the versioner tool is not implementing the major sub-directories, therefore the DestDir will only return at most v2
-	regex := regexp.MustCompile(`testdata[/\\]scenariod[/\\]foo[/\\]v2$`)
-	if !regex.MatchString(mod.DestDir()) {
-		t.Fatalf("bad destination dir: %s", mod.DestDir())
-	}
-}
-
-func Test_ScenarioE(t *testing.T) {
-	// scenario E has a new export on top of a v2 release
-	mod, err := GetModuleInfo("../../testdata/scenarioe/foo", "../../testdata/scenarioe/foo/stage")
-	if err != nil {
-		t.Fatalf("failed to get module info: %v", err)
-	}
-	if mod.BreakingChanges() {
-		t.Fatal("unexpected breaking changes in scenario E")
-	}
-	if !mod.NewExports() {
-		t.Fatal("expected new exports in scenario E")
-	}
-	// despite the module is v2, but the stage content has no breaking changes, therefore the staged module does not have version suffix
-	if mod.VersionSuffix() {
-		t.Fatalf("unexpected version suffix in scenario E")
-	}
-	regex := regexp.MustCompile(`testdata/scenarioe/foo$`)
-	if !regex.MatchString(mod.DestDir()) {
-		t.Fatalf("bad destination dir: %s", mod.DestDir())
-	}
-}
-
-func Test_ScenarioF(t *testing.T) {
-	// scenario F is a new module
-	mod, err := GetModuleInfo("../../testdata/scenariof/foo", "../../testdata/scenariof/foo/stage")
-	if err != nil {
-		t.Fatalf("failed to get module info: %v", err)
-	}
-	if mod.BreakingChanges() {
-		t.Fatal("unexpected breaking changes in scenario F")
-	}
-	if !mod.NewExports() {
-		t.Fatal("expected new exports in scenario F")
-	}
-	if mod.VersionSuffix() {
-		t.Fatalf("unexpected version suffix in scenario F")
-	}
-	if !mod.NewModule() {
-		t.Fatal("expected new module in scenario F")
-	}
-	regex := regexp.MustCompile(`testdata/scenariof/foo$`)
-	if !regex.MatchString(mod.DestDir()) {
-		t.Fatalf("bad destination dir: %s", mod.DestDir())
+	for _, c := range testData {
+		t.Logf("Testing %s", c.name)
+		mod, err := GetModuleInfo(c.baseline, c.stage)
+		if err != nil {
+			t.Fatalf("unexpected error: %+v", err)
+		}
+		if mod.BreakingChanges() != c.expected.breakingChange {
+			t.Fatalf("breaking changes: expected %t but got %t", c.expected.breakingChange, mod.BreakingChanges())
+		}
+		if mod.NewExports() != c.expected.newExports {
+			t.Fatalf("new exports: expected %t but got %t", c.expected.newExports, mod.NewExports())
+		}
+		if mod.VersionSuffix() != c.expected.versionSuffix {
+			t.Fatalf("version suffix: expected %t but got %t", c.expected.versionSuffix, mod.VersionSuffix())
+		}
+		destDir, err := filepath.Abs(mod.DestDir())
+		if err != nil {
+			t.Fatalf("unexpected error: %+v", err)
+		}
+		expectedDest, err := filepath.Abs(c.expected.destDir)
+		if err != nil {
+			t.Fatalf("unexpected error: %+v", err)
+		}
+		if destDir != expectedDest {
+			t.Fatalf("destDir: expected %v but got %v", expectedDest, destDir)
+		}
 	}
 }
 

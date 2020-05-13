@@ -59,13 +59,14 @@ The default version for new modules is v1.0.0, and for preview modules is v0.0.0
 			if !modinfo.IsValidModuleVersion(startingVerPreview) {
 				return fmt.Errorf("the string '%s' is not a valid module version", startingVerPreview)
 			}
-			versionSetting = &VersionSetting{
-				InitialVersion:        startingVer,
-				InitialVersionPreview: startingVerPreview,
-			}
-			repoRoot = viper.GetString("gomod-root")
-			getTagsHook = getTags
-			_, err := ExecuteVersioner(root)
+			_, err := ExecuteVersioner(root, Flags{
+				RepoRoot:       viper.GetString("gomod-root"),
+				VersionSetting: &VersionSetting{
+					InitialVersion:        startingVer,
+					InitialVersionPreview: startingVerPreview,
+				},
+				GetTagsHook:    getTags,
+			})
 			return err
 		},
 	}
@@ -114,6 +115,18 @@ var (
 	getTagsHook = getTags
 )
 
+type Flags struct {
+	RepoRoot string
+	VersionSetting *VersionSetting
+	GetTagsHook TagsHookFunc
+}
+
+func (f Flags) apply() {
+	repoRoot = f.RepoRoot
+	versionSetting = f.VersionSetting
+	getTagsHook = f.GetTagsHook
+}
+
 // VersionSetting assembles the settings on starting versions
 type VersionSetting struct {
 	InitialVersion        string
@@ -121,7 +134,8 @@ type VersionSetting struct {
 }
 
 // ExecuteVersioner execute the versioner command, print the tags to stdout
-func ExecuteVersioner(r string) ([]string, error) {
+func ExecuteVersioner(r string, flags Flags) ([]string, error) {
+	flags.apply()
 	root, err := filepath.Abs(r)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get absolute path from '%s': %v", root, err)
@@ -134,7 +148,7 @@ func ExecuteVersioner(r string) ([]string, error) {
 
 	tags := make([]string, 0)
 	for _, dir := range subDirectories {
-		_, tag, err := ExecuteUnstage(dir)
+		_, tag, err := ExecuteUnstage(dir, flags)
 		if err != nil {
 			return tags, fmt.Errorf("failed to get tag in stage folder '%s': %v", dir, err)
 		}

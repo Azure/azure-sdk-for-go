@@ -85,8 +85,12 @@ var (
 )
 
 func prepareTestData(root string, tagsHook cmd.TagsHookFunc) error {
-	const repoRoot = "github.com/Azure/azure-sdk-for-go"
-	if _, err := cmd.ExecuteVersioner(root, repoRoot, defaultVersion, tagsHook); err != nil {
+	flags := cmd.Flags{
+		RepoRoot:       "github.com/Azure/azure-sdk-for-go",
+		VersionSetting: defaultVersion,
+		GetTagsHook:    tagsHook,
+	}
+	if _, err := cmd.ExecuteVersioner(root, flags); err != nil {
 		return fmt.Errorf("failed to prepare test data: %+v", err)
 	}
 	return nil
@@ -120,14 +124,21 @@ func Test_findAllVersionFiles(t *testing.T) {
 	expected := []string{
 		"../../testdata/scenarioa/foo/version.go",
 		"../../testdata/scenariob/foo/version.go",
+		"../../testdata/scenariob/foo/v2/version.go",
 		"../../testdata/scenarioc/foo/version.go",
 		"../../testdata/scenariod/foo/version.go",
+		"../../testdata/scenariod/foo/v2/version.go",
+		"../../testdata/scenariod/foo/v3/version.go",
 		"../../testdata/scenarioe/foo/version.go",
+		"../../testdata/scenarioe/foo/v2/version.go",
 		"../../testdata/scenariof/foo/version.go",
 		"../../testdata/scenariog/foo/mgmt/2019-10-11/foo/version.go",
+		"../../testdata/scenariog/foo/mgmt/2019-10-11/foo/v2/version.go",
 		"../../testdata/scenarioh/foo/mgmt/2019-10-11/foo/version.go",
+		"../../testdata/scenarioh/foo/mgmt/2019-10-11/foo/v2/version.go",
 		"../../testdata/scenarioi/foo/mgmt/2019-10-23/foo/version.go",
 		"../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/version.go",
+		"../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2/version.go",
 		"../../testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/version.go",
 		"../../testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/version.go",
 		"../../testdata/scenariom/foo/mgmt/2019-11-01-preview/foo/version.go",
@@ -213,6 +224,7 @@ func Test_readNewTags(t *testing.T) {
 		"tools/testdata/scenariog/foo/mgmt/2019-10-11/foo/v2.0.0",
 		"tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v2.0.0",
 		"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.2",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.2",
 		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2.0.0",
 		"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.2.0",
 		"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.2.0",

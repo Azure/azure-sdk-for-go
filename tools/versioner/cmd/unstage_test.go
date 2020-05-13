@@ -70,7 +70,7 @@ func Test_findLatestMajorVersion(t *testing.T) {
 		},
 		{
 			stage:    "../../testdata/scenariod/foo/stage",
-			expected: filepath.Join("..", "..", "testdata", "scenariod", "foo"),
+			expected: filepath.Join("..", "..", "testdata", "scenariod", "foo", "v2"),
 		},
 		{
 			stage:    "../../testdata/scenariof/foo/stage",
@@ -233,6 +233,71 @@ var defaultVersionSetting = &VersionSetting{
 	InitialVersionPreview: startingModVerPreview,
 }
 
+var (
+	allAvailableTags = []string{
+		"tools/testdata/scenarioa/foo/v1.0.0",
+		"tools/testdata/scenariob/foo/v1.0.0",
+		"tools/testdata/scenariob/foo/v1.1.0",
+		"tools/testdata/scenarioc/foo/v1.0.0",
+		"tools/testdata/scenariod/foo/v1.0.0",
+		"tools/testdata/scenariod/foo/v1.0.1",
+		"tools/testdata/scenariod/foo/v1.1.0",
+		"tools/testdata/scenariod/foo/v1.2.0",
+		"tools/testdata/scenariod/foo/v2.0.0",
+		"tools/testdata/scenariod/foo/v2.1.0",
+		"tools/testdata/scenariod/foo/v2.1.1",
+		"tools/testdata/scenarioe/foo/v1.0.0",
+		"tools/testdata/scenarioe/foo/v1.1.0",
+		"tools/testdata/scenarioe/foo/v2.0.0",
+		"tools/testdata/scenarioe/foo/v2.1.0",
+		"tools/testdata/scenariog/foo/mgmt/2019-10-11/foo/v1.0.0",
+		"tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v1.0.0",
+		"tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v1.1.0",
+		"tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v1.2.0",
+		"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.0.0",
+		"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.0.1",
+		"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.0",
+		"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.1",
+		"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.2",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.0.0",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.0.1",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.0",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.1",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.2",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2.0.0",
+		"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
+		"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
+		"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
+		"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
+		"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
+		"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
+		"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
+		"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
+		"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
+		"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
+		"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
+		"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
+		"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
+		"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
+		"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
+		"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
+		"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
+		"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
+		"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
+		"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
+	}
+)
+
+func getTagsWithPrefix(_, prefix string) ([]string, error) {
+	var result []string
+	for _, tag := range allAvailableTags {
+		if strings.HasPrefix(tag, prefix) {
+			result = append(result, tag)
+		}
+	}
+	return result, nil
+}
+
 func TestExecuteUnstage(t *testing.T) {
 	type expected struct {
 		dest      string
@@ -243,21 +308,11 @@ func TestExecuteUnstage(t *testing.T) {
 	}
 	testData := []struct {
 		name        string
-		getTagsHook TagsHookFunc
 		stage       string
 		expected
 	}{
 		{
 			name: "scenario a: minor version v1",
-			getTagsHook: func(root, prefix string) ([]string, error) {
-				// root doesn't matter
-				if !strings.HasSuffix(prefix, "/testdata/scenarioa/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{
-					"tools/testdata/scenarioa/foo/v1.0.0",
-				}, nil
-			},
 			stage: "../../testdata/scenarioa/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenarioa/foo",
@@ -269,16 +324,6 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario b: major version v2",
-			getTagsHook: func(root, prefix string) ([]string, error) {
-				// root doesn't matter
-				if !strings.HasSuffix(prefix, "/testdata/scenariob/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{
-					"tools/testdata/scenariob/foo/v1.0.0",
-					"tools/testdata/scenariob/foo/v1.1.0",
-				}, nil
-			},
 			stage: "../../testdata/scenariob/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenariob/foo/v2",
@@ -290,15 +335,6 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario c: patch version v1",
-			getTagsHook: func(root, prefix string) ([]string, error) {
-				// root doesn't matter
-				if !strings.HasSuffix(prefix, "/testdata/scenarioc/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{
-					"tools/testdata/scenarioc/foo/v1.0.0",
-				}, nil
-			},
 			stage: "../../testdata/scenarioc/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenarioc/foo",
@@ -310,20 +346,6 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario d: major version v3",
-			getTagsHook: func(root, prefix string) ([]string, error) {
-				if !strings.HasSuffix(prefix, "/testdata/scenariod/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{
-					"tools/testdata/scenariod/foo/v1.0.0",
-					"tools/testdata/scenariod/foo/v1.0.1",
-					"tools/testdata/scenariod/foo/v1.1.0",
-					"tools/testdata/scenariod/foo/v1.2.0",
-					"tools/testdata/scenariod/foo/v2.0.0",
-					"tools/testdata/scenariod/foo/v2.1.0",
-					"tools/testdata/scenariod/foo/v2.1.1",
-				}, nil
-			},
 			stage: "../../testdata/scenariod/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenariod/foo/v3",
@@ -335,18 +357,6 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario e: update from v2.1.0 to v2.2.0",
-			getTagsHook: func(root, prefix string) ([]string, error) {
-				// root doesn't matter
-				if !strings.HasSuffix(prefix, "/testdata/scenarioe/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{
-					"tools/testdata/scenarioe/foo/v1.0.0",
-					"tools/testdata/scenarioe/foo/v1.1.0",
-					"tools/testdata/scenarioe/foo/v2.0.0",
-					"tools/testdata/scenarioe/foo/v2.1.0",
-				}, nil
-			},
 			stage: "../../testdata/scenarioe/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenarioe/foo/v2",
@@ -358,13 +368,6 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario f: new module",
-			getTagsHook: func(root, prefix string) ([]string, error) {
-				// root doesn't matter
-				if !strings.HasSuffix(prefix, "/testdata/scenariof/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{}, nil
-			},
 			stage: "../../testdata/scenariof/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenariof/foo",
@@ -376,14 +379,6 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario g: new management plane major v2",
-			getTagsHook: func(root string, prefix string) ([]string, error) {
-				if !strings.HasSuffix(prefix, "testdata/scenariog/foo/mgmt/2019-10-11/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{
-					"tools/testdata/scenariog/foo/mgmt/2019-10-11/foo/v1.0.0",
-				}, nil
-			},
 			stage: "../../testdata/scenariog/foo/mgmt/2019-10-11/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenariog/foo/mgmt/2019-10-11/foo/v2",
@@ -395,16 +390,6 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario h: major version v2 (import need changes)",
-			getTagsHook: func(root string, prefix string) ([]string, error) {
-				if !strings.HasSuffix(prefix, "testdata/scenarioh/foo/mgmt/2019-10-11/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{
-					"tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v1.0.0",
-					"tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v1.1.0",
-					"tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v1.2.0",
-				}, nil
-			},
 			stage: "../../testdata/scenarioh/foo/mgmt/2019-10-11/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenarioh/foo/mgmt/2019-10-11/foo/v2",
@@ -416,18 +401,6 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario i: identical, should have no update",
-			getTagsHook: func(root string, prefix string) ([]string, error) {
-				if !strings.HasSuffix(prefix, "testdata/scenarioi/foo/mgmt/2019-10-23/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{
-					"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.0.0",
-					"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.0.1",
-					"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.0",
-					"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.1",
-					"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.2",
-				}, nil
-			},
 			stage: "../../testdata/scenarioi/foo/mgmt/2019-10-23/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenarioi/foo/mgmt/2019-10-23/foo",
@@ -439,19 +412,6 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario j: identical v2, should have no update",
-			getTagsHook: func(root string, prefix string) ([]string, error) {
-				if !strings.HasSuffix(prefix, "testdata/scenarioj/foo/mgmt/2019-10-23/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{
-					"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.0.0",
-					"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.0.1",
-					"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.0",
-					"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.1",
-					"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.2",
-					"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2.0.0",
-				}, nil
-			},
 			stage: "../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2",
@@ -463,18 +423,6 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario k: preview with addition changes",
-			getTagsHook: func(root string, prefix string) ([]string, error) {
-				if !strings.HasSuffix(prefix, "testdata/scenariok/foo/mgmt/2019-11-01-preview/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{
-					"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
-					"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
-					"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
-					"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
-					"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
-				}, nil
-			},
 			stage: "../../testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenariok/foo/mgmt/2019-11-01-preview/foo",
@@ -486,18 +434,6 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario l: breaking changes in preview package",
-			getTagsHook: func(root string, prefix string) ([]string, error) {
-				if !strings.HasSuffix(prefix, "testdata/scenariol/foo/mgmt/2019-11-01-preview/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{
-					"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
-					"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
-					"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
-					"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
-					"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
-				}, nil
-			},
 			stage: "../../testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenariol/foo/mgmt/2019-11-01-preview/foo",
@@ -509,12 +445,6 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario m: new preview module",
-			getTagsHook: func(root string, prefix string) ([]string, error) {
-				if !strings.HasSuffix(prefix, "testdata/scenariom/foo/mgmt/2019-11-01-preview/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{}, nil
-			},
 			stage: "../../testdata/scenariom/foo/mgmt/2019-11-01-preview/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenariom/foo/mgmt/2019-11-01-preview/foo",
@@ -526,18 +456,6 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario n: patch version for preview module",
-			getTagsHook: func(root string, prefix string) ([]string, error) {
-				if !strings.HasSuffix(prefix, "testdata/scenarion/foo/mgmt/2019-11-01-preview/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{
-					"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
-					"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
-					"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
-					"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
-					"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
-				}, nil
-			},
 			stage: "../../testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenarion/foo/mgmt/2019-11-01-preview/foo",
@@ -549,18 +467,6 @@ func TestExecuteUnstage(t *testing.T) {
 		},
 		{
 			name: "scenario o: no change in preview module",
-			getTagsHook: func(root string, prefix string) ([]string, error) {
-				if !strings.HasSuffix(prefix, "testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo") {
-					return nil, fmt.Errorf("bad prefix '%s'", prefix)
-				}
-				return []string{
-					"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
-					"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
-					"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
-					"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
-					"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
-				}, nil
-			},
 			stage: "../../testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/stage",
 			expected: expected{
 				dest:      "../../testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo",
@@ -573,15 +479,17 @@ func TestExecuteUnstage(t *testing.T) {
 	}
 
 	cleanTestData()
-	//defer cleanTestData()
+	defer cleanTestData()
 
-	repoRoot = "github.com/Azure/azure-sdk-for-go"
-	versionSetting = defaultVersionSetting
+	flags := Flags{
+		RepoRoot:       "github.com/Azure/azure-sdk-for-go",
+		VersionSetting: defaultVersionSetting,
+		GetTagsHook:    getTagsWithPrefix,
+	}
 
 	for _, c := range testData {
 		t.Logf("Testing %s", c.name)
-		getTagsHook = c.getTagsHook
-		dest, tag, err := ExecuteUnstage(c.stage)
+		dest, tag, err := ExecuteUnstage(c.stage, flags)
 		if err != nil {
 			t.Fatalf("unexpected error: %+v", err)
 		}
@@ -632,8 +540,14 @@ func TestCheckIdentical(t *testing.T) {
 		},
 		{
 			name:      "scenario j",
-			baseline:  "../../testdata/scenarioj/foo/mgmt/2019-10-23/foo",
+			baseline:  "../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2",
 			stage:     "../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/stage",
+			identical: true,
+		},
+		{
+			name:      "scenario o",
+			baseline:  "../../testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo",
+			stage:     "../../testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/stage",
 			identical: true,
 		},
 	}

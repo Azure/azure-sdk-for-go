@@ -355,7 +355,7 @@ func TestGetLatestSemver(t *testing.T) {
 	}
 
 	for _, c := range testData {
-		v, err := getLatestSemver(c.tags, c.tagPrefix)
+		v, err := getLatestSemver(c.tags)
 		if err != nil {
 			t.Fatalf("unexpected error: %+v", err)
 		}

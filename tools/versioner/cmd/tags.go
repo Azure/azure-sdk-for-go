@@ -50,7 +50,7 @@ func calculateTagForStable(baseline, initialStartVersion, repoRoot string, mod m
 		return "", fmt.Errorf("failed to list tags: %+v", err)
 	}
 
-	latestVersion, err := getLatestSemver(tags, tagPrefix)
+	latestVersion, err := getLatestSemver(tags)
 	if err != nil {
 		return "", fmt.Errorf("failed to get latest version: %+v", err)
 	}
@@ -92,7 +92,7 @@ func calculateTagForPreview(baseline, initialStartVersion, repoRoot string, mod 
 		return "", fmt.Errorf("failed to list tags: %+v", err)
 	}
 
-	latestVersion, err := getLatestSemver(tags, tagPrefix)
+	latestVersion, err := getLatestSemver(tags)
 	if err != nil {
 		return "", fmt.Errorf("failed to get latest version: %+v", err)
 	}
@@ -113,14 +113,10 @@ func calculateTagForPreview(baseline, initialStartVersion, repoRoot string, mod 
 	return fmt.Sprintf("%s/v%s", tagPrefix, latestVersion.IncPatch().String()), nil
 }
 
-func getLatestSemver(tags []string, tagPrefix string) (*semver.Version, error) {
+func getLatestSemver(tags []string) (*semver.Version, error) {
 	var versions []*semver.Version
 	for _, tag := range tags {
-		index := strings.Index(tag, tagPrefix)
-		if index < 0 {
-			return nil, fmt.Errorf("do not find '%s' in tag '%s'", tagPrefix, tag)
-		}
-		verString := strings.Trim(tag[index+len(tagPrefix):], "/")
+		verString := semverRegex.FindString(tag)
 		ver, err := semver.NewVersion(verString)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse semver %s: %+v", verString, err)

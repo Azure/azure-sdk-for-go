@@ -24,7 +24,7 @@ func UserAgent() string {
 
 // Version returns the semantic version (see http://semver.org) of the client.
 func Version() string {
-	return "v1.1.2"
+	return "v2.0.0"
 }
 
-// tag: tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.2
+// tag: tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v2.0.0

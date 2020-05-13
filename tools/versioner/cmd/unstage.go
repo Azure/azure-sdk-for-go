@@ -19,7 +19,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -55,12 +54,12 @@ The default version for new modules is v1.0.0, and for preview modules is v0.0.0
 			if !modinfo.IsValidModuleVersion(startingVerPreview) {
 				return fmt.Errorf("the string '%s' is not a valid module version", startingVerPreview)
 			}
-			versionSetting := &VersionSetting{
+			versionSetting = &VersionSetting{
 				InitialVersion:        startingVer,
 				InitialVersionPreview: startingVerPreview,
 			}
-			repoRoot := viper.GetString("gomod-root")
-			_, _, err := ExecuteUnstage(root, repoRoot, versionSetting, getTags)
+			repoRoot = viper.GetString("gomod-root")
+			_, _, err := ExecuteUnstage(root)
 			return err
 		},
 	}
@@ -83,46 +82,109 @@ const (
 type TagsHookFunc func(root string, tagPrefix string) ([]string, error)
 
 // ExecuteUnstage executes the unstage command
-func ExecuteUnstage(s, repoRoot string, versionSetting *VersionSetting, getTagsHook TagsHookFunc) (string, string, error) {
+func ExecuteUnstage(s string) (string, string, error) {
 	stage, err := filepath.Abs(s)
 	if err != nil {
 		return "", "", fmt.Errorf("failed to get absolute path from '%s': %+v", s, err)
 	}
 	// find target directory, which should just be the parent of the stage directory
 	baseline := filepath.Dir(stage)
-	// format stage folder first to avoid unnecessary changes detected by apidiff
-	// and gofmt will automatically convert CRLF to LF, therefore we have to do the same to both baseline and stage to avoid any differences caused by the line separators
-	if err := formatCode(baseline); err != nil {
-		return "", "", fmt.Errorf("failed to format baseline directory: %+v", err)
-	}
+	// format the stage directory to avoid unexpected diff
 	if err := formatCode(stage); err != nil {
-		return "", "", fmt.Errorf("failed to format stage directory: %+v", err)
+		return "", "", fmt.Errorf("failed to format directory '%s': %+v", stage, err)
 	}
-	log.Infof("Target directory path of stage '%s': %s", stage, baseline)
-	log.Infof("Checking if '%s' and '%s' are identical", baseline, stage)
-	// first we need to check if the baseline and stage is identical, if no change, we just remove the stage directory and return empty tag
-	identical, err := checkIdentical(baseline, stage)
+	lmv, err := findLatestMajorVersion(stage)
 	if err != nil {
-		return "", "", fmt.Errorf("failed to check identical: %+v", err)
+		return "", "", fmt.Errorf("failed to find latest major version directory in '%s': %+v", stage, err)
 	}
-	if identical {
-		// directly remove the stage directory
-		log.Infof("Stage '%s' is identical to '%s', removing stage", stage, baseline)
-		tag, err := updateIdenticalPackage(baseline, stage, repoRoot, getTagsHook)
-		if err != nil {
-			return "", "", fmt.Errorf("failed to update identical package: %+v", err)
+	log.Debugf("Latest major version directory: %s", lmv)
+	log.Debug("Comparing exports in latest major directory and stage content...")
+	mod, err := modinfo.GetModuleInfo(lmv, stage)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to create module info: %+v", err)
+	}
+
+	// preview packages do not do side by side update, they always get updated in-placed
+	var tag string
+	if !mod.IsPreviewPackage() && mod.BreakingChanges() {
+		tag, err = forSideBySideRelease(baseline, stage, mod)
+	} else {
+		// check if lmv and stage are identical
+		log.Debugf("Checking if '%s' and '%s' are identical...", lmv, stage)
+		identical, err2 := checkIdentical(lmv, stage)
+		if err2 != nil {
+			return "", "", fmt.Errorf("failed to check identical: %+v", err2)
 		}
-		return baseline, tag, nil
+		if identical {
+			//tag, err = updateIdenticalPackage()
+		} else {
+			tag, err = forInPlaceUpdate(baseline, lmv, stage, mod)
+		}
 	}
-	log.Infof("Generating changes between '%s' and '%s'", baseline, stage)
-	mod, err := modinfo.GetModuleInfo(baseline, stage)
+
+	return mod.DestDir(), tag, err
+}
+
+func forSideBySideRelease(baseline, stage string, mod modinfo.Provider) (string, error) {
+	log.Debug("This is a side by side update")
+	// calculate module tag
+	tag, err := calculateModuleTag(baseline, versionSetting, repoRoot, mod, getTagsHook)
 	if err != nil {
-		return "", "", fmt.Errorf("failed to create module info: %v", err)
+		return "", fmt.Errorf("failed to calculate module tag: %+v", err)
 	}
-	// despite that to have a major version directory for those major version greater than 1 would have better compatibility,
-	// consider that now go 1.12 is not in the supporting list of golang version, we just simply do all the update inplace to reduce complexity
-	tag, err := updatePackage(baseline, stage, repoRoot, versionSetting, mod, getTagsHook)
-	return baseline, tag, err
+	log.Debugf("Tag calculated for stage '%s' is %s", stage, tag)
+	log.Debug("Updating go.mod...")
+	if err := updateGoModFile(stage, tag); err != nil {
+		return "", fmt.Errorf("failed to update go.mod file: %+v", err)
+	}
+	log.Debug("Updating import statements...")
+	if err := updateImportStatement(stage, mod.DestDir()); err != nil {
+		return "", fmt.Errorf("failed to replace import statement: %+v", err)
+	}
+	log.Debug("Updating version.go...")
+	if err := updateVersionFile(stage, tag); err != nil {
+		return "", fmt.Errorf("failed to update version.go file: %+v", err)
+	}
+	log.Debug("Writing CHANGELOG...")
+	if err := writeChangelog(stage, mod); err != nil {
+		return "", fmt.Errorf("failed to write CHANGELOG.md: %+v", err)
+	}
+	log.Debugf("Renaming stage directory to '%s'...", mod.DestDir())
+	if err := os.Rename(stage, mod.DestDir()); err != nil {
+		return "", fmt.Errorf("failed to rename '%s' to '%s': %+v", stage, mod.DestDir(), err)
+	}
+	return tag, nil
+}
+
+func forInPlaceUpdate(baseline, lmv, stage string, mod modinfo.Provider) (string, error) {
+	log.Debug("This is a in-placed update")
+	// calculate module tag
+	tag, err := calculateModuleTag(baseline, versionSetting, repoRoot, mod, getTagsHook)
+	if err != nil {
+		return "", fmt.Errorf("failed to calculate module tag: %+v", err)
+	}
+	log.Debugf("Tag calculated for stage '%s' is %s", stage, tag)
+	log.Debug("Updating go.mod...")
+	if err := updateGoModFile(stage, tag); err != nil {
+		return "", fmt.Errorf("failed to update go.mod file: %+v", err)
+	}
+	log.Debug("Updating import statements...")
+	if err := updateImportStatement(stage, mod.DestDir()); err != nil {
+		return "", fmt.Errorf("failed to replace import statement: %+v", err)
+	}
+	log.Debug("Updating version.go...")
+	if err := updateVersionFile(stage, tag); err != nil {
+		return "", fmt.Errorf("failed to update version.go file: %+v", err)
+	}
+	log.Debug("Writing CHANGELOG...")
+	if err := writeChangelog(stage, mod); err != nil {
+		return "", fmt.Errorf("failed to write CHANGELOG.md: %+v", err)
+	}
+	log.Debugf("Overriding stage directory to '%s'...", lmv)
+	if err := overrideLMVFromStageDirectory(lmv, stage); err != nil {
+		return "", fmt.Errorf("failed to override stage to lmv '%s': %+v", lmv, err)
+	}
+	return tag, nil
 }
 
 func checkIdentical(baseline, stage string) (bool, error) {
@@ -134,6 +196,7 @@ func checkIdentical(baseline, stage string) (bool, error) {
 	}
 	// strip out those are in stage directory
 	fileListInBaseline = escapeStage(fileListInBaseline, stage)
+	fileListInBaseline = escapeMajorSubDirectories(fileListInBaseline)
 	fileListInBaseline = escapeSpecialFiles(fileListInBaseline)
 	fileListInStage, err := listAllFiles(stage)
 	if err != nil {
@@ -174,6 +237,7 @@ func listAllFiles(root string) ([]string, error) {
 	return results, err
 }
 
+// escape the stage directory and all its sub-directories from the list
 func escapeStage(fileList []string, stage string) []string {
 	var result []string
 	for _, path := range fileList {
@@ -184,6 +248,11 @@ func escapeStage(fileList []string, stage string) []string {
 	return result
 }
 
+func escapeMajorSubDirectories(fileList []string) []string {
+	return fileList
+}
+
+// escape the special files -- go.mod, changelog and version.go
 func escapeSpecialFiles(fileList []string) []string {
 	var result []string
 	for _, path := range fileList {
@@ -304,7 +373,7 @@ func updateGoModFile(directory, tag string) error {
 // when this file is generated by autorest
 func updateVersionFile(directory, tag string) error {
 	version := semverRegex.FindString(tag)
-	log.Infof("Updating version.go file in %s with version %s", directory, version)
+	log.Debugf("Updating version.go file in %s with version %s", directory, version)
 	// version.go file must exists
 	file := filepath.Join(directory, versionFilename)
 	if _, err := os.Stat(file); os.IsNotExist(err) {
@@ -334,10 +403,14 @@ func updateVersionFile(directory, tag string) error {
 			line = fmt.Sprintf("// tag: %s", tag)
 			hasTag = true
 		}
-		fmt.Fprintln(verFile, line)
+		if _, err := fmt.Fprintln(verFile, line); err != nil {
+			return err
+		}
 	}
 	if !hasTag {
-		fmt.Fprintf(verFile, "\n// tag: %s\n", tag)
+		if _, err := fmt.Fprintf(verFile, "\n// tag: %s\n", tag); err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -394,48 +467,47 @@ func updateGoMod(goMod io.ReadWriteSeeker, newVer string) error {
 }
 
 // traversal all go source files in the stage folder, and replace the import statement with new ones
-func updateImportStatement(stage, currentPath, ver string) error {
-	index := strings.Index(currentPath, "github.com")
-	if index < 0 {
-		return fmt.Errorf("github.com does not find in path '%s', this should never happen", currentPath)
+func updateImportStatement(stage, dest string) error {
+	newImport, err := importPathFromAbsPath(dest, repoRoot)
+	if err != nil {
+		return fmt.Errorf("failed to get import from '%s': %+v", dest, err)
 	}
-	newImport := strings.ReplaceAll(currentPath[index:], "\\", "/")
-	oldImport := newImport[:strings.LastIndex(newImport, "/"+ver)]
-	log.Infof("Attempting to replace import statement from '%s' to '%s'", oldImport, newImport)
-	files, err := findAllFilesContainImportStatement(stage, oldImport)
+	baseline := filepath.Dir(stage)
+	oldImport, err := importPathFromAbsPath(baseline, repoRoot)
+	if err != nil {
+		return fmt.Errorf("failed to get import from '%s': %+v", baseline, err)
+	}
+	log.Debugf("Attempting to replace import statement from '%s' to '%s'", oldImport, newImport)
+	goFiles, err := findAllGoSourceFiles(stage)
 	if err != nil {
 		return err
 	}
-	log.Infof("Found %d files with import statement of '%s'", len(files), oldImport)
-	log.Debugf("Files: \n%s", strings.Join(files, "\n"))
-	err = replaceImportStatement(files, oldImport, newImport)
-	if err != nil {
-		return err
+	log.Debugf("Found %d go source files: \n%s", len(goFiles), strings.Join(goFiles, "\n"))
+	for _, file := range goFiles {
+		if err := replaceImportInFile(file, oldImport, newImport); err != nil {
+			return fmt.Errorf("failed to replace import statement in file '%s': %+v", file, err)
+		}
 	}
 	return nil
 }
 
-func findAllFilesContainImportStatement(path, importStatement string) ([]string, error) {
+func importPathFromAbsPath(path, repoRoot string) (string, error) {
+	path = strings.ReplaceAll(path, "\\", "/")
+	index := strings.Index(path, repoRoot)
+	if index < 0 {
+		return "", fmt.Errorf("do not find '%s' in path '%s'", repoRoot, path)
+	}
+	return path[index:], nil
+}
+
+func findAllGoSourceFiles(path string) ([]string, error) {
 	var fileList []string // fileList stores filenames for those content contained the given import statements
 	err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
 		if !info.IsDir() && strings.HasSuffix(info.Name(), ".go") {
-			// read every line of this file
-			file, err := os.Open(path)
-			if err != nil {
-				return fmt.Errorf("failed to open file '%s': %v", path, err)
-			}
-			defer file.Close()
-			scanner := bufio.NewScanner(file)
-			scanner.Split(bufio.ScanLines)
-			for scanner.Scan() {
-				line := scanner.Text()
-				if strings.Index(line, importStatement) > -1 {
-					fileList = append(fileList, path)
-				}
-			}
+			fileList = append(fileList, path)
 			return nil
 		}
 		return nil
@@ -443,45 +515,49 @@ func findAllFilesContainImportStatement(path, importStatement string) ([]string,
 	return fileList, err
 }
 
-func replaceImportStatement(files []string, oldImport, newImport string) error {
-	for _, file := range files {
-		err := replaceImportInFile(file, oldImport, newImport)
-		if err != nil {
-			return fmt.Errorf("failed to preform replace in file '%s'", file)
+func replaceImportInFile(filepath, oldContent, newContent string) error {
+	file, err := os.OpenFile(filepath, os.O_RDWR, 0666)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	if err := updateGoSourceFile(file, oldContent, newContent); err != nil {
+		return fmt.Errorf("failed to update import statement in file '%s': %+v", filepath, err)
+	}
+	return nil
+}
+
+func updateGoSourceFile(file io.ReadWriteSeeker, oldImport, newImport string) error {
+	lines := files.GetLines(file)
+	content := strings.Join(lines, "\n")
+	importStatements := findImportStatements(content)
+	newImportStatements := strings.ReplaceAll(importStatements, oldImport, newImport)
+	newFileContent := strings.ReplaceAll(content, importStatements, newImportStatements)
+
+	if _, err := file.Seek(0, io.SeekStart); err != nil {
+		return err
+	}
+
+	for _, line := range strings.Split(newFileContent, "\n") {
+		if _, err := fmt.Fprintln(file, line); err != nil {
+			return err
 		}
 	}
 	return nil
 }
 
-func replaceImportInFile(filepath, oldContent, newContent string) error {
-	bytes, err := ioutil.ReadFile(filepath)
-	if err != nil {
-		return fmt.Errorf("failed to open file '%s': %v", filepath, err)
-	}
-	content := string(bytes)
-	importStatements, err := findImportStatements(content)
-	if err != nil {
-		return err
-	}
-	newImportStatements := strings.ReplaceAll(importStatements, oldContent, newContent)
-	newFileContent := strings.ReplaceAll(content, importStatements, newImportStatements)
-	if err := ioutil.WriteFile(filepath, []byte(newFileContent), 0755); err != nil {
-		return err
-	}
-	return nil
-}
-
-func findImportStatements(content string) (string, error) {
+func findImportStatements(content string) string {
 	oneLineImport := regexp.MustCompile(`import ".*"`)
 	if oneLineImport.MatchString(content) {
-		return oneLineImport.FindString(content), nil
+		return oneLineImport.FindString(content)
 	}
-	multiLineRegex := `import \(\r?\n(\s*\".*\"\r?\n)+\s*\)`
+	multiLineRegex := `import \(\n(\s*\".*\"\n)+\s*\)`
 	multiLineImport := regexp.MustCompile(multiLineRegex)
 	if multiLineImport.MatchString(content) {
-		return multiLineImport.FindString(content), nil
+		return multiLineImport.FindString(content)
 	}
-	return "", fmt.Errorf("failed to match import statement")
+	return ""
 }
 
 func writeChangelog(stage string, mod modinfo.Provider) error {

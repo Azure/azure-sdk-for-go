@@ -281,7 +281,7 @@ func TestExecuteUnstage(t *testing.T) {
 			},
 			stage: "../../testdata/scenariob/foo/stage",
 			expected: expected{
-				dest:      "../../testdata/scenariob/foo",
+				dest:      "../../testdata/scenariob/foo/v2",
 				tag:       "tools/testdata/scenariob/foo/v2.0.0",
 				mod:       fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariob/foo/v2\n\n%s\n", goVersion),
 				version:   "v2.0.0",
@@ -326,7 +326,7 @@ func TestExecuteUnstage(t *testing.T) {
 			},
 			stage: "../../testdata/scenariod/foo/stage",
 			expected: expected{
-				dest:      "../../testdata/scenariod/foo",
+				dest:      "../../testdata/scenariod/foo/v3",
 				tag:       "tools/testdata/scenariod/foo/v3.0.0",
 				mod:       fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariod/foo/v3\n\n%s\n", goVersion),
 				version:   "v3.0.0",
@@ -349,7 +349,7 @@ func TestExecuteUnstage(t *testing.T) {
 			},
 			stage: "../../testdata/scenarioe/foo/stage",
 			expected: expected{
-				dest:      "../../testdata/scenarioe/foo",
+				dest:      "../../testdata/scenarioe/foo/v2",
 				tag:       "tools/testdata/scenarioe/foo/v2.2.0",
 				mod:       fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioe/foo/v2\n\n%s\n", goVersion),
 				version:   "v2.2.0",
@@ -386,7 +386,7 @@ func TestExecuteUnstage(t *testing.T) {
 			},
 			stage: "../../testdata/scenariog/foo/mgmt/2019-10-11/foo/stage",
 			expected: expected{
-				dest:      "../../testdata/scenariog/foo/mgmt/2019-10-11/foo",
+				dest:      "../../testdata/scenariog/foo/mgmt/2019-10-11/foo/v2",
 				tag:       "tools/testdata/scenariog/foo/mgmt/2019-10-11/foo/v2.0.0",
 				mod:       fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariog/foo/mgmt/2019-10-11/foo/v2\n\n%s\n", goVersion),
 				version:   "v2.0.0",
@@ -407,7 +407,7 @@ func TestExecuteUnstage(t *testing.T) {
 			},
 			stage: "../../testdata/scenarioh/foo/mgmt/2019-10-11/foo/stage",
 			expected: expected{
-				dest:      "../../testdata/scenarioh/foo/mgmt/2019-10-11/foo",
+				dest:      "../../testdata/scenarioh/foo/mgmt/2019-10-11/foo/v2",
 				tag:       "tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v2.0.0",
 				mod:       fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v2\n\n%s\n", goVersion),
 				version:   "v2.0.0",
@@ -454,7 +454,7 @@ func TestExecuteUnstage(t *testing.T) {
 			},
 			stage: "../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/stage",
 			expected: expected{
-				dest:      "../../testdata/scenarioj/foo/mgmt/2019-10-23/foo",
+				dest:      "../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2",
 				tag:       "tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2.0.0",
 				mod:       fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2\n\n%s\n", goVersion),
 				version:   "v2.0.0",
@@ -573,13 +573,15 @@ func TestExecuteUnstage(t *testing.T) {
 	}
 
 	cleanTestData()
-	defer cleanTestData()
+	//defer cleanTestData()
 
-	const repoRoot = "github.com/Azure/azure-sdk-for-go"
+	repoRoot = "github.com/Azure/azure-sdk-for-go"
+	versionSetting = defaultVersionSetting
 
 	for _, c := range testData {
 		t.Logf("Testing %s", c.name)
-		dest, tag, err := ExecuteUnstage(c.stage, repoRoot, defaultVersionSetting, c.getTagsHook)
+		getTagsHook = c.getTagsHook
+		dest, tag, err := ExecuteUnstage(c.stage)
 		if err != nil {
 			t.Fatalf("unexpected error: %+v", err)
 		}

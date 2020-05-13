@@ -15,9 +15,12 @@
 package dirs
 
 import (
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/files"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // GetSubdirs returns all of the subdirectories under current.
@@ -50,4 +53,41 @@ func DeleteChildDirs(dir string) error {
 		}
 	}
 	return nil
+}
+
+// DeepCompare compares the two directories to determine if they are identical recursively.
+// note: will take a significant long time when invoking on large directories
+func DeepCompare(base, target string) (bool, error) {
+	identical := true
+	err := filepath.Walk(base, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		index := strings.Index(path, base)
+		if index < 0 {
+			return fmt.Errorf("failed to get base directory '%s' in path '%s'", base, path)
+		}
+		relativePath := path[index + len(base):]
+		targetPath := filepath.Join(target, relativePath)
+		if exists, err := files.Exists(targetPath); err != nil {
+			return err
+		} else if !exists {
+			identical = false
+			return notIdenticalError{}
+		}
+
+		return nil
+	})
+
+	if _, ok := err.(notIdenticalError); ok {
+		return identical, nil
+	}
+	return identical, err
+}
+
+type notIdenticalError struct {
+}
+
+func (e notIdenticalError) Error() string {
+	return "Not identical"
 }

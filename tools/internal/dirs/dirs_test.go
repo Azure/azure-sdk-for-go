@@ -14,7 +14,12 @@
 
 package dirs
 
-import "testing"
+import (
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/ioext"
+	"os"
+	"path/filepath"
+	"testing"
+)
 
 func TestGetSubdirs(t *testing.T) {
 	sd, err := GetSubdirs("../..")
@@ -43,5 +48,29 @@ func TestGetSubdirsNoExist(t *testing.T) {
 	}
 	if sd != nil {
 		t.Fatal("expected nil subdirs")
+	}
+}
+
+func TestDeepCompare(t *testing.T) {
+	profiles, err := filepath.Abs("../../../profiles")
+	if err != nil {
+		t.Fatalf("unexpected error: %+v", err)
+	}
+	temp := profiles + "1temp"
+	defer func() {
+		err := os.RemoveAll(temp)
+		if err != nil {
+			t.Fatalf("cannot remove the temp directory: %+v", err)
+		}
+	}()
+	if err := ioext.CopyDir(profiles, temp); err != nil {
+		t.Fatalf("unexpected error: %+v", err)
+	}
+	identical, err := DeepCompare(profiles, temp)
+	if err != nil {
+		t.Fatalf("unexpected error: %+v", err)
+	}
+	if !identical {
+		t.Fatalf("expected %v but got %v", true, identical)
 	}
 }

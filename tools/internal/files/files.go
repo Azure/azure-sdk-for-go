@@ -73,6 +73,7 @@ func GetLines(file io.Reader) []string {
 	return lines
 }
 
+// Exists returns if a file or directory exists or not
 func Exists(path string) (bool, error) {
 	_, err := os.Stat(path)
 	if err == nil { return true, nil }

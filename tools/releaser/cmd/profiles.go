@@ -16,18 +16,21 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/ioext"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/log"
-	"github.com/spf13/cobra"
+	"os"
 	"os/exec"
 	"path/filepath"
+
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/ioext"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/dirs"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/log"
+	"github.com/spf13/cobra"
 )
 
 func profilesCommand() *cobra.Command {
 	profile := &cobra.Command{
 		Use:   "profiles <sdk directory>",
 		Short: "Release new modules of profiles from the profiles' root directory",
-		Args: cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(1),
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			path := args[0]
@@ -40,7 +43,7 @@ func profilesCommand() *cobra.Command {
 
 const (
 	profilesName = "profiles"
-	tempName = "profiles1temp"
+	tempName     = "profiles1temp"
 )
 
 func executeProfiles(path string) error {
@@ -50,20 +53,50 @@ func executeProfiles(path string) error {
 		return fmt.Errorf("failed to get absolute path of '%s': %+v", path, err)
 	}
 	// check if root exists
-	profiles := filepath.Join(root, profilesName)
+	profilesPath := filepath.Join(root, profilesName)
 	temp := filepath.Join(root, tempName)
-	log.Debugf("Copying from `%s` to `%s`", profiles, temp)
-	if err := ioext.CopyDir(profiles, temp); err != nil {
+	log.Debugf("Copying from `%s` to `%s`", profilesPath, temp)
+	if err := ioext.CopyDir(profilesPath, temp); err != nil {
 		return fmt.Errorf("failed to copy '%s' to '%s'", root, temp)
 	}
+
+	defer func() {
+		log.Debugf("Removing temp directory '%s'...", temp)
+		if err := os.RemoveAll(temp); err != nil {
+			log.Errorf("failed to remove temp directory '%s': %+v", temp, err)
+		}
+	}()
+	// format old code to avoid CRLF difference
+	if err := formatCode(temp); err != nil {
+		return fmt.Errorf("failed to format temp directory: %+v", err)
+	}
+
 	// runs go generate
-	if err := executeGoGenerate(root); err != nil {
-		return fmt.Errorf("failed to run go generate: %+v", err)
+	log.Debug("Regenerating profiles...")
+	profiles, err := dirs.GetSubdirs(profilesPath)
+	if err != nil {
+		return fmt.Errorf("failed to list all profiles: %+v", err)
+	}
+	for _, profile := range profiles {
+		identical, err := compareProfile(root, filepath.Base(profile))
+		if err != nil {
+			return fmt.Errorf("failed to compare profile '%s': %+v", profile, err)
+		}
+		log.Debugf("Profile %s identical: %t", profile, identical)
 	}
 	// format both of them to avoid CRLF difference
+	if err := formatCode(profilesPath); err != nil {
+		return fmt.Errorf("failed to format '%s': %+v", profilesPath, err)
+	}
 	// compares differences and bump version if necessary
-	// remove the temp directory
+	// iterate all profiles
 	return nil
+}
+
+func compareProfile(root, profile string) (bool, error) {
+	base := filepath.Join(root, tempName, profile)
+	target := filepath.Join(root, profilesName, profile)
+	return dirs.DeepCompare(base, target)
 }
 
 func executeGoGenerate(path string) error {
@@ -73,6 +106,6 @@ func executeGoGenerate(path string) error {
 	if err != nil {
 		return fmt.Errorf(string(output))
 	}
-	log.Info(string(output))
+	log.Debug(string(output))
 	return nil
 }

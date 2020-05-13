@@ -404,6 +404,25 @@ func PossiblePartnerTopicProvisioningStateValues() []PartnerTopicProvisioningSta
 	return []PartnerTopicProvisioningState{PartnerTopicProvisioningStateCanceled, PartnerTopicProvisioningStateCreating, PartnerTopicProvisioningStateDeleting, PartnerTopicProvisioningStateFailed, PartnerTopicProvisioningStateSucceeded, PartnerTopicProvisioningStateUpdating}
 }
 
+// PartnerTopicReadinessState enumerates the values for partner topic readiness state.
+type PartnerTopicReadinessState string
+
+const (
+	// ActivatedByUser ...
+	ActivatedByUser PartnerTopicReadinessState = "ActivatedByUser"
+	// DeactivatedByUser ...
+	DeactivatedByUser PartnerTopicReadinessState = "DeactivatedByUser"
+	// DeletedByUser ...
+	DeletedByUser PartnerTopicReadinessState = "DeletedByUser"
+	// NotActivatedByUserYet ...
+	NotActivatedByUserYet PartnerTopicReadinessState = "NotActivatedByUserYet"
+)
+
+// PossiblePartnerTopicReadinessStateValues returns an array of possible values for the PartnerTopicReadinessState const type.
+func PossiblePartnerTopicReadinessStateValues() []PartnerTopicReadinessState {
+	return []PartnerTopicReadinessState{ActivatedByUser, DeactivatedByUser, DeletedByUser, NotActivatedByUserYet}
+}
+
 // PartnerTopicTypeAuthorizationState enumerates the values for partner topic type authorization state.
 type PartnerTopicTypeAuthorizationState string
 
@@ -956,7 +975,7 @@ func (beaf BoolEqualsAdvancedFilter) AsBasicAdvancedFilter() (BasicAdvancedFilte
 	return &beaf, true
 }
 
-// ConnectionState connectionState Information.
+// ConnectionState connectionState information.
 type ConnectionState struct {
 	// Status - Status of the connection. Possible values include: 'Pending', 'Approved', 'Rejected', 'Disconnected'
 	Status PersistedConnectionStatus `json:"status,omitempty"`
@@ -2058,6 +2077,35 @@ type EventChannelDestination struct {
 	PartnerTopicName *string `json:"partnerTopicName,omitempty"`
 }
 
+// EventChannelFilter filter for the Event Channel.
+type EventChannelFilter struct {
+	// AdvancedFilters - An array of advanced filters that are used for filtering event channels.
+	AdvancedFilters *[]BasicAdvancedFilter `json:"advancedFilters,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for EventChannelFilter struct.
+func (ecf *EventChannelFilter) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "advancedFilters":
+			if v != nil {
+				advancedFilters, err := unmarshalBasicAdvancedFilterArray(*v)
+				if err != nil {
+					return err
+				}
+				ecf.AdvancedFilters = &advancedFilters
+			}
+		}
+	}
+
+	return nil
+}
+
 // EventChannelProperties properties of the Event Channel.
 type EventChannelProperties struct {
 	// Source - Source of the event channel. This represents a unique resource in the partner's resource model.
@@ -2066,6 +2114,39 @@ type EventChannelProperties struct {
 	Destination *EventChannelDestination `json:"destination,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of the event channel. Possible values include: 'EventChannelProvisioningStateCreating', 'EventChannelProvisioningStateUpdating', 'EventChannelProvisioningStateDeleting', 'EventChannelProvisioningStateSucceeded', 'EventChannelProvisioningStateCanceled', 'EventChannelProvisioningStateFailed'
 	ProvisioningState EventChannelProvisioningState `json:"provisioningState,omitempty"`
+	// PartnerTopicReadinessState - READ-ONLY; The readiness state of the corresponding partner topic. Possible values include: 'NotActivatedByUserYet', 'ActivatedByUser', 'DeactivatedByUser', 'DeletedByUser'
+	PartnerTopicReadinessState PartnerTopicReadinessState `json:"partnerTopicReadinessState,omitempty"`
+	// ExpirationTimeIfNotActivatedUtc - Expiration time of the event channel. If this timer expires while the corresponding partner topic is never activated,
+	// the event channel and corresponding partner topic are deleted.
+	ExpirationTimeIfNotActivatedUtc *date.Time `json:"expirationTimeIfNotActivatedUtc,omitempty"`
+	// Filter - Information about the filter for the event channel.
+	Filter *EventChannelFilter `json:"filter,omitempty"`
+	// PartnerTopicFriendlyDescription - Friendly description about the topic. This can be set by the publisher/partner to show custom description for the customer partner topic.
+	// This will be helpful to remove any ambiguity of the origin of creation of the partner topic for the customer.
+	PartnerTopicFriendlyDescription *string `json:"partnerTopicFriendlyDescription,omitempty"`
+}
+
+// EventChannelsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type EventChannelsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *EventChannelsDeleteFuture) Result(client EventChannelsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventgrid.EventChannelsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("eventgrid.EventChannelsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // EventChannelsListResult result of the List Event Channels operation
@@ -4715,8 +4796,20 @@ type PartnerRegistrationProperties struct {
 	PartnerResourceTypeName *string `json:"partnerResourceTypeName,omitempty"`
 	// PartnerResourceTypeDisplayName - Display name of the partner resource type.
 	PartnerResourceTypeDisplayName *string `json:"partnerResourceTypeDisplayName,omitempty"`
-	// PartnerResourceTypeDescription - Description of the partner resource type.
+	// PartnerResourceTypeDescription - Short description of the partner resource type. The length of this description should not exceed 256 characters.
 	PartnerResourceTypeDescription *string `json:"partnerResourceTypeDescription,omitempty"`
+	// LongDescription - Long description for the custom scenarios and integration to be displayed in the portal if needed.
+	// Length of this description should not exceed 2048 characters.
+	LongDescription *string `json:"longDescription,omitempty"`
+	// PartnerCustomerServiceNumber - The customer service number of the publisher. The expected phone format should start with a '+' sign
+	// followed by the country code. The remaining digits are then followed. Only digits and spaces are allowed and its
+	// length cannot exceed 16 digits including country code. Examples of valid phone numbers are: +1 515 123 4567 and
+	// +966 7 5115 2471. Examples of invalid phone numbers are: +1 (515) 123-4567, 1 515 123 4567 and +966 121 5115 24 7 551 1234 43
+	PartnerCustomerServiceNumber *string `json:"partnerCustomerServiceNumber,omitempty"`
+	// PartnerCustomerServiceExtension - The extension of the customer service number of the publisher. Only digits are allowed and number of digits should not exceed 10.
+	PartnerCustomerServiceExtension *string `json:"partnerCustomerServiceExtension,omitempty"`
+	// CustomerServiceURI - The extension of the customer service URI of the publisher.
+	CustomerServiceURI *string `json:"customerServiceUri,omitempty"`
 	// SetupURI - URI of the partner website that can be used by Azure customers to setup Event Grid
 	// integration on an event source.
 	SetupURI *string `json:"setupUri,omitempty"`
@@ -4880,6 +4973,8 @@ func NewPartnerRegistrationsListResultPage(getNextPage func(context.Context, Par
 
 // PartnerRegistrationUpdateParameters properties of the Partner Registration update.
 type PartnerRegistrationUpdateParameters struct {
+	// Tags - Tags of the partner registration resource.
+	Tags map[string]*string `json:"tags"`
 	// PartnerTopicTypeName - Name of the partner topic type.
 	PartnerTopicTypeName *string `json:"partnerTopicTypeName,omitempty"`
 	// PartnerTopicTypeDisplayName - Display name of the partner topic type.
@@ -4896,6 +4991,33 @@ type PartnerRegistrationUpdateParameters struct {
 	// partner namespaces is always permitted under the same Azure subscription as the one used
 	// for creating the partner registration.
 	AuthorizedAzureSubscriptionIds *[]string `json:"authorizedAzureSubscriptionIds,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PartnerRegistrationUpdateParameters.
+func (prup PartnerRegistrationUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if prup.Tags != nil {
+		objectMap["tags"] = prup.Tags
+	}
+	if prup.PartnerTopicTypeName != nil {
+		objectMap["partnerTopicTypeName"] = prup.PartnerTopicTypeName
+	}
+	if prup.PartnerTopicTypeDisplayName != nil {
+		objectMap["partnerTopicTypeDisplayName"] = prup.PartnerTopicTypeDisplayName
+	}
+	if prup.PartnerTopicTypeDescription != nil {
+		objectMap["partnerTopicTypeDescription"] = prup.PartnerTopicTypeDescription
+	}
+	if prup.SetupURI != nil {
+		objectMap["setupUri"] = prup.SetupURI
+	}
+	if prup.LogoURI != nil {
+		objectMap["logoUri"] = prup.LogoURI
+	}
+	if prup.AuthorizedAzureSubscriptionIds != nil {
+		objectMap["authorizedAzureSubscriptionIds"] = prup.AuthorizedAzureSubscriptionIds
+	}
+	return json.Marshal(objectMap)
 }
 
 // PartnerTopic eventGrid Partner Topic.
@@ -5084,10 +5206,16 @@ func (future *PartnerTopicEventSubscriptionsUpdateFuture) Result(client PartnerT
 type PartnerTopicProperties struct {
 	// Source - Source associated with this partner topic. This represents a unique partner resource.
 	Source *string `json:"source,omitempty"`
+	// ExpirationTimeIfNotActivatedUtc - Expiration time of the partner topic. If this timer expires while the partner topic is still never activated,
+	// the partner topic and corresponding event channel are deleted.
+	ExpirationTimeIfNotActivatedUtc *date.Time `json:"expirationTimeIfNotActivatedUtc,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of the partner topic. Possible values include: 'PartnerTopicProvisioningStateCreating', 'PartnerTopicProvisioningStateUpdating', 'PartnerTopicProvisioningStateDeleting', 'PartnerTopicProvisioningStateSucceeded', 'PartnerTopicProvisioningStateCanceled', 'PartnerTopicProvisioningStateFailed'
 	ProvisioningState PartnerTopicProvisioningState `json:"provisioningState,omitempty"`
 	// ActivationState - Activation state of the partner topic. Possible values include: 'NeverActivated', 'Activated', 'Deactivated'
 	ActivationState PartnerTopicActivationState `json:"activationState,omitempty"`
+	// PartnerTopicFriendlyDescription - Friendly description about the topic. This can be set by the publisher/partner to show custom description for the customer partner topic.
+	// This will be helpful to remove any ambiguity of the origin of creation of the partner topic for the customer.
+	PartnerTopicFriendlyDescription *string `json:"partnerTopicFriendlyDescription,omitempty"`
 }
 
 // PartnerTopicsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -5376,7 +5504,7 @@ type PrivateEndpoint struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// PrivateEndpointConnection privateEndpointConnection resource information.
+// PrivateEndpointConnection ...
 type PrivateEndpointConnection struct {
 	autorest.Response `json:"-"`
 	// PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnection.
@@ -5596,7 +5724,7 @@ func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context
 	return PrivateEndpointConnectionListResultPage{fn: getNextPage}
 }
 
-// PrivateEndpointConnectionProperties properties of the private endpoint connection resource
+// PrivateEndpointConnectionProperties properties of the private endpoint connection resource.
 type PrivateEndpointConnectionProperties struct {
 	// PrivateEndpoint - The Private Endpoint resource for this Connection.
 	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
@@ -5909,8 +6037,7 @@ type Resource struct {
 
 // ResourceSku describes an EventGrid Resource Sku.
 type ResourceSku struct {
-	// Name - the Sku name of the resource.
-	// the possible values: Basic; Premium. Possible values include: 'Basic', 'Premium'
+	// Name - The Sku name of the resource. The possible values are: Basic or Premium. Possible values include: 'Basic', 'Premium'
 	Name Sku `json:"name,omitempty"`
 }
 
@@ -6134,22 +6261,6 @@ func (sbtesd *ServiceBusTopicEventSubscriptionDestination) UnmarshalJSON(body []
 type ServiceBusTopicEventSubscriptionDestinationProperties struct {
 	// ResourceID - The Azure Resource Id that represents the endpoint of the Service Bus Topic destination of an event subscription.
 	ResourceID *string `json:"resourceId,omitempty"`
-}
-
-// SkuDefinitionsForResourceType describes an EventGrid Resource Sku Definition.
-type SkuDefinitionsForResourceType struct {
-	// ResourceType - The Resource Type applicable for the Sku.
-	ResourceType *string `json:"resourceType,omitempty"`
-	// Skus - The Sku pricing tiers for the resource type.
-	Skus *[]ResourceSku `json:"skus,omitempty"`
-}
-
-// SkuDefinitionsForResourceTypeListResult list collection of Sku Definitions for each Resource Type.
-type SkuDefinitionsForResourceTypeListResult struct {
-	// Value - A collection of Sku Definitions for each Resource Type.
-	Value *[]SkuDefinitionsForResourceType `json:"value,omitempty"`
-	// NextLink - A link for the next page of Sku Definitions.
-	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // StorageBlobDeadLetterDestination information about the storage blob based dead letter destination.
@@ -7384,7 +7495,6 @@ func (t *Topic) UnmarshalJSON(body []byte) error {
 
 // TopicProperties properties of the Topic
 type TopicProperties struct {
-	// PrivateEndpointConnections - List of private endpoint connections.
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of the topic. Possible values include: 'TopicProvisioningStateCreating', 'TopicProvisioningStateUpdating', 'TopicProvisioningStateDeleting', 'TopicProvisioningStateSucceeded', 'TopicProvisioningStateCanceled', 'TopicProvisioningStateFailed'
 	ProvisioningState TopicProvisioningState `json:"provisioningState,omitempty"`

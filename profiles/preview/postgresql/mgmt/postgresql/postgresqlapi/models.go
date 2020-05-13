@@ -19,7 +19,7 @@
 
 package postgresqlapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2017-12-01/postgresql/postgresqlapi"
+import original "github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql/postgresqlapi"
 
 type CheckNameAvailabilityClientAPI = original.CheckNameAvailabilityClientAPI
 type ConfigurationsClientAPI = original.ConfigurationsClientAPI
@@ -28,8 +28,11 @@ type FirewallRulesClientAPI = original.FirewallRulesClientAPI
 type LocationBasedPerformanceTierClientAPI = original.LocationBasedPerformanceTierClientAPI
 type LogFilesClientAPI = original.LogFilesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type ReplicasClientAPI = original.ReplicasClientAPI
 type ServerAdministratorsClientAPI = original.ServerAdministratorsClientAPI
+type ServerKeysClientAPI = original.ServerKeysClientAPI
 type ServerSecurityAlertPoliciesClientAPI = original.ServerSecurityAlertPoliciesClientAPI
 type ServersClientAPI = original.ServersClientAPI
 type VirtualNetworkRulesClientAPI = original.VirtualNetworkRulesClientAPI

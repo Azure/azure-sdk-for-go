@@ -22,7 +22,7 @@ package postgresql
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2017-12-01/postgresql"
+	original "github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql"
 )
 
 const (
@@ -205,7 +205,23 @@ type OperationsClient = original.OperationsClient
 type PerformanceTierListResult = original.PerformanceTierListResult
 type PerformanceTierProperties = original.PerformanceTierProperties
 type PerformanceTierServiceLevelObjectives = original.PerformanceTierServiceLevelObjectives
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
+type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateEndpointConnectionsUpdateTagsFuture = original.PrivateEndpointConnectionsUpdateTagsFuture
 type PrivateEndpointProperty = original.PrivateEndpointProperty
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceListResultIterator = original.PrivateLinkResourceListResultIterator
+type PrivateLinkResourceListResultPage = original.PrivateLinkResourceListResultPage
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
 type ProxyResource = original.ProxyResource
 type ReplicasClient = original.ReplicasClient
 type Resource = original.Resource
@@ -219,6 +235,14 @@ type ServerAdministratorsClient = original.ServerAdministratorsClient
 type ServerAdministratorsCreateOrUpdateFuture = original.ServerAdministratorsCreateOrUpdateFuture
 type ServerAdministratorsDeleteFuture = original.ServerAdministratorsDeleteFuture
 type ServerForCreate = original.ServerForCreate
+type ServerKey = original.ServerKey
+type ServerKeyListResult = original.ServerKeyListResult
+type ServerKeyListResultIterator = original.ServerKeyListResultIterator
+type ServerKeyListResultPage = original.ServerKeyListResultPage
+type ServerKeyProperties = original.ServerKeyProperties
+type ServerKeysClient = original.ServerKeysClient
+type ServerKeysCreateOrUpdateFuture = original.ServerKeysCreateOrUpdateFuture
+type ServerKeysDeleteFuture = original.ServerKeysDeleteFuture
 type ServerListResult = original.ServerListResult
 type ServerPrivateEndpointConnection = original.ServerPrivateEndpointConnection
 type ServerPrivateEndpointConnectionProperties = original.ServerPrivateEndpointConnectionProperties
@@ -241,6 +265,7 @@ type ServersRestartFuture = original.ServersRestartFuture
 type ServersUpdateFuture = original.ServersUpdateFuture
 type Sku = original.Sku
 type StorageProfile = original.StorageProfile
+type TagsObject = original.TagsObject
 type TrackedResource = original.TrackedResource
 type VirtualNetworkRule = original.VirtualNetworkRule
 type VirtualNetworkRuleListResult = original.VirtualNetworkRuleListResult
@@ -296,6 +321,30 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return original.NewPrivateEndpointConnectionListResultIterator(page)
+}
+func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(getNextPage)
+}
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourceListResultIterator(page PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator {
+	return original.NewPrivateLinkResourceListResultIterator(page)
+}
+func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return original.NewPrivateLinkResourceListResultPage(getNextPage)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewReplicasClient(subscriptionID string) ReplicasClient {
 	return original.NewReplicasClient(subscriptionID)
 }
@@ -307,6 +356,18 @@ func NewServerAdministratorsClient(subscriptionID string) ServerAdministratorsCl
 }
 func NewServerAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ServerAdministratorsClient {
 	return original.NewServerAdministratorsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServerKeyListResultIterator(page ServerKeyListResultPage) ServerKeyListResultIterator {
+	return original.NewServerKeyListResultIterator(page)
+}
+func NewServerKeyListResultPage(getNextPage func(context.Context, ServerKeyListResult) (ServerKeyListResult, error)) ServerKeyListResultPage {
+	return original.NewServerKeyListResultPage(getNextPage)
+}
+func NewServerKeysClient(subscriptionID string) ServerKeysClient {
+	return original.NewServerKeysClient(subscriptionID)
+}
+func NewServerKeysClientWithBaseURI(baseURI string, subscriptionID string) ServerKeysClient {
+	return original.NewServerKeysClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServerSecurityAlertPoliciesClient(subscriptionID string) ServerSecurityAlertPoliciesClient {
 	return original.NewServerSecurityAlertPoliciesClient(subscriptionID)

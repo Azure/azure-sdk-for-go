@@ -14,4 +14,4 @@
 
 package foo
 
-func DoItOne() {}
+func DoItOne(string) {}

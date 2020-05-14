@@ -624,6 +624,160 @@ func (client AppsClient) ImportResponder(resp *http.Response) (result UUID, err 
 	return
 }
 
+// ImportLuFormat imports an application to LUIS, the application's structure is included in the request body.
+// Parameters:
+// luisAppLu - a LUIS application structure.
+// appName - the application name to create. If not specified, the application name will be read from the
+// imported object. If the application name already exists, an error is returned.
+func (client AppsClient) ImportLuFormat(ctx context.Context, luisAppLu string, appName string) (result UUID, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ImportLuFormat")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ImportLuFormatPreparer(ctx, luisAppLu, appName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ImportLuFormat", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ImportLuFormatSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ImportLuFormat", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ImportLuFormatResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ImportLuFormat", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ImportLuFormatPreparer prepares the ImportLuFormat request.
+func (client AppsClient) ImportLuFormatPreparer(ctx context.Context, luisAppLu string, appName string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(appName) > 0 {
+		queryParameters["appName"] = autorest.Encode("query", appName)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("text/plain"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
+		autorest.WithPath("/apps/import"),
+		autorest.WithJSON(luisAppLu),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ImportLuFormatSender sends the ImportLuFormat request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ImportLuFormatSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ImportLuFormatResponder handles the response to the ImportLuFormat request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ImportLuFormatResponder(resp *http.Response) (result UUID, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ImportV2App imports an application to LUIS, the application's structure is included in the request body.
+// Parameters:
+// luisAppV2 - a LUIS application structure.
+// appName - the application name to create. If not specified, the application name will be read from the
+// imported object. If the application name already exists, an error is returned.
+func (client AppsClient) ImportV2App(ctx context.Context, luisAppV2 LuisAppV2, appName string) (result UUID, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ImportV2App")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ImportV2AppPreparer(ctx, luisAppV2, appName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ImportV2App", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ImportV2AppSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ImportV2App", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ImportV2AppResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ImportV2App", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ImportV2AppPreparer prepares the ImportV2App request.
+func (client AppsClient) ImportV2AppPreparer(ctx context.Context, luisAppV2 LuisAppV2, appName string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(appName) > 0 {
+		queryParameters["appName"] = autorest.Encode("query", appName)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
+		autorest.WithPath("/apps/import"),
+		autorest.WithJSON(luisAppV2),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ImportV2AppSender sends the ImportV2App request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ImportV2AppSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ImportV2AppResponder handles the response to the ImportV2App request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ImportV2AppResponder(resp *http.Response) (result UUID, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // List lists all of the user's applications.
 // Parameters:
 // skip - the number of entries to skip. Default value is 0.

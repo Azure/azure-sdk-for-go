@@ -233,6 +233,19 @@ type GremlinResourcesClientAPI interface {
 
 var _ GremlinResourcesClientAPI = (*documentdb.GremlinResourcesClient)(nil)
 
+// NotebookWorkspacesClientAPI contains the set of methods on the NotebookWorkspacesClient type.
+type NotebookWorkspacesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, notebookCreateUpdateParameters documentdb.NotebookWorkspaceCreateUpdateParameters) (result documentdb.NotebookWorkspacesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.NotebookWorkspacesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.NotebookWorkspace, err error)
+	ListByDatabaseAccount(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.NotebookWorkspaceListResult, err error)
+	ListConnectionInfo(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.NotebookWorkspaceConnectionInfoResult, err error)
+	RegenerateAuthToken(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.NotebookWorkspacesRegenerateAuthTokenFuture, err error)
+	Start(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.NotebookWorkspacesStartFuture, err error)
+}
+
+var _ NotebookWorkspacesClientAPI = (*documentdb.NotebookWorkspacesClient)(nil)
+
 // PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
 type PrivateLinkResourcesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, accountName string, groupName string) (result documentdb.PrivateLinkResource, err error)

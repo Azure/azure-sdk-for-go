@@ -206,6 +206,15 @@ const (
 	PartnerTopicProvisioningStateUpdating  PartnerTopicProvisioningState = original.PartnerTopicProvisioningStateUpdating
 )
 
+type PartnerTopicReadinessState = original.PartnerTopicReadinessState
+
+const (
+	ActivatedByUser       PartnerTopicReadinessState = original.ActivatedByUser
+	DeactivatedByUser     PartnerTopicReadinessState = original.DeactivatedByUser
+	DeletedByUser         PartnerTopicReadinessState = original.DeletedByUser
+	NotActivatedByUserYet PartnerTopicReadinessState = original.NotActivatedByUserYet
+)
+
 type PartnerTopicTypeAuthorizationState = original.PartnerTopicTypeAuthorizationState
 
 const (
@@ -685,6 +694,9 @@ func PossiblePartnerTopicActivationStateValues() []PartnerTopicActivationState {
 }
 func PossiblePartnerTopicProvisioningStateValues() []PartnerTopicProvisioningState {
 	return original.PossiblePartnerTopicProvisioningStateValues()
+}
+func PossiblePartnerTopicReadinessStateValues() []PartnerTopicReadinessState {
+	return original.PossiblePartnerTopicReadinessStateValues()
 }
 func PossiblePartnerTopicTypeAuthorizationStateValues() []PartnerTopicTypeAuthorizationState {
 	return original.PossiblePartnerTopicTypeAuthorizationStateValues()

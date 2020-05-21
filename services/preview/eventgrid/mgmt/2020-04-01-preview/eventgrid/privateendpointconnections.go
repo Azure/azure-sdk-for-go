@@ -337,7 +337,8 @@ func (client PrivateEndpointConnectionsClient) ListByResourceComplete(ctx contex
 // parentType - the type of the parent resource. This can be either \'topics\' or \'domains\'.
 // parentName - the name of the parent resource (namely, either, the topic name or domain name).
 // privateEndpointConnectionName - the name of the private endpoint connection connection.
-func (client PrivateEndpointConnectionsClient) Update(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string) (result PrivateEndpointConnectionsUpdateFuture, err error) {
+// privateEndpointConnection - the private endpoint connection object to update.
+func (client PrivateEndpointConnectionsClient) Update(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection) (result PrivateEndpointConnectionsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.Update")
 		defer func() {
@@ -348,7 +349,7 @@ func (client PrivateEndpointConnectionsClient) Update(ctx context.Context, resou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, parentType, parentName, privateEndpointConnectionName)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, parentType, parentName, privateEndpointConnectionName, privateEndpointConnection)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.PrivateEndpointConnectionsClient", "Update", nil, "Failure preparing request")
 		return
@@ -364,7 +365,7 @@ func (client PrivateEndpointConnectionsClient) Update(ctx context.Context, resou
 }
 
 // UpdatePreparer prepares the Update request.
-func (client PrivateEndpointConnectionsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string) (*http.Request, error) {
+func (client PrivateEndpointConnectionsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"parentName":                    autorest.Encode("path", parentName),
 		"parentType":                    autorest.Encode("path", parentType),
@@ -379,9 +380,11 @@ func (client PrivateEndpointConnectionsClient) UpdatePreparer(ctx context.Contex
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{parentType}/{parentName}/privateEndpointConnections/{privateEndpointConnectionName}", pathParameters),
+		autorest.WithJSON(privateEndpointConnection),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

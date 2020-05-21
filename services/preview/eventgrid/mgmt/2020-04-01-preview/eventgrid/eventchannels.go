@@ -127,13 +127,13 @@ func (client EventChannelsClient) CreateOrUpdateResponder(resp *http.Response) (
 // resourceGroupName - the name of the resource group within the user's subscription.
 // partnerNamespaceName - name of the partner namespace.
 // eventChannelName - name of the event channel.
-func (client EventChannelsClient) Delete(ctx context.Context, resourceGroupName string, partnerNamespaceName string, eventChannelName string) (result autorest.Response, err error) {
+func (client EventChannelsClient) Delete(ctx context.Context, resourceGroupName string, partnerNamespaceName string, eventChannelName string) (result EventChannelsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EventChannelsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -144,16 +144,10 @@ func (client EventChannelsClient) Delete(ctx context.Context, resourceGroupName 
 		return
 	}
 
-	resp, err := client.DeleteSender(req)
+	result, err = client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "eventgrid.EventChannelsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventgrid.EventChannelsClient", "Delete", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.EventChannelsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -183,8 +177,14 @@ func (client EventChannelsClient) DeletePreparer(ctx context.Context, resourceGr
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client EventChannelsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client EventChannelsClient) DeleteSender(req *http.Request) (future EventChannelsDeleteFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always

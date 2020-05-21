@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## `v42.3.0`
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| subscription | 2019-10-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| resourcegraph | 2018-09-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| eventgrid | 2020-04-01-preview |
+
 ## `v42.2.0`
 
 ### New Packages

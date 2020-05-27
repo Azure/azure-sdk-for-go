@@ -8,6 +8,7 @@ package azcore
 import (
 	"context"
 	"errors"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"testing"
@@ -77,5 +78,34 @@ func TestRequestMarshalJSON(t *testing.T) {
 	}
 	if req.ContentLength == 0 {
 		t.Fatal("unexpected zero content length")
+	}
+}
+
+func TestRequestMarshalAsByteArray(t *testing.T) {
+	u, err := url.Parse("https://contoso.com")
+	if err != nil {
+		panic(err)
+	}
+	req := NewRequest(http.MethodPost, *u)
+	const payload = "a string that gets encoded with base64url"
+	err = req.MarshalAsByteArray([]byte(payload))
+	if err != nil {
+		t.Fatalf("marshal failure: %v", err)
+	}
+	if ct := req.Header.Get(HeaderContentType); ct != contentTypeAppJSON {
+		t.Fatalf("unexpected content type, got %s wanted %s", ct, contentTypeAppJSON)
+	}
+	if req.Body == nil {
+		t.Fatal("unexpected nil request body")
+	}
+	if req.ContentLength == 0 {
+		t.Fatal("unexpected zero content length")
+	}
+	b, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(b) != `"YSBzdHJpbmcgdGhhdCBnZXRzIGVuY29kZWQgd2l0aCBiYXNlNjR1cmw"` {
+		t.Fatalf("bad body, got %s", string(b))
 	}
 }

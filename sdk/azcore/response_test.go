@@ -132,3 +132,24 @@ func TestRetryAfter(t *testing.T) {
 		t.Fatalf("expected ~600 seconds, got %d", d/time.Second)
 	}
 }
+
+func TestResponseUnmarshalAsByteArray(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithBody([]byte(`"YSBzdHJpbmcgdGhhdCBnZXRzIGVuY29kZWQgd2l0aCBiYXNlNjR1cmw"`)))
+	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
+	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	var ba *[]byte
+	if err := resp.UnmarshalAsByteArray(&ba); err != nil {
+		t.Fatalf("unexpected error unmarshalling: %v", err)
+	}
+	if string(*ba) != "a string that gets encoded with base64url" {
+		t.Fatalf("bad payload, got %s", string(*ba))
+	}
+}

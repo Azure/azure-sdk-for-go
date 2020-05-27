@@ -7,6 +7,7 @@ package azcore
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
@@ -47,6 +48,30 @@ func (r *Response) HasStatusCode(statusCodes ...int) bool {
 		}
 	}
 	return false
+}
+
+// UnmarshalAsByteArray will base-64 decode the received payload and place the result into the value pointed
+// to by v. Raw standard encoding is tried first, and if that fails the standard decoder is tried next.
+func (r *Response) UnmarshalAsByteArray(v **[]byte) error {
+	if len(r.payload()) == 0 {
+		return nil
+	}
+	payload := string(r.payload())
+	if payload[0] == '"' {
+		// remove surrounding quotes
+		payload = payload[1 : len(payload)-1]
+	}
+	decoded, err := base64.RawStdEncoding.DecodeString(payload)
+	if err == nil {
+		*v = &decoded
+		return nil
+	}
+	decoded, err = base64.StdEncoding.DecodeString(payload)
+	if err == nil {
+		*v = &decoded
+		return nil
+	}
+	return err
 }
 
 // UnmarshalAsJSON calls json.Unmarshal() to unmarshal the received payload into the value pointed to by v.

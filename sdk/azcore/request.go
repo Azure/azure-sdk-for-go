@@ -8,6 +8,7 @@ package azcore
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
@@ -79,6 +80,13 @@ func (req *Request) Next(ctx context.Context) (*Response, error) {
 	nextReq := *req
 	nextReq.policies = nextReq.policies[1:]
 	return nextPolicy.Do(ctx, &nextReq)
+}
+
+// MarshalAsByteArray will base-64 encode the byte slice v then calls MarshalAsJSON.
+// It uses the raw standard encoder to encode the JSON string.
+func (req *Request) MarshalAsByteArray(v []byte) error {
+	encode := base64.RawStdEncoding.EncodeToString(v)
+	return req.MarshalAsJSON(encode)
 }
 
 // MarshalAsJSON calls json.Marshal() to get the JSON encoding of v then calls SetBody.

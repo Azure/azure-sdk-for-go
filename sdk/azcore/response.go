@@ -50,9 +50,8 @@ func (r *Response) HasStatusCode(statusCodes ...int) bool {
 	return false
 }
 
-// UnmarshalAsByteArray will base-64 decode the received payload and place the result into the value pointed
-// to by v. Raw standard encoding is tried first, and if that fails the standard decoder is tried next.
-func (r *Response) UnmarshalAsByteArray(v **[]byte) error {
+// UnmarshalAsByteArray will base-64 decode the received payload and place the result into the value pointed to by v.
+func (r *Response) UnmarshalAsByteArray(v **[]byte, format Base64Encoding) error {
 	if len(r.payload()) == 0 {
 		return nil
 	}
@@ -61,17 +60,25 @@ func (r *Response) UnmarshalAsByteArray(v **[]byte) error {
 		// remove surrounding quotes
 		payload = payload[1 : len(payload)-1]
 	}
-	decoded, err := base64.RawStdEncoding.DecodeString(payload)
-	if err == nil {
-		*v = &decoded
-		return nil
+	switch format {
+	case Base64StdFormat:
+		decoded, err := base64.StdEncoding.DecodeString(payload)
+		if err == nil {
+			*v = &decoded
+			return nil
+		}
+		return err
+	case Base64URLFormat:
+		// use raw encoding as URL format should not contain any '=' characters
+		decoded, err := base64.RawURLEncoding.DecodeString(payload)
+		if err == nil {
+			*v = &decoded
+			return nil
+		}
+		return err
+	default:
+		return fmt.Errorf("unrecognized byte array format: %d", format)
 	}
-	decoded, err = base64.StdEncoding.DecodeString(payload)
-	if err == nil {
-		*v = &decoded
-		return nil
-	}
-	return err
 }
 
 // UnmarshalAsJSON calls json.Unmarshal() to unmarshal the received payload into the value pointed to by v.

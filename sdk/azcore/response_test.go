@@ -133,7 +133,7 @@ func TestRetryAfter(t *testing.T) {
 	}
 }
 
-func TestResponseUnmarshalAsByteArray(t *testing.T) {
+func TestResponseUnmarshalAsByteArrayURLFormat(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(`"YSBzdHJpbmcgdGhhdCBnZXRzIGVuY29kZWQgd2l0aCBiYXNlNjR1cmw"`)))
@@ -146,7 +146,28 @@ func TestResponseUnmarshalAsByteArray(t *testing.T) {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
 	var ba *[]byte
-	if err := resp.UnmarshalAsByteArray(&ba); err != nil {
+	if err := resp.UnmarshalAsByteArray(&ba, Base64URLFormat); err != nil {
+		t.Fatalf("unexpected error unmarshalling: %v", err)
+	}
+	if string(*ba) != "a string that gets encoded with base64url" {
+		t.Fatalf("bad payload, got %s", string(*ba))
+	}
+}
+
+func TestResponseUnmarshalAsByteArrayStdFormat(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithBody([]byte(`"YSBzdHJpbmcgdGhhdCBnZXRzIGVuY29kZWQgd2l0aCBiYXNlNjR1cmw="`)))
+	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
+	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	var ba *[]byte
+	if err := resp.UnmarshalAsByteArray(&ba, Base64StdFormat); err != nil {
 		t.Fatalf("unexpected error unmarshalling: %v", err)
 	}
 	if string(*ba) != "a string that gets encoded with base64url" {

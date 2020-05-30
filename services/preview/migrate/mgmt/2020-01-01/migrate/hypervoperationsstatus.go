@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// HyperVOperationsStatusClient is the client for the HyperVOperationsStatus methods of the Migrate service.
+// HyperVOperationsStatusClient is the discover your workloads for Azure.
 type HyperVOperationsStatusClient struct {
 	BaseClient
 }

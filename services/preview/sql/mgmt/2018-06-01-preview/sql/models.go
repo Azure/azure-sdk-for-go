@@ -2728,6 +2728,8 @@ type ManagedInstanceProperties struct {
 	TimezoneID *string `json:"timezoneId,omitempty"`
 	// InstancePoolID - The Id of the instance pool this managed server belongs to.
 	InstancePoolID *string `json:"instancePoolId,omitempty"`
+	// MaintenanceConfigurationID - Specifies maintenance configuration id to apply to this managed instance.
+	MaintenanceConfigurationID *string `json:"maintenanceConfigurationId,omitempty"`
 	// MinimalTLSVersion - Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
 	MinimalTLSVersion *string `json:"minimalTlsVersion,omitempty"`
 }

@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// HyperVSitesClient is the client for the HyperVSites methods of the Migrate service.
+// HyperVSitesClient is the discover your workloads for Azure.
 type HyperVSitesClient struct {
 	BaseClient
 }

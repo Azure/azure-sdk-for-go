@@ -330,6 +330,23 @@ func NewAPIOperationListResultPage(getNextPage func(context.Context, APIOperatio
 	return APIOperationListResultPage{fn: getNextPage}
 }
 
+// AscOperation the status of operation.
+type AscOperation struct {
+	autorest.Response `json:"-"`
+	// ID - The operation Id.
+	ID *string `json:"id,omitempty"`
+	// Name - The operation name.
+	Name *string `json:"name,omitempty"`
+	// StartTime - The start time of the operation.
+	StartTime *string `json:"startTime,omitempty"`
+	// EndTime - The end time of the operation.
+	EndTime *string `json:"endTime,omitempty"`
+	// Status - The status of the operation.
+	Status *string `json:"status,omitempty"`
+	// Error - The error detail of the operation if any.
+	Error *ErrorResponse `json:"error,omitempty"`
+}
+
 // Cache a Cache instance. Follows Azure Resource Manager standards:
 // https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
 type Cache struct {
@@ -951,6 +968,14 @@ type CloudErrorBody struct {
 	Message *string `json:"message,omitempty"`
 	// Target - The target of the particular error. For example, the name of the property in error.
 	Target *string `json:"target,omitempty"`
+}
+
+// ErrorResponse describes the format of Error response.
+type ErrorResponse struct {
+	// Code - Error code
+	Code *string `json:"code,omitempty"`
+	// Message - Error message indicating why the operation failed.
+	Message *string `json:"message,omitempty"`
 }
 
 // KeyVaultKeyReference describes a reference to Key Vault Key.

@@ -148,6 +148,13 @@ const (
 	Internal ConnectionType = original.Internal
 )
 
+type ControlType = original.ControlType
+
+const (
+	ControlTypeBuiltIn ControlType = original.ControlTypeBuiltIn
+	ControlTypeCustom  ControlType = original.ControlTypeCustom
+)
+
 type DataSource = original.DataSource
 
 const (
@@ -198,6 +205,12 @@ const (
 	ExecutableAudit   Executable = original.ExecutableAudit
 	ExecutableEnforce Executable = original.ExecutableEnforce
 	ExecutableNone    Executable = original.ExecutableNone
+)
+
+type ExpandControlsEnum = original.ExpandControlsEnum
+
+const (
+	Definition ExpandControlsEnum = original.Definition
 )
 
 type ExpandEnum = original.ExpandEnum
@@ -263,10 +276,18 @@ const (
 type KindEnum = original.KindEnum
 
 const (
-	KindAAD                      KindEnum = original.KindAAD
-	KindATA                      KindEnum = original.KindATA
-	KindCEF                      KindEnum = original.KindCEF
-	KindExternalSecuritySolution KindEnum = original.KindExternalSecuritySolution
+	KindDataExportSettings KindEnum = original.KindDataExportSettings
+	KindSetting            KindEnum = original.KindSetting
+	KindSettingResource    KindEnum = original.KindSettingResource
+)
+
+type KindEnum1 = original.KindEnum1
+
+const (
+	KindAAD                      KindEnum1 = original.KindAAD
+	KindATA                      KindEnum1 = original.KindATA
+	KindCEF                      KindEnum1 = original.KindCEF
+	KindExternalSecuritySolution KindEnum1 = original.KindExternalSecuritySolution
 )
 
 type Msi = original.Msi
@@ -406,6 +427,14 @@ const (
 	ResourceStatusOffByPolicy   ResourceStatus = original.ResourceStatusOffByPolicy
 )
 
+type RuleState = original.RuleState
+
+const (
+	RuleStateDisabled RuleState = original.RuleStateDisabled
+	RuleStateEnabled  RuleState = original.RuleStateEnabled
+	RuleStateExpired  RuleState = original.RuleStateExpired
+)
+
 type RuleType = original.RuleType
 
 const (
@@ -442,13 +471,6 @@ const (
 	ScriptAudit   Script = original.ScriptAudit
 	ScriptEnforce Script = original.ScriptEnforce
 	ScriptNone    Script = original.ScriptNone
-)
-
-type SettingKind = original.SettingKind
-
-const (
-	SettingKindAlertSuppressionSetting SettingKind = original.SettingKindAlertSuppressionSetting
-	SettingKindDataExportSetting       SettingKind = original.SettingKindDataExportSetting
 )
 
 type Severity = original.Severity
@@ -594,6 +616,12 @@ type AlertListIterator = original.AlertListIterator
 type AlertListPage = original.AlertListPage
 type AlertProperties = original.AlertProperties
 type AlertsClient = original.AlertsClient
+type AlertsSuppressionRule = original.AlertsSuppressionRule
+type AlertsSuppressionRuleProperties = original.AlertsSuppressionRuleProperties
+type AlertsSuppressionRulesClient = original.AlertsSuppressionRulesClient
+type AlertsSuppressionRulesList = original.AlertsSuppressionRulesList
+type AlertsSuppressionRulesListIterator = original.AlertsSuppressionRulesListIterator
+type AlertsSuppressionRulesListPage = original.AlertsSuppressionRulesListPage
 type AllowedConnectionsClient = original.AllowedConnectionsClient
 type AllowedConnectionsList = original.AllowedConnectionsList
 type AllowedConnectionsListIterator = original.AllowedConnectionsListIterator
@@ -652,6 +680,7 @@ type AutomationTriggeringRule = original.AutomationTriggeringRule
 type AutomationValidationStatus = original.AutomationValidationStatus
 type AutomationsClient = original.AutomationsClient
 type AzureResourceDetails = original.AzureResourceDetails
+type AzureResourceLink = original.AzureResourceLink
 type BaseClient = original.BaseClient
 type BasicAdditionalData = original.BasicAdditionalData
 type BasicAllowlistCustomAlertRule = original.BasicAllowlistCustomAlertRule
@@ -660,6 +689,8 @@ type BasicCustomAlertRule = original.BasicCustomAlertRule
 type BasicExternalSecuritySolution = original.BasicExternalSecuritySolution
 type BasicListCustomAlertRule = original.BasicListCustomAlertRule
 type BasicResourceDetails = original.BasicResourceDetails
+type BasicSetting = original.BasicSetting
+type BasicSettingResource = original.BasicSettingResource
 type BasicThresholdCustomAlertRule = original.BasicThresholdCustomAlertRule
 type BasicTimeWindowCustomAlertRule = original.BasicTimeWindowCustomAlertRule
 type CVE = original.CVE
@@ -693,8 +724,8 @@ type ContactProperties = original.ContactProperties
 type ContactsClient = original.ContactsClient
 type ContainerRegistryVulnerabilityProperties = original.ContainerRegistryVulnerabilityProperties
 type CustomAlertRule = original.CustomAlertRule
-type DataExportSetting = original.DataExportSetting
 type DataExportSettingProperties = original.DataExportSettingProperties
+type DataExportSettings = original.DataExportSettings
 type DenylistCustomAlertRule = original.DenylistCustomAlertRule
 type DeviceSecurityGroup = original.DeviceSecurityGroup
 type DeviceSecurityGroupList = original.DeviceSecurityGroupList
@@ -821,6 +852,28 @@ type Resource = original.Resource
 type ResourceDetails = original.ResourceDetails
 type Rule = original.Rule
 type SQLServerVulnerabilityProperties = original.SQLServerVulnerabilityProperties
+type ScopeElement = original.ScopeElement
+type ScoreDetails = original.ScoreDetails
+type SecureScoreControlDefinitionItem = original.SecureScoreControlDefinitionItem
+type SecureScoreControlDefinitionItemProperties = original.SecureScoreControlDefinitionItemProperties
+type SecureScoreControlDefinitionList = original.SecureScoreControlDefinitionList
+type SecureScoreControlDefinitionListIterator = original.SecureScoreControlDefinitionListIterator
+type SecureScoreControlDefinitionListPage = original.SecureScoreControlDefinitionListPage
+type SecureScoreControlDefinitionSource = original.SecureScoreControlDefinitionSource
+type SecureScoreControlDefinitionsClient = original.SecureScoreControlDefinitionsClient
+type SecureScoreControlDetails = original.SecureScoreControlDetails
+type SecureScoreControlList = original.SecureScoreControlList
+type SecureScoreControlListIterator = original.SecureScoreControlListIterator
+type SecureScoreControlListPage = original.SecureScoreControlListPage
+type SecureScoreControlScore = original.SecureScoreControlScore
+type SecureScoreControlScoreDetails = original.SecureScoreControlScoreDetails
+type SecureScoreControlsClient = original.SecureScoreControlsClient
+type SecureScoreItem = original.SecureScoreItem
+type SecureScoreItemProperties = original.SecureScoreItemProperties
+type SecureScoresClient = original.SecureScoresClient
+type SecureScoresList = original.SecureScoresList
+type SecureScoresListIterator = original.SecureScoresListIterator
+type SecureScoresListPage = original.SecureScoresListPage
 type SensitivityLabel = original.SensitivityLabel
 type ServerVulnerabilityAssessment = original.ServerVulnerabilityAssessment
 type ServerVulnerabilityAssessmentClient = original.ServerVulnerabilityAssessmentClient
@@ -840,6 +893,7 @@ type SubAssessmentListPage = original.SubAssessmentListPage
 type SubAssessmentProperties = original.SubAssessmentProperties
 type SubAssessmentStatus = original.SubAssessmentStatus
 type SubAssessmentsClient = original.SubAssessmentsClient
+type SuppressionAlertsScope = original.SuppressionAlertsScope
 type Tags = original.Tags
 type TagsResource = original.TagsResource
 type Task = original.Task
@@ -914,6 +968,18 @@ func NewAlertsClient(subscriptionID string, ascLocation string) AlertsClient {
 }
 func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AlertsClient {
 	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAlertsSuppressionRulesClient(subscriptionID string, ascLocation string) AlertsSuppressionRulesClient {
+	return original.NewAlertsSuppressionRulesClient(subscriptionID, ascLocation)
+}
+func NewAlertsSuppressionRulesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AlertsSuppressionRulesClient {
+	return original.NewAlertsSuppressionRulesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAlertsSuppressionRulesListIterator(page AlertsSuppressionRulesListPage) AlertsSuppressionRulesListIterator {
+	return original.NewAlertsSuppressionRulesListIterator(page)
+}
+func NewAlertsSuppressionRulesListPage(getNextPage func(context.Context, AlertsSuppressionRulesList) (AlertsSuppressionRulesList, error)) AlertsSuppressionRulesListPage {
+	return original.NewAlertsSuppressionRulesListPage(getNextPage)
 }
 func NewAllowedConnectionsClient(subscriptionID string, ascLocation string) AllowedConnectionsClient {
 	return original.NewAllowedConnectionsClient(subscriptionID, ascLocation)
@@ -1179,6 +1245,42 @@ func NewRegulatoryComplianceStandardsClient(subscriptionID string, ascLocation s
 func NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) RegulatoryComplianceStandardsClient {
 	return original.NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
+func NewSecureScoreControlDefinitionListIterator(page SecureScoreControlDefinitionListPage) SecureScoreControlDefinitionListIterator {
+	return original.NewSecureScoreControlDefinitionListIterator(page)
+}
+func NewSecureScoreControlDefinitionListPage(getNextPage func(context.Context, SecureScoreControlDefinitionList) (SecureScoreControlDefinitionList, error)) SecureScoreControlDefinitionListPage {
+	return original.NewSecureScoreControlDefinitionListPage(getNextPage)
+}
+func NewSecureScoreControlDefinitionsClient(subscriptionID string, ascLocation string) SecureScoreControlDefinitionsClient {
+	return original.NewSecureScoreControlDefinitionsClient(subscriptionID, ascLocation)
+}
+func NewSecureScoreControlDefinitionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SecureScoreControlDefinitionsClient {
+	return original.NewSecureScoreControlDefinitionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewSecureScoreControlListIterator(page SecureScoreControlListPage) SecureScoreControlListIterator {
+	return original.NewSecureScoreControlListIterator(page)
+}
+func NewSecureScoreControlListPage(getNextPage func(context.Context, SecureScoreControlList) (SecureScoreControlList, error)) SecureScoreControlListPage {
+	return original.NewSecureScoreControlListPage(getNextPage)
+}
+func NewSecureScoreControlsClient(subscriptionID string, ascLocation string) SecureScoreControlsClient {
+	return original.NewSecureScoreControlsClient(subscriptionID, ascLocation)
+}
+func NewSecureScoreControlsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SecureScoreControlsClient {
+	return original.NewSecureScoreControlsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewSecureScoresClient(subscriptionID string, ascLocation string) SecureScoresClient {
+	return original.NewSecureScoresClient(subscriptionID, ascLocation)
+}
+func NewSecureScoresClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SecureScoresClient {
+	return original.NewSecureScoresClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewSecureScoresListIterator(page SecureScoresListPage) SecureScoresListIterator {
+	return original.NewSecureScoresListIterator(page)
+}
+func NewSecureScoresListPage(getNextPage func(context.Context, SecureScoresList) (SecureScoresList, error)) SecureScoresListPage {
+	return original.NewSecureScoresListPage(getNextPage)
+}
 func NewServerVulnerabilityAssessmentClient(subscriptionID string, ascLocation string) ServerVulnerabilityAssessmentClient {
 	return original.NewServerVulnerabilityAssessmentClient(subscriptionID, ascLocation)
 }
@@ -1290,6 +1392,9 @@ func PossibleConfigurationStatusValues() []ConfigurationStatus {
 func PossibleConnectionTypeValues() []ConnectionType {
 	return original.PossibleConnectionTypeValues()
 }
+func PossibleControlTypeValues() []ControlType {
+	return original.PossibleControlTypeValues()
+}
 func PossibleDataSourceValues() []DataSource {
 	return original.PossibleDataSourceValues()
 }
@@ -1311,6 +1416,9 @@ func PossibleExeValues() []Exe {
 func PossibleExecutableValues() []Executable {
 	return original.PossibleExecutableValues()
 }
+func PossibleExpandControlsEnumValues() []ExpandControlsEnum {
+	return original.PossibleExpandControlsEnumValues()
+}
 func PossibleExpandEnumValues() []ExpandEnum {
 	return original.PossibleExpandEnumValues()
 }
@@ -1331,6 +1439,9 @@ func PossibleImplementationEffortValues() []ImplementationEffort {
 }
 func PossibleIssueValues() []Issue {
 	return original.PossibleIssueValues()
+}
+func PossibleKindEnum1Values() []KindEnum1 {
+	return original.PossibleKindEnum1Values()
 }
 func PossibleKindEnumValues() []KindEnum {
 	return original.PossibleKindEnumValues()
@@ -1377,14 +1488,14 @@ func PossibleReportedSeverityValues() []ReportedSeverity {
 func PossibleResourceStatusValues() []ResourceStatus {
 	return original.PossibleResourceStatusValues()
 }
+func PossibleRuleStateValues() []RuleState {
+	return original.PossibleRuleStateValues()
+}
 func PossibleRuleTypeValues() []RuleType {
 	return original.PossibleRuleTypeValues()
 }
 func PossibleScriptValues() []Script {
 	return original.PossibleScriptValues()
-}
-func PossibleSettingKindValues() []SettingKind {
-	return original.PossibleSettingKindValues()
 }
 func PossibleSeverityValues() []Severity {
 	return original.PossibleSeverityValues()

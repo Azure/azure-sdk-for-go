@@ -71,7 +71,9 @@ func (client ApplicationsClient) CreateOrUpdate(ctx context.Context, resourceGro
 				{Target: "applicationGroupName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: applicationName,
 			Constraints: []validation.Constraint{{Target: "applicationName", Name: validation.MaxLength, Rule: 24, Chain: nil},
-				{Target: "applicationName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+				{Target: "applicationName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: application,
+			Constraints: []validation.Constraint{{Target: "application.ApplicationProperties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("desktopvirtualization.ApplicationsClient", "CreateOrUpdate", err.Error())
 	}
 

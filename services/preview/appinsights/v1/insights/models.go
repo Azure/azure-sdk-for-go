@@ -2095,12 +2095,112 @@ func (erd EventsResultData) AsBasicEventsResultData() (BasicEventsResultData, bo
 
 // EventsResultDataCustomDimensions custom dimensions of the event
 type EventsResultDataCustomDimensions struct {
-	AdditionalProperties interface{} `json:"additionalProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties  map[string]interface{} `json:""`
+	AdditionalProperties1 interface{}            `json:"additionalProperties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EventsResultDataCustomDimensions.
+func (erdD EventsResultDataCustomDimensions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if erdD.AdditionalProperties1 != nil {
+		objectMap["additionalProperties"] = erdD.AdditionalProperties1
+	}
+	for k, v := range erdD.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for EventsResultDataCustomDimensions struct.
+func (erdD *EventsResultDataCustomDimensions) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if erdD.AdditionalProperties == nil {
+					erdD.AdditionalProperties = make(map[string]interface{})
+				}
+				erdD.AdditionalProperties[k] = additionalProperties
+			}
+		case "additionalProperties":
+			if v != nil {
+				var additionalProperties1 interface{}
+				err = json.Unmarshal(*v, &additionalProperties1)
+				if err != nil {
+					return err
+				}
+				erdD.AdditionalProperties1 = additionalProperties1
+			}
+		}
+	}
+
+	return nil
 }
 
 // EventsResultDataCustomMeasurements custom measurements of the event
 type EventsResultDataCustomMeasurements struct {
-	AdditionalProperties interface{} `json:"additionalProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties  map[string]interface{} `json:""`
+	AdditionalProperties1 interface{}            `json:"additionalProperties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EventsResultDataCustomMeasurements.
+func (erdM EventsResultDataCustomMeasurements) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if erdM.AdditionalProperties1 != nil {
+		objectMap["additionalProperties"] = erdM.AdditionalProperties1
+	}
+	for k, v := range erdM.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for EventsResultDataCustomMeasurements struct.
+func (erdM *EventsResultDataCustomMeasurements) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if erdM.AdditionalProperties == nil {
+					erdM.AdditionalProperties = make(map[string]interface{})
+				}
+				erdM.AdditionalProperties[k] = additionalProperties
+			}
+		case "additionalProperties":
+			if v != nil {
+				var additionalProperties1 interface{}
+				err = json.Unmarshal(*v, &additionalProperties1)
+				if err != nil {
+					return err
+				}
+				erdM.AdditionalProperties1 = additionalProperties1
+			}
+		}
+	}
+
+	return nil
 }
 
 // EventsResults an events query result.

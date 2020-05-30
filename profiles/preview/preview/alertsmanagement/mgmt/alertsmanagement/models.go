@@ -39,8 +39,14 @@ const (
 type AlertModificationEvent = original.AlertModificationEvent
 
 const (
+	ActionRuleSuppressed   AlertModificationEvent = original.ActionRuleSuppressed
+	ActionRuleTriggered    AlertModificationEvent = original.ActionRuleTriggered
+	ActionsFailed          AlertModificationEvent = original.ActionsFailed
+	ActionsSuppressed      AlertModificationEvent = original.ActionsSuppressed
+	ActionsTriggered       AlertModificationEvent = original.ActionsTriggered
 	AlertCreated           AlertModificationEvent = original.AlertCreated
 	MonitorConditionChange AlertModificationEvent = original.MonitorConditionChange
+	SeverityChange         AlertModificationEvent = original.SeverityChange
 	StateChange            AlertModificationEvent = original.StateChange
 )
 
@@ -125,6 +131,7 @@ type ScopeType = original.ScopeType
 const (
 	ScopeTypeResource      ScopeType = original.ScopeTypeResource
 	ScopeTypeResourceGroup ScopeType = original.ScopeTypeResourceGroup
+	ScopeTypeSubscription  ScopeType = original.ScopeTypeSubscription
 )
 
 type Severity = original.Severity

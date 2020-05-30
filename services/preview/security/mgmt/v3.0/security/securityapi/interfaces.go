@@ -45,14 +45,14 @@ var _ PricingsClientAPI = (*security.PricingsClient)(nil)
 type AlertsClientAPI interface {
 	GetResourceGroupLevelAlerts(ctx context.Context, alertName string, resourceGroupName string) (result security.Alert, err error)
 	GetSubscriptionLevelAlert(ctx context.Context, alertName string) (result security.Alert, err error)
-	List(ctx context.Context, filter string, selectParameter string, expand string) (result security.AlertListPage, err error)
-	ListComplete(ctx context.Context, filter string, selectParameter string, expand string) (result security.AlertListIterator, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string) (result security.AlertListPage, err error)
-	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string) (result security.AlertListIterator, err error)
-	ListResourceGroupLevelAlertsByRegion(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string) (result security.AlertListPage, err error)
-	ListResourceGroupLevelAlertsByRegionComplete(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string) (result security.AlertListIterator, err error)
-	ListSubscriptionLevelAlertsByRegion(ctx context.Context, filter string, selectParameter string, expand string) (result security.AlertListPage, err error)
-	ListSubscriptionLevelAlertsByRegionComplete(ctx context.Context, filter string, selectParameter string, expand string) (result security.AlertListIterator, err error)
+	List(ctx context.Context, filter string, selectParameter string, expand string, autoDismissRuleName string) (result security.AlertListPage, err error)
+	ListComplete(ctx context.Context, filter string, selectParameter string, expand string, autoDismissRuleName string) (result security.AlertListIterator, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string, autoDismissRuleName string) (result security.AlertListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string, autoDismissRuleName string) (result security.AlertListIterator, err error)
+	ListResourceGroupLevelAlertsByRegion(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string, autoDismissRuleName string) (result security.AlertListPage, err error)
+	ListResourceGroupLevelAlertsByRegionComplete(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string, autoDismissRuleName string) (result security.AlertListIterator, err error)
+	ListSubscriptionLevelAlertsByRegion(ctx context.Context, filter string, selectParameter string, expand string, autoDismissRuleName string) (result security.AlertListPage, err error)
+	ListSubscriptionLevelAlertsByRegionComplete(ctx context.Context, filter string, selectParameter string, expand string, autoDismissRuleName string) (result security.AlertListIterator, err error)
 	UpdateResourceGroupLevelAlertStateToDismiss(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error)
 	UpdateResourceGroupLevelAlertStateToReactivate(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error)
 	UpdateSubscriptionLevelAlertStateToDismiss(ctx context.Context, alertName string) (result autorest.Response, err error)
@@ -66,7 +66,7 @@ type SettingsClientAPI interface {
 	Get(ctx context.Context, settingName string) (result security.Setting, err error)
 	List(ctx context.Context) (result security.SettingsListPage, err error)
 	ListComplete(ctx context.Context) (result security.SettingsListIterator, err error)
-	Update(ctx context.Context, settingName string, setting security.Setting) (result security.Setting, err error)
+	Update(ctx context.Context, settingName string, setting security.BasicSetting) (result security.Setting, err error)
 }
 
 var _ SettingsClientAPI = (*security.SettingsClient)(nil)
@@ -130,28 +130,6 @@ type IotSecuritySolutionsAnalyticsRecommendationClientAPI interface {
 }
 
 var _ IotSecuritySolutionsAnalyticsRecommendationClientAPI = (*security.IotSecuritySolutionsAnalyticsRecommendationClient)(nil)
-
-// DiscoveredSecuritySolutionsClientAPI contains the set of methods on the DiscoveredSecuritySolutionsClient type.
-type DiscoveredSecuritySolutionsClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, discoveredSecuritySolutionName string) (result security.DiscoveredSecuritySolution, err error)
-	List(ctx context.Context) (result security.DiscoveredSecuritySolutionListPage, err error)
-	ListComplete(ctx context.Context) (result security.DiscoveredSecuritySolutionListIterator, err error)
-	ListByHomeRegion(ctx context.Context) (result security.DiscoveredSecuritySolutionListPage, err error)
-	ListByHomeRegionComplete(ctx context.Context) (result security.DiscoveredSecuritySolutionListIterator, err error)
-}
-
-var _ DiscoveredSecuritySolutionsClientAPI = (*security.DiscoveredSecuritySolutionsClient)(nil)
-
-// ExternalSecuritySolutionsClientAPI contains the set of methods on the ExternalSecuritySolutionsClient type.
-type ExternalSecuritySolutionsClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, externalSecuritySolutionsName string) (result security.ExternalSecuritySolutionModel, err error)
-	List(ctx context.Context) (result security.ExternalSecuritySolutionListPage, err error)
-	ListComplete(ctx context.Context) (result security.ExternalSecuritySolutionListIterator, err error)
-	ListByHomeRegion(ctx context.Context) (result security.ExternalSecuritySolutionListPage, err error)
-	ListByHomeRegionComplete(ctx context.Context) (result security.ExternalSecuritySolutionListIterator, err error)
-}
-
-var _ ExternalSecuritySolutionsClientAPI = (*security.ExternalSecuritySolutionsClient)(nil)
 
 // LocationsClientAPI contains the set of methods on the LocationsClient type.
 type LocationsClientAPI interface {
@@ -266,16 +244,6 @@ type RegulatoryComplianceAssessmentsClientAPI interface {
 
 var _ RegulatoryComplianceAssessmentsClientAPI = (*security.RegulatoryComplianceAssessmentsClient)(nil)
 
-// ServerVulnerabilityAssessmentClientAPI contains the set of methods on the ServerVulnerabilityAssessmentClient type.
-type ServerVulnerabilityAssessmentClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.ServerVulnerabilityAssessment, err error)
-	Delete(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.ServerVulnerabilityAssessment, err error)
-	ListByExtendedResource(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.ServerVulnerabilityAssessmentsList, err error)
-}
-
-var _ ServerVulnerabilityAssessmentClientAPI = (*security.ServerVulnerabilityAssessmentClient)(nil)
-
 // SubAssessmentsClientAPI contains the set of methods on the SubAssessmentsClient type.
 type SubAssessmentsClientAPI interface {
 	Get(ctx context.Context, scope string, assessmentName string, subAssessmentName string) (result security.SubAssessment, err error)
@@ -300,6 +268,27 @@ type AutomationsClientAPI interface {
 }
 
 var _ AutomationsClientAPI = (*security.AutomationsClient)(nil)
+
+// AlertsSuppressionRulesClientAPI contains the set of methods on the AlertsSuppressionRulesClient type.
+type AlertsSuppressionRulesClientAPI interface {
+	Delete(ctx context.Context, alertsSuppressionRuleName string) (result autorest.Response, err error)
+	Get(ctx context.Context, alertsSuppressionRuleName string) (result security.AlertsSuppressionRule, err error)
+	List(ctx context.Context, alertType string) (result security.AlertsSuppressionRulesListPage, err error)
+	ListComplete(ctx context.Context, alertType string) (result security.AlertsSuppressionRulesListIterator, err error)
+	Update(ctx context.Context, alertsSuppressionRuleName string, alertsSuppressionRule security.AlertsSuppressionRule) (result security.AlertsSuppressionRule, err error)
+}
+
+var _ AlertsSuppressionRulesClientAPI = (*security.AlertsSuppressionRulesClient)(nil)
+
+// ServerVulnerabilityAssessmentClientAPI contains the set of methods on the ServerVulnerabilityAssessmentClient type.
+type ServerVulnerabilityAssessmentClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.ServerVulnerabilityAssessment, err error)
+	Delete(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.ServerVulnerabilityAssessment, err error)
+	ListByExtendedResource(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.ServerVulnerabilityAssessmentsList, err error)
+}
+
+var _ ServerVulnerabilityAssessmentClientAPI = (*security.ServerVulnerabilityAssessmentClient)(nil)
 
 // AssessmentsMetadataClientAPI contains the set of methods on the AssessmentsMetadataClient type.
 type AssessmentsMetadataClientAPI interface {
@@ -385,3 +374,54 @@ type JitNetworkAccessPoliciesClientAPI interface {
 }
 
 var _ JitNetworkAccessPoliciesClientAPI = (*security.JitNetworkAccessPoliciesClient)(nil)
+
+// DiscoveredSecuritySolutionsClientAPI contains the set of methods on the DiscoveredSecuritySolutionsClient type.
+type DiscoveredSecuritySolutionsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, discoveredSecuritySolutionName string) (result security.DiscoveredSecuritySolution, err error)
+	List(ctx context.Context) (result security.DiscoveredSecuritySolutionListPage, err error)
+	ListComplete(ctx context.Context) (result security.DiscoveredSecuritySolutionListIterator, err error)
+	ListByHomeRegion(ctx context.Context) (result security.DiscoveredSecuritySolutionListPage, err error)
+	ListByHomeRegionComplete(ctx context.Context) (result security.DiscoveredSecuritySolutionListIterator, err error)
+}
+
+var _ DiscoveredSecuritySolutionsClientAPI = (*security.DiscoveredSecuritySolutionsClient)(nil)
+
+// ExternalSecuritySolutionsClientAPI contains the set of methods on the ExternalSecuritySolutionsClient type.
+type ExternalSecuritySolutionsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, externalSecuritySolutionsName string) (result security.ExternalSecuritySolutionModel, err error)
+	List(ctx context.Context) (result security.ExternalSecuritySolutionListPage, err error)
+	ListComplete(ctx context.Context) (result security.ExternalSecuritySolutionListIterator, err error)
+	ListByHomeRegion(ctx context.Context) (result security.ExternalSecuritySolutionListPage, err error)
+	ListByHomeRegionComplete(ctx context.Context) (result security.ExternalSecuritySolutionListIterator, err error)
+}
+
+var _ ExternalSecuritySolutionsClientAPI = (*security.ExternalSecuritySolutionsClient)(nil)
+
+// SecureScoresClientAPI contains the set of methods on the SecureScoresClient type.
+type SecureScoresClientAPI interface {
+	Get(ctx context.Context, secureScoreName string) (result security.SecureScoreItem, err error)
+	List(ctx context.Context) (result security.SecureScoresListPage, err error)
+	ListComplete(ctx context.Context) (result security.SecureScoresListIterator, err error)
+}
+
+var _ SecureScoresClientAPI = (*security.SecureScoresClient)(nil)
+
+// SecureScoreControlsClientAPI contains the set of methods on the SecureScoreControlsClient type.
+type SecureScoreControlsClientAPI interface {
+	List(ctx context.Context, expand security.ExpandControlsEnum) (result security.SecureScoreControlListPage, err error)
+	ListComplete(ctx context.Context, expand security.ExpandControlsEnum) (result security.SecureScoreControlListIterator, err error)
+	ListBySecureScore(ctx context.Context, secureScoreName string, expand security.ExpandControlsEnum) (result security.SecureScoreControlListPage, err error)
+	ListBySecureScoreComplete(ctx context.Context, secureScoreName string, expand security.ExpandControlsEnum) (result security.SecureScoreControlListIterator, err error)
+}
+
+var _ SecureScoreControlsClientAPI = (*security.SecureScoreControlsClient)(nil)
+
+// SecureScoreControlDefinitionsClientAPI contains the set of methods on the SecureScoreControlDefinitionsClient type.
+type SecureScoreControlDefinitionsClientAPI interface {
+	List(ctx context.Context) (result security.SecureScoreControlDefinitionListPage, err error)
+	ListComplete(ctx context.Context) (result security.SecureScoreControlDefinitionListIterator, err error)
+	ListBySubscription(ctx context.Context) (result security.SecureScoreControlDefinitionListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result security.SecureScoreControlDefinitionListIterator, err error)
+}
+
+var _ SecureScoreControlDefinitionsClientAPI = (*security.SecureScoreControlDefinitionsClient)(nil)

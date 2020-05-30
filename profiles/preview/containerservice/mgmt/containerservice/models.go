@@ -22,7 +22,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-03-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-04-01/containerservice"
 )
 
 const (
@@ -177,7 +177,6 @@ const (
 type ScaleSetPriority = original.ScaleSetPriority
 
 const (
-	Low     ScaleSetPriority = original.Low
 	Regular ScaleSetPriority = original.Regular
 	Spot    ScaleSetPriority = original.Spot
 )
@@ -380,6 +379,7 @@ type AgentPoolProfile = original.AgentPoolProfile
 type AgentPoolUpgradeProfile = original.AgentPoolUpgradeProfile
 type AgentPoolUpgradeProfileProperties = original.AgentPoolUpgradeProfileProperties
 type AgentPoolUpgradeProfilePropertiesUpgradesItem = original.AgentPoolUpgradeProfilePropertiesUpgradesItem
+type AgentPoolUpgradeSettings = original.AgentPoolUpgradeSettings
 type AgentPoolsClient = original.AgentPoolsClient
 type AgentPoolsCreateOrUpdateFuture = original.AgentPoolsCreateOrUpdateFuture
 type AgentPoolsDeleteFuture = original.AgentPoolsDeleteFuture

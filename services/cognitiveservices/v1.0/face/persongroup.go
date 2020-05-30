@@ -39,29 +39,30 @@ func NewPersonGroupClient(endpoint string) PersonGroupClient {
 // Create create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
 // <br /> A person group is the container of the uploaded person data, including face recognition features.
 // <br /> After creation, use [PersonGroup Person -
-// Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group,
-// and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to
-// get this group ready for [Face -
-// Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+// Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/create) to add persons into the
+// group, and then call [PersonGroup -
+// Train](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/train) to get this group ready for
+// [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
 // <br /> No image will be stored. Only the person's extracted face features and userData will be stored on server
-// until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or
-// [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+// until [PersonGroup Person -
+// Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup -
+// Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
 // <br/>'recognitionModel' should be specified to associate with this person group. The default value for
 // 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in
 // this parameter. New faces that are added to an existing person group will use the recognition model that's already
 // associated with the collection. Existing face features in a person group can't be updated to features extracted by
 // another version of recognition model.
 // * 'recognition_01': The default recognition model for [PersonGroup -
-// Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244). All those person groups
+// Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/create). All those person groups
 // created before 2019 March are bonded with this recognition model.
-// * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall
+// * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall
 // accuracy is improved compared with 'recognition_01'.
 //
 // Person group quota:
 // * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
 // * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
 // * to handle larger scale face identification problem, please consider using
-// [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
+// [LargePersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup).
 // Parameters:
 // personGroupID - id referencing a particular person group.
 // body - request body for creating new person group.
@@ -220,7 +221,7 @@ func (client PersonGroupClient) DeleteResponder(resp *http.Response) (result aut
 }
 
 // Get retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use
-// [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
+// [PersonGroup Person - List](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/list).
 // Parameters:
 // personGroupID - id referencing a particular person group.
 // returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in

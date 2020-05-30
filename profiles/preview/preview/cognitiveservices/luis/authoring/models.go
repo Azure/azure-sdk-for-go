@@ -370,7 +370,6 @@ type PatternRule = original.PatternRule
 type PatternRuleCreateObject = original.PatternRuleCreateObject
 type PatternRuleInfo = original.PatternRuleInfo
 type PatternRuleUpdateObject = original.PatternRuleUpdateObject
-type PermissionsClient = original.PermissionsClient
 type PersonalAssistantsResponse = original.PersonalAssistantsResponse
 type PhraseListFeatureInfo = original.PhraseListFeatureInfo
 type PhraselistCreateObject = original.PhraselistCreateObject
@@ -426,9 +425,6 @@ func NewModelClient(endpoint string) ModelClient {
 }
 func NewPatternClient(endpoint string) PatternClient {
 	return original.NewPatternClient(endpoint)
-}
-func NewPermissionsClient(endpoint string) PermissionsClient {
-	return original.NewPermissionsClient(endpoint)
 }
 func NewSettingsClient(endpoint string) SettingsClient {
 	return original.NewSettingsClient(endpoint)

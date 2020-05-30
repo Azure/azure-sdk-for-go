@@ -811,7 +811,8 @@ type EntityLabel struct {
 	// Role - The role of the predicted entity.
 	Role *string `json:"role,omitempty"`
 	// RoleID - The role id for the predicted entity.
-	RoleID *uuid.UUID `json:"roleId,omitempty"`
+	RoleID   *uuid.UUID     `json:"roleId,omitempty"`
+	Children *[]EntityLabel `json:"children,omitempty"`
 }
 
 // EntityLabelObject defines the entity type and position of the extracted entity within the example.
@@ -824,6 +825,8 @@ type EntityLabelObject struct {
 	EndCharIndex *int32 `json:"endCharIndex,omitempty"`
 	// Role - The role the entity plays in the utterance.
 	Role *string `json:"role,omitempty"`
+	// Children - The identified entities within the example utterance.
+	Children *[]EntityLabelObject `json:"children,omitempty"`
 }
 
 // EntityModelCreateObject an entity extractor create object.
@@ -864,7 +867,8 @@ type EntityPrediction struct {
 	// EndTokenIndex - The index within the utterance where the extracted entity ends.
 	EndTokenIndex *int32 `json:"endTokenIndex,omitempty"`
 	// Phrase - The actual token(s) that comprise the entity.
-	Phrase *string `json:"phrase,omitempty"`
+	Phrase   *string             `json:"phrase,omitempty"`
+	Children *[]EntityPrediction `json:"children,omitempty"`
 }
 
 // EntityRole entity extractor role
@@ -1114,7 +1118,8 @@ type JSONEntity struct {
 	// Entity - The entity name.
 	Entity *string `json:"entity,omitempty"`
 	// Role - The role the entity plays in the utterance.
-	Role *string `json:"role,omitempty"`
+	Role     *string       `json:"role,omitempty"`
+	Children *[]JSONEntity `json:"children,omitempty"`
 }
 
 // JSONModelFeature exported Model - Phraselist Model Feature.
@@ -1927,6 +1932,7 @@ type ModelFeatureInformation struct {
 	ModelName *string `json:"modelName,omitempty"`
 	// FeatureName - The name of the feature used.
 	FeatureName *string `json:"featureName,omitempty"`
+	IsRequired  *bool   `json:"isRequired,omitempty"`
 }
 
 // ModelInfo base type used in entity types.
@@ -2382,7 +2388,6 @@ type TaskUpdateObject struct {
 
 // UserAccessList list of user permissions.
 type UserAccessList struct {
-	autorest.Response `json:"-"`
 	// Owner - The email address of owner of the application.
 	Owner  *string   `json:"owner,omitempty"`
 	Emails *[]string `json:"emails,omitempty"`

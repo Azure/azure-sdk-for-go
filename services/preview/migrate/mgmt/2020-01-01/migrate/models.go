@@ -1471,6 +1471,174 @@ type OperatingSystemConfiguration struct {
 	Bitness Bitness `json:"bitness,omitempty"`
 }
 
+// Operation a REST API operation supported by the provider.
+type Operation struct {
+	// Name - READ-ONLY; Name of the operation.
+	Name *string `json:"name,omitempty"`
+	// Display - Displayable properties of the operation.
+	Display *OperationDisplay `json:"display,omitempty"`
+	// Origin - READ-ONLY; Origin of the operation.
+	Origin *string `json:"origin,omitempty"`
+}
+
+// OperationDisplay displayable properties of the operation.
+type OperationDisplay struct {
+	// Provider - READ-ONLY; Provider of the operation.
+	Provider *string `json:"provider,omitempty"`
+	// Resource - READ-ONLY; Resource operated on by the operation.
+	Resource *string `json:"resource,omitempty"`
+	// Operation - READ-ONLY; Operation Type.
+	Operation *string `json:"operation,omitempty"`
+	// Description - READ-ONLY; Description of the operation.
+	Description *string `json:"description,omitempty"`
+}
+
+// OperationResultList list of API operations.
+type OperationResultList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of operations.
+	Value *[]Operation `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Value of next link.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// OperationResultListIterator provides access to a complete listing of Operation values.
+type OperationResultListIterator struct {
+	i    int
+	page OperationResultListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *OperationResultListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationResultListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OperationResultListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter OperationResultListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter OperationResultListIterator) Response() OperationResultList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter OperationResultListIterator) Value() Operation {
+	if !iter.page.NotDone() {
+		return Operation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the OperationResultListIterator type.
+func NewOperationResultListIterator(page OperationResultListPage) OperationResultListIterator {
+	return OperationResultListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (orl OperationResultList) IsEmpty() bool {
+	return orl.Value == nil || len(*orl.Value) == 0
+}
+
+// operationResultListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (orl OperationResultList) operationResultListPreparer(ctx context.Context) (*http.Request, error) {
+	if orl.NextLink == nil || len(to.String(orl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(orl.NextLink)))
+}
+
+// OperationResultListPage contains a page of Operation values.
+type OperationResultListPage struct {
+	fn  func(context.Context, OperationResultList) (OperationResultList, error)
+	orl OperationResultList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *OperationResultListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationResultListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.orl)
+	if err != nil {
+		return err
+	}
+	page.orl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OperationResultListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page OperationResultListPage) NotDone() bool {
+	return !page.orl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page OperationResultListPage) Response() OperationResultList {
+	return page.orl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page OperationResultListPage) Values() []Operation {
+	if page.orl.IsEmpty() {
+		return nil
+	}
+	return *page.orl.Value
+}
+
+// Creates a new instance of the OperationResultListPage type.
+func NewOperationResultListPage(getNextPage func(context.Context, OperationResultList) (OperationResultList, error)) OperationResultListPage {
+	return OperationResultListPage{fn: getNextPage}
+}
+
 // OperationStatus operation status REST resource.
 type OperationStatus struct {
 	autorest.Response `json:"-"`

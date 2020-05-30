@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// HyperVJobsClient is the client for the HyperVJobs methods of the Migrate service.
+// HyperVJobsClient is the discover your workloads for Azure.
 type HyperVJobsClient struct {
 	BaseClient
 }

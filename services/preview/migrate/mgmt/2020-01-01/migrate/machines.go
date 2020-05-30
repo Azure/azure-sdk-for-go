@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// MachinesClient is the client for the Machines methods of the Migrate service.
+// MachinesClient is the discover your workloads for Azure.
 type MachinesClient struct {
 	BaseClient
 }

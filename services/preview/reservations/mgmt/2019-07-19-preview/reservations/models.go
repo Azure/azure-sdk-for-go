@@ -287,6 +287,12 @@ func PossibleStatusCodeValues() []StatusCode {
 	return []StatusCode{StatusCodeActive, StatusCodeExpired, StatusCodeMerged, StatusCodeNone, StatusCodePaymentInstrumentError, StatusCodePending, StatusCodePurchaseError, StatusCodeSplit, StatusCodeSucceeded}
 }
 
+// Actions the actions for auto quota increase.
+type Actions struct {
+	// EmailActions - The email actions for auto quota increase.
+	EmailActions *EmailActions `json:"emailActions,omitempty"`
+}
+
 // AppliedReservationList ...
 type AppliedReservationList struct {
 	Value *[]string `json:"value,omitempty"`
@@ -455,9 +461,9 @@ type AutoQuotaIncreaseSettings struct {
 	// Settings - Settings for automatic quota increase.
 	Settings *AqiSettings `json:"settings,omitempty"`
 	// OnFailure - The on failure Actions.
-	OnFailure *OnFailure `json:"onFailure,omitempty"`
+	OnFailure *Actions `json:"onFailure,omitempty"`
 	// OnSuccess - The on success Actions.
-	OnSuccess *OnFailure `json:"onSuccess,omitempty"`
+	OnSuccess *Actions `json:"onSuccess,omitempty"`
 	// SupportTicketAction - The support ticket action.
 	SupportTicketAction *SupportRequestAction `json:"supportTicketAction,omitempty"`
 }
@@ -600,8 +606,8 @@ type EmailAction struct {
 
 // EmailActions the email actions.
 type EmailActions struct {
-	// Value - The list of email actions based on the success or failure of automatic quota increase action.
-	Value *[]EmailAction `json:"value,omitempty"`
+	// EmailAddresses - The list of email actions.
+	EmailAddresses *[]EmailAction `json:"emailAddresses,omitempty"`
 }
 
 // Error ...
@@ -837,26 +843,6 @@ func (mr *MergeRequest) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// OnFailure the actions for auto quota increase.
-type OnFailure struct {
-	// EmailActions - The email actions for auto quota increase.
-	EmailActions *OnFailureEmailActions `json:"emailActions,omitempty"`
-	// PhoneActions - The phone actions for auto quota increase.
-	PhoneActions *OnFailurePhoneActions `json:"phoneActions,omitempty"`
-}
-
-// OnFailureEmailActions the email actions for auto quota increase.
-type OnFailureEmailActions struct {
-	// Value - The list of email actions.
-	Value *[]EmailAction `json:"value,omitempty"`
-}
-
-// OnFailurePhoneActions the phone actions for auto quota increase.
-type OnFailurePhoneActions struct {
-	// Value - The list of phone actions.
-	Value *[]PhoneAction `json:"value,omitempty"`
 }
 
 // OperationDisplay ...
@@ -1534,6 +1520,35 @@ type PurchaseRequestPropertiesReservedResourceProperties struct {
 	InstanceFlexibility InstanceFlexibility `json:"instanceFlexibility,omitempty"`
 }
 
+// QuotaCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type QuotaCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *QuotaCreateOrUpdateFuture) Result(client QuotaClient) (so SetObject, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.QuotaCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("reservations.QuotaCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so, err = client.CreateOrUpdateResponder(so.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "reservations.QuotaCreateOrUpdateFuture", "Result", so.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // QuotaLimits quota limits.
 type QuotaLimits struct {
 	autorest.Response `json:"-"`
@@ -1704,35 +1719,6 @@ type QuotaProperties struct {
 	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
 	// Properties - Additional properties for the specific resource provider.
 	Properties interface{} `json:"properties,omitempty"`
-}
-
-// QuotaRequestCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type QuotaRequestCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *QuotaRequestCreateFuture) Result(client QuotaRequestClient) (so SetObject, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("reservations.QuotaRequestCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.CreateResponder(so.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "reservations.QuotaRequestCreateFuture", "Result", so.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // QuotaRequestDetails the details of the quota Request.
@@ -2202,30 +2188,29 @@ func (qrsr2 *QuotaRequestSubmitResponse201) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// QuotaRequestUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type QuotaRequestUpdateFuture struct {
+// QuotaUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type QuotaUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *QuotaRequestUpdateFuture) Result(client QuotaRequestClient) (so SetObject, err error) {
+func (future *QuotaUpdateFuture) Result(client QuotaClient) (so SetObject, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "reservations.QuotaUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("reservations.QuotaRequestUpdateFuture")
+		err = azure.NewAsyncOpIncompleteError("reservations.QuotaUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 		so, err = client.UpdateResponder(so.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "reservations.QuotaRequestUpdateFuture", "Result", so.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "reservations.QuotaUpdateFuture", "Result", so.Response.Response, "Failure responding to request")
 		}
 	}
 	return

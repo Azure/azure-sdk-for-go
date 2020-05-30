@@ -68,7 +68,10 @@ func (client ApplicationGroupsClient) CreateOrUpdate(ctx context.Context, resour
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: applicationGroupName,
 			Constraints: []validation.Constraint{{Target: "applicationGroupName", Name: validation.MaxLength, Rule: 24, Chain: nil},
-				{Target: "applicationGroupName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+				{Target: "applicationGroupName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: applicationGroup,
+			Constraints: []validation.Constraint{{Target: "applicationGroup.ApplicationGroupProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "applicationGroup.ApplicationGroupProperties.HostPoolArmPath", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("desktopvirtualization.ApplicationGroupsClient", "CreateOrUpdate", err.Error())
 	}
 

@@ -39,10 +39,10 @@ var _ FeaturesClientAPI = (*authoring.FeaturesClient)(nil)
 
 // ExamplesClientAPI contains the set of methods on the ExamplesClient type.
 type ExamplesClientAPI interface {
-	Add(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObject authoring.ExampleLabelObject) (result authoring.LabelExampleResponse, err error)
-	Batch(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObjectArray []authoring.ExampleLabelObject) (result authoring.ListBatchLabelExample, err error)
+	Add(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObject authoring.ExampleLabelObject, enableNestedChildren *bool) (result authoring.LabelExampleResponse, err error)
+	Batch(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObjectArray []authoring.ExampleLabelObject, enableNestedChildren *bool) (result authoring.ListBatchLabelExample, err error)
 	Delete(ctx context.Context, appID uuid.UUID, versionID string, exampleID int32) (result authoring.OperationStatus, err error)
-	List(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result authoring.ListLabeledUtterance, err error)
+	List(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32, enableNestedChildren *bool) (result authoring.ListLabeledUtterance, err error)
 }
 
 var _ ExamplesClientAPI = (*authoring.ExamplesClient)(nil)
@@ -125,11 +125,11 @@ type ModelClientAPI interface {
 	ListCustomPrebuiltModels(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.ListCustomPrebuiltModel, err error)
 	ListEntities(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result authoring.ListNDepthEntityExtractor, err error)
 	ListEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result authoring.ListEntityRole, err error)
-	ListEntitySuggestions(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32) (result authoring.ListEntitiesSuggestionExample, err error)
+	ListEntitySuggestions(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32, enableNestedChildren *bool) (result authoring.ListEntitiesSuggestionExample, err error)
 	ListHierarchicalEntities(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result authoring.ListHierarchicalEntityExtractor, err error)
 	ListHierarchicalEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (result authoring.ListEntityRole, err error)
 	ListIntents(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result authoring.ListIntentClassifier, err error)
-	ListIntentSuggestions(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32) (result authoring.ListIntentsSuggestionExample, err error)
+	ListIntentSuggestions(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32, enableNestedChildren *bool) (result authoring.ListIntentsSuggestionExample, err error)
 	ListModels(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result authoring.ListModelInfoResponse, err error)
 	ListPatternAnyEntityInfos(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result authoring.ListPatternAnyEntityExtractor, err error)
 	ListPatternAnyEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result authoring.ListEntityRole, err error)
@@ -217,16 +217,6 @@ type TrainClientAPI interface {
 }
 
 var _ TrainClientAPI = (*authoring.TrainClient)(nil)
-
-// PermissionsClientAPI contains the set of methods on the PermissionsClient type.
-type PermissionsClientAPI interface {
-	Add(ctx context.Context, appID uuid.UUID, userToAdd authoring.UserCollaborator) (result authoring.OperationStatus, err error)
-	Delete(ctx context.Context, appID uuid.UUID, userToDelete authoring.UserCollaborator) (result authoring.OperationStatus, err error)
-	List(ctx context.Context, appID uuid.UUID) (result authoring.UserAccessList, err error)
-	Update(ctx context.Context, appID uuid.UUID, collaborators authoring.CollaboratorsArray) (result authoring.OperationStatus, err error)
-}
-
-var _ PermissionsClientAPI = (*authoring.PermissionsClient)(nil)
 
 // PatternClientAPI contains the set of methods on the PatternClient type.
 type PatternClientAPI interface {

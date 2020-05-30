@@ -252,6 +252,13 @@ const (
 	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
 )
 
+type ProvisioningState1 = original.ProvisioningState1
+
+const (
+	ProvisioningState1Failed    ProvisioningState1 = original.ProvisioningState1Failed
+	ProvisioningState1Succeeded ProvisioningState1 = original.ProvisioningState1Succeeded
+)
+
 type QueryAggregationFunction = original.QueryAggregationFunction
 
 const (
@@ -550,6 +557,13 @@ type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionPro
 type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
 type PrivateEndpointConnectionsCreateFuture = original.PrivateEndpointConnectionsCreateFuture
 type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkHub = original.PrivateLinkHub
+type PrivateLinkHubInfoListResult = original.PrivateLinkHubInfoListResult
+type PrivateLinkHubInfoListResultIterator = original.PrivateLinkHubInfoListResultIterator
+type PrivateLinkHubInfoListResultPage = original.PrivateLinkHubInfoListResultPage
+type PrivateLinkHubPatchInfo = original.PrivateLinkHubPatchInfo
+type PrivateLinkHubProperties = original.PrivateLinkHubProperties
+type PrivateLinkHubsClient = original.PrivateLinkHubsClient
 type PrivateLinkResource = original.PrivateLinkResource
 type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
 type PrivateLinkResourceListResultIterator = original.PrivateLinkResourceListResultIterator
@@ -806,6 +820,18 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointC
 }
 func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkHubInfoListResultIterator(page PrivateLinkHubInfoListResultPage) PrivateLinkHubInfoListResultIterator {
+	return original.NewPrivateLinkHubInfoListResultIterator(page)
+}
+func NewPrivateLinkHubInfoListResultPage(getNextPage func(context.Context, PrivateLinkHubInfoListResult) (PrivateLinkHubInfoListResult, error)) PrivateLinkHubInfoListResultPage {
+	return original.NewPrivateLinkHubInfoListResultPage(getNextPage)
+}
+func NewPrivateLinkHubsClient(subscriptionID string) PrivateLinkHubsClient {
+	return original.NewPrivateLinkHubsClient(subscriptionID)
+}
+func NewPrivateLinkHubsClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkHubsClient {
+	return original.NewPrivateLinkHubsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewPrivateLinkResourceListResultIterator(page PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator {
 	return original.NewPrivateLinkResourceListResultIterator(page)
@@ -1097,6 +1123,9 @@ func PossibleNodeSizeValues() []NodeSize {
 }
 func PossibleOperationStatusValues() []OperationStatus {
 	return original.PossibleOperationStatusValues()
+}
+func PossibleProvisioningState1Values() []ProvisioningState1 {
+	return original.PossibleProvisioningState1Values()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

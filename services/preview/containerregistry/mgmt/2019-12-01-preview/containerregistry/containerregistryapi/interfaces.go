@@ -22,6 +22,17 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2019-12-01-preview/containerregistry"
 )
 
+// ExportPipelinesClientAPI contains the set of methods on the ExportPipelinesClient type.
+type ExportPipelinesClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, exportPipelineCreateParameters containerregistry.ExportPipeline) (result containerregistry.ExportPipelinesCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string) (result containerregistry.ExportPipelinesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string) (result containerregistry.ExportPipeline, err error)
+	List(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.ExportPipelineListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.ExportPipelineListResultIterator, err error)
+}
+
+var _ ExportPipelinesClientAPI = (*containerregistry.ExportPipelinesClient)(nil)
+
 // RegistriesClientAPI contains the set of methods on the RegistriesClient type.
 type RegistriesClientAPI interface {
 	CheckNameAvailability(ctx context.Context, registryNameCheckRequest containerregistry.RegistryNameCheckRequest) (result containerregistry.RegistryNameStatus, err error)
@@ -46,6 +57,17 @@ type RegistriesClientAPI interface {
 
 var _ RegistriesClientAPI = (*containerregistry.RegistriesClient)(nil)
 
+// ImportPipelinesClientAPI contains the set of methods on the ImportPipelinesClient type.
+type ImportPipelinesClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, registryName string, importPipelineName string, importPipelineCreateParameters containerregistry.ImportPipeline) (result containerregistry.ImportPipelinesCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, registryName string, importPipelineName string) (result containerregistry.ImportPipelinesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, registryName string, importPipelineName string) (result containerregistry.ImportPipeline, err error)
+	List(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.ImportPipelineListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.ImportPipelineListResultIterator, err error)
+}
+
+var _ ImportPipelinesClientAPI = (*containerregistry.ImportPipelinesClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result containerregistry.OperationListResultPage, err error)
@@ -53,6 +75,17 @@ type OperationsClientAPI interface {
 }
 
 var _ OperationsClientAPI = (*containerregistry.OperationsClient)(nil)
+
+// PipelineRunsClientAPI contains the set of methods on the PipelineRunsClient type.
+type PipelineRunsClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, pipelineRunCreateParameters containerregistry.PipelineRun) (result containerregistry.PipelineRunsCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string) (result containerregistry.PipelineRunsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string) (result containerregistry.PipelineRun, err error)
+	List(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.PipelineRunListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.PipelineRunListResultIterator, err error)
+}
+
+var _ PipelineRunsClientAPI = (*containerregistry.PipelineRunsClient)(nil)
 
 // PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
 type PrivateEndpointConnectionsClientAPI interface {

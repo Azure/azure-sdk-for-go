@@ -750,15 +750,15 @@ func PossibleInstanceTypeBasicRecoveryPlanActionDetailsValues() []InstanceTypeBa
 type InstanceTypeBasicRecoveryPlanProviderSpecificDetails string
 
 const (
-	// InstanceTypeRecoveryPlanA2ADetails ...
-	InstanceTypeRecoveryPlanA2ADetails InstanceTypeBasicRecoveryPlanProviderSpecificDetails = "RecoveryPlanA2ADetails"
-	// InstanceTypeRecoveryPlanProviderSpecificDetails ...
-	InstanceTypeRecoveryPlanProviderSpecificDetails InstanceTypeBasicRecoveryPlanProviderSpecificDetails = "RecoveryPlanProviderSpecificDetails"
+	// InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A ...
+	InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A InstanceTypeBasicRecoveryPlanProviderSpecificDetails = "A2A"
+	// InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails ...
+	InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails InstanceTypeBasicRecoveryPlanProviderSpecificDetails = "RecoveryPlanProviderSpecificDetails"
 )
 
 // PossibleInstanceTypeBasicRecoveryPlanProviderSpecificDetailsValues returns an array of possible values for the InstanceTypeBasicRecoveryPlanProviderSpecificDetails const type.
 func PossibleInstanceTypeBasicRecoveryPlanProviderSpecificDetailsValues() []InstanceTypeBasicRecoveryPlanProviderSpecificDetails {
-	return []InstanceTypeBasicRecoveryPlanProviderSpecificDetails{InstanceTypeRecoveryPlanA2ADetails, InstanceTypeRecoveryPlanProviderSpecificDetails}
+	return []InstanceTypeBasicRecoveryPlanProviderSpecificDetails{InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A, InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails}
 }
 
 // InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput enumerates the values for instance type basic
@@ -2270,6 +2270,10 @@ type A2AReplicationDetails struct {
 	InitialPrimaryFabricLocation *string `json:"initialPrimaryFabricLocation,omitempty"`
 	// InitialRecoveryFabricLocation - READ-ONLY; The initial recovery fabric location.
 	InitialRecoveryFabricLocation *string `json:"initialRecoveryFabricLocation,omitempty"`
+	// InitialPrimaryZone - READ-ONLY; The initial primary availability zone.
+	InitialPrimaryZone *string `json:"initialPrimaryZone,omitempty"`
+	// InitialRecoveryZone - READ-ONLY; The initial recovery availability zone.
+	InitialRecoveryZone *string `json:"initialRecoveryZone,omitempty"`
 	// MultiVMGroupID - The multi vm group Id.
 	MultiVMGroupID *string `json:"multiVmGroupId,omitempty"`
 	// MultiVMGroupName - The multi vm group name.
@@ -14908,13 +14912,13 @@ type RecoveryPlanA2ADetails struct {
 	PrimaryZone *string `json:"primaryZone,omitempty"`
 	// RecoveryZone - The recovery zone.
 	RecoveryZone *string `json:"recoveryZone,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeRecoveryPlanProviderSpecificDetails', 'InstanceTypeRecoveryPlanA2ADetails'
+	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails', 'InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A'
 	InstanceType InstanceTypeBasicRecoveryPlanProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RecoveryPlanA2ADetails.
 func (rpad RecoveryPlanA2ADetails) MarshalJSON() ([]byte, error) {
-	rpad.InstanceType = InstanceTypeRecoveryPlanA2ADetails
+	rpad.InstanceType = InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A
 	objectMap := make(map[string]interface{})
 	if rpad.PrimaryZone != nil {
 		objectMap["primaryZone"] = rpad.PrimaryZone
@@ -16037,7 +16041,7 @@ type BasicRecoveryPlanProviderSpecificDetails interface {
 
 // RecoveryPlanProviderSpecificDetails recovery plan provider specific details.
 type RecoveryPlanProviderSpecificDetails struct {
-	// InstanceType - Possible values include: 'InstanceTypeRecoveryPlanProviderSpecificDetails', 'InstanceTypeRecoveryPlanA2ADetails'
+	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails', 'InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A'
 	InstanceType InstanceTypeBasicRecoveryPlanProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -16049,7 +16053,7 @@ func unmarshalBasicRecoveryPlanProviderSpecificDetails(body []byte) (BasicRecove
 	}
 
 	switch m["instanceType"] {
-	case string(InstanceTypeRecoveryPlanA2ADetails):
+	case string(InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A):
 		var rpad RecoveryPlanA2ADetails
 		err := json.Unmarshal(body, &rpad)
 		return rpad, err
@@ -16080,7 +16084,7 @@ func unmarshalBasicRecoveryPlanProviderSpecificDetailsArray(body []byte) ([]Basi
 
 // MarshalJSON is the custom marshaler for RecoveryPlanProviderSpecificDetails.
 func (rppsd RecoveryPlanProviderSpecificDetails) MarshalJSON() ([]byte, error) {
-	rppsd.InstanceType = InstanceTypeRecoveryPlanProviderSpecificDetails
+	rppsd.InstanceType = InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails
 	objectMap := make(map[string]interface{})
 	if rppsd.InstanceType != "" {
 		objectMap["instanceType"] = rppsd.InstanceType

@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// VCenterClient is the client for the VCenter methods of the Migrate service.
+// VCenterClient is the discover your workloads for Azure.
 type VCenterClient struct {
 	BaseClient
 }

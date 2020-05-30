@@ -1,6 +1,6 @@
-// Package migrate implements the Azure ARM Migrate service API version v1.
+// Package migrate implements the Azure ARM Migrate service API version 2020-01-01.
 //
-//
+// Discover your workloads for Azure.
 package migrate
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

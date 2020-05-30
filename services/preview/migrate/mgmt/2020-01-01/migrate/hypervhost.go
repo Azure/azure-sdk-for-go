@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// HyperVHostClient is the client for the HyperVHost methods of the Migrate service.
+// HyperVHostClient is the discover your workloads for Azure.
 type HyperVHostClient struct {
 	BaseClient
 }

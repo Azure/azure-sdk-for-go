@@ -806,6 +806,7 @@ const (
 	TypeDynamicsCrmSource              TypeBasicCopySource = original.TypeDynamicsCrmSource
 	TypeDynamicsSource                 TypeBasicCopySource = original.TypeDynamicsSource
 	TypeEloquaSource                   TypeBasicCopySource = original.TypeEloquaSource
+	TypeExcelSource                    TypeBasicCopySource = original.TypeExcelSource
 	TypeFileSystemSource               TypeBasicCopySource = original.TypeFileSystemSource
 	TypeGoogleAdWordsSource            TypeBasicCopySource = original.TypeGoogleAdWordsSource
 	TypeGoogleBigQuerySource           TypeBasicCopySource = original.TypeGoogleBigQuerySource
@@ -867,6 +868,7 @@ const (
 	TypeVerticaSource                  TypeBasicCopySource = original.TypeVerticaSource
 	TypeWebSource                      TypeBasicCopySource = original.TypeWebSource
 	TypeXeroSource                     TypeBasicCopySource = original.TypeXeroSource
+	TypeXMLSource                      TypeBasicCopySource = original.TypeXMLSource
 	TypeZohoSource                     TypeBasicCopySource = original.TypeZohoSource
 )
 
@@ -922,6 +924,7 @@ const (
 	TypeDynamicsCrmEntity              TypeBasicDataset = original.TypeDynamicsCrmEntity
 	TypeDynamicsEntity                 TypeBasicDataset = original.TypeDynamicsEntity
 	TypeEloquaObject                   TypeBasicDataset = original.TypeEloquaObject
+	TypeExcel                          TypeBasicDataset = original.TypeExcel
 	TypeFileShare                      TypeBasicDataset = original.TypeFileShare
 	TypeGoogleAdWordsObject            TypeBasicDataset = original.TypeGoogleAdWordsObject
 	TypeGoogleBigQueryObject           TypeBasicDataset = original.TypeGoogleBigQueryObject
@@ -978,6 +981,7 @@ const (
 	TypeVerticaTable                   TypeBasicDataset = original.TypeVerticaTable
 	TypeWebTable                       TypeBasicDataset = original.TypeWebTable
 	TypeXeroObject                     TypeBasicDataset = original.TypeXeroObject
+	TypeXML                            TypeBasicDataset = original.TypeXML
 	TypeZohoObject                     TypeBasicDataset = original.TypeZohoObject
 )
 
@@ -1050,6 +1054,7 @@ const (
 	TypeDelimitedTextReadSettings TypeBasicFormatReadSettings = original.TypeDelimitedTextReadSettings
 	TypeFormatReadSettings        TypeBasicFormatReadSettings = original.TypeFormatReadSettings
 	TypeJSONReadSettings          TypeBasicFormatReadSettings = original.TypeJSONReadSettings
+	TypeXMLReadSettings           TypeBasicFormatReadSettings = original.TypeXMLReadSettings
 )
 
 type TypeBasicFormatWriteSettings = original.TypeBasicFormatWriteSettings
@@ -1590,6 +1595,9 @@ type EloquaSource = original.EloquaSource
 type EntityReference = original.EntityReference
 type EnvironmentVariableSetup = original.EnvironmentVariableSetup
 type EnvironmentVariableSetupTypeProperties = original.EnvironmentVariableSetupTypeProperties
+type ExcelDataset = original.ExcelDataset
+type ExcelDatasetTypeProperties = original.ExcelDatasetTypeProperties
+type ExcelSource = original.ExcelSource
 type ExecuteDataFlowActivity = original.ExecuteDataFlowActivity
 type ExecuteDataFlowActivityTypeProperties = original.ExecuteDataFlowActivityTypeProperties
 type ExecuteDataFlowActivityTypePropertiesCompute = original.ExecuteDataFlowActivityTypePropertiesCompute
@@ -2137,6 +2145,10 @@ type WebLinkedServiceTypeProperties = original.WebLinkedServiceTypeProperties
 type WebSource = original.WebSource
 type WebTableDataset = original.WebTableDataset
 type WebTableDatasetTypeProperties = original.WebTableDatasetTypeProperties
+type XMLDataset = original.XMLDataset
+type XMLDatasetTypeProperties = original.XMLDatasetTypeProperties
+type XMLReadSettings = original.XMLReadSettings
+type XMLSource = original.XMLSource
 type XeroLinkedService = original.XeroLinkedService
 type XeroLinkedServiceTypeProperties = original.XeroLinkedServiceTypeProperties
 type XeroObjectDataset = original.XeroObjectDataset

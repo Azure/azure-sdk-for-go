@@ -374,16 +374,8 @@ const (
 type KindBasicSettings = original.KindBasicSettings
 
 const (
-	KindSettings       KindBasicSettings = original.KindSettings
-	KindToggleSettings KindBasicSettings = original.KindToggleSettings
-	KindUebaSettings   KindBasicSettings = original.KindUebaSettings
-)
-
-type LicenseStatus = original.LicenseStatus
-
-const (
-	LicenseStatusDisabled LicenseStatus = original.LicenseStatusDisabled
-	LicenseStatusEnabled  LicenseStatus = original.LicenseStatusEnabled
+	KindEyesOn   KindBasicSettings = original.KindEyesOn
+	KindSettings KindBasicSettings = original.KindSettings
 )
 
 type MicrosoftSecurityProductName = original.MicrosoftSecurityProductName
@@ -444,20 +436,6 @@ type RelationTypes = original.RelationTypes
 
 const (
 	CasesToBookmarks RelationTypes = original.CasesToBookmarks
-)
-
-type SettingKind = original.SettingKind
-
-const (
-	SettingKindToggleSettings SettingKind = original.SettingKindToggleSettings
-	SettingKindUebaSettings   SettingKind = original.SettingKindUebaSettings
-)
-
-type StatusInMcas = original.StatusInMcas
-
-const (
-	StatusInMcasDisabled StatusInMcas = original.StatusInMcasDisabled
-	StatusInMcasEnabled  StatusInMcas = original.StatusInMcasEnabled
 )
 
 type TemplateStatus = original.TemplateStatus
@@ -544,11 +522,6 @@ type BookmarkList = original.BookmarkList
 type BookmarkListIterator = original.BookmarkListIterator
 type BookmarkListPage = original.BookmarkListPage
 type BookmarkProperties = original.BookmarkProperties
-type BookmarkRelation = original.BookmarkRelation
-type BookmarkRelationList = original.BookmarkRelationList
-type BookmarkRelationListIterator = original.BookmarkRelationListIterator
-type BookmarkRelationListPage = original.BookmarkRelationListPage
-type BookmarkRelationProperties = original.BookmarkRelationProperties
 type BookmarkRelationsClient = original.BookmarkRelationsClient
 type BookmarksClient = original.BookmarksClient
 type Case = original.Case
@@ -616,6 +589,8 @@ type EntityQueryProperties = original.EntityQueryProperties
 type EntityRelationsClient = original.EntityRelationsClient
 type ExpansionResultAggregation = original.ExpansionResultAggregation
 type ExpansionResultsMetadata = original.ExpansionResultsMetadata
+type EyesOn = original.EyesOn
+type EyesOnSettingsProperties = original.EyesOnSettingsProperties
 type FileEntity = original.FileEntity
 type FileEntityProperties = original.FileEntityProperties
 type FileHashEntity = original.FileHashEntity
@@ -712,6 +687,7 @@ type SecurityAlertProperties = original.SecurityAlertProperties
 type SecurityAlertPropertiesConfidenceReasonsItem = original.SecurityAlertPropertiesConfidenceReasonsItem
 type SecurityGroupEntity = original.SecurityGroupEntity
 type SecurityGroupEntityProperties = original.SecurityGroupEntityProperties
+type SettingList = original.SettingList
 type Settings = original.Settings
 type SettingsKind = original.SettingsKind
 type SettingsModel = original.SettingsModel
@@ -728,12 +704,8 @@ type TiTaxiiDataConnector = original.TiTaxiiDataConnector
 type TiTaxiiDataConnectorDataTypes = original.TiTaxiiDataConnectorDataTypes
 type TiTaxiiDataConnectorDataTypesTaxiiClient = original.TiTaxiiDataConnectorDataTypesTaxiiClient
 type TiTaxiiDataConnectorProperties = original.TiTaxiiDataConnectorProperties
-type ToggleSettings = original.ToggleSettings
-type ToggleSettingsProperties = original.ToggleSettingsProperties
 type URLEntity = original.URLEntity
 type URLEntityProperties = original.URLEntityProperties
-type UebaSettings = original.UebaSettings
-type UebaSettingsProperties = original.UebaSettingsProperties
 type UserInfo = original.UserInfo
 
 func New(subscriptionID string) BaseClient {
@@ -786,12 +758,6 @@ func NewBookmarkListIterator(page BookmarkListPage) BookmarkListIterator {
 }
 func NewBookmarkListPage(getNextPage func(context.Context, BookmarkList) (BookmarkList, error)) BookmarkListPage {
 	return original.NewBookmarkListPage(getNextPage)
-}
-func NewBookmarkRelationListIterator(page BookmarkRelationListPage) BookmarkRelationListIterator {
-	return original.NewBookmarkRelationListIterator(page)
-}
-func NewBookmarkRelationListPage(getNextPage func(context.Context, BookmarkRelationList) (BookmarkRelationList, error)) BookmarkRelationListPage {
-	return original.NewBookmarkRelationListPage(getNextPage)
 }
 func NewBookmarkRelationsClient(subscriptionID string) BookmarkRelationsClient {
 	return original.NewBookmarkRelationsClient(subscriptionID)
@@ -1072,9 +1038,6 @@ func PossibleKindBasicSettingsValues() []KindBasicSettings {
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
-func PossibleLicenseStatusValues() []LicenseStatus {
-	return original.PossibleLicenseStatusValues()
-}
 func PossibleMicrosoftSecurityProductNameValues() []MicrosoftSecurityProductName {
 	return original.PossibleMicrosoftSecurityProductNameValues()
 }
@@ -1092,12 +1055,6 @@ func PossibleRelationNodeKindValues() []RelationNodeKind {
 }
 func PossibleRelationTypesValues() []RelationTypes {
 	return original.PossibleRelationTypesValues()
-}
-func PossibleSettingKindValues() []SettingKind {
-	return original.PossibleSettingKindValues()
-}
-func PossibleStatusInMcasValues() []StatusInMcas {
-	return original.PossibleStatusInMcasValues()
 }
 func PossibleTemplateStatusValues() []TemplateStatus {
 	return original.PossibleTemplateStatusValues()

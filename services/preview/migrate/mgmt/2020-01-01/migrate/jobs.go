@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// JobsClient is the client for the Jobs methods of the Migrate service.
+// JobsClient is the discover your workloads for Azure.
 type JobsClient struct {
 	BaseClient
 }

@@ -151,3 +151,11 @@ type VMwareOperationsStatusClientAPI interface {
 }
 
 var _ VMwareOperationsStatusClientAPI = (*migrate.VMwareOperationsStatusClient)(nil)
+
+// OperationsClientAPI contains the set of methods on the OperationsClient type.
+type OperationsClientAPI interface {
+	List(ctx context.Context, APIVersion string) (result migrate.OperationResultListPage, err error)
+	ListComplete(ctx context.Context, APIVersion string) (result migrate.OperationResultListIterator, err error)
+}
+
+var _ OperationsClientAPI = (*migrate.OperationsClient)(nil)

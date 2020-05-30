@@ -29,3 +29,4 @@ type LocationsClientAPI = original.LocationsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type ScriptActionsClientAPI = original.ScriptActionsClientAPI
 type ScriptExecutionHistoryClientAPI = original.ScriptExecutionHistoryClientAPI
+type VirtualMachinesClientAPI = original.VirtualMachinesClientAPI

@@ -22,7 +22,7 @@ package desktopvirtualization
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2019-01-23-preview/desktopvirtualization"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2019-12-10-preview/desktopvirtualization"
 )
 
 const (
@@ -55,7 +55,7 @@ type HostPoolType = original.HostPoolType
 
 const (
 	Personal HostPoolType = original.Personal
-	Shared   HostPoolType = original.Shared
+	Pooled   HostPoolType = original.Pooled
 )
 
 type LoadBalancerType = original.LoadBalancerType
@@ -71,6 +71,14 @@ type PersonalDesktopAssignmentType = original.PersonalDesktopAssignmentType
 const (
 	Automatic PersonalDesktopAssignmentType = original.Automatic
 	Direct    PersonalDesktopAssignmentType = original.Direct
+)
+
+type RegistrationTokenOperation = original.RegistrationTokenOperation
+
+const (
+	Delete RegistrationTokenOperation = original.Delete
+	None   RegistrationTokenOperation = original.None
+	Update RegistrationTokenOperation = original.Update
 )
 
 type SessionState = original.SessionState
@@ -123,6 +131,7 @@ type ApplicationPatch = original.ApplicationPatch
 type ApplicationPatchProperties = original.ApplicationPatchProperties
 type ApplicationProperties = original.ApplicationProperties
 type ApplicationsClient = original.ApplicationsClient
+type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type Desktop = original.Desktop
@@ -140,6 +149,7 @@ type HostPoolPatchProperties = original.HostPoolPatchProperties
 type HostPoolProperties = original.HostPoolProperties
 type HostPoolsClient = original.HostPoolsClient
 type OperationsClient = original.OperationsClient
+type ProxyResource = original.ProxyResource
 type RegistrationInfo = original.RegistrationInfo
 type RegistrationInfoPatch = original.RegistrationInfoPatch
 type Resource = original.Resource
@@ -308,6 +318,9 @@ func PossibleLoadBalancerTypeValues() []LoadBalancerType {
 }
 func PossiblePersonalDesktopAssignmentTypeValues() []PersonalDesktopAssignmentType {
 	return original.PossiblePersonalDesktopAssignmentTypeValues()
+}
+func PossibleRegistrationTokenOperationValues() []RegistrationTokenOperation {
+	return original.PossibleRegistrationTokenOperationValues()
 }
 func PossibleSessionStateValues() []SessionState {
 	return original.PossibleSessionStateValues()

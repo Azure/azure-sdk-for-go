@@ -42,11 +42,11 @@ type Column = original.Column
 type ErrorDetail = original.ErrorDetail
 type ErrorInfo = original.ErrorInfo
 type ErrorResponse = original.ErrorResponse
-type GetClient = original.GetClient
 type MetadataApplication = original.MetadataApplication
 type MetadataApplicationRelated = original.MetadataApplicationRelated
 type MetadataCategory = original.MetadataCategory
 type MetadataCategoryRelated = original.MetadataCategoryRelated
+type MetadataClient = original.MetadataClient
 type MetadataFunction = original.MetadataFunction
 type MetadataFunctionRelated = original.MetadataFunctionRelated
 type MetadataPermissions = original.MetadataPermissions
@@ -65,7 +65,6 @@ type MetadataTableColumnsItem = original.MetadataTableColumnsItem
 type MetadataTableRelated = original.MetadataTableRelated
 type MetadataWorkspace = original.MetadataWorkspace
 type MetadataWorkspaceRelated = original.MetadataWorkspaceRelated
-type PostClient = original.PostClient
 type QueryBody = original.QueryBody
 type QueryClient = original.QueryClient
 type QueryResults = original.QueryResults
@@ -74,17 +73,11 @@ type Table = original.Table
 func New() BaseClient {
 	return original.New()
 }
-func NewGetClient() GetClient {
-	return original.NewGetClient()
+func NewMetadataClient() MetadataClient {
+	return original.NewMetadataClient()
 }
-func NewGetClientWithBaseURI(baseURI string) GetClient {
-	return original.NewGetClientWithBaseURI(baseURI)
-}
-func NewPostClient() PostClient {
-	return original.NewPostClient()
-}
-func NewPostClientWithBaseURI(baseURI string) PostClient {
-	return original.NewPostClientWithBaseURI(baseURI)
+func NewMetadataClientWithBaseURI(baseURI string) MetadataClient {
+	return original.NewMetadataClientWithBaseURI(baseURI)
 }
 func NewQueryClient() QueryClient {
 	return original.NewQueryClient()

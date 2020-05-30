@@ -32,19 +32,19 @@ type TableResourcesClient struct {
 }
 
 // NewTableResourcesClient creates an instance of the TableResourcesClient client.
-func NewTableResourcesClient(subscriptionID string, subscriptionID1 string) TableResourcesClient {
-	return NewTableResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewTableResourcesClient(subscriptionID string) TableResourcesClient {
+	return NewTableResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewTableResourcesClientWithBaseURI creates an instance of the TableResourcesClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) TableResourcesClient {
-	return TableResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string) TableResourcesClient {
+	return TableResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateUpdateTable create or update an Azure Cosmos DB Table
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // tableName - cosmos DB table name.
 // createUpdateTableParameters - the parameters to provide for the current Table.
@@ -60,6 +60,8 @@ func (client TableResourcesClient) CreateUpdateTable(ctx context.Context, resour
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -143,7 +145,7 @@ func (client TableResourcesClient) CreateUpdateTableResponder(resp *http.Respons
 
 // DeleteTable deletes an existing Azure Cosmos DB Table.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // tableName - cosmos DB table name.
 func (client TableResourcesClient) DeleteTable(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result TableResourcesDeleteTableFuture, err error) {
@@ -158,6 +160,8 @@ func (client TableResourcesClient) DeleteTable(ctx context.Context, resourceGrou
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -232,7 +236,7 @@ func (client TableResourcesClient) DeleteTableResponder(resp *http.Response) (re
 
 // GetTable gets the Tables under an existing Azure Cosmos DB database account with the provided name.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // tableName - cosmos DB table name.
 func (client TableResourcesClient) GetTable(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result TableGetResults, err error) {
@@ -247,6 +251,8 @@ func (client TableResourcesClient) GetTable(ctx context.Context, resourceGroupNa
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -323,7 +329,7 @@ func (client TableResourcesClient) GetTableResponder(resp *http.Response) (resul
 // GetTableThroughput gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the
 // provided name.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // tableName - cosmos DB table name.
 func (client TableResourcesClient) GetTableThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result ThroughputSettingsGetResults, err error) {
@@ -338,6 +344,8 @@ func (client TableResourcesClient) GetTableThroughput(ctx context.Context, resou
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -413,7 +421,7 @@ func (client TableResourcesClient) GetTableThroughputResponder(resp *http.Respon
 
 // ListTables lists the Tables under an existing Azure Cosmos DB database account.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 func (client TableResourcesClient) ListTables(ctx context.Context, resourceGroupName string, accountName string) (result TableListResult, err error) {
 	if tracing.IsEnabled() {
@@ -427,6 +435,8 @@ func (client TableResourcesClient) ListTables(ctx context.Context, resourceGroup
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -501,7 +511,7 @@ func (client TableResourcesClient) ListTablesResponder(resp *http.Response) (res
 
 // UpdateTableThroughput update RUs per second of an Azure Cosmos DB Table
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // tableName - cosmos DB table name.
 // updateThroughputParameters - the parameters to provide for the RUs per second of the current Table.
@@ -517,6 +527,8 @@ func (client TableResourcesClient) UpdateTableThroughput(ctx context.Context, re
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},

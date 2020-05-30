@@ -23,6 +23,4 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/digitaltwins
 
 type ClientAPI = original.ClientAPI
 type EndpointClientAPI = original.EndpointClientAPI
-type IoTHubClientAPI = original.IoTHubClientAPI
-type IoTHubsClientAPI = original.IoTHubsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

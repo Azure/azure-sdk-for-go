@@ -32,20 +32,20 @@ type GremlinResourcesClient struct {
 }
 
 // NewGremlinResourcesClient creates an instance of the GremlinResourcesClient client.
-func NewGremlinResourcesClient(subscriptionID string, subscriptionID1 string) GremlinResourcesClient {
-	return NewGremlinResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewGremlinResourcesClient(subscriptionID string) GremlinResourcesClient {
+	return NewGremlinResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewGremlinResourcesClientWithBaseURI creates an instance of the GremlinResourcesClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewGremlinResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) GremlinResourcesClient {
-	return GremlinResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewGremlinResourcesClientWithBaseURI(baseURI string, subscriptionID string) GremlinResourcesClient {
+	return GremlinResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateUpdateGremlinDatabase create or update an Azure Cosmos DB Gremlin database
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // createUpdateGremlinDatabaseParameters - the parameters to provide for the current Gremlin database.
@@ -61,6 +61,8 @@ func (client GremlinResourcesClient) CreateUpdateGremlinDatabase(ctx context.Con
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -144,7 +146,7 @@ func (client GremlinResourcesClient) CreateUpdateGremlinDatabaseResponder(resp *
 
 // CreateUpdateGremlinGraph create or update an Azure Cosmos DB Gremlin graph
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // graphName - cosmos DB graph name.
@@ -161,6 +163,8 @@ func (client GremlinResourcesClient) CreateUpdateGremlinGraph(ctx context.Contex
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -252,7 +256,7 @@ func (client GremlinResourcesClient) CreateUpdateGremlinGraphResponder(resp *htt
 
 // DeleteGremlinDatabase deletes an existing Azure Cosmos DB Gremlin database.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 func (client GremlinResourcesClient) DeleteGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result GremlinResourcesDeleteGremlinDatabaseFuture, err error) {
@@ -267,6 +271,8 @@ func (client GremlinResourcesClient) DeleteGremlinDatabase(ctx context.Context, 
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -341,7 +347,7 @@ func (client GremlinResourcesClient) DeleteGremlinDatabaseResponder(resp *http.R
 
 // DeleteGremlinGraph deletes an existing Azure Cosmos DB Gremlin graph.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // graphName - cosmos DB graph name.
@@ -357,6 +363,8 @@ func (client GremlinResourcesClient) DeleteGremlinGraph(ctx context.Context, res
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -433,7 +441,7 @@ func (client GremlinResourcesClient) DeleteGremlinGraphResponder(resp *http.Resp
 // GetGremlinDatabase gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided
 // name.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 func (client GremlinResourcesClient) GetGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result GremlinDatabaseGetResults, err error) {
@@ -448,6 +456,8 @@ func (client GremlinResourcesClient) GetGremlinDatabase(ctx context.Context, res
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -524,7 +534,7 @@ func (client GremlinResourcesClient) GetGremlinDatabaseResponder(resp *http.Resp
 // GetGremlinDatabaseThroughput gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB
 // database account with the provided name.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 func (client GremlinResourcesClient) GetGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result ThroughputSettingsGetResults, err error) {
@@ -539,6 +549,8 @@ func (client GremlinResourcesClient) GetGremlinDatabaseThroughput(ctx context.Co
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -614,7 +626,7 @@ func (client GremlinResourcesClient) GetGremlinDatabaseThroughputResponder(resp 
 
 // GetGremlinGraph gets the Gremlin graph under an existing Azure Cosmos DB database account.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // graphName - cosmos DB graph name.
@@ -630,6 +642,8 @@ func (client GremlinResourcesClient) GetGremlinGraph(ctx context.Context, resour
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -707,7 +721,7 @@ func (client GremlinResourcesClient) GetGremlinGraphResponder(resp *http.Respons
 // GetGremlinGraphThroughput gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with
 // the provided name.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // graphName - cosmos DB graph name.
@@ -723,6 +737,8 @@ func (client GremlinResourcesClient) GetGremlinGraphThroughput(ctx context.Conte
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -799,7 +815,7 @@ func (client GremlinResourcesClient) GetGremlinGraphThroughputResponder(resp *ht
 
 // ListGremlinDatabases lists the Gremlin databases under an existing Azure Cosmos DB database account.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 func (client GremlinResourcesClient) ListGremlinDatabases(ctx context.Context, resourceGroupName string, accountName string) (result GremlinDatabaseListResult, err error) {
 	if tracing.IsEnabled() {
@@ -813,6 +829,8 @@ func (client GremlinResourcesClient) ListGremlinDatabases(ctx context.Context, r
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -887,7 +905,7 @@ func (client GremlinResourcesClient) ListGremlinDatabasesResponder(resp *http.Re
 
 // ListGremlinGraphs lists the Gremlin graph under an existing Azure Cosmos DB database account.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 func (client GremlinResourcesClient) ListGremlinGraphs(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result GremlinGraphListResult, err error) {
@@ -902,6 +920,8 @@ func (client GremlinResourcesClient) ListGremlinGraphs(ctx context.Context, reso
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -977,7 +997,7 @@ func (client GremlinResourcesClient) ListGremlinGraphsResponder(resp *http.Respo
 
 // UpdateGremlinDatabaseThroughput update RUs per second of an Azure Cosmos DB Gremlin database
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // updateThroughputParameters - the RUs per second of the parameters to provide for the current Gremlin
@@ -994,6 +1014,8 @@ func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughput(ctx context
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -1078,7 +1100,7 @@ func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughputResponder(re
 
 // UpdateGremlinGraphThroughput update RUs per second of an Azure Cosmos DB Gremlin graph
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // graphName - cosmos DB graph name.
@@ -1095,6 +1117,8 @@ func (client GremlinResourcesClient) UpdateGremlinGraphThroughput(ctx context.Co
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},

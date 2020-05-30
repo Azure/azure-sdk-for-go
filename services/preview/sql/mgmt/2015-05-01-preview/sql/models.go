@@ -1720,7 +1720,12 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	State BlobAuditingPolicyState `json:"state,omitempty"`
 	// StorageEndpoint - Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled is required.
 	StorageEndpoint *string `json:"storageEndpoint,omitempty"`
-	// StorageAccountAccessKey - Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is specified, storageAccountAccessKey is required.
+	// StorageAccountAccessKey - Specifies the identifier key of the auditing storage account.
+	// If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server system-assigned managed identity to access the storage.
+	// Prerequisites for using managed identity authentication:
+	// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server identity.
+	// For more information, see [Auditing to storage using Managed Identity authentication](https://go.microsoft.com/fwlink/?linkid=2114355)
 	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
 	// RetentionDays - Specifies the number of days to keep in the audit logs in the storage account.
 	RetentionDays *int32 `json:"retentionDays,omitempty"`
@@ -4739,6 +4744,8 @@ type ManagedInstanceProperties struct {
 	TimezoneID *string `json:"timezoneId,omitempty"`
 	// InstancePoolID - The Id of the instance pool this managed server belongs to.
 	InstancePoolID *string `json:"instancePoolId,omitempty"`
+	// MaintenanceConfigurationID - Specifies maintenance configuration id to apply to this managed instance.
+	MaintenanceConfigurationID *string `json:"maintenanceConfigurationId,omitempty"`
 	// MinimalTLSVersion - Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
 	MinimalTLSVersion *string `json:"minimalTlsVersion,omitempty"`
 }

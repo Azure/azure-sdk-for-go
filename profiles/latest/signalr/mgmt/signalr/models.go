@@ -22,17 +22,25 @@ package signalr
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2018-10-01/signalr"
+	original "github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2020-05-01/signalr"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type ACLAction = original.ACLAction
+
+const (
+	Allow ACLAction = original.Allow
+	Deny  ACLAction = original.Deny
+)
+
 type FeatureFlags = original.FeatureFlags
 
 const (
 	EnableConnectivityLogs FeatureFlags = original.EnableConnectivityLogs
+	EnableMessagingLogs    FeatureFlags = original.EnableMessagingLogs
 	ServiceMode            FeatureFlags = original.ServiceMode
 )
 
@@ -41,6 +49,15 @@ type KeyType = original.KeyType
 const (
 	Primary   KeyType = original.Primary
 	Secondary KeyType = original.Secondary
+)
+
+type PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatus
+
+const (
+	Approved     PrivateLinkServiceConnectionStatus = original.Approved
+	Disconnected PrivateLinkServiceConnectionStatus = original.Disconnected
+	Pending      PrivateLinkServiceConnectionStatus = original.Pending
+	Rejected     PrivateLinkServiceConnectionStatus = original.Rejected
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -57,6 +74,21 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
+type RequestType = original.RequestType
+
+const (
+	ClientConnection RequestType = original.ClientConnection
+	RESTAPI          RequestType = original.RESTAPI
+	ServerConnection RequestType = original.ServerConnection
+)
+
+type ServiceKind = original.ServiceKind
+
+const (
+	RawWebSockets ServiceKind = original.RawWebSockets
+	SignalR       ServiceKind = original.SignalR
+)
+
 type SkuTier = original.SkuTier
 
 const (
@@ -71,7 +103,6 @@ type Client = original.Client
 type CorsSettings = original.CorsSettings
 type CreateOrUpdateFuture = original.CreateOrUpdateFuture
 type CreateOrUpdateProperties = original.CreateOrUpdateProperties
-type CreateParameters = original.CreateParameters
 type DeleteFuture = original.DeleteFuture
 type Dimension = original.Dimension
 type ErrorResponse = original.ErrorResponse
@@ -82,6 +113,8 @@ type LogSpecification = original.LogSpecification
 type MetricSpecification = original.MetricSpecification
 type NameAvailability = original.NameAvailability
 type NameAvailabilityParameters = original.NameAvailabilityParameters
+type NetworkACL = original.NetworkACL
+type NetworkACLs = original.NetworkACLs
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
@@ -89,7 +122,21 @@ type OperationListIterator = original.OperationListIterator
 type OperationListPage = original.OperationListPage
 type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointACL = original.PrivateEndpointACL
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceList = original.PrivateLinkResourceList
+type PrivateLinkResourceListIterator = original.PrivateLinkResourceListIterator
+type PrivateLinkResourceListPage = original.PrivateLinkResourceListPage
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type Properties = original.Properties
+type ProxyResource = original.ProxyResource
 type RegenerateKeyFuture = original.RegenerateKeyFuture
 type RegenerateKeyParameters = original.RegenerateKeyParameters
 type Resource = original.Resource
@@ -99,10 +146,11 @@ type ResourceListPage = original.ResourceListPage
 type ResourceSku = original.ResourceSku
 type ResourceType = original.ResourceType
 type RestartFuture = original.RestartFuture
+type ServerlessUpstreamSettings = original.ServerlessUpstreamSettings
 type ServiceSpecification = original.ServiceSpecification
 type TrackedResource = original.TrackedResource
 type UpdateFuture = original.UpdateFuture
-type UpdateParameters = original.UpdateParameters
+type UpstreamTemplate = original.UpstreamTemplate
 type Usage = original.Usage
 type UsageList = original.UsageList
 type UsageListIterator = original.UsageListIterator
@@ -131,6 +179,24 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourceListIterator(page PrivateLinkResourceListPage) PrivateLinkResourceListIterator {
+	return original.NewPrivateLinkResourceListIterator(page)
+}
+func NewPrivateLinkResourceListPage(getNextPage func(context.Context, PrivateLinkResourceList) (PrivateLinkResourceList, error)) PrivateLinkResourceListPage {
+	return original.NewPrivateLinkResourceListPage(getNextPage)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewResourceListIterator(page ResourceListPage) ResourceListIterator {
 	return original.NewResourceListIterator(page)
 }
@@ -152,14 +218,26 @@ func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesCli
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleACLActionValues() []ACLAction {
+	return original.PossibleACLActionValues()
+}
 func PossibleFeatureFlagsValues() []FeatureFlags {
 	return original.PossibleFeatureFlagsValues()
 }
 func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
 }
+func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
+	return original.PossiblePrivateLinkServiceConnectionStatusValues()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossibleRequestTypeValues() []RequestType {
+	return original.PossibleRequestTypeValues()
+}
+func PossibleServiceKindValues() []ServiceKind {
+	return original.PossibleServiceKindValues()
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()

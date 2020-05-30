@@ -65,6 +65,13 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	Disabled PublicNetworkAccess = original.Disabled
+	Enabled  PublicNetworkAccess = original.Enabled
+)
+
 type APIKey = original.APIKey
 type APIKeyListResult = original.APIKeyListResult
 type APIKeyListResultIterator = original.APIKeyListResultIterator
@@ -100,6 +107,7 @@ type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionLis
 type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
 type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
 type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionReference = original.PrivateEndpointConnectionReference
 type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
 type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
 type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
@@ -187,6 +195,9 @@ func PossibleIdentityTypeValues() []IdentityType {
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

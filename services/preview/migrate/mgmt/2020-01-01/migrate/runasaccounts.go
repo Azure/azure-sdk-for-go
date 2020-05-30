@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// RunAsAccountsClient is the client for the RunAsAccounts methods of the Migrate service.
+// RunAsAccountsClient is the discover your workloads for Azure.
 type RunAsAccountsClient struct {
 	BaseClient
 }

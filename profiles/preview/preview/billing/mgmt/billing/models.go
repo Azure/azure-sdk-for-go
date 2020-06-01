@@ -22,7 +22,7 @@ package billing
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2020-05/billing"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2020-05-01-preview/billing"
 )
 
 const (

@@ -19,7 +19,7 @@
 
 package billingapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2020-05/billing/billingapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2020-05-01-preview/billing/billingapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
 type AddressClientAPI = original.AddressClientAPI

@@ -7,7 +7,7 @@
 | Package Name | API Version |
 | -----------: | :---------: |
 | azuredata | 2019-07-24-preview |
-| billing | 2020-05 |
+| billing | 2020-05-01-preview |
 | cdn | 2020-04-15 |
 | computervision | v3.0 |
 | containerservice | 2020-04-01 |

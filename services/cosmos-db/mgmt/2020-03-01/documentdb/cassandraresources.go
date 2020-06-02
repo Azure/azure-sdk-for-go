@@ -32,20 +32,20 @@ type CassandraResourcesClient struct {
 }
 
 // NewCassandraResourcesClient creates an instance of the CassandraResourcesClient client.
-func NewCassandraResourcesClient(subscriptionID string, subscriptionID1 string) CassandraResourcesClient {
-	return NewCassandraResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewCassandraResourcesClient(subscriptionID string) CassandraResourcesClient {
+	return NewCassandraResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewCassandraResourcesClientWithBaseURI creates an instance of the CassandraResourcesClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewCassandraResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CassandraResourcesClient {
-	return CassandraResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewCassandraResourcesClientWithBaseURI(baseURI string, subscriptionID string) CassandraResourcesClient {
+	return CassandraResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateUpdateCassandraKeyspace create or update an Azure Cosmos DB Cassandra keyspace
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // keyspaceName - cosmos DB keyspace name.
 // createUpdateCassandraKeyspaceParameters - the parameters to provide for the current Cassandra keyspace.
@@ -61,6 +61,8 @@ func (client CassandraResourcesClient) CreateUpdateCassandraKeyspace(ctx context
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -144,7 +146,7 @@ func (client CassandraResourcesClient) CreateUpdateCassandraKeyspaceResponder(re
 
 // CreateUpdateCassandraTable create or update an Azure Cosmos DB Cassandra Table
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // keyspaceName - cosmos DB keyspace name.
 // tableName - cosmos DB table name.
@@ -161,6 +163,8 @@ func (client CassandraResourcesClient) CreateUpdateCassandraTable(ctx context.Co
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -245,7 +249,7 @@ func (client CassandraResourcesClient) CreateUpdateCassandraTableResponder(resp 
 
 // DeleteCassandraKeyspace deletes an existing Azure Cosmos DB Cassandra keyspace.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // keyspaceName - cosmos DB keyspace name.
 func (client CassandraResourcesClient) DeleteCassandraKeyspace(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string) (result CassandraResourcesDeleteCassandraKeyspaceFuture, err error) {
@@ -260,6 +264,8 @@ func (client CassandraResourcesClient) DeleteCassandraKeyspace(ctx context.Conte
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -334,7 +340,7 @@ func (client CassandraResourcesClient) DeleteCassandraKeyspaceResponder(resp *ht
 
 // DeleteCassandraTable deletes an existing Azure Cosmos DB Cassandra table.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // keyspaceName - cosmos DB keyspace name.
 // tableName - cosmos DB table name.
@@ -350,6 +356,8 @@ func (client CassandraResourcesClient) DeleteCassandraTable(ctx context.Context,
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -426,7 +434,7 @@ func (client CassandraResourcesClient) DeleteCassandraTableResponder(resp *http.
 // GetCassandraKeyspace gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the
 // provided name.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // keyspaceName - cosmos DB keyspace name.
 func (client CassandraResourcesClient) GetCassandraKeyspace(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string) (result CassandraKeyspaceGetResults, err error) {
@@ -441,6 +449,8 @@ func (client CassandraResourcesClient) GetCassandraKeyspace(ctx context.Context,
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -517,7 +527,7 @@ func (client CassandraResourcesClient) GetCassandraKeyspaceResponder(resp *http.
 // GetCassandraKeyspaceThroughput gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB
 // database account with the provided name.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // keyspaceName - cosmos DB keyspace name.
 func (client CassandraResourcesClient) GetCassandraKeyspaceThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string) (result ThroughputSettingsGetResults, err error) {
@@ -532,6 +542,8 @@ func (client CassandraResourcesClient) GetCassandraKeyspaceThroughput(ctx contex
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -607,7 +619,7 @@ func (client CassandraResourcesClient) GetCassandraKeyspaceThroughputResponder(r
 
 // GetCassandraTable gets the Cassandra table under an existing Azure Cosmos DB database account.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // keyspaceName - cosmos DB keyspace name.
 // tableName - cosmos DB table name.
@@ -623,6 +635,8 @@ func (client CassandraResourcesClient) GetCassandraTable(ctx context.Context, re
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -700,7 +714,7 @@ func (client CassandraResourcesClient) GetCassandraTableResponder(resp *http.Res
 // GetCassandraTableThroughput gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB
 // database account with the provided name.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // keyspaceName - cosmos DB keyspace name.
 // tableName - cosmos DB table name.
@@ -716,6 +730,8 @@ func (client CassandraResourcesClient) GetCassandraTableThroughput(ctx context.C
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -792,7 +808,7 @@ func (client CassandraResourcesClient) GetCassandraTableThroughputResponder(resp
 
 // ListCassandraKeyspaces lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 func (client CassandraResourcesClient) ListCassandraKeyspaces(ctx context.Context, resourceGroupName string, accountName string) (result CassandraKeyspaceListResult, err error) {
 	if tracing.IsEnabled() {
@@ -806,6 +822,8 @@ func (client CassandraResourcesClient) ListCassandraKeyspaces(ctx context.Contex
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -880,7 +898,7 @@ func (client CassandraResourcesClient) ListCassandraKeyspacesResponder(resp *htt
 
 // ListCassandraTables lists the Cassandra table under an existing Azure Cosmos DB database account.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // keyspaceName - cosmos DB keyspace name.
 func (client CassandraResourcesClient) ListCassandraTables(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string) (result CassandraTableListResult, err error) {
@@ -895,6 +913,8 @@ func (client CassandraResourcesClient) ListCassandraTables(ctx context.Context, 
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -970,7 +990,7 @@ func (client CassandraResourcesClient) ListCassandraTablesResponder(resp *http.R
 
 // UpdateCassandraKeyspaceThroughput update RUs per second of an Azure Cosmos DB Cassandra Keyspace
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // keyspaceName - cosmos DB keyspace name.
 // updateThroughputParameters - the RUs per second of the parameters to provide for the current Cassandra
@@ -987,6 +1007,8 @@ func (client CassandraResourcesClient) UpdateCassandraKeyspaceThroughput(ctx con
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -1071,7 +1093,7 @@ func (client CassandraResourcesClient) UpdateCassandraKeyspaceThroughputResponde
 
 // UpdateCassandraTableThroughput update RUs per second of an Azure Cosmos DB Cassandra table
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // keyspaceName - cosmos DB keyspace name.
 // tableName - cosmos DB table name.
@@ -1089,6 +1111,8 @@ func (client CassandraResourcesClient) UpdateCassandraTableThroughput(ctx contex
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},

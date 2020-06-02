@@ -42,7 +42,8 @@ func NewExamplesClient(endpoint string) ExamplesClient {
 // appID - the application ID.
 // versionID - the version ID.
 // exampleLabelObject - a labeled example utterance with the expected intent and entities.
-func (client ExamplesClient) Add(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObject ExampleLabelObject) (result LabelExampleResponse, err error) {
+// enableNestedChildren - toggles nested/flat format
+func (client ExamplesClient) Add(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObject ExampleLabelObject, enableNestedChildren *bool) (result LabelExampleResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExamplesClient.Add")
 		defer func() {
@@ -53,7 +54,7 @@ func (client ExamplesClient) Add(ctx context.Context, appID uuid.UUID, versionID
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddPreparer(ctx, appID, versionID, exampleLabelObject)
+	req, err := client.AddPreparer(ctx, appID, versionID, exampleLabelObject, enableNestedChildren)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ExamplesClient", "Add", nil, "Failure preparing request")
 		return
@@ -75,7 +76,7 @@ func (client ExamplesClient) Add(ctx context.Context, appID uuid.UUID, versionID
 }
 
 // AddPreparer prepares the Add request.
-func (client ExamplesClient) AddPreparer(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObject ExampleLabelObject) (*http.Request, error) {
+func (client ExamplesClient) AddPreparer(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObject ExampleLabelObject, enableNestedChildren *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -85,12 +86,20 @@ func (client ExamplesClient) AddPreparer(ctx context.Context, appID uuid.UUID, v
 		"versionId": autorest.Encode("path", versionID),
 	}
 
+	queryParameters := map[string]interface{}{}
+	if enableNestedChildren != nil {
+		queryParameters["enableNestedChildren"] = autorest.Encode("query", *enableNestedChildren)
+	} else {
+		queryParameters["enableNestedChildren"] = autorest.Encode("query", false)
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/example", pathParameters),
-		autorest.WithJSON(exampleLabelObject))
+		autorest.WithJSON(exampleLabelObject),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -118,7 +127,8 @@ func (client ExamplesClient) AddResponder(resp *http.Response) (result LabelExam
 // appID - the application ID.
 // versionID - the version ID.
 // exampleLabelObjectArray - array of example utterances.
-func (client ExamplesClient) Batch(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObjectArray []ExampleLabelObject) (result ListBatchLabelExample, err error) {
+// enableNestedChildren - toggles nested/flat format
+func (client ExamplesClient) Batch(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObjectArray []ExampleLabelObject, enableNestedChildren *bool) (result ListBatchLabelExample, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExamplesClient.Batch")
 		defer func() {
@@ -135,7 +145,7 @@ func (client ExamplesClient) Batch(ctx context.Context, appID uuid.UUID, version
 		return result, validation.NewError("authoring.ExamplesClient", "Batch", err.Error())
 	}
 
-	req, err := client.BatchPreparer(ctx, appID, versionID, exampleLabelObjectArray)
+	req, err := client.BatchPreparer(ctx, appID, versionID, exampleLabelObjectArray, enableNestedChildren)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ExamplesClient", "Batch", nil, "Failure preparing request")
 		return
@@ -157,7 +167,7 @@ func (client ExamplesClient) Batch(ctx context.Context, appID uuid.UUID, version
 }
 
 // BatchPreparer prepares the Batch request.
-func (client ExamplesClient) BatchPreparer(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObjectArray []ExampleLabelObject) (*http.Request, error) {
+func (client ExamplesClient) BatchPreparer(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObjectArray []ExampleLabelObject, enableNestedChildren *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -167,12 +177,20 @@ func (client ExamplesClient) BatchPreparer(ctx context.Context, appID uuid.UUID,
 		"versionId": autorest.Encode("path", versionID),
 	}
 
+	queryParameters := map[string]interface{}{}
+	if enableNestedChildren != nil {
+		queryParameters["enableNestedChildren"] = autorest.Encode("query", *enableNestedChildren)
+	} else {
+		queryParameters["enableNestedChildren"] = autorest.Encode("query", false)
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples", pathParameters),
-		autorest.WithJSON(exampleLabelObjectArray))
+		autorest.WithJSON(exampleLabelObjectArray),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -276,7 +294,8 @@ func (client ExamplesClient) DeleteResponder(resp *http.Response) (result Operat
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ExamplesClient) List(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListLabeledUtterance, err error) {
+// enableNestedChildren - toggles nested/flat format
+func (client ExamplesClient) List(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32, enableNestedChildren *bool) (result ListLabeledUtterance, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExamplesClient.List")
 		defer func() {
@@ -299,7 +318,7 @@ func (client ExamplesClient) List(ctx context.Context, appID uuid.UUID, versionI
 		return result, validation.NewError("authoring.ExamplesClient", "List", err.Error())
 	}
 
-	req, err := client.ListPreparer(ctx, appID, versionID, skip, take)
+	req, err := client.ListPreparer(ctx, appID, versionID, skip, take, enableNestedChildren)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ExamplesClient", "List", nil, "Failure preparing request")
 		return
@@ -321,7 +340,7 @@ func (client ExamplesClient) List(ctx context.Context, appID uuid.UUID, versionI
 }
 
 // ListPreparer prepares the List request.
-func (client ExamplesClient) ListPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client ExamplesClient) ListPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32, enableNestedChildren *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -341,6 +360,11 @@ func (client ExamplesClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 		queryParameters["take"] = autorest.Encode("query", *take)
 	} else {
 		queryParameters["take"] = autorest.Encode("query", 100)
+	}
+	if enableNestedChildren != nil {
+		queryParameters["enableNestedChildren"] = autorest.Encode("query", *enableNestedChildren)
+	} else {
+		queryParameters["enableNestedChildren"] = autorest.Encode("query", false)
 	}
 
 	preparer := autorest.CreatePreparer(

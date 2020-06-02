@@ -204,6 +204,64 @@ func PossiblePasswordNameValues() []PasswordName {
 	return []PasswordName{Password, Password2}
 }
 
+// PipelineOptions enumerates the values for pipeline options.
+type PipelineOptions string
+
+const (
+	// ContinueOnErrors ...
+	ContinueOnErrors PipelineOptions = "ContinueOnErrors"
+	// DeleteSourceBlobOnSuccess ...
+	DeleteSourceBlobOnSuccess PipelineOptions = "DeleteSourceBlobOnSuccess"
+	// OverwriteBlobs ...
+	OverwriteBlobs PipelineOptions = "OverwriteBlobs"
+	// OverwriteTags ...
+	OverwriteTags PipelineOptions = "OverwriteTags"
+)
+
+// PossiblePipelineOptionsValues returns an array of possible values for the PipelineOptions const type.
+func PossiblePipelineOptionsValues() []PipelineOptions {
+	return []PipelineOptions{ContinueOnErrors, DeleteSourceBlobOnSuccess, OverwriteBlobs, OverwriteTags}
+}
+
+// PipelineRunSourceType enumerates the values for pipeline run source type.
+type PipelineRunSourceType string
+
+const (
+	// AzureStorageBlob ...
+	AzureStorageBlob PipelineRunSourceType = "AzureStorageBlob"
+)
+
+// PossiblePipelineRunSourceTypeValues returns an array of possible values for the PipelineRunSourceType const type.
+func PossiblePipelineRunSourceTypeValues() []PipelineRunSourceType {
+	return []PipelineRunSourceType{AzureStorageBlob}
+}
+
+// PipelineRunTargetType enumerates the values for pipeline run target type.
+type PipelineRunTargetType string
+
+const (
+	// PipelineRunTargetTypeAzureStorageBlob ...
+	PipelineRunTargetTypeAzureStorageBlob PipelineRunTargetType = "AzureStorageBlob"
+)
+
+// PossiblePipelineRunTargetTypeValues returns an array of possible values for the PipelineRunTargetType const type.
+func PossiblePipelineRunTargetTypeValues() []PipelineRunTargetType {
+	return []PipelineRunTargetType{PipelineRunTargetTypeAzureStorageBlob}
+}
+
+// PipelineSourceType enumerates the values for pipeline source type.
+type PipelineSourceType string
+
+const (
+	// AzureStorageBlobContainer ...
+	AzureStorageBlobContainer PipelineSourceType = "AzureStorageBlobContainer"
+)
+
+// PossiblePipelineSourceTypeValues returns an array of possible values for the PipelineSourceType const type.
+func PossiblePipelineSourceTypeValues() []PipelineSourceType {
+	return []PipelineSourceType{AzureStorageBlobContainer}
+}
+
 // PolicyStatus enumerates the values for policy status.
 type PolicyStatus string
 
@@ -240,6 +298,21 @@ const (
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{Canceled, Creating, Deleting, Failed, Succeeded, Updating}
+}
+
+// PublicNetworkAccess enumerates the values for public network access.
+type PublicNetworkAccess string
+
+const (
+	// PublicNetworkAccessDisabled ...
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	// PublicNetworkAccessEnabled ...
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns an array of possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{PublicNetworkAccessDisabled, PublicNetworkAccessEnabled}
 }
 
 // RegistryUsageUnit enumerates the values for registry usage unit.
@@ -1141,7 +1214,7 @@ type BaseImageTrigger struct {
 	UpdateTriggerEndpoint *string `json:"updateTriggerEndpoint,omitempty"`
 	// UpdateTriggerPayloadType - Type of Payload body for Base image update triggers. Possible values include: 'UpdateTriggerPayloadTypeDefault', 'UpdateTriggerPayloadTypeToken'
 	UpdateTriggerPayloadType UpdateTriggerPayloadType `json:"updateTriggerPayloadType,omitempty"`
-	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusEnabled', 'TriggerStatusDisabled'
 	Status TriggerStatus `json:"status,omitempty"`
 	// Name - The name of the trigger.
 	Name *string `json:"name,omitempty"`
@@ -1155,7 +1228,7 @@ type BaseImageTriggerUpdateParameters struct {
 	UpdateTriggerEndpoint *string `json:"updateTriggerEndpoint,omitempty"`
 	// UpdateTriggerPayloadType - Type of Payload body for Base image update triggers. Possible values include: 'UpdateTriggerPayloadTypeDefault', 'UpdateTriggerPayloadTypeToken'
 	UpdateTriggerPayloadType UpdateTriggerPayloadType `json:"updateTriggerPayloadType,omitempty"`
-	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusEnabled', 'TriggerStatusDisabled'
 	Status TriggerStatus `json:"status,omitempty"`
 	// Name - The name of the trigger.
 	Name *string `json:"name,omitempty"`
@@ -2004,6 +2077,313 @@ func (erm EventResponseMessage) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ExportPipeline an object that represents an export pipeline for a container registry.
+type ExportPipeline struct {
+	autorest.Response `json:"-"`
+	// Identity - The identity of the export pipeline.
+	Identity *IdentityProperties `json:"identity,omitempty"`
+	// ExportPipelineProperties - The properties of the export pipeline.
+	*ExportPipelineProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExportPipeline.
+func (ep ExportPipeline) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ep.Identity != nil {
+		objectMap["identity"] = ep.Identity
+	}
+	if ep.ExportPipelineProperties != nil {
+		objectMap["properties"] = ep.ExportPipelineProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ExportPipeline struct.
+func (ep *ExportPipeline) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "identity":
+			if v != nil {
+				var identity IdentityProperties
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				ep.Identity = &identity
+			}
+		case "properties":
+			if v != nil {
+				var exportPipelineProperties ExportPipelineProperties
+				err = json.Unmarshal(*v, &exportPipelineProperties)
+				if err != nil {
+					return err
+				}
+				ep.ExportPipelineProperties = &exportPipelineProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ep.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ep.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ep.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ExportPipelineListResult the result of a request to list export pipelines for a container registry.
+type ExportPipelineListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of export pipelines. Since this list may be incomplete, the nextLink field should be used to request the next list of export pipelines.
+	Value *[]ExportPipeline `json:"value,omitempty"`
+	// NextLink - The URI that can be used to request the next list of pipeline runs.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ExportPipelineListResultIterator provides access to a complete listing of ExportPipeline values.
+type ExportPipelineListResultIterator struct {
+	i    int
+	page ExportPipelineListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ExportPipelineListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExportPipelineListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ExportPipelineListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ExportPipelineListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ExportPipelineListResultIterator) Response() ExportPipelineListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ExportPipelineListResultIterator) Value() ExportPipeline {
+	if !iter.page.NotDone() {
+		return ExportPipeline{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ExportPipelineListResultIterator type.
+func NewExportPipelineListResultIterator(page ExportPipelineListResultPage) ExportPipelineListResultIterator {
+	return ExportPipelineListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (eplr ExportPipelineListResult) IsEmpty() bool {
+	return eplr.Value == nil || len(*eplr.Value) == 0
+}
+
+// exportPipelineListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (eplr ExportPipelineListResult) exportPipelineListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if eplr.NextLink == nil || len(to.String(eplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(eplr.NextLink)))
+}
+
+// ExportPipelineListResultPage contains a page of ExportPipeline values.
+type ExportPipelineListResultPage struct {
+	fn   func(context.Context, ExportPipelineListResult) (ExportPipelineListResult, error)
+	eplr ExportPipelineListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ExportPipelineListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExportPipelineListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.eplr)
+	if err != nil {
+		return err
+	}
+	page.eplr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ExportPipelineListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ExportPipelineListResultPage) NotDone() bool {
+	return !page.eplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ExportPipelineListResultPage) Response() ExportPipelineListResult {
+	return page.eplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ExportPipelineListResultPage) Values() []ExportPipeline {
+	if page.eplr.IsEmpty() {
+		return nil
+	}
+	return *page.eplr.Value
+}
+
+// Creates a new instance of the ExportPipelineListResultPage type.
+func NewExportPipelineListResultPage(getNextPage func(context.Context, ExportPipelineListResult) (ExportPipelineListResult, error)) ExportPipelineListResultPage {
+	return ExportPipelineListResultPage{fn: getNextPage}
+}
+
+// ExportPipelineProperties the properties of an export pipeline.
+type ExportPipelineProperties struct {
+	// Target - The target properties of the export pipeline.
+	Target *ExportPipelineTargetProperties `json:"target,omitempty"`
+	// Options - The list of all options configured for the pipeline.
+	Options *[]PipelineOptions `json:"options,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state of the pipeline at the time the operation was called. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// ExportPipelinesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ExportPipelinesCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ExportPipelinesCreateFuture) Result(client ExportPipelinesClient) (ep ExportPipeline, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.ExportPipelinesCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ep.Response.Response, err = future.GetResult(sender); err == nil && ep.Response.Response.StatusCode != http.StatusNoContent {
+		ep, err = client.CreateResponder(ep.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesCreateFuture", "Result", ep.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ExportPipelinesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ExportPipelinesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ExportPipelinesDeleteFuture) Result(client ExportPipelinesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.ExportPipelinesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ExportPipelineTargetProperties the properties of the export pipeline target.
+type ExportPipelineTargetProperties struct {
+	// Type - The type of target for the export pipeline.
+	Type *string `json:"type,omitempty"`
+	// URI - The target uri of the export pipeline.
+	// When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
+	// When 'AzureStorageBlobContainer':  "https://accountName.blob.core.windows.net/containerName"
+	URI *string `json:"uri,omitempty"`
+	// KeyVaultURI - They key vault secret uri to obtain the target storage SAS token.
+	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+}
+
 // FileTaskRunRequest the request parameters for a scheduling run against a task file.
 type FileTaskRunRequest struct {
 	// TaskFilePath - The template/definition file path relative to the source.
@@ -2320,6 +2700,315 @@ type ImportImageParameters struct {
 	UntaggedTargetRepositories *[]string `json:"untaggedTargetRepositories,omitempty"`
 	// Mode - When Force, any existing target tags will be overwritten. When NoForce, any existing target tags will fail the operation before any copying begins. Possible values include: 'NoForce', 'Force'
 	Mode ImportMode `json:"mode,omitempty"`
+}
+
+// ImportPipeline an object that represents an import pipeline for a container registry.
+type ImportPipeline struct {
+	autorest.Response `json:"-"`
+	// Identity - The identity of the import pipeline.
+	Identity *IdentityProperties `json:"identity,omitempty"`
+	// ImportPipelineProperties - The properties of the import pipeline.
+	*ImportPipelineProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImportPipeline.
+func (IP ImportPipeline) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if IP.Identity != nil {
+		objectMap["identity"] = IP.Identity
+	}
+	if IP.ImportPipelineProperties != nil {
+		objectMap["properties"] = IP.ImportPipelineProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ImportPipeline struct.
+func (IP *ImportPipeline) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "identity":
+			if v != nil {
+				var identity IdentityProperties
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				IP.Identity = &identity
+			}
+		case "properties":
+			if v != nil {
+				var importPipelineProperties ImportPipelineProperties
+				err = json.Unmarshal(*v, &importPipelineProperties)
+				if err != nil {
+					return err
+				}
+				IP.ImportPipelineProperties = &importPipelineProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				IP.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				IP.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				IP.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ImportPipelineListResult the result of a request to list import pipelines for a container registry.
+type ImportPipelineListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of import pipelines. Since this list may be incomplete, the nextLink field should be used to request the next list of import pipelines.
+	Value *[]ImportPipeline `json:"value,omitempty"`
+	// NextLink - The URI that can be used to request the next list of pipeline runs.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ImportPipelineListResultIterator provides access to a complete listing of ImportPipeline values.
+type ImportPipelineListResultIterator struct {
+	i    int
+	page ImportPipelineListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ImportPipelineListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ImportPipelineListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ImportPipelineListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ImportPipelineListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ImportPipelineListResultIterator) Response() ImportPipelineListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ImportPipelineListResultIterator) Value() ImportPipeline {
+	if !iter.page.NotDone() {
+		return ImportPipeline{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ImportPipelineListResultIterator type.
+func NewImportPipelineListResultIterator(page ImportPipelineListResultPage) ImportPipelineListResultIterator {
+	return ImportPipelineListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (iplr ImportPipelineListResult) IsEmpty() bool {
+	return iplr.Value == nil || len(*iplr.Value) == 0
+}
+
+// importPipelineListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (iplr ImportPipelineListResult) importPipelineListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if iplr.NextLink == nil || len(to.String(iplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(iplr.NextLink)))
+}
+
+// ImportPipelineListResultPage contains a page of ImportPipeline values.
+type ImportPipelineListResultPage struct {
+	fn   func(context.Context, ImportPipelineListResult) (ImportPipelineListResult, error)
+	iplr ImportPipelineListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ImportPipelineListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ImportPipelineListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.iplr)
+	if err != nil {
+		return err
+	}
+	page.iplr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ImportPipelineListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ImportPipelineListResultPage) NotDone() bool {
+	return !page.iplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ImportPipelineListResultPage) Response() ImportPipelineListResult {
+	return page.iplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ImportPipelineListResultPage) Values() []ImportPipeline {
+	if page.iplr.IsEmpty() {
+		return nil
+	}
+	return *page.iplr.Value
+}
+
+// Creates a new instance of the ImportPipelineListResultPage type.
+func NewImportPipelineListResultPage(getNextPage func(context.Context, ImportPipelineListResult) (ImportPipelineListResult, error)) ImportPipelineListResultPage {
+	return ImportPipelineListResultPage{fn: getNextPage}
+}
+
+// ImportPipelineProperties the properties of an import pipeline.
+type ImportPipelineProperties struct {
+	// Source - The source properties of the import pipeline.
+	Source *ImportPipelineSourceProperties `json:"source,omitempty"`
+	// Trigger - The properties that describe the trigger of the import pipeline.
+	Trigger *PipelineTriggerProperties `json:"trigger,omitempty"`
+	// Options - The list of all options configured for the pipeline.
+	Options *[]PipelineOptions `json:"options,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state of the pipeline at the time the operation was called. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// ImportPipelinesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ImportPipelinesCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ImportPipelinesCreateFuture) Result(client ImportPipelinesClient) (IP ImportPipeline, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.ImportPipelinesCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.ImportPipelinesCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if IP.Response.Response, err = future.GetResult(sender); err == nil && IP.Response.Response.StatusCode != http.StatusNoContent {
+		IP, err = client.CreateResponder(IP.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.ImportPipelinesCreateFuture", "Result", IP.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ImportPipelinesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ImportPipelinesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ImportPipelinesDeleteFuture) Result(client ImportPipelinesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.ImportPipelinesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.ImportPipelinesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ImportPipelineSourceProperties the properties of the import pipeline source.
+type ImportPipelineSourceProperties struct {
+	// Type - The type of source for the import pipeline. Possible values include: 'AzureStorageBlobContainer'
+	Type PipelineSourceType `json:"type,omitempty"`
+	// URI - The source uri of the import pipeline.
+	// When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
+	// When 'AzureStorageBlobContainer': "https://accountName.blob.core.windows.net/containerName"
+	URI *string `json:"uri,omitempty"`
+	// KeyVaultURI - They key vault secret uri to obtain the source storage SAS token.
+	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
 }
 
 // ImportSource ...
@@ -2665,6 +3354,370 @@ type OverrideTaskStepProperties struct {
 	Values *[]SetValue `json:"values,omitempty"`
 	// UpdateTriggerToken - Base64 encoded update trigger token that will be attached with the base image trigger webhook.
 	UpdateTriggerToken *string `json:"updateTriggerToken,omitempty"`
+}
+
+// PipelineRun an object that represents a pipeline run for a container registry.
+type PipelineRun struct {
+	autorest.Response `json:"-"`
+	// PipelineRunProperties - The properties of a pipeline run.
+	*PipelineRunProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PipelineRun.
+func (pr PipelineRun) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pr.PipelineRunProperties != nil {
+		objectMap["properties"] = pr.PipelineRunProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PipelineRun struct.
+func (pr *PipelineRun) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var pipelineRunProperties PipelineRunProperties
+				err = json.Unmarshal(*v, &pipelineRunProperties)
+				if err != nil {
+					return err
+				}
+				pr.PipelineRunProperties = &pipelineRunProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PipelineRunListResult the result of a request to list pipeline runs for a container registry.
+type PipelineRunListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of pipeline runs. Since this list may be incomplete, the nextLink field should be used to request the next list of pipeline runs.
+	Value *[]PipelineRun `json:"value,omitempty"`
+	// NextLink - The URI that can be used to request the next list of pipeline runs.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PipelineRunListResultIterator provides access to a complete listing of PipelineRun values.
+type PipelineRunListResultIterator struct {
+	i    int
+	page PipelineRunListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PipelineRunListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PipelineRunListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PipelineRunListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PipelineRunListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PipelineRunListResultIterator) Response() PipelineRunListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PipelineRunListResultIterator) Value() PipelineRun {
+	if !iter.page.NotDone() {
+		return PipelineRun{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PipelineRunListResultIterator type.
+func NewPipelineRunListResultIterator(page PipelineRunListResultPage) PipelineRunListResultIterator {
+	return PipelineRunListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (prlr PipelineRunListResult) IsEmpty() bool {
+	return prlr.Value == nil || len(*prlr.Value) == 0
+}
+
+// pipelineRunListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (prlr PipelineRunListResult) pipelineRunListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if prlr.NextLink == nil || len(to.String(prlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(prlr.NextLink)))
+}
+
+// PipelineRunListResultPage contains a page of PipelineRun values.
+type PipelineRunListResultPage struct {
+	fn   func(context.Context, PipelineRunListResult) (PipelineRunListResult, error)
+	prlr PipelineRunListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PipelineRunListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PipelineRunListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.prlr)
+	if err != nil {
+		return err
+	}
+	page.prlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PipelineRunListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PipelineRunListResultPage) NotDone() bool {
+	return !page.prlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PipelineRunListResultPage) Response() PipelineRunListResult {
+	return page.prlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PipelineRunListResultPage) Values() []PipelineRun {
+	if page.prlr.IsEmpty() {
+		return nil
+	}
+	return *page.prlr.Value
+}
+
+// Creates a new instance of the PipelineRunListResultPage type.
+func NewPipelineRunListResultPage(getNextPage func(context.Context, PipelineRunListResult) (PipelineRunListResult, error)) PipelineRunListResultPage {
+	return PipelineRunListResultPage{fn: getNextPage}
+}
+
+// PipelineRunProperties the properties of a pipeline run.
+type PipelineRunProperties struct {
+	// ProvisioningState - READ-ONLY; The provisioning state of a pipeline run. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// Request - The request parameters for a pipeline run.
+	Request *PipelineRunRequest `json:"request,omitempty"`
+	// Response - READ-ONLY; The response of a pipeline run.
+	Response *PipelineRunResponse `json:"response,omitempty"`
+	// ForceUpdateTag - How the pipeline run should be forced to recreate even if the pipeline run configuration has not changed.
+	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+}
+
+// PipelineRunRequest the request properties provided for a pipeline run.
+type PipelineRunRequest struct {
+	// PipelineResourceID - The resource ID of the pipeline to run.
+	PipelineResourceID *string `json:"pipelineResourceId,omitempty"`
+	// Artifacts - List of source artifacts to be transferred by the pipeline.
+	// Specify an image by repository ('hello-world'). This will use the 'latest' tag.
+	// Specify an image by tag ('hello-world:latest').
+	// Specify an image by sha256-based manifest digest ('hello-world@sha256:abc123').
+	Artifacts *[]string `json:"artifacts,omitempty"`
+	// Source - The source properties of the pipeline run.
+	Source *PipelineRunSourceProperties `json:"source,omitempty"`
+	// Target - The target properties of the pipeline run.
+	Target *PipelineRunTargetProperties `json:"target,omitempty"`
+	// CatalogDigest - The digest of the tar used to transfer the artifacts.
+	CatalogDigest *string `json:"catalogDigest,omitempty"`
+}
+
+// PipelineRunResponse the response properties returned for a pipeline run.
+type PipelineRunResponse struct {
+	// Status - The current status of the pipeline run.
+	Status *string `json:"status,omitempty"`
+	// ImportedArtifacts - The artifacts imported in the pipeline run.
+	ImportedArtifacts *[]string `json:"importedArtifacts,omitempty"`
+	// Progress - The current progress of the copy operation.
+	Progress *ProgressProperties `json:"progress,omitempty"`
+	// StartTime - The time the pipeline run started.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// FinishTime - The time the pipeline run finished.
+	FinishTime *date.Time `json:"finishTime,omitempty"`
+	// Source - The source of the pipeline run.
+	Source *ImportPipelineSourceProperties `json:"source,omitempty"`
+	// Target - The target of the pipeline run.
+	Target *ExportPipelineTargetProperties `json:"target,omitempty"`
+	// CatalogDigest - The digest of the tar used to transfer the artifacts.
+	CatalogDigest *string `json:"catalogDigest,omitempty"`
+	// Trigger - The trigger that caused the pipeline run.
+	Trigger *PipelineTriggerDescriptor `json:"trigger,omitempty"`
+	// PipelineRunErrorMessage - The detailed error message for the pipeline run in the case of failure.
+	PipelineRunErrorMessage *string `json:"pipelineRunErrorMessage,omitempty"`
+}
+
+// PipelineRunsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type PipelineRunsCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *PipelineRunsCreateFuture) Result(client PipelineRunsClient) (pr PipelineRun, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.PipelineRunsCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.PipelineRunsCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if pr.Response.Response, err = future.GetResult(sender); err == nil && pr.Response.Response.StatusCode != http.StatusNoContent {
+		pr, err = client.CreateResponder(pr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.PipelineRunsCreateFuture", "Result", pr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// PipelineRunsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type PipelineRunsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *PipelineRunsDeleteFuture) Result(client PipelineRunsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.PipelineRunsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.PipelineRunsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// PipelineRunSourceProperties ...
+type PipelineRunSourceProperties struct {
+	// Type - The type of the source. Possible values include: 'AzureStorageBlob'
+	Type PipelineRunSourceType `json:"type,omitempty"`
+	// Name - The name of the source.
+	Name *string `json:"name,omitempty"`
+}
+
+// PipelineRunTargetProperties ...
+type PipelineRunTargetProperties struct {
+	// Type - The type of the target. Possible values include: 'PipelineRunTargetTypeAzureStorageBlob'
+	Type PipelineRunTargetType `json:"type,omitempty"`
+	// Name - The name of the target.
+	Name *string `json:"name,omitempty"`
+}
+
+// PipelineSourceTriggerDescriptor ...
+type PipelineSourceTriggerDescriptor struct {
+	// Timestamp - The timestamp when the source update happened.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+}
+
+// PipelineSourceTriggerProperties ...
+type PipelineSourceTriggerProperties struct {
+	// Status - The current status of the source trigger. Possible values include: 'TriggerStatusEnabled', 'TriggerStatusDisabled'
+	Status TriggerStatus `json:"status,omitempty"`
+}
+
+// PipelineTriggerDescriptor ...
+type PipelineTriggerDescriptor struct {
+	// SourceTrigger - The source trigger that caused the pipeline run.
+	SourceTrigger *PipelineSourceTriggerDescriptor `json:"sourceTrigger,omitempty"`
+}
+
+// PipelineTriggerProperties ...
+type PipelineTriggerProperties struct {
+	// SourceTrigger - The source trigger properties of the pipeline.
+	SourceTrigger *PipelineSourceTriggerProperties `json:"sourceTrigger,omitempty"`
 }
 
 // PlatformProperties the platform properties against which the run has to happen.
@@ -3233,6 +4286,12 @@ type PrivateLinkServiceConnectionState struct {
 	ActionsRequired ActionsRequired `json:"actionsRequired,omitempty"`
 }
 
+// ProgressProperties ...
+type ProgressProperties struct {
+	// Percentage - The percentage complete of the copy operation.
+	Percentage *string `json:"percentage,omitempty"`
+}
+
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
 // required location and tags.
 type ProxyResource struct {
@@ -3755,6 +4814,8 @@ type RegistryProperties struct {
 	DataEndpointHostNames *[]string `json:"dataEndpointHostNames,omitempty"`
 	// PrivateEndpointConnections - READ-ONLY; List of private endpoint connections for a container registry.
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	// PublicNetworkAccess - Whether or not public network access is allowed for the container registry. Possible values include: 'PublicNetworkAccessEnabled', 'PublicNetworkAccessDisabled'
+	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 }
 
 // RegistryPropertiesUpdateParameters the parameters for updating the properties of a container registry.
@@ -3769,6 +4830,8 @@ type RegistryPropertiesUpdateParameters struct {
 	Encryption *EncryptionProperty `json:"encryption,omitempty"`
 	// DataEndpointEnabled - Enable a single data endpoint per region for serving data.
 	DataEndpointEnabled *bool `json:"dataEndpointEnabled,omitempty"`
+	// PublicNetworkAccess - Whether or not public network access is allowed for the container registry. Possible values include: 'PublicNetworkAccessEnabled', 'PublicNetworkAccessDisabled'
+	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 }
 
 // RegistryUpdateParameters the parameters for updating a container registry.
@@ -4124,6 +5187,8 @@ type ReplicationProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Status - READ-ONLY; The status of the replication at the time the operation was called.
 	Status *Status `json:"status,omitempty"`
+	// RegionEndpointEnabled - Specifies whether the replication's regional endpoint is enabled. Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue to be synced with other replications.
+	RegionEndpointEnabled *bool `json:"regionEndpointEnabled,omitempty"`
 }
 
 // ReplicationsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -4211,6 +5276,8 @@ func (future *ReplicationsUpdateFuture) Result(client ReplicationsClient) (r Rep
 type ReplicationUpdateParameters struct {
 	// Tags - The tags for the replication.
 	Tags map[string]*string `json:"tags"`
+	// ReplicationUpdateParametersProperties - The parameters for updating a replication's properties
+	*ReplicationUpdateParametersProperties `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ReplicationUpdateParameters.
@@ -4219,7 +5286,49 @@ func (rup ReplicationUpdateParameters) MarshalJSON() ([]byte, error) {
 	if rup.Tags != nil {
 		objectMap["tags"] = rup.Tags
 	}
+	if rup.ReplicationUpdateParametersProperties != nil {
+		objectMap["properties"] = rup.ReplicationUpdateParametersProperties
+	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ReplicationUpdateParameters struct.
+func (rup *ReplicationUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				rup.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var replicationUpdateParametersProperties ReplicationUpdateParametersProperties
+				err = json.Unmarshal(*v, &replicationUpdateParametersProperties)
+				if err != nil {
+					return err
+				}
+				rup.ReplicationUpdateParametersProperties = &replicationUpdateParametersProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// ReplicationUpdateParametersProperties ...
+type ReplicationUpdateParametersProperties struct {
+	// RegionEndpointEnabled - Specifies whether the replication's regional endpoint is enabled. Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue to be synced with other replications.
+	RegionEndpointEnabled *bool `json:"regionEndpointEnabled,omitempty"`
 }
 
 // Request the request that generated the event.
@@ -5167,7 +6276,7 @@ type SourceTrigger struct {
 	SourceRepository *SourceProperties `json:"sourceRepository,omitempty"`
 	// SourceTriggerEvents - The source event corresponding to the trigger.
 	SourceTriggerEvents *[]SourceTriggerEvent `json:"sourceTriggerEvents,omitempty"`
-	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusEnabled', 'TriggerStatusDisabled'
 	Status TriggerStatus `json:"status,omitempty"`
 	// Name - The name of the trigger.
 	Name *string `json:"name,omitempty"`
@@ -5197,7 +6306,7 @@ type SourceTriggerUpdateParameters struct {
 	SourceRepository *SourceUpdateParameters `json:"sourceRepository,omitempty"`
 	// SourceTriggerEvents - The source event corresponding to the trigger.
 	SourceTriggerEvents *[]SourceTriggerEvent `json:"sourceTriggerEvents,omitempty"`
-	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusEnabled', 'TriggerStatusDisabled'
 	Status TriggerStatus `json:"status,omitempty"`
 	// Name - The name of the trigger.
 	Name *string `json:"name,omitempty"`
@@ -6697,7 +7806,7 @@ func (tup *TaskUpdateParameters) UnmarshalJSON(body []byte) error {
 type TimerTrigger struct {
 	// Schedule - The CRON expression for the task schedule
 	Schedule *string `json:"schedule,omitempty"`
-	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusEnabled', 'TriggerStatusDisabled'
 	Status TriggerStatus `json:"status,omitempty"`
 	// Name - The name of the trigger.
 	Name *string `json:"name,omitempty"`
@@ -6715,7 +7824,7 @@ type TimerTriggerDescriptor struct {
 type TimerTriggerUpdateParameters struct {
 	// Schedule - The CRON expression for the task schedule
 	Schedule *string `json:"schedule,omitempty"`
-	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusEnabled', 'TriggerStatusDisabled'
 	Status TriggerStatus `json:"status,omitempty"`
 	// Name - The name of the trigger.
 	Name *string `json:"name,omitempty"`

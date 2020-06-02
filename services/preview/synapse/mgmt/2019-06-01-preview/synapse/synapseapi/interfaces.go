@@ -357,3 +357,17 @@ type PrivateEndpointConnectionsClientAPI interface {
 }
 
 var _ PrivateEndpointConnectionsClientAPI = (*synapse.PrivateEndpointConnectionsClient)(nil)
+
+// PrivateLinkHubsClientAPI contains the set of methods on the PrivateLinkHubsClient type.
+type PrivateLinkHubsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateLinkHubInfo synapse.PrivateLinkHub) (result synapse.PrivateLinkHub, err error)
+	Delete(ctx context.Context, resourceGroupName string, privateLinkHubName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, privateLinkHubName string) (result synapse.PrivateLinkHub, err error)
+	List(ctx context.Context) (result synapse.PrivateLinkHubInfoListResultPage, err error)
+	ListComplete(ctx context.Context) (result synapse.PrivateLinkHubInfoListResultIterator, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result synapse.PrivateLinkHubInfoListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result synapse.PrivateLinkHubInfoListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateLinkHubPatchInfo synapse.PrivateLinkHubPatchInfo) (result synapse.PrivateLinkHub, err error)
+}
+
+var _ PrivateLinkHubsClientAPI = (*synapse.PrivateLinkHubsClient)(nil)

@@ -21,6 +21,7 @@ package storagecacheapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2020-03-01/storagecache/storagecacheapi"
 
+type AscOperationsClientAPI = original.AscOperationsClientAPI
 type CachesClientAPI = original.CachesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type SkusClientAPI = original.SkusClientAPI

@@ -32,15 +32,15 @@ type CollectionRegionClient struct {
 }
 
 // NewCollectionRegionClient creates an instance of the CollectionRegionClient client.
-func NewCollectionRegionClient(subscriptionID string) CollectionRegionClient {
-	return NewCollectionRegionClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewCollectionRegionClient(subscriptionID string, subscriptionID1 string) CollectionRegionClient {
+	return NewCollectionRegionClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewCollectionRegionClientWithBaseURI creates an instance of the CollectionRegionClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionRegionClient {
-	return CollectionRegionClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionRegionClient {
+	return CollectionRegionClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given database account, collection and

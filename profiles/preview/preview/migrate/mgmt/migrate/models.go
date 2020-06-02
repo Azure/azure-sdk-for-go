@@ -182,9 +182,15 @@ type MachinesClient = original.MachinesClient
 type NetworkConfiguration = original.NetworkConfiguration
 type OperatingSystem = original.OperatingSystem
 type OperatingSystemConfiguration = original.OperatingSystemConfiguration
+type Operation = original.Operation
+type OperationDisplay = original.OperationDisplay
+type OperationResultList = original.OperationResultList
+type OperationResultListIterator = original.OperationResultListIterator
+type OperationResultListPage = original.OperationResultListPage
 type OperationStatus = original.OperationStatus
 type OperationStatusError = original.OperationStatusError
 type OperationStatusProperties = original.OperationStatusProperties
+type OperationsClient = original.OperationsClient
 type OtherDatabase = original.OtherDatabase
 type RunAsAccountProperties = original.RunAsAccountProperties
 type RunAsAccountsClient = original.RunAsAccountsClient
@@ -313,6 +319,18 @@ func NewMachinesClient() MachinesClient {
 }
 func NewMachinesClientWithBaseURI(baseURI string) MachinesClient {
 	return original.NewMachinesClientWithBaseURI(baseURI)
+}
+func NewOperationResultListIterator(page OperationResultListPage) OperationResultListIterator {
+	return original.NewOperationResultListIterator(page)
+}
+func NewOperationResultListPage(getNextPage func(context.Context, OperationResultList) (OperationResultList, error)) OperationResultListPage {
+	return original.NewOperationResultListPage(getNextPage)
+}
+func NewOperationsClient() OperationsClient {
+	return original.NewOperationsClient()
+}
+func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI)
 }
 func NewRunAsAccountsClient() RunAsAccountsClient {
 	return original.NewRunAsAccountsClient()

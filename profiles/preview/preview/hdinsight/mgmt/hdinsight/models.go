@@ -167,6 +167,8 @@ type ExtensionsDisableMonitoringFuture = original.ExtensionsDisableMonitoringFut
 type ExtensionsEnableMonitoringFuture = original.ExtensionsEnableMonitoringFuture
 type GatewaySettings = original.GatewaySettings
 type HardwareProfile = original.HardwareProfile
+type HostInfo = original.HostInfo
+type HostInfoListResult = original.HostInfoListResult
 type KafkaRestProperties = original.KafkaRestProperties
 type LinuxOperatingSystemProfile = original.LinuxOperatingSystemProfile
 type LocalizedName = original.LocalizedName
@@ -214,6 +216,8 @@ type VMSizeCompatibilityFilterV2 = original.VMSizeCompatibilityFilterV2
 type VMSizesCapability = original.VMSizesCapability
 type VersionSpec = original.VersionSpec
 type VersionsCapability = original.VersionsCapability
+type VirtualMachinesClient = original.VirtualMachinesClient
+type VirtualMachinesRestartHostsFuture = original.VirtualMachinesRestartHostsFuture
 type VirtualNetworkProfile = original.VirtualNetworkProfile
 
 func New(subscriptionID string) BaseClient {
@@ -296,6 +300,12 @@ func NewScriptExecutionHistoryClient(subscriptionID string) ScriptExecutionHisto
 }
 func NewScriptExecutionHistoryClientWithBaseURI(baseURI string, subscriptionID string) ScriptExecutionHistoryClient {
 	return original.NewScriptExecutionHistoryClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClient(subscriptionID)
+}
+func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

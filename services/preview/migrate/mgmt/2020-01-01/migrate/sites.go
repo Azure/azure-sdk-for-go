@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// SitesClient is the client for the Sites methods of the Migrate service.
+// SitesClient is the discover your workloads for Azure.
 type SitesClient struct {
 	BaseClient
 }

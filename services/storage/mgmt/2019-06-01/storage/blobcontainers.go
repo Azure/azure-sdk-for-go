@@ -1000,7 +1000,8 @@ func (client BlobContainersClient) LeaseResponder(resp *http.Response) (result L
 // must be between 3 and 24 characters in length and use numbers and lower-case letters only.
 // maxpagesize - optional. Specified maximum number of containers that can be included in the list.
 // filter - optional. When specified, only container names starting with the filter will be listed.
-func (client BlobContainersClient) List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (result ListContainerItemsPage, err error) {
+// include - optional, used to include the properties for soft deleted blob containers.
+func (client BlobContainersClient) List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, include ListContainersInclude) (result ListContainerItemsPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlobContainersClient.List")
 		defer func() {
@@ -1025,7 +1026,7 @@ func (client BlobContainersClient) List(ctx context.Context, resourceGroupName s
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, accountName, maxpagesize, filter)
+	req, err := client.ListPreparer(ctx, resourceGroupName, accountName, maxpagesize, filter, include)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.BlobContainersClient", "List", nil, "Failure preparing request")
 		return
@@ -1047,7 +1048,7 @@ func (client BlobContainersClient) List(ctx context.Context, resourceGroupName s
 }
 
 // ListPreparer prepares the List request.
-func (client BlobContainersClient) ListPreparer(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (*http.Request, error) {
+func (client BlobContainersClient) ListPreparer(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, include ListContainersInclude) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1063,6 +1064,9 @@ func (client BlobContainersClient) ListPreparer(ctx context.Context, resourceGro
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(string(include)) > 0 {
+		queryParameters["$include"] = autorest.Encode("query", include)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1114,7 +1118,7 @@ func (client BlobContainersClient) listNextResults(ctx context.Context, lastResu
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client BlobContainersClient) ListComplete(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (result ListContainerItemsIterator, err error) {
+func (client BlobContainersClient) ListComplete(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, include ListContainersInclude) (result ListContainerItemsIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlobContainersClient.List")
 		defer func() {
@@ -1125,7 +1129,7 @@ func (client BlobContainersClient) ListComplete(ctx context.Context, resourceGro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, resourceGroupName, accountName, maxpagesize, filter)
+	result.page, err = client.List(ctx, resourceGroupName, accountName, maxpagesize, filter, include)
 	return
 }
 

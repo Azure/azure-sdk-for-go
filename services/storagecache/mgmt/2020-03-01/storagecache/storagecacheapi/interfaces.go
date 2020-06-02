@@ -46,6 +46,13 @@ type UsageModelsClientAPI interface {
 
 var _ UsageModelsClientAPI = (*storagecache.UsageModelsClient)(nil)
 
+// AscOperationsClientAPI contains the set of methods on the AscOperationsClient type.
+type AscOperationsClientAPI interface {
+	Get(ctx context.Context, location string, operationID string) (result storagecache.AscOperation, err error)
+}
+
+var _ AscOperationsClientAPI = (*storagecache.AscOperationsClient)(nil)
+
 // CachesClientAPI contains the set of methods on the CachesClient type.
 type CachesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, cache *storagecache.Cache) (result storagecache.CachesCreateOrUpdateFuture, err error)

@@ -22,7 +22,6 @@ package insightsapi
 import original "github.com/Azure/azure-sdk-for-go/services/preview/appinsights/v1/insights/insightsapi"
 
 type EventsClientAPI = original.EventsClientAPI
-type GetClientAPI = original.GetClientAPI
+type MetadataClientAPI = original.MetadataClientAPI
 type MetricsClientAPI = original.MetricsClientAPI
-type PostClientAPI = original.PostClientAPI
 type QueryClientAPI = original.QueryClientAPI

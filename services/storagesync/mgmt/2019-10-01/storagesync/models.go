@@ -1797,40 +1797,6 @@ func (future *ServerEndpointsUpdateFuture) Result(client ServerEndpointsClient) 
 	return
 }
 
-// ServerEndpointSyncActivityStatus sync Session status object.
-type ServerEndpointSyncActivityStatus struct {
-	// Timestamp - READ-ONLY; Timestamp when properties were updated
-	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// PerItemErrorCount - READ-ONLY; Per item error count
-	PerItemErrorCount *int64 `json:"perItemErrorCount,omitempty"`
-	// AppliedItemCount - READ-ONLY; Applied item count.
-	AppliedItemCount *int64 `json:"appliedItemCount,omitempty"`
-	// TotalItemCount - READ-ONLY; Total item count (if available)
-	TotalItemCount *int64 `json:"totalItemCount,omitempty"`
-	// AppliedBytes - READ-ONLY; Applied bytes
-	AppliedBytes *int64 `json:"appliedBytes,omitempty"`
-	// TotalBytes - READ-ONLY; Total bytes (if available)
-	TotalBytes *int64 `json:"totalBytes,omitempty"`
-}
-
-// ServerEndpointSyncSessionStatus sync Session status object.
-type ServerEndpointSyncSessionStatus struct {
-	// LastSyncResult - READ-ONLY; Last sync result (HResult)
-	LastSyncResult *int32 `json:"lastSyncResult,omitempty"`
-	// LastSyncTimestamp - READ-ONLY; Last sync timestamp
-	LastSyncTimestamp *date.Time `json:"lastSyncTimestamp,omitempty"`
-	// LastSyncSuccessTimestamp - READ-ONLY; Last sync success timestamp
-	LastSyncSuccessTimestamp *date.Time `json:"lastSyncSuccessTimestamp,omitempty"`
-	// LastSyncPerItemErrorCount - READ-ONLY; Last sync per item error count.
-	LastSyncPerItemErrorCount *int64 `json:"lastSyncPerItemErrorCount,omitempty"`
-	// PersistentFilesNotSyncingCount - READ-ONLY; Count of persistent files not syncing.
-	PersistentFilesNotSyncingCount *int64 `json:"persistentFilesNotSyncingCount,omitempty"`
-	// TransientFilesNotSyncingCount - READ-ONLY; Count of transient files not syncing.
-	TransientFilesNotSyncingCount *int64 `json:"transientFilesNotSyncingCount,omitempty"`
-	// FilesNotSyncingErrors - READ-ONLY; Array of per-item errors coming from the last sync session.
-	FilesNotSyncingErrors *[]ServerEndpointFilesNotSyncingError `json:"filesNotSyncingErrors,omitempty"`
-}
-
 // ServerEndpointSyncStatus server Endpoint sync status
 type ServerEndpointSyncStatus struct {
 	// DownloadHealth - READ-ONLY; Download Health Status. Possible values include: 'DownloadHealthHealthy', 'DownloadHealthError', 'DownloadHealthSyncBlockedForRestore', 'DownloadHealthSyncBlockedForChangeDetectionPostRestore', 'DownloadHealthNoActivity'
@@ -1846,13 +1812,13 @@ type ServerEndpointSyncStatus struct {
 	// LastUpdatedTimestamp - READ-ONLY; Last Updated Timestamp
 	LastUpdatedTimestamp *date.Time `json:"lastUpdatedTimestamp,omitempty"`
 	// UploadStatus - READ-ONLY; Upload Status
-	UploadStatus *ServerEndpointSyncSessionStatus `json:"uploadStatus,omitempty"`
+	UploadStatus *SyncSessionStatus `json:"uploadStatus,omitempty"`
 	// DownloadStatus - READ-ONLY; Download Status
-	DownloadStatus *ServerEndpointSyncSessionStatus `json:"downloadStatus,omitempty"`
+	DownloadStatus *SyncSessionStatus `json:"downloadStatus,omitempty"`
 	// UploadActivity - READ-ONLY; Upload sync activity
-	UploadActivity *ServerEndpointSyncActivityStatus `json:"uploadActivity,omitempty"`
+	UploadActivity *SyncActivityStatus `json:"uploadActivity,omitempty"`
 	// DownloadActivity - READ-ONLY; Download sync activity
-	DownloadActivity *ServerEndpointSyncActivityStatus `json:"downloadActivity,omitempty"`
+	DownloadActivity *SyncActivityStatus `json:"downloadActivity,omitempty"`
 	// OfflineDataTransferStatus - READ-ONLY; Offline Data Transfer State. Possible values include: 'InProgress', 'Stopping', 'NotRunning', 'Complete'
 	OfflineDataTransferStatus OfflineDataTransferStatus `json:"offlineDataTransferStatus,omitempty"`
 }
@@ -2080,6 +2046,22 @@ type SubscriptionState struct {
 	Properties interface{} `json:"properties,omitempty"`
 }
 
+// SyncActivityStatus sync Session status object.
+type SyncActivityStatus struct {
+	// Timestamp - READ-ONLY; Timestamp when properties were updated
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// PerItemErrorCount - READ-ONLY; Per item error count
+	PerItemErrorCount *int64 `json:"perItemErrorCount,omitempty"`
+	// AppliedItemCount - READ-ONLY; Applied item count.
+	AppliedItemCount *int64 `json:"appliedItemCount,omitempty"`
+	// TotalItemCount - READ-ONLY; Total item count (if available)
+	TotalItemCount *int64 `json:"totalItemCount,omitempty"`
+	// AppliedBytes - READ-ONLY; Applied bytes
+	AppliedBytes *int64 `json:"appliedBytes,omitempty"`
+	// TotalBytes - READ-ONLY; Total bytes (if available)
+	TotalBytes *int64 `json:"totalBytes,omitempty"`
+}
+
 // SyncGroup sync Group object.
 type SyncGroup struct {
 	autorest.Response `json:"-"`
@@ -2178,6 +2160,24 @@ type SyncGroupProperties struct {
 	UniqueID *string `json:"uniqueId,omitempty"`
 	// SyncGroupStatus - READ-ONLY; Sync group status
 	SyncGroupStatus *string `json:"syncGroupStatus,omitempty"`
+}
+
+// SyncSessionStatus sync Session status object.
+type SyncSessionStatus struct {
+	// LastSyncResult - READ-ONLY; Last sync result (HResult)
+	LastSyncResult *int32 `json:"lastSyncResult,omitempty"`
+	// LastSyncTimestamp - READ-ONLY; Last sync timestamp
+	LastSyncTimestamp *date.Time `json:"lastSyncTimestamp,omitempty"`
+	// LastSyncSuccessTimestamp - READ-ONLY; Last sync success timestamp
+	LastSyncSuccessTimestamp *date.Time `json:"lastSyncSuccessTimestamp,omitempty"`
+	// LastSyncPerItemErrorCount - READ-ONLY; Last sync per item error count.
+	LastSyncPerItemErrorCount *int64 `json:"lastSyncPerItemErrorCount,omitempty"`
+	// PersistentFilesNotSyncingCount - READ-ONLY; Count of persistent files not syncing.
+	PersistentFilesNotSyncingCount *int64 `json:"persistentFilesNotSyncingCount,omitempty"`
+	// TransientFilesNotSyncingCount - READ-ONLY; Count of transient files not syncing.
+	TransientFilesNotSyncingCount *int64 `json:"transientFilesNotSyncingCount,omitempty"`
+	// FilesNotSyncingErrors - READ-ONLY; Array of per-item errors coming from the last sync session.
+	FilesNotSyncingErrors *[]ServerEndpointFilesNotSyncingError `json:"filesNotSyncingErrors,omitempty"`
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource

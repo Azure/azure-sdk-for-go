@@ -69,6 +69,15 @@ const (
 	DeploymentResourceStatusUpgrading  DeploymentResourceStatus = original.DeploymentResourceStatusUpgrading
 )
 
+type ManagedIdentityType = original.ManagedIdentityType
+
+const (
+	None                       ManagedIdentityType = original.None
+	SystemAssigned             ManagedIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned ManagedIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               ManagedIdentityType = original.UserAssigned
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -83,11 +92,33 @@ const (
 	ProvisioningStateUpdating   ProvisioningState = original.ProvisioningStateUpdating
 )
 
+type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
+
+const (
+	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = original.NotAvailableForSubscription
+	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
+)
+
+type ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsType
+
+const (
+	Location ResourceSkuRestrictionsType = original.Location
+	Zone     ResourceSkuRestrictionsType = original.Zone
+)
+
 type RuntimeVersion = original.RuntimeVersion
 
 const (
 	Java11 RuntimeVersion = original.Java11
 	Java8  RuntimeVersion = original.Java8
+)
+
+type SkuScaleType = original.SkuScaleType
+
+const (
+	SkuScaleTypeAutomatic SkuScaleType = original.SkuScaleTypeAutomatic
+	SkuScaleTypeManual    SkuScaleType = original.SkuScaleTypeManual
+	SkuScaleTypeNone      SkuScaleType = original.SkuScaleTypeNone
 )
 
 type TestKeyType = original.TestKeyType
@@ -168,6 +199,7 @@ type Error = original.Error
 type GitPatternRepository = original.GitPatternRepository
 type LogFileURLResponse = original.LogFileURLResponse
 type LogSpecification = original.LogSpecification
+type ManagedIdentityProperties = original.ManagedIdentityProperties
 type MetricDimension = original.MetricDimension
 type MetricSpecification = original.MetricSpecification
 type NameAvailability = original.NameAvailability
@@ -180,6 +212,15 @@ type PersistentDisk = original.PersistentDisk
 type ProxyResource = original.ProxyResource
 type RegenerateTestKeyRequestPayload = original.RegenerateTestKeyRequestPayload
 type Resource = original.Resource
+type ResourceSku = original.ResourceSku
+type ResourceSkuCapabilities = original.ResourceSkuCapabilities
+type ResourceSkuCollection = original.ResourceSkuCollection
+type ResourceSkuCollectionIterator = original.ResourceSkuCollectionIterator
+type ResourceSkuCollectionPage = original.ResourceSkuCollectionPage
+type ResourceSkuLocationInfo = original.ResourceSkuLocationInfo
+type ResourceSkuRestrictionInfo = original.ResourceSkuRestrictionInfo
+type ResourceSkuRestrictions = original.ResourceSkuRestrictions
+type ResourceSkuZoneDetails = original.ResourceSkuZoneDetails
 type ResourceUploadDefinition = original.ResourceUploadDefinition
 type ServiceResource = original.ServiceResource
 type ServiceResourceList = original.ServiceResourceList
@@ -190,6 +231,9 @@ type ServicesClient = original.ServicesClient
 type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
 type ServicesDeleteFuture = original.ServicesDeleteFuture
 type ServicesUpdateFuture = original.ServicesUpdateFuture
+type Sku = original.Sku
+type SkuCapacity = original.SkuCapacity
+type SkuClient = original.SkuClient
 type TemporaryDisk = original.TemporaryDisk
 type TestKeys = original.TestKeys
 type TraceProperties = original.TraceProperties
@@ -271,6 +315,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewResourceSkuCollectionIterator(page ResourceSkuCollectionPage) ResourceSkuCollectionIterator {
+	return original.NewResourceSkuCollectionIterator(page)
+}
+func NewResourceSkuCollectionPage(getNextPage func(context.Context, ResourceSkuCollection) (ResourceSkuCollection, error)) ResourceSkuCollectionPage {
+	return original.NewResourceSkuCollectionPage(getNextPage)
+}
 func NewServiceResourceListIterator(page ServiceResourceListPage) ServiceResourceListIterator {
 	return original.NewServiceResourceListIterator(page)
 }
@@ -282,6 +332,12 @@ func NewServicesClient(subscriptionID string) ServicesClient {
 }
 func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
 	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSkuClient(subscriptionID string) SkuClient {
+	return original.NewSkuClient(subscriptionID)
+}
+func NewSkuClientWithBaseURI(baseURI string, subscriptionID string) SkuClient {
+	return original.NewSkuClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -298,11 +354,23 @@ func PossibleDeploymentResourceProvisioningStateValues() []DeploymentResourcePro
 func PossibleDeploymentResourceStatusValues() []DeploymentResourceStatus {
 	return original.PossibleDeploymentResourceStatusValues()
 }
+func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
+	return original.PossibleManagedIdentityTypeValues()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
+func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
+	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
+}
+func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
+	return original.PossibleResourceSkuRestrictionsTypeValues()
+}
 func PossibleRuntimeVersionValues() []RuntimeVersion {
 	return original.PossibleRuntimeVersionValues()
+}
+func PossibleSkuScaleTypeValues() []SkuScaleType {
+	return original.PossibleSkuScaleTypeValues()
 }
 func PossibleTestKeyTypeValues() []TestKeyType {
 	return original.PossibleTestKeyTypeValues()

@@ -24,19 +24,19 @@ import (
 
 // SourceControlConfigurationsClientAPI contains the set of methods on the SourceControlConfigurationsClient type.
 type SourceControlConfigurationsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, APIVersion string, sourceControlConfiguration kubernetesconfiguration.SourceControlConfiguration) (result kubernetesconfiguration.SourceControlConfiguration, err error)
-	Delete(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, APIVersion string) (result kubernetesconfiguration.SourceControlConfigurationsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, APIVersion string) (result kubernetesconfiguration.SourceControlConfiguration, err error)
-	List(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, APIVersion string) (result kubernetesconfiguration.SourceControlConfigurationListPage, err error)
-	ListComplete(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, APIVersion string) (result kubernetesconfiguration.SourceControlConfigurationListIterator, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, sourceControlConfiguration kubernetesconfiguration.SourceControlConfiguration) (result kubernetesconfiguration.SourceControlConfiguration, err error)
+	Delete(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string) (result kubernetesconfiguration.SourceControlConfigurationsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string) (result kubernetesconfiguration.SourceControlConfiguration, err error)
+	List(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string) (result kubernetesconfiguration.SourceControlConfigurationListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string) (result kubernetesconfiguration.SourceControlConfigurationListIterator, err error)
 }
 
 var _ SourceControlConfigurationsClientAPI = (*kubernetesconfiguration.SourceControlConfigurationsClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
-	List(ctx context.Context, APIVersion string) (result kubernetesconfiguration.ResourceProviderOperationListPage, err error)
-	ListComplete(ctx context.Context, APIVersion string) (result kubernetesconfiguration.ResourceProviderOperationListIterator, err error)
+	List(ctx context.Context) (result kubernetesconfiguration.ResourceProviderOperationListPage, err error)
+	ListComplete(ctx context.Context) (result kubernetesconfiguration.ResourceProviderOperationListIterator, err error)
 }
 
 var _ OperationsClientAPI = (*kubernetesconfiguration.OperationsClient)(nil)

@@ -49,16 +49,6 @@ const (
 	EndpointTypeServiceBus                             EndpointType = original.EndpointTypeServiceBus
 )
 
-type IntegrationResourceState = original.IntegrationResourceState
-
-const (
-	IntegrationResourceStateCanceled     IntegrationResourceState = original.IntegrationResourceStateCanceled
-	IntegrationResourceStateDeleting     IntegrationResourceState = original.IntegrationResourceStateDeleting
-	IntegrationResourceStateFailed       IntegrationResourceState = original.IntegrationResourceStateFailed
-	IntegrationResourceStateProvisioning IntegrationResourceState = original.IntegrationResourceStateProvisioning
-	IntegrationResourceStateSucceeded    IntegrationResourceState = original.IntegrationResourceStateSucceeded
-)
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -100,17 +90,6 @@ type ErrorResponse = original.ErrorResponse
 type EventGrid = original.EventGrid
 type EventHub = original.EventHub
 type ExternalResource = original.ExternalResource
-type IntegrationResource = original.IntegrationResource
-type IntegrationResourceListResult = original.IntegrationResourceListResult
-type IntegrationResourceListResultIterator = original.IntegrationResourceListResultIterator
-type IntegrationResourceListResultPage = original.IntegrationResourceListResultPage
-type IntegrationResourceProperties = original.IntegrationResourceProperties
-type IntegrationResourceState1 = original.IntegrationResourceState1
-type IntegrationResourceUpdateInfo = original.IntegrationResourceUpdateInfo
-type IntegrationResourceUpdateProperties = original.IntegrationResourceUpdateProperties
-type IoTHubClient = original.IoTHubClient
-type IoTHubDeleteFuture = original.IoTHubDeleteFuture
-type IoTHubsClient = original.IoTHubsClient
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -151,24 +130,6 @@ func NewEndpointResourceListResultIterator(page EndpointResourceListResultPage) 
 func NewEndpointResourceListResultPage(getNextPage func(context.Context, EndpointResourceListResult) (EndpointResourceListResult, error)) EndpointResourceListResultPage {
 	return original.NewEndpointResourceListResultPage(getNextPage)
 }
-func NewIntegrationResourceListResultIterator(page IntegrationResourceListResultPage) IntegrationResourceListResultIterator {
-	return original.NewIntegrationResourceListResultIterator(page)
-}
-func NewIntegrationResourceListResultPage(getNextPage func(context.Context, IntegrationResourceListResult) (IntegrationResourceListResult, error)) IntegrationResourceListResultPage {
-	return original.NewIntegrationResourceListResultPage(getNextPage)
-}
-func NewIoTHubClient(subscriptionID uuid.UUID) IoTHubClient {
-	return original.NewIoTHubClient(subscriptionID)
-}
-func NewIoTHubClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) IoTHubClient {
-	return original.NewIoTHubClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewIoTHubsClient(subscriptionID uuid.UUID) IoTHubsClient {
-	return original.NewIoTHubsClient(subscriptionID)
-}
-func NewIoTHubsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) IoTHubsClient {
-	return original.NewIoTHubsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
@@ -189,9 +150,6 @@ func PossibleEndpointProvisioningStateValues() []EndpointProvisioningState {
 }
 func PossibleEndpointTypeValues() []EndpointType {
 	return original.PossibleEndpointTypeValues()
-}
-func PossibleIntegrationResourceStateValues() []IntegrationResourceState {
-	return original.PossibleIntegrationResourceStateValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

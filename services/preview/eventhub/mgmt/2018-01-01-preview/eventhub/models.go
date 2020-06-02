@@ -1051,10 +1051,10 @@ func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResul
 
 // ClusterProperties event Hubs Cluster properties supplied in responses in List or Get operations.
 type ClusterProperties struct {
-	// Created - READ-ONLY; The UTC time when the Event Hubs Cluster was created.
-	Created *string `json:"created,omitempty"`
-	// Updated - READ-ONLY; The UTC time when the Event Hubs Cluster was last updated.
-	Updated *string `json:"updated,omitempty"`
+	// CreatedAt - READ-ONLY; The UTC time when the Event Hubs Cluster was created.
+	CreatedAt *string `json:"createdAt,omitempty"`
+	// UpdatedAt - READ-ONLY; The UTC time when the Event Hubs Cluster was last updated.
+	UpdatedAt *string `json:"updatedAt,omitempty"`
 	// MetricID - READ-ONLY; The metric ID of the cluster resource. Provided by the service and not modifiable by the user.
 	MetricID *string `json:"metricId,omitempty"`
 	// Status - READ-ONLY; Status of the Cluster resource
@@ -1775,7 +1775,7 @@ type EHNamespaceProperties struct {
 // Encryption properties to configure Encryption
 type Encryption struct {
 	// KeyVaultProperties - Properties of KeyVault
-	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+	KeyVaultProperties *[]KeyVaultProperties `json:"keyVaultProperties,omitempty"`
 	// KeySource - Enumerates the possible value of keySource for Encryption. Possible values include: 'MicrosoftKeyVault'
 	KeySource KeySource `json:"keySource,omitempty"`
 }
@@ -2034,6 +2034,8 @@ type KeyVaultProperties struct {
 	KeyName *string `json:"keyName,omitempty"`
 	// KeyVaultURI - Uri of KeyVault
 	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+	// KeyVersion - Key Version
+	KeyVersion *string `json:"keyVersion,omitempty"`
 }
 
 // ListResult the result of the List EventHubs operation.

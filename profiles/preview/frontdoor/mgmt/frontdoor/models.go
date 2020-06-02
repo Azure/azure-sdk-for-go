@@ -22,7 +22,7 @@ package frontdoor
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-01-01/frontdoor"
+	original "github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-05-01/frontdoor"
 )
 
 const (
@@ -535,6 +535,8 @@ type ManagedRuleSetDefinitionProperties = original.ManagedRuleSetDefinitionPrope
 type ManagedRuleSetList = original.ManagedRuleSetList
 type ManagedRuleSetsClient = original.ManagedRuleSetsClient
 type MatchCondition = original.MatchCondition
+type NameAvailabilityClient = original.NameAvailabilityClient
+type NameAvailabilityWithSubscriptionClient = original.NameAvailabilityWithSubscriptionClient
 type NetworkExperimentProfilesClient = original.NetworkExperimentProfilesClient
 type NetworkExperimentProfilesCreateOrUpdateFuture = original.NetworkExperimentProfilesCreateOrUpdateFuture
 type NetworkExperimentProfilesDeleteFuture = original.NetworkExperimentProfilesDeleteFuture
@@ -648,6 +650,18 @@ func NewManagedRuleSetsClient(subscriptionID string) ManagedRuleSetsClient {
 }
 func NewManagedRuleSetsClientWithBaseURI(baseURI string, subscriptionID string) ManagedRuleSetsClient {
 	return original.NewManagedRuleSetsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNameAvailabilityClient(subscriptionID string) NameAvailabilityClient {
+	return original.NewNameAvailabilityClient(subscriptionID)
+}
+func NewNameAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) NameAvailabilityClient {
+	return original.NewNameAvailabilityClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNameAvailabilityWithSubscriptionClient(subscriptionID string) NameAvailabilityWithSubscriptionClient {
+	return original.NewNameAvailabilityWithSubscriptionClient(subscriptionID)
+}
+func NewNameAvailabilityWithSubscriptionClientWithBaseURI(baseURI string, subscriptionID string) NameAvailabilityWithSubscriptionClient {
+	return original.NewNameAvailabilityWithSubscriptionClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewNetworkExperimentProfilesClient(subscriptionID string) NetworkExperimentProfilesClient {
 	return original.NewNetworkExperimentProfilesClient(subscriptionID)

@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// HyperVRunAsAccountsClient is the client for the HyperVRunAsAccounts methods of the Migrate service.
+// HyperVRunAsAccountsClient is the discover your workloads for Azure.
 type HyperVRunAsAccountsClient struct {
 	BaseClient
 }

@@ -21,6 +21,31 @@ package eventgrid
 
 import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid"
 
+type AppAction = original.AppAction
+
+const (
+	ChangedAppSettings AppAction = original.ChangedAppSettings
+	Completed          AppAction = original.Completed
+	Failed             AppAction = original.Failed
+	Restarted          AppAction = original.Restarted
+	Started            AppAction = original.Started
+	Stopped            AppAction = original.Stopped
+)
+
+type AppServicePlanAction = original.AppServicePlanAction
+
+const (
+	Updated AppServicePlanAction = original.Updated
+)
+
+type AsyncStatus = original.AsyncStatus
+
+const (
+	AsyncStatusCompleted AsyncStatus = original.AsyncStatusCompleted
+	AsyncStatusFailed    AsyncStatus = original.AsyncStatusFailed
+	AsyncStatusStarted   AsyncStatus = original.AsyncStatusStarted
+)
+
 type MediaJobErrorCategory = original.MediaJobErrorCategory
 
 const (
@@ -71,8 +96,18 @@ const (
 	OdataTypeMicrosoftMediaJobOutputAsset OdataType = original.OdataTypeMicrosoftMediaJobOutputAsset
 )
 
+type StampKind = original.StampKind
+
+const (
+	AseV1  StampKind = original.AseV1
+	AseV2  StampKind = original.AseV2
+	Public StampKind = original.Public
+)
+
 type AppConfigurationKeyValueDeletedEventData = original.AppConfigurationKeyValueDeletedEventData
 type AppConfigurationKeyValueModifiedEventData = original.AppConfigurationKeyValueModifiedEventData
+type AppEventTypeDetail = original.AppEventTypeDetail
+type AppServicePlanEventTypeDetail = original.AppServicePlanEventTypeDetail
 type BaseClient = original.BaseClient
 type BasicMediaJobOutput = original.BasicMediaJobOutput
 type ContainerRegistryArtifactEventData = original.ContainerRegistryArtifactEventData
@@ -175,12 +210,35 @@ type StorageDirectoryRenamedEventData = original.StorageDirectoryRenamedEventDat
 type SubscriptionDeletedEventData = original.SubscriptionDeletedEventData
 type SubscriptionValidationEventData = original.SubscriptionValidationEventData
 type SubscriptionValidationResponse = original.SubscriptionValidationResponse
+type WebAppServicePlanUpdatedEventData = original.WebAppServicePlanUpdatedEventData
+type WebAppServicePlanUpdatedEventDataSku = original.WebAppServicePlanUpdatedEventDataSku
+type WebAppUpdatedEventData = original.WebAppUpdatedEventData
+type WebBackupOperationCompletedEventData = original.WebBackupOperationCompletedEventData
+type WebBackupOperationFailedEventData = original.WebBackupOperationFailedEventData
+type WebBackupOperationStartedEventData = original.WebBackupOperationStartedEventData
+type WebRestoreOperationCompletedEventData = original.WebRestoreOperationCompletedEventData
+type WebRestoreOperationFailedEventData = original.WebRestoreOperationFailedEventData
+type WebRestoreOperationStartedEventData = original.WebRestoreOperationStartedEventData
+type WebSlotSwapCompletedEventData = original.WebSlotSwapCompletedEventData
+type WebSlotSwapFailedEventData = original.WebSlotSwapFailedEventData
+type WebSlotSwapStartedEventData = original.WebSlotSwapStartedEventData
+type WebSlotSwapWithPreviewCancelledEventData = original.WebSlotSwapWithPreviewCancelledEventData
+type WebSlotSwapWithPreviewStartedEventData = original.WebSlotSwapWithPreviewStartedEventData
 
 func New() BaseClient {
 	return original.New()
 }
 func NewWithoutDefaults() BaseClient {
 	return original.NewWithoutDefaults()
+}
+func PossibleAppActionValues() []AppAction {
+	return original.PossibleAppActionValues()
+}
+func PossibleAppServicePlanActionValues() []AppServicePlanAction {
+	return original.PossibleAppServicePlanActionValues()
+}
+func PossibleAsyncStatusValues() []AsyncStatus {
+	return original.PossibleAsyncStatusValues()
 }
 func PossibleMediaJobErrorCategoryValues() []MediaJobErrorCategory {
 	return original.PossibleMediaJobErrorCategoryValues()
@@ -196,6 +254,9 @@ func PossibleMediaJobStateValues() []MediaJobState {
 }
 func PossibleOdataTypeValues() []OdataType {
 	return original.PossibleOdataTypeValues()
+}
+func PossibleStampKindValues() []StampKind {
+	return original.PossibleStampKindValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

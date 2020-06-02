@@ -110,6 +110,33 @@ const (
 	Password2 PasswordName = original.Password2
 )
 
+type PipelineOptions = original.PipelineOptions
+
+const (
+	ContinueOnErrors          PipelineOptions = original.ContinueOnErrors
+	DeleteSourceBlobOnSuccess PipelineOptions = original.DeleteSourceBlobOnSuccess
+	OverwriteBlobs            PipelineOptions = original.OverwriteBlobs
+	OverwriteTags             PipelineOptions = original.OverwriteTags
+)
+
+type PipelineRunSourceType = original.PipelineRunSourceType
+
+const (
+	AzureStorageBlob PipelineRunSourceType = original.AzureStorageBlob
+)
+
+type PipelineRunTargetType = original.PipelineRunTargetType
+
+const (
+	PipelineRunTargetTypeAzureStorageBlob PipelineRunTargetType = original.PipelineRunTargetTypeAzureStorageBlob
+)
+
+type PipelineSourceType = original.PipelineSourceType
+
+const (
+	AzureStorageBlobContainer PipelineSourceType = original.AzureStorageBlobContainer
+)
+
 type PolicyStatus = original.PolicyStatus
 
 const (
@@ -126,6 +153,13 @@ const (
 	Failed    ProvisioningState = original.Failed
 	Succeeded ProvisioningState = original.Succeeded
 	Updating  ProvisioningState = original.Updating
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
 )
 
 type RegistryUsageUnit = original.RegistryUsageUnit
@@ -365,6 +399,15 @@ type EventListResultIterator = original.EventListResultIterator
 type EventListResultPage = original.EventListResultPage
 type EventRequestMessage = original.EventRequestMessage
 type EventResponseMessage = original.EventResponseMessage
+type ExportPipeline = original.ExportPipeline
+type ExportPipelineListResult = original.ExportPipelineListResult
+type ExportPipelineListResultIterator = original.ExportPipelineListResultIterator
+type ExportPipelineListResultPage = original.ExportPipelineListResultPage
+type ExportPipelineProperties = original.ExportPipelineProperties
+type ExportPipelineTargetProperties = original.ExportPipelineTargetProperties
+type ExportPipelinesClient = original.ExportPipelinesClient
+type ExportPipelinesCreateFuture = original.ExportPipelinesCreateFuture
+type ExportPipelinesDeleteFuture = original.ExportPipelinesDeleteFuture
 type FileTaskRunRequest = original.FileTaskRunRequest
 type FileTaskStep = original.FileTaskStep
 type FileTaskStepUpdateParameters = original.FileTaskStepUpdateParameters
@@ -375,6 +418,15 @@ type IdentityProperties = original.IdentityProperties
 type ImageDescriptor = original.ImageDescriptor
 type ImageUpdateTrigger = original.ImageUpdateTrigger
 type ImportImageParameters = original.ImportImageParameters
+type ImportPipeline = original.ImportPipeline
+type ImportPipelineListResult = original.ImportPipelineListResult
+type ImportPipelineListResultIterator = original.ImportPipelineListResultIterator
+type ImportPipelineListResultPage = original.ImportPipelineListResultPage
+type ImportPipelineProperties = original.ImportPipelineProperties
+type ImportPipelineSourceProperties = original.ImportPipelineSourceProperties
+type ImportPipelinesClient = original.ImportPipelinesClient
+type ImportPipelinesCreateFuture = original.ImportPipelinesCreateFuture
+type ImportPipelinesDeleteFuture = original.ImportPipelinesDeleteFuture
 type ImportSource = original.ImportSource
 type ImportSourceCredentials = original.ImportSourceCredentials
 type InnerErrorDescription = original.InnerErrorDescription
@@ -390,6 +442,22 @@ type OperationPropertiesDefinition = original.OperationPropertiesDefinition
 type OperationServiceSpecificationDefinition = original.OperationServiceSpecificationDefinition
 type OperationsClient = original.OperationsClient
 type OverrideTaskStepProperties = original.OverrideTaskStepProperties
+type PipelineRun = original.PipelineRun
+type PipelineRunListResult = original.PipelineRunListResult
+type PipelineRunListResultIterator = original.PipelineRunListResultIterator
+type PipelineRunListResultPage = original.PipelineRunListResultPage
+type PipelineRunProperties = original.PipelineRunProperties
+type PipelineRunRequest = original.PipelineRunRequest
+type PipelineRunResponse = original.PipelineRunResponse
+type PipelineRunSourceProperties = original.PipelineRunSourceProperties
+type PipelineRunTargetProperties = original.PipelineRunTargetProperties
+type PipelineRunsClient = original.PipelineRunsClient
+type PipelineRunsCreateFuture = original.PipelineRunsCreateFuture
+type PipelineRunsDeleteFuture = original.PipelineRunsDeleteFuture
+type PipelineSourceTriggerDescriptor = original.PipelineSourceTriggerDescriptor
+type PipelineSourceTriggerProperties = original.PipelineSourceTriggerProperties
+type PipelineTriggerDescriptor = original.PipelineTriggerDescriptor
+type PipelineTriggerProperties = original.PipelineTriggerProperties
 type PlatformProperties = original.PlatformProperties
 type PlatformUpdateParameters = original.PlatformUpdateParameters
 type Policies = original.Policies
@@ -408,6 +476,7 @@ type PrivateLinkResourceListResultIterator = original.PrivateLinkResourceListRes
 type PrivateLinkResourceListResultPage = original.PrivateLinkResourceListResultPage
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
+type ProgressProperties = original.ProgressProperties
 type ProxyResource = original.ProxyResource
 type QuarantinePolicy = original.QuarantinePolicy
 type RegenerateCredentialParameters = original.RegenerateCredentialParameters
@@ -437,6 +506,7 @@ type ReplicationListResultIterator = original.ReplicationListResultIterator
 type ReplicationListResultPage = original.ReplicationListResultPage
 type ReplicationProperties = original.ReplicationProperties
 type ReplicationUpdateParameters = original.ReplicationUpdateParameters
+type ReplicationUpdateParametersProperties = original.ReplicationUpdateParametersProperties
 type ReplicationsClient = original.ReplicationsClient
 type ReplicationsCreateFuture = original.ReplicationsCreateFuture
 type ReplicationsDeleteFuture = original.ReplicationsDeleteFuture
@@ -563,6 +633,30 @@ func NewEventListResultIterator(page EventListResultPage) EventListResultIterato
 func NewEventListResultPage(getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
 	return original.NewEventListResultPage(getNextPage)
 }
+func NewExportPipelineListResultIterator(page ExportPipelineListResultPage) ExportPipelineListResultIterator {
+	return original.NewExportPipelineListResultIterator(page)
+}
+func NewExportPipelineListResultPage(getNextPage func(context.Context, ExportPipelineListResult) (ExportPipelineListResult, error)) ExportPipelineListResultPage {
+	return original.NewExportPipelineListResultPage(getNextPage)
+}
+func NewExportPipelinesClient(subscriptionID string) ExportPipelinesClient {
+	return original.NewExportPipelinesClient(subscriptionID)
+}
+func NewExportPipelinesClientWithBaseURI(baseURI string, subscriptionID string) ExportPipelinesClient {
+	return original.NewExportPipelinesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewImportPipelineListResultIterator(page ImportPipelineListResultPage) ImportPipelineListResultIterator {
+	return original.NewImportPipelineListResultIterator(page)
+}
+func NewImportPipelineListResultPage(getNextPage func(context.Context, ImportPipelineListResult) (ImportPipelineListResult, error)) ImportPipelineListResultPage {
+	return original.NewImportPipelineListResultPage(getNextPage)
+}
+func NewImportPipelinesClient(subscriptionID string) ImportPipelinesClient {
+	return original.NewImportPipelinesClient(subscriptionID)
+}
+func NewImportPipelinesClientWithBaseURI(baseURI string, subscriptionID string) ImportPipelinesClient {
+	return original.NewImportPipelinesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
@@ -574,6 +668,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPipelineRunListResultIterator(page PipelineRunListResultPage) PipelineRunListResultIterator {
+	return original.NewPipelineRunListResultIterator(page)
+}
+func NewPipelineRunListResultPage(getNextPage func(context.Context, PipelineRunListResult) (PipelineRunListResult, error)) PipelineRunListResultPage {
+	return original.NewPipelineRunListResultPage(getNextPage)
+}
+func NewPipelineRunsClient(subscriptionID string) PipelineRunsClient {
+	return original.NewPipelineRunsClient(subscriptionID)
+}
+func NewPipelineRunsClientWithBaseURI(baseURI string, subscriptionID string) PipelineRunsClient {
+	return original.NewPipelineRunsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
 	return original.NewPrivateEndpointConnectionListResultIterator(page)
@@ -725,11 +831,26 @@ func PossibleOSValues() []OS {
 func PossiblePasswordNameValues() []PasswordName {
 	return original.PossiblePasswordNameValues()
 }
+func PossiblePipelineOptionsValues() []PipelineOptions {
+	return original.PossiblePipelineOptionsValues()
+}
+func PossiblePipelineRunSourceTypeValues() []PipelineRunSourceType {
+	return original.PossiblePipelineRunSourceTypeValues()
+}
+func PossiblePipelineRunTargetTypeValues() []PipelineRunTargetType {
+	return original.PossiblePipelineRunTargetTypeValues()
+}
+func PossiblePipelineSourceTypeValues() []PipelineSourceType {
+	return original.PossiblePipelineSourceTypeValues()
+}
 func PossiblePolicyStatusValues() []PolicyStatus {
 	return original.PossiblePolicyStatusValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func PossibleRegistryUsageUnitValues() []RegistryUsageUnit {
 	return original.PossibleRegistryUsageUnitValues()

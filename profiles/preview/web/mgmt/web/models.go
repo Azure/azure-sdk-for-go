@@ -440,9 +440,10 @@ const (
 type ManagedServiceIdentityType = original.ManagedServiceIdentityType
 
 const (
-	ManagedServiceIdentityTypeNone           ManagedServiceIdentityType = original.ManagedServiceIdentityTypeNone
-	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssigned
-	ManagedServiceIdentityTypeUserAssigned   ManagedServiceIdentityType = original.ManagedServiceIdentityTypeUserAssigned
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = original.ManagedServiceIdentityTypeNone
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssigned
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssignedUserAssigned
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = original.ManagedServiceIdentityTypeUserAssigned
 )
 
 type MySQLMigrationType = original.MySQLMigrationType
@@ -857,6 +858,10 @@ type CsmOperationCollectionPage = original.CsmOperationCollectionPage
 type CsmOperationDescription = original.CsmOperationDescription
 type CsmOperationDescriptionProperties = original.CsmOperationDescriptionProperties
 type CsmOperationDisplay = original.CsmOperationDisplay
+type CsmPublishingCredentialsPoliciesCollection = original.CsmPublishingCredentialsPoliciesCollection
+type CsmPublishingCredentialsPoliciesCollectionProperties = original.CsmPublishingCredentialsPoliciesCollectionProperties
+type CsmPublishingCredentialsPoliciesEntity = original.CsmPublishingCredentialsPoliciesEntity
+type CsmPublishingCredentialsPoliciesEntityProperties = original.CsmPublishingCredentialsPoliciesEntityProperties
 type CsmPublishingProfileOptions = original.CsmPublishingProfileOptions
 type CsmSlotEntity = original.CsmSlotEntity
 type CsmUsageQuota = original.CsmUsageQuota

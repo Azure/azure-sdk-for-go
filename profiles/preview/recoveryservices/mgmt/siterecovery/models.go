@@ -361,8 +361,8 @@ const (
 type InstanceTypeBasicRecoveryPlanProviderSpecificDetails = original.InstanceTypeBasicRecoveryPlanProviderSpecificDetails
 
 const (
-	InstanceTypeRecoveryPlanA2ADetails              InstanceTypeBasicRecoveryPlanProviderSpecificDetails = original.InstanceTypeRecoveryPlanA2ADetails
-	InstanceTypeRecoveryPlanProviderSpecificDetails InstanceTypeBasicRecoveryPlanProviderSpecificDetails = original.InstanceTypeRecoveryPlanProviderSpecificDetails
+	InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A                                 InstanceTypeBasicRecoveryPlanProviderSpecificDetails = original.InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A
+	InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails InstanceTypeBasicRecoveryPlanProviderSpecificDetails = original.InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails
 )
 
 type InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput = original.InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput

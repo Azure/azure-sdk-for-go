@@ -52,9 +52,13 @@ type PolicyEvaluationDetails = original.PolicyEvaluationDetails
 type PolicyEvent = original.PolicyEvent
 type PolicyEventsClient = original.PolicyEventsClient
 type PolicyEventsQueryResults = original.PolicyEventsQueryResults
+type PolicyEventsQueryResultsIterator = original.PolicyEventsQueryResultsIterator
+type PolicyEventsQueryResultsPage = original.PolicyEventsQueryResultsPage
 type PolicyState = original.PolicyState
 type PolicyStatesClient = original.PolicyStatesClient
 type PolicyStatesQueryResults = original.PolicyStatesQueryResults
+type PolicyStatesQueryResultsIterator = original.PolicyStatesQueryResultsIterator
+type PolicyStatesQueryResultsPage = original.PolicyStatesQueryResultsPage
 type PolicyTrackedResource = original.PolicyTrackedResource
 type PolicyTrackedResourcesClient = original.PolicyTrackedResourcesClient
 type PolicyTrackedResourcesQueryResults = original.PolicyTrackedResourcesQueryResults
@@ -96,11 +100,23 @@ func NewPolicyEventsClient() PolicyEventsClient {
 func NewPolicyEventsClientWithBaseURI(baseURI string) PolicyEventsClient {
 	return original.NewPolicyEventsClientWithBaseURI(baseURI)
 }
+func NewPolicyEventsQueryResultsIterator(page PolicyEventsQueryResultsPage) PolicyEventsQueryResultsIterator {
+	return original.NewPolicyEventsQueryResultsIterator(page)
+}
+func NewPolicyEventsQueryResultsPage(getNextPage func(context.Context, PolicyEventsQueryResults) (PolicyEventsQueryResults, error)) PolicyEventsQueryResultsPage {
+	return original.NewPolicyEventsQueryResultsPage(getNextPage)
+}
 func NewPolicyStatesClient() PolicyStatesClient {
 	return original.NewPolicyStatesClient()
 }
 func NewPolicyStatesClientWithBaseURI(baseURI string) PolicyStatesClient {
 	return original.NewPolicyStatesClientWithBaseURI(baseURI)
+}
+func NewPolicyStatesQueryResultsIterator(page PolicyStatesQueryResultsPage) PolicyStatesQueryResultsIterator {
+	return original.NewPolicyStatesQueryResultsIterator(page)
+}
+func NewPolicyStatesQueryResultsPage(getNextPage func(context.Context, PolicyStatesQueryResults) (PolicyStatesQueryResults, error)) PolicyStatesQueryResultsPage {
+	return original.NewPolicyStatesQueryResultsPage(getNextPage)
 }
 func NewPolicyTrackedResourcesClient() PolicyTrackedResourcesClient {
 	return original.NewPolicyTrackedResourcesClient()

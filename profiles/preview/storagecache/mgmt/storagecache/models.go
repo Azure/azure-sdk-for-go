@@ -97,6 +97,8 @@ type APIOperationDisplay = original.APIOperationDisplay
 type APIOperationListResult = original.APIOperationListResult
 type APIOperationListResultIterator = original.APIOperationListResultIterator
 type APIOperationListResultPage = original.APIOperationListResultPage
+type AscOperation = original.AscOperation
+type AscOperationsClient = original.AscOperationsClient
 type BaseClient = original.BaseClient
 type BasicStorageTargetProperties = original.BasicStorageTargetProperties
 type Cache = original.Cache
@@ -122,6 +124,7 @@ type ClfsTarget = original.ClfsTarget
 type ClfsTargetProperties = original.ClfsTargetProperties
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type ErrorResponse = original.ErrorResponse
 type KeyVaultKeyReference = original.KeyVaultKeyReference
 type KeyVaultKeyReferenceSourceVault = original.KeyVaultKeyReferenceSourceVault
 type NamespaceJunction = original.NamespaceJunction
@@ -163,6 +166,12 @@ func NewAPIOperationListResultIterator(page APIOperationListResultPage) APIOpera
 }
 func NewAPIOperationListResultPage(getNextPage func(context.Context, APIOperationListResult) (APIOperationListResult, error)) APIOperationListResultPage {
 	return original.NewAPIOperationListResultPage(getNextPage)
+}
+func NewAscOperationsClient(subscriptionID string) AscOperationsClient {
+	return original.NewAscOperationsClient(subscriptionID)
+}
+func NewAscOperationsClientWithBaseURI(baseURI string, subscriptionID string) AscOperationsClient {
+	return original.NewAscOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCachesClient(subscriptionID string) CachesClient {
 	return original.NewCachesClient(subscriptionID)

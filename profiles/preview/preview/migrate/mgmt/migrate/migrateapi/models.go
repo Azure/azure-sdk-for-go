@@ -30,6 +30,7 @@ type HyperVRunAsAccountsClientAPI = original.HyperVRunAsAccountsClientAPI
 type HyperVSitesClientAPI = original.HyperVSitesClientAPI
 type JobsClientAPI = original.JobsClientAPI
 type MachinesClientAPI = original.MachinesClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
 type RunAsAccountsClientAPI = original.RunAsAccountsClientAPI
 type SitesClientAPI = original.SitesClientAPI
 type VCenterClientAPI = original.VCenterClientAPI

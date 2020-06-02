@@ -22,7 +22,7 @@ package mixedreality
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/mixedreality/mgmt/2019-02-28/mixedreality"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/mixedreality/mgmt/2020-05-01-preview/mixedreality"
 )
 
 const (
@@ -43,37 +43,66 @@ const (
 	Invalid       NameUnavailableReason = original.Invalid
 )
 
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	SystemAssigned ResourceIdentityType = original.SystemAssigned
+)
+
+type SkuTier = original.SkuTier
+
+const (
+	Basic    SkuTier = original.Basic
+	Free     SkuTier = original.Free
+	Premium  SkuTier = original.Premium
+	Standard SkuTier = original.Standard
+)
+
+type AccountKeyRegenerateRequest = original.AccountKeyRegenerateRequest
+type AccountKeys = original.AccountKeys
+type AccountProperties = original.AccountProperties
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type CheckNameAvailabilityRequest = original.CheckNameAvailabilityRequest
 type CheckNameAvailabilityResponse = original.CheckNameAvailabilityResponse
-type ErrorResponse = original.ErrorResponse
+type CloudError = original.CloudError
+type CloudErrorBody = original.CloudErrorBody
+type Identity = original.Identity
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
-type OperationList = original.OperationList
-type OperationListIterator = original.OperationListIterator
-type OperationListPage = original.OperationListPage
+type OperationPage = original.OperationPage
+type OperationPageIterator = original.OperationPageIterator
+type OperationPagePage = original.OperationPagePage
 type OperationsClient = original.OperationsClient
+type Plan = original.Plan
 type ProxyResource = original.ProxyResource
+type RemoteRenderingAccount = original.RemoteRenderingAccount
+type RemoteRenderingAccountIdentity = original.RemoteRenderingAccountIdentity
+type RemoteRenderingAccountPage = original.RemoteRenderingAccountPage
+type RemoteRenderingAccountPageIterator = original.RemoteRenderingAccountPageIterator
+type RemoteRenderingAccountPagePage = original.RemoteRenderingAccountPagePage
+type RemoteRenderingAccountsClient = original.RemoteRenderingAccountsClient
 type Resource = original.Resource
+type ResourceModelWithAllowedPropertySet = original.ResourceModelWithAllowedPropertySet
+type ResourceModelWithAllowedPropertySetIdentity = original.ResourceModelWithAllowedPropertySetIdentity
+type ResourceModelWithAllowedPropertySetPlan = original.ResourceModelWithAllowedPropertySetPlan
+type ResourceModelWithAllowedPropertySetSku = original.ResourceModelWithAllowedPropertySetSku
+type Sku = original.Sku
 type SpatialAnchorsAccount = original.SpatialAnchorsAccount
-type SpatialAnchorsAccountKeyRegenerateRequest = original.SpatialAnchorsAccountKeyRegenerateRequest
-type SpatialAnchorsAccountKeys = original.SpatialAnchorsAccountKeys
-type SpatialAnchorsAccountList = original.SpatialAnchorsAccountList
-type SpatialAnchorsAccountListIterator = original.SpatialAnchorsAccountListIterator
-type SpatialAnchorsAccountListPage = original.SpatialAnchorsAccountListPage
-type SpatialAnchorsAccountProperties = original.SpatialAnchorsAccountProperties
+type SpatialAnchorsAccountPage = original.SpatialAnchorsAccountPage
+type SpatialAnchorsAccountPageIterator = original.SpatialAnchorsAccountPageIterator
+type SpatialAnchorsAccountPagePage = original.SpatialAnchorsAccountPagePage
 type SpatialAnchorsAccountsClient = original.SpatialAnchorsAccountsClient
 type TrackedResource = original.TrackedResource
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewOperationListIterator(page OperationListPage) OperationListIterator {
-	return original.NewOperationListIterator(page)
+func NewOperationPageIterator(page OperationPagePage) OperationPageIterator {
+	return original.NewOperationPageIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationPagePage(getNextPage func(context.Context, OperationPage) (OperationPage, error)) OperationPagePage {
+	return original.NewOperationPagePage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -81,11 +110,23 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSpatialAnchorsAccountListIterator(page SpatialAnchorsAccountListPage) SpatialAnchorsAccountListIterator {
-	return original.NewSpatialAnchorsAccountListIterator(page)
+func NewRemoteRenderingAccountPageIterator(page RemoteRenderingAccountPagePage) RemoteRenderingAccountPageIterator {
+	return original.NewRemoteRenderingAccountPageIterator(page)
 }
-func NewSpatialAnchorsAccountListPage(getNextPage func(context.Context, SpatialAnchorsAccountList) (SpatialAnchorsAccountList, error)) SpatialAnchorsAccountListPage {
-	return original.NewSpatialAnchorsAccountListPage(getNextPage)
+func NewRemoteRenderingAccountPagePage(getNextPage func(context.Context, RemoteRenderingAccountPage) (RemoteRenderingAccountPage, error)) RemoteRenderingAccountPagePage {
+	return original.NewRemoteRenderingAccountPagePage(getNextPage)
+}
+func NewRemoteRenderingAccountsClient(subscriptionID string) RemoteRenderingAccountsClient {
+	return original.NewRemoteRenderingAccountsClient(subscriptionID)
+}
+func NewRemoteRenderingAccountsClientWithBaseURI(baseURI string, subscriptionID string) RemoteRenderingAccountsClient {
+	return original.NewRemoteRenderingAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSpatialAnchorsAccountPageIterator(page SpatialAnchorsAccountPagePage) SpatialAnchorsAccountPageIterator {
+	return original.NewSpatialAnchorsAccountPageIterator(page)
+}
+func NewSpatialAnchorsAccountPagePage(getNextPage func(context.Context, SpatialAnchorsAccountPage) (SpatialAnchorsAccountPage, error)) SpatialAnchorsAccountPagePage {
+	return original.NewSpatialAnchorsAccountPagePage(getNextPage)
 }
 func NewSpatialAnchorsAccountsClient(subscriptionID string) SpatialAnchorsAccountsClient {
 	return original.NewSpatialAnchorsAccountsClient(subscriptionID)
@@ -101,6 +142,12 @@ func PossibleNameAvailabilityValues() []NameAvailability {
 }
 func PossibleNameUnavailableReasonValues() []NameUnavailableReason {
 	return original.PossibleNameUnavailableReasonValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleSkuTierValues() []SkuTier {
+	return original.PossibleSkuTierValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

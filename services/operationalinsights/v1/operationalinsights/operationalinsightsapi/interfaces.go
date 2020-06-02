@@ -29,16 +29,10 @@ type QueryClientAPI interface {
 
 var _ QueryClientAPI = (*operationalinsights.QueryClient)(nil)
 
-// GetClientAPI contains the set of methods on the GetClient type.
-type GetClientAPI interface {
-	Metadata(ctx context.Context, workspaceID string) (result operationalinsights.MetadataResults, err error)
+// MetadataClientAPI contains the set of methods on the MetadataClient type.
+type MetadataClientAPI interface {
+	Get(ctx context.Context, workspaceID string) (result operationalinsights.MetadataResults, err error)
+	Post(ctx context.Context, workspaceID string) (result operationalinsights.MetadataResults, err error)
 }
 
-var _ GetClientAPI = (*operationalinsights.GetClient)(nil)
-
-// PostClientAPI contains the set of methods on the PostClient type.
-type PostClientAPI interface {
-	Metadata(ctx context.Context, workspaceID string) (result operationalinsights.MetadataResults, err error)
-}
-
-var _ PostClientAPI = (*operationalinsights.PostClient)(nil)
+var _ MetadataClientAPI = (*operationalinsights.MetadataClient)(nil)

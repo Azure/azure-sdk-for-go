@@ -401,6 +401,8 @@ var _ VirtualClustersClientAPI = (*sql.VirtualClustersClient)(nil)
 type ExtendedDatabaseBlobAuditingPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.ExtendedDatabaseBlobAuditingPolicy) (result sql.ExtendedDatabaseBlobAuditingPolicy, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.ExtendedDatabaseBlobAuditingPolicy, err error)
+	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.ExtendedDatabaseBlobAuditingPolicyListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.ExtendedDatabaseBlobAuditingPolicyListResultIterator, err error)
 }
 
 var _ ExtendedDatabaseBlobAuditingPoliciesClientAPI = (*sql.ExtendedDatabaseBlobAuditingPoliciesClient)(nil)
@@ -409,6 +411,8 @@ var _ ExtendedDatabaseBlobAuditingPoliciesClientAPI = (*sql.ExtendedDatabaseBlob
 type ExtendedServerBlobAuditingPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ExtendedServerBlobAuditingPolicy) (result sql.ExtendedServerBlobAuditingPoliciesCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ExtendedServerBlobAuditingPolicy, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ExtendedServerBlobAuditingPolicyListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ExtendedServerBlobAuditingPolicyListResultIterator, err error)
 }
 
 var _ ExtendedServerBlobAuditingPoliciesClientAPI = (*sql.ExtendedServerBlobAuditingPoliciesClient)(nil)

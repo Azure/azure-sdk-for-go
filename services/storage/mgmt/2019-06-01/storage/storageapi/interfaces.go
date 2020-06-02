@@ -78,6 +78,7 @@ var _ ManagementPoliciesClientAPI = (*storage.ManagementPoliciesClient)(nil)
 type PrivateEndpointConnectionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result storage.PrivateEndpointConnection, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.PrivateEndpointConnectionListResult, err error)
 	Put(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties storage.PrivateEndpointConnection) (result storage.PrivateEndpointConnection, err error)
 }
 
@@ -131,8 +132,8 @@ type BlobContainersClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, accountName string, containerName string) (result storage.BlobContainer, err error)
 	GetImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string) (result storage.ImmutabilityPolicy, err error)
 	Lease(ctx context.Context, resourceGroupName string, accountName string, containerName string, parameters *storage.LeaseContainerRequest) (result storage.LeaseContainerResponse, err error)
-	List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (result storage.ListContainerItemsPage, err error)
-	ListComplete(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (result storage.ListContainerItemsIterator, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, include storage.ListContainersInclude) (result storage.ListContainerItemsPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, include storage.ListContainersInclude) (result storage.ListContainerItemsIterator, err error)
 	LockImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string) (result storage.ImmutabilityPolicy, err error)
 	SetLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold storage.LegalHold) (result storage.LegalHold, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer storage.BlobContainer) (result storage.BlobContainer, err error)
@@ -161,3 +162,45 @@ type FileSharesClientAPI interface {
 }
 
 var _ FileSharesClientAPI = (*storage.FileSharesClient)(nil)
+
+// QueueServicesClientAPI contains the set of methods on the QueueServicesClient type.
+type QueueServicesClientAPI interface {
+	GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (result storage.QueueServiceProperties, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.ListQueueServices, err error)
+	SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters storage.QueueServiceProperties) (result storage.QueueServiceProperties, err error)
+}
+
+var _ QueueServicesClientAPI = (*storage.QueueServicesClient)(nil)
+
+// QueueClientAPI contains the set of methods on the QueueClient type.
+type QueueClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue storage.Queue) (result storage.Queue, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, queueName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, queueName string) (result storage.Queue, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (result storage.ListQueueResourcePage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string) (result storage.ListQueueResourceIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue storage.Queue) (result storage.Queue, err error)
+}
+
+var _ QueueClientAPI = (*storage.QueueClient)(nil)
+
+// TableServicesClientAPI contains the set of methods on the TableServicesClient type.
+type TableServicesClientAPI interface {
+	GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (result storage.TableServiceProperties, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.ListTableServices, err error)
+	SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters storage.TableServiceProperties) (result storage.TableServiceProperties, err error)
+}
+
+var _ TableServicesClientAPI = (*storage.TableServicesClient)(nil)
+
+// TableClientAPI contains the set of methods on the TableClient type.
+type TableClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result storage.Table, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result storage.Table, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.ListTableResourcePage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, accountName string) (result storage.ListTableResourceIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result storage.Table, err error)
+}
+
+var _ TableClientAPI = (*storage.TableClient)(nil)

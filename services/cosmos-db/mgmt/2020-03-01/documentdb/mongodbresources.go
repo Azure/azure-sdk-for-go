@@ -32,20 +32,20 @@ type MongoDBResourcesClient struct {
 }
 
 // NewMongoDBResourcesClient creates an instance of the MongoDBResourcesClient client.
-func NewMongoDBResourcesClient(subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
-	return NewMongoDBResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewMongoDBResourcesClient(subscriptionID string) MongoDBResourcesClient {
+	return NewMongoDBResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewMongoDBResourcesClientWithBaseURI creates an instance of the MongoDBResourcesClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
-	return MongoDBResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string) MongoDBResourcesClient {
+	return MongoDBResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateUpdateMongoDBCollection create or update an Azure Cosmos DB MongoDB Collection
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // collectionName - cosmos DB collection name.
@@ -62,6 +62,8 @@ func (client MongoDBResourcesClient) CreateUpdateMongoDBCollection(ctx context.C
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -146,7 +148,7 @@ func (client MongoDBResourcesClient) CreateUpdateMongoDBCollectionResponder(resp
 
 // CreateUpdateMongoDBDatabase create or updates Azure Cosmos DB MongoDB database
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // createUpdateMongoDBDatabaseParameters - the parameters to provide for the current MongoDB database.
@@ -162,6 +164,8 @@ func (client MongoDBResourcesClient) CreateUpdateMongoDBDatabase(ctx context.Con
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -245,7 +249,7 @@ func (client MongoDBResourcesClient) CreateUpdateMongoDBDatabaseResponder(resp *
 
 // DeleteMongoDBCollection deletes an existing Azure Cosmos DB MongoDB Collection.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // collectionName - cosmos DB collection name.
@@ -261,6 +265,8 @@ func (client MongoDBResourcesClient) DeleteMongoDBCollection(ctx context.Context
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -336,7 +342,7 @@ func (client MongoDBResourcesClient) DeleteMongoDBCollectionResponder(resp *http
 
 // DeleteMongoDBDatabase deletes an existing Azure Cosmos DB MongoDB database.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 func (client MongoDBResourcesClient) DeleteMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result MongoDBResourcesDeleteMongoDBDatabaseFuture, err error) {
@@ -351,6 +357,8 @@ func (client MongoDBResourcesClient) DeleteMongoDBDatabase(ctx context.Context, 
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -425,7 +433,7 @@ func (client MongoDBResourcesClient) DeleteMongoDBDatabaseResponder(resp *http.R
 
 // GetMongoDBCollection gets the MongoDB collection under an existing Azure Cosmos DB database account.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // collectionName - cosmos DB collection name.
@@ -441,6 +449,8 @@ func (client MongoDBResourcesClient) GetMongoDBCollection(ctx context.Context, r
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -518,7 +528,7 @@ func (client MongoDBResourcesClient) GetMongoDBCollectionResponder(resp *http.Re
 // GetMongoDBCollectionThroughput gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB
 // database account with the provided name.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // collectionName - cosmos DB collection name.
@@ -534,6 +544,8 @@ func (client MongoDBResourcesClient) GetMongoDBCollectionThroughput(ctx context.
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -611,7 +623,7 @@ func (client MongoDBResourcesClient) GetMongoDBCollectionThroughputResponder(res
 // GetMongoDBDatabase gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided
 // name.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 func (client MongoDBResourcesClient) GetMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result MongoDBDatabaseGetResults, err error) {
@@ -626,6 +638,8 @@ func (client MongoDBResourcesClient) GetMongoDBDatabase(ctx context.Context, res
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -702,7 +716,7 @@ func (client MongoDBResourcesClient) GetMongoDBDatabaseResponder(resp *http.Resp
 // GetMongoDBDatabaseThroughput gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB
 // database account with the provided name.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 func (client MongoDBResourcesClient) GetMongoDBDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result ThroughputSettingsGetResults, err error) {
@@ -717,6 +731,8 @@ func (client MongoDBResourcesClient) GetMongoDBDatabaseThroughput(ctx context.Co
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -792,7 +808,7 @@ func (client MongoDBResourcesClient) GetMongoDBDatabaseThroughputResponder(resp 
 
 // ListMongoDBCollections lists the MongoDB collection under an existing Azure Cosmos DB database account.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 func (client MongoDBResourcesClient) ListMongoDBCollections(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result MongoDBCollectionListResult, err error) {
@@ -807,6 +823,8 @@ func (client MongoDBResourcesClient) ListMongoDBCollections(ctx context.Context,
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -882,7 +900,7 @@ func (client MongoDBResourcesClient) ListMongoDBCollectionsResponder(resp *http.
 
 // ListMongoDBDatabases lists the MongoDB databases under an existing Azure Cosmos DB database account.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 func (client MongoDBResourcesClient) ListMongoDBDatabases(ctx context.Context, resourceGroupName string, accountName string) (result MongoDBDatabaseListResult, err error) {
 	if tracing.IsEnabled() {
@@ -896,6 +914,8 @@ func (client MongoDBResourcesClient) ListMongoDBDatabases(ctx context.Context, r
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -970,7 +990,7 @@ func (client MongoDBResourcesClient) ListMongoDBDatabasesResponder(resp *http.Re
 
 // UpdateMongoDBCollectionThroughput update the RUs per second of an Azure Cosmos DB MongoDB collection
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // collectionName - cosmos DB collection name.
@@ -988,6 +1008,8 @@ func (client MongoDBResourcesClient) UpdateMongoDBCollectionThroughput(ctx conte
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -1073,7 +1095,7 @@ func (client MongoDBResourcesClient) UpdateMongoDBCollectionThroughputResponder(
 
 // UpdateMongoDBDatabaseThroughput update RUs per second of the an Azure Cosmos DB MongoDB database
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // updateThroughputParameters - the RUs per second of the parameters to provide for the current MongoDB
@@ -1090,6 +1112,8 @@ func (client MongoDBResourcesClient) UpdateMongoDBDatabaseThroughput(ctx context
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},

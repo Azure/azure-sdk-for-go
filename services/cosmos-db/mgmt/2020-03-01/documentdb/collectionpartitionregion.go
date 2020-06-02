@@ -32,21 +32,21 @@ type CollectionPartitionRegionClient struct {
 }
 
 // NewCollectionPartitionRegionClient creates an instance of the CollectionPartitionRegionClient client.
-func NewCollectionPartitionRegionClient(subscriptionID string, subscriptionID1 string) CollectionPartitionRegionClient {
-	return NewCollectionPartitionRegionClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewCollectionPartitionRegionClient(subscriptionID string) CollectionPartitionRegionClient {
+	return NewCollectionPartitionRegionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewCollectionPartitionRegionClientWithBaseURI creates an instance of the CollectionPartitionRegionClient client
 // using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
 // clouds, Azure stack).
-func NewCollectionPartitionRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionPartitionRegionClient {
-	return CollectionPartitionRegionClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewCollectionPartitionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionPartitionRegionClient {
+	return CollectionPartitionRegionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given collection and region, split by
 // partition.
 // Parameters:
-// resourceGroupName - name of an Azure resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - cosmos DB database account name.
 // region - cosmos DB region, with spaces between words and each word capitalized.
 // databaseRid - cosmos DB database rid.
@@ -66,6 +66,8 @@ func (client CollectionPartitionRegionClient) ListMetrics(ctx context.Context, r
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},

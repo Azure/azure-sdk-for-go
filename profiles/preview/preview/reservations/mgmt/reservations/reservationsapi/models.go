@@ -27,6 +27,4 @@ type ClientAPI = original.ClientAPI
 type OperationClientAPI = original.OperationClientAPI
 type OrderClientAPI = original.OrderClientAPI
 type QuotaClientAPI = original.QuotaClientAPI
-type QuotaRequestClientAPI = original.QuotaRequestClientAPI
-type QuotaRequestsClientAPI = original.QuotaRequestsClientAPI
-type QuotasClientAPI = original.QuotasClientAPI
+type QuotaRequestStatusClientAPI = original.QuotaRequestStatusClientAPI

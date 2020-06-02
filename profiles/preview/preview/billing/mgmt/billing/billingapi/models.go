@@ -19,29 +19,23 @@
 
 package billingapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-11-01-preview/billing/billingapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2020-05-01-preview/billing/billingapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
-type AddressesClientAPI = original.AddressesClientAPI
+type AddressClientAPI = original.AddressClientAPI
 type AgreementsClientAPI = original.AgreementsClientAPI
 type AvailableBalancesClientAPI = original.AvailableBalancesClientAPI
 type CustomersClientAPI = original.CustomersClientAPI
-type DepartmentsClientAPI = original.DepartmentsClientAPI
-type EnrollmentAccountsClientAPI = original.EnrollmentAccountsClientAPI
+type InstructionsClientAPI = original.InstructionsClientAPI
 type InvoiceSectionsClientAPI = original.InvoiceSectionsClientAPI
 type InvoicesClientAPI = original.InvoicesClientAPI
-type LineOfCreditsClientAPI = original.LineOfCreditsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
-type PaymentMethodsClientAPI = original.PaymentMethodsClientAPI
 type PermissionsClientAPI = original.PermissionsClientAPI
 type PoliciesClientAPI = original.PoliciesClientAPI
-type PriceSheetClientAPI = original.PriceSheetClientAPI
 type ProductsClientAPI = original.ProductsClientAPI
 type ProfilesClientAPI = original.ProfilesClientAPI
 type PropertyClientAPI = original.PropertyClientAPI
-type RecipientTransfersClientAPI = original.RecipientTransfersClientAPI
 type RoleAssignmentsClientAPI = original.RoleAssignmentsClientAPI
 type RoleDefinitionsClientAPI = original.RoleDefinitionsClientAPI
 type SubscriptionsClientAPI = original.SubscriptionsClientAPI
 type TransactionsClientAPI = original.TransactionsClientAPI
-type TransfersClientAPI = original.TransfersClientAPI

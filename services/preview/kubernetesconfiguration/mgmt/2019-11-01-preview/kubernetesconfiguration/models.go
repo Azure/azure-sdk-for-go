@@ -37,6 +37,10 @@ type ComplianceState string
 const (
 	// Compliant ...
 	Compliant ComplianceState = "Compliant"
+	// Failed ...
+	Failed ComplianceState = "Failed"
+	// Installed ...
+	Installed ComplianceState = "Installed"
 	// Noncompliant ...
 	Noncompliant ComplianceState = "Noncompliant"
 	// Pending ...
@@ -45,7 +49,7 @@ const (
 
 // PossibleComplianceStateValues returns an array of possible values for the ComplianceState const type.
 func PossibleComplianceStateValues() []ComplianceState {
-	return []ComplianceState{Compliant, Noncompliant, Pending}
+	return []ComplianceState{Compliant, Failed, Installed, Noncompliant, Pending}
 }
 
 // EnableHelmOperator enumerates the values for enable helm operator.
@@ -112,26 +116,26 @@ func PossibleOperatorTypeValues() []OperatorType {
 type ProvisioningState string
 
 const (
-	// Accepted ...
-	Accepted ProvisioningState = "Accepted"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Running ...
-	Running ProvisioningState = "Running"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
+	// ProvisioningStateAccepted ...
+	ProvisioningStateAccepted ProvisioningState = "Accepted"
+	// ProvisioningStateDeleting ...
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	// ProvisioningStateFailed ...
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateRunning ...
+	ProvisioningStateRunning ProvisioningState = "Running"
+	// ProvisioningStateSucceeded ...
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Accepted, Deleting, Failed, Running, Succeeded}
+	return []ProvisioningState{ProvisioningStateAccepted, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateRunning, ProvisioningStateSucceeded}
 }
 
 // ComplianceStatus compliance Status details
 type ComplianceStatus struct {
-	// ComplianceState - READ-ONLY; The compliance state of the configuration. Possible values include: 'Pending', 'Compliant', 'Noncompliant'
+	// ComplianceState - READ-ONLY; The compliance state of the configuration. Possible values include: 'Pending', 'Compliant', 'Noncompliant', 'Installed', 'Failed'
 	ComplianceState ComplianceState `json:"complianceState,omitempty"`
 	// LastConfigApplied - Datetime the configuration was last applied.
 	LastConfigApplied *date.Time `json:"lastConfigApplied,omitempty"`
@@ -599,7 +603,7 @@ type SourceControlConfigurationProperties struct {
 	EnableHelmOperator EnableHelmOperator `json:"enableHelmOperator,omitempty"`
 	// HelmOperatorProperties - Properties for Helm operator.
 	HelmOperatorProperties *HelmOperatorProperties `json:"helmOperatorProperties,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the resource provider. Possible values include: 'Accepted', 'Deleting', 'Running', 'Succeeded', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the resource provider. Possible values include: 'ProvisioningStateAccepted', 'ProvisioningStateDeleting', 'ProvisioningStateRunning', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ComplianceStatus - READ-ONLY; Compliance Status of the Configuration
 	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty"`

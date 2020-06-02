@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// VMwareOperationsStatusClient is the client for the VMwareOperationsStatus methods of the Migrate service.
+// VMwareOperationsStatusClient is the discover your workloads for Azure.
 type VMwareOperationsStatusClient struct {
 	BaseClient
 }

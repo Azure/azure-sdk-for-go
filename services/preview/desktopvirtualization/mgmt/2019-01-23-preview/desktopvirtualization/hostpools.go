@@ -67,7 +67,9 @@ func (client HostPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: hostPoolName,
 			Constraints: []validation.Constraint{{Target: "hostPoolName", Name: validation.MaxLength, Rule: 24, Chain: nil},
-				{Target: "hostPoolName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+				{Target: "hostPoolName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: hostPool,
+			Constraints: []validation.Constraint{{Target: "hostPool.HostPoolProperties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("desktopvirtualization.HostPoolsClient", "CreateOrUpdate", err.Error())
 	}
 

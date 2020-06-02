@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// HyperVClusterClient is the client for the HyperVCluster methods of the Migrate service.
+// HyperVClusterClient is the discover your workloads for Azure.
 type HyperVClusterClient struct {
 	BaseClient
 }

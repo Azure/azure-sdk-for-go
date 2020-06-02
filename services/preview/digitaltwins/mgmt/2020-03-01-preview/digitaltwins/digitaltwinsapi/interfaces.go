@@ -48,23 +48,6 @@ type EndpointClientAPI interface {
 
 var _ EndpointClientAPI = (*digitaltwins.EndpointClient)(nil)
 
-// IoTHubClientAPI contains the set of methods on the IoTHubClient type.
-type IoTHubClientAPI interface {
-	CreateOrUpdate(ctx context.Context, scope string, integrationResourceName string, iotHubDescription digitaltwins.IntegrationResource) (result digitaltwins.IntegrationResource, err error)
-	Delete(ctx context.Context, scope string, integrationResourceName string) (result digitaltwins.IoTHubDeleteFuture, err error)
-	Get(ctx context.Context, scope string, integrationResourceName string) (result digitaltwins.IntegrationResource, err error)
-}
-
-var _ IoTHubClientAPI = (*digitaltwins.IoTHubClient)(nil)
-
-// IoTHubsClientAPI contains the set of methods on the IoTHubsClient type.
-type IoTHubsClientAPI interface {
-	List(ctx context.Context, resourceGroupName string, resourceName string) (result digitaltwins.IntegrationResourceListResultPage, err error)
-	ListComplete(ctx context.Context, resourceGroupName string, resourceName string) (result digitaltwins.IntegrationResourceListResultIterator, err error)
-}
-
-var _ IoTHubsClientAPI = (*digitaltwins.IoTHubsClient)(nil)
-
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result digitaltwins.OperationListResultPage, err error)

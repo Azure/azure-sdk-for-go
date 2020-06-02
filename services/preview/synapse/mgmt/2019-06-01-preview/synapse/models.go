@@ -503,6 +503,21 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{ProvisioningStateDeleteError, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateProvisioning, ProvisioningStateSucceeded}
 }
 
+// ProvisioningState1 enumerates the values for provisioning state 1.
+type ProvisioningState1 string
+
+const (
+	// ProvisioningState1Failed ...
+	ProvisioningState1Failed ProvisioningState1 = "Failed"
+	// ProvisioningState1Succeeded ...
+	ProvisioningState1Succeeded ProvisioningState1 = "Succeeded"
+)
+
+// PossibleProvisioningState1Values returns an array of possible values for the ProvisioningState1 const type.
+func PossibleProvisioningState1Values() []ProvisioningState1 {
+	return []ProvisioningState1{ProvisioningState1Failed, ProvisioningState1Succeeded}
+}
+
 // QueryAggregationFunction enumerates the values for query aggregation function.
 type QueryAggregationFunction string
 
@@ -4841,6 +4856,274 @@ func (future *PrivateEndpointConnectionsDeleteFuture) Result(client PrivateEndpo
 		}
 	}
 	return
+}
+
+// PrivateLinkHub a privateLinkHub
+type PrivateLinkHub struct {
+	autorest.Response `json:"-"`
+	// PrivateLinkHubProperties - PrivateLinkHub resource properties
+	*PrivateLinkHubProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkHub.
+func (plh PrivateLinkHub) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if plh.PrivateLinkHubProperties != nil {
+		objectMap["properties"] = plh.PrivateLinkHubProperties
+	}
+	if plh.Tags != nil {
+		objectMap["tags"] = plh.Tags
+	}
+	if plh.Location != nil {
+		objectMap["location"] = plh.Location
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PrivateLinkHub struct.
+func (plh *PrivateLinkHub) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var privateLinkHubProperties PrivateLinkHubProperties
+				err = json.Unmarshal(*v, &privateLinkHubProperties)
+				if err != nil {
+					return err
+				}
+				plh.PrivateLinkHubProperties = &privateLinkHubProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				plh.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				plh.Location = &location
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				plh.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				plh.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				plh.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PrivateLinkHubInfoListResult list of privateLinkHubs
+type PrivateLinkHubInfoListResult struct {
+	autorest.Response `json:"-"`
+	// NextLink - Link to the next page of results
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - List of privateLinkHubs
+	Value *[]PrivateLinkHub `json:"value,omitempty"`
+}
+
+// PrivateLinkHubInfoListResultIterator provides access to a complete listing of PrivateLinkHub values.
+type PrivateLinkHubInfoListResultIterator struct {
+	i    int
+	page PrivateLinkHubInfoListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PrivateLinkHubInfoListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkHubInfoListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PrivateLinkHubInfoListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PrivateLinkHubInfoListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PrivateLinkHubInfoListResultIterator) Response() PrivateLinkHubInfoListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PrivateLinkHubInfoListResultIterator) Value() PrivateLinkHub {
+	if !iter.page.NotDone() {
+		return PrivateLinkHub{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PrivateLinkHubInfoListResultIterator type.
+func NewPrivateLinkHubInfoListResultIterator(page PrivateLinkHubInfoListResultPage) PrivateLinkHubInfoListResultIterator {
+	return PrivateLinkHubInfoListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (plhilr PrivateLinkHubInfoListResult) IsEmpty() bool {
+	return plhilr.Value == nil || len(*plhilr.Value) == 0
+}
+
+// privateLinkHubInfoListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (plhilr PrivateLinkHubInfoListResult) privateLinkHubInfoListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if plhilr.NextLink == nil || len(to.String(plhilr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(plhilr.NextLink)))
+}
+
+// PrivateLinkHubInfoListResultPage contains a page of PrivateLinkHub values.
+type PrivateLinkHubInfoListResultPage struct {
+	fn     func(context.Context, PrivateLinkHubInfoListResult) (PrivateLinkHubInfoListResult, error)
+	plhilr PrivateLinkHubInfoListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PrivateLinkHubInfoListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkHubInfoListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.plhilr)
+	if err != nil {
+		return err
+	}
+	page.plhilr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PrivateLinkHubInfoListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PrivateLinkHubInfoListResultPage) NotDone() bool {
+	return !page.plhilr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PrivateLinkHubInfoListResultPage) Response() PrivateLinkHubInfoListResult {
+	return page.plhilr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PrivateLinkHubInfoListResultPage) Values() []PrivateLinkHub {
+	if page.plhilr.IsEmpty() {
+		return nil
+	}
+	return *page.plhilr.Value
+}
+
+// Creates a new instance of the PrivateLinkHubInfoListResultPage type.
+func NewPrivateLinkHubInfoListResultPage(getNextPage func(context.Context, PrivateLinkHubInfoListResult) (PrivateLinkHubInfoListResult, error)) PrivateLinkHubInfoListResultPage {
+	return PrivateLinkHubInfoListResultPage{fn: getNextPage}
+}
+
+// PrivateLinkHubPatchInfo privateLinkHub patch details
+type PrivateLinkHubPatchInfo struct {
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkHubPatchInfo.
+func (plhpi PrivateLinkHubPatchInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if plhpi.Tags != nil {
+		objectMap["tags"] = plhpi.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// PrivateLinkHubProperties privateLinkHub properties
+type PrivateLinkHubProperties struct {
+	// ProvisioningState - READ-ONLY; PrivateLinkHub provisioning state. Possible values include: 'ProvisioningState1Succeeded', 'ProvisioningState1Failed'
+	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
 }
 
 // PrivateLinkResource a private link resource

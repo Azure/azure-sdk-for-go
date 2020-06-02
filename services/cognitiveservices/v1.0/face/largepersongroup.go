@@ -42,23 +42,24 @@ func NewLargePersonGroupClient(endpoint string) LargePersonGroupClient {
 // to 1,000,000
 // people.
 // <br /> After creation, use [LargePersonGroup Person -
-// Create](/docs/services/563879b61984550e40cbbe8d/operations/599adcba3a7b9412a4d53f40) to add person into the group,
-// and call [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4) to
-// get this group ready for [Face -
-// Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+// Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroupperson/create) to add person into
+// the group, and call [LargePersonGroup -
+// Train](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup/train) to get this group ready
+// for [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
 // <br /> No image will be stored. Only the person's extracted face features and userData will be stored on server
 // until [LargePersonGroup Person -
-// Delete](/docs/services/563879b61984550e40cbbe8d/operations/599ade5c6ac60f11b48b5aa2) or [LargePersonGroup -
-// Delete](/docs/services/563879b61984550e40cbbe8d/operations/599adc216ac60f11b48b5a9f) is called.
+// Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroupperson/delete) or
+// [LargePersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup/delete) is
+// called.
 // <br/>'recognitionModel' should be specified to associate with this large person group. The default value for
 // 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in
 // this parameter. New faces that are added to an existing large person group will use the recognition model that's
 // already associated with the collection. Existing face features in a large person group can't be updated to features
 // extracted by another version of recognition model.
 // * 'recognition_01': The default recognition model for [LargePersonGroup -
-// Create](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d). All those large person groups
-// created before 2019 March are bonded with this recognition model.
-// * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall
+// Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup/create). All those large person
+// groups created before 2019 March are bonded with this recognition model.
+// * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall
 // accuracy is improved compared with 'recognition_01'.
 //
 // Large person group quota:
@@ -223,8 +224,8 @@ func (client LargePersonGroupClient) DeleteResponder(resp *http.Response) (resul
 
 // Get retrieve the information of a large person group, including its name, userData and recognitionModel. This API
 // returns large person group information only, use [LargePersonGroup Person -
-// List](/docs/services/563879b61984550e40cbbe8d/operations/599adda06ac60f11b48b5aa1) instead to retrieve person
-// information under the large person group.
+// List](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroupperson/list) instead to retrieve
+// person information under the large person group.
 // Parameters:
 // largePersonGroupID - id referencing a particular large person group.
 // returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in

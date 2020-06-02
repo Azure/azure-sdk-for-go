@@ -25,6 +25,59 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid"
 
+// AppAction enumerates the values for app action.
+type AppAction string
+
+const (
+	// ChangedAppSettings There was an operation to change app setting on the web app.
+	ChangedAppSettings AppAction = "ChangedAppSettings"
+	// Completed The job has completed.
+	Completed AppAction = "Completed"
+	// Failed The job has failed to complete.
+	Failed AppAction = "Failed"
+	// Restarted Web app was restarted.
+	Restarted AppAction = "Restarted"
+	// Started The job has started.
+	Started AppAction = "Started"
+	// Stopped Web app was stopped.
+	Stopped AppAction = "Stopped"
+)
+
+// PossibleAppActionValues returns an array of possible values for the AppAction const type.
+func PossibleAppActionValues() []AppAction {
+	return []AppAction{ChangedAppSettings, Completed, Failed, Restarted, Started, Stopped}
+}
+
+// AppServicePlanAction enumerates the values for app service plan action.
+type AppServicePlanAction string
+
+const (
+	// Updated App Service plan is being updated.
+	Updated AppServicePlanAction = "Updated"
+)
+
+// PossibleAppServicePlanActionValues returns an array of possible values for the AppServicePlanAction const type.
+func PossibleAppServicePlanActionValues() []AppServicePlanAction {
+	return []AppServicePlanAction{Updated}
+}
+
+// AsyncStatus enumerates the values for async status.
+type AsyncStatus string
+
+const (
+	// AsyncStatusCompleted Async operation has completed.
+	AsyncStatusCompleted AsyncStatus = "Completed"
+	// AsyncStatusFailed Async operation failed to complete.
+	AsyncStatusFailed AsyncStatus = "Failed"
+	// AsyncStatusStarted Async operation has started.
+	AsyncStatusStarted AsyncStatus = "Started"
+)
+
+// PossibleAsyncStatusValues returns an array of possible values for the AsyncStatus const type.
+func PossibleAsyncStatusValues() []AsyncStatus {
+	return []AsyncStatus{AsyncStatusCompleted, AsyncStatusFailed, AsyncStatusStarted}
+}
+
 // MediaJobErrorCategory enumerates the values for media job error category.
 type MediaJobErrorCategory string
 
@@ -141,6 +194,23 @@ func PossibleOdataTypeValues() []OdataType {
 	return []OdataType{OdataTypeMediaJobOutput, OdataTypeMicrosoftMediaJobOutputAsset}
 }
 
+// StampKind enumerates the values for stamp kind.
+type StampKind string
+
+const (
+	// AseV1 App Service Plan is running on an App Service Environment V1.
+	AseV1 StampKind = "AseV1"
+	// AseV2 App Service Plan is running on an App Service Environment V2.
+	AseV2 StampKind = "AseV2"
+	// Public App Service Plan is running on a public stamp.
+	Public StampKind = "Public"
+)
+
+// PossibleStampKindValues returns an array of possible values for the StampKind const type.
+func PossibleStampKindValues() []StampKind {
+	return []StampKind{AseV1, AseV2, Public}
+}
+
 // AppConfigurationKeyValueDeletedEventData schema of the Data property of an EventGridEvent for an
 // Microsoft.AppConfiguration.KeyValueDeleted event.
 type AppConfigurationKeyValueDeletedEventData struct {
@@ -161,6 +231,22 @@ type AppConfigurationKeyValueModifiedEventData struct {
 	Label *string `json:"label,omitempty"`
 	// Etag - The etag representing the new state of the key-value.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// AppEventTypeDetail detail of action on the app.
+type AppEventTypeDetail struct {
+	// Action - Type of action of the operation. Possible values include: 'Restarted', 'Stopped', 'ChangedAppSettings', 'Started', 'Completed', 'Failed'
+	Action AppAction `json:"action,omitempty"`
+}
+
+// AppServicePlanEventTypeDetail detail of action on the app service plan.
+type AppServicePlanEventTypeDetail struct {
+	// StampKind - Kind of environment where app service plan is. Possible values include: 'Public', 'AseV1', 'AseV2'
+	StampKind StampKind `json:"stampKind,omitempty"`
+	// Action - Type of action on the app service plan. Possible values include: 'Updated'
+	Action AppServicePlanAction `json:"action,omitempty"`
+	// Status - Possible values include: 'AsyncStatusStarted', 'AsyncStatusCompleted', 'AsyncStatusFailed'
+	Status AsyncStatus `json:"status,omitempty"`
 }
 
 // ContainerRegistryArtifactEventData the content of the event request message.
@@ -2466,4 +2552,254 @@ type SubscriptionValidationEventData struct {
 type SubscriptionValidationResponse struct {
 	// ValidationResponse - The validation response sent by the subscriber to Azure Event Grid to complete the validation of an event subscription.
 	ValidationResponse *string `json:"validationResponse,omitempty"`
+}
+
+// WebAppServicePlanUpdatedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Web.AppServicePlanUpdated event.
+type WebAppServicePlanUpdatedEventData struct {
+	AppServicePlanEventTypeDetail *AppServicePlanEventTypeDetail `json:"appServicePlanEventTypeDetail,omitempty"`
+	// Sku - sku of app service plan.
+	Sku *WebAppServicePlanUpdatedEventDataSku `json:"sku,omitempty"`
+	// Name - name of the app service plan that had this event.
+	Name *string `json:"name,omitempty"`
+	// ClientRequestID - The client request id generated by the app service for the app service plan API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// CorrelationRequestID - The correlation request id generated by the app service for the app service plan API operation that triggered this event.
+	CorrelationRequestID *string `json:"correlationRequestId,omitempty"`
+	// RequestID - The request id generated by the app service for the app service plan API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// Address - HTTP request URL of this operation.
+	Address *string `json:"address,omitempty"`
+	// Verb - HTTP verb of this operation.
+	Verb *string `json:"verb,omitempty"`
+}
+
+// WebAppServicePlanUpdatedEventDataSku sku of app service plan.
+type WebAppServicePlanUpdatedEventDataSku struct {
+	// Name - name of app service plan sku.
+	Name *string `json:"name,omitempty"`
+	// Tier - tier of app service plan sku.
+	Tier *string `json:"Tier,omitempty"`
+	// Size - size of app service plan sku.
+	Size *string `json:"Size,omitempty"`
+	// Family - family of app service plan sku.
+	Family *string `json:"Family,omitempty"`
+	// Capacity - capacity of app service plan sku.
+	Capacity *string `json:"Capacity,omitempty"`
+}
+
+// WebAppUpdatedEventData schema of the Data property of an EventGridEvent for an Microsoft.Web.AppUpdated
+// event.
+type WebAppUpdatedEventData struct {
+	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
+	// Name - name of the web site that had this event.
+	Name *string `json:"name,omitempty"`
+	// ClientRequestID - The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// CorrelationRequestID - The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string `json:"correlationRequestId,omitempty"`
+	// RequestID - The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// Address - HTTP request URL of this operation.
+	Address *string `json:"address,omitempty"`
+	// Verb - HTTP verb of this operation.
+	Verb *string `json:"verb,omitempty"`
+}
+
+// WebBackupOperationCompletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Web.BackupOperationCompleted event.
+type WebBackupOperationCompletedEventData struct {
+	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
+	// Name - name of the web site that had this event.
+	Name *string `json:"name,omitempty"`
+	// ClientRequestID - The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// CorrelationRequestID - The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string `json:"correlationRequestId,omitempty"`
+	// RequestID - The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// Address - HTTP request URL of this operation.
+	Address *string `json:"address,omitempty"`
+	// Verb - HTTP verb of this operation.
+	Verb *string `json:"verb,omitempty"`
+}
+
+// WebBackupOperationFailedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Web.BackupOperationFailed event.
+type WebBackupOperationFailedEventData struct {
+	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
+	// Name - name of the web site that had this event.
+	Name *string `json:"name,omitempty"`
+	// ClientRequestID - The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// CorrelationRequestID - The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string `json:"correlationRequestId,omitempty"`
+	// RequestID - The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// Address - HTTP request URL of this operation.
+	Address *string `json:"address,omitempty"`
+	// Verb - HTTP verb of this operation.
+	Verb *string `json:"verb,omitempty"`
+}
+
+// WebBackupOperationStartedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Web.BackupOperationStarted event.
+type WebBackupOperationStartedEventData struct {
+	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
+	// Name - name of the web site that had this event.
+	Name *string `json:"name,omitempty"`
+	// ClientRequestID - The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// CorrelationRequestID - The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string `json:"correlationRequestId,omitempty"`
+	// RequestID - The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// Address - HTTP request URL of this operation.
+	Address *string `json:"address,omitempty"`
+	// Verb - HTTP verb of this operation.
+	Verb *string `json:"verb,omitempty"`
+}
+
+// WebRestoreOperationCompletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Web.RestoreOperationCompleted event.
+type WebRestoreOperationCompletedEventData struct {
+	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
+	// Name - name of the web site that had this event.
+	Name *string `json:"name,omitempty"`
+	// ClientRequestID - The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// CorrelationRequestID - The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string `json:"correlationRequestId,omitempty"`
+	// RequestID - The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// Address - HTTP request URL of this operation.
+	Address *string `json:"address,omitempty"`
+	// Verb - HTTP verb of this operation.
+	Verb *string `json:"verb,omitempty"`
+}
+
+// WebRestoreOperationFailedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Web.RestoreOperationFailed event.
+type WebRestoreOperationFailedEventData struct {
+	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
+	// Name - name of the web site that had this event.
+	Name *string `json:"name,omitempty"`
+	// ClientRequestID - The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// CorrelationRequestID - The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string `json:"correlationRequestId,omitempty"`
+	// RequestID - The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// Address - HTTP request URL of this operation.
+	Address *string `json:"address,omitempty"`
+	// Verb - HTTP verb of this operation.
+	Verb *string `json:"verb,omitempty"`
+}
+
+// WebRestoreOperationStartedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Web.RestoreOperationStarted event.
+type WebRestoreOperationStartedEventData struct {
+	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
+	// Name - name of the web site that had this event.
+	Name *string `json:"name,omitempty"`
+	// ClientRequestID - The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// CorrelationRequestID - The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string `json:"correlationRequestId,omitempty"`
+	// RequestID - The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// Address - HTTP request URL of this operation.
+	Address *string `json:"address,omitempty"`
+	// Verb - HTTP verb of this operation.
+	Verb *string `json:"verb,omitempty"`
+}
+
+// WebSlotSwapCompletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Web.SlotSwapCompleted event.
+type WebSlotSwapCompletedEventData struct {
+	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
+	// Name - name of the web site that had this event.
+	Name *string `json:"name,omitempty"`
+	// ClientRequestID - The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// CorrelationRequestID - The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string `json:"correlationRequestId,omitempty"`
+	// RequestID - The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// Address - HTTP request URL of this operation.
+	Address *string `json:"address,omitempty"`
+	// Verb - HTTP verb of this operation.
+	Verb *string `json:"verb,omitempty"`
+}
+
+// WebSlotSwapFailedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Web.SlotSwapFailed event.
+type WebSlotSwapFailedEventData struct {
+	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
+	// Name - name of the web site that had this event.
+	Name *string `json:"name,omitempty"`
+	// ClientRequestID - The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// CorrelationRequestID - The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string `json:"correlationRequestId,omitempty"`
+	// RequestID - The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// Address - HTTP request URL of this operation.
+	Address *string `json:"address,omitempty"`
+	// Verb - HTTP verb of this operation.
+	Verb *string `json:"verb,omitempty"`
+}
+
+// WebSlotSwapStartedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Web.SlotSwapStarted event.
+type WebSlotSwapStartedEventData struct {
+	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
+	// Name - name of the web site that had this event.
+	Name *string `json:"name,omitempty"`
+	// ClientRequestID - The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// CorrelationRequestID - The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string `json:"correlationRequestId,omitempty"`
+	// RequestID - The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// Address - HTTP request URL of this operation.
+	Address *string `json:"address,omitempty"`
+	// Verb - HTTP verb of this operation.
+	Verb *string `json:"verb,omitempty"`
+}
+
+// WebSlotSwapWithPreviewCancelledEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Web.SlotSwapWithPreviewCancelled event.
+type WebSlotSwapWithPreviewCancelledEventData struct {
+	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
+	// Name - name of the web site that had this event.
+	Name *string `json:"name,omitempty"`
+	// ClientRequestID - The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// CorrelationRequestID - The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string `json:"correlationRequestId,omitempty"`
+	// RequestID - The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// Address - HTTP request URL of this operation.
+	Address *string `json:"address,omitempty"`
+	// Verb - HTTP verb of this operation.
+	Verb *string `json:"verb,omitempty"`
+}
+
+// WebSlotSwapWithPreviewStartedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Web.SlotSwapWithPreviewStarted event.
+type WebSlotSwapWithPreviewStartedEventData struct {
+	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
+	// Name - name of the web site that had this event.
+	Name *string `json:"name,omitempty"`
+	// ClientRequestID - The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// CorrelationRequestID - The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string `json:"correlationRequestId,omitempty"`
+	// RequestID - The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// Address - HTTP request URL of this operation.
+	Address *string `json:"address,omitempty"`
+	// Verb - HTTP verb of this operation.
+	Verb *string `json:"verb,omitempty"`
 }

@@ -33,6 +33,8 @@ type ComplianceState = original.ComplianceState
 
 const (
 	Compliant    ComplianceState = original.Compliant
+	Failed       ComplianceState = original.Failed
+	Installed    ComplianceState = original.Installed
 	Noncompliant ComplianceState = original.Noncompliant
 	Pending      ComplianceState = original.Pending
 )
@@ -68,11 +70,11 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Accepted  ProvisioningState = original.Accepted
-	Deleting  ProvisioningState = original.Deleting
-	Failed    ProvisioningState = original.Failed
-	Running   ProvisioningState = original.Running
-	Succeeded ProvisioningState = original.Succeeded
+	ProvisioningStateAccepted  ProvisioningState = original.ProvisioningStateAccepted
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateRunning   ProvisioningState = original.ProvisioningStateRunning
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
 )
 
 type BaseClient = original.BaseClient

@@ -22,7 +22,7 @@ package machinelearningservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2020-03-01/machinelearningservices"
+	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2020-04-01/machinelearningservices"
 )
 
 const (
@@ -151,7 +151,10 @@ const (
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	SystemAssigned ResourceIdentityType = original.SystemAssigned
+	None                       ResourceIdentityType = original.None
+	SystemAssigned             ResourceIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               ResourceIdentityType = original.UserAssigned
 )
 
 type Status = original.Status
@@ -227,6 +230,7 @@ type ErrorResponse = original.ErrorResponse
 type HDInsight = original.HDInsight
 type HDInsightProperties = original.HDInsightProperties
 type Identity = original.Identity
+type IdentityUserAssignedIdentitiesValue = original.IdentityUserAssignedIdentitiesValue
 type KeyVaultProperties = original.KeyVaultProperties
 type ListAmlUserFeatureResult = original.ListAmlUserFeatureResult
 type ListAmlUserFeatureResultIterator = original.ListAmlUserFeatureResultIterator

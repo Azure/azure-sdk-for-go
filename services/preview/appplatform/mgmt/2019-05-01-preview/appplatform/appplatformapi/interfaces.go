@@ -116,3 +116,11 @@ type OperationsClientAPI interface {
 }
 
 var _ OperationsClientAPI = (*appplatform.OperationsClient)(nil)
+
+// SkuClientAPI contains the set of methods on the SkuClient type.
+type SkuClientAPI interface {
+	List(ctx context.Context) (result appplatform.ResourceSkuCollectionPage, err error)
+	ListComplete(ctx context.Context) (result appplatform.ResourceSkuCollectionIterator, err error)
+}
+
+var _ SkuClientAPI = (*appplatform.SkuClient)(nil)

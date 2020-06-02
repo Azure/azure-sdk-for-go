@@ -52,9 +52,8 @@ func NewSourceControlConfigurationsClientWithBaseURI(baseURI string, subscriptio
 // connectedClusters (for OnPrem K8S clusters).
 // clusterName - the name of the kubernetes cluster.
 // sourceControlConfigurationName - name of the Source Control Configuration.
-// APIVersion - the API version to be used with the HTTP request.
 // sourceControlConfiguration - properties necessary to Create KubernetesConfiguration.
-func (client SourceControlConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, APIVersion string, sourceControlConfiguration SourceControlConfiguration) (result SourceControlConfiguration, err error) {
+func (client SourceControlConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, sourceControlConfiguration SourceControlConfiguration) (result SourceControlConfiguration, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SourceControlConfigurationsClient.CreateOrUpdate")
 		defer func() {
@@ -65,7 +64,7 @@ func (client SourceControlConfigurationsClient) CreateOrUpdate(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, APIVersion, sourceControlConfiguration)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, sourceControlConfiguration)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kubernetesconfiguration.SourceControlConfigurationsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -87,7 +86,7 @@ func (client SourceControlConfigurationsClient) CreateOrUpdate(ctx context.Conte
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client SourceControlConfigurationsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, APIVersion string, sourceControlConfiguration SourceControlConfiguration) (*http.Request, error) {
+func (client SourceControlConfigurationsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, sourceControlConfiguration SourceControlConfiguration) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":                    autorest.Encode("path", clusterName),
 		"clusterResourceName":            autorest.Encode("path", clusterResourceName),
@@ -97,6 +96,7 @@ func (client SourceControlConfigurationsClient) CreateOrUpdatePreparer(ctx conte
 		"subscriptionId":                 autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2019-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -140,8 +140,7 @@ func (client SourceControlConfigurationsClient) CreateOrUpdateResponder(resp *ht
 // connectedClusters (for OnPrem K8S clusters).
 // clusterName - the name of the kubernetes cluster.
 // sourceControlConfigurationName - name of the Source Control Configuration.
-// APIVersion - the API version to be used with the HTTP request.
-func (client SourceControlConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, APIVersion string) (result SourceControlConfigurationsDeleteFuture, err error) {
+func (client SourceControlConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string) (result SourceControlConfigurationsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SourceControlConfigurationsClient.Delete")
 		defer func() {
@@ -152,7 +151,7 @@ func (client SourceControlConfigurationsClient) Delete(ctx context.Context, reso
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, APIVersion)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kubernetesconfiguration.SourceControlConfigurationsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -168,7 +167,7 @@ func (client SourceControlConfigurationsClient) Delete(ctx context.Context, reso
 }
 
 // DeletePreparer prepares the Delete request.
-func (client SourceControlConfigurationsClient) DeletePreparer(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, APIVersion string) (*http.Request, error) {
+func (client SourceControlConfigurationsClient) DeletePreparer(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":                    autorest.Encode("path", clusterName),
 		"clusterResourceName":            autorest.Encode("path", clusterResourceName),
@@ -178,6 +177,7 @@ func (client SourceControlConfigurationsClient) DeletePreparer(ctx context.Conte
 		"subscriptionId":                 autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2019-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -223,8 +223,7 @@ func (client SourceControlConfigurationsClient) DeleteResponder(resp *http.Respo
 // connectedClusters (for OnPrem K8S clusters).
 // clusterName - the name of the kubernetes cluster.
 // sourceControlConfigurationName - name of the Source Control Configuration.
-// APIVersion - the API version to be used with the HTTP request.
-func (client SourceControlConfigurationsClient) Get(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, APIVersion string) (result SourceControlConfiguration, err error) {
+func (client SourceControlConfigurationsClient) Get(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string) (result SourceControlConfiguration, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SourceControlConfigurationsClient.Get")
 		defer func() {
@@ -235,7 +234,7 @@ func (client SourceControlConfigurationsClient) Get(ctx context.Context, resourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, APIVersion)
+	req, err := client.GetPreparer(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kubernetesconfiguration.SourceControlConfigurationsClient", "Get", nil, "Failure preparing request")
 		return
@@ -257,7 +256,7 @@ func (client SourceControlConfigurationsClient) Get(ctx context.Context, resourc
 }
 
 // GetPreparer prepares the Get request.
-func (client SourceControlConfigurationsClient) GetPreparer(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string, APIVersion string) (*http.Request, error) {
+func (client SourceControlConfigurationsClient) GetPreparer(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, sourceControlConfigurationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":                    autorest.Encode("path", clusterName),
 		"clusterResourceName":            autorest.Encode("path", clusterResourceName),
@@ -267,6 +266,7 @@ func (client SourceControlConfigurationsClient) GetPreparer(ctx context.Context,
 		"subscriptionId":                 autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2019-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -306,8 +306,7 @@ func (client SourceControlConfigurationsClient) GetResponder(resp *http.Response
 // clusterResourceName - the Kubernetes cluster resource name - either managedClusters (for AKS clusters) or
 // connectedClusters (for OnPrem K8S clusters).
 // clusterName - the name of the kubernetes cluster.
-// APIVersion - the API version to be used with the HTTP request.
-func (client SourceControlConfigurationsClient) List(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, APIVersion string) (result SourceControlConfigurationListPage, err error) {
+func (client SourceControlConfigurationsClient) List(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string) (result SourceControlConfigurationListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SourceControlConfigurationsClient.List")
 		defer func() {
@@ -319,7 +318,7 @@ func (client SourceControlConfigurationsClient) List(ctx context.Context, resour
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, APIVersion)
+	req, err := client.ListPreparer(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kubernetesconfiguration.SourceControlConfigurationsClient", "List", nil, "Failure preparing request")
 		return
@@ -341,7 +340,7 @@ func (client SourceControlConfigurationsClient) List(ctx context.Context, resour
 }
 
 // ListPreparer prepares the List request.
-func (client SourceControlConfigurationsClient) ListPreparer(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, APIVersion string) (*http.Request, error) {
+func (client SourceControlConfigurationsClient) ListPreparer(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":         autorest.Encode("path", clusterName),
 		"clusterResourceName": autorest.Encode("path", clusterResourceName),
@@ -350,6 +349,7 @@ func (client SourceControlConfigurationsClient) ListPreparer(ctx context.Context
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2019-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -403,7 +403,7 @@ func (client SourceControlConfigurationsClient) listNextResults(ctx context.Cont
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SourceControlConfigurationsClient) ListComplete(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, APIVersion string) (result SourceControlConfigurationListIterator, err error) {
+func (client SourceControlConfigurationsClient) ListComplete(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string) (result SourceControlConfigurationListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SourceControlConfigurationsClient.List")
 		defer func() {
@@ -414,6 +414,6 @@ func (client SourceControlConfigurationsClient) ListComplete(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, APIVersion)
+	result.page, err = client.List(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName)
 	return
 }

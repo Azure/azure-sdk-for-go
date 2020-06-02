@@ -1,5 +1,69 @@
 # CHANGELOG
 
+## `v43.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| azuredata | 2019-07-24-preview |
+| billing | 2020-05-01-preview |
+| cdn | 2020-04-15 |
+| computervision | v3.0 |
+| containerservice | 2020-04-01 |
+| desktopvirtualization | 2019-09-24-preview<br/>2019-12-10-preview |
+| devices | 2020-03-01 |
+| frontdoor | 2020-04-01<br/>2020-05-01 |
+| machinelearningservices | 2020-04-01 |
+| mixedreality | 2020-05-01-preview |
+| operationalinsights | 2020-03-01-preview |
+| peering | 2020-04-01 |
+| signalr | 2020-05-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| alertsmanagement | 2019-05-05 |
+| anomalydetector | v1.0 |
+| appconfiguration | 2019-11-01-preview |
+| appplatform | 2019-05-01-preview |
+| cognitiveservices | 2017-04-18 |
+| containerregistry | 2019-12-01-preview |
+| datafactory | 2018-06-01 |
+| desktopvirtualization | 2019-01-23-preview |
+| eventgrid | 2018-01-01 |
+| hdinsight | 2018-06-01-preview |
+| machinelearningservices | 2020-03-01 |
+| media | 2018-07-01 |
+| migrate | 2020-01-01 |
+| sql | 2015-05-01-preview<br/>2017-03-01-preview<br/>2018-06-01-preview<br/>v3.0 |
+| storagecache | 2020-03-01 |
+| synapse | 2019-06-01-preview |
+| web | 2019-08-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| authoring | luis |
+| digitaltwins | 2020-03-01-preview |
+| documentdb | 2019-08-01<br/>2020-03-01 |
+| eventhub | 2018-01-01-preview |
+| insights | v1 |
+| kubernetesconfiguration | 2019-11-01-preview |
+| kusto | 2020-02-15 |
+| netapp | 2019-11-01 |
+| operationalinsights | v1 |
+| policyinsights | 2018-07-01-preview<br/>2019-10-01 |
+| reservations | 2019-07-19-preview |
+| security | v1.0<br/>v2.0<br/>v3.0 |
+| securityinsight | 2019-01-01-preview |
+| siterecovery | 2018-07-10 |
+| storage | 2016-12-01<br/>2019-06-01 |
+| storagesync | 2019-10-01 |
+| timeseriesinsights | 2018-08-15-preview |
+
 ## `v42.3.0`
 
 | Package Name | API Version |

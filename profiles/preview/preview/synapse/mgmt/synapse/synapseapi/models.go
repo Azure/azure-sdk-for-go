@@ -34,6 +34,7 @@ type IntegrationRuntimeStatusClientAPI = original.IntegrationRuntimeStatusClient
 type IntegrationRuntimesClientAPI = original.IntegrationRuntimesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkHubsClientAPI = original.PrivateLinkHubsClientAPI
 type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type SQLPoolBlobAuditingPoliciesClientAPI = original.SQLPoolBlobAuditingPoliciesClientAPI
 type SQLPoolConnectionPoliciesClientAPI = original.SQLPoolConnectionPoliciesClientAPI

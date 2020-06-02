@@ -28,3 +28,4 @@ type CustomDomainsClientAPI = original.CustomDomainsClientAPI
 type DeploymentsClientAPI = original.DeploymentsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type ServicesClientAPI = original.ServicesClientAPI
+type SkuClientAPI = original.SkuClientAPI

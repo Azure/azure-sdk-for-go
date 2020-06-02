@@ -62,6 +62,8 @@ type PolicyEvaluationDetails = original.PolicyEvaluationDetails
 type PolicyEvent = original.PolicyEvent
 type PolicyEventsClient = original.PolicyEventsClient
 type PolicyEventsQueryResults = original.PolicyEventsQueryResults
+type PolicyEventsQueryResultsIterator = original.PolicyEventsQueryResultsIterator
+type PolicyEventsQueryResultsPage = original.PolicyEventsQueryResultsPage
 type PolicyGroupSummary = original.PolicyGroupSummary
 type PolicyMetadata = original.PolicyMetadata
 type PolicyMetadataClient = original.PolicyMetadataClient
@@ -73,6 +75,8 @@ type PolicyMetadataSlimProperties = original.PolicyMetadataSlimProperties
 type PolicyState = original.PolicyState
 type PolicyStatesClient = original.PolicyStatesClient
 type PolicyStatesQueryResults = original.PolicyStatesQueryResults
+type PolicyStatesQueryResultsIterator = original.PolicyStatesQueryResultsIterator
+type PolicyStatesQueryResultsPage = original.PolicyStatesQueryResultsPage
 type PolicyStatesTriggerResourceGroupEvaluationFuture = original.PolicyStatesTriggerResourceGroupEvaluationFuture
 type PolicyStatesTriggerSubscriptionEvaluationFuture = original.PolicyStatesTriggerSubscriptionEvaluationFuture
 type PolicyTrackedResource = original.PolicyTrackedResource
@@ -95,7 +99,6 @@ type RemediationListResultPage = original.RemediationListResultPage
 type RemediationProperties = original.RemediationProperties
 type RemediationsClient = original.RemediationsClient
 type SlimPolicyMetadata = original.SlimPolicyMetadata
-type String = original.String
 type SummarizeResults = original.SummarizeResults
 type Summary = original.Summary
 type SummaryResults = original.SummaryResults
@@ -117,6 +120,12 @@ func NewPolicyEventsClient() PolicyEventsClient {
 func NewPolicyEventsClientWithBaseURI(baseURI string) PolicyEventsClient {
 	return original.NewPolicyEventsClientWithBaseURI(baseURI)
 }
+func NewPolicyEventsQueryResultsIterator(page PolicyEventsQueryResultsPage) PolicyEventsQueryResultsIterator {
+	return original.NewPolicyEventsQueryResultsIterator(page)
+}
+func NewPolicyEventsQueryResultsPage(getNextPage func(context.Context, PolicyEventsQueryResults) (PolicyEventsQueryResults, error)) PolicyEventsQueryResultsPage {
+	return original.NewPolicyEventsQueryResultsPage(getNextPage)
+}
 func NewPolicyMetadataClient() PolicyMetadataClient {
 	return original.NewPolicyMetadataClient()
 }
@@ -134,6 +143,12 @@ func NewPolicyStatesClient() PolicyStatesClient {
 }
 func NewPolicyStatesClientWithBaseURI(baseURI string) PolicyStatesClient {
 	return original.NewPolicyStatesClientWithBaseURI(baseURI)
+}
+func NewPolicyStatesQueryResultsIterator(page PolicyStatesQueryResultsPage) PolicyStatesQueryResultsIterator {
+	return original.NewPolicyStatesQueryResultsIterator(page)
+}
+func NewPolicyStatesQueryResultsPage(getNextPage func(context.Context, PolicyStatesQueryResults) (PolicyStatesQueryResults, error)) PolicyStatesQueryResultsPage {
+	return original.NewPolicyStatesQueryResultsPage(getNextPage)
 }
 func NewPolicyTrackedResourcesClient() PolicyTrackedResourcesClient {
 	return original.NewPolicyTrackedResourcesClient()

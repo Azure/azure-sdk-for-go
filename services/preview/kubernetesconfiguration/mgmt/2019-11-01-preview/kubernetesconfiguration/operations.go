@@ -43,9 +43,7 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 
 // List list all the available operations the KubernetesConfiguration resource provider supports.
-// Parameters:
-// APIVersion - the API version to be used with the HTTP request.
-func (client OperationsClient) List(ctx context.Context, APIVersion string) (result ResourceProviderOperationListPage, err error) {
+func (client OperationsClient) List(ctx context.Context) (result ResourceProviderOperationListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsClient.List")
 		defer func() {
@@ -57,7 +55,7 @@ func (client OperationsClient) List(ctx context.Context, APIVersion string) (res
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, APIVersion)
+	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kubernetesconfiguration.OperationsClient", "List", nil, "Failure preparing request")
 		return
@@ -79,7 +77,8 @@ func (client OperationsClient) List(ctx context.Context, APIVersion string) (res
 }
 
 // ListPreparer prepares the List request.
-func (client OperationsClient) ListPreparer(ctx context.Context, APIVersion string) (*http.Request, error) {
+func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+	const APIVersion = "2019-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -133,7 +132,7 @@ func (client OperationsClient) listNextResults(ctx context.Context, lastResults 
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client OperationsClient) ListComplete(ctx context.Context, APIVersion string) (result ResourceProviderOperationListIterator, err error) {
+func (client OperationsClient) ListComplete(ctx context.Context) (result ResourceProviderOperationListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsClient.List")
 		defer func() {
@@ -144,6 +143,6 @@ func (client OperationsClient) ListComplete(ctx context.Context, APIVersion stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, APIVersion)
+	result.page, err = client.List(ctx)
 	return
 }

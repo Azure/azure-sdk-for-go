@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// HyperVMachinesClient is the client for the HyperVMachines methods of the Migrate service.
+// HyperVMachinesClient is the discover your workloads for Azure.
 type HyperVMachinesClient struct {
 	BaseClient
 }

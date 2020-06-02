@@ -9,10 +9,14 @@ const (
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 )
 
-// DefaultAzureCredentialOptions contain information that can configure Default Token Credentials
+// DefaultAzureCredentialOptions contains options for configuring how credentials are acquired.
 type DefaultAzureCredentialOptions struct {
+	// set this field to true in order to exclude the EnvironmentCredential from the set of
+	// credentials that will be used to authenticate with
 	ExcludeEnvironmentCredential bool
-	ExcludeMSICredential         bool
+	// set this field to true in order to exclude the ManagedIdentityCredential from the set of
+	// credentials that will be used to authenticate with
+	ExcludeMSICredential bool
 }
 
 // NewDefaultAzureCredential provides a default ChainedTokenCredential configuration for applications that will be deployed to Azure.  The following credential

@@ -287,6 +287,12 @@ func PossibleStatusCodeValues() []StatusCode {
 	return []StatusCode{StatusCodeActive, StatusCodeExpired, StatusCodeMerged, StatusCodeNone, StatusCodePaymentInstrumentError, StatusCodePending, StatusCodePurchaseError, StatusCodeSplit, StatusCodeSucceeded}
 }
 
+// Actions the actions for auto quota increase.
+type Actions struct {
+	// EmailActions - The email actions for auto quota increase.
+	EmailActions *EmailActions `json:"emailActions,omitempty"`
+}
+
 // AppliedReservationList ...
 type AppliedReservationList struct {
 	Value *[]string `json:"value,omitempty"`
@@ -455,9 +461,9 @@ type AutoQuotaIncreaseSettings struct {
 	// Settings - Settings for automatic quota increase.
 	Settings *AqiSettings `json:"settings,omitempty"`
 	// OnFailure - The on failure Actions.
-	OnFailure *OnFailure `json:"onFailure,omitempty"`
+	OnFailure *Actions `json:"onFailure,omitempty"`
 	// OnSuccess - The on success Actions.
-	OnSuccess *OnFailure `json:"onSuccess,omitempty"`
+	OnSuccess *Actions `json:"onSuccess,omitempty"`
 	// SupportTicketAction - The support ticket action.
 	SupportTicketAction *SupportRequestAction `json:"supportTicketAction,omitempty"`
 }
@@ -588,29 +594,8 @@ func (cql *CurrentQuotaLimit) UnmarshalJSON(body []byte) error {
 // CurrentQuotaLimitBase quota limits.
 type CurrentQuotaLimitBase struct {
 	autorest.Response `json:"-"`
-	// Limit - The quota limit.
-	Limit *int32 `json:"limit,omitempty"`
-	// CurrentValue - READ-ONLY; The current resource usages information.
-	CurrentValue *int32 `json:"currentValue,omitempty"`
-	// Unit -  The units of the limit, such as - Count, Bytes, etc. Use the unit field provided in the Get quota response.
-	Unit *string `json:"unit,omitempty"`
-	// Name - Name of the resource provide by the resource Provider. Please use this name property for quotaRequests.
-	Name *CurrentQuotaLimitBaseName `json:"name,omitempty"`
-	// ResourceType - The Resource Type Name.
-	ResourceType interface{} `json:"resourceType,omitempty"`
-	// QuotaPeriod - READ-ONLY; The quota period over which the usage values are summarized, such as - P1D (Per one day), PT1M (Per one minute), PT1S (Per one second). This parameter is optional because, for some resources like compute, the period doesn’t matter.
-	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
-	// Properties - Additional properties for the specific resource provider.
-	Properties interface{} `json:"properties,omitempty"`
-}
-
-// CurrentQuotaLimitBaseName name of the resource provide by the resource Provider. Please use this name
-// property for quotaRequests.
-type CurrentQuotaLimitBaseName struct {
-	// Value - Resource name.
-	Value *string `json:"value,omitempty"`
-	// LocalizedValue - READ-ONLY; Resource display name.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	// Properties - Quota properties for the resource.
+	Properties *QuotaProperties `json:"properties,omitempty"`
 }
 
 // EmailAction email Action.
@@ -621,8 +606,8 @@ type EmailAction struct {
 
 // EmailActions the email actions.
 type EmailActions struct {
-	// Value - The list of actions based on the success or failure of automatic quota increase action.
-	Value *[]EmailAction `json:"value,omitempty"`
+	// EmailAddresses - The list of email actions.
+	EmailAddresses *[]EmailAction `json:"emailAddresses,omitempty"`
 }
 
 // Error ...
@@ -858,26 +843,6 @@ func (mr *MergeRequest) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// OnFailure the actions for auto quota increase.
-type OnFailure struct {
-	// EmailActions - The email actions for auto quota increase.
-	EmailActions *OnFailureEmailActions `json:"emailActions,omitempty"`
-	// PhoneActions - The phone actions for auto quota increase.
-	PhoneActions *OnFailurePhoneActions `json:"phoneActions,omitempty"`
-}
-
-// OnFailureEmailActions the email actions for auto quota increase.
-type OnFailureEmailActions struct {
-	// Value - The list of email actions.
-	Value *[]EmailAction `json:"value,omitempty"`
-}
-
-// OnFailurePhoneActions the phone actions for auto quota increase.
-type OnFailurePhoneActions struct {
-	// Value - The list of phone actions.
-	Value *[]PhoneAction `json:"value,omitempty"`
 }
 
 // OperationDisplay ...
@@ -1555,6 +1520,35 @@ type PurchaseRequestPropertiesReservedResourceProperties struct {
 	InstanceFlexibility InstanceFlexibility `json:"instanceFlexibility,omitempty"`
 }
 
+// QuotaCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type QuotaCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *QuotaCreateOrUpdateFuture) Result(client QuotaClient) (so SetObject, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.QuotaCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("reservations.QuotaCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so, err = client.CreateOrUpdateResponder(so.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "reservations.QuotaCreateOrUpdateFuture", "Result", so.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // QuotaLimits quota limits.
 type QuotaLimits struct {
 	autorest.Response `json:"-"`
@@ -1709,33 +1703,22 @@ type QuotaLimitsResponse struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// QuotaRequestCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type QuotaRequestCreateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *QuotaRequestCreateFuture) Result(client QuotaRequestClient) (so SetObject, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("reservations.QuotaRequestCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.CreateResponder(so.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "reservations.QuotaRequestCreateFuture", "Result", so.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+// QuotaProperties quota properties for the resource.
+type QuotaProperties struct {
+	// Limit - The quota limit.
+	Limit *int32 `json:"limit,omitempty"`
+	// CurrentValue - READ-ONLY; The current resource usages information.
+	CurrentValue *int32 `json:"currentValue,omitempty"`
+	// Unit -  The units of the limit, such as - Count, Bytes, etc. Use the unit field provided in the Get quota response.
+	Unit *string `json:"unit,omitempty"`
+	// Name - Name of the resource provide by the resource Provider. Please use this name property for quotaRequests.
+	Name *ResourceName `json:"name,omitempty"`
+	// ResourceType - The Resource Type Name.
+	ResourceType interface{} `json:"resourceType,omitempty"`
+	// QuotaPeriod - READ-ONLY; The quota period over which the usage values are summarized, such as - P1D (Per one day), PT1M (Per one minute), PT1S (Per one second). This parameter is optional because, for some resources like compute, the period doesn’t matter.
+	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
+	// Properties - Additional properties for the specific resource provider.
+	Properties interface{} `json:"properties,omitempty"`
 }
 
 // QuotaRequestDetails the details of the quota Request.
@@ -2205,30 +2188,29 @@ func (qrsr2 *QuotaRequestSubmitResponse201) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// QuotaRequestUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type QuotaRequestUpdateFuture struct {
+// QuotaUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type QuotaUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *QuotaRequestUpdateFuture) Result(client QuotaRequestClient) (so SetObject, err error) {
+func (future *QuotaUpdateFuture) Result(client QuotaClient) (so SetObject, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "reservations.QuotaUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("reservations.QuotaRequestUpdateFuture")
+		err = azure.NewAsyncOpIncompleteError("reservations.QuotaUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 		so, err = client.UpdateResponder(so.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "reservations.QuotaRequestUpdateFuture", "Result", so.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "reservations.QuotaUpdateFuture", "Result", so.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -2342,6 +2324,15 @@ func (future *ReservationUpdateFuture) Result(client Client) (r Response, err er
 		}
 	}
 	return
+}
+
+// ResourceName name of the resource provide by the resource Provider. Please use this name property for
+// quotaRequests.
+type ResourceName struct {
+	// Value - Resource name.
+	Value *string `json:"value,omitempty"`
+	// LocalizedValue - READ-ONLY; Resource display name.
+	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
 // Response ...
@@ -2500,7 +2491,7 @@ type SubRequest struct {
 	// Limit - READ-ONLY; The Resource limit.
 	Limit *int32 `json:"limit,omitempty"`
 	// Name - The Resource name.
-	Name *SubRequestName `json:"name,omitempty"`
+	Name *ResourceName `json:"name,omitempty"`
 	// ResourceType - READ-ONLY; Resource type for which the quota check was made.
 	ResourceType *string `json:"resourceType,omitempty"`
 	// Unit -  The units of the limit, such as - Count, Bytes, etc. Use the unit field provided in the Get quota response.
@@ -2511,14 +2502,6 @@ type SubRequest struct {
 	Message *string `json:"message,omitempty"`
 	// SubRequestID - READ-ONLY; Sub request id for individual request.
 	SubRequestID *string `json:"subRequestId,omitempty"`
-}
-
-// SubRequestName the Resource name.
-type SubRequestName struct {
-	// LocalizedValue - READ-ONLY; Resource display name.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
-	// Value - READ-ONLY; Resource name.
-	Value *string `json:"value,omitempty"`
 }
 
 // SubscriptionScopeProperties ...

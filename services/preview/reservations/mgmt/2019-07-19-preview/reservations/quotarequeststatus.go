@@ -26,32 +26,33 @@ import (
 	"net/http"
 )
 
-// QuotaRequestsClient is the client for the QuotaRequests methods of the Reservations service.
-type QuotaRequestsClient struct {
+// QuotaRequestStatusClient is the client for the QuotaRequestStatus methods of the Reservations service.
+type QuotaRequestStatusClient struct {
 	BaseClient
 }
 
-// NewQuotaRequestsClient creates an instance of the QuotaRequestsClient client.
-func NewQuotaRequestsClient() QuotaRequestsClient {
-	return NewQuotaRequestsClientWithBaseURI(DefaultBaseURI)
+// NewQuotaRequestStatusClient creates an instance of the QuotaRequestStatusClient client.
+func NewQuotaRequestStatusClient() QuotaRequestStatusClient {
+	return NewQuotaRequestStatusClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewQuotaRequestsClientWithBaseURI creates an instance of the QuotaRequestsClient client using a custom endpoint.
-// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewQuotaRequestsClientWithBaseURI(baseURI string) QuotaRequestsClient {
-	return QuotaRequestsClient{NewWithBaseURI(baseURI)}
+// NewQuotaRequestStatusClientWithBaseURI creates an instance of the QuotaRequestStatusClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
+func NewQuotaRequestStatusClientWithBaseURI(baseURI string) QuotaRequestStatusClient {
+	return QuotaRequestStatusClient{NewWithBaseURI(baseURI)}
 }
 
-// GetStatus gets the QuotaRequest details and status by the quota requestId for the resources for the resource
-// provider at a specific location. The requestId is returned as response to the Put requests for serviceLimits.
+// Get gets the QuotaRequest details and status by the quota request Id for the resources for the resource provider at
+// a specific location. The requestId is returned as response to the Put requests for serviceLimits.
 // Parameters:
 // subscriptionID - azure subscription id.
-// providerID - azure resource Provider id.
+// providerID - azure resource provider id.
 // location - azure region.
 // ID - quota Request id.
-func (client QuotaRequestsClient) GetStatus(ctx context.Context, subscriptionID string, providerID string, location string, ID string) (result QuotaRequestDetails, err error) {
+func (client QuotaRequestStatusClient) Get(ctx context.Context, subscriptionID string, providerID string, location string, ID string) (result QuotaRequestDetails, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/QuotaRequestsClient.GetStatus")
+		ctx = tracing.StartSpan(ctx, fqdn+"/QuotaRequestStatusClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -60,29 +61,29 @@ func (client QuotaRequestsClient) GetStatus(ctx context.Context, subscriptionID 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetStatusPreparer(ctx, subscriptionID, providerID, location, ID)
+	req, err := client.GetPreparer(ctx, subscriptionID, providerID, location, ID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestsClient", "GetStatus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestStatusClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetStatusSender(req)
+	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestsClient", "GetStatus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestStatusClient", "Get", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetStatusResponder(resp)
+	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestsClient", "GetStatus", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestStatusClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetStatusPreparer prepares the GetStatus request.
-func (client QuotaRequestsClient) GetStatusPreparer(ctx context.Context, subscriptionID string, providerID string, location string, ID string) (*http.Request, error) {
+// GetPreparer prepares the Get request.
+func (client QuotaRequestStatusClient) GetPreparer(ctx context.Context, subscriptionID string, providerID string, location string, ID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"id":             autorest.Encode("path", ID),
 		"location":       autorest.Encode("path", location),
@@ -103,15 +104,15 @@ func (client QuotaRequestsClient) GetStatusPreparer(ctx context.Context, subscri
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetStatusSender sends the GetStatus request. The method will close the
+// GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client QuotaRequestsClient) GetStatusSender(req *http.Request) (*http.Response, error) {
+func (client QuotaRequestStatusClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
-// GetStatusResponder handles the response to the GetStatus request. The method always
+// GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client QuotaRequestsClient) GetStatusResponder(resp *http.Response) (result QuotaRequestDetails, err error) {
+func (client QuotaRequestStatusClient) GetResponder(resp *http.Response) (result QuotaRequestDetails, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -122,11 +123,11 @@ func (client QuotaRequestsClient) GetStatusResponder(resp *http.Response) (resul
 	return
 }
 
-// ListStatus for the specified location and Resource provider gets the current quota requests under the subscription
-// over the time period of one year ago from now to one year back. oData filter can be used to select quota requests.
+// List for the specified location and Resource provider gets the current quota requests under the subscription over
+// the time period of one year ago from now to one year back. oData filter can be used to select quota requests.
 // Parameters:
 // subscriptionID - azure subscription id.
-// providerID - azure resource Provider id.
+// providerID - azure resource provider id.
 // location - azure region.
 // filter - | Field                    | Supported operators
 // |---------------------|------------------------
@@ -136,9 +137,9 @@ func (client QuotaRequestsClient) GetStatusResponder(resp *http.Response) (resul
 // skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls
-func (client QuotaRequestsClient) ListStatus(ctx context.Context, subscriptionID string, providerID string, location string, filter string, top *int32, skiptoken string) (result QuotaRequestDetailsListPage, err error) {
+func (client QuotaRequestStatusClient) List(ctx context.Context, subscriptionID string, providerID string, location string, filter string, top *int32, skiptoken string) (result QuotaRequestDetailsListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/QuotaRequestsClient.ListStatus")
+		ctx = tracing.StartSpan(ctx, fqdn+"/QuotaRequestStatusClient.List")
 		defer func() {
 			sc := -1
 			if result.qrdl.Response.Response != nil {
@@ -151,33 +152,33 @@ func (client QuotaRequestsClient) ListStatus(ctx context.Context, subscriptionID
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("reservations.QuotaRequestsClient", "ListStatus", err.Error())
+		return result, validation.NewError("reservations.QuotaRequestStatusClient", "List", err.Error())
 	}
 
-	result.fn = client.listStatusNextResults
-	req, err := client.ListStatusPreparer(ctx, subscriptionID, providerID, location, filter, top, skiptoken)
+	result.fn = client.listNextResults
+	req, err := client.ListPreparer(ctx, subscriptionID, providerID, location, filter, top, skiptoken)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestsClient", "ListStatus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestStatusClient", "List", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListStatusSender(req)
+	resp, err := client.ListSender(req)
 	if err != nil {
 		result.qrdl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestsClient", "ListStatus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestStatusClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.qrdl, err = client.ListStatusResponder(resp)
+	result.qrdl, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestsClient", "ListStatus", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestStatusClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListStatusPreparer prepares the ListStatus request.
-func (client QuotaRequestsClient) ListStatusPreparer(ctx context.Context, subscriptionID string, providerID string, location string, filter string, top *int32, skiptoken string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client QuotaRequestStatusClient) ListPreparer(ctx context.Context, subscriptionID string, providerID string, location string, filter string, top *int32, skiptoken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       autorest.Encode("path", location),
 		"providerId":     autorest.Encode("path", providerID),
@@ -206,15 +207,15 @@ func (client QuotaRequestsClient) ListStatusPreparer(ctx context.Context, subscr
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListStatusSender sends the ListStatus request. The method will close the
+// ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client QuotaRequestsClient) ListStatusSender(req *http.Request) (*http.Response, error) {
+func (client QuotaRequestStatusClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListStatusResponder handles the response to the ListStatus request. The method always
+// ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client QuotaRequestsClient) ListStatusResponder(resp *http.Response) (result QuotaRequestDetailsList, err error) {
+func (client QuotaRequestStatusClient) ListResponder(resp *http.Response) (result QuotaRequestDetailsList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -225,31 +226,31 @@ func (client QuotaRequestsClient) ListStatusResponder(resp *http.Response) (resu
 	return
 }
 
-// listStatusNextResults retrieves the next set of results, if any.
-func (client QuotaRequestsClient) listStatusNextResults(ctx context.Context, lastResults QuotaRequestDetailsList) (result QuotaRequestDetailsList, err error) {
+// listNextResults retrieves the next set of results, if any.
+func (client QuotaRequestStatusClient) listNextResults(ctx context.Context, lastResults QuotaRequestDetailsList) (result QuotaRequestDetailsList, err error) {
 	req, err := lastResults.quotaRequestDetailsListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "reservations.QuotaRequestsClient", "listStatusNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "reservations.QuotaRequestStatusClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.ListStatusSender(req)
+	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "reservations.QuotaRequestsClient", "listStatusNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "reservations.QuotaRequestStatusClient", "listNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.ListStatusResponder(resp)
+	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestsClient", "listStatusNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestStatusClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// ListStatusComplete enumerates all values, automatically crossing page boundaries as required.
-func (client QuotaRequestsClient) ListStatusComplete(ctx context.Context, subscriptionID string, providerID string, location string, filter string, top *int32, skiptoken string) (result QuotaRequestDetailsListIterator, err error) {
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client QuotaRequestStatusClient) ListComplete(ctx context.Context, subscriptionID string, providerID string, location string, filter string, top *int32, skiptoken string) (result QuotaRequestDetailsListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/QuotaRequestsClient.ListStatus")
+		ctx = tracing.StartSpan(ctx, fqdn+"/QuotaRequestStatusClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -258,6 +259,6 @@ func (client QuotaRequestsClient) ListStatusComplete(ctx context.Context, subscr
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListStatus(ctx, subscriptionID, providerID, location, filter, top, skiptoken)
+	result.page, err = client.List(ctx, subscriptionID, providerID, location, filter, top, skiptoken)
 	return
 }

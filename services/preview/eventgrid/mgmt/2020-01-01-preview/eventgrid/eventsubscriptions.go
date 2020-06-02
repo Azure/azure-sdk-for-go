@@ -121,7 +121,6 @@ func (client EventSubscriptionsClient) CreateOrUpdateSender(req *http.Request) (
 func (client EventSubscriptionsClient) CreateOrUpdateResponder(resp *http.Response) (result EventSubscription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -203,7 +202,6 @@ func (client EventSubscriptionsClient) DeleteSender(req *http.Request) (future E
 func (client EventSubscriptionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -284,7 +282,6 @@ func (client EventSubscriptionsClient) GetSender(req *http.Request) (*http.Respo
 func (client EventSubscriptionsClient) GetResponder(resp *http.Response) (result EventSubscription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -366,7 +363,6 @@ func (client EventSubscriptionsClient) GetFullURLSender(req *http.Request) (*htt
 func (client EventSubscriptionsClient) GetFullURLResponder(resp *http.Response) (result EventSubscriptionFullURL, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -459,7 +455,6 @@ func (client EventSubscriptionsClient) ListByDomainTopicSender(req *http.Request
 func (client EventSubscriptionsClient) ListByDomainTopicResponder(resp *http.Response) (result EventSubscriptionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -591,7 +586,6 @@ func (client EventSubscriptionsClient) ListByResourceSender(req *http.Request) (
 func (client EventSubscriptionsClient) ListByResourceResponder(resp *http.Response) (result EventSubscriptionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -717,7 +711,6 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupSender(req *http
 func (client EventSubscriptionsClient) ListGlobalByResourceGroupResponder(resp *http.Response) (result EventSubscriptionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -846,7 +839,6 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupForTopicTypeSend
 func (client EventSubscriptionsClient) ListGlobalByResourceGroupForTopicTypeResponder(resp *http.Response) (result EventSubscriptionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -970,7 +962,6 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionSender(req *http.
 func (client EventSubscriptionsClient) ListGlobalBySubscriptionResponder(resp *http.Response) (result EventSubscriptionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1097,7 +1088,6 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionForTopicTypeSende
 func (client EventSubscriptionsClient) ListGlobalBySubscriptionForTopicTypeResponder(resp *http.Response) (result EventSubscriptionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1226,7 +1216,6 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupSender(req *ht
 func (client EventSubscriptionsClient) ListRegionalByResourceGroupResponder(resp *http.Response) (result EventSubscriptionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1357,7 +1346,6 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupForTopicTypeSe
 func (client EventSubscriptionsClient) ListRegionalByResourceGroupForTopicTypeResponder(resp *http.Response) (result EventSubscriptionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1483,7 +1471,6 @@ func (client EventSubscriptionsClient) ListRegionalBySubscriptionSender(req *htt
 func (client EventSubscriptionsClient) ListRegionalBySubscriptionResponder(resp *http.Response) (result EventSubscriptionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1612,7 +1599,6 @@ func (client EventSubscriptionsClient) ListRegionalBySubscriptionForTopicTypeSen
 func (client EventSubscriptionsClient) ListRegionalBySubscriptionForTopicTypeResponder(resp *http.Response) (result EventSubscriptionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1734,7 +1720,6 @@ func (client EventSubscriptionsClient) UpdateSender(req *http.Request) (future E
 func (client EventSubscriptionsClient) UpdateResponder(resp *http.Response) (result EventSubscription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

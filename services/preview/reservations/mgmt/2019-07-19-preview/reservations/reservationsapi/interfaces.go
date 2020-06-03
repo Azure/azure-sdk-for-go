@@ -32,35 +32,23 @@ var _ BaseClientAPI = (*reservations.BaseClient)(nil)
 
 // QuotaClientAPI contains the set of methods on the QuotaClient type.
 type QuotaClientAPI interface {
-	ListStatus(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string) (result reservations.CurrentQuotaLimitBase, err error)
+	CreateOrUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest reservations.CurrentQuotaLimitBase) (result reservations.QuotaCreateOrUpdateFuture, err error)
+	Get(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string) (result reservations.CurrentQuotaLimitBase, err error)
+	List(ctx context.Context, subscriptionID string, providerID string, location string) (result reservations.QuotaLimitsPage, err error)
+	ListComplete(ctx context.Context, subscriptionID string, providerID string, location string) (result reservations.QuotaLimitsIterator, err error)
+	Update(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest reservations.CurrentQuotaLimitBase) (result reservations.QuotaUpdateFuture, err error)
 }
 
 var _ QuotaClientAPI = (*reservations.QuotaClient)(nil)
 
-// QuotaRequestClientAPI contains the set of methods on the QuotaRequestClient type.
-type QuotaRequestClientAPI interface {
-	Create(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest reservations.CurrentQuotaLimitBase, ifMatch string) (result reservations.QuotaRequestCreateFuture, err error)
-	Update(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest reservations.CurrentQuotaLimitBase, ifMatch string) (result reservations.QuotaRequestUpdateFuture, err error)
+// QuotaRequestStatusClientAPI contains the set of methods on the QuotaRequestStatusClient type.
+type QuotaRequestStatusClientAPI interface {
+	Get(ctx context.Context, subscriptionID string, providerID string, location string, ID string) (result reservations.QuotaRequestDetails, err error)
+	List(ctx context.Context, subscriptionID string, providerID string, location string, filter string, top *int32, skiptoken string) (result reservations.QuotaRequestDetailsListPage, err error)
+	ListComplete(ctx context.Context, subscriptionID string, providerID string, location string, filter string, top *int32, skiptoken string) (result reservations.QuotaRequestDetailsListIterator, err error)
 }
 
-var _ QuotaRequestClientAPI = (*reservations.QuotaRequestClient)(nil)
-
-// QuotasClientAPI contains the set of methods on the QuotasClient type.
-type QuotasClientAPI interface {
-	ListStatus(ctx context.Context, subscriptionID string, providerID string, location string) (result reservations.QuotaLimitsPage, err error)
-	ListStatusComplete(ctx context.Context, subscriptionID string, providerID string, location string) (result reservations.QuotaLimitsIterator, err error)
-}
-
-var _ QuotasClientAPI = (*reservations.QuotasClient)(nil)
-
-// QuotaRequestsClientAPI contains the set of methods on the QuotaRequestsClient type.
-type QuotaRequestsClientAPI interface {
-	GetStatus(ctx context.Context, subscriptionID string, providerID string, location string, ID string) (result reservations.QuotaRequestDetails, err error)
-	ListStatus(ctx context.Context, subscriptionID string, providerID string, location string, filter string, top *int32, skiptoken string) (result reservations.QuotaRequestDetailsListPage, err error)
-	ListStatusComplete(ctx context.Context, subscriptionID string, providerID string, location string, filter string, top *int32, skiptoken string) (result reservations.QuotaRequestDetailsListIterator, err error)
-}
-
-var _ QuotaRequestsClientAPI = (*reservations.QuotaRequestsClient)(nil)
+var _ QuotaRequestStatusClientAPI = (*reservations.QuotaRequestStatusClient)(nil)
 
 // AutoQuotaIncreaseClientAPI contains the set of methods on the AutoQuotaIncreaseClient type.
 type AutoQuotaIncreaseClientAPI interface {

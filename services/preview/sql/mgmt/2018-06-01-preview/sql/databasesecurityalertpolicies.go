@@ -119,7 +119,6 @@ func (client DatabaseSecurityAlertPoliciesClient) CreateOrUpdateSender(req *http
 func (client DatabaseSecurityAlertPoliciesClient) CreateOrUpdateResponder(resp *http.Response) (result DatabaseSecurityAlertPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -199,7 +198,6 @@ func (client DatabaseSecurityAlertPoliciesClient) GetSender(req *http.Request) (
 func (client DatabaseSecurityAlertPoliciesClient) GetResponder(resp *http.Response) (result DatabaseSecurityAlertPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -279,7 +277,6 @@ func (client DatabaseSecurityAlertPoliciesClient) ListByDatabaseSender(req *http
 func (client DatabaseSecurityAlertPoliciesClient) ListByDatabaseResponder(resp *http.Response) (result DatabaseSecurityAlertListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -30,9 +30,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/uuid"
+	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
 	"github.com/mitchellh/mapstructure"
-	"github.com/Azure/go-amqp"
 )
 
 type (
@@ -390,7 +390,7 @@ func annotationsFromMap(m map[string]interface{}) amqp.Annotations {
 }
 
 func messageFromAMQPMessage(msg *amqp.Message) (*Message, error) {
-	return newMessage(msg.Data[0], msg)
+	return newMessage(msg.GetData(), msg)
 }
 
 func newMessage(data []byte, amqpMsg *amqp.Message) (*Message, error) {

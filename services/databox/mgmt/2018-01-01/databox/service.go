@@ -120,7 +120,6 @@ func (client ServiceClient) ListAvailableSkusSender(req *http.Request) (*http.Re
 func (client ServiceClient) ListAvailableSkusResponder(resp *http.Response) (result AvailableSkusResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -244,7 +243,6 @@ func (client ServiceClient) ValidateAddressMethodSender(req *http.Request) (*htt
 func (client ServiceClient) ValidateAddressMethodResponder(resp *http.Response) (result AddressValidationOutput, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

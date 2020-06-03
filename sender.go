@@ -28,6 +28,7 @@ import (
 	"time"
 
 	common "github.com/Azure/azure-amqp-common-go/v3"
+
 	"github.com/Azure/azure-amqp-common-go/v3/uuid"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
@@ -100,7 +101,7 @@ func (s *Sender) Recover(ctx context.Context) error {
 	// we must close then rebuild the session/link atomically
 	s.clientMu.Lock()
 	defer s.clientMu.Unlock()
-	_ = s.close(ctx)
+	_ = s.close(closeCtx)
 	return s.newSessionAndLink(ctx)
 }
 

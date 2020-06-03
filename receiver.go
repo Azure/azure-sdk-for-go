@@ -27,9 +27,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3"
-	"github.com/devigned/tab"
+	common "github.com/Azure/azure-amqp-common-go/v3"
+
 	"github.com/Azure/go-amqp"
+	"github.com/devigned/tab"
 )
 
 type (
@@ -180,7 +181,7 @@ func (r *Receiver) Recover(ctx context.Context) error {
 	closeCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	closeCtx = tab.NewContext(closeCtx, span)
 	defer cancel()
-	_ = r.Close(ctx)
+	_ = r.Close(closeCtx)
 	return r.newSessionAndLink(ctx)
 }
 

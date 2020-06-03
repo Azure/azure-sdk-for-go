@@ -112,7 +112,6 @@ func (client ConnectionsClient) ConfirmConsentCodeSender(req *http.Request) (*ht
 func (client ConnectionsClient) ConfirmConsentCodeResponder(resp *http.Response) (result Connection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -191,7 +190,6 @@ func (client ConnectionsClient) CreateOrUpdateSender(req *http.Request) (*http.R
 func (client ConnectionsClient) CreateOrUpdateResponder(resp *http.Response) (result Connection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -267,7 +265,6 @@ func (client ConnectionsClient) DeleteSender(req *http.Request) (*http.Response,
 func (client ConnectionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -342,7 +339,6 @@ func (client ConnectionsClient) GetSender(req *http.Request) (*http.Response, er
 func (client ConnectionsClient) GetResponder(resp *http.Response) (result Connection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -425,7 +421,6 @@ func (client ConnectionsClient) ListSender(req *http.Request) (*http.Response, e
 func (client ConnectionsClient) ListResponder(resp *http.Response) (result ConnectionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -541,7 +536,6 @@ func (client ConnectionsClient) ListConnectionKeysSender(req *http.Request) (*ht
 func (client ConnectionsClient) ListConnectionKeysResponder(resp *http.Response) (result ConnectionSecrets, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -620,7 +614,6 @@ func (client ConnectionsClient) ListConsentLinksSender(req *http.Request) (*http
 func (client ConnectionsClient) ListConsentLinksResponder(resp *http.Response) (result ConsentLinkPayload, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

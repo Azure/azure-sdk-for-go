@@ -109,7 +109,6 @@ func (client SitesClient) AddSitePremierAddOnSender(req *http.Request) (*http.Re
 func (client SitesClient) AddSitePremierAddOnResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -186,7 +185,6 @@ func (client SitesClient) AddSitePremierAddOnSlotSender(req *http.Request) (*htt
 func (client SitesClient) AddSitePremierAddOnSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -268,7 +266,6 @@ func (client SitesClient) ApplySlotConfigSlotSender(req *http.Request) (*http.Re
 func (client SitesClient) ApplySlotConfigSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -348,7 +345,6 @@ func (client SitesClient) ApplySlotConfigToProductionSender(req *http.Request) (
 func (client SitesClient) ApplySlotConfigToProductionResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -427,7 +423,6 @@ func (client SitesClient) BackupSiteSender(req *http.Request) (*http.Response, e
 func (client SitesClient) BackupSiteResponder(resp *http.Response) (result BackupItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -508,7 +503,6 @@ func (client SitesClient) BackupSiteSlotSender(req *http.Request) (*http.Respons
 func (client SitesClient) BackupSiteSlotResponder(resp *http.Response) (result BackupItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -589,7 +583,6 @@ func (client SitesClient) CreateDeploymentSender(req *http.Request) (*http.Respo
 func (client SitesClient) CreateDeploymentResponder(resp *http.Response) (result Deployment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -672,7 +665,6 @@ func (client SitesClient) CreateDeploymentSlotSender(req *http.Request) (*http.R
 func (client SitesClient) CreateDeploymentSlotResponder(resp *http.Response) (result Deployment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -755,7 +747,6 @@ func (client SitesClient) CreateInstanceDeploymentSender(req *http.Request) (*ht
 func (client SitesClient) CreateInstanceDeploymentResponder(resp *http.Response) (result Deployment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -840,7 +831,6 @@ func (client SitesClient) CreateInstanceDeploymentSlotSender(req *http.Request) 
 func (client SitesClient) CreateInstanceDeploymentSlotResponder(resp *http.Response) (result Deployment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -937,7 +927,6 @@ func (client SitesClient) CreateOrUpdateSiteSender(req *http.Request) (future Si
 func (client SitesClient) CreateOrUpdateSiteResponder(resp *http.Response) (result Site, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1016,7 +1005,6 @@ func (client SitesClient) CreateOrUpdateSiteConfigSender(req *http.Request) (*ht
 func (client SitesClient) CreateOrUpdateSiteConfigResponder(resp *http.Response) (result SiteConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1097,7 +1085,6 @@ func (client SitesClient) CreateOrUpdateSiteConfigSlotSender(req *http.Request) 
 func (client SitesClient) CreateOrUpdateSiteConfigSlotResponder(resp *http.Response) (result SiteConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1178,7 +1165,6 @@ func (client SitesClient) CreateOrUpdateSiteHostNameBindingSender(req *http.Requ
 func (client SitesClient) CreateOrUpdateSiteHostNameBindingResponder(resp *http.Response) (result HostNameBinding, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1261,7 +1247,6 @@ func (client SitesClient) CreateOrUpdateSiteHostNameBindingSlotSender(req *http.
 func (client SitesClient) CreateOrUpdateSiteHostNameBindingSlotResponder(resp *http.Response) (result HostNameBinding, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1342,7 +1327,6 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSender(req *ht
 func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1425,7 +1409,6 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlotSender(req
 func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlotResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1524,7 +1507,6 @@ func (client SitesClient) CreateOrUpdateSiteSlotSender(req *http.Request) (futur
 func (client SitesClient) CreateOrUpdateSiteSlotResponder(resp *http.Response) (result Site, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1603,7 +1585,6 @@ func (client SitesClient) CreateOrUpdateSiteSourceControlSender(req *http.Reques
 func (client SitesClient) CreateOrUpdateSiteSourceControlResponder(resp *http.Response) (result SiteSourceControl, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1684,7 +1665,6 @@ func (client SitesClient) CreateOrUpdateSiteSourceControlSlotSender(req *http.Re
 func (client SitesClient) CreateOrUpdateSiteSourceControlSlotResponder(resp *http.Response) (result SiteSourceControl, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1765,7 +1745,6 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionSender(req *http.Reque
 func (client SitesClient) CreateOrUpdateSiteVNETConnectionResponder(resp *http.Response) (result VnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1848,7 +1827,6 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewaySender(req *htt
 func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewayResponder(resp *http.Response) (result VnetGateway, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1933,7 +1911,6 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewaySlotSender(req 
 func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewaySlotResponder(resp *http.Response) (result VnetGateway, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2016,7 +1993,6 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionSlotSender(req *http.R
 func (client SitesClient) CreateOrUpdateSiteVNETConnectionSlotResponder(resp *http.Response) (result VnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2094,7 +2070,6 @@ func (client SitesClient) DeleteBackupSender(req *http.Request) (*http.Response,
 func (client SitesClient) DeleteBackupResponder(resp *http.Response) (result BackupItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2174,7 +2149,6 @@ func (client SitesClient) DeleteBackupSlotSender(req *http.Request) (*http.Respo
 func (client SitesClient) DeleteBackupSlotResponder(resp *http.Response) (result BackupItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2252,7 +2226,6 @@ func (client SitesClient) DeleteDeploymentSender(req *http.Request) (*http.Respo
 func (client SitesClient) DeleteDeploymentResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2332,7 +2305,6 @@ func (client SitesClient) DeleteDeploymentSlotSender(req *http.Request) (*http.R
 func (client SitesClient) DeleteDeploymentSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2412,7 +2384,6 @@ func (client SitesClient) DeleteInstanceDeploymentSender(req *http.Request) (*ht
 func (client SitesClient) DeleteInstanceDeploymentResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2494,7 +2465,6 @@ func (client SitesClient) DeleteInstanceDeploymentSlotSender(req *http.Request) 
 func (client SitesClient) DeleteInstanceDeploymentSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2587,7 +2557,6 @@ func (client SitesClient) DeleteSiteSender(req *http.Request) (*http.Response, e
 func (client SitesClient) DeleteSiteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2665,7 +2634,6 @@ func (client SitesClient) DeleteSiteHostNameBindingSender(req *http.Request) (*h
 func (client SitesClient) DeleteSiteHostNameBindingResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2745,7 +2713,6 @@ func (client SitesClient) DeleteSiteHostNameBindingSlotSender(req *http.Request)
 func (client SitesClient) DeleteSiteHostNameBindingSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2819,7 +2786,6 @@ func (client SitesClient) DeleteSitePremierAddOnSender(req *http.Request) (*http
 func (client SitesClient) DeleteSitePremierAddOnResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2894,7 +2860,6 @@ func (client SitesClient) DeleteSitePremierAddOnSlotSender(req *http.Request) (*
 func (client SitesClient) DeleteSitePremierAddOnSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2972,7 +2937,6 @@ func (client SitesClient) DeleteSiteRelayServiceConnectionSender(req *http.Reque
 func (client SitesClient) DeleteSiteRelayServiceConnectionResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3052,7 +3016,6 @@ func (client SitesClient) DeleteSiteRelayServiceConnectionSlotSender(req *http.R
 func (client SitesClient) DeleteSiteRelayServiceConnectionSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3147,7 +3110,6 @@ func (client SitesClient) DeleteSiteSlotSender(req *http.Request) (*http.Respons
 func (client SitesClient) DeleteSiteSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3223,7 +3185,6 @@ func (client SitesClient) DeleteSiteSourceControlSender(req *http.Request) (*htt
 func (client SitesClient) DeleteSiteSourceControlResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3301,7 +3262,6 @@ func (client SitesClient) DeleteSiteSourceControlSlotSender(req *http.Request) (
 func (client SitesClient) DeleteSiteSourceControlSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3379,7 +3339,6 @@ func (client SitesClient) DeleteSiteVNETConnectionSender(req *http.Request) (*ht
 func (client SitesClient) DeleteSiteVNETConnectionResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3459,7 +3418,6 @@ func (client SitesClient) DeleteSiteVNETConnectionSlotSender(req *http.Request) 
 func (client SitesClient) DeleteSiteVNETConnectionSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3538,7 +3496,6 @@ func (client SitesClient) DiscoverSiteRestoreSender(req *http.Request) (*http.Re
 func (client SitesClient) DiscoverSiteRestoreResponder(resp *http.Response) (result RestoreRequest, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3619,7 +3576,6 @@ func (client SitesClient) DiscoverSiteRestoreSlotSender(req *http.Request) (*htt
 func (client SitesClient) DiscoverSiteRestoreSlotResponder(resp *http.Response) (result RestoreRequest, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3695,7 +3651,6 @@ func (client SitesClient) GenerateNewSitePublishingPasswordSender(req *http.Requ
 func (client SitesClient) GenerateNewSitePublishingPasswordResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3773,7 +3728,6 @@ func (client SitesClient) GenerateNewSitePublishingPasswordSlotSender(req *http.
 func (client SitesClient) GenerateNewSitePublishingPasswordSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3856,7 +3810,6 @@ func (client SitesClient) GetDeletedSitesSender(req *http.Request) (*http.Respon
 func (client SitesClient) GetDeletedSitesResponder(resp *http.Response) (result DeletedSiteCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3971,7 +3924,6 @@ func (client SitesClient) GetDeploymentSender(req *http.Request) (*http.Response
 func (client SitesClient) GetDeploymentResponder(resp *http.Response) (result Deployment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4048,7 +4000,6 @@ func (client SitesClient) GetDeploymentsSender(req *http.Request) (*http.Respons
 func (client SitesClient) GetDeploymentsResponder(resp *http.Response) (result DeploymentCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4165,7 +4116,6 @@ func (client SitesClient) GetDeploymentSlotSender(req *http.Request) (*http.Resp
 func (client SitesClient) GetDeploymentSlotResponder(resp *http.Response) (result Deployment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4244,7 +4194,6 @@ func (client SitesClient) GetDeploymentsSlotSender(req *http.Request) (*http.Res
 func (client SitesClient) GetDeploymentsSlotResponder(resp *http.Response) (result DeploymentCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4361,7 +4310,6 @@ func (client SitesClient) GetInstanceDeploymentSender(req *http.Request) (*http.
 func (client SitesClient) GetInstanceDeploymentResponder(resp *http.Response) (result Deployment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4440,7 +4388,6 @@ func (client SitesClient) GetInstanceDeploymentsSender(req *http.Request) (*http
 func (client SitesClient) GetInstanceDeploymentsResponder(resp *http.Response) (result DeploymentCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4559,7 +4506,6 @@ func (client SitesClient) GetInstanceDeploymentSlotSender(req *http.Request) (*h
 func (client SitesClient) GetInstanceDeploymentSlotResponder(resp *http.Response) (result Deployment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4640,7 +4586,6 @@ func (client SitesClient) GetInstanceDeploymentsSlotSender(req *http.Request) (*
 func (client SitesClient) GetInstanceDeploymentsSlotResponder(resp *http.Response) (result DeploymentCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4757,7 +4702,6 @@ func (client SitesClient) GetSiteSender(req *http.Request) (*http.Response, erro
 func (client SitesClient) GetSiteResponder(resp *http.Response) (result Site, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4833,7 +4777,6 @@ func (client SitesClient) GetSiteBackupConfigurationSender(req *http.Request) (*
 func (client SitesClient) GetSiteBackupConfigurationResponder(resp *http.Response) (result BackupRequest, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4911,7 +4854,6 @@ func (client SitesClient) GetSiteBackupConfigurationSlotSender(req *http.Request
 func (client SitesClient) GetSiteBackupConfigurationSlotResponder(resp *http.Response) (result BackupRequest, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4989,7 +4931,6 @@ func (client SitesClient) GetSiteBackupStatusSender(req *http.Request) (*http.Re
 func (client SitesClient) GetSiteBackupStatusResponder(resp *http.Response) (result BackupItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5070,7 +5011,6 @@ func (client SitesClient) GetSiteBackupStatusSecretsSender(req *http.Request) (*
 func (client SitesClient) GetSiteBackupStatusSecretsResponder(resp *http.Response) (result BackupItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5153,7 +5093,6 @@ func (client SitesClient) GetSiteBackupStatusSecretsSlotSender(req *http.Request
 func (client SitesClient) GetSiteBackupStatusSecretsSlotResponder(resp *http.Response) (result BackupItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5233,7 +5172,6 @@ func (client SitesClient) GetSiteBackupStatusSlotSender(req *http.Request) (*htt
 func (client SitesClient) GetSiteBackupStatusSlotResponder(resp *http.Response) (result BackupItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5309,7 +5247,6 @@ func (client SitesClient) GetSiteConfigSender(req *http.Request) (*http.Response
 func (client SitesClient) GetSiteConfigResponder(resp *http.Response) (result SiteConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5387,7 +5324,6 @@ func (client SitesClient) GetSiteConfigSlotSender(req *http.Request) (*http.Resp
 func (client SitesClient) GetSiteConfigSlotResponder(resp *http.Response) (result SiteConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5465,7 +5401,6 @@ func (client SitesClient) GetSiteHostNameBindingSender(req *http.Request) (*http
 func (client SitesClient) GetSiteHostNameBindingResponder(resp *http.Response) (result HostNameBinding, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5542,7 +5477,6 @@ func (client SitesClient) GetSiteHostNameBindingsSender(req *http.Request) (*htt
 func (client SitesClient) GetSiteHostNameBindingsResponder(resp *http.Response) (result HostNameBindingCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5659,7 +5593,6 @@ func (client SitesClient) GetSiteHostNameBindingSlotSender(req *http.Request) (*
 func (client SitesClient) GetSiteHostNameBindingSlotResponder(resp *http.Response) (result HostNameBinding, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5738,7 +5671,6 @@ func (client SitesClient) GetSiteHostNameBindingsSlotSender(req *http.Request) (
 func (client SitesClient) GetSiteHostNameBindingsSlotResponder(resp *http.Response) (result HostNameBindingCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5852,7 +5784,6 @@ func (client SitesClient) GetSiteInstanceIdentifiersSender(req *http.Request) (*
 func (client SitesClient) GetSiteInstanceIdentifiersResponder(resp *http.Response) (result SiteInstanceCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5968,7 +5899,6 @@ func (client SitesClient) GetSiteInstanceIdentifiersSlotSender(req *http.Request
 func (client SitesClient) GetSiteInstanceIdentifiersSlotResponder(resp *http.Response) (result SiteInstanceCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6081,7 +6011,6 @@ func (client SitesClient) GetSiteLogsConfigSender(req *http.Request) (*http.Resp
 func (client SitesClient) GetSiteLogsConfigResponder(resp *http.Response) (result SiteLogsConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6159,7 +6088,6 @@ func (client SitesClient) GetSiteLogsConfigSlotSender(req *http.Request) (*http.
 func (client SitesClient) GetSiteLogsConfigSlotResponder(resp *http.Response) (result SiteLogsConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6236,7 +6164,6 @@ func (client SitesClient) GetSiteMetricDefinitionsSender(req *http.Request) (*ht
 func (client SitesClient) GetSiteMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6352,7 +6279,6 @@ func (client SitesClient) GetSiteMetricDefinitionsSlotSender(req *http.Request) 
 func (client SitesClient) GetSiteMetricDefinitionsSlotResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6476,7 +6402,6 @@ func (client SitesClient) GetSiteMetricsSender(req *http.Request) (*http.Respons
 func (client SitesClient) GetSiteMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6602,7 +6527,6 @@ func (client SitesClient) GetSiteMetricsSlotSender(req *http.Request) (*http.Res
 func (client SitesClient) GetSiteMetricsSlotResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6717,7 +6641,6 @@ func (client SitesClient) GetSiteNetworkFeaturesSender(req *http.Request) (*http
 func (client SitesClient) GetSiteNetworkFeaturesResponder(resp *http.Response) (result NetworkFeatures, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6797,7 +6720,6 @@ func (client SitesClient) GetSiteNetworkFeaturesSlotSender(req *http.Request) (*
 func (client SitesClient) GetSiteNetworkFeaturesSlotResponder(resp *http.Response) (result NetworkFeatures, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6875,7 +6797,6 @@ func (client SitesClient) GetSiteOperationSender(req *http.Request) (*http.Respo
 func (client SitesClient) GetSiteOperationResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -6955,7 +6876,6 @@ func (client SitesClient) GetSiteOperationSlotSender(req *http.Request) (*http.R
 func (client SitesClient) GetSiteOperationSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -7029,7 +6949,6 @@ func (client SitesClient) GetSitePremierAddOnSender(req *http.Request) (*http.Re
 func (client SitesClient) GetSitePremierAddOnResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -7104,7 +7023,6 @@ func (client SitesClient) GetSitePremierAddOnSlotSender(req *http.Request) (*htt
 func (client SitesClient) GetSitePremierAddOnSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -7182,7 +7100,6 @@ func (client SitesClient) GetSiteRelayServiceConnectionSender(req *http.Request)
 func (client SitesClient) GetSiteRelayServiceConnectionResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7262,7 +7179,6 @@ func (client SitesClient) GetSiteRelayServiceConnectionSlotSender(req *http.Requ
 func (client SitesClient) GetSiteRelayServiceConnectionSlotResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7349,7 +7265,6 @@ func (client SitesClient) GetSitesSender(req *http.Request) (*http.Response, err
 func (client SitesClient) GetSitesResponder(resp *http.Response) (result SiteCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7468,7 +7383,6 @@ func (client SitesClient) GetSiteSlotSender(req *http.Request) (*http.Response, 
 func (client SitesClient) GetSiteSlotResponder(resp *http.Response) (result Site, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7549,7 +7463,6 @@ func (client SitesClient) GetSiteSlotsSender(req *http.Request) (*http.Response,
 func (client SitesClient) GetSiteSlotsResponder(resp *http.Response) (result SiteCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7662,7 +7575,6 @@ func (client SitesClient) GetSiteSnapshotsSender(req *http.Request) (*http.Respo
 func (client SitesClient) GetSiteSnapshotsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -7740,7 +7652,6 @@ func (client SitesClient) GetSiteSnapshotsSlotSender(req *http.Request) (*http.R
 func (client SitesClient) GetSiteSnapshotsSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -7816,7 +7727,6 @@ func (client SitesClient) GetSiteSourceControlSender(req *http.Request) (*http.R
 func (client SitesClient) GetSiteSourceControlResponder(resp *http.Response) (result SiteSourceControl, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7894,7 +7804,6 @@ func (client SitesClient) GetSiteSourceControlSlotSender(req *http.Request) (*ht
 func (client SitesClient) GetSiteSourceControlSlotResponder(resp *http.Response) (result SiteSourceControl, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7977,7 +7886,6 @@ func (client SitesClient) GetSiteUsagesSender(req *http.Request) (*http.Response
 func (client SitesClient) GetSiteUsagesResponder(resp *http.Response) (result CsmUsageQuotaCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8099,7 +8007,6 @@ func (client SitesClient) GetSiteUsagesSlotSender(req *http.Request) (*http.Resp
 func (client SitesClient) GetSiteUsagesSlotResponder(resp *http.Response) (result CsmUsageQuotaCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8214,7 +8121,6 @@ func (client SitesClient) GetSiteVNETConnectionSender(req *http.Request) (*http.
 func (client SitesClient) GetSiteVNETConnectionResponder(resp *http.Response) (result VnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8290,7 +8196,6 @@ func (client SitesClient) GetSiteVNETConnectionsSender(req *http.Request) (*http
 func (client SitesClient) GetSiteVNETConnectionsResponder(resp *http.Response) (result ListVnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -8370,7 +8275,6 @@ func (client SitesClient) GetSiteVNETConnectionSlotSender(req *http.Request) (*h
 func (client SitesClient) GetSiteVNETConnectionSlotResponder(resp *http.Response) (result VnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8448,7 +8352,6 @@ func (client SitesClient) GetSiteVNETConnectionsSlotSender(req *http.Request) (*
 func (client SitesClient) GetSiteVNETConnectionsSlotResponder(resp *http.Response) (result ListVnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -8528,7 +8431,6 @@ func (client SitesClient) GetSiteVnetGatewaySender(req *http.Request) (*http.Res
 func (client SitesClient) GetSiteVnetGatewayResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -8610,7 +8512,6 @@ func (client SitesClient) GetSiteVnetGatewaySlotSender(req *http.Request) (*http
 func (client SitesClient) GetSiteVnetGatewaySlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -8686,7 +8587,6 @@ func (client SitesClient) GetSlotConfigNamesSender(req *http.Request) (*http.Res
 func (client SitesClient) GetSlotConfigNamesResponder(resp *http.Response) (result SlotConfigNamesResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8766,7 +8666,6 @@ func (client SitesClient) GetSlotsDifferencesFromProductionSender(req *http.Requ
 func (client SitesClient) GetSlotsDifferencesFromProductionResponder(resp *http.Response) (result SlotDifferenceCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8885,7 +8784,6 @@ func (client SitesClient) GetSlotsDifferencesSlotSender(req *http.Request) (*htt
 func (client SitesClient) GetSlotsDifferencesSlotResponder(resp *http.Response) (result SlotDifferenceCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8998,7 +8896,6 @@ func (client SitesClient) IsSiteCloneableSender(req *http.Request) (*http.Respon
 func (client SitesClient) IsSiteCloneableResponder(resp *http.Response) (result SiteCloneability, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9076,7 +8973,6 @@ func (client SitesClient) IsSiteCloneableSlotSender(req *http.Request) (*http.Re
 func (client SitesClient) IsSiteCloneableSlotResponder(resp *http.Response) (result SiteCloneability, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9152,7 +9048,6 @@ func (client SitesClient) ListSiteAppSettingsSender(req *http.Request) (*http.Re
 func (client SitesClient) ListSiteAppSettingsResponder(resp *http.Response) (result StringDictionary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9230,7 +9125,6 @@ func (client SitesClient) ListSiteAppSettingsSlotSender(req *http.Request) (*htt
 func (client SitesClient) ListSiteAppSettingsSlotResponder(resp *http.Response) (result StringDictionary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9306,7 +9200,6 @@ func (client SitesClient) ListSiteAuthSettingsSender(req *http.Request) (*http.R
 func (client SitesClient) ListSiteAuthSettingsResponder(resp *http.Response) (result SiteAuthSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9384,7 +9277,6 @@ func (client SitesClient) ListSiteAuthSettingsSlotSender(req *http.Request) (*ht
 func (client SitesClient) ListSiteAuthSettingsSlotResponder(resp *http.Response) (result SiteAuthSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9461,7 +9353,6 @@ func (client SitesClient) ListSiteBackupsSender(req *http.Request) (*http.Respon
 func (client SitesClient) ListSiteBackupsResponder(resp *http.Response) (result BackupItemCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9577,7 +9468,6 @@ func (client SitesClient) ListSiteBackupsSlotSender(req *http.Request) (*http.Re
 func (client SitesClient) ListSiteBackupsSlotResponder(resp *http.Response) (result BackupItemCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9690,7 +9580,6 @@ func (client SitesClient) ListSiteConnectionStringsSender(req *http.Request) (*h
 func (client SitesClient) ListSiteConnectionStringsResponder(resp *http.Response) (result ConnectionStringDictionary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9768,7 +9657,6 @@ func (client SitesClient) ListSiteConnectionStringsSlotSender(req *http.Request)
 func (client SitesClient) ListSiteConnectionStringsSlotResponder(resp *http.Response) (result ConnectionStringDictionary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9844,7 +9732,6 @@ func (client SitesClient) ListSiteMetadataSender(req *http.Request) (*http.Respo
 func (client SitesClient) ListSiteMetadataResponder(resp *http.Response) (result StringDictionary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9922,7 +9809,6 @@ func (client SitesClient) ListSiteMetadataSlotSender(req *http.Request) (*http.R
 func (client SitesClient) ListSiteMetadataSlotResponder(resp *http.Response) (result StringDictionary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9995,7 +9881,6 @@ func (client SitesClient) ListSitePremierAddOnsSender(req *http.Request) (*http.
 func (client SitesClient) ListSitePremierAddOnsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -10069,7 +9954,6 @@ func (client SitesClient) ListSitePremierAddOnsSlotSender(req *http.Request) (*h
 func (client SitesClient) ListSitePremierAddOnsSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -10145,7 +10029,6 @@ func (client SitesClient) ListSitePublishingCredentialsSender(req *http.Request)
 func (client SitesClient) ListSitePublishingCredentialsResponder(resp *http.Response) (result User, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10223,7 +10106,6 @@ func (client SitesClient) ListSitePublishingCredentialsSlotSender(req *http.Requ
 func (client SitesClient) ListSitePublishingCredentialsSlotResponder(resp *http.Response) (result User, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10304,7 +10186,6 @@ func (client SitesClient) ListSitePublishingProfileXMLResponder(resp *http.Respo
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -10385,7 +10266,6 @@ func (client SitesClient) ListSitePublishingProfileXMLSlotResponder(resp *http.R
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -10459,7 +10339,6 @@ func (client SitesClient) ListSiteRelayServiceConnectionsSender(req *http.Reques
 func (client SitesClient) ListSiteRelayServiceConnectionsResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10537,7 +10416,6 @@ func (client SitesClient) ListSiteRelayServiceConnectionsSlotSender(req *http.Re
 func (client SitesClient) ListSiteRelayServiceConnectionsSlotResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10617,7 +10495,6 @@ func (client SitesClient) RecoverSiteSender(req *http.Request) (future SitesReco
 func (client SitesClient) RecoverSiteResponder(resp *http.Response) (result Site, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10699,7 +10576,6 @@ func (client SitesClient) RecoverSiteSlotSender(req *http.Request) (future Sites
 func (client SitesClient) RecoverSiteSlotResponder(resp *http.Response) (result Site, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10775,7 +10651,6 @@ func (client SitesClient) ResetProductionSlotConfigSender(req *http.Request) (*h
 func (client SitesClient) ResetProductionSlotConfigResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -10853,7 +10728,6 @@ func (client SitesClient) ResetSlotConfigSlotSender(req *http.Request) (*http.Re
 func (client SitesClient) ResetSlotConfigSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -10938,7 +10812,6 @@ func (client SitesClient) RestartSiteSender(req *http.Request) (*http.Response, 
 func (client SitesClient) RestartSiteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -11025,7 +10898,6 @@ func (client SitesClient) RestartSiteSlotSender(req *http.Request) (*http.Respon
 func (client SitesClient) RestartSiteSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -11106,7 +10978,6 @@ func (client SitesClient) RestoreSiteSender(req *http.Request) (future SitesRest
 func (client SitesClient) RestoreSiteResponder(resp *http.Response) (result RestoreResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11189,7 +11060,6 @@ func (client SitesClient) RestoreSiteSlotSender(req *http.Request) (future Sites
 func (client SitesClient) RestoreSiteSlotResponder(resp *http.Response) (result RestoreResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11265,7 +11135,6 @@ func (client SitesClient) StartSiteSender(req *http.Request) (*http.Response, er
 func (client SitesClient) StartSiteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -11343,7 +11212,6 @@ func (client SitesClient) StartSiteSlotSender(req *http.Request) (*http.Response
 func (client SitesClient) StartSiteSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -11419,7 +11287,6 @@ func (client SitesClient) StopSiteSender(req *http.Request) (*http.Response, err
 func (client SitesClient) StopSiteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -11497,7 +11364,6 @@ func (client SitesClient) StopSiteSlotSender(req *http.Request) (*http.Response,
 func (client SitesClient) StopSiteSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -11578,7 +11444,6 @@ func (client SitesClient) SwapSlotsSlotSender(req *http.Request) (future SitesSw
 func (client SitesClient) SwapSlotsSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11657,7 +11522,6 @@ func (client SitesClient) SwapSlotWithProductionSender(req *http.Request) (futur
 func (client SitesClient) SwapSlotWithProductionResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11730,7 +11594,6 @@ func (client SitesClient) SyncSiteRepositorySender(req *http.Request) (*http.Res
 func (client SitesClient) SyncSiteRepositoryResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -11804,7 +11667,6 @@ func (client SitesClient) SyncSiteRepositorySlotSender(req *http.Request) (*http
 func (client SitesClient) SyncSiteRepositorySlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -11883,7 +11745,6 @@ func (client SitesClient) UpdateSiteAppSettingsSender(req *http.Request) (*http.
 func (client SitesClient) UpdateSiteAppSettingsResponder(resp *http.Response) (result StringDictionary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11964,7 +11825,6 @@ func (client SitesClient) UpdateSiteAppSettingsSlotSender(req *http.Request) (*h
 func (client SitesClient) UpdateSiteAppSettingsSlotResponder(resp *http.Response) (result StringDictionary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12043,7 +11903,6 @@ func (client SitesClient) UpdateSiteAuthSettingsSender(req *http.Request) (*http
 func (client SitesClient) UpdateSiteAuthSettingsResponder(resp *http.Response) (result SiteAuthSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12124,7 +11983,6 @@ func (client SitesClient) UpdateSiteAuthSettingsSlotSender(req *http.Request) (*
 func (client SitesClient) UpdateSiteAuthSettingsSlotResponder(resp *http.Response) (result SiteAuthSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12203,7 +12061,6 @@ func (client SitesClient) UpdateSiteBackupConfigurationSender(req *http.Request)
 func (client SitesClient) UpdateSiteBackupConfigurationResponder(resp *http.Response) (result BackupRequest, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12284,7 +12141,6 @@ func (client SitesClient) UpdateSiteBackupConfigurationSlotSender(req *http.Requ
 func (client SitesClient) UpdateSiteBackupConfigurationSlotResponder(resp *http.Response) (result BackupRequest, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12363,7 +12219,6 @@ func (client SitesClient) UpdateSiteConfigSender(req *http.Request) (*http.Respo
 func (client SitesClient) UpdateSiteConfigResponder(resp *http.Response) (result SiteConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12444,7 +12299,6 @@ func (client SitesClient) UpdateSiteConfigSlotSender(req *http.Request) (*http.R
 func (client SitesClient) UpdateSiteConfigSlotResponder(resp *http.Response) (result SiteConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12523,7 +12377,6 @@ func (client SitesClient) UpdateSiteConnectionStringsSender(req *http.Request) (
 func (client SitesClient) UpdateSiteConnectionStringsResponder(resp *http.Response) (result ConnectionStringDictionary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12604,7 +12457,6 @@ func (client SitesClient) UpdateSiteConnectionStringsSlotSender(req *http.Reques
 func (client SitesClient) UpdateSiteConnectionStringsSlotResponder(resp *http.Response) (result ConnectionStringDictionary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12683,7 +12535,6 @@ func (client SitesClient) UpdateSiteLogsConfigSender(req *http.Request) (*http.R
 func (client SitesClient) UpdateSiteLogsConfigResponder(resp *http.Response) (result SiteLogsConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12764,7 +12615,6 @@ func (client SitesClient) UpdateSiteLogsConfigSlotSender(req *http.Request) (*ht
 func (client SitesClient) UpdateSiteLogsConfigSlotResponder(resp *http.Response) (result SiteLogsConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12843,7 +12693,6 @@ func (client SitesClient) UpdateSiteMetadataSender(req *http.Request) (*http.Res
 func (client SitesClient) UpdateSiteMetadataResponder(resp *http.Response) (result StringDictionary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12924,7 +12773,6 @@ func (client SitesClient) UpdateSiteMetadataSlotSender(req *http.Request) (*http
 func (client SitesClient) UpdateSiteMetadataSlotResponder(resp *http.Response) (result StringDictionary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13005,7 +12853,6 @@ func (client SitesClient) UpdateSiteRelayServiceConnectionSender(req *http.Reque
 func (client SitesClient) UpdateSiteRelayServiceConnectionResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13088,7 +12935,6 @@ func (client SitesClient) UpdateSiteRelayServiceConnectionSlotSender(req *http.R
 func (client SitesClient) UpdateSiteRelayServiceConnectionSlotResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13167,7 +13013,6 @@ func (client SitesClient) UpdateSiteSourceControlSender(req *http.Request) (*htt
 func (client SitesClient) UpdateSiteSourceControlResponder(resp *http.Response) (result SiteSourceControl, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13248,7 +13093,6 @@ func (client SitesClient) UpdateSiteSourceControlSlotSender(req *http.Request) (
 func (client SitesClient) UpdateSiteSourceControlSlotResponder(resp *http.Response) (result SiteSourceControl, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13329,7 +13173,6 @@ func (client SitesClient) UpdateSiteVNETConnectionSender(req *http.Request) (*ht
 func (client SitesClient) UpdateSiteVNETConnectionResponder(resp *http.Response) (result VnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13412,7 +13255,6 @@ func (client SitesClient) UpdateSiteVNETConnectionGatewaySender(req *http.Reques
 func (client SitesClient) UpdateSiteVNETConnectionGatewayResponder(resp *http.Response) (result VnetGateway, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13497,7 +13339,6 @@ func (client SitesClient) UpdateSiteVNETConnectionGatewaySlotSender(req *http.Re
 func (client SitesClient) UpdateSiteVNETConnectionGatewaySlotResponder(resp *http.Response) (result VnetGateway, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13580,7 +13421,6 @@ func (client SitesClient) UpdateSiteVNETConnectionSlotSender(req *http.Request) 
 func (client SitesClient) UpdateSiteVNETConnectionSlotResponder(resp *http.Response) (result VnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13659,7 +13499,6 @@ func (client SitesClient) UpdateSlotConfigNamesSender(req *http.Request) (*http.
 func (client SitesClient) UpdateSlotConfigNamesResponder(resp *http.Response) (result SlotConfigNamesResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

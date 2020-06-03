@@ -109,7 +109,6 @@ func (client CompliancesClient) GetSender(req *http.Request) (*http.Response, er
 func (client CompliancesClient) GetResponder(resp *http.Response) (result Compliance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -184,7 +183,6 @@ func (client CompliancesClient) ListSender(req *http.Request) (*http.Response, e
 func (client CompliancesClient) ListResponder(resp *http.Response) (result ComplianceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

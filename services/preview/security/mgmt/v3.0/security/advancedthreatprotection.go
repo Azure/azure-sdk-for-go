@@ -111,7 +111,6 @@ func (client AdvancedThreatProtectionClient) CreateSender(req *http.Request) (*h
 func (client AdvancedThreatProtectionClient) CreateResponder(resp *http.Response) (result AdvancedThreatProtectionSetting, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -185,7 +184,6 @@ func (client AdvancedThreatProtectionClient) GetSender(req *http.Request) (*http
 func (client AdvancedThreatProtectionClient) GetResponder(resp *http.Response) (result AdvancedThreatProtectionSetting, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

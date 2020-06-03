@@ -113,7 +113,6 @@ func (client DeviceSecurityGroupsClient) CreateOrUpdateSender(req *http.Request)
 func (client DeviceSecurityGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result DeviceSecurityGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -189,7 +188,6 @@ func (client DeviceSecurityGroupsClient) DeleteSender(req *http.Request) (*http.
 func (client DeviceSecurityGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -264,7 +262,6 @@ func (client DeviceSecurityGroupsClient) GetSender(req *http.Request) (*http.Res
 func (client DeviceSecurityGroupsClient) GetResponder(resp *http.Response) (result DeviceSecurityGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -338,7 +335,6 @@ func (client DeviceSecurityGroupsClient) ListSender(req *http.Request) (*http.Re
 func (client DeviceSecurityGroupsClient) ListResponder(resp *http.Response) (result DeviceSecurityGroupList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

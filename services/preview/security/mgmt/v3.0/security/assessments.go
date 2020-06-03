@@ -133,7 +133,6 @@ func (client AssessmentsClient) CreateOrUpdateSender(req *http.Request) (*http.R
 func (client AssessmentsClient) CreateOrUpdateResponder(resp *http.Response) (result Assessment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -209,7 +208,6 @@ func (client AssessmentsClient) DeleteSender(req *http.Request) (*http.Response,
 func (client AssessmentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -287,7 +285,6 @@ func (client AssessmentsClient) GetSender(req *http.Request) (*http.Response, er
 func (client AssessmentsClient) GetResponder(resp *http.Response) (result Assessment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -362,7 +359,6 @@ func (client AssessmentsClient) ListSender(req *http.Request) (*http.Response, e
 func (client AssessmentsClient) ListResponder(resp *http.Response) (result AssessmentList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

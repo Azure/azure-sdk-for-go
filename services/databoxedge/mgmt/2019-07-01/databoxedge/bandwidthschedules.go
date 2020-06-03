@@ -127,7 +127,6 @@ func (client BandwidthSchedulesClient) CreateOrUpdateSender(req *http.Request) (
 func (client BandwidthSchedulesClient) CreateOrUpdateResponder(resp *http.Response) (result BandwidthSchedule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -205,7 +204,6 @@ func (client BandwidthSchedulesClient) DeleteSender(req *http.Request) (future B
 func (client BandwidthSchedulesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -282,7 +280,6 @@ func (client BandwidthSchedulesClient) GetSender(req *http.Request) (*http.Respo
 func (client BandwidthSchedulesClient) GetResponder(resp *http.Response) (result BandwidthSchedule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -359,7 +356,6 @@ func (client BandwidthSchedulesClient) ListByDataBoxEdgeDeviceSender(req *http.R
 func (client BandwidthSchedulesClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response) (result BandwidthSchedulesList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

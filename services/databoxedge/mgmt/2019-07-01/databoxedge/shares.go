@@ -126,7 +126,6 @@ func (client SharesClient) CreateOrUpdateSender(req *http.Request) (future Share
 func (client SharesClient) CreateOrUpdateResponder(resp *http.Response) (result Share, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -204,7 +203,6 @@ func (client SharesClient) DeleteSender(req *http.Request) (future SharesDeleteF
 func (client SharesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -281,7 +279,6 @@ func (client SharesClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client SharesClient) GetResponder(resp *http.Response) (result Share, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -358,7 +355,6 @@ func (client SharesClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*ht
 func (client SharesClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response) (result ShareList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -473,7 +469,6 @@ func (client SharesClient) RefreshSender(req *http.Request) (future SharesRefres
 func (client SharesClient) RefreshResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

@@ -109,7 +109,6 @@ func (client NodesClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*htt
 func (client NodesClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response) (result NodeList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -119,7 +119,6 @@ func (client DevicesClient) CreateOrUpdateSender(req *http.Request) (future Devi
 func (client DevicesClient) CreateOrUpdateResponder(resp *http.Response) (result Device, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -207,7 +206,6 @@ func (client DevicesClient) CreateOrUpdateSecuritySettingsSender(req *http.Reque
 func (client DevicesClient) CreateOrUpdateSecuritySettingsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -282,7 +280,6 @@ func (client DevicesClient) DeleteSender(req *http.Request) (future DevicesDelet
 func (client DevicesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -357,7 +354,6 @@ func (client DevicesClient) DownloadUpdatesSender(req *http.Request) (future Dev
 func (client DevicesClient) DownloadUpdatesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -432,7 +428,6 @@ func (client DevicesClient) GetSender(req *http.Request) (*http.Response, error)
 func (client DevicesClient) GetResponder(resp *http.Response) (result Device, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -508,7 +503,6 @@ func (client DevicesClient) GetExtendedInformationSender(req *http.Request) (*ht
 func (client DevicesClient) GetExtendedInformationResponder(resp *http.Response) (result DeviceExtendedInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -584,7 +578,6 @@ func (client DevicesClient) GetNetworkSettingsSender(req *http.Request) (*http.R
 func (client DevicesClient) GetNetworkSettingsResponder(resp *http.Response) (result NetworkSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -660,7 +653,6 @@ func (client DevicesClient) GetUpdateSummarySender(req *http.Request) (*http.Res
 func (client DevicesClient) GetUpdateSummaryResponder(resp *http.Response) (result UpdateSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -736,7 +728,6 @@ func (client DevicesClient) InstallUpdatesSender(req *http.Request) (future Devi
 func (client DevicesClient) InstallUpdatesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -815,7 +806,6 @@ func (client DevicesClient) ListByResourceGroupSender(req *http.Request) (*http.
 func (client DevicesClient) ListByResourceGroupResponder(resp *http.Response) (result DeviceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -930,7 +920,6 @@ func (client DevicesClient) ListBySubscriptionSender(req *http.Request) (*http.R
 func (client DevicesClient) ListBySubscriptionResponder(resp *http.Response) (result DeviceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1043,7 +1032,6 @@ func (client DevicesClient) ScanForUpdatesSender(req *http.Request) (future Devi
 func (client DevicesClient) ScanForUpdatesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1121,7 +1109,6 @@ func (client DevicesClient) UpdateSender(req *http.Request) (*http.Response, err
 func (client DevicesClient) UpdateResponder(resp *http.Response) (result Device, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1207,7 +1194,6 @@ func (client DevicesClient) UploadCertificateSender(req *http.Request) (*http.Re
 func (client DevicesClient) UploadCertificateResponder(resp *http.Response) (result UploadCertificateResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

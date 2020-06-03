@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/rpc"
-	"github.com/devigned/tab"
 	"github.com/Azure/go-amqp"
+	"github.com/devigned/tab"
 )
 
 // MessageSession represents and allows for interaction with a Service Bus Session.

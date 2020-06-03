@@ -4,9 +4,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/uuid"
+	"github.com/Azure/go-amqp"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/mitchellh/mapstructure"
-	"github.com/Azure/go-amqp"
 )
 
 func (suite *serviceBusSuite) TestMapStructureEncode() {
@@ -74,6 +74,10 @@ func (suite *serviceBusSuite) TestMessageToAMQPMessage() {
 			ScheduledEnqueueTime:   &until,
 			EnqueuedSequenceNumber: to.Int64Ptr(1),
 			ViaPartitionKey:        to.StringPtr("via"),
+			Annotations: map[string]interface{}{
+				"custom":              "annotation",
+				"x-opt-partition-key": "other value",
+			},
 		},
 		UserProperties: map[string]interface{}{
 			"test": "foo",
@@ -98,6 +102,17 @@ func (suite *serviceBusSuite) TestMessageToAMQPMessage() {
 		sysPropMap, err := encodeStructureToMap(msg.SystemProperties)
 		if suite.NoError(err) {
 			for key, val := range sysPropMap {
+				suite.Equal(val, aMsg.Annotations[key], key)
+			}
+
+			for key, val := range msg.SystemProperties.Annotations {
+				// The partition key should be overridden by the value in the
+				// base system properties
+				if key == "x-opt-partition-key" {
+					suite.Equal(*msg.SystemProperties.PartitionKey, aMsg.Annotations[key], key)
+					continue
+				}
+
 				suite.Equal(val, aMsg.Annotations[key], key)
 			}
 		}
@@ -147,6 +162,7 @@ func (suite *serviceBusSuite) TestAMQPMessageToMessage() {
 			"x-opt-scheduled-enqueue-time":  until,
 			"x-opt-enqueue-sequence-number": int64(1),
 			"x-opt-via-partition-key":       "via",
+			"custom-annotation":             "value",
 		},
 		ApplicationProperties: map[string]interface{}{
 			"test": "foo",
@@ -175,6 +191,10 @@ func (suite *serviceBusSuite) TestAMQPMessageToMessage() {
 		sysPropMap, err := encodeStructureToMap(msg.SystemProperties)
 		if suite.NoError(err) {
 			for key, val := range sysPropMap {
+				suite.Equal(val, aMsg.Annotations[key], key)
+			}
+
+			for key, val := range msg.SystemProperties.Annotations {
 				suite.Equal(val, aMsg.Annotations[key], key)
 			}
 		}

@@ -28,8 +28,8 @@ import (
 	"sync/atomic"
 
 	"github.com/Azure/azure-amqp-common-go/v3/uuid"
-	"github.com/devigned/tab"
 	"github.com/Azure/go-amqp"
+	"github.com/devigned/tab"
 )
 
 type (

@@ -63,9 +63,9 @@ resource "random_string" "secret" {
 resource "azuread_application" "test" {
   count                       = data.azurerm_client_config.current.service_principal_application_id == "" ? 1 : 0
   name                        = "servicebustest"
-  homepage                    = "https://servicebustest"
-  identifier_uris             = ["https://servicebustest"]
-  reply_urls                  = ["https://servicebustest"]
+  homepage                    = "https://servicebustest-${random_string.name.result}"
+  identifier_uris             = ["https://servicebustest-${random_string.name.result}"]
+  reply_urls                  = ["https://servicebustest-${random_string.name.result}"]
   available_to_other_tenants  = false
   oauth2_allow_implicit_flow  = true
 }

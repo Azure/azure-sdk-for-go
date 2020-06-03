@@ -111,7 +111,6 @@ func (client SubAssessmentsClient) GetSender(req *http.Request) (*http.Response,
 func (client SubAssessmentsClient) GetResponder(resp *http.Response) (result SubAssessment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -188,7 +187,6 @@ func (client SubAssessmentsClient) ListSender(req *http.Request) (*http.Response
 func (client SubAssessmentsClient) ListResponder(resp *http.Response) (result SubAssessmentList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -300,7 +298,6 @@ func (client SubAssessmentsClient) ListAllSender(req *http.Request) (*http.Respo
 func (client SubAssessmentsClient) ListAllResponder(resp *http.Response) (result SubAssessmentList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

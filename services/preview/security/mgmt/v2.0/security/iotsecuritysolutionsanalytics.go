@@ -122,7 +122,6 @@ func (client IoTSecuritySolutionsAnalyticsClient) GetAllSender(req *http.Request
 func (client IoTSecuritySolutionsAnalyticsClient) GetAllResponder(resp *http.Response) (result IoTSecuritySolutionAnalyticsModelList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -209,7 +208,6 @@ func (client IoTSecuritySolutionsAnalyticsClient) GetDefaultSender(req *http.Req
 func (client IoTSecuritySolutionsAnalyticsClient) GetDefaultResponder(resp *http.Response) (result IoTSecuritySolutionAnalyticsModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

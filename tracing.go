@@ -46,6 +46,7 @@ func (m *Message) startSpanFromContext(ctx context.Context, operationName string
 	if m.GroupSequence != nil {
 		attrs = append(attrs, tab.Int64Attribute("amqp.sequence_number", int64(*m.GroupSequence)))
 	}
+	span.AddAttributes(attrs...)
 	return ctx, span
 }
 

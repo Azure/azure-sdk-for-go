@@ -115,7 +115,6 @@ func (client DisasterRecoveryConfigurationsClient) CreateOrUpdateSender(req *htt
 func (client DisasterRecoveryConfigurationsClient) CreateOrUpdateResponder(resp *http.Response) (result DisasterRecoveryConfiguration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -194,7 +193,6 @@ func (client DisasterRecoveryConfigurationsClient) DeleteSender(req *http.Reques
 func (client DisasterRecoveryConfigurationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -272,7 +270,6 @@ func (client DisasterRecoveryConfigurationsClient) FailoverSender(req *http.Requ
 func (client DisasterRecoveryConfigurationsClient) FailoverResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -351,7 +348,6 @@ func (client DisasterRecoveryConfigurationsClient) FailoverAllowDataLossSender(r
 func (client DisasterRecoveryConfigurationsClient) FailoverAllowDataLossResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -429,7 +425,6 @@ func (client DisasterRecoveryConfigurationsClient) GetSender(req *http.Request) 
 func (client DisasterRecoveryConfigurationsClient) GetResponder(resp *http.Response) (result DisasterRecoveryConfiguration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -506,7 +501,6 @@ func (client DisasterRecoveryConfigurationsClient) ListSender(req *http.Request)
 func (client DisasterRecoveryConfigurationsClient) ListResponder(resp *http.Response) (result DisasterRecoveryConfigurationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

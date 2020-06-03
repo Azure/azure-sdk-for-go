@@ -38,6 +38,7 @@ type ClientAPI interface {
 	ListAll(ctx context.Context) (result features.OperationsListResultPage, err error)
 	ListAllComplete(ctx context.Context) (result features.OperationsListResultIterator, err error)
 	Register(ctx context.Context, resourceProviderNamespace string, featureName string) (result features.Result, err error)
+	Unregister(ctx context.Context, resourceProviderNamespace string, featureName string) (result features.Result, err error)
 }
 
 var _ ClientAPI = (*features.Client)(nil)

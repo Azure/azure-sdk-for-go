@@ -132,7 +132,6 @@ func (client BaseClient) ResourcesSender(req *http.Request) (*http.Response, err
 func (client BaseClient) ResourcesResponder(resp *http.Response) (result QueryResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

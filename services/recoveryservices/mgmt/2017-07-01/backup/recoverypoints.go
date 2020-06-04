@@ -117,7 +117,6 @@ func (client RecoveryPointsClient) GetAccessTokenSender(req *http.Request) (*htt
 func (client RecoveryPointsClient) GetAccessTokenResponder(resp *http.Response) (result CrrAccessTokenResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

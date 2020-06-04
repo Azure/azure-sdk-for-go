@@ -119,7 +119,6 @@ func (client ProtectedItemsCrrClient) ListSender(req *http.Request) (*http.Respo
 func (client ProtectedItemsCrrClient) ListResponder(resp *http.Response) (result ProtectedItemResourceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

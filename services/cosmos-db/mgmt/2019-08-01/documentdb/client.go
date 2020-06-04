@@ -32,21 +32,23 @@ const (
 // BaseClient is the base client for Documentdb.
 type BaseClient struct {
 	autorest.Client
-	BaseURI        string
-	SubscriptionID string
+	BaseURI         string
+	SubscriptionID  string
+	SubscriptionID1 string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+func New(subscriptionID string, subscriptionID1 string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client using a custom endpoint.  Use this when interacting with
 // an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) BaseClient {
 	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
+		Client:          autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:         baseURI,
+		SubscriptionID:  subscriptionID,
+		SubscriptionID1: subscriptionID1,
 	}
 }

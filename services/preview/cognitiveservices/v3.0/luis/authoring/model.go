@@ -5962,7 +5962,8 @@ func (client ModelClient) ListEntityRolesResponder(resp *http.Response) (result 
 // versionID - the version ID.
 // entityID - the target entity extractor model to enhance.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListEntitySuggestions(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32) (result ListEntitiesSuggestionExample, err error) {
+// enableNestedChildren - toggles nested/flat format
+func (client ModelClient) ListEntitySuggestions(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32, enableNestedChildren *bool) (result ListEntitiesSuggestionExample, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListEntitySuggestions")
 		defer func() {
@@ -5982,7 +5983,7 @@ func (client ModelClient) ListEntitySuggestions(ctx context.Context, appID uuid.
 		return result, validation.NewError("authoring.ModelClient", "ListEntitySuggestions", err.Error())
 	}
 
-	req, err := client.ListEntitySuggestionsPreparer(ctx, appID, versionID, entityID, take)
+	req, err := client.ListEntitySuggestionsPreparer(ctx, appID, versionID, entityID, take, enableNestedChildren)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListEntitySuggestions", nil, "Failure preparing request")
 		return
@@ -6004,7 +6005,7 @@ func (client ModelClient) ListEntitySuggestions(ctx context.Context, appID uuid.
 }
 
 // ListEntitySuggestionsPreparer prepares the ListEntitySuggestions request.
-func (client ModelClient) ListEntitySuggestionsPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32) (*http.Request, error) {
+func (client ModelClient) ListEntitySuggestionsPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32, enableNestedChildren *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -6020,6 +6021,11 @@ func (client ModelClient) ListEntitySuggestionsPreparer(ctx context.Context, app
 		queryParameters["take"] = autorest.Encode("query", *take)
 	} else {
 		queryParameters["take"] = autorest.Encode("query", 100)
+	}
+	if enableNestedChildren != nil {
+		queryParameters["enableNestedChildren"] = autorest.Encode("query", *enableNestedChildren)
+	} else {
+		queryParameters["enableNestedChildren"] = autorest.Encode("query", false)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -6331,7 +6337,8 @@ func (client ModelClient) ListIntentsResponder(resp *http.Response) (result List
 // versionID - the version ID.
 // intentID - the intent classifier ID.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListIntentSuggestions(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32) (result ListIntentsSuggestionExample, err error) {
+// enableNestedChildren - toggles nested/flat format
+func (client ModelClient) ListIntentSuggestions(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32, enableNestedChildren *bool) (result ListIntentsSuggestionExample, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListIntentSuggestions")
 		defer func() {
@@ -6351,7 +6358,7 @@ func (client ModelClient) ListIntentSuggestions(ctx context.Context, appID uuid.
 		return result, validation.NewError("authoring.ModelClient", "ListIntentSuggestions", err.Error())
 	}
 
-	req, err := client.ListIntentSuggestionsPreparer(ctx, appID, versionID, intentID, take)
+	req, err := client.ListIntentSuggestionsPreparer(ctx, appID, versionID, intentID, take, enableNestedChildren)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListIntentSuggestions", nil, "Failure preparing request")
 		return
@@ -6373,7 +6380,7 @@ func (client ModelClient) ListIntentSuggestions(ctx context.Context, appID uuid.
 }
 
 // ListIntentSuggestionsPreparer prepares the ListIntentSuggestions request.
-func (client ModelClient) ListIntentSuggestionsPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32) (*http.Request, error) {
+func (client ModelClient) ListIntentSuggestionsPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32, enableNestedChildren *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -6389,6 +6396,11 @@ func (client ModelClient) ListIntentSuggestionsPreparer(ctx context.Context, app
 		queryParameters["take"] = autorest.Encode("query", *take)
 	} else {
 		queryParameters["take"] = autorest.Encode("query", 100)
+	}
+	if enableNestedChildren != nil {
+		queryParameters["enableNestedChildren"] = autorest.Encode("query", *enableNestedChildren)
+	} else {
+		queryParameters["enableNestedChildren"] = autorest.Encode("query", false)
 	}
 
 	preparer := autorest.CreatePreparer(

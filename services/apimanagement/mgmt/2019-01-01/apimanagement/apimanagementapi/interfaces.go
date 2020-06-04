@@ -707,7 +707,7 @@ var _ UserIdentitiesClientAPI = (*apimanagement.UserIdentitiesClient)(nil)
 
 // UserConfirmationPasswordClientAPI contains the set of methods on the UserConfirmationPasswordClient type.
 type UserConfirmationPasswordClientAPI interface {
-	Send(ctx context.Context, resourceGroupName string, serviceName string, userID string) (result autorest.Response, err error)
+	SendMethod(ctx context.Context, resourceGroupName string, serviceName string, userID string) (result autorest.Response, err error)
 }
 
 var _ UserConfirmationPasswordClientAPI = (*apimanagement.UserConfirmationPasswordClient)(nil)

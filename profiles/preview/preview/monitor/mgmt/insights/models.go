@@ -108,6 +108,22 @@ const (
 	Present    DataStatus = original.Present
 )
 
+type DynamicThresholdOperator = original.DynamicThresholdOperator
+
+const (
+	DynamicThresholdOperatorGreaterOrLessThan DynamicThresholdOperator = original.DynamicThresholdOperatorGreaterOrLessThan
+	DynamicThresholdOperatorGreaterThan       DynamicThresholdOperator = original.DynamicThresholdOperatorGreaterThan
+	DynamicThresholdOperatorLessThan          DynamicThresholdOperator = original.DynamicThresholdOperatorLessThan
+)
+
+type DynamicThresholdSensitivity = original.DynamicThresholdSensitivity
+
+const (
+	DynamicThresholdSensitivityHigh   DynamicThresholdSensitivity = original.DynamicThresholdSensitivityHigh
+	DynamicThresholdSensitivityLow    DynamicThresholdSensitivity = original.DynamicThresholdSensitivityLow
+	DynamicThresholdSensitivityMedium DynamicThresholdSensitivity = original.DynamicThresholdSensitivityMedium
+)
+
 type Enabled = original.Enabled
 
 const (
@@ -163,6 +179,7 @@ const (
 	OdataTypeMetricAlertCriteria                                         OdataTypeBasicMetricAlertCriteria = original.OdataTypeMetricAlertCriteria
 	OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria
 	OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria   OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria
+	OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria    OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria
 )
 
 type OdataTypeBasicRuleAction = original.OdataTypeBasicRuleAction
@@ -188,6 +205,17 @@ const (
 	NotOnboarded OnboardingStatus = original.NotOnboarded
 	Onboarded    OnboardingStatus = original.Onboarded
 	Unknown      OnboardingStatus = original.Unknown
+)
+
+type Operator = original.Operator
+
+const (
+	OperatorEquals             Operator = original.OperatorEquals
+	OperatorGreaterThan        Operator = original.OperatorGreaterThan
+	OperatorGreaterThanOrEqual Operator = original.OperatorGreaterThanOrEqual
+	OperatorLessThan           Operator = original.OperatorLessThan
+	OperatorLessThanOrEqual    Operator = original.OperatorLessThanOrEqual
+	OperatorNotEquals          Operator = original.OperatorNotEquals
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -472,6 +500,7 @@ type VMInsightsOnboardingStatusProperties = original.VMInsightsOnboardingStatusP
 type VoiceReceiver = original.VoiceReceiver
 type WebhookNotification = original.WebhookNotification
 type WebhookReceiver = original.WebhookReceiver
+type WebtestLocationAvailabilityCriteria = original.WebtestLocationAvailabilityCriteria
 type WorkspaceInfo = original.WorkspaceInfo
 type WorkspaceInfoProperties = original.WorkspaceInfoProperties
 
@@ -646,6 +675,12 @@ func PossibleCriterionTypeValues() []CriterionType {
 func PossibleDataStatusValues() []DataStatus {
 	return original.PossibleDataStatusValues()
 }
+func PossibleDynamicThresholdOperatorValues() []DynamicThresholdOperator {
+	return original.PossibleDynamicThresholdOperatorValues()
+}
+func PossibleDynamicThresholdSensitivityValues() []DynamicThresholdSensitivity {
+	return original.PossibleDynamicThresholdSensitivityValues()
+}
 func PossibleEnabledValues() []Enabled {
 	return original.PossibleEnabledValues()
 }
@@ -675,6 +710,9 @@ func PossibleOdataTypeValues() []OdataType {
 }
 func PossibleOnboardingStatusValues() []OnboardingStatus {
 	return original.PossibleOnboardingStatusValues()
+}
+func PossibleOperatorValues() []Operator {
+	return original.PossibleOperatorValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

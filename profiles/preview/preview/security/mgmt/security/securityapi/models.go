@@ -22,8 +22,10 @@ package securityapi
 import original "github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security/securityapi"
 
 type AdaptiveApplicationControlsClientAPI = original.AdaptiveApplicationControlsClientAPI
+type AdaptiveNetworkHardeningsClientAPI = original.AdaptiveNetworkHardeningsClientAPI
 type AdvancedThreatProtectionClientAPI = original.AdvancedThreatProtectionClientAPI
 type AlertsClientAPI = original.AlertsClientAPI
+type AlertsSuppressionRulesClientAPI = original.AlertsSuppressionRulesClientAPI
 type AllowedConnectionsClientAPI = original.AllowedConnectionsClientAPI
 type AssessmentsClientAPI = original.AssessmentsClientAPI
 type AssessmentsMetadataClientAPI = original.AssessmentsMetadataClientAPI
@@ -47,6 +49,9 @@ type PricingsClientAPI = original.PricingsClientAPI
 type RegulatoryComplianceAssessmentsClientAPI = original.RegulatoryComplianceAssessmentsClientAPI
 type RegulatoryComplianceControlsClientAPI = original.RegulatoryComplianceControlsClientAPI
 type RegulatoryComplianceStandardsClientAPI = original.RegulatoryComplianceStandardsClientAPI
+type SecureScoreControlDefinitionsClientAPI = original.SecureScoreControlDefinitionsClientAPI
+type SecureScoreControlsClientAPI = original.SecureScoreControlsClientAPI
+type SecureScoresClientAPI = original.SecureScoresClientAPI
 type ServerVulnerabilityAssessmentClientAPI = original.ServerVulnerabilityAssessmentClientAPI
 type SettingsClientAPI = original.SettingsClientAPI
 type SubAssessmentsClientAPI = original.SubAssessmentsClientAPI

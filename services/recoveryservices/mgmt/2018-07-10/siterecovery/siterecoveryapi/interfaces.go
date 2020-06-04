@@ -42,8 +42,8 @@ var _ ReplicationAlertSettingsClientAPI = (*siterecovery.ReplicationAlertSetting
 
 // ReplicationEligibilityResultsClientAPI contains the set of methods on the ReplicationEligibilityResultsClient type.
 type ReplicationEligibilityResultsClientAPI interface {
-	Get(ctx context.Context, virtualMachineName string) (result siterecovery.ReplicationEligibilityResultsGetFuture, err error)
-	List(ctx context.Context, virtualMachineName string) (result siterecovery.ReplicationEligibilityResultsListFuture, err error)
+	Get(ctx context.Context, virtualMachineName string) (result siterecovery.ReplicationEligibilityResults, err error)
+	List(ctx context.Context, virtualMachineName string) (result siterecovery.ReplicationEligibilityResultsCollection, err error)
 }
 
 var _ ReplicationEligibilityResultsClientAPI = (*siterecovery.ReplicationEligibilityResultsClient)(nil)

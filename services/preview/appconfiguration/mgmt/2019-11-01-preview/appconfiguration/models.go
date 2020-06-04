@@ -107,6 +107,21 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{Canceled, Creating, Deleting, Failed, Succeeded, Updating}
 }
 
+// PublicNetworkAccess enumerates the values for public network access.
+type PublicNetworkAccess string
+
+const (
+	// Disabled ...
+	Disabled PublicNetworkAccess = "Disabled"
+	// Enabled ...
+	Enabled PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns an array of possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{Disabled, Enabled}
+}
+
 // APIKey an API key used for authenticating with a configuration store endpoint.
 type APIKey struct {
 	autorest.Response `json:"-"`
@@ -564,6 +579,10 @@ type ConfigurationStoreProperties struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 	// Encryption - The encryption settings of the configuration store.
 	Encryption *EncryptionProperties `json:"encryption,omitempty"`
+	// PrivateEndpointConnections - READ-ONLY; The list of private endpoint connections that are set up for this resource.
+	PrivateEndpointConnections *[]PrivateEndpointConnectionReference `json:"privateEndpointConnections,omitempty"`
+	// PublicNetworkAccess - Control permission for data plane traffic coming from public networks while private endpoint is enabled. Possible values include: 'Enabled', 'Disabled'
+	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 }
 
 // ConfigurationStorePropertiesUpdateParameters the properties for updating a configuration store.
@@ -1209,6 +1228,78 @@ type PrivateEndpointConnectionProperties struct {
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
 }
 
+// PrivateEndpointConnectionReference a reference to a related private endpoint connection.
+type PrivateEndpointConnectionReference struct {
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+	// PrivateEndpointConnectionProperties - The properties of a private endpoint connection.
+	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpointConnectionReference.
+func (pecr PrivateEndpointConnectionReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pecr.PrivateEndpointConnectionProperties != nil {
+		objectMap["properties"] = pecr.PrivateEndpointConnectionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PrivateEndpointConnectionReference struct.
+func (pecr *PrivateEndpointConnectionReference) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pecr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pecr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pecr.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var privateEndpointConnectionProperties PrivateEndpointConnectionProperties
+				err = json.Unmarshal(*v, &privateEndpointConnectionProperties)
+				if err != nil {
+					return err
+				}
+				pecr.PrivateEndpointConnectionProperties = &privateEndpointConnectionProperties
+			}
+		}
+	}
+
+	return nil
+}
+
 // PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type PrivateEndpointConnectionsCreateOrUpdateFuture struct {
@@ -1487,6 +1578,8 @@ type PrivateLinkResourceProperties struct {
 	GroupID *string `json:"groupId,omitempty"`
 	// RequiredMembers - READ-ONLY; The private link resource required member names.
 	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
+	// RequiredZoneNames - READ-ONLY; The list of required DNS zone names of the private link resource.
+	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
 }
 
 // PrivateLinkServiceConnectionState the state of a private link service connection.

@@ -43,14 +43,14 @@ func NewUserConfirmationPasswordClientWithBaseURI(baseURI string, subscriptionID
 	return UserConfirmationPasswordClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Send sends confirmation
+// SendMethod sends confirmation
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
 // userID - user identifier. Must be unique in the current API Management service instance.
-func (client UserConfirmationPasswordClient) Send(ctx context.Context, resourceGroupName string, serviceName string, userID string) (result autorest.Response, err error) {
+func (client UserConfirmationPasswordClient) SendMethod(ctx context.Context, resourceGroupName string, serviceName string, userID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/UserConfirmationPasswordClient.Send")
+		ctx = tracing.StartSpan(ctx, fqdn+"/UserConfirmationPasswordClient.SendMethod")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -67,32 +67,32 @@ func (client UserConfirmationPasswordClient) Send(ctx context.Context, resourceG
 		{TargetValue: userID,
 			Constraints: []validation.Constraint{{Target: "userID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "userID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("apimanagement.UserConfirmationPasswordClient", "Send", err.Error())
+		return result, validation.NewError("apimanagement.UserConfirmationPasswordClient", "SendMethod", err.Error())
 	}
 
-	req, err := client.SendPreparer(ctx, resourceGroupName, serviceName, userID)
+	req, err := client.SendMethodPreparer(ctx, resourceGroupName, serviceName, userID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.UserConfirmationPasswordClient", "Send", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UserConfirmationPasswordClient", "SendMethod", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.SendSender(req)
+	resp, err := client.SendMethodSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "apimanagement.UserConfirmationPasswordClient", "Send", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UserConfirmationPasswordClient", "SendMethod", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.SendResponder(resp)
+	result, err = client.SendMethodResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.UserConfirmationPasswordClient", "Send", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UserConfirmationPasswordClient", "SendMethod", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// SendPreparer prepares the Send request.
-func (client UserConfirmationPasswordClient) SendPreparer(ctx context.Context, resourceGroupName string, serviceName string, userID string) (*http.Request, error) {
+// SendMethodPreparer prepares the SendMethod request.
+func (client UserConfirmationPasswordClient) SendMethodPreparer(ctx context.Context, resourceGroupName string, serviceName string, userID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -113,16 +113,15 @@ func (client UserConfirmationPasswordClient) SendPreparer(ctx context.Context, r
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// SendSender sends the Send request. The method will close the
+// SendMethodSender sends the SendMethod request. The method will close the
 // http.Response Body if it receives an error.
-func (client UserConfirmationPasswordClient) SendSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+func (client UserConfirmationPasswordClient) SendMethodSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
-// SendResponder handles the response to the Send request. The method always
+// SendMethodResponder handles the response to the SendMethod request. The method always
 // closes the http.Response Body.
-func (client UserConfirmationPasswordClient) SendResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client UserConfirmationPasswordClient) SendMethodResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

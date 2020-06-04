@@ -142,6 +142,13 @@ const (
 	Local DiffDiskOptions = original.Local
 )
 
+type DiffDiskPlacement = original.DiffDiskPlacement
+
+const (
+	CacheDisk    DiffDiskPlacement = original.CacheDisk
+	ResourceDisk DiffDiskPlacement = original.ResourceDisk
+)
+
 type DiskCreateOption = original.DiskCreateOption
 
 const (
@@ -267,6 +274,27 @@ type OperatingSystemTypes = original.OperatingSystemTypes
 const (
 	Linux   OperatingSystemTypes = original.Linux
 	Windows OperatingSystemTypes = original.Windows
+)
+
+type OrchestrationServiceNames = original.OrchestrationServiceNames
+
+const (
+	AutomaticRepairs OrchestrationServiceNames = original.AutomaticRepairs
+)
+
+type OrchestrationServiceState = original.OrchestrationServiceState
+
+const (
+	NotRunning OrchestrationServiceState = original.NotRunning
+	Running    OrchestrationServiceState = original.Running
+	Suspended  OrchestrationServiceState = original.Suspended
+)
+
+type OrchestrationServiceStateAction = original.OrchestrationServiceStateAction
+
+const (
+	Resume  OrchestrationServiceStateAction = original.Resume
+	Suspend OrchestrationServiceStateAction = original.Suspend
 )
 
 type PassNames = original.PassNames
@@ -421,6 +449,7 @@ const (
 type StorageAccountType = original.StorageAccountType
 
 const (
+	StorageAccountTypePremiumLRS  StorageAccountType = original.StorageAccountTypePremiumLRS
 	StorageAccountTypeStandardLRS StorageAccountType = original.StorageAccountTypeStandardLRS
 	StorageAccountTypeStandardZRS StorageAccountType = original.StorageAccountTypeStandardZRS
 )
@@ -873,6 +902,8 @@ type OperationListResult = original.OperationListResult
 type OperationValue = original.OperationValue
 type OperationValueDisplay = original.OperationValueDisplay
 type OperationsClient = original.OperationsClient
+type OrchestrationServiceStateInput = original.OrchestrationServiceStateInput
+type OrchestrationServiceSummary = original.OrchestrationServiceSummary
 type Plan = original.Plan
 type ProximityPlacementGroup = original.ProximityPlacementGroup
 type ProximityPlacementGroupListResult = original.ProximityPlacementGroupListResult
@@ -918,6 +949,14 @@ type RunCommandParameterDefinition = original.RunCommandParameterDefinition
 type RunCommandResult = original.RunCommandResult
 type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
+type SSHPublicKeyGenerateKeyPairResult = original.SSHPublicKeyGenerateKeyPairResult
+type SSHPublicKeyResource = original.SSHPublicKeyResource
+type SSHPublicKeyResourceProperties = original.SSHPublicKeyResourceProperties
+type SSHPublicKeyUpdateResource = original.SSHPublicKeyUpdateResource
+type SSHPublicKeysClient = original.SSHPublicKeysClient
+type SSHPublicKeysGroupListResult = original.SSHPublicKeysGroupListResult
+type SSHPublicKeysGroupListResultIterator = original.SSHPublicKeysGroupListResultIterator
+type SSHPublicKeysGroupListResultPage = original.SSHPublicKeysGroupListResultPage
 type ScaleInPolicy = original.ScaleInPolicy
 type ScheduledEventsProfile = original.ScheduledEventsProfile
 type ShareInfoElement = original.ShareInfoElement
@@ -1094,6 +1133,7 @@ type VirtualMachineScaleSetsRedeployFuture = original.VirtualMachineScaleSetsRed
 type VirtualMachineScaleSetsReimageAllFuture = original.VirtualMachineScaleSetsReimageAllFuture
 type VirtualMachineScaleSetsReimageFuture = original.VirtualMachineScaleSetsReimageFuture
 type VirtualMachineScaleSetsRestartFuture = original.VirtualMachineScaleSetsRestartFuture
+type VirtualMachineScaleSetsSetOrchestrationServiceStateFuture = original.VirtualMachineScaleSetsSetOrchestrationServiceStateFuture
 type VirtualMachineScaleSetsStartFuture = original.VirtualMachineScaleSetsStartFuture
 type VirtualMachineScaleSetsUpdateFuture = original.VirtualMachineScaleSetsUpdateFuture
 type VirtualMachineScaleSetsUpdateInstancesFuture = original.VirtualMachineScaleSetsUpdateInstancesFuture
@@ -1316,6 +1356,18 @@ func NewRunCommandListResultIterator(page RunCommandListResultPage) RunCommandLi
 func NewRunCommandListResultPage(getNextPage func(context.Context, RunCommandListResult) (RunCommandListResult, error)) RunCommandListResultPage {
 	return original.NewRunCommandListResultPage(getNextPage)
 }
+func NewSSHPublicKeysClient(subscriptionID string) SSHPublicKeysClient {
+	return original.NewSSHPublicKeysClient(subscriptionID)
+}
+func NewSSHPublicKeysClientWithBaseURI(baseURI string, subscriptionID string) SSHPublicKeysClient {
+	return original.NewSSHPublicKeysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSSHPublicKeysGroupListResultIterator(page SSHPublicKeysGroupListResultPage) SSHPublicKeysGroupListResultIterator {
+	return original.NewSSHPublicKeysGroupListResultIterator(page)
+}
+func NewSSHPublicKeysGroupListResultPage(getNextPage func(context.Context, SSHPublicKeysGroupListResult) (SSHPublicKeysGroupListResult, error)) SSHPublicKeysGroupListResultPage {
+	return original.NewSSHPublicKeysGroupListResultPage(getNextPage)
+}
 func NewSnapshotListIterator(page SnapshotListPage) SnapshotListIterator {
 	return original.NewSnapshotListIterator(page)
 }
@@ -1472,6 +1524,9 @@ func PossibleDedicatedHostLicenseTypesValues() []DedicatedHostLicenseTypes {
 func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
 	return original.PossibleDiffDiskOptionsValues()
 }
+func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
+	return original.PossibleDiffDiskPlacementValues()
+}
 func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	return original.PossibleDiskCreateOptionTypesValues()
 }
@@ -1519,6 +1574,15 @@ func PossibleOperatingSystemStateTypesValues() []OperatingSystemStateTypes {
 }
 func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
 	return original.PossibleOperatingSystemTypesValues()
+}
+func PossibleOrchestrationServiceNamesValues() []OrchestrationServiceNames {
+	return original.PossibleOrchestrationServiceNamesValues()
+}
+func PossibleOrchestrationServiceStateActionValues() []OrchestrationServiceStateAction {
+	return original.PossibleOrchestrationServiceStateActionValues()
+}
+func PossibleOrchestrationServiceStateValues() []OrchestrationServiceState {
+	return original.PossibleOrchestrationServiceStateValues()
 }
 func PossiblePassNamesValues() []PassNames {
 	return original.PossiblePassNamesValues()

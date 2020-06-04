@@ -82,15 +82,13 @@ type KindBasicEventSourceResource = original.KindBasicEventSourceResource
 const (
 	KindBasicEventSourceResourceKindEventSourceResource KindBasicEventSourceResource = original.KindBasicEventSourceResourceKindEventSourceResource
 	KindBasicEventSourceResourceKindMicrosoftEventHub   KindBasicEventSourceResource = original.KindBasicEventSourceResourceKindMicrosoftEventHub
-	KindBasicEventSourceResourceKindMicrosoftIotHub     KindBasicEventSourceResource = original.KindBasicEventSourceResourceKindMicrosoftIotHub
+	KindBasicEventSourceResourceKindMicrosoftIoTHub     KindBasicEventSourceResource = original.KindBasicEventSourceResourceKindMicrosoftIoTHub
 )
 
 type LocalTimestampFormat = original.LocalTimestampFormat
 
 const (
 	Embedded LocalTimestampFormat = original.Embedded
-	Iana     LocalTimestampFormat = original.Iana
-	TimeSpan LocalTimestampFormat = original.TimeSpan
 )
 
 type PropertyType = original.PropertyType

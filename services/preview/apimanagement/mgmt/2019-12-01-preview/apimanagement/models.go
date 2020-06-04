@@ -79,6 +79,19 @@ func PossibleAPITypeValues() []APIType {
 	return []APIType{HTTP, Soap}
 }
 
+// AppType enumerates the values for app type.
+type AppType string
+
+const (
+	// DeveloperPortal User create request was sent by new developer portal.
+	DeveloperPortal AppType = "developerPortal"
+)
+
+// PossibleAppTypeValues returns an array of possible values for the AppType const type.
+func PossibleAppTypeValues() []AppType {
+	return []AppType{DeveloperPortal}
+}
+
 // AsyncOperationStatus enumerates the values for async operation status.
 type AsyncOperationStatus string
 
@@ -336,21 +349,21 @@ func PossibleGroupTypeValues() []GroupType {
 type HostnameType string
 
 const (
-	// DeveloperPortal ...
-	DeveloperPortal HostnameType = "DeveloperPortal"
-	// Management ...
-	Management HostnameType = "Management"
-	// Portal ...
-	Portal HostnameType = "Portal"
-	// Proxy ...
-	Proxy HostnameType = "Proxy"
-	// Scm ...
-	Scm HostnameType = "Scm"
+	// HostnameTypeDeveloperPortal ...
+	HostnameTypeDeveloperPortal HostnameType = "DeveloperPortal"
+	// HostnameTypeManagement ...
+	HostnameTypeManagement HostnameType = "Management"
+	// HostnameTypePortal ...
+	HostnameTypePortal HostnameType = "Portal"
+	// HostnameTypeProxy ...
+	HostnameTypeProxy HostnameType = "Proxy"
+	// HostnameTypeScm ...
+	HostnameTypeScm HostnameType = "Scm"
 )
 
 // PossibleHostnameTypeValues returns an array of possible values for the HostnameType const type.
 func PossibleHostnameTypeValues() []HostnameType {
-	return []HostnameType{DeveloperPortal, Management, Portal, Proxy, Scm}
+	return []HostnameType{HostnameTypeDeveloperPortal, HostnameTypeManagement, HostnameTypePortal, HostnameTypeProxy, HostnameTypeScm}
 }
 
 // HTTPCorrelationProtocol enumerates the values for http correlation protocol.
@@ -557,6 +570,19 @@ const (
 // PossibleProtocolValues returns an array of possible values for the Protocol const type.
 func PossibleProtocolValues() []Protocol {
 	return []Protocol{ProtocolHTTP, ProtocolHTTPS}
+}
+
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
+
+const (
+	// Created ...
+	Created ProvisioningState = "created"
+)
+
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Created}
 }
 
 // ResourceSkuCapacityScaleType enumerates the values for resource sku capacity scale type.
@@ -2213,6 +2239,84 @@ type APIVersionSetUpdateParametersProperties struct {
 	VersionHeaderName *string `json:"versionHeaderName,omitempty"`
 }
 
+// AssociationContract association entity details.
+type AssociationContract struct {
+	// AssociationContractProperties - Association entity contract properties.
+	*AssociationContractProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type for API Management resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssociationContract.
+func (ac AssociationContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ac.AssociationContractProperties != nil {
+		objectMap["properties"] = ac.AssociationContractProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AssociationContract struct.
+func (ac *AssociationContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var associationContractProperties AssociationContractProperties
+				err = json.Unmarshal(*v, &associationContractProperties)
+				if err != nil {
+					return err
+				}
+				ac.AssociationContractProperties = &associationContractProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ac.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ac.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ac.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AssociationContractProperties association entity contract properties.
+type AssociationContractProperties struct {
+	// ProvisioningState - Provisioning state. Possible values include: 'Created'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
 // AuthenticationSettingsContract API Authentication Settings.
 type AuthenticationSettingsContract struct {
 	// OAuth2 - OAuth2 Authentication settings
@@ -2461,8 +2565,6 @@ type AuthorizationServerContractBaseProperties struct {
 	DefaultScope *string `json:"defaultScope,omitempty"`
 	// BearerTokenSendingMethods - Specifies the mechanism by which access token is passed to the API.
 	BearerTokenSendingMethods *[]BearerTokenSendingMethod `json:"bearerTokenSendingMethods,omitempty"`
-	// ClientSecret - Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-	ClientSecret *string `json:"clientSecret,omitempty"`
 	// ResourceOwnerUsername - Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username.
 	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
 	// ResourceOwnerPassword - Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password.
@@ -2481,6 +2583,8 @@ type AuthorizationServerContractProperties struct {
 	GrantTypes *[]GrantType `json:"grantTypes,omitempty"`
 	// ClientID - Client or app id registered with this authorization server.
 	ClientID *string `json:"clientId,omitempty"`
+	// ClientSecret - Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+	ClientSecret *string `json:"clientSecret,omitempty"`
 	// Description - Description of the authorization server. Can contain HTML formatting tags.
 	Description *string `json:"description,omitempty"`
 	// AuthorizationMethods - HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional.
@@ -2497,8 +2601,6 @@ type AuthorizationServerContractProperties struct {
 	DefaultScope *string `json:"defaultScope,omitempty"`
 	// BearerTokenSendingMethods - Specifies the mechanism by which access token is passed to the API.
 	BearerTokenSendingMethods *[]BearerTokenSendingMethod `json:"bearerTokenSendingMethods,omitempty"`
-	// ClientSecret - Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-	ClientSecret *string `json:"clientSecret,omitempty"`
 	// ResourceOwnerUsername - Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username.
 	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
 	// ResourceOwnerPassword - Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password.
@@ -2590,6 +2692,8 @@ type AuthorizationServerUpdateContractProperties struct {
 	GrantTypes *[]GrantType `json:"grantTypes,omitempty"`
 	// ClientID - Client or app id registered with this authorization server.
 	ClientID *string `json:"clientId,omitempty"`
+	// ClientSecret - Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+	ClientSecret *string `json:"clientSecret,omitempty"`
 	// Description - Description of the authorization server. Can contain HTML formatting tags.
 	Description *string `json:"description,omitempty"`
 	// AuthorizationMethods - HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional.
@@ -2606,8 +2710,6 @@ type AuthorizationServerUpdateContractProperties struct {
 	DefaultScope *string `json:"defaultScope,omitempty"`
 	// BearerTokenSendingMethods - Specifies the mechanism by which access token is passed to the API.
 	BearerTokenSendingMethods *[]BearerTokenSendingMethod `json:"bearerTokenSendingMethods,omitempty"`
-	// ClientSecret - Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-	ClientSecret *string `json:"clientSecret,omitempty"`
 	// ResourceOwnerUsername - Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username.
 	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
 	// ResourceOwnerPassword - Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password.
@@ -4335,6 +4437,494 @@ type ErrorResponseBody struct {
 	Details *[]ErrorFieldContract `json:"details,omitempty"`
 }
 
+// GatewayCollection paged Gateway list representation.
+type GatewayCollection struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Page values.
+	Value *[]GatewayContract `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Next page link if any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// GatewayCollectionIterator provides access to a complete listing of GatewayContract values.
+type GatewayCollectionIterator struct {
+	i    int
+	page GatewayCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *GatewayCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GatewayCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *GatewayCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter GatewayCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter GatewayCollectionIterator) Response() GatewayCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter GatewayCollectionIterator) Value() GatewayContract {
+	if !iter.page.NotDone() {
+		return GatewayContract{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the GatewayCollectionIterator type.
+func NewGatewayCollectionIterator(page GatewayCollectionPage) GatewayCollectionIterator {
+	return GatewayCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (gc GatewayCollection) IsEmpty() bool {
+	return gc.Value == nil || len(*gc.Value) == 0
+}
+
+// gatewayCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (gc GatewayCollection) gatewayCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if gc.NextLink == nil || len(to.String(gc.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(gc.NextLink)))
+}
+
+// GatewayCollectionPage contains a page of GatewayContract values.
+type GatewayCollectionPage struct {
+	fn func(context.Context, GatewayCollection) (GatewayCollection, error)
+	gc GatewayCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *GatewayCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GatewayCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.gc)
+	if err != nil {
+		return err
+	}
+	page.gc = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *GatewayCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page GatewayCollectionPage) NotDone() bool {
+	return !page.gc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page GatewayCollectionPage) Response() GatewayCollection {
+	return page.gc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page GatewayCollectionPage) Values() []GatewayContract {
+	if page.gc.IsEmpty() {
+		return nil
+	}
+	return *page.gc.Value
+}
+
+// Creates a new instance of the GatewayCollectionPage type.
+func NewGatewayCollectionPage(getNextPage func(context.Context, GatewayCollection) (GatewayCollection, error)) GatewayCollectionPage {
+	return GatewayCollectionPage{fn: getNextPage}
+}
+
+// GatewayContract gateway details.
+type GatewayContract struct {
+	autorest.Response `json:"-"`
+	// GatewayContractProperties - Gateway details.
+	*GatewayContractProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type for API Management resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GatewayContract.
+func (gc GatewayContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gc.GatewayContractProperties != nil {
+		objectMap["properties"] = gc.GatewayContractProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GatewayContract struct.
+func (gc *GatewayContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var gatewayContractProperties GatewayContractProperties
+				err = json.Unmarshal(*v, &gatewayContractProperties)
+				if err != nil {
+					return err
+				}
+				gc.GatewayContractProperties = &gatewayContractProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				gc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				gc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				gc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// GatewayContractProperties properties of the Gateway contract.
+type GatewayContractProperties struct {
+	// LocationData - Gateway location.
+	LocationData *ResourceLocationDataContract `json:"locationData,omitempty"`
+	// Description - Gateway description
+	Description *string `json:"description,omitempty"`
+}
+
+// GatewayHostnameConfigurationCollection paged Gateway hostname configuration list representation.
+type GatewayHostnameConfigurationCollection struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Page values.
+	Value *[]GatewayHostnameConfigurationContract `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Next page link if any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// GatewayHostnameConfigurationCollectionIterator provides access to a complete listing of
+// GatewayHostnameConfigurationContract values.
+type GatewayHostnameConfigurationCollectionIterator struct {
+	i    int
+	page GatewayHostnameConfigurationCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *GatewayHostnameConfigurationCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GatewayHostnameConfigurationCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *GatewayHostnameConfigurationCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter GatewayHostnameConfigurationCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter GatewayHostnameConfigurationCollectionIterator) Response() GatewayHostnameConfigurationCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter GatewayHostnameConfigurationCollectionIterator) Value() GatewayHostnameConfigurationContract {
+	if !iter.page.NotDone() {
+		return GatewayHostnameConfigurationContract{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the GatewayHostnameConfigurationCollectionIterator type.
+func NewGatewayHostnameConfigurationCollectionIterator(page GatewayHostnameConfigurationCollectionPage) GatewayHostnameConfigurationCollectionIterator {
+	return GatewayHostnameConfigurationCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ghcc GatewayHostnameConfigurationCollection) IsEmpty() bool {
+	return ghcc.Value == nil || len(*ghcc.Value) == 0
+}
+
+// gatewayHostnameConfigurationCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ghcc GatewayHostnameConfigurationCollection) gatewayHostnameConfigurationCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if ghcc.NextLink == nil || len(to.String(ghcc.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ghcc.NextLink)))
+}
+
+// GatewayHostnameConfigurationCollectionPage contains a page of GatewayHostnameConfigurationContract
+// values.
+type GatewayHostnameConfigurationCollectionPage struct {
+	fn   func(context.Context, GatewayHostnameConfigurationCollection) (GatewayHostnameConfigurationCollection, error)
+	ghcc GatewayHostnameConfigurationCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *GatewayHostnameConfigurationCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GatewayHostnameConfigurationCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ghcc)
+	if err != nil {
+		return err
+	}
+	page.ghcc = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *GatewayHostnameConfigurationCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page GatewayHostnameConfigurationCollectionPage) NotDone() bool {
+	return !page.ghcc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page GatewayHostnameConfigurationCollectionPage) Response() GatewayHostnameConfigurationCollection {
+	return page.ghcc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page GatewayHostnameConfigurationCollectionPage) Values() []GatewayHostnameConfigurationContract {
+	if page.ghcc.IsEmpty() {
+		return nil
+	}
+	return *page.ghcc.Value
+}
+
+// Creates a new instance of the GatewayHostnameConfigurationCollectionPage type.
+func NewGatewayHostnameConfigurationCollectionPage(getNextPage func(context.Context, GatewayHostnameConfigurationCollection) (GatewayHostnameConfigurationCollection, error)) GatewayHostnameConfigurationCollectionPage {
+	return GatewayHostnameConfigurationCollectionPage{fn: getNextPage}
+}
+
+// GatewayHostnameConfigurationContract gateway hostname configuration details.
+type GatewayHostnameConfigurationContract struct {
+	autorest.Response `json:"-"`
+	// GatewayHostnameConfigurationContractProperties - Gateway hostname configuration details.
+	*GatewayHostnameConfigurationContractProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type for API Management resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GatewayHostnameConfigurationContract.
+func (ghcc GatewayHostnameConfigurationContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ghcc.GatewayHostnameConfigurationContractProperties != nil {
+		objectMap["properties"] = ghcc.GatewayHostnameConfigurationContractProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GatewayHostnameConfigurationContract struct.
+func (ghcc *GatewayHostnameConfigurationContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var gatewayHostnameConfigurationContractProperties GatewayHostnameConfigurationContractProperties
+				err = json.Unmarshal(*v, &gatewayHostnameConfigurationContractProperties)
+				if err != nil {
+					return err
+				}
+				ghcc.GatewayHostnameConfigurationContractProperties = &gatewayHostnameConfigurationContractProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ghcc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ghcc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ghcc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// GatewayHostnameConfigurationContractProperties gateway hostname configuration details.
+type GatewayHostnameConfigurationContractProperties struct {
+	// Hostname - Hostname value. Supports valid domain name, partial or full wildcard
+	Hostname *string `json:"hostname,omitempty"`
+	// CertificateID - Identifier of Certificate entity that will be used for TLS connection establishment
+	CertificateID *string `json:"certificateId,omitempty"`
+	// NegotiateClientCertificate - Determines whether gateway requests client certificate
+	NegotiateClientCertificate *bool `json:"negotiateClientCertificate,omitempty"`
+}
+
+// GatewayKeyRegenerationRequestContract gateway key regeneration request contract properties.
+type GatewayKeyRegenerationRequestContract struct {
+	// KeyType - The Key being regenerated. Possible values include: 'Primary', 'Secondary'
+	KeyType KeyType `json:"keyType,omitempty"`
+}
+
+// GatewayKeysContract gateway authentication keys.
+type GatewayKeysContract struct {
+	autorest.Response `json:"-"`
+	// Primary - Primary gateway key.
+	Primary *string `json:"primary,omitempty"`
+	// Secondary - Secondary gateway key.
+	Secondary *string `json:"secondary,omitempty"`
+}
+
+// GatewayTokenContract gateway access token.
+type GatewayTokenContract struct {
+	autorest.Response `json:"-"`
+	// Value - Shared Access Authentication token value for the Gateway.
+	Value *string `json:"value,omitempty"`
+}
+
+// GatewayTokenRequestContract gateway token request contract properties.
+type GatewayTokenRequestContract struct {
+	// KeyType - The Key to be used to generate gateway token. Possible values include: 'Primary', 'Secondary'
+	KeyType KeyType `json:"keyType,omitempty"`
+	// Expiry - The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+	Expiry *date.Time `json:"expiry,omitempty"`
+}
+
 // GenerateSsoURLResult generate SSO Url operations response details.
 type GenerateSsoURLResult struct {
 	autorest.Response `json:"-"`
@@ -4679,7 +5269,7 @@ type GroupUpdateParametersProperties struct {
 
 // HostnameConfiguration custom hostname configuration.
 type HostnameConfiguration struct {
-	// Type - Hostname type. Possible values include: 'Proxy', 'Portal', 'Management', 'Scm', 'DeveloperPortal'
+	// Type - Hostname type. Possible values include: 'HostnameTypeProxy', 'HostnameTypePortal', 'HostnameTypeManagement', 'HostnameTypeScm', 'HostnameTypeDeveloperPortal'
 	Type HostnameType `json:"type,omitempty"`
 	// HostName - Hostname to configure on the Api Management service.
 	HostName *string `json:"hostName,omitempty"`
@@ -4802,6 +5392,104 @@ func (ipc *IdentityProviderContract) UnmarshalJSON(body []byte) error {
 // Twitter or Azure Active Directory which can be used to enable access to the API Management service
 // developer portal for all users.
 type IdentityProviderContractProperties struct {
+	// ClientID - Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for Google login, App ID for Microsoft.
+	ClientID *string `json:"clientId,omitempty"`
+	// ClientSecret - Client secret of the Application in external Identity Provider, used to authenticate login request. For example, it is App Secret for Facebook login, API Key for Google login, Public Key for Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+	ClientSecret *string `json:"clientSecret,omitempty"`
+	// Type - Identity Provider Type identifier. Possible values include: 'Facebook', 'Google', 'Microsoft', 'Twitter', 'Aad', 'AadB2C'
+	Type IdentityProviderType `json:"type,omitempty"`
+	// SigninTenant - The TenantId to use instead of Common when logging into Active Directory
+	SigninTenant *string `json:"signinTenant,omitempty"`
+	// AllowedTenants - List of Allowed Tenants when configuring Azure Active Directory login.
+	AllowedTenants *[]string `json:"allowedTenants,omitempty"`
+	// Authority - OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
+	Authority *string `json:"authority,omitempty"`
+	// SignupPolicyName - Signup Policy Name. Only applies to AAD B2C Identity Provider.
+	SignupPolicyName *string `json:"signupPolicyName,omitempty"`
+	// SigninPolicyName - Signin Policy Name. Only applies to AAD B2C Identity Provider.
+	SigninPolicyName *string `json:"signinPolicyName,omitempty"`
+	// ProfileEditingPolicyName - Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.
+	ProfileEditingPolicyName *string `json:"profileEditingPolicyName,omitempty"`
+	// PasswordResetPolicyName - Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
+	PasswordResetPolicyName *string `json:"passwordResetPolicyName,omitempty"`
+}
+
+// IdentityProviderCreateContract identity Provider details.
+type IdentityProviderCreateContract struct {
+	// IdentityProviderCreateContractProperties - Identity Provider contract properties.
+	*IdentityProviderCreateContractProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type for API Management resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IdentityProviderCreateContract.
+func (ipcc IdentityProviderCreateContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ipcc.IdentityProviderCreateContractProperties != nil {
+		objectMap["properties"] = ipcc.IdentityProviderCreateContractProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IdentityProviderCreateContract struct.
+func (ipcc *IdentityProviderCreateContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var identityProviderCreateContractProperties IdentityProviderCreateContractProperties
+				err = json.Unmarshal(*v, &identityProviderCreateContractProperties)
+				if err != nil {
+					return err
+				}
+				ipcc.IdentityProviderCreateContractProperties = &identityProviderCreateContractProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ipcc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ipcc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ipcc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// IdentityProviderCreateContractProperties the external Identity Providers like Facebook, Google,
+// Microsoft, Twitter or Azure Active Directory which can be used to enable access to the API Management
+// service developer portal for all users.
+type IdentityProviderCreateContractProperties struct {
 	// ClientID - Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for Google login, App ID for Microsoft.
 	ClientID *string `json:"clientId,omitempty"`
 	// ClientSecret - Client secret of the Application in external Identity Provider, used to authenticate login request. For example, it is App Secret for Facebook login, API Key for Google login, Public Key for Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
@@ -6349,7 +7037,91 @@ func (nvc *NamedValueContract) UnmarshalJSON(body []byte) error {
 type NamedValueContractProperties struct {
 	// DisplayName - Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.
 	DisplayName *string `json:"displayName,omitempty"`
-	// Value - Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace.
+	// Value - Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+	Value *string `json:"value,omitempty"`
+	// Tags - Optional tags that when provided can be used to filter the NamedValue list.
+	Tags *[]string `json:"tags,omitempty"`
+	// Secret - Determines whether the value is a secret and should be encrypted or not. Default value is false.
+	Secret *bool `json:"secret,omitempty"`
+}
+
+// NamedValueCreateContract namedValue details.
+type NamedValueCreateContract struct {
+	// NamedValueCreateContractProperties - NamedValue entity contract properties for PUT operation.
+	*NamedValueCreateContractProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type for API Management resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NamedValueCreateContract.
+func (nvcc NamedValueCreateContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nvcc.NamedValueCreateContractProperties != nil {
+		objectMap["properties"] = nvcc.NamedValueCreateContractProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for NamedValueCreateContract struct.
+func (nvcc *NamedValueCreateContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var namedValueCreateContractProperties NamedValueCreateContractProperties
+				err = json.Unmarshal(*v, &namedValueCreateContractProperties)
+				if err != nil {
+					return err
+				}
+				nvcc.NamedValueCreateContractProperties = &namedValueCreateContractProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				nvcc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				nvcc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				nvcc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// NamedValueCreateContractProperties namedValue Contract properties.
+type NamedValueCreateContractProperties struct {
+	// DisplayName - Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Value - Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
 	Value *string `json:"value,omitempty"`
 	// Tags - Optional tags that when provided can be used to filter the NamedValue list.
 	Tags *[]string `json:"tags,omitempty"`
@@ -7844,6 +8616,13 @@ type PortalDelegationSettingsProperties struct {
 	UserRegistration *RegistrationDelegationSettingsProperties `json:"userRegistration,omitempty"`
 }
 
+// PortalSettingValidationKeyContract client or app secret used in IdentityProviders, Aad, OpenID or OAuth.
+type PortalSettingValidationKeyContract struct {
+	autorest.Response `json:"-"`
+	// ValidationKey - This is secret value of the validation key in portal settings.
+	ValidationKey *string `json:"validationKey,omitempty"`
+}
+
 // PortalSigninSettingProperties sign-in settings contract properties.
 type PortalSigninSettingProperties struct {
 	// Enabled - Redirect Anonymous users to the Sign-In page.
@@ -8332,6 +9111,13 @@ type ProductUpdateProperties struct {
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
+}
+
+// PropertyValueContract client or app secret used in IdentityProviders, Aad, OpenID or OAuth.
+type PropertyValueContract struct {
+	autorest.Response `json:"-"`
+	// Value - This is secret value of the NamedValue entity.
+	Value *string `json:"value,omitempty"`
 }
 
 // QuotaCounterCollection paged Quota Counter list representation.
@@ -9042,6 +9828,18 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// ResourceLocationDataContract resource location data properties.
+type ResourceLocationDataContract struct {
+	// Name - A canonical name for the geographic or physical location.
+	Name *string `json:"name,omitempty"`
+	// City - The city or locality where the resource is located.
+	City *string `json:"city,omitempty"`
+	// District - The district, state, or province where the resource is located.
+	District *string `json:"district,omitempty"`
+	// CountryOrRegion - The country or region where the resource is located.
+	CountryOrRegion *string `json:"countryOrRegion,omitempty"`
 }
 
 // ResourceSku describes an available API Management SKU.
@@ -9803,8 +10601,12 @@ type ServiceIdentity struct {
 	// PrincipalID - READ-ONLY; The principal id of the identity.
 	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
 	// TenantID - READ-ONLY; The client tenant id of the identity.
-	TenantID               *uuid.UUID                                             `json:"tenantId,omitempty"`
-	UserAssignedIdentities map[string]*ServiceIdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities"`
+	TenantID *uuid.UUID `json:"tenantId,omitempty"`
+	// UserAssignedIdentities - The list of user identities associated with the resource. The user identity
+	// dictionary key references will be ARM resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/
+	//     providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	UserAssignedIdentities map[string]*UserIdentityProperties `json:"userAssignedIdentities"`
 }
 
 // MarshalJSON is the custom marshaler for ServiceIdentity.
@@ -9817,14 +10619,6 @@ func (si ServiceIdentity) MarshalJSON() ([]byte, error) {
 		objectMap["userAssignedIdentities"] = si.UserAssignedIdentities
 	}
 	return json.Marshal(objectMap)
-}
-
-// ServiceIdentityUserAssignedIdentitiesValue ...
-type ServiceIdentityUserAssignedIdentitiesValue struct {
-	// PrincipalID - READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty"`
-	// ClientID - READ-ONLY; The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty"`
 }
 
 // ServiceListResult the response of the List API Management services operation.
@@ -10249,7 +11043,7 @@ func (future *ServiceRestoreFuture) Result(client ServiceClient) (sr ServiceReso
 type ServiceSkuProperties struct {
 	// Name - Name of the Sku. Possible values include: 'SkuTypeDeveloper', 'SkuTypeStandard', 'SkuTypePremium', 'SkuTypeBasic', 'SkuTypeConsumption'
 	Name SkuType `json:"name,omitempty"`
-	// Capacity - Capacity of the SKU (number of deployed units of the SKU).
+	// Capacity - Capacity of the SKU (number of deployed units of the SKU). For Consumption SKU capacity must be specified as 0.
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
@@ -11974,6 +12768,8 @@ type UserCreateParameterProperties struct {
 	LastName *string `json:"lastName,omitempty"`
 	// Password - User Password. If no value is provided, a default password is generated.
 	Password *string `json:"password,omitempty"`
+	// AppType - Determines the type of application which send the create user request. Default is old publisher portal. Possible values include: 'DeveloperPortal'
+	AppType AppType `json:"appType,omitempty"`
 	// Confirmation - Determines the type of confirmation e-mail that will be sent to the newly created user. Possible values include: 'Signup', 'Invite'
 	Confirmation Confirmation `json:"confirmation,omitempty"`
 	// State - Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal or call any APIs of subscribed products. Default state is Active. Possible values include: 'UserStateActive', 'UserStateBlocked', 'UserStatePending', 'UserStateDeleted'
@@ -12187,6 +12983,14 @@ type UserIdentityContract struct {
 	Provider *string `json:"provider,omitempty"`
 	// ID - Identifier value within provider.
 	ID *string `json:"id,omitempty"`
+}
+
+// UserIdentityProperties ...
+type UserIdentityProperties struct {
+	// PrincipalID - The principal id of user assigned identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ClientID - The client id of user assigned identity.
+	ClientID *string `json:"clientId,omitempty"`
 }
 
 // UserTokenParameterProperties parameters supplied to the Get User Token operation.

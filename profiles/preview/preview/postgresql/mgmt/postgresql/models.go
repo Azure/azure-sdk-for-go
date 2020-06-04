@@ -52,12 +52,60 @@ const (
 	SystemAssigned IdentityType = original.SystemAssigned
 )
 
+type InfrastructureEncryption = original.InfrastructureEncryption
+
+const (
+	InfrastructureEncryptionDisabled InfrastructureEncryption = original.InfrastructureEncryptionDisabled
+	InfrastructureEncryptionEnabled  InfrastructureEncryption = original.InfrastructureEncryptionEnabled
+)
+
+type MinimalTLSVersionEnum = original.MinimalTLSVersionEnum
+
+const (
+	TLS10                  MinimalTLSVersionEnum = original.TLS10
+	TLS11                  MinimalTLSVersionEnum = original.TLS11
+	TLS12                  MinimalTLSVersionEnum = original.TLS12
+	TLSEnforcementDisabled MinimalTLSVersionEnum = original.TLSEnforcementDisabled
+)
+
 type OperationOrigin = original.OperationOrigin
 
 const (
 	NotSpecified OperationOrigin = original.NotSpecified
 	System       OperationOrigin = original.System
 	User         OperationOrigin = original.User
+)
+
+type PrivateEndpointProvisioningState = original.PrivateEndpointProvisioningState
+
+const (
+	Approving PrivateEndpointProvisioningState = original.Approving
+	Dropping  PrivateEndpointProvisioningState = original.Dropping
+	Failed    PrivateEndpointProvisioningState = original.Failed
+	Ready     PrivateEndpointProvisioningState = original.Ready
+	Rejecting PrivateEndpointProvisioningState = original.Rejecting
+)
+
+type PrivateLinkServiceConnectionStateActionsRequire = original.PrivateLinkServiceConnectionStateActionsRequire
+
+const (
+	None PrivateLinkServiceConnectionStateActionsRequire = original.None
+)
+
+type PrivateLinkServiceConnectionStateStatus = original.PrivateLinkServiceConnectionStateStatus
+
+const (
+	Approved     PrivateLinkServiceConnectionStateStatus = original.Approved
+	Disconnected PrivateLinkServiceConnectionStateStatus = original.Disconnected
+	Pending      PrivateLinkServiceConnectionStateStatus = original.Pending
+	Rejected     PrivateLinkServiceConnectionStateStatus = original.Rejected
+)
+
+type PublicNetworkAccessEnum = original.PublicNetworkAccessEnum
+
+const (
+	PublicNetworkAccessEnumDisabled PublicNetworkAccessEnum = original.PublicNetworkAccessEnumDisabled
+	PublicNetworkAccessEnumEnabled  PublicNetworkAccessEnum = original.PublicNetworkAccessEnumEnabled
 )
 
 type ServerSecurityAlertPolicyState = original.ServerSecurityAlertPolicyState
@@ -70,9 +118,10 @@ const (
 type ServerState = original.ServerState
 
 const (
-	ServerStateDisabled ServerState = original.ServerStateDisabled
-	ServerStateDropping ServerState = original.ServerStateDropping
-	ServerStateReady    ServerState = original.ServerStateReady
+	ServerStateDisabled     ServerState = original.ServerStateDisabled
+	ServerStateDropping     ServerState = original.ServerStateDropping
+	ServerStateInaccessible ServerState = original.ServerStateInaccessible
+	ServerStateReady        ServerState = original.ServerStateReady
 )
 
 type ServerVersion = original.ServerVersion
@@ -111,11 +160,11 @@ const (
 type VirtualNetworkRuleState = original.VirtualNetworkRuleState
 
 const (
-	Deleting     VirtualNetworkRuleState = original.Deleting
-	Initializing VirtualNetworkRuleState = original.Initializing
-	InProgress   VirtualNetworkRuleState = original.InProgress
-	Ready        VirtualNetworkRuleState = original.Ready
-	Unknown      VirtualNetworkRuleState = original.Unknown
+	VirtualNetworkRuleStateDeleting     VirtualNetworkRuleState = original.VirtualNetworkRuleStateDeleting
+	VirtualNetworkRuleStateInitializing VirtualNetworkRuleState = original.VirtualNetworkRuleStateInitializing
+	VirtualNetworkRuleStateInProgress   VirtualNetworkRuleState = original.VirtualNetworkRuleStateInProgress
+	VirtualNetworkRuleStateReady        VirtualNetworkRuleState = original.VirtualNetworkRuleStateReady
+	VirtualNetworkRuleStateUnknown      VirtualNetworkRuleState = original.VirtualNetworkRuleStateUnknown
 )
 
 type BaseClient = original.BaseClient
@@ -154,6 +203,9 @@ type OperationsClient = original.OperationsClient
 type PerformanceTierListResult = original.PerformanceTierListResult
 type PerformanceTierProperties = original.PerformanceTierProperties
 type PerformanceTierServiceLevelObjectives = original.PerformanceTierServiceLevelObjectives
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointProperty = original.PrivateEndpointProperty
+type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
 type ProxyResource = original.ProxyResource
 type ReplicasClient = original.ReplicasClient
 type ResourceIdentity = original.ResourceIdentity
@@ -167,6 +219,7 @@ type ServerAdministratorsCreateOrUpdateFuture = original.ServerAdministratorsCre
 type ServerAdministratorsDeleteFuture = original.ServerAdministratorsDeleteFuture
 type ServerForCreate = original.ServerForCreate
 type ServerListResult = original.ServerListResult
+type ServerPrivateEndpointConnection = original.ServerPrivateEndpointConnection
 type ServerProperties = original.ServerProperties
 type ServerPropertiesForCreate = original.ServerPropertiesForCreate
 type ServerPropertiesForDefaultCreate = original.ServerPropertiesForDefaultCreate
@@ -288,8 +341,26 @@ func PossibleGeoRedundantBackupValues() []GeoRedundantBackup {
 func PossibleIdentityTypeValues() []IdentityType {
 	return original.PossibleIdentityTypeValues()
 }
+func PossibleInfrastructureEncryptionValues() []InfrastructureEncryption {
+	return original.PossibleInfrastructureEncryptionValues()
+}
+func PossibleMinimalTLSVersionEnumValues() []MinimalTLSVersionEnum {
+	return original.PossibleMinimalTLSVersionEnumValues()
+}
 func PossibleOperationOriginValues() []OperationOrigin {
 	return original.PossibleOperationOriginValues()
+}
+func PossiblePrivateEndpointProvisioningStateValues() []PrivateEndpointProvisioningState {
+	return original.PossiblePrivateEndpointProvisioningStateValues()
+}
+func PossiblePrivateLinkServiceConnectionStateActionsRequireValues() []PrivateLinkServiceConnectionStateActionsRequire {
+	return original.PossiblePrivateLinkServiceConnectionStateActionsRequireValues()
+}
+func PossiblePrivateLinkServiceConnectionStateStatusValues() []PrivateLinkServiceConnectionStateStatus {
+	return original.PossiblePrivateLinkServiceConnectionStateStatusValues()
+}
+func PossiblePublicNetworkAccessEnumValues() []PublicNetworkAccessEnum {
+	return original.PossiblePublicNetworkAccessEnumValues()
 }
 func PossibleServerSecurityAlertPolicyStateValues() []ServerSecurityAlertPolicyState {
 	return original.PossibleServerSecurityAlertPolicyStateValues()

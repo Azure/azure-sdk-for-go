@@ -35,4 +35,5 @@ type DomainsClientAPI = original.DomainsClientAPI
 type ProviderClientAPI = original.ProviderClientAPI
 type RecommendationsClientAPI = original.RecommendationsClientAPI
 type ResourceHealthMetadataClientAPI = original.ResourceHealthMetadataClientAPI
+type StaticSitesClientAPI = original.StaticSitesClientAPI
 type TopLevelDomainsClientAPI = original.TopLevelDomainsClientAPI

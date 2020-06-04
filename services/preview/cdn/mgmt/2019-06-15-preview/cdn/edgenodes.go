@@ -77,7 +77,7 @@ func (client EdgeNodesClient) List(ctx context.Context) (result EdgenodeResultPa
 
 // ListPreparer prepares the List request.
 func (client EdgeNodesClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2019-06-15-preview"
+	const APIVersion = "2019-06-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

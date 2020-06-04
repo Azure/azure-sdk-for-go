@@ -21,4 +21,5 @@ package operationalinsightsapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/v1/operationalinsights/operationalinsightsapi"
 
+type MetadataClientAPI = original.MetadataClientAPI
 type QueryClientAPI = original.QueryClientAPI

@@ -28,3 +28,11 @@ type QueryClientAPI interface {
 }
 
 var _ QueryClientAPI = (*operationalinsights.QueryClient)(nil)
+
+// MetadataClientAPI contains the set of methods on the MetadataClient type.
+type MetadataClientAPI interface {
+	Get(ctx context.Context, workspaceID string) (result operationalinsights.MetadataResults, err error)
+	Post(ctx context.Context, workspaceID string) (result operationalinsights.MetadataResults, err error)
+}
+
+var _ MetadataClientAPI = (*operationalinsights.MetadataClient)(nil)

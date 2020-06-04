@@ -46,13 +46,13 @@ func NewReplicationEligibilityResultsClientWithBaseURI(baseURI string, subscript
 // Get validates whether a given VM can be protected or not in which case returns list of errors.
 // Parameters:
 // virtualMachineName - virtual Machine name.
-func (client ReplicationEligibilityResultsClient) Get(ctx context.Context, virtualMachineName string) (result ReplicationEligibilityResultsGetFuture, err error) {
+func (client ReplicationEligibilityResultsClient) Get(ctx context.Context, virtualMachineName string) (result ReplicationEligibilityResults, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ReplicationEligibilityResultsClient.Get")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -63,10 +63,16 @@ func (client ReplicationEligibilityResultsClient) Get(ctx context.Context, virtu
 		return
 	}
 
-	result, err = client.GetSender(req)
+	resp, err := client.GetSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationEligibilityResultsClient", "Get", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationEligibilityResultsClient", "Get", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationEligibilityResultsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -95,14 +101,8 @@ func (client ReplicationEligibilityResultsClient) GetPreparer(ctx context.Contex
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ReplicationEligibilityResultsClient) GetSender(req *http.Request) (future ReplicationEligibilityResultsGetFuture, err error) {
-	var resp *http.Response
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
+func (client ReplicationEligibilityResultsClient) GetSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -121,13 +121,13 @@ func (client ReplicationEligibilityResultsClient) GetResponder(resp *http.Respon
 // List validates whether a given VM can be protected or not in which case returns list of errors.
 // Parameters:
 // virtualMachineName - virtual Machine name.
-func (client ReplicationEligibilityResultsClient) List(ctx context.Context, virtualMachineName string) (result ReplicationEligibilityResultsListFuture, err error) {
+func (client ReplicationEligibilityResultsClient) List(ctx context.Context, virtualMachineName string) (result ReplicationEligibilityResultsCollection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ReplicationEligibilityResultsClient.List")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -138,10 +138,16 @@ func (client ReplicationEligibilityResultsClient) List(ctx context.Context, virt
 		return
 	}
 
-	result, err = client.ListSender(req)
+	resp, err := client.ListSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationEligibilityResultsClient", "List", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationEligibilityResultsClient", "List", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationEligibilityResultsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -170,14 +176,8 @@ func (client ReplicationEligibilityResultsClient) ListPreparer(ctx context.Conte
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ReplicationEligibilityResultsClient) ListSender(req *http.Request) (future ReplicationEligibilityResultsListFuture, err error) {
-	var resp *http.Response
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
+func (client ReplicationEligibilityResultsClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always

@@ -29,12 +29,7 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type UserAssignedIdentities = original.UserAssignedIdentities
-
-const (
-	MicrosoftManagedIdentityuserAssignedIdentities UserAssignedIdentities = original.MicrosoftManagedIdentityuserAssignedIdentities
-)
-
+type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
@@ -46,9 +41,11 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type ProxyResource = original.ProxyResource
 type Resource = original.Resource
 type SystemAssignedIdentitiesClient = original.SystemAssignedIdentitiesClient
 type SystemAssignedIdentity = original.SystemAssignedIdentity
+type TrackedResource = original.TrackedResource
 type UserAssignedIdentitiesClient = original.UserAssignedIdentitiesClient
 type UserAssignedIdentitiesListResult = original.UserAssignedIdentitiesListResult
 type UserAssignedIdentitiesListResultIterator = original.UserAssignedIdentitiesListResultIterator
@@ -89,9 +86,6 @@ func NewUserAssignedIdentitiesListResultPage(getNextPage func(context.Context, U
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleUserAssignedIdentitiesValues() []UserAssignedIdentities {
-	return original.PossibleUserAssignedIdentitiesValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

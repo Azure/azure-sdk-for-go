@@ -301,6 +301,7 @@ type HierarchicalChildEntity = original.HierarchicalChildEntity
 type HierarchicalChildModelUpdateObject = original.HierarchicalChildModelUpdateObject
 type HierarchicalEntityExtractor = original.HierarchicalEntityExtractor
 type HierarchicalModel = original.HierarchicalModel
+type HierarchicalModelV2 = original.HierarchicalModelV2
 type Int32 = original.Int32
 type Int64 = original.Int64
 type IntentClassifier = original.IntentClassifier
@@ -347,6 +348,7 @@ type ListString = original.ListString
 type ListUUID = original.ListUUID
 type ListVersionInfo = original.ListVersionInfo
 type LuisApp = original.LuisApp
+type LuisAppV2 = original.LuisAppV2
 type ModelClient = original.ModelClient
 type ModelCreateObject = original.ModelCreateObject
 type ModelFeatureInformation = original.ModelFeatureInformation
@@ -368,7 +370,6 @@ type PatternRule = original.PatternRule
 type PatternRuleCreateObject = original.PatternRuleCreateObject
 type PatternRuleInfo = original.PatternRuleInfo
 type PatternRuleUpdateObject = original.PatternRuleUpdateObject
-type PermissionsClient = original.PermissionsClient
 type PersonalAssistantsResponse = original.PersonalAssistantsResponse
 type PhraseListFeatureInfo = original.PhraseListFeatureInfo
 type PhraselistCreateObject = original.PhraselistCreateObject
@@ -424,9 +425,6 @@ func NewModelClient(endpoint string) ModelClient {
 }
 func NewPatternClient(endpoint string) PatternClient {
 	return original.NewPatternClient(endpoint)
-}
-func NewPermissionsClient(endpoint string) PermissionsClient {
-	return original.NewPermissionsClient(endpoint)
 }
 func NewSettingsClient(endpoint string) SettingsClient {
 	return original.NewSettingsClient(endpoint)

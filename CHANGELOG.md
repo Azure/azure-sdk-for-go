@@ -1,6 +1,268 @@
 # CHANGELOG
 
-## v40.6.0
+## `v43.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| azuredata | 2019-07-24-preview |
+| billing | 2020-05-01-preview |
+| cdn | 2020-04-15 |
+| computervision | v3.0 |
+| containerservice | 2020-04-01 |
+| desktopvirtualization | 2019-09-24-preview<br/>2019-12-10-preview |
+| devices | 2020-03-01 |
+| frontdoor | 2020-04-01<br/>2020-05-01 |
+| machinelearningservices | 2020-04-01 |
+| mixedreality | 2020-05-01-preview |
+| operationalinsights | 2020-03-01-preview |
+| peering | 2020-04-01 |
+| signalr | 2020-05-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| alertsmanagement | 2019-05-05 |
+| anomalydetector | v1.0 |
+| appconfiguration | 2019-11-01-preview |
+| appplatform | 2019-05-01-preview |
+| cognitiveservices | 2017-04-18 |
+| containerregistry | 2019-12-01-preview |
+| datafactory | 2018-06-01 |
+| desktopvirtualization | 2019-01-23-preview |
+| eventgrid | 2018-01-01 |
+| hdinsight | 2018-06-01-preview |
+| machinelearningservices | 2020-03-01 |
+| media | 2018-07-01 |
+| migrate | 2020-01-01 |
+| sql | 2015-05-01-preview<br/>2017-03-01-preview<br/>2018-06-01-preview<br/>v3.0 |
+| storagecache | 2020-03-01 |
+| synapse | 2019-06-01-preview |
+| web | 2019-08-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| authoring | luis |
+| digitaltwins | 2020-03-01-preview |
+| documentdb | 2019-08-01<br/>2020-03-01 |
+| eventhub | 2018-01-01-preview |
+| insights | v1 |
+| kubernetesconfiguration | 2019-11-01-preview |
+| kusto | 2020-02-15 |
+| netapp | 2019-11-01 |
+| operationalinsights | v1 |
+| policyinsights | 2018-07-01-preview<br/>2019-10-01 |
+| reservations | 2019-07-19-preview |
+| security | v1.0<br/>v2.0<br/>v3.0 |
+| securityinsight | 2019-01-01-preview |
+| siterecovery | 2018-07-10 |
+| storage | 2016-12-01<br/>2019-06-01 |
+| storagesync | 2019-10-01 |
+| timeseriesinsights | 2018-08-15-preview |
+
+## `v42.3.0`
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| subscription | 2019-10-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| resourcegraph | 2018-09-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| eventgrid | 2020-04-01-preview |
+
+## `v42.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| mysql | 2020-01-01 |
+| network | 2020-04-01 |
+| postgresql | 2020-01-01 |
+| virtualmachineimagebuilder | 2020-02-01 |
+
+## `v42.1.0`
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| databricks | 2018-04-01 |
+
+## `v42.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| desktopvirtualization | 2019-01-23-preview |
+| documentdb | 2020-03-01 |
+| hybriddata | 2019-06-01 |
+| hybridkubernetes | 2020-01-01-preview |
+| maintenance | 2020-04-01 |
+| search | 2020-03-13 |
+| securityinsight | 2019-01-01-preview<br/>v1.0 |
+| storagecache | 2020-03-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| adhybridhealthservice | 2014-01-01 |
+| batch | 2020-03-01 |
+| containerregistry | 2019-06-01-preview<br/>2019-12-01-preview |
+| costmanagement | 2019-03-01 |
+| datafactory | 2018-06-01 |
+| documentdb | 2019-08-01-preview<br/>2019-12-12 |
+| healthcareapis | 2019-09-16 |
+| insights | 2018-03-01<br/>2018-09-01<br/>2018-11-01-preview<br/>2019-03-01<br/>2019-06-01 |
+| siterecovery | 2018-07-10 |
+| sql | 2014-04-01<br/>2015-05-01-preview<br/>2017-03-01-preview<br/>v3.0 |
+| web | 2019-08-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| appplatform | 2019-05-01-preview |
+| authoring | luis |
+| compute | 2019-12-01 |
+| containerservice | 2020-03-01 |
+| databricks | 2018-04-01 |
+| digitaltwins | 2020-03-01-preview |
+| eventhub | 2018-01-01-preview |
+| graphrbac | 1.6 |
+| logic | 2019-05-01 |
+| managedapplications | 2019-07-01 |
+| netapp | 2019-05-01<br/>2019-06-01<br/>2019-07-01<br/>2019-08-01<br/>2019-10-01<br/>2019-11-01 |
+| policyinsights | 2019-10-01 |
+| portal | 2015-08-01-preview<br/>2018-10-01-preview<br/>2019-01-01-preview |
+| recoveryservices | 2016-06-01 |
+| security | v1.0<br/>v2.0<br/>v3.0 |
+| storage | 2019-06-01 |
+
+### Removed Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| securityinsight | 2017-08-01-preview |
+
+## `v41.3.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| kubernetesconfiguration | 2019-11-01-preview |
+| network | 2020-03-01 |
+| training | customvision |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| storage | 2019-06-01 |
+
+## `v41.2.0`
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| synapse | 2019-06-01-preview |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| eventgrid | 2020-04-01-preview |
+
+## `v41.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| backup | 2020-02-02 |
+
+
+## `v41.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| batch | 2020-03-01<br/>2020-03-01.11.0 |
+| computervision | v3.0-preview |
+| containerservice | 2020-03-01 |
+| keyvault | v7.1-preview<br/>v7.2-preview |
+| machinelearningservices | 2020-02-18-preview<br/>2020-03-01 |
+| managementgroups | 2020-02-01 |
+| migrate | 2020-01-01 |
+| redhatopenshift | 2020-04-30 |
+| storagesync | 2019-10-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| azurestack | 2017-06-01 |
+| backup | 2019-06-15 |
+| blueprint | 2018-11-01-preview |
+| compute | 2019-12-01 |
+| documentdb | 2019-08-01<br/>2019-08-01-preview |
+| features | 2015-12-01 |
+| frontdoor | 2019-04-01<br/>2019-05-01<br/>2019-10-01<br/>2019-11-01 |
+| insights | 2015-05-01<br/>v1 |
+| operationalinsights | v1 |
+| siterecovery | 2018-01-10 |
+| sql | 2018-06-01-preview<br/>v3.0 |
+| storage | 2019-06-01 |
+| web | 2019-08-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2018-06-01-preview<br/>2019-01-01<br/>2019-12-01-preview |
+| attestation | 2018-09-01-preview |
+| cdn | 2019-06-15-preview |
+| containerregistry | 2019-06-01-preview<br/>2019-12-01-preview |
+| datafactory | 2018-06-01 |
+| documentdb | 2019-12-12 |
+| eventgrid | 2018-01-01 |
+| eventhub | 2015-08-01<br/>2017-04-01 |
+| frontdoor | 2020-01-01 |
+| insights | 2018-03-01<br/>2018-09-01<br/>2018-11-01-preview<br/>2019-03-01<br/>2019-06-01 |
+| iotcentral | 2018-09-01 |
+| mariadb | 2018-06-01 |
+| msi | 2015-08-31-preview<br/>2018-11-30 |
+| mysql | 2017-12-01<br/>2017-12-01-preview |
+| netapp | 2019-11-01 |
+| network | 2016-09-01<br/>2016-12-01<br/>2019-11-01 |
+| notificationhubs | 2014-09-01<br/>2016-03-01<br/>2017-04-01 |
+| operationalinsights | 2015-11-01-preview |
+| postgresql | 2017-12-01<br/>2017-12-01-preview |
+| relay | 2016-07-01<br/>2017-04-01 |
+| reservations | 2019-07-19-preview |
+| security | v1.0<br/>v2.0<br/>v3.0 |
+| servicebus | 2015-08-01<br/>2017-04-01 |
+| siterecovery | 2018-07-10 |
+| synapse | 2019-06-01-preview |
+
+## `v40.6.0`
 
 ### New Packages
 
@@ -17,7 +279,7 @@
 
 ### Updated `./storage` package, which allows users to use azure-sdk-for-go to connect to and use cosmosdb table storage.
 
-## v40.5.0
+## `v40.5.0`
 
 ### New Packages
 

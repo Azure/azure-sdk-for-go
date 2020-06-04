@@ -750,15 +750,15 @@ func PossibleInstanceTypeBasicRecoveryPlanActionDetailsValues() []InstanceTypeBa
 type InstanceTypeBasicRecoveryPlanProviderSpecificDetails string
 
 const (
-	// InstanceTypeRecoveryPlanA2ADetails ...
-	InstanceTypeRecoveryPlanA2ADetails InstanceTypeBasicRecoveryPlanProviderSpecificDetails = "RecoveryPlanA2ADetails"
-	// InstanceTypeRecoveryPlanProviderSpecificDetails ...
-	InstanceTypeRecoveryPlanProviderSpecificDetails InstanceTypeBasicRecoveryPlanProviderSpecificDetails = "RecoveryPlanProviderSpecificDetails"
+	// InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A ...
+	InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A InstanceTypeBasicRecoveryPlanProviderSpecificDetails = "A2A"
+	// InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails ...
+	InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails InstanceTypeBasicRecoveryPlanProviderSpecificDetails = "RecoveryPlanProviderSpecificDetails"
 )
 
 // PossibleInstanceTypeBasicRecoveryPlanProviderSpecificDetailsValues returns an array of possible values for the InstanceTypeBasicRecoveryPlanProviderSpecificDetails const type.
 func PossibleInstanceTypeBasicRecoveryPlanProviderSpecificDetailsValues() []InstanceTypeBasicRecoveryPlanProviderSpecificDetails {
-	return []InstanceTypeBasicRecoveryPlanProviderSpecificDetails{InstanceTypeRecoveryPlanA2ADetails, InstanceTypeRecoveryPlanProviderSpecificDetails}
+	return []InstanceTypeBasicRecoveryPlanProviderSpecificDetails{InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A, InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails}
 }
 
 // InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput enumerates the values for instance type basic
@@ -1179,6 +1179,25 @@ func PossiblePresenceStatusValues() []PresenceStatus {
 	return []PresenceStatus{NotPresent, Present, Unknown}
 }
 
+// ProtectionHealth enumerates the values for protection health.
+type ProtectionHealth string
+
+const (
+	// ProtectionHealthCritical ...
+	ProtectionHealthCritical ProtectionHealth = "Critical"
+	// ProtectionHealthNone ...
+	ProtectionHealthNone ProtectionHealth = "None"
+	// ProtectionHealthNormal ...
+	ProtectionHealthNormal ProtectionHealth = "Normal"
+	// ProtectionHealthWarning ...
+	ProtectionHealthWarning ProtectionHealth = "Warning"
+)
+
+// PossibleProtectionHealthValues returns an array of possible values for the ProtectionHealth const type.
+func PossibleProtectionHealthValues() []ProtectionHealth {
+	return []ProtectionHealth{ProtectionHealthCritical, ProtectionHealthNone, ProtectionHealthNormal, ProtectionHealthWarning}
+}
+
 // RecoveryPlanActionLocation enumerates the values for recovery plan action location.
 type RecoveryPlanActionLocation string
 
@@ -1560,6 +1579,8 @@ type A2AEnableProtectionInput struct {
 	RecoveryCloudServiceID *string `json:"recoveryCloudServiceId,omitempty"`
 	// RecoveryAvailabilitySetID - The recovery availability set Id.
 	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
+	// RecoveryProximityPlacementGroupID - The recovery proximity placement group Id.
+	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
 	// VMDisks - The list of vm disk details.
 	VMDisks *[]A2AVMDiskInputDetails `json:"vmDisks,omitempty"`
 	// VMManagedDisks - The list of vm managed disk details.
@@ -1598,6 +1619,9 @@ func (aepi A2AEnableProtectionInput) MarshalJSON() ([]byte, error) {
 	}
 	if aepi.RecoveryAvailabilitySetID != nil {
 		objectMap["recoveryAvailabilitySetId"] = aepi.RecoveryAvailabilitySetID
+	}
+	if aepi.RecoveryProximityPlacementGroupID != nil {
+		objectMap["recoveryProximityPlacementGroupId"] = aepi.RecoveryProximityPlacementGroupID
 	}
 	if aepi.VMDisks != nil {
 		objectMap["vmDisks"] = aepi.VMDisks
@@ -2246,6 +2270,10 @@ type A2AReplicationDetails struct {
 	InitialPrimaryFabricLocation *string `json:"initialPrimaryFabricLocation,omitempty"`
 	// InitialRecoveryFabricLocation - READ-ONLY; The initial recovery fabric location.
 	InitialRecoveryFabricLocation *string `json:"initialRecoveryFabricLocation,omitempty"`
+	// InitialPrimaryZone - READ-ONLY; The initial primary availability zone.
+	InitialPrimaryZone *string `json:"initialPrimaryZone,omitempty"`
+	// InitialRecoveryZone - READ-ONLY; The initial recovery availability zone.
+	InitialRecoveryZone *string `json:"initialRecoveryZone,omitempty"`
 	// MultiVMGroupID - The multi vm group Id.
 	MultiVMGroupID *string `json:"multiVmGroupId,omitempty"`
 	// MultiVMGroupName - The multi vm group name.
@@ -2316,6 +2344,8 @@ type A2AReplicationDetails struct {
 	VMEncryptionType VMEncryptionType `json:"vmEncryptionType,omitempty"`
 	// TfoAzureVMName - The test failover VM name.
 	TfoAzureVMName *string `json:"tfoAzureVMName,omitempty"`
+	// RecoveryProximityPlacementGroupID - The recovery proximity placement group Id.
+	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
 	InstanceType InstanceTypeBasicReplicationProviderSpecificSettings `json:"instanceType,omitempty"`
 }
@@ -2428,6 +2458,9 @@ func (ard A2AReplicationDetails) MarshalJSON() ([]byte, error) {
 	}
 	if ard.TfoAzureVMName != nil {
 		objectMap["tfoAzureVMName"] = ard.TfoAzureVMName
+	}
+	if ard.RecoveryProximityPlacementGroupID != nil {
+		objectMap["recoveryProximityPlacementGroupId"] = ard.RecoveryProximityPlacementGroupID
 	}
 	if ard.InstanceType != "" {
 		objectMap["instanceType"] = ard.InstanceType
@@ -2570,6 +2603,8 @@ type A2ASwitchProtectionInput struct {
 	RecoveryCloudServiceID *string `json:"recoveryCloudServiceId,omitempty"`
 	// RecoveryAvailabilitySetID - The recovery availability set.
 	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
+	// RecoveryProximityPlacementGroupID - The recovery proximity placement group Id.
+	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
 	// PolicyID - The Policy Id.
 	PolicyID *string `json:"policyId,omitempty"`
 	// RecoveryBootDiagStorageAccountID - The boot diagnostic storage account.
@@ -2601,6 +2636,9 @@ func (aspi A2ASwitchProtectionInput) MarshalJSON() ([]byte, error) {
 	}
 	if aspi.RecoveryAvailabilitySetID != nil {
 		objectMap["recoveryAvailabilitySetId"] = aspi.RecoveryAvailabilitySetID
+	}
+	if aspi.RecoveryProximityPlacementGroupID != nil {
+		objectMap["recoveryProximityPlacementGroupId"] = aspi.RecoveryProximityPlacementGroupID
 	}
 	if aspi.PolicyID != nil {
 		objectMap["policyId"] = aspi.PolicyID
@@ -2691,6 +2729,8 @@ type A2AUpdateReplicationProtectedItemInput struct {
 	RecoveryBootDiagStorageAccountID *string `json:"recoveryBootDiagStorageAccountId,omitempty"`
 	// DiskEncryptionInfo - The recovery os disk encryption information.
 	DiskEncryptionInfo *DiskEncryptionInfo `json:"diskEncryptionInfo,omitempty"`
+	// RecoveryProximityPlacementGroupID - The recovery proximity placement group Id.
+	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
 	// TfoAzureVMName - The user given name for test failover VM.
 	TfoAzureVMName *string `json:"tfoAzureVMName,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2'
@@ -2715,6 +2755,9 @@ func (aurpii A2AUpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, erro
 	}
 	if aurpii.DiskEncryptionInfo != nil {
 		objectMap["diskEncryptionInfo"] = aurpii.DiskEncryptionInfo
+	}
+	if aurpii.RecoveryProximityPlacementGroupID != nil {
+		objectMap["recoveryProximityPlacementGroupId"] = aurpii.RecoveryProximityPlacementGroupID
 	}
 	if aurpii.TfoAzureVMName != nil {
 		objectMap["tfoAzureVMName"] = aurpii.TfoAzureVMName
@@ -9362,6 +9405,8 @@ type InMageAzureV2ReplicationDetails struct {
 	LastHeartbeat *date.Time `json:"lastHeartbeat,omitempty"`
 	// ProcessServerID - The process server Id.
 	ProcessServerID *string `json:"processServerId,omitempty"`
+	// ProcessServerName - READ-ONLY; The process server name.
+	ProcessServerName *string `json:"processServerName,omitempty"`
 	// MultiVMGroupID - The multi vm group Id.
 	MultiVMGroupID *string `json:"multiVmGroupId,omitempty"`
 	// MultiVMGroupName - The multi vm group name.
@@ -13668,6 +13713,22 @@ type ProcessServer struct {
 	AgentExpiryDate *date.Time `json:"agentExpiryDate,omitempty"`
 	// AgentVersionDetails - The agent version details.
 	AgentVersionDetails *VersionDetails `json:"agentVersionDetails,omitempty"`
+	// Health - READ-ONLY; The health of Process Server. Possible values include: 'ProtectionHealthNone', 'ProtectionHealthNormal', 'ProtectionHealthWarning', 'ProtectionHealthCritical'
+	Health ProtectionHealth `json:"health,omitempty"`
+	// PsStatsRefreshTime - READ-ONLY; The process server stats refresh time.
+	PsStatsRefreshTime *date.Time `json:"psStatsRefreshTime,omitempty"`
+	// ThroughputUploadPendingDataInBytes - READ-ONLY; The uploading pending data in bytes.
+	ThroughputUploadPendingDataInBytes *int64 `json:"throughputUploadPendingDataInBytes,omitempty"`
+	// ThroughputInMBps - READ-ONLY; The throughput in MBps.
+	ThroughputInMBps *int64 `json:"throughputInMBps,omitempty"`
+	// ThroughputInBytes - READ-ONLY; The throughput in bytes.
+	ThroughputInBytes *int64 `json:"throughputInBytes,omitempty"`
+	// ThroughputStatus - READ-ONLY; The throughput status.
+	ThroughputStatus *string `json:"throughputStatus,omitempty"`
+	// MarsCommunicationStatus - READ-ONLY; The MARS communication status.
+	MarsCommunicationStatus *string `json:"marsCommunicationStatus,omitempty"`
+	// MarsRegistrationStatus - READ-ONLY; The MARS registration status.
+	MarsRegistrationStatus *string `json:"marsRegistrationStatus,omitempty"`
 }
 
 // ProtectableItem replication protected item
@@ -14851,13 +14912,13 @@ type RecoveryPlanA2ADetails struct {
 	PrimaryZone *string `json:"primaryZone,omitempty"`
 	// RecoveryZone - The recovery zone.
 	RecoveryZone *string `json:"recoveryZone,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeRecoveryPlanProviderSpecificDetails', 'InstanceTypeRecoveryPlanA2ADetails'
+	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails', 'InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A'
 	InstanceType InstanceTypeBasicRecoveryPlanProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RecoveryPlanA2ADetails.
 func (rpad RecoveryPlanA2ADetails) MarshalJSON() ([]byte, error) {
-	rpad.InstanceType = InstanceTypeRecoveryPlanA2ADetails
+	rpad.InstanceType = InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A
 	objectMap := make(map[string]interface{})
 	if rpad.PrimaryZone != nil {
 		objectMap["primaryZone"] = rpad.PrimaryZone
@@ -15980,7 +16041,7 @@ type BasicRecoveryPlanProviderSpecificDetails interface {
 
 // RecoveryPlanProviderSpecificDetails recovery plan provider specific details.
 type RecoveryPlanProviderSpecificDetails struct {
-	// InstanceType - Possible values include: 'InstanceTypeRecoveryPlanProviderSpecificDetails', 'InstanceTypeRecoveryPlanA2ADetails'
+	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails', 'InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A'
 	InstanceType InstanceTypeBasicRecoveryPlanProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -15992,7 +16053,7 @@ func unmarshalBasicRecoveryPlanProviderSpecificDetails(body []byte) (BasicRecove
 	}
 
 	switch m["instanceType"] {
-	case string(InstanceTypeRecoveryPlanA2ADetails):
+	case string(InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A):
 		var rpad RecoveryPlanA2ADetails
 		err := json.Unmarshal(body, &rpad)
 		return rpad, err
@@ -16023,7 +16084,7 @@ func unmarshalBasicRecoveryPlanProviderSpecificDetailsArray(body []byte) ([]Basi
 
 // MarshalJSON is the custom marshaler for RecoveryPlanProviderSpecificDetails.
 func (rppsd RecoveryPlanProviderSpecificDetails) MarshalJSON() ([]byte, error) {
-	rppsd.InstanceType = InstanceTypeRecoveryPlanProviderSpecificDetails
+	rppsd.InstanceType = InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails
 	objectMap := make(map[string]interface{})
 	if rppsd.InstanceType != "" {
 		objectMap["instanceType"] = rppsd.InstanceType
@@ -17075,64 +17136,6 @@ type ReplicationEligibilityResultsErrorInfo struct {
 	RecommendedAction *string `json:"recommendedAction,omitempty"`
 	// Status - READ-ONLY; The error status.
 	Status *string `json:"status,omitempty"`
-}
-
-// ReplicationEligibilityResultsGetFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ReplicationEligibilityResultsGetFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ReplicationEligibilityResultsGetFuture) Result(client ReplicationEligibilityResultsClient) (rer ReplicationEligibilityResults, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationEligibilityResultsGetFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("siterecovery.ReplicationEligibilityResultsGetFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rer.Response.Response, err = future.GetResult(sender); err == nil && rer.Response.Response.StatusCode != http.StatusNoContent {
-		rer, err = client.GetResponder(rer.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationEligibilityResultsGetFuture", "Result", rer.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// ReplicationEligibilityResultsListFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ReplicationEligibilityResultsListFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ReplicationEligibilityResultsListFuture) Result(client ReplicationEligibilityResultsClient) (rerc ReplicationEligibilityResultsCollection, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationEligibilityResultsListFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("siterecovery.ReplicationEligibilityResultsListFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rerc.Response.Response, err = future.GetResult(sender); err == nil && rerc.Response.Response.StatusCode != http.StatusNoContent {
-		rerc, err = client.ListResponder(rerc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationEligibilityResultsListFuture", "Result", rerc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // ReplicationEligibilityResultsProperties properties model for replication eligibility results API.
@@ -20997,6 +21000,8 @@ type TargetComputeSizeProperties struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// CPUCoresCount - The maximum cpu cores count supported by target compute size.
 	CPUCoresCount *int32 `json:"cpuCoresCount,omitempty"`
+	// VCPUsAvailable - READ-ONLY; The Available vCPUs supported by target compute size.
+	VCPUsAvailable *int32 `json:"vCPUsAvailable,omitempty"`
 	// MemoryInGB - The maximum memory in GB supported by target compute size.
 	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
 	// MaxDataDiskCount - The maximum data disks count supported by target compute size.
@@ -21007,6 +21012,8 @@ type TargetComputeSizeProperties struct {
 	Errors *[]ComputeSizeErrorDetails `json:"errors,omitempty"`
 	// HighIopsSupported - The value indicating whether the target compute size supports high Iops.
 	HighIopsSupported *string `json:"highIopsSupported,omitempty"`
+	// HyperVGenerations - READ-ONLY; The supported HyperV Generations.
+	HyperVGenerations *[]string `json:"hyperVGenerations,omitempty"`
 }
 
 // BasicTaskTypeDetails task details based on specific task type.
@@ -22926,6 +22933,18 @@ type VMNicDetails struct {
 	EnableAcceleratedNetworkingOnTfo *bool `json:"enableAcceleratedNetworkingOnTfo,omitempty"`
 	// TfoIPConfigs - The IP configurations to be used by NIC during test failover.
 	TfoIPConfigs *[]IPConfig `json:"tfoIPConfigs,omitempty"`
+	// RecoveryNicName - The name of the NIC to be used when creating target NICs.
+	RecoveryNicName *string `json:"recoveryNicName,omitempty"`
+	// RecoveryNicResourceGroupName - The resource group of the NIC to be used when creating target NICs.
+	RecoveryNicResourceGroupName *string `json:"recoveryNicResourceGroupName,omitempty"`
+	// ReuseExistingNic - A value indicating whether an existing NIC is allowed to be reused during failover subject to availability.
+	ReuseExistingNic *bool `json:"reuseExistingNic,omitempty"`
+	// TfoRecoveryNicName - The name of the NIC to be used when creating target NICs in TFO.
+	TfoRecoveryNicName *string `json:"tfoRecoveryNicName,omitempty"`
+	// TfoRecoveryNicResourceGroupName - The resource group of the NIC to be used when creating target NICs in TFO.
+	TfoRecoveryNicResourceGroupName *string `json:"tfoRecoveryNicResourceGroupName,omitempty"`
+	// TfoReuseExistingNic - A value indicating whether an existing NIC is allowed to be reused during test failover subject to availability.
+	TfoReuseExistingNic *bool `json:"tfoReuseExistingNic,omitempty"`
 }
 
 // VMNicInputDetails hyper V VM network input details.
@@ -22954,6 +22973,18 @@ type VMNicInputDetails struct {
 	EnableAcceleratedNetworkingOnTfo *bool `json:"enableAcceleratedNetworkingOnTfo,omitempty"`
 	// TfoIPConfigs - The IP configurations to be used by NIC during test failover.
 	TfoIPConfigs *[]IPConfig `json:"tfoIPConfigs,omitempty"`
+	// RecoveryNicName - The name of the NIC to be used when creating target NICs.
+	RecoveryNicName *string `json:"recoveryNicName,omitempty"`
+	// RecoveryNicResourceGroupName - The resource group of the NIC to be used when creating target NICs.
+	RecoveryNicResourceGroupName *string `json:"recoveryNicResourceGroupName,omitempty"`
+	// ReuseExistingNic - A value indicating whether an existing NIC is allowed to be reused during failover subject to availability.
+	ReuseExistingNic *bool `json:"reuseExistingNic,omitempty"`
+	// TfoNicName - The name of the NIC to be used when creating target NICs in TFO.
+	TfoNicName *string `json:"tfoNicName,omitempty"`
+	// TfoNicResourceGroupName - The resource group of the NIC to be used when creating target NICs in TFO.
+	TfoNicResourceGroupName *string `json:"tfoNicResourceGroupName,omitempty"`
+	// TfoReuseExistingNic - A value indicating whether an existing NIC is allowed to be reused during test failover subject to availability.
+	TfoReuseExistingNic *bool `json:"tfoReuseExistingNic,omitempty"`
 }
 
 // VMNicUpdatesTaskDetails this class represents the vm NicUpdates task details.

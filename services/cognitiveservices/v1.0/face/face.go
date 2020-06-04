@@ -41,9 +41,9 @@ func NewClient(endpoint string) Client {
 // attributes.<br />
 // * No image will be stored. Only the extracted face feature will be stored on server. The faceId is an identifier of
 // the face feature and will be used in [Face -
-// Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face -
-// Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find
-// Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). The stored face feature(s)
+// Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify), [Face -
+// Verify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface), and [Face - Find
+// Similar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar). The stored face feature(s)
 // will expire and be deleted 24 hours after the original detection call.
 // * Optional parameters include faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile,
 // facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise. Some of the results
@@ -51,19 +51,19 @@ func NewClient(endpoint string) Client {
 // * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
 // * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
 // * For optimal results when querying [Face -
-// Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face -
-// Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find
-// Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) ('returnFaceId' is true),
+// Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify), [Face -
+// Verify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface), and [Face - Find
+// Similar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar) ('returnFaceId' is true),
 // please use faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
 // * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
 // dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
 // * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to
 // [How to specify a detection
-// model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+// model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
 // | Model | Recommended use-case(s) |
 // | ---------- | -------- |
 // | 'detection_01': | The default detection model for [Face -
-// Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236). Recommend for near frontal
+// Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl). Recommend for near frontal
 // face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image
 // orientation, the faces in such cases may not be detected. |
 // | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry
@@ -74,11 +74,11 @@ func NewClient(endpoint string) Client {
 // 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this
 // parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More
 // details, please refer to [How to specify a recognition
-// model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model)
+// model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model)
 // | Model | Recommended use-case(s) |
 // | ---------- | -------- |
 // | 'recognition_01': | The default recognition model for [Face -
-// Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236). All those faceIds created
+// Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl). All those faceIds created
 // before 2019 March are bonded with this recognition model. |
 // | 'recognition_02': | Recognition model released in 2019 March. 'recognition_02' is recommended since its overall
 // accuracy is improved compared with 'recognition_01'. |
@@ -202,9 +202,9 @@ func (client Client) DetectWithStreamResponder(resp *http.Response) (result List
 // attributes.<br />
 // * No image will be stored. Only the extracted face feature will be stored on server. The faceId is an identifier of
 // the face feature and will be used in [Face -
-// Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face -
-// Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find
-// Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). The stored face feature(s)
+// Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify), [Face -
+// Verify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface), and [Face - Find
+// Similar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar). The stored face feature(s)
 // will expire and be deleted 24 hours after the original detection call.
 // * Optional parameters include faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile,
 // facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise. Some of the results
@@ -212,19 +212,19 @@ func (client Client) DetectWithStreamResponder(resp *http.Response) (result List
 // * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
 // * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
 // * For optimal results when querying [Face -
-// Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face -
-// Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find
-// Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) ('returnFaceId' is true),
+// Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify), [Face -
+// Verify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface), and [Face - Find
+// Similar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar) ('returnFaceId' is true),
 // please use faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
 // * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
 // dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
 // * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to
 // [How to specify a detection
-// model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+// model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
 // | Model | Recommended use-case(s) |
 // | ---------- | -------- |
 // | 'detection_01': | The default detection model for [Face -
-// Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236). Recommend for near frontal
+// Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl). Recommend for near frontal
 // face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image
 // orientation, the faces in such cases may not be detected. |
 // | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry
@@ -235,11 +235,11 @@ func (client Client) DetectWithStreamResponder(resp *http.Response) (result List
 // 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this
 // parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More
 // details, please refer to [How to specify a recognition
-// model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model)
+// model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model)
 // | Model | Recommended use-case(s) |
 // | ---------- | -------- |
 // | 'recognition_01': | The default recognition model for [Face -
-// Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236). All those faceIds created
+// Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl). All those faceIds created
 // before 2019 March are bonded with this recognition model. |
 // | 'recognition_02': | Recognition model released in 2019 March. 'recognition_02' is recommended since its overall
 // accuracy is improved compared with 'recognition_01'. |
@@ -367,11 +367,11 @@ func (client Client) DetectWithURLResponder(resp *http.Response) (result ListDet
 
 // FindSimilar given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a
 // large face list. faceId array contains the faces created by [Face -
-// Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours
+// Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), which will expire 24 hours
 // after creation. A "faceListId" is created by [FaceList -
-// Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds
-// that will not expire. And a "largeFaceListId" is created by [LargeFaceList -
-// Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds
+// Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/create) containing persistedFaceIds that
+// will not expire. And a "largeFaceListId" is created by [LargeFaceList -
+// Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/largefacelist/create) containing persistedFaceIds
 // that will also not expire. Depending on the input the returned similar faces list contains faceIds or
 // persistedFaceIds ranked by similarity.
 // <br/>Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it
@@ -476,8 +476,8 @@ func (client Client) FindSimilarResponder(resp *http.Response) (result ListSimil
 // * MessyGroup is a special face group containing faces that cannot find any similar counterpart face from original
 // faces. The messyGroup will not appear in the result if all faces found their counterparts.
 // * Group API needs at least 2 candidate faces and 1000 at most. We suggest to try [Face -
-// Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a) when you only have 2 candidate
-// faces.
+// Verify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/verifyfacetoface) when you only have 2
+// candidate faces.
 // * The 'recognitionModel' associated with the query faces' faceIds should be the same.
 // Parameters:
 // body - request body for grouping.
@@ -560,8 +560,8 @@ func (client Client) GroupResponder(resp *http.Response) (result GroupResult, er
 // faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return
 // candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be
 // trained to make it ready for identification. See more in [PersonGroup -
-// Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup -
-// Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+// Train](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/train) and [LargePersonGroup -
+// Train](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup/train).
 // <br/>
 //
 // Remarks:<br />
@@ -572,7 +572,7 @@ func (client Client) GroupResponder(resp *http.Response) (result GroupResult, er
 // clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
 // * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is
 // identified, the returned candidates will be an empty array.
-// * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you
+// * Try [Face - Find Similar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar) when you
 // need to find similar faces from a face list/large face list instead of a person group/large person group.
 // * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used
 // by the target person group or large person group.

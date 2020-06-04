@@ -119,8 +119,7 @@ func (client DelegationSettingsClient) CreateOrUpdatePreparer(ctx context.Contex
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DelegationSettingsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -204,8 +203,7 @@ func (client DelegationSettingsClient) GetPreparer(ctx context.Context, resource
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DelegationSettingsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -289,8 +287,7 @@ func (client DelegationSettingsClient) GetEntityTagPreparer(ctx context.Context,
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client DelegationSettingsClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
@@ -302,6 +299,90 @@ func (client DelegationSettingsClient) GetEntityTagResponder(resp *http.Response
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
+	return
+}
+
+// ListSecrets gets the secret validation key of the DelegationSettings.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+func (client DelegationSettingsClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string) (result PortalSettingValidationKeyContract, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DelegationSettingsClient.ListSecrets")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: serviceName,
+			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("apimanagement.DelegationSettingsClient", "ListSecrets", err.Error())
+	}
+
+	req, err := client.ListSecretsPreparer(ctx, resourceGroupName, serviceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.DelegationSettingsClient", "ListSecrets", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSecretsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "apimanagement.DelegationSettingsClient", "ListSecrets", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListSecretsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.DelegationSettingsClient", "ListSecrets", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSecretsPreparer prepares the ListSecrets request.
+func (client DelegationSettingsClient) ListSecretsPreparer(ctx context.Context, resourceGroupName string, serviceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serviceName":       autorest.Encode("path", serviceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-12-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/delegation/listSecrets", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSecretsSender sends the ListSecrets request. The method will close the
+// http.Response Body if it receives an error.
+func (client DelegationSettingsClient) ListSecretsSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListSecretsResponder handles the response to the ListSecrets request. The method always
+// closes the http.Response Body.
+func (client DelegationSettingsClient) ListSecretsResponder(resp *http.Response) (result PortalSettingValidationKeyContract, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -379,8 +460,7 @@ func (client DelegationSettingsClient) UpdatePreparer(ctx context.Context, resou
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client DelegationSettingsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

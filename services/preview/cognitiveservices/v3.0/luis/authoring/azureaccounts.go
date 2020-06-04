@@ -40,8 +40,10 @@ func NewAzureAccountsClient(endpoint string) AzureAccountsClient {
 // AssignToApp assigns an Azure account to the application.
 // Parameters:
 // appID - the application ID.
+// armToken - the custom arm token header to use; containing the user's ARM token used to validate azure
+// accounts information.
 // azureAccountInfoObject - the Azure account information object.
-func (client AzureAccountsClient) AssignToApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (result OperationStatus, err error) {
+func (client AzureAccountsClient) AssignToApp(ctx context.Context, appID uuid.UUID, armToken string, azureAccountInfoObject *AzureAccountInfoObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.AssignToApp")
 		defer func() {
@@ -62,7 +64,7 @@ func (client AzureAccountsClient) AssignToApp(ctx context.Context, appID uuid.UU
 		return result, validation.NewError("authoring.AzureAccountsClient", "AssignToApp", err.Error())
 	}
 
-	req, err := client.AssignToAppPreparer(ctx, appID, azureAccountInfoObject)
+	req, err := client.AssignToAppPreparer(ctx, appID, armToken, azureAccountInfoObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "AssignToApp", nil, "Failure preparing request")
 		return
@@ -84,7 +86,7 @@ func (client AzureAccountsClient) AssignToApp(ctx context.Context, appID uuid.UU
 }
 
 // AssignToAppPreparer prepares the AssignToApp request.
-func (client AzureAccountsClient) AssignToAppPreparer(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (*http.Request, error) {
+func (client AzureAccountsClient) AssignToAppPreparer(ctx context.Context, appID uuid.UUID, armToken string, azureAccountInfoObject *AzureAccountInfoObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -101,6 +103,10 @@ func (client AzureAccountsClient) AssignToAppPreparer(ctx context.Context, appID
 	if azureAccountInfoObject != nil {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithJSON(azureAccountInfoObject))
+	}
+	if len(armToken) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ArmToken", autorest.String(armToken)))
 	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -127,7 +133,9 @@ func (client AzureAccountsClient) AssignToAppResponder(resp *http.Response) (res
 // GetAssigned gets the LUIS Azure accounts assigned to the application for the user using his ARM token.
 // Parameters:
 // appID - the application ID.
-func (client AzureAccountsClient) GetAssigned(ctx context.Context, appID uuid.UUID) (result ListAzureAccountInfoObject, err error) {
+// armToken - the custom arm token header to use; containing the user's ARM token used to validate azure
+// accounts information.
+func (client AzureAccountsClient) GetAssigned(ctx context.Context, appID uuid.UUID, armToken string) (result ListAzureAccountInfoObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.GetAssigned")
 		defer func() {
@@ -138,7 +146,7 @@ func (client AzureAccountsClient) GetAssigned(ctx context.Context, appID uuid.UU
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetAssignedPreparer(ctx, appID)
+	req, err := client.GetAssignedPreparer(ctx, appID, armToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "GetAssigned", nil, "Failure preparing request")
 		return
@@ -160,7 +168,7 @@ func (client AzureAccountsClient) GetAssigned(ctx context.Context, appID uuid.UU
 }
 
 // GetAssignedPreparer prepares the GetAssigned request.
-func (client AzureAccountsClient) GetAssignedPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
+func (client AzureAccountsClient) GetAssignedPreparer(ctx context.Context, appID uuid.UUID, armToken string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -173,6 +181,10 @@ func (client AzureAccountsClient) GetAssignedPreparer(ctx context.Context, appID
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/azureaccounts", pathParameters))
+	if len(armToken) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ArmToken", autorest.String(armToken)))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -196,7 +208,10 @@ func (client AzureAccountsClient) GetAssignedResponder(resp *http.Response) (res
 }
 
 // ListUserLUISAccounts gets the LUIS Azure accounts for the user using his ARM token.
-func (client AzureAccountsClient) ListUserLUISAccounts(ctx context.Context) (result ListAzureAccountInfoObject, err error) {
+// Parameters:
+// armToken - the custom arm token header to use; containing the user's ARM token used to validate azure
+// accounts information.
+func (client AzureAccountsClient) ListUserLUISAccounts(ctx context.Context, armToken string) (result ListAzureAccountInfoObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.ListUserLUISAccounts")
 		defer func() {
@@ -207,7 +222,7 @@ func (client AzureAccountsClient) ListUserLUISAccounts(ctx context.Context) (res
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListUserLUISAccountsPreparer(ctx)
+	req, err := client.ListUserLUISAccountsPreparer(ctx, armToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "ListUserLUISAccounts", nil, "Failure preparing request")
 		return
@@ -229,7 +244,7 @@ func (client AzureAccountsClient) ListUserLUISAccounts(ctx context.Context) (res
 }
 
 // ListUserLUISAccountsPreparer prepares the ListUserLUISAccounts request.
-func (client AzureAccountsClient) ListUserLUISAccountsPreparer(ctx context.Context) (*http.Request, error) {
+func (client AzureAccountsClient) ListUserLUISAccountsPreparer(ctx context.Context, armToken string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -238,6 +253,10 @@ func (client AzureAccountsClient) ListUserLUISAccountsPreparer(ctx context.Conte
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPath("/azureaccounts"))
+	if len(armToken) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ArmToken", autorest.String(armToken)))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -263,8 +282,10 @@ func (client AzureAccountsClient) ListUserLUISAccountsResponder(resp *http.Respo
 // RemoveFromApp removes assigned Azure account from the application.
 // Parameters:
 // appID - the application ID.
+// armToken - the custom arm token header to use; containing the user's ARM token used to validate azure
+// accounts information.
 // azureAccountInfoObject - the Azure account information object.
-func (client AzureAccountsClient) RemoveFromApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (result OperationStatus, err error) {
+func (client AzureAccountsClient) RemoveFromApp(ctx context.Context, appID uuid.UUID, armToken string, azureAccountInfoObject *AzureAccountInfoObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.RemoveFromApp")
 		defer func() {
@@ -285,7 +306,7 @@ func (client AzureAccountsClient) RemoveFromApp(ctx context.Context, appID uuid.
 		return result, validation.NewError("authoring.AzureAccountsClient", "RemoveFromApp", err.Error())
 	}
 
-	req, err := client.RemoveFromAppPreparer(ctx, appID, azureAccountInfoObject)
+	req, err := client.RemoveFromAppPreparer(ctx, appID, armToken, azureAccountInfoObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "RemoveFromApp", nil, "Failure preparing request")
 		return
@@ -307,7 +328,7 @@ func (client AzureAccountsClient) RemoveFromApp(ctx context.Context, appID uuid.
 }
 
 // RemoveFromAppPreparer prepares the RemoveFromApp request.
-func (client AzureAccountsClient) RemoveFromAppPreparer(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (*http.Request, error) {
+func (client AzureAccountsClient) RemoveFromAppPreparer(ctx context.Context, appID uuid.UUID, armToken string, azureAccountInfoObject *AzureAccountInfoObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -324,6 +345,10 @@ func (client AzureAccountsClient) RemoveFromAppPreparer(ctx context.Context, app
 	if azureAccountInfoObject != nil {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithJSON(azureAccountInfoObject))
+	}
+	if len(armToken) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ArmToken", autorest.String(armToken)))
 	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

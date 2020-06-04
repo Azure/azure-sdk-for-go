@@ -1366,7 +1366,7 @@ type ErrorReportUsersEntries struct {
 type ErrorReportUsersEntry struct {
 	// UserID - The user ID value.
 	UserID *string `json:"userId,omitempty"`
-	// IPAddress - The Ip address corresponding to the last error event.
+	// IPAddress - The IP address corresponding to the last error event.
 	IPAddress *string `json:"ipAddress,omitempty"`
 	// LastUpdated - The date and time when the last error event was logged.
 	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
@@ -1766,6 +1766,211 @@ type InboundReplicationNeighbor struct {
 type InboundReplicationNeighbors struct {
 	// Value - The details of inbound replication neighbors.
 	Value *[]InboundReplicationNeighbor `json:"value,omitempty"`
+}
+
+// IPAddressAggregate the key value pair for properties.
+type IPAddressAggregate struct {
+	// ID - Unique ID for the entree
+	ID *string `json:"id,omitempty"`
+	// TenantID - The tenant ID
+	TenantID *string `json:"tenantId,omitempty"`
+	// ServiceID - The service ID
+	ServiceID *string `json:"serviceId,omitempty"`
+	// IPAddress - The IP address from where the attempted login originated from.
+	IPAddress *string `json:"ipAddress,omitempty"`
+	// Timestamp - When the event occurred
+	Timestamp *string `json:"timestamp,omitempty"`
+	// FirstAuditTimestamp - The first audit timestamp
+	FirstAuditTimestamp *string `json:"firstAuditTimestamp,omitempty"`
+	// LastAuditTimestamp - The last audit timestamp
+	LastAuditTimestamp *string `json:"lastAuditTimestamp,omitempty"`
+	// ExtranetLockoutErrorCount - The extranet lockout error count
+	ExtranetLockoutErrorCount *int32 `json:"extranetLockoutErrorCount,omitempty"`
+	// BadPasswordErrorCount - The bad password error count
+	BadPasswordErrorCount *int32 `json:"badPasswordErrorCount,omitempty"`
+	// UniqueUsernamesAttemptedCount - The unique usernames attempted
+	UniqueUsernamesAttemptedCount *int32 `json:"uniqueUsernamesAttemptedCount,omitempty"`
+	// AttemptCountThresholdIsExceeded - A value indicating whether the attempt count threshold been exceeded
+	AttemptCountThresholdIsExceeded *bool `json:"attemptCountThresholdIsExceeded,omitempty"`
+	// TimeSpan - The duration of the event
+	TimeSpan *string `json:"timeSpan,omitempty"`
+	// IsWhitelistedIPAddress - A value indicating whether the IP address has been whitelisted.
+	IsWhitelistedIPAddress *bool `json:"isWhitelistedIpAddress,omitempty"`
+	// NetworkLocation - The network location
+	NetworkLocation *string `json:"networkLocation,omitempty"`
+	// AttemptCountThresholdOnTrigger - The attempted count threshold on trigger.
+	AttemptCountThresholdOnTrigger *int32 `json:"attemptCountThresholdOnTrigger,omitempty"`
+	// AttemptThresholdTypeOnTrigger - The attempted threshold type on trigger.
+	AttemptThresholdTypeOnTrigger *string `json:"attemptThresholdTypeOnTrigger,omitempty"`
+	// GeographicLocation - The geographic location.
+	GeographicLocation *string `json:"geographicLocation,omitempty"`
+}
+
+// IPAddressAggregates IP address aggregates.
+type IPAddressAggregates struct {
+	autorest.Response `json:"-"`
+	// Value - The value returned by the operation.
+	Value *[]IPAddressAggregate `json:"value,omitempty"`
+	// NextLink - URL to get the next set of IP Aggregate list results if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
+	// TotalCount - The number of results.
+	TotalCount *int32 `json:"totalCount,omitempty"`
+	// ContinuationToken - The continuation token for paginated calls.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
+}
+
+// IPAddressAggregateSetting the key value pair for IP aggregate thresholds.
+type IPAddressAggregateSetting struct {
+	autorest.Response `json:"-"`
+	// ID - Unique ID for the entree
+	ID *string `json:"id,omitempty"`
+	// BadPasswordAndExtranetLockoutCombinedDailyThreshold - This threshold setting defines the per day trigger for a new event to be generated in the report.
+	BadPasswordAndExtranetLockoutCombinedDailyThreshold *int32 `json:"badPasswordAndExtranetLockoutCombinedDailyThreshold,omitempty"`
+	// BadPasswordAndExtranetLockoutCombinedHourlyThreshold - This threshold setting defines the per hour trigger for a new event to be generated in the report.
+	BadPasswordAndExtranetLockoutCombinedHourlyThreshold *int32 `json:"badPasswordAndExtranetLockoutCombinedHourlyThreshold,omitempty"`
+	// ExtranetLockoutDailyThreshold - This threshold setting defines the per hour trigger for a new event to be generated in the report.
+	ExtranetLockoutDailyThreshold *int32 `json:"extranetLockoutDailyThreshold,omitempty"`
+	// ExtranetLockoutHourlyThreshold - This threshold setting defines the per hour trigger for a new event to be generated in the report.
+	ExtranetLockoutHourlyThreshold *int32 `json:"extranetLockoutHourlyThreshold,omitempty"`
+	// EmailNotificationEnabled - A value indicating whether email notification has been enabled.
+	EmailNotificationEnabled *bool `json:"emailNotificationEnabled,omitempty"`
+}
+
+// IPAddressAggregatesIterator provides access to a complete listing of IPAddressAggregate values.
+type IPAddressAggregatesIterator struct {
+	i    int
+	page IPAddressAggregatesPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IPAddressAggregatesIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPAddressAggregatesIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IPAddressAggregatesIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IPAddressAggregatesIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IPAddressAggregatesIterator) Response() IPAddressAggregates {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IPAddressAggregatesIterator) Value() IPAddressAggregate {
+	if !iter.page.NotDone() {
+		return IPAddressAggregate{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IPAddressAggregatesIterator type.
+func NewIPAddressAggregatesIterator(page IPAddressAggregatesPage) IPAddressAggregatesIterator {
+	return IPAddressAggregatesIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (iaa IPAddressAggregates) IsEmpty() bool {
+	return iaa.Value == nil || len(*iaa.Value) == 0
+}
+
+// iPAddressAggregatesPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (iaa IPAddressAggregates) iPAddressAggregatesPreparer(ctx context.Context) (*http.Request, error) {
+	if iaa.NextLink == nil || len(to.String(iaa.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(iaa.NextLink)))
+}
+
+// IPAddressAggregatesPage contains a page of IPAddressAggregate values.
+type IPAddressAggregatesPage struct {
+	fn  func(context.Context, IPAddressAggregates) (IPAddressAggregates, error)
+	iaa IPAddressAggregates
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IPAddressAggregatesPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPAddressAggregatesPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.iaa)
+	if err != nil {
+		return err
+	}
+	page.iaa = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IPAddressAggregatesPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IPAddressAggregatesPage) NotDone() bool {
+	return !page.iaa.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IPAddressAggregatesPage) Response() IPAddressAggregates {
+	return page.iaa
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IPAddressAggregatesPage) Values() []IPAddressAggregate {
+	if page.iaa.IsEmpty() {
+		return nil
+	}
+	return *page.iaa.Value
+}
+
+// Creates a new instance of the IPAddressAggregatesPage type.
+func NewIPAddressAggregatesPage(getNextPage func(context.Context, IPAddressAggregates) (IPAddressAggregates, error)) IPAddressAggregatesPage {
+	return IPAddressAggregatesPage{fn: getNextPage}
 }
 
 // Item the key value pair for properties.

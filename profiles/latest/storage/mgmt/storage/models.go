@@ -98,6 +98,13 @@ const (
 	DirectoryServiceOptionsNone  DirectoryServiceOptions = original.DirectoryServiceOptionsNone
 )
 
+type EnabledProtocols = original.EnabledProtocols
+
+const (
+	NFS EnabledProtocols = original.NFS
+	SMB EnabledProtocols = original.SMB
+)
+
 type EncryptionScopeSource = original.EncryptionScopeSource
 
 const (
@@ -118,6 +125,12 @@ const (
 	GeoReplicationStatusBootstrap   GeoReplicationStatus = original.GeoReplicationStatusBootstrap
 	GeoReplicationStatusLive        GeoReplicationStatus = original.GeoReplicationStatusLive
 	GeoReplicationStatusUnavailable GeoReplicationStatus = original.GeoReplicationStatusUnavailable
+)
+
+type GetShareExpand = original.GetShareExpand
+
+const (
+	Stats GetShareExpand = original.Stats
 )
 
 type HTTPProtocol = original.HTTPProtocol
@@ -204,10 +217,22 @@ const (
 	LeaseStatusUnlocked LeaseStatus = original.LeaseStatusUnlocked
 )
 
+type ListContainersInclude = original.ListContainersInclude
+
+const (
+	Deleted ListContainersInclude = original.Deleted
+)
+
 type ListKeyExpand = original.ListKeyExpand
 
 const (
 	Kerb ListKeyExpand = original.Kerb
+)
+
+type ListSharesExpand = original.ListSharesExpand
+
+const (
+	ListSharesExpandDeleted ListSharesExpand = original.ListSharesExpandDeleted
 )
 
 type Permissions = original.Permissions
@@ -270,6 +295,14 @@ const (
 	QuotaID                     ReasonCode = original.QuotaID
 )
 
+type RootSquashType = original.RootSquashType
+
+const (
+	AllSquash    RootSquashType = original.AllSquash
+	NoRootSquash RootSquashType = original.NoRootSquash
+	RootSquash   RootSquashType = original.RootSquash
+)
+
 type RoutingChoice = original.RoutingChoice
 
 const (
@@ -284,6 +317,15 @@ const (
 	F Services = original.F
 	Q Services = original.Q
 	T Services = original.T
+)
+
+type ShareAccessTier = original.ShareAccessTier
+
+const (
+	ShareAccessTierCool                 ShareAccessTier = original.ShareAccessTierCool
+	ShareAccessTierHot                  ShareAccessTier = original.ShareAccessTierHot
+	ShareAccessTierPremium              ShareAccessTier = original.ShareAccessTierPremium
+	ShareAccessTierTransactionOptimized ShareAccessTier = original.ShareAccessTierTransactionOptimized
 )
 
 type SignedResource = original.SignedResource
@@ -388,6 +430,7 @@ type CustomDomain = original.CustomDomain
 type DateAfterCreation = original.DateAfterCreation
 type DateAfterModification = original.DateAfterModification
 type DeleteRetentionPolicy = original.DeleteRetentionPolicy
+type DeletedShare = original.DeletedShare
 type Dimension = original.Dimension
 type Encryption = original.Encryption
 type EncryptionScope = original.EncryptionScope
@@ -428,7 +471,17 @@ type ListContainerItem = original.ListContainerItem
 type ListContainerItems = original.ListContainerItems
 type ListContainerItemsIterator = original.ListContainerItemsIterator
 type ListContainerItemsPage = original.ListContainerItemsPage
+type ListQueue = original.ListQueue
+type ListQueueProperties = original.ListQueueProperties
+type ListQueueResource = original.ListQueueResource
+type ListQueueResourceIterator = original.ListQueueResourceIterator
+type ListQueueResourcePage = original.ListQueueResourcePage
+type ListQueueServices = original.ListQueueServices
 type ListServiceSasResponse = original.ListServiceSasResponse
+type ListTableResource = original.ListTableResource
+type ListTableResourceIterator = original.ListTableResourceIterator
+type ListTableResourcePage = original.ListTableResourcePage
+type ListTableServices = original.ListTableServices
 type ManagementPoliciesClient = original.ManagementPoliciesClient
 type ManagementPolicy = original.ManagementPolicy
 type ManagementPolicyAction = original.ManagementPolicyAction
@@ -441,6 +494,12 @@ type ManagementPolicySchema = original.ManagementPolicySchema
 type ManagementPolicySnapShot = original.ManagementPolicySnapShot
 type MetricSpecification = original.MetricSpecification
 type NetworkRuleSet = original.NetworkRuleSet
+type ObjectReplicationPolicies = original.ObjectReplicationPolicies
+type ObjectReplicationPoliciesClient = original.ObjectReplicationPoliciesClient
+type ObjectReplicationPolicy = original.ObjectReplicationPolicy
+type ObjectReplicationPolicyFilter = original.ObjectReplicationPolicyFilter
+type ObjectReplicationPolicyProperties = original.ObjectReplicationPolicyProperties
+type ObjectReplicationPolicyRule = original.ObjectReplicationPolicyRule
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -448,6 +507,7 @@ type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
 type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
 type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
 type PrivateLinkResource = original.PrivateLinkResource
@@ -456,6 +516,12 @@ type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProxyResource = original.ProxyResource
+type Queue = original.Queue
+type QueueClient = original.QueueClient
+type QueueProperties = original.QueueProperties
+type QueueServiceProperties = original.QueueServiceProperties
+type QueueServicePropertiesProperties = original.QueueServicePropertiesProperties
+type QueueServicesClient = original.QueueServicesClient
 type Resource = original.Resource
 type RestorePolicyProperties = original.RestorePolicyProperties
 type Restriction = original.Restriction
@@ -467,6 +533,13 @@ type Sku = original.Sku
 type SkuInformation = original.SkuInformation
 type SkuListResult = original.SkuListResult
 type SkusClient = original.SkusClient
+type Table = original.Table
+type TableClient = original.TableClient
+type TableProperties = original.TableProperties
+type TableServiceProperties = original.TableServiceProperties
+type TableServicePropertiesProperties = original.TableServicePropertiesProperties
+type TableServicesClient = original.TableServicesClient
+type TagFilter = original.TagFilter
 type TagProperty = original.TagProperty
 type TrackedResource = original.TrackedResource
 type UpdateHistoryProperty = original.UpdateHistoryProperty
@@ -539,11 +612,29 @@ func NewListContainerItemsIterator(page ListContainerItemsPage) ListContainerIte
 func NewListContainerItemsPage(getNextPage func(context.Context, ListContainerItems) (ListContainerItems, error)) ListContainerItemsPage {
 	return original.NewListContainerItemsPage(getNextPage)
 }
+func NewListQueueResourceIterator(page ListQueueResourcePage) ListQueueResourceIterator {
+	return original.NewListQueueResourceIterator(page)
+}
+func NewListQueueResourcePage(getNextPage func(context.Context, ListQueueResource) (ListQueueResource, error)) ListQueueResourcePage {
+	return original.NewListQueueResourcePage(getNextPage)
+}
+func NewListTableResourceIterator(page ListTableResourcePage) ListTableResourceIterator {
+	return original.NewListTableResourceIterator(page)
+}
+func NewListTableResourcePage(getNextPage func(context.Context, ListTableResource) (ListTableResource, error)) ListTableResourcePage {
+	return original.NewListTableResourcePage(getNextPage)
+}
 func NewManagementPoliciesClient(subscriptionID string) ManagementPoliciesClient {
 	return original.NewManagementPoliciesClient(subscriptionID)
 }
 func NewManagementPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ManagementPoliciesClient {
 	return original.NewManagementPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewObjectReplicationPoliciesClient(subscriptionID string) ObjectReplicationPoliciesClient {
+	return original.NewObjectReplicationPoliciesClient(subscriptionID)
+}
+func NewObjectReplicationPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ObjectReplicationPoliciesClient {
+	return original.NewObjectReplicationPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -563,11 +654,35 @@ func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesCl
 func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
 	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewQueueClient(subscriptionID string) QueueClient {
+	return original.NewQueueClient(subscriptionID)
+}
+func NewQueueClientWithBaseURI(baseURI string, subscriptionID string) QueueClient {
+	return original.NewQueueClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewQueueServicesClient(subscriptionID string) QueueServicesClient {
+	return original.NewQueueServicesClient(subscriptionID)
+}
+func NewQueueServicesClientWithBaseURI(baseURI string, subscriptionID string) QueueServicesClient {
+	return original.NewQueueServicesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewSkusClient(subscriptionID string) SkusClient {
 	return original.NewSkusClient(subscriptionID)
 }
 func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
 	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTableClient(subscriptionID string) TableClient {
+	return original.NewTableClient(subscriptionID)
+}
+func NewTableClientWithBaseURI(baseURI string, subscriptionID string) TableClient {
+	return original.NewTableClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTableServicesClient(subscriptionID string) TableServicesClient {
+	return original.NewTableServicesClient(subscriptionID)
+}
+func NewTableServicesClientWithBaseURI(baseURI string, subscriptionID string) TableServicesClient {
+	return original.NewTableServicesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewUsagesClient(subscriptionID string) UsagesClient {
 	return original.NewUsagesClient(subscriptionID)
@@ -605,6 +720,9 @@ func PossibleDefaultActionValues() []DefaultAction {
 func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
 	return original.PossibleDirectoryServiceOptionsValues()
 }
+func PossibleEnabledProtocolsValues() []EnabledProtocols {
+	return original.PossibleEnabledProtocolsValues()
+}
 func PossibleEncryptionScopeSourceValues() []EncryptionScopeSource {
 	return original.PossibleEncryptionScopeSourceValues()
 }
@@ -613,6 +731,9 @@ func PossibleEncryptionScopeStateValues() []EncryptionScopeState {
 }
 func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 	return original.PossibleGeoReplicationStatusValues()
+}
+func PossibleGetShareExpandValues() []GetShareExpand {
+	return original.PossibleGetShareExpandValues()
 }
 func PossibleHTTPProtocolValues() []HTTPProtocol {
 	return original.PossibleHTTPProtocolValues()
@@ -647,8 +768,14 @@ func PossibleLeaseStateValues() []LeaseState {
 func PossibleLeaseStatusValues() []LeaseStatus {
 	return original.PossibleLeaseStatusValues()
 }
+func PossibleListContainersIncludeValues() []ListContainersInclude {
+	return original.PossibleListContainersIncludeValues()
+}
 func PossibleListKeyExpandValues() []ListKeyExpand {
 	return original.PossibleListKeyExpandValues()
+}
+func PossibleListSharesExpandValues() []ListSharesExpand {
+	return original.PossibleListSharesExpandValues()
 }
 func PossiblePermissionsValues() []Permissions {
 	return original.PossiblePermissionsValues()
@@ -671,11 +798,17 @@ func PossibleReasonCodeValues() []ReasonCode {
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()
 }
+func PossibleRootSquashTypeValues() []RootSquashType {
+	return original.PossibleRootSquashTypeValues()
+}
 func PossibleRoutingChoiceValues() []RoutingChoice {
 	return original.PossibleRoutingChoiceValues()
 }
 func PossibleServicesValues() []Services {
 	return original.PossibleServicesValues()
+}
+func PossibleShareAccessTierValues() []ShareAccessTier {
+	return original.PossibleShareAccessTierValues()
 }
 func PossibleSignedResourceTypesValues() []SignedResourceTypes {
 	return original.PossibleSignedResourceTypesValues()

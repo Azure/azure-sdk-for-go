@@ -365,18 +365,27 @@ func (client SystemTopicEventSubscriptionsClient) GetFullURLResponder(resp *http
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription.
 // systemTopicName - name of the system topic.
-func (client SystemTopicEventSubscriptionsClient) ListBySystemTopic(ctx context.Context, resourceGroupName string, systemTopicName string) (result EventSubscriptionsListResult, err error) {
+// filter - the query used to filter the search results using OData syntax. Filtering is permitted on the
+// 'name' property only and with limited number of OData operations. These operations are: the 'contains'
+// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+// No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+// 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+// 'westus'.
+// top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
+// 100. If not specified, the default number of results to be returned is 20 items per page.
+func (client SystemTopicEventSubscriptionsClient) ListBySystemTopic(ctx context.Context, resourceGroupName string, systemTopicName string, filter string, top *int32) (result EventSubscriptionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SystemTopicEventSubscriptionsClient.ListBySystemTopic")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.eslr.Response.Response != nil {
+				sc = result.eslr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListBySystemTopicPreparer(ctx, resourceGroupName, systemTopicName)
+	result.fn = client.listBySystemTopicNextResults
+	req, err := client.ListBySystemTopicPreparer(ctx, resourceGroupName, systemTopicName, filter, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.SystemTopicEventSubscriptionsClient", "ListBySystemTopic", nil, "Failure preparing request")
 		return
@@ -384,12 +393,12 @@ func (client SystemTopicEventSubscriptionsClient) ListBySystemTopic(ctx context.
 
 	resp, err := client.ListBySystemTopicSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.eslr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "eventgrid.SystemTopicEventSubscriptionsClient", "ListBySystemTopic", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListBySystemTopicResponder(resp)
+	result.eslr, err = client.ListBySystemTopicResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.SystemTopicEventSubscriptionsClient", "ListBySystemTopic", resp, "Failure responding to request")
 	}
@@ -398,7 +407,7 @@ func (client SystemTopicEventSubscriptionsClient) ListBySystemTopic(ctx context.
 }
 
 // ListBySystemTopicPreparer prepares the ListBySystemTopic request.
-func (client SystemTopicEventSubscriptionsClient) ListBySystemTopicPreparer(ctx context.Context, resourceGroupName string, systemTopicName string) (*http.Request, error) {
+func (client SystemTopicEventSubscriptionsClient) ListBySystemTopicPreparer(ctx context.Context, resourceGroupName string, systemTopicName string, filter string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -408,6 +417,12 @@ func (client SystemTopicEventSubscriptionsClient) ListBySystemTopicPreparer(ctx 
 	const APIVersion = "2020-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -434,6 +449,43 @@ func (client SystemTopicEventSubscriptionsClient) ListBySystemTopicResponder(res
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listBySystemTopicNextResults retrieves the next set of results, if any.
+func (client SystemTopicEventSubscriptionsClient) listBySystemTopicNextResults(ctx context.Context, lastResults EventSubscriptionsListResult) (result EventSubscriptionsListResult, err error) {
+	req, err := lastResults.eventSubscriptionsListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "eventgrid.SystemTopicEventSubscriptionsClient", "listBySystemTopicNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListBySystemTopicSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "eventgrid.SystemTopicEventSubscriptionsClient", "listBySystemTopicNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListBySystemTopicResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventgrid.SystemTopicEventSubscriptionsClient", "listBySystemTopicNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListBySystemTopicComplete enumerates all values, automatically crossing page boundaries as required.
+func (client SystemTopicEventSubscriptionsClient) ListBySystemTopicComplete(ctx context.Context, resourceGroupName string, systemTopicName string, filter string, top *int32) (result EventSubscriptionsListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SystemTopicEventSubscriptionsClient.ListBySystemTopic")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListBySystemTopic(ctx, resourceGroupName, systemTopicName, filter, top)
 	return
 }
 

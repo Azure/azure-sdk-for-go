@@ -115,8 +115,7 @@ func (client ReportsClient) ListByAPIPreparer(ctx context.Context, apimBaseURL s
 // ListByAPISender sends the ListByAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByAPISender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByAPIResponder handles the response to the ListByAPI request. The method always
@@ -250,8 +249,7 @@ func (client ReportsClient) ListByGeoPreparer(ctx context.Context, apimBaseURL s
 // ListByGeoSender sends the ListByGeo request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByGeoSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByGeoResponder handles the response to the ListByGeo request. The method always
@@ -383,8 +381,7 @@ func (client ReportsClient) ListByOperationPreparer(ctx context.Context, apimBas
 // ListByOperationSender sends the ListByOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByOperationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByOperationResponder handles the response to the ListByOperation request. The method always
@@ -516,8 +513,7 @@ func (client ReportsClient) ListByProductPreparer(ctx context.Context, apimBaseU
 // ListByProductSender sends the ListByProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByProductSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByProductResponder handles the response to the ListByProduct request. The method always
@@ -648,8 +644,7 @@ func (client ReportsClient) ListByRequestPreparer(ctx context.Context, apimBaseU
 // ListByRequestSender sends the ListByRequest request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByRequestSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByRequestResponder handles the response to the ListByRequest request. The method always
@@ -746,8 +741,7 @@ func (client ReportsClient) ListBySubscriptionPreparer(ctx context.Context, apim
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
@@ -885,8 +879,7 @@ func (client ReportsClient) ListByTimePreparer(ctx context.Context, apimBaseURL 
 // ListByTimeSender sends the ListByTime request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByTimeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByTimeResponder handles the response to the ListByTime request. The method always
@@ -1018,8 +1011,7 @@ func (client ReportsClient) ListByUserPreparer(ctx context.Context, apimBaseURL 
 // ListByUserSender sends the ListByUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByUserSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByUserResponder handles the response to the ListByUser request. The method always

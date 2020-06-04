@@ -22,7 +22,7 @@ package storagesync
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2019-06-01/storagesync"
+	original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2019-10-01/storagesync"
 )
 
 const (
@@ -186,8 +186,14 @@ type CloudEndpointsPostRestoreFuture = original.CloudEndpointsPostRestoreFuture
 type CloudEndpointsPreBackupFuture = original.CloudEndpointsPreBackupFuture
 type CloudEndpointsPreRestoreFuture = original.CloudEndpointsPreRestoreFuture
 type CloudEndpointsTriggerChangeDetectionFuture = original.CloudEndpointsTriggerChangeDetectionFuture
+type CloudTieringCachePerformance = original.CloudTieringCachePerformance
+type CloudTieringDatePolicyStatus = original.CloudTieringDatePolicyStatus
+type CloudTieringFilesNotTiering = original.CloudTieringFilesNotTiering
+type CloudTieringSpaceSavings = original.CloudTieringSpaceSavings
+type CloudTieringVolumeFreeSpacePolicyStatus = original.CloudTieringVolumeFreeSpacePolicyStatus
 type Error = original.Error
 type ErrorDetails = original.ErrorDetails
+type FilesNotTieringError = original.FilesNotTieringError
 type OperationDisplayInfo = original.OperationDisplayInfo
 type OperationDisplayResource = original.OperationDisplayResource
 type OperationEntity = original.OperationEntity
@@ -224,8 +230,6 @@ type ServerEndpointFilesNotSyncingError = original.ServerEndpointFilesNotSyncing
 type ServerEndpointProperties = original.ServerEndpointProperties
 type ServerEndpointRecallError = original.ServerEndpointRecallError
 type ServerEndpointRecallStatus = original.ServerEndpointRecallStatus
-type ServerEndpointSyncActivityStatus = original.ServerEndpointSyncActivityStatus
-type ServerEndpointSyncSessionStatus = original.ServerEndpointSyncSessionStatus
 type ServerEndpointSyncStatus = original.ServerEndpointSyncStatus
 type ServerEndpointUpdateParameters = original.ServerEndpointUpdateParameters
 type ServerEndpointUpdateProperties = original.ServerEndpointUpdateProperties
@@ -241,11 +245,13 @@ type ServiceProperties = original.ServiceProperties
 type ServiceUpdateParameters = original.ServiceUpdateParameters
 type ServicesClient = original.ServicesClient
 type SubscriptionState = original.SubscriptionState
+type SyncActivityStatus = original.SyncActivityStatus
 type SyncGroup = original.SyncGroup
 type SyncGroupArray = original.SyncGroupArray
 type SyncGroupCreateParameters = original.SyncGroupCreateParameters
 type SyncGroupProperties = original.SyncGroupProperties
 type SyncGroupsClient = original.SyncGroupsClient
+type SyncSessionStatus = original.SyncSessionStatus
 type TrackedResource = original.TrackedResource
 type TriggerChangeDetectionParameters = original.TriggerChangeDetectionParameters
 type TriggerRolloverRequest = original.TriggerRolloverRequest

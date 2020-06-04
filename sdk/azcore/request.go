@@ -8,6 +8,7 @@ package azcore
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
@@ -21,6 +22,15 @@ import (
 const (
 	contentTypeAppJSON = "application/json"
 	contentTypeAppXML  = "application/xml"
+)
+
+// Base64Encoding is usesd to specify which base-64 encoder/decoder to use when
+// encoding/decoding a slice of bytes to/from a string.
+type Base64Encoding int
+
+const (
+	Base64StdFormat Base64Encoding = 0
+	Base64URLFormat Base64Encoding = 1
 )
 
 // Request is an abstraction over the creation of an HTTP request as it passes through the pipeline.
@@ -79,6 +89,25 @@ func (req *Request) Next(ctx context.Context) (*Response, error) {
 	nextReq := *req
 	nextReq.policies = nextReq.policies[1:]
 	return nextPolicy.Do(ctx, &nextReq)
+}
+
+// MarshalAsByteArray will base-64 encode the byte slice v, then calls SetBody.
+// The encoded value is treated as a JSON string.
+func (req *Request) MarshalAsByteArray(v []byte, format Base64Encoding) error {
+	var encode string
+	switch format {
+	case Base64StdFormat:
+		encode = base64.StdEncoding.EncodeToString(v)
+	case Base64URLFormat:
+		// use raw encoding so that '=' characters are omitted as they have special meaning in URLs
+		encode = base64.RawURLEncoding.EncodeToString(v)
+	default:
+		return fmt.Errorf("unrecognized byte array format: %d", format)
+	}
+	// send as a JSON string
+	encode = fmt.Sprintf("\"%s\"", encode)
+	req.Header.Set(HeaderContentType, contentTypeAppJSON)
+	return req.SetBody(NopCloser(strings.NewReader(encode)))
 }
 
 // MarshalAsJSON calls json.Marshal() to get the JSON encoding of v then calls SetBody.

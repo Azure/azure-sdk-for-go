@@ -28,6 +28,7 @@ const (
 	Hourly   Granularity = original.Hourly
 	Minutely Granularity = original.Minutely
 	Monthly  Granularity = original.Monthly
+	Secondly Granularity = original.Secondly
 	Weekly   Granularity = original.Weekly
 	Yearly   Granularity = original.Yearly
 )

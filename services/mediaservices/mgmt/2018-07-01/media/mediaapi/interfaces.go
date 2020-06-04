@@ -53,6 +53,7 @@ type MediaservicesClientAPI interface {
 	ListComplete(ctx context.Context, resourceGroupName string) (result media.ServiceCollectionIterator, err error)
 	ListBySubscription(ctx context.Context) (result media.SubscriptionMediaServiceCollectionPage, err error)
 	ListBySubscriptionComplete(ctx context.Context) (result media.SubscriptionMediaServiceCollectionIterator, err error)
+	ListEdgePolicies(ctx context.Context, resourceGroupName string, accountName string, parameters media.ListEdgePoliciesInput) (result media.EdgePolicies, err error)
 	SyncStorageKeys(ctx context.Context, resourceGroupName string, accountName string, parameters media.SyncStorageKeysInput) (result autorest.Response, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, parameters media.Service) (result media.Service, err error)
 }

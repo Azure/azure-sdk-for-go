@@ -135,7 +135,10 @@ const (
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	SystemAssigned ResourceIdentityType = original.SystemAssigned
+	ResourceIdentityTypeNone                       ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
 type Application = original.Application
@@ -197,6 +200,7 @@ type Plan = original.Plan
 type PlanPatchable = original.PlanPatchable
 type Resource = original.Resource
 type Sku = original.Sku
+type UserAssignedResourceIdentity = original.UserAssignedResourceIdentity
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

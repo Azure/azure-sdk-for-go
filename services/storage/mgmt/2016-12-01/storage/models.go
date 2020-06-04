@@ -190,25 +190,6 @@ func PossibleReasonValues() []Reason {
 	return []Reason{AccountNameInvalid, AlreadyExists}
 }
 
-// ResourceEnum enumerates the values for resource enum.
-type ResourceEnum string
-
-const (
-	// ResourceEnumB ...
-	ResourceEnumB ResourceEnum = "b"
-	// ResourceEnumC ...
-	ResourceEnumC ResourceEnum = "c"
-	// ResourceEnumF ...
-	ResourceEnumF ResourceEnum = "f"
-	// ResourceEnumS ...
-	ResourceEnumS ResourceEnum = "s"
-)
-
-// PossibleResourceEnumValues returns an array of possible values for the ResourceEnum const type.
-func PossibleResourceEnumValues() []ResourceEnum {
-	return []ResourceEnum{ResourceEnumB, ResourceEnumC, ResourceEnumF, ResourceEnumS}
-}
-
 // ResourceTypes enumerates the values for resource types.
 type ResourceTypes string
 
@@ -243,6 +224,25 @@ const (
 // PossibleServicesValues returns an array of possible values for the Services const type.
 func PossibleServicesValues() []Services {
 	return []Services{B, F, Q, T}
+}
+
+// SignedResource enumerates the values for signed resource.
+type SignedResource string
+
+const (
+	// SignedResourceB ...
+	SignedResourceB SignedResource = "b"
+	// SignedResourceC ...
+	SignedResourceC SignedResource = "c"
+	// SignedResourceF ...
+	SignedResourceF SignedResource = "f"
+	// SignedResourceS ...
+	SignedResourceS SignedResource = "s"
+)
+
+// PossibleSignedResourceValues returns an array of possible values for the SignedResource const type.
+func PossibleSignedResourceValues() []SignedResource {
+	return []SignedResource{SignedResourceB, SignedResourceC, SignedResourceF, SignedResourceS}
 }
 
 // SkuName enumerates the values for sku name.
@@ -616,8 +616,8 @@ type AccountSasParameters struct {
 	Services Services `json:"signedServices,omitempty"`
 	// ResourceTypes - The signed resource types that are accessible with the account SAS. Service (s): Access to service-level APIs; Container (c): Access to container-level APIs; Object (o): Access to object-level APIs for blobs, queue messages, table entities, and files. Possible values include: 'ResourceTypesS', 'ResourceTypesC', 'ResourceTypesO'
 	ResourceTypes ResourceTypes `json:"signedResourceTypes,omitempty"`
-	// Permissions - The signed permissions for the account SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p). Possible values include: 'R', 'D', 'W', 'L', 'A', 'C', 'U', 'P'
-	Permissions Permissions `json:"signedPermission,omitempty"`
+	// Permissions - The signed permissions for the account SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p). Possible values include: 'Permissions1R', 'Permissions1D', 'Permissions1W', 'Permissions1L', 'Permissions1A', 'Permissions1C', 'Permissions1U', 'Permissions1P'
+	Permissions Permissions1 `json:"signedPermission,omitempty"`
 	// IPAddressOrRange - An IP address or a range of IP addresses from which to accept requests.
 	IPAddressOrRange *string `json:"signedIp,omitempty"`
 	// Protocols - The protocol permitted for a request made with the account SAS. Possible values include: 'Httpshttp', 'HTTPS'
@@ -829,10 +829,10 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 type ServiceSasParameters struct {
 	// CanonicalizedResource - The canonical path to the signed resource.
 	CanonicalizedResource *string `json:"canonicalizedResource,omitempty"`
-	// Resource - The signed services accessible with the service SAS. Possible values include: Blob (b), Container (c), File (f), Share (s). Possible values include: 'ResourceEnumB', 'ResourceEnumC', 'ResourceEnumF', 'ResourceEnumS'
-	Resource ResourceEnum `json:"signedResource,omitempty"`
-	// Permissions - The signed permissions for the service SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p). Possible values include: 'Permissions1R', 'Permissions1D', 'Permissions1W', 'Permissions1L', 'Permissions1A', 'Permissions1C', 'Permissions1U', 'Permissions1P'
-	Permissions Permissions1 `json:"signedPermission,omitempty"`
+	// Resource - The signed services accessible with the service SAS. Possible values include: Blob (b), Container (c), File (f), Share (s). Possible values include: 'SignedResourceB', 'SignedResourceC', 'SignedResourceF', 'SignedResourceS'
+	Resource SignedResource `json:"signedResource,omitempty"`
+	// Permissions - The signed permissions for the service SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p). Possible values include: 'R', 'D', 'W', 'L', 'A', 'C', 'U', 'P'
+	Permissions Permissions `json:"signedPermission,omitempty"`
 	// IPAddressOrRange - An IP address or a range of IP addresses from which to accept requests.
 	IPAddressOrRange *string `json:"signedIp,omitempty"`
 	// Protocols - The protocol permitted for a request made with the account SAS. Possible values include: 'Httpshttp', 'HTTPS'

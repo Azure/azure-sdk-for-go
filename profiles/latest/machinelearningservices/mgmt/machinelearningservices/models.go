@@ -22,7 +22,7 @@ package machinelearningservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2020-01-01/machinelearningservices"
+	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2020-04-01/machinelearningservices"
 )
 
 const (
@@ -107,9 +107,11 @@ const (
 type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
 
 const (
-	Approved PrivateEndpointServiceConnectionStatus = original.Approved
-	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
-	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
+	Approved     PrivateEndpointServiceConnectionStatus = original.Approved
+	Disconnected PrivateEndpointServiceConnectionStatus = original.Disconnected
+	Pending      PrivateEndpointServiceConnectionStatus = original.Pending
+	Rejected     PrivateEndpointServiceConnectionStatus = original.Rejected
+	Timeout      PrivateEndpointServiceConnectionStatus = original.Timeout
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -149,7 +151,10 @@ const (
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	SystemAssigned ResourceIdentityType = original.SystemAssigned
+	None                       ResourceIdentityType = original.None
+	SystemAssigned             ResourceIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               ResourceIdentityType = original.UserAssigned
 )
 
 type Status = original.Status
@@ -225,6 +230,7 @@ type ErrorResponse = original.ErrorResponse
 type HDInsight = original.HDInsight
 type HDInsightProperties = original.HDInsightProperties
 type Identity = original.Identity
+type IdentityUserAssignedIdentitiesValue = original.IdentityUserAssignedIdentitiesValue
 type KeyVaultProperties = original.KeyVaultProperties
 type ListAmlUserFeatureResult = original.ListAmlUserFeatureResult
 type ListAmlUserFeatureResultIterator = original.ListAmlUserFeatureResultIterator
@@ -272,6 +278,8 @@ type Restriction = original.Restriction
 type SKUCapability = original.SKUCapability
 type ScaleSettings = original.ScaleSettings
 type ServicePrincipalCredentials = original.ServicePrincipalCredentials
+type SharedPrivateLinkResource = original.SharedPrivateLinkResource
+type SharedPrivateLinkResourceProperty = original.SharedPrivateLinkResourceProperty
 type Sku = original.Sku
 type SkuListResult = original.SkuListResult
 type SkuListResultIterator = original.SkuListResultIterator

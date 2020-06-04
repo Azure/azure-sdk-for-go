@@ -44,14 +44,13 @@ func NewPublishedArtifactsClientWithBaseURI(baseURI string) PublishedArtifactsCl
 
 // Get get an artifact for a published blueprint definition.
 // Parameters:
-// scope - the scope of the resource. Valid scopes are: management group (format:
+// resourceScope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
-// use.
+// '/subscriptions/{subscriptionId}').
 // blueprintName - name of the blueprint definition.
 // versionID - version of the published blueprint definition.
 // artifactName - name of the blueprint artifact.
-func (client PublishedArtifactsClient) Get(ctx context.Context, scope string, blueprintName string, versionID string, artifactName string) (result ArtifactModel, err error) {
+func (client PublishedArtifactsClient) Get(ctx context.Context, resourceScope string, blueprintName string, versionID string, artifactName string) (result ArtifactModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedArtifactsClient.Get")
 		defer func() {
@@ -62,7 +61,7 @@ func (client PublishedArtifactsClient) Get(ctx context.Context, scope string, bl
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, scope, blueprintName, versionID, artifactName)
+	req, err := client.GetPreparer(ctx, resourceScope, blueprintName, versionID, artifactName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "Get", nil, "Failure preparing request")
 		return
@@ -84,11 +83,11 @@ func (client PublishedArtifactsClient) Get(ctx context.Context, scope string, bl
 }
 
 // GetPreparer prepares the Get request.
-func (client PublishedArtifactsClient) GetPreparer(ctx context.Context, scope string, blueprintName string, versionID string, artifactName string) (*http.Request, error) {
+func (client PublishedArtifactsClient) GetPreparer(ctx context.Context, resourceScope string, blueprintName string, versionID string, artifactName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"artifactName":  autorest.Encode("path", artifactName),
 		"blueprintName": autorest.Encode("path", blueprintName),
-		"scope":         scope,
+		"resourceScope": resourceScope,
 		"versionId":     autorest.Encode("path", versionID),
 	}
 
@@ -100,7 +99,7 @@ func (client PublishedArtifactsClient) GetPreparer(ctx context.Context, scope st
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}/artifacts/{artifactName}", pathParameters),
+		autorest.WithPathParameters("/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}/artifacts/{artifactName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -126,13 +125,12 @@ func (client PublishedArtifactsClient) GetResponder(resp *http.Response) (result
 
 // List list artifacts for a version of a published blueprint definition.
 // Parameters:
-// scope - the scope of the resource. Valid scopes are: management group (format:
+// resourceScope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
-// use.
+// '/subscriptions/{subscriptionId}').
 // blueprintName - name of the blueprint definition.
 // versionID - version of the published blueprint definition.
-func (client PublishedArtifactsClient) List(ctx context.Context, scope string, blueprintName string, versionID string) (result ArtifactListPage, err error) {
+func (client PublishedArtifactsClient) List(ctx context.Context, resourceScope string, blueprintName string, versionID string) (result ArtifactListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedArtifactsClient.List")
 		defer func() {
@@ -144,7 +142,7 @@ func (client PublishedArtifactsClient) List(ctx context.Context, scope string, b
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, scope, blueprintName, versionID)
+	req, err := client.ListPreparer(ctx, resourceScope, blueprintName, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "List", nil, "Failure preparing request")
 		return
@@ -166,10 +164,10 @@ func (client PublishedArtifactsClient) List(ctx context.Context, scope string, b
 }
 
 // ListPreparer prepares the List request.
-func (client PublishedArtifactsClient) ListPreparer(ctx context.Context, scope string, blueprintName string, versionID string) (*http.Request, error) {
+func (client PublishedArtifactsClient) ListPreparer(ctx context.Context, resourceScope string, blueprintName string, versionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"blueprintName": autorest.Encode("path", blueprintName),
-		"scope":         scope,
+		"resourceScope": resourceScope,
 		"versionId":     autorest.Encode("path", versionID),
 	}
 
@@ -181,7 +179,7 @@ func (client PublishedArtifactsClient) ListPreparer(ctx context.Context, scope s
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}/artifacts", pathParameters),
+		autorest.WithPathParameters("/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}/artifacts", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -227,7 +225,7 @@ func (client PublishedArtifactsClient) listNextResults(ctx context.Context, last
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client PublishedArtifactsClient) ListComplete(ctx context.Context, scope string, blueprintName string, versionID string) (result ArtifactListIterator, err error) {
+func (client PublishedArtifactsClient) ListComplete(ctx context.Context, resourceScope string, blueprintName string, versionID string) (result ArtifactListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedArtifactsClient.List")
 		defer func() {
@@ -238,6 +236,6 @@ func (client PublishedArtifactsClient) ListComplete(ctx context.Context, scope s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, scope, blueprintName, versionID)
+	result.page, err = client.List(ctx, resourceScope, blueprintName, versionID)
 	return
 }

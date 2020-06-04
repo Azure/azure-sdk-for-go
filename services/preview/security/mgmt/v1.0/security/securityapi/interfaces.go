@@ -23,6 +23,35 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// SecureScoresClientAPI contains the set of methods on the SecureScoresClient type.
+type SecureScoresClientAPI interface {
+	Get(ctx context.Context, secureScoreName string) (result security.SecureScoreItem, err error)
+	List(ctx context.Context) (result security.SecureScoresListPage, err error)
+	ListComplete(ctx context.Context) (result security.SecureScoresListIterator, err error)
+}
+
+var _ SecureScoresClientAPI = (*security.SecureScoresClient)(nil)
+
+// SecureScoreControlsClientAPI contains the set of methods on the SecureScoreControlsClient type.
+type SecureScoreControlsClientAPI interface {
+	List(ctx context.Context, expand security.ExpandControlsEnum) (result security.SecureScoreControlListPage, err error)
+	ListComplete(ctx context.Context, expand security.ExpandControlsEnum) (result security.SecureScoreControlListIterator, err error)
+	ListBySecureScore(ctx context.Context, secureScoreName string, expand security.ExpandControlsEnum) (result security.SecureScoreControlListPage, err error)
+	ListBySecureScoreComplete(ctx context.Context, secureScoreName string, expand security.ExpandControlsEnum) (result security.SecureScoreControlListIterator, err error)
+}
+
+var _ SecureScoreControlsClientAPI = (*security.SecureScoreControlsClient)(nil)
+
+// SecureScoreControlDefinitionsClientAPI contains the set of methods on the SecureScoreControlDefinitionsClient type.
+type SecureScoreControlDefinitionsClientAPI interface {
+	List(ctx context.Context) (result security.SecureScoreControlDefinitionListPage, err error)
+	ListComplete(ctx context.Context) (result security.SecureScoreControlDefinitionListIterator, err error)
+	ListBySubscription(ctx context.Context) (result security.SecureScoreControlDefinitionListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result security.SecureScoreControlDefinitionListIterator, err error)
+}
+
+var _ SecureScoreControlDefinitionsClientAPI = (*security.SecureScoreControlDefinitionsClient)(nil)
+
 // AutomationsClientAPI contains the set of methods on the AutomationsClient type.
 type AutomationsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, automationName string, automation security.Automation) (result security.Automation, err error)
@@ -163,7 +192,7 @@ var _ SettingsClientAPI = (*security.SettingsClient)(nil)
 
 // InformationProtectionPoliciesClientAPI contains the set of methods on the InformationProtectionPoliciesClient type.
 type InformationProtectionPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, scope string, informationProtectionPolicyName string) (result security.InformationProtectionPolicy, err error)
+	CreateOrUpdate(ctx context.Context, scope string, informationProtectionPolicyName string, informationProtectionPolicy security.InformationProtectionPolicy) (result security.InformationProtectionPolicy, err error)
 	Get(ctx context.Context, scope string, informationProtectionPolicyName string) (result security.InformationProtectionPolicy, err error)
 	List(ctx context.Context, scope string) (result security.InformationProtectionPolicyListPage, err error)
 	ListComplete(ctx context.Context, scope string) (result security.InformationProtectionPolicyListIterator, err error)
@@ -255,6 +284,7 @@ var _ JitNetworkAccessPoliciesClientAPI = (*security.JitNetworkAccessPoliciesCli
 
 // AdaptiveApplicationControlsClientAPI contains the set of methods on the AdaptiveApplicationControlsClient type.
 type AdaptiveApplicationControlsClientAPI interface {
+	Delete(ctx context.Context, groupName string) (result autorest.Response, err error)
 	Get(ctx context.Context, groupName string) (result security.AppWhitelistingGroup, err error)
 	List(ctx context.Context, includePathRecommendations *bool, summary *bool) (result security.AppWhitelistingGroups, err error)
 	Put(ctx context.Context, groupName string, body security.AppWhitelistingPutGroupData) (result security.AppWhitelistingGroup, err error)
@@ -304,3 +334,14 @@ type AdaptiveNetworkHardeningsClientAPI interface {
 }
 
 var _ AdaptiveNetworkHardeningsClientAPI = (*security.AdaptiveNetworkHardeningsClient)(nil)
+
+// AlertsSuppressionRulesClientAPI contains the set of methods on the AlertsSuppressionRulesClient type.
+type AlertsSuppressionRulesClientAPI interface {
+	Delete(ctx context.Context, alertsSuppressionRuleName string) (result autorest.Response, err error)
+	Get(ctx context.Context, alertsSuppressionRuleName string) (result security.AlertsSuppressionRule, err error)
+	List(ctx context.Context, alertType string) (result security.AlertsSuppressionRulesListPage, err error)
+	ListComplete(ctx context.Context, alertType string) (result security.AlertsSuppressionRulesListIterator, err error)
+	Update(ctx context.Context, alertsSuppressionRuleName string, alertsSuppressionRule security.AlertsSuppressionRule) (result security.AlertsSuppressionRule, err error)
+}
+
+var _ AlertsSuppressionRulesClientAPI = (*security.AlertsSuppressionRulesClient)(nil)

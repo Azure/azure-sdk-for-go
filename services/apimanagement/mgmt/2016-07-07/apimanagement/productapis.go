@@ -122,8 +122,7 @@ func (client ProductApisClient) AddPreparer(ctx context.Context, resourceGroupNa
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductApisClient) AddSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // AddResponder handles the response to the Add request. The method always
@@ -237,8 +236,7 @@ func (client ProductApisClient) ListByProductPreparer(ctx context.Context, resou
 // ListByProductSender sends the ListByProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductApisClient) ListByProductSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByProductResponder handles the response to the ListByProduct request. The method always
@@ -371,8 +369,7 @@ func (client ProductApisClient) RemovePreparer(ctx context.Context, resourceGrou
 // RemoveSender sends the Remove request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductApisClient) RemoveSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RemoveResponder handles the response to the Remove request. The method always

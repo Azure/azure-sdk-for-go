@@ -76,23 +76,3 @@ type OperationsClientAPI interface {
 }
 
 var _ OperationsClientAPI = (*operationalinsights.OperationsClient)(nil)
-
-// PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
-type PrivateLinkResourcesClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, workspaceName string, groupName string) (result operationalinsights.PrivateLinkResource, err error)
-	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.PrivateLinkResourceListResultPage, err error)
-	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.PrivateLinkResourceListResultIterator, err error)
-}
-
-var _ PrivateLinkResourcesClientAPI = (*operationalinsights.PrivateLinkResourcesClient)(nil)
-
-// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
-type PrivateEndpointConnectionsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, parameters operationalinsights.PrivateEndpointConnection) (result operationalinsights.PrivateEndpointConnectionsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string) (result operationalinsights.PrivateEndpointConnectionsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string) (result operationalinsights.PrivateEndpointConnection, err error)
-	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.PrivateEndpointConnectionListResultPage, err error)
-	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.PrivateEndpointConnectionListResultIterator, err error)
-}
-
-var _ PrivateEndpointConnectionsClientAPI = (*operationalinsights.PrivateEndpointConnectionsClient)(nil)

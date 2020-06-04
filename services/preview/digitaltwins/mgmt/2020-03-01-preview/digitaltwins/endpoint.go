@@ -23,7 +23,6 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
-	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -33,13 +32,13 @@ type EndpointClient struct {
 }
 
 // NewEndpointClient creates an instance of the EndpointClient client.
-func NewEndpointClient(subscriptionID uuid.UUID) EndpointClient {
+func NewEndpointClient(subscriptionID string) EndpointClient {
 	return NewEndpointClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewEndpointClientWithBaseURI creates an instance of the EndpointClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewEndpointClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) EndpointClient {
+func NewEndpointClientWithBaseURI(baseURI string, subscriptionID string) EndpointClient {
 	return EndpointClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
@@ -130,7 +129,6 @@ func (client EndpointClient) CreateOrUpdateSender(req *http.Request) (future End
 func (client EndpointClient) CreateOrUpdateResponder(resp *http.Response) (result EndpointResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -222,7 +220,6 @@ func (client EndpointClient) DeleteSender(req *http.Request) (future EndpointDel
 func (client EndpointClient) DeleteResponder(resp *http.Response) (result EndpointResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -314,7 +311,6 @@ func (client EndpointClient) GetSender(req *http.Request) (*http.Response, error
 func (client EndpointClient) GetResponder(resp *http.Response) (result EndpointResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -401,7 +397,6 @@ func (client EndpointClient) ListSender(req *http.Request) (*http.Response, erro
 func (client EndpointClient) ListResponder(resp *http.Response) (result EndpointResourceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

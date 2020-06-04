@@ -622,6 +622,8 @@ type GraphQueryResource struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name. This is GUID value. The display name should be assigned within properties field.
 	Name *string `json:"name,omitempty"`
+	// Location - The location of the resource
+	Location *string `json:"location,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 	// ETag - This will be used to handle Optimistic Concurrency. If not present, it will always overwrite the existing resource without checking conflict.
@@ -635,6 +637,9 @@ func (gqr GraphQueryResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if gqr.GraphQueryProperties != nil {
 		objectMap["properties"] = gqr.GraphQueryProperties
+	}
+	if gqr.Location != nil {
+		objectMap["location"] = gqr.Location
 	}
 	if gqr.ETag != nil {
 		objectMap["eTag"] = gqr.ETag
@@ -680,6 +685,15 @@ func (gqr *GraphQueryResource) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				gqr.Name = &name
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				gqr.Location = &location
 			}
 		case "type":
 			if v != nil {
@@ -1064,6 +1078,8 @@ type Resource struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name. This is GUID value. The display name should be assigned within properties field.
 	Name *string `json:"name,omitempty"`
+	// Location - The location of the resource
+	Location *string `json:"location,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 	// ETag - This will be used to handle Optimistic Concurrency. If not present, it will always overwrite the existing resource without checking conflict.
@@ -1075,6 +1091,9 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
 	if r.ETag != nil {
 		objectMap["eTag"] = r.ETag
 	}

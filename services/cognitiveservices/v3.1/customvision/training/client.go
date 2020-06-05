@@ -121,7 +121,6 @@ func (client BaseClient) CreateImageRegionsSender(req *http.Request) (*http.Resp
 func (client BaseClient) CreateImageRegionsResponder(resp *http.Response) (result ImageRegionCreateSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -217,7 +216,6 @@ func (client BaseClient) CreateImagesFromDataSender(req *http.Request) (*http.Re
 func (client BaseClient) CreateImagesFromDataResponder(resp *http.Response) (result ImageCreateSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -293,7 +291,6 @@ func (client BaseClient) CreateImagesFromFilesSender(req *http.Request) (*http.R
 func (client BaseClient) CreateImagesFromFilesResponder(resp *http.Response) (result ImageCreateSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -369,7 +366,6 @@ func (client BaseClient) CreateImagesFromPredictionsSender(req *http.Request) (*
 func (client BaseClient) CreateImagesFromPredictionsResponder(resp *http.Response) (result ImageCreateSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -445,7 +441,6 @@ func (client BaseClient) CreateImagesFromUrlsSender(req *http.Request) (*http.Re
 func (client BaseClient) CreateImagesFromUrlsResponder(resp *http.Response) (result ImageCreateSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -520,7 +515,6 @@ func (client BaseClient) CreateImageTagsSender(req *http.Request) (*http.Respons
 func (client BaseClient) CreateImageTagsResponder(resp *http.Response) (result ImageTagCreateSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -609,7 +603,6 @@ func (client BaseClient) CreateProjectSender(req *http.Request) (*http.Response,
 func (client BaseClient) CreateProjectResponder(resp *http.Response) (result Project, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -695,7 +688,6 @@ func (client BaseClient) CreateTagSender(req *http.Request) (*http.Response, err
 func (client BaseClient) CreateTagResponder(resp *http.Response) (result Tag, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -782,7 +774,6 @@ func (client BaseClient) DeleteImageRegionsSender(req *http.Request) (*http.Resp
 func (client BaseClient) DeleteImageRegionsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -879,7 +870,6 @@ func (client BaseClient) DeleteImagesSender(req *http.Request) (*http.Response, 
 func (client BaseClient) DeleteImagesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -972,7 +962,6 @@ func (client BaseClient) DeleteImageTagsSender(req *http.Request) (*http.Respons
 func (client BaseClient) DeleteImageTagsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1045,7 +1034,6 @@ func (client BaseClient) DeleteIterationSender(req *http.Request) (*http.Respons
 func (client BaseClient) DeleteIterationResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1131,7 +1119,6 @@ func (client BaseClient) DeletePredictionSender(req *http.Request) (*http.Respon
 func (client BaseClient) DeletePredictionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1202,7 +1189,6 @@ func (client BaseClient) DeleteProjectSender(req *http.Request) (*http.Response,
 func (client BaseClient) DeleteProjectResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1275,7 +1261,6 @@ func (client BaseClient) DeleteTagSender(req *http.Request) (*http.Response, err
 func (client BaseClient) DeleteTagResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1358,7 +1343,6 @@ func (client BaseClient) ExportIterationSender(req *http.Request) (*http.Respons
 func (client BaseClient) ExportIterationResponder(resp *http.Response) (result Export, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1430,7 +1414,6 @@ func (client BaseClient) GetDomainSender(req *http.Request) (*http.Response, err
 func (client BaseClient) GetDomainResponder(resp *http.Response) (result Domain, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1496,7 +1479,6 @@ func (client BaseClient) GetDomainsSender(req *http.Request) (*http.Response, er
 func (client BaseClient) GetDomainsResponder(resp *http.Response) (result ListDomain, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1570,7 +1552,6 @@ func (client BaseClient) GetExportsSender(req *http.Request) (*http.Response, er
 func (client BaseClient) GetExportsResponder(resp *http.Response) (result ListExport, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1653,7 +1634,6 @@ func (client BaseClient) GetImagePerformanceCountSender(req *http.Request) (*htt
 func (client BaseClient) GetImagePerformanceCountResponder(resp *http.Response) (result Int32, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1768,7 +1748,6 @@ func (client BaseClient) GetImagePerformancesSender(req *http.Request) (*http.Re
 func (client BaseClient) GetImagePerformancesResponder(resp *http.Response) (result ListImagePerformance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1843,7 +1822,6 @@ func (client BaseClient) GetImageRegionProposalsSender(req *http.Request) (*http
 func (client BaseClient) GetImageRegionProposalsResponder(resp *http.Response) (result ImageRegionProposal, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1937,7 +1915,6 @@ func (client BaseClient) GetImagesByIdsSender(req *http.Request) (*http.Response
 func (client BaseClient) GetImagesByIdsResponder(resp *http.Response) (result ListImage, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2011,7 +1988,6 @@ func (client BaseClient) GetIterationSender(req *http.Request) (*http.Response, 
 func (client BaseClient) GetIterationResponder(resp *http.Response) (result Iteration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2096,7 +2072,6 @@ func (client BaseClient) GetIterationPerformanceSender(req *http.Request) (*http
 func (client BaseClient) GetIterationPerformanceResponder(resp *http.Response) (result IterationPerformance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2168,7 +2143,6 @@ func (client BaseClient) GetIterationsSender(req *http.Request) (*http.Response,
 func (client BaseClient) GetIterationsResponder(resp *http.Response) (result ListIteration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2240,7 +2214,6 @@ func (client BaseClient) GetProjectSender(req *http.Request) (*http.Response, er
 func (client BaseClient) GetProjectResponder(resp *http.Response) (result Project, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2306,7 +2279,6 @@ func (client BaseClient) GetProjectsSender(req *http.Request) (*http.Response, e
 func (client BaseClient) GetProjectsResponder(resp *http.Response) (result ListProject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2387,7 +2359,6 @@ func (client BaseClient) GetTagSender(req *http.Request) (*http.Response, error)
 func (client BaseClient) GetTagResponder(resp *http.Response) (result Tag, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2472,7 +2443,6 @@ func (client BaseClient) GetTaggedImageCountSender(req *http.Request) (*http.Res
 func (client BaseClient) GetTaggedImageCountResponder(resp *http.Response) (result Int32, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2589,7 +2559,6 @@ func (client BaseClient) GetTaggedImagesSender(req *http.Request) (*http.Respons
 func (client BaseClient) GetTaggedImagesResponder(resp *http.Response) (result ListImage, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2668,7 +2637,6 @@ func (client BaseClient) GetTagsSender(req *http.Request) (*http.Response, error
 func (client BaseClient) GetTagsResponder(resp *http.Response) (result ListTag, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2749,7 +2717,6 @@ func (client BaseClient) GetUntaggedImageCountSender(req *http.Request) (*http.R
 func (client BaseClient) GetUntaggedImageCountResponder(resp *http.Response) (result Int32, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2855,7 +2822,6 @@ func (client BaseClient) GetUntaggedImagesSender(req *http.Request) (*http.Respo
 func (client BaseClient) GetUntaggedImagesResponder(resp *http.Response) (result ListImage, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2937,7 +2903,6 @@ func (client BaseClient) PublishIterationSender(req *http.Request) (*http.Respon
 func (client BaseClient) PublishIterationResponder(resp *http.Response) (result Bool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3012,7 +2977,6 @@ func (client BaseClient) QueryPredictionsSender(req *http.Request) (*http.Respon
 func (client BaseClient) QueryPredictionsResponder(resp *http.Response) (result PredictionQueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3094,7 +3058,6 @@ func (client BaseClient) QuerySuggestedImageCountSender(req *http.Request) (*htt
 func (client BaseClient) QuerySuggestedImageCountResponder(resp *http.Response) (result SetInt32, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3176,7 +3139,6 @@ func (client BaseClient) QuerySuggestedImagesSender(req *http.Request) (*http.Re
 func (client BaseClient) QuerySuggestedImagesResponder(resp *http.Response) (result SuggestedTagAndRegionQuery, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3269,7 +3231,6 @@ func (client BaseClient) QuickTestImageSender(req *http.Request) (*http.Response
 func (client BaseClient) QuickTestImageResponder(resp *http.Response) (result ImagePrediction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3365,7 +3326,6 @@ func (client BaseClient) QuickTestImageURLSender(req *http.Request) (*http.Respo
 func (client BaseClient) QuickTestImageURLResponder(resp *http.Response) (result ImagePrediction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3456,7 +3416,6 @@ func (client BaseClient) SuggestTagsAndRegionsSender(req *http.Request) (*http.R
 func (client BaseClient) SuggestTagsAndRegionsResponder(resp *http.Response) (result ListSuggestedTagAndRegion, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3551,7 +3510,6 @@ func (client BaseClient) TrainProjectSender(req *http.Request) (*http.Response, 
 func (client BaseClient) TrainProjectResponder(resp *http.Response) (result Iteration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3625,7 +3583,6 @@ func (client BaseClient) UnpublishIterationSender(req *http.Request) (*http.Resp
 func (client BaseClient) UnpublishIterationResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -3716,7 +3673,6 @@ func (client BaseClient) UpdateIterationSender(req *http.Request) (*http.Respons
 func (client BaseClient) UpdateIterationResponder(resp *http.Response) (result Iteration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3796,7 +3752,6 @@ func (client BaseClient) UpdateProjectSender(req *http.Request) (*http.Response,
 func (client BaseClient) UpdateProjectResponder(resp *http.Response) (result Project, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3875,7 +3830,6 @@ func (client BaseClient) UpdateTagSender(req *http.Request) (*http.Response, err
 func (client BaseClient) UpdateTagResponder(resp *http.Response) (result Tag, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

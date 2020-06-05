@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// ClientCertificateCredential enables authentication of a service principal in to Azure Active Directory using a certificate that is assigned to it's App Registration. More information
+// ClientCertificateCredential enables authentication of a service principal to Azure Active Directory using a certificate that is assigned to its App Registration. More information
 // on how to configure certificate authentication can be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-certificate-credentials#register-your-certificate-with-azure-ad
 type ClientCertificateCredential struct {
@@ -25,7 +25,7 @@ type ClientCertificateCredential struct {
 // tenantID: The Azure Active Directory tenant (directory) Id of the service principal.
 // clientID: The client (application) ID of the service principal.
 // clientCertificate: The path to the client certificate that was generated for the App Registration used to authenticate the client.
-// options: allow to configure the management of the requests sent to the Azure Active Directory service.
+// options: configure the management of the requests sent to Azure Active Directory.
 func NewClientCertificateCredential(tenantID string, clientID string, clientCertificate string, options *TokenCredentialOptions) (*ClientCertificateCredential, error) {
 	_, err := os.Stat(clientCertificate)
 	if err != nil {
@@ -39,7 +39,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, clientCert
 	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, clientCertificate: clientCertificate, client: c}, nil
 }
 
-// GetToken obtains a token from the Azure Active Directory service, using the certificate in the file path to authenticate.
+// GetToken obtains a token from Azure Active Directory, using the certificate in the file path.
 // scopes: The list of scopes for which the token will have access.
 // ctx: controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.

@@ -35,7 +35,7 @@ type tokenResponse struct {
 	refreshToken string
 }
 
-// AADAuthenticationFailedError is a struct used to marshal responses when authentication has failed
+// AADAuthenticationFailedError is used to unmarshal error responses received from Azure Active Directory
 type AADAuthenticationFailedError struct {
 	Message       string `json:"error"`
 	Description   string `json:"error_description"`
@@ -54,18 +54,19 @@ func (e *AADAuthenticationFailedError) Error() string {
 	return msg
 }
 
-// AuthenticationFailedError is a struct used to marshal responses when authentication has failed
+// AuthenticationFailedError is returned when the authentication request has failed.
 type AuthenticationFailedError struct {
 	inner error
 	msg   string
 }
 
-// Unwrap method on AuthenticationFailedError provides access to the inner error
+// Unwrap method on AuthenticationFailedError provides access to the inner error authentication
+// error returned from Azure Active Directory
 func (e *AuthenticationFailedError) Unwrap() error {
 	return e.inner
 }
 
-// IsNotRetriable allows retry policy to stop execution in case it receives a AuthenticationFailedError
+// IsNotRetriable allows retry policy to stop execution in case it receives an AuthenticationFailedError
 func (e *AuthenticationFailedError) IsNotRetriable() bool {
 	return true
 }
@@ -88,10 +89,13 @@ func newAADAuthenticationFailedError(resp *azcore.Response) error {
 	return authFailed
 }
 
-// CredentialUnavailableError an error type returned when the conditions required to create a credential do not exist
+// CredentialUnavailableError is an error type returned when the conditions required to
+// create a credential do not exist or are unavailable
 type CredentialUnavailableError struct {
+	// CredentialType holds the name of the credential that is unavailable
 	CredentialType string
-	Message        string
+	// Message contains the reason why the credential is unavailable
+	Message string
 }
 
 func (e *CredentialUnavailableError) Error() string {
@@ -103,7 +107,7 @@ func (e *CredentialUnavailableError) IsNotRetriable() bool {
 	return true
 }
 
-// TokenCredentialOptions to configure requests made to Azure Identity Services
+// TokenCredentialOptions are used to configure how requests are made to Azure Active Directory
 type TokenCredentialOptions struct {
 	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
 	AuthorityHost *url.URL
@@ -122,8 +126,7 @@ type TokenCredentialOptions struct {
 	Telemetry azcore.TelemetryOptions
 }
 
-// NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
-// NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
+// setDefaultValues initializes an instance of TokenCredentialOptions with default settings
 func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, error) {
 	authorityHost := AzurePublicCloud
 	if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
@@ -153,7 +156,7 @@ func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, er
 	return c, nil
 }
 
-// NewDefaultPipeline creates a Pipeline using the specified pipeline options
+// newDefaultPipeline creates a pipeline using the specified pipeline options
 func newDefaultPipeline(o TokenCredentialOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {
 		o.HTTPClient = azcore.DefaultHTTPClientTransport()
@@ -167,7 +170,7 @@ func newDefaultPipeline(o TokenCredentialOptions) azcore.Pipeline {
 		azcore.NewRequestLogPolicy(o.LogOptions))
 }
 
-// NewDefaultMSIPipeline creates a Pipeline using the specified pipeline options needed
+// newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
 // for a Managed Identity, such as a MSI specific retry policy
 func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {

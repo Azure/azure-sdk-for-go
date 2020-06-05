@@ -132,7 +132,6 @@ func (client BaseClient) PredictImageSender(req *http.Request) (*http.Response, 
 func (client BaseClient) PredictImageResponder(resp *http.Response) (result ImagePrediction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -219,7 +218,6 @@ func (client BaseClient) PredictImageURLSender(req *http.Request) (*http.Respons
 func (client BaseClient) PredictImageURLResponder(resp *http.Response) (result ImagePrediction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -306,7 +304,6 @@ func (client BaseClient) PredictImageURLWithNoStoreSender(req *http.Request) (*h
 func (client BaseClient) PredictImageURLWithNoStoreResponder(resp *http.Response) (result ImagePrediction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -395,7 +392,6 @@ func (client BaseClient) PredictImageWithNoStoreSender(req *http.Request) (*http
 func (client BaseClient) PredictImageWithNoStoreResponder(resp *http.Response) (result ImagePrediction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

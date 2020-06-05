@@ -119,7 +119,6 @@ func (client BaseClient) GetAppliedReservationListSender(req *http.Request) (*ht
 func (client BaseClient) GetAppliedReservationListResponder(resp *http.Response) (result AppliedReservations, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -199,7 +198,6 @@ func (client BaseClient) GetCatalogSender(req *http.Request) (*http.Response, er
 func (client BaseClient) GetCatalogResponder(resp *http.Response) (result ListCatalog, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

@@ -942,7 +942,7 @@ type ComputeResource struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Identity - READ-ONLY; The identity of the resource.
+	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -956,6 +956,9 @@ type ComputeResource struct {
 func (cr ComputeResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = cr.Properties
+	if cr.Identity != nil {
+		objectMap["identity"] = cr.Identity
+	}
 	if cr.Location != nil {
 		objectMap["location"] = cr.Location
 	}
@@ -2229,7 +2232,7 @@ type Resource struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Identity - READ-ONLY; The identity of the resource.
+	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -2242,6 +2245,9 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if r.Identity != nil {
+		objectMap["identity"] = r.Identity
+	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -2574,7 +2580,7 @@ type Workspace struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Identity - READ-ONLY; The identity of the resource.
+	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -2589,6 +2595,9 @@ func (w Workspace) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if w.WorkspaceProperties != nil {
 		objectMap["properties"] = w.WorkspaceProperties
+	}
+	if w.Identity != nil {
+		objectMap["identity"] = w.Identity
 	}
 	if w.Location != nil {
 		objectMap["location"] = w.Location

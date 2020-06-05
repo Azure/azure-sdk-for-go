@@ -11,8 +11,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// ChainedTokenCredential provides a TokenCredential implementation that chains multiple TokenCredential implementations to be tried in order
-// until one of the GetToken methods returns a non-nil AccessToken.
+// ChainedTokenCredential provides a TokenCredential implementation that chains multiple TokenCredential sources to be tried in order
+// and returns the token from the first successful call to GetToken().
 type ChainedTokenCredential struct {
 	sources []azcore.TokenCredential
 }
@@ -30,7 +30,7 @@ func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedToken
 	return &ChainedTokenCredential{sources: sources}, nil
 }
 
-// GetToken sequentially calls TokenCredential.GetToken on all the specified sources, returning the first non-nil AccessToken.
+// GetToken sequentially calls TokenCredential.GetToken on all the specified sources, returning the token from the first successful call to GetToken().
 func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (token *azcore.AccessToken, err error) {
 	var errList []*CredentialUnavailableError
 	for _, cred := range c.sources { // loop through all of the credentials provided in sources

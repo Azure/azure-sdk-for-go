@@ -60,13 +60,12 @@ type AuthenticationFailedError struct {
 	msg   string
 }
 
-// Unwrap method on AuthenticationFailedError provides access to the inner error authentication
-// error returned from Azure Active Directory
+// Unwrap method on AuthenticationFailedError provides access to the inner error if available.
 func (e *AuthenticationFailedError) Unwrap() error {
 	return e.inner
 }
 
-// IsNotRetriable allows retry policy to stop execution in case it receives an AuthenticationFailedError
+// IsNotRetriable returns true indicating that this is a terminal error.
 func (e *AuthenticationFailedError) IsNotRetriable() bool {
 	return true
 }
@@ -89,8 +88,8 @@ func newAADAuthenticationFailedError(resp *azcore.Response) error {
 	return authFailed
 }
 
-// CredentialUnavailableError is an error type returned when the conditions required to
-// create a credential do not exist or are unavailable
+// CredentialUnavailableError is the error type returned when the conditions required to
+// create a credential do not exist or are unavailable.
 type CredentialUnavailableError struct {
 	// CredentialType holds the name of the credential that is unavailable
 	CredentialType string
@@ -102,7 +101,7 @@ func (e *CredentialUnavailableError) Error() string {
 	return e.CredentialType + ": " + e.Message
 }
 
-// IsNotRetriable allows retry policy to stop execution in case it receives a CredentialUnavailableError
+// IsNotRetriable returns true indicating that this is a terminal error.
 func (e *CredentialUnavailableError) IsNotRetriable() bool {
 	return true
 }

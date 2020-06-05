@@ -116,7 +116,6 @@ func (client IotHubResourceClient) CheckNameAvailabilitySender(req *http.Request
 func (client IotHubResourceClient) CheckNameAvailabilityResponder(resp *http.Response) (result IotHubNameAvailabilityInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -196,7 +195,6 @@ func (client IotHubResourceClient) CreateEventHubConsumerGroupSender(req *http.R
 func (client IotHubResourceClient) CreateEventHubConsumerGroupResponder(resp *http.Response) (result EventHubConsumerGroupInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -300,7 +298,6 @@ func (client IotHubResourceClient) CreateOrUpdateSender(req *http.Request) (futu
 func (client IotHubResourceClient) CreateOrUpdateResponder(resp *http.Response) (result IotHubDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -376,7 +373,6 @@ func (client IotHubResourceClient) DeleteSender(req *http.Request) (future IotHu
 func (client IotHubResourceClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -456,7 +452,6 @@ func (client IotHubResourceClient) DeleteEventHubConsumerGroupSender(req *http.R
 func (client IotHubResourceClient) DeleteEventHubConsumerGroupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -543,7 +538,6 @@ func (client IotHubResourceClient) ExportDevicesSender(req *http.Request) (*http
 func (client IotHubResourceClient) ExportDevicesResponder(resp *http.Response) (result JobResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -619,7 +613,6 @@ func (client IotHubResourceClient) GetSender(req *http.Request) (*http.Response,
 func (client IotHubResourceClient) GetResponder(resp *http.Response) (result IotHubDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -699,7 +692,6 @@ func (client IotHubResourceClient) GetEventHubConsumerGroupSender(req *http.Requ
 func (client IotHubResourceClient) GetEventHubConsumerGroupResponder(resp *http.Response) (result EventHubConsumerGroupInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -778,7 +770,6 @@ func (client IotHubResourceClient) GetJobSender(req *http.Request) (*http.Respon
 func (client IotHubResourceClient) GetJobResponder(resp *http.Response) (result JobResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -857,7 +848,6 @@ func (client IotHubResourceClient) GetKeysForKeyNameSender(req *http.Request) (*
 func (client IotHubResourceClient) GetKeysForKeyNameResponder(resp *http.Response) (result SharedAccessSignatureAuthorizationRule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -934,7 +924,6 @@ func (client IotHubResourceClient) GetQuotaMetricsSender(req *http.Request) (*ht
 func (client IotHubResourceClient) GetQuotaMetricsResponder(resp *http.Response) (result IotHubQuotaMetricInfoListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1047,7 +1036,6 @@ func (client IotHubResourceClient) GetStatsSender(req *http.Request) (*http.Resp
 func (client IotHubResourceClient) GetStatsResponder(resp *http.Response) (result RegistryStatistics, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1124,7 +1112,6 @@ func (client IotHubResourceClient) GetValidSkusSender(req *http.Request) (*http.
 func (client IotHubResourceClient) GetValidSkusResponder(resp *http.Response) (result IotHubSkuDescriptionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1249,7 +1236,6 @@ func (client IotHubResourceClient) ImportDevicesSender(req *http.Request) (*http
 func (client IotHubResourceClient) ImportDevicesResponder(resp *http.Response) (result JobResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1324,7 +1310,6 @@ func (client IotHubResourceClient) ListByResourceGroupSender(req *http.Request) 
 func (client IotHubResourceClient) ListByResourceGroupResponder(resp *http.Response) (result IotHubDescriptionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1433,7 +1418,6 @@ func (client IotHubResourceClient) ListBySubscriptionSender(req *http.Request) (
 func (client IotHubResourceClient) ListBySubscriptionResponder(resp *http.Response) (result IotHubDescriptionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1550,7 +1534,6 @@ func (client IotHubResourceClient) ListEventHubConsumerGroupsSender(req *http.Re
 func (client IotHubResourceClient) ListEventHubConsumerGroupsResponder(resp *http.Response) (result EventHubConsumerGroupsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1665,7 +1648,6 @@ func (client IotHubResourceClient) ListJobsSender(req *http.Request) (*http.Resp
 func (client IotHubResourceClient) ListJobsResponder(resp *http.Response) (result JobResponseListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1780,7 +1762,6 @@ func (client IotHubResourceClient) ListKeysSender(req *http.Request) (*http.Resp
 func (client IotHubResourceClient) ListKeysResponder(resp *http.Response) (result SharedAccessSignatureAuthorizationRuleListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -13,13 +13,13 @@ import (
 )
 
 const (
-	// AzureChina is a global constant to use in order to access the Azure China cloud
+	// AzureChina is a global constant to use in order to access the Azure China cloud.
 	AzureChina = "https://login.chinacloudapi.cn/"
-	// AzureGermany is a global constant to use in order to access the Azure Germany cloud
+	// AzureGermany is a global constant to use in order to access the Azure Germany cloud.
 	AzureGermany = "https://login.microsoftonline.de/"
-	// AzureGovernment is a global constant to use in order to access the Azure Government cloud
+	// AzureGovernment is a global constant to use in order to access the Azure Government cloud.
 	AzureGovernment = "https://login.microsoftonline.us/"
-	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud
+	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud.
 	AzurePublicCloud = "https://login.microsoftonline.com/"
 )
 
@@ -35,7 +35,7 @@ type tokenResponse struct {
 	refreshToken string
 }
 
-// AADAuthenticationFailedError is used to unmarshal error responses received from Azure Active Directory
+// AADAuthenticationFailedError is used to unmarshal error responses received from Azure Active Directory.
 type AADAuthenticationFailedError struct {
 	Message       string `json:"error"`
 	Description   string `json:"error_description"`
@@ -106,26 +106,26 @@ func (e *CredentialUnavailableError) IsNotRetriable() bool {
 	return true
 }
 
-// TokenCredentialOptions are used to configure how requests are made to Azure Active Directory
+// TokenCredentialOptions are used to configure how requests are made to Azure Active Directory.
 type TokenCredentialOptions struct {
 	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
 	AuthorityHost *url.URL
 
-	// HTTPClient sets the transport for making HTTP requests.
-	// Leave this as nil to use the default HTTP transport.
+	// HTTPClient sets the transport for making HTTP requests
+	// Leave this as nil to use the default HTTP transport
 	HTTPClient azcore.Transport
 
-	// LogOptions configures the built-in request logging policy behavior.
+	// LogOptions configures the built-in request logging policy behavior
 	LogOptions azcore.RequestLogOptions
 
-	// Retry configures the built-in retry policy behavior.
+	// Retry configures the built-in retry policy behavior
 	Retry *azcore.RetryOptions
 
-	// Telemetry configures the built-in telemetry policy behavior.
+	// Telemetry configures the built-in telemetry policy behavior
 	Telemetry azcore.TelemetryOptions
 }
 
-// setDefaultValues initializes an instance of TokenCredentialOptions with default settings
+// setDefaultValues initializes an instance of TokenCredentialOptions with default settings.
 func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, error) {
 	authorityHost := AzurePublicCloud
 	if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
@@ -155,7 +155,7 @@ func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, er
 	return c, nil
 }
 
-// newDefaultPipeline creates a pipeline using the specified pipeline options
+// newDefaultPipeline creates a pipeline using the specified pipeline options.
 func newDefaultPipeline(o TokenCredentialOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {
 		o.HTTPClient = azcore.DefaultHTTPClientTransport()
@@ -170,7 +170,7 @@ func newDefaultPipeline(o TokenCredentialOptions) azcore.Pipeline {
 }
 
 // newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
-// for a Managed Identity, such as a MSI specific retry policy
+// for a Managed Identity, such as a MSI specific retry policy.
 func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {
 		o.HTTPClient = azcore.DefaultHTTPClientTransport()

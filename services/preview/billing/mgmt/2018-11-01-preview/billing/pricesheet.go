@@ -108,7 +108,6 @@ func (client PriceSheetClient) DownloadSender(req *http.Request) (future PriceSh
 func (client PriceSheetClient) DownloadResponder(resp *http.Response) (result DownloadURL, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

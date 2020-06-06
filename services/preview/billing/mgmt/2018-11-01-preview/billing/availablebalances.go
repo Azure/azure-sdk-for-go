@@ -109,7 +109,6 @@ func (client AvailableBalancesClient) GetByBillingProfileSender(req *http.Reques
 func (client AvailableBalancesClient) GetByBillingProfileResponder(resp *http.Response) (result AvailableBalance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -109,7 +109,6 @@ func (client PeriodsClient) GetSender(req *http.Request) (*http.Response, error)
 func (client PeriodsClient) GetResponder(resp *http.Response) (result Period, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -208,7 +207,6 @@ func (client PeriodsClient) ListSender(req *http.Request) (*http.Response, error
 func (client PeriodsClient) ListResponder(resp *http.Response) (result PeriodsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

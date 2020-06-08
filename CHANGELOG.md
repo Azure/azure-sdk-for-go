@@ -8,6 +8,12 @@
 | -----------: | :---------: |
 | keyvault | 2019-09-01 |
 
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| resourcegraph | 2018-09-01 |
+
 ### BreakingChanges
 
 | Package Name | API Version |

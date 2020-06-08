@@ -23,7 +23,6 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
-	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -33,13 +32,13 @@ type EndpointClient struct {
 }
 
 // NewEndpointClient creates an instance of the EndpointClient client.
-func NewEndpointClient(subscriptionID uuid.UUID) EndpointClient {
+func NewEndpointClient(subscriptionID string) EndpointClient {
 	return NewEndpointClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewEndpointClientWithBaseURI creates an instance of the EndpointClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewEndpointClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) EndpointClient {
+func NewEndpointClientWithBaseURI(baseURI string, subscriptionID string) EndpointClient {
 	return EndpointClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 

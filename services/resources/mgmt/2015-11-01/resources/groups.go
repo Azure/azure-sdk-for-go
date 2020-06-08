@@ -116,7 +116,6 @@ func (client GroupsClient) CheckExistenceSender(req *http.Request) (*http.Respon
 func (client GroupsClient) CheckExistenceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
@@ -203,7 +202,6 @@ func (client GroupsClient) CreateOrUpdateSender(req *http.Request) (*http.Respon
 func (client GroupsClient) CreateOrUpdateResponder(resp *http.Response) (result Group, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -286,7 +284,6 @@ func (client GroupsClient) DeleteSender(req *http.Request) (future GroupsDeleteF
 func (client GroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -367,7 +364,6 @@ func (client GroupsClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client GroupsClient) GetResponder(resp *http.Response) (result Group, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -448,7 +444,6 @@ func (client GroupsClient) ListSender(req *http.Request) (*http.Response, error)
 func (client GroupsClient) ListResponder(resp *http.Response) (result GroupListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -581,7 +576,6 @@ func (client GroupsClient) ListResourcesSender(req *http.Request) (*http.Respons
 func (client GroupsClient) ListResourcesResponder(resp *http.Response) (result ListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -706,7 +700,6 @@ func (client GroupsClient) PatchSender(req *http.Request) (*http.Response, error
 func (client GroupsClient) PatchResponder(resp *http.Response) (result Group, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

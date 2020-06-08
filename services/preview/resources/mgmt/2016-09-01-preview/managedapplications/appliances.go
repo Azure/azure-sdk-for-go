@@ -135,7 +135,6 @@ func (client AppliancesClient) CreateOrUpdateSender(req *http.Request) (future A
 func (client AppliancesClient) CreateOrUpdateResponder(resp *http.Response) (result Appliance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -228,7 +227,6 @@ func (client AppliancesClient) CreateOrUpdateByIDSender(req *http.Request) (futu
 func (client AppliancesClient) CreateOrUpdateByIDResponder(resp *http.Response) (result Appliance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -315,7 +313,6 @@ func (client AppliancesClient) DeleteSender(req *http.Request) (future Appliance
 func (client AppliancesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -389,7 +386,6 @@ func (client AppliancesClient) DeleteByIDSender(req *http.Request) (future Appli
 func (client AppliancesClient) DeleteByIDResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -475,7 +471,6 @@ func (client AppliancesClient) GetSender(req *http.Request) (*http.Response, err
 func (client AppliancesClient) GetResponder(resp *http.Response) (result Appliance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -550,7 +545,6 @@ func (client AppliancesClient) GetByIDSender(req *http.Request) (*http.Response,
 func (client AppliancesClient) GetByIDResponder(resp *http.Response) (result Appliance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -633,7 +627,6 @@ func (client AppliancesClient) ListByResourceGroupSender(req *http.Request) (*ht
 func (client AppliancesClient) ListByResourceGroupResponder(resp *http.Response) (result ApplianceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -742,7 +735,6 @@ func (client AppliancesClient) ListBySubscriptionSender(req *http.Request) (*htt
 func (client AppliancesClient) ListBySubscriptionResponder(resp *http.Response) (result ApplianceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -872,7 +864,6 @@ func (client AppliancesClient) UpdateSender(req *http.Request) (*http.Response, 
 func (client AppliancesClient) UpdateResponder(resp *http.Response) (result Appliance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -953,7 +944,6 @@ func (client AppliancesClient) UpdateByIDSender(req *http.Request) (*http.Respon
 func (client AppliancesClient) UpdateByIDResponder(resp *http.Response) (result Appliance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

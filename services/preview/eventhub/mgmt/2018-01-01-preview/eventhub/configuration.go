@@ -26,8 +26,7 @@ import (
 	"net/http"
 )
 
-// ConfigurationClient is the azure Event Hubs client for managing Event Hubs Cluster, IPFilter Rules and
-// VirtualNetworkRules resources.
+// ConfigurationClient is the client for the Configuration methods of the Eventhub service.
 type ConfigurationClient struct {
 	BaseClient
 }
@@ -46,7 +45,7 @@ func NewConfigurationClientWithBaseURI(baseURI string, subscriptionID string) Co
 // Get get all Event Hubs Cluster settings - a collection of key/value pairs which represent the quotas and settings
 // imposed on the cluster.
 // Parameters:
-// resourceGroupName - name of the resource group within the Azure subscription.
+// resourceGroupName - name of the resource group within the azure subscription.
 // clusterName - the name of the Event Hubs Cluster.
 func (client ConfigurationClient) Get(ctx context.Context, resourceGroupName string, clusterName string) (result ClusterQuotaConfigurationProperties, err error) {
 	if tracing.IsEnabled() {
@@ -122,7 +121,6 @@ func (client ConfigurationClient) GetSender(req *http.Request) (*http.Response, 
 func (client ConfigurationClient) GetResponder(resp *http.Response) (result ClusterQuotaConfigurationProperties, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -133,7 +131,7 @@ func (client ConfigurationClient) GetResponder(resp *http.Response) (result Clus
 // Patch replace all specified Event Hubs Cluster settings with those contained in the request body. Leaves the
 // settings not specified in the request body unmodified.
 // Parameters:
-// resourceGroupName - name of the resource group within the Azure subscription.
+// resourceGroupName - name of the resource group within the azure subscription.
 // clusterName - the name of the Event Hubs Cluster.
 // parameters - parameters for creating an Event Hubs Cluster resource.
 func (client ConfigurationClient) Patch(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterQuotaConfigurationProperties) (result ClusterQuotaConfigurationProperties, err error) {
@@ -212,7 +210,6 @@ func (client ConfigurationClient) PatchSender(req *http.Request) (*http.Response
 func (client ConfigurationClient) PatchResponder(resp *http.Response) (result ClusterQuotaConfigurationProperties, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

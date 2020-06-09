@@ -42,8 +42,8 @@ func NewSecureScoresClientWithBaseURI(baseURI string, subscriptionID string, asc
 	return SecureScoresClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
-// Get get secure score for a specific initiative within your current scope. For the ASC Default initiative, use
-// 'ascScore'.
+// Get get secure score for a specific Security Center initiative within your current scope. For the ASC Default
+// initiative, use 'ascScore'.
 // Parameters:
 // secureScoreName - the initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
 // request below.

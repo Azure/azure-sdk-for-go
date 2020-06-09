@@ -23,7 +23,6 @@ import (
 	"context"
 
 	original "github.com/Azure/azure-sdk-for-go/services/preview/digitaltwins/mgmt/2020-03-01-preview/digitaltwins"
-	uuid "github.com/satori/go.uuid"
 )
 
 const (
@@ -103,13 +102,13 @@ type ServiceBus = original.ServiceBus
 type SkuInfo = original.SkuInfo
 type UpdateFuture = original.UpdateFuture
 
-func New(subscriptionID uuid.UUID) BaseClient {
+func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewClient(subscriptionID uuid.UUID) Client {
+func NewClient(subscriptionID string) Client {
 	return original.NewClient(subscriptionID)
 }
-func NewClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) Client {
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDescriptionListResultIterator(page DescriptionListResultPage) DescriptionListResultIterator {
@@ -118,10 +117,10 @@ func NewDescriptionListResultIterator(page DescriptionListResultPage) Descriptio
 func NewDescriptionListResultPage(getNextPage func(context.Context, DescriptionListResult) (DescriptionListResult, error)) DescriptionListResultPage {
 	return original.NewDescriptionListResultPage(getNextPage)
 }
-func NewEndpointClient(subscriptionID uuid.UUID) EndpointClient {
+func NewEndpointClient(subscriptionID string) EndpointClient {
 	return original.NewEndpointClient(subscriptionID)
 }
-func NewEndpointClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) EndpointClient {
+func NewEndpointClientWithBaseURI(baseURI string, subscriptionID string) EndpointClient {
 	return original.NewEndpointClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewEndpointResourceListResultIterator(page EndpointResourceListResultPage) EndpointResourceListResultIterator {
@@ -136,13 +135,13 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
-func NewOperationsClient(subscriptionID uuid.UUID) OperationsClient {
+func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) OperationsClient {
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID uuid.UUID) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleEndpointProvisioningStateValues() []EndpointProvisioningState {

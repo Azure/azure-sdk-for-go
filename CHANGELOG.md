@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## `v43.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| keyvault | 2019-09-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| resourcegraph | 2018-09-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| digitaltwins | 2020-03-01-preview |
+
 ## `v43.0.0`
 
 ### New Packages

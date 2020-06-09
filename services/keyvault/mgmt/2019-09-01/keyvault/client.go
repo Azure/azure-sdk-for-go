@@ -1,7 +1,7 @@
-// Package digitaltwins implements the Azure ARM Digitaltwins service API version 2020-03-01-preview.
+// Package keyvault implements the Azure ARM Keyvault service API version 2019-09-01.
 //
-// Azure Digital Twins Client for managing DigitalTwinsInstance
-package digitaltwins
+// The Azure management API provides a RESTful set of web services that interact with Azure Key Vault.
+package keyvault
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,11 +25,11 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Digitaltwins
+	// DefaultBaseURI is the default URI used for the service Keyvault
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Digitaltwins.
+// BaseClient is the base client for Keyvault.
 type BaseClient struct {
 	autorest.Client
 	BaseURI        string

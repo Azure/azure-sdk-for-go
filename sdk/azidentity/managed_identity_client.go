@@ -43,8 +43,8 @@ const (
 	msiTypeUnavailable msiType = 4
 )
 
-// ManagedIdentityClient provides the base for authenticating with Managed Identities on Azure VMs and Cloud Shell
-// This type initializes a default azcore.Pipeline and IdentityClientOptions.
+// managedIdentityClient provides the base for authenticating in managed identity environments
+// This type includes an azcore.Pipeline and TokenCredentialOptions.
 type managedIdentityClient struct {
 	options                TokenCredentialOptions
 	pipeline               azcore.Pipeline
@@ -80,9 +80,9 @@ func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
 	}
 }
 
-// NewManagedIdentityClient creates a new instance of the ManagedIdentityClient with the IdentityClientOptions
+// newManagedIdentityClient creates a new instance of the ManagedIdentityClient with the ManagedIdentityCredentialOptions
 // that are passed into it along with a default pipeline.
-// options: IdentityClientOptions that adds policies for the pipeline and the authority host that
+// options: ManagedIdentityCredentialOptions configure policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
 func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *managedIdentityClient {
 	options = options.setDefaultValues()
@@ -94,18 +94,17 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *manage
 	}
 }
 
-// Authenticate creates an authentication request for a Managed Identity and returns the resulting Access Token or
-// an error in case of authentication failure.
-// ctx: The current request context
-// clientID: The client (application) ID of the service principal
-// scopes: The scopes required for the token
+// authenticate creates an authentication request for a Managed Identity and returns the resulting Access Token if successful.
+// ctx: The current context for controlling the request lifetime.
+// clientID: The client (application) ID of the service principal.
+// scopes: The scopes required for the token.
 func (c *managedIdentityClient) authenticate(ctx context.Context, clientID string, scopes []string) (*azcore.AccessToken, error) {
 	currentMSI, err := c.getMSIType(ctx)
 	if err != nil {
 		return nil, err
 	}
 	// This condition should never be true since getMSIType returns an error in these cases
-	// if msi is unavailable or we were unable to determine the type return a nil access token
+	// if MSI is unavailable or we were unable to determine the type return a nil access token
 	if currentMSI == msiTypeUnavailable || currentMSI == msiTypeUnknown {
 		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
 	}

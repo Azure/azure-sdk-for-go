@@ -7,9 +7,9 @@ import (
 	"os"
 )
 
-// NewEnvironmentCredential creates an instance of the EnvironmentCredential type and reads client secret details from environment variables.
-// If the expected environment variables are not found at this time, the GetToken method will return the default AccessToken when invoked.
-// options: The options used to configure the management of the requests sent to the Azure Active Directory service.
+// NewEnvironmentCredential creates an instance of the ClientSecretCredential type and reads credential details from environment variables.
+// If the expected environment variables are not found at this time, then a CredentialUnavailableError will be returned.
+// options: The options used to configure the management of the requests sent to Azure Active Directory.
 func NewEnvironmentCredential(options *TokenCredentialOptions) (*ClientSecretCredential, error) {
 	tenantID := os.Getenv("AZURE_TENANT_ID")
 	if tenantID == "" {

@@ -20,10 +20,10 @@ type DefaultAzureCredentialOptions struct {
 }
 
 // NewDefaultAzureCredential provides a default ChainedTokenCredential configuration for applications that will be deployed to Azure.  The following credential
-// types will be tried, in order:
+// types will be tried, in the following order:
 // - EnvironmentCredential
 // - ManagedIdentityCredential
-// Consult the documentation of these credential types for more information on how they attempt authentication.
+// Consult the documentation for these credential types for more information on how they attempt authentication.
 func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*ChainedTokenCredential, error) {
 	var creds []azcore.TokenCredential
 	errMsg := ""
@@ -49,7 +49,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 			errMsg += err.Error()
 		}
 	}
-
+	// if no credentials are added to the slice of TokenCredentials then return a CredentialUnavailableError
 	if len(creds) == 0 {
 		return nil, &CredentialUnavailableError{CredentialType: "Default Token Credential", Message: errMsg}
 	}

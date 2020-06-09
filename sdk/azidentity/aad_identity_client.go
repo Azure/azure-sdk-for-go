@@ -41,16 +41,16 @@ const (
 	qpUsername            = "username"
 )
 
-// AADIdentityClient provides the base for authenticating with Client Secret Credentials, Client Certificate Credentials
-// and Environment Credentials. This type initializes a default azcore.Pipeline and IdentityClientOptions.
+// aadIdentityClient provides the base for authenticating with Client Secret Credentials, Client Certificate Credentials
+// and Environment Credentials. This type inlcudes an azcore.Pipeline and TokenCredentialOptions.
 type aadIdentityClient struct {
 	options  TokenCredentialOptions
 	pipeline azcore.Pipeline
 }
 
-// NewAADIdentityClient creates a new instance of the AADIdentityClient with the IdentityClientOptions
+// newAADIdentityClient creates a new instance of the aadIdentityClient with the TokenCredentialOptions
 // that are passed into it along with a default pipeline.
-// options: IdentityClientOptions that adds policies for the pipeline and the authority host that
+// options: TokenCredentialOptions that can configure policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
 func newAADIdentityClient(options *TokenCredentialOptions) (*aadIdentityClient, error) {
 	options, err := options.setDefaultValues()
@@ -60,13 +60,13 @@ func newAADIdentityClient(options *TokenCredentialOptions) (*aadIdentityClient, 
 	return &aadIdentityClient{options: *options, pipeline: newDefaultPipeline(*options)}, nil
 }
 
-// Authenticate creates a client secret authentication request and returns the resulting Access Token or
-// an error in case of authentication failure.
+// refreshAccessToken creates a refresh token request and returns the resulting Access Token or
+// an error in case of an authentication failure.
 // ctx: The current request context
 // tenantID: The Azure Active Directory tenant (directory) Id of the service principal
 // clientID: The client (application) ID of the service principal
 // clientSecret: A client secret that was generated for the App Registration used to authenticate the client
-// scopes: The scopes required for the token
+// scopes: The scopes for the given access token
 func (c *aadIdentityClient) refreshAccessToken(ctx context.Context, tenantID string, clientID string, clientSecret string, refreshToken string, scopes []string) (*tokenResponse, error) {
 	msg, err := c.createRefreshTokenRequest(tenantID, clientID, clientSecret, refreshToken, scopes)
 	if err != nil {
@@ -111,7 +111,7 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 }
 
 // AuthenticateCertificate creates a client certificate authentication request and returns an Access Token or
-// an error in case of authentication failure.
+// an error.
 // ctx: The current request context
 // tenantID: The Azure Active Directory tenant (directory) Id of the service principal
 // clientID: The client (application) ID of the service principal
@@ -242,8 +242,8 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, 
 	return msg, nil
 }
 
-// AuthenticateUsernamePassword creates a client username and password authentication request and returns an Access Token or
-// an error in case of authentication failure.
+// authenticateUsernamePassword creates a client username and password authentication request and returns an Access Token or
+// an error.
 // ctx: The current request context
 // tenantID: The Azure Active Directory tenant (directory) Id of the service principal
 // clientID: The client (application) ID of the service principal
@@ -296,7 +296,7 @@ func createDeviceCodeResult(res *azcore.Response) (*deviceCodeResult, error) {
 }
 
 // authenticateDeviceCode creates a device code authentication request and returns an Access Token or
-// an error in case of authentication failure.
+// an error in case of failure.
 // ctx: The current request context
 // tenantID: The Azure Active Directory tenant (directory) Id of the service principal
 // clientID: The client (application) ID of the service principal

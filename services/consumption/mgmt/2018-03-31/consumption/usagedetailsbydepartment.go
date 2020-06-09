@@ -146,7 +146,6 @@ func (client UsageDetailsByDepartmentClient) ListSender(req *http.Request) (*htt
 func (client UsageDetailsByDepartmentClient) ListResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -296,7 +295,6 @@ func (client UsageDetailsByDepartmentClient) ListByBillingPeriodSender(req *http
 func (client UsageDetailsByDepartmentClient) ListByBillingPeriodResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

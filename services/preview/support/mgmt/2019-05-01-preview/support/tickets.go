@@ -116,7 +116,6 @@ func (client TicketsClient) CheckNameAvailabilitySender(req *http.Request) (*htt
 func (client TicketsClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameAvailabilityOutput, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -222,7 +221,6 @@ func (client TicketsClient) CreateSender(req *http.Request) (future TicketsCreat
 func (client TicketsClient) CreateResponder(resp *http.Response) (result TicketDetails, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -298,7 +296,6 @@ func (client TicketsClient) GetSender(req *http.Request) (*http.Response, error)
 func (client TicketsClient) GetResponder(resp *http.Response) (result TicketDetails, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -386,7 +383,6 @@ func (client TicketsClient) ListSender(req *http.Request) (*http.Response, error
 func (client TicketsClient) ListResponder(resp *http.Response) (result TicketsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -503,7 +499,6 @@ func (client TicketsClient) UpdateSender(req *http.Request) (*http.Response, err
 func (client TicketsClient) UpdateResponder(resp *http.Response) (result TicketDetails, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

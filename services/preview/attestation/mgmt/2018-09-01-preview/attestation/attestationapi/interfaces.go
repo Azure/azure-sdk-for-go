@@ -32,11 +32,12 @@ var _ OperationsClientAPI = (*attestation.OperationsClient)(nil)
 
 // ProvidersClientAPI contains the set of methods on the ProvidersClient type.
 type ProvidersClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, providerName string, creationParams *attestation.ServiceCreationParams) (result attestation.Provider, err error)
+	Create(ctx context.Context, resourceGroupName string, providerName string, creationParams attestation.ServiceCreationParams) (result attestation.Provider, err error)
 	Delete(ctx context.Context, resourceGroupName string, providerName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, providerName string) (result attestation.Provider, err error)
 	List(ctx context.Context) (result attestation.ProviderListResult, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result attestation.ProviderListResult, err error)
+	Update(ctx context.Context, resourceGroupName string, providerName string, updateParams attestation.ServicePatchParams) (result attestation.Provider, err error)
 }
 
 var _ ProvidersClientAPI = (*attestation.ProvidersClient)(nil)

@@ -113,7 +113,6 @@ func (client ReservationsDetailsClient) ListSender(req *http.Request) (*http.Res
 func (client ReservationsDetailsClient) ListResponder(resp *http.Response) (result ReservationDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

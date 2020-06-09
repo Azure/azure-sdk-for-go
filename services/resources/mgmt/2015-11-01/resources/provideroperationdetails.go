@@ -107,7 +107,6 @@ func (client ProviderOperationDetailsClient) ListSender(req *http.Request) (*htt
 func (client ProviderOperationDetailsClient) ListResponder(resp *http.Response) (result ProviderOperationDetailListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

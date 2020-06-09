@@ -26,44 +26,24 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/mgmt/2018-08-31/marketplacefulfillment"
 
-        // SaasSubscriptionStatus enumerates the values for saas subscription status.
-    type SaasSubscriptionStatus string
-
-    const (
-                // NotStarted ...
-        NotStarted SaasSubscriptionStatus = "NotStarted"
-                // PendingFulfillmentStart ...
-        PendingFulfillmentStart SaasSubscriptionStatus = "PendingFulfillmentStart"
-                // Subscribed ...
-        Subscribed SaasSubscriptionStatus = "Subscribed"
-                // Suspended ...
-        Suspended SaasSubscriptionStatus = "Suspended"
-                // Unsubscribed ...
-        Unsubscribed SaasSubscriptionStatus = "Unsubscribed"
-            )
-    // PossibleSaasSubscriptionStatusValues returns an array of possible values for the SaasSubscriptionStatus const type.
-    func PossibleSaasSubscriptionStatusValues() []SaasSubscriptionStatus {
-        return []SaasSubscriptionStatus{NotStarted,PendingFulfillmentStart,Subscribed,Suspended,Unsubscribed}
-    }
-
         // Status enumerates the values for status.
     type Status string
 
     const (
-                // StatusConflict ...
-        StatusConflict Status = "Conflict"
-                // StatusFailed ...
-        StatusFailed Status = "Failed"
-                // StatusInProgress ...
-        StatusInProgress Status = "InProgress"
-                // StatusNotStarted ...
-        StatusNotStarted Status = "NotStarted"
-                // StatusSucceeded ...
-        StatusSucceeded Status = "Succeeded"
+                // Conflict ...
+        Conflict Status = "Conflict"
+                // Failed ...
+        Failed Status = "Failed"
+                // InProgress ...
+        InProgress Status = "InProgress"
+                // NotStarted ...
+        NotStarted Status = "NotStarted"
+                // Succeeded ...
+        Succeeded Status = "Succeeded"
             )
     // PossibleStatusValues returns an array of possible values for the Status const type.
     func PossibleStatusValues() []Status {
-        return []Status{StatusConflict,StatusFailed,StatusInProgress,StatusNotStarted,StatusSucceeded}
+        return []Status{Conflict,Failed,InProgress,NotStarted,Succeeded}
     }
 
             // ErrorResponse error response indicates Microsoft.MarketplaceFulfillment service is not able to process
@@ -97,12 +77,12 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
             // PlanID - Plan Id.
             PlanID *string `json:"planId,omitempty"`
             // Quantity - Quantity.
-            Quantity *string `json:"quantity,omitempty"`
+            Quantity *int32 `json:"quantity,omitempty"`
             // Action - Action of operation.
             Action *string `json:"action,omitempty"`
             // Timestamp - Timestamp of operation.
             Timestamp *date.Time `json:"timestamp,omitempty"`
-            // Status - Status of operation. Possible values include: 'StatusNotStarted', 'StatusInProgress', 'StatusSucceeded', 'StatusFailed', 'StatusConflict'
+            // Status - Status of operation. Possible values include: 'NotStarted', 'InProgress', 'Succeeded', 'Failed', 'Conflict'
             Status Status `json:"status,omitempty"`
             }
 
@@ -206,7 +186,7 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
     }
                 case "quantity":
     if v != nil {
-        var quantity string
+        var quantity int32
         err = json.Unmarshal(*v, &quantity)
     if err != nil {
     return err
@@ -259,12 +239,12 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
             // PlanID - Plan Id.
             PlanID *string `json:"planId,omitempty"`
             // Quantity - Quantity.
-            Quantity *string `json:"quantity,omitempty"`
+            Quantity *int32 `json:"quantity,omitempty"`
             // Action - Action of operation.
             Action *string `json:"action,omitempty"`
             // Timestamp - Timestamp of operation.
             Timestamp *date.Time `json:"timestamp,omitempty"`
-            // Status - Status of operation. Possible values include: 'StatusNotStarted', 'StatusInProgress', 'StatusSucceeded', 'StatusFailed', 'StatusConflict'
+            // Status - Status of operation. Possible values include: 'NotStarted', 'InProgress', 'Succeeded', 'Failed', 'Conflict'
             Status Status `json:"status,omitempty"`
             }
 
@@ -289,8 +269,6 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
             Beneficiary *Tenant `json:"beneficiary,omitempty"`
             // Purchaser - Tenant that purchased the SaaS subscription.
             Purchaser *Tenant `json:"purchaser,omitempty"`
-            // SaasSubscriptionStatus - Indicates the status of the operation. Possible values include: 'NotStarted', 'PendingFulfillmentStart', 'Subscribed', 'Suspended', 'Unsubscribed'
-            SaasSubscriptionStatus SaasSubscriptionStatus `json:"saasSubscriptionStatus,omitempty"`
             }
 
         // MarshalJSON is the custom marshaler for Subscription.
@@ -322,9 +300,6 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
                 }
                 if(s.Purchaser != nil) {
                 objectMap["purchaser"] = s.Purchaser
-                }
-                if(s.SaasSubscriptionStatus != "") {
-                objectMap["saasSubscriptionStatus"] = s.SaasSubscriptionStatus
                 }
                 return json.Marshal(objectMap)
         }
@@ -418,15 +393,6 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
     }
         s.Purchaser = &purchaser
     }
-                case "saasSubscriptionStatus":
-    if v != nil {
-        var saasSubscriptionStatus SaasSubscriptionStatus
-        err = json.Unmarshal(*v, &saasSubscriptionStatus)
-    if err != nil {
-    return err
-    }
-        s.SaasSubscriptionStatus = saasSubscriptionStatus
-    }
             }
         }
 
@@ -451,8 +417,6 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
             Beneficiary *Tenant `json:"beneficiary,omitempty"`
             // Purchaser - Tenant that purchased the SaaS subscription.
             Purchaser *Tenant `json:"purchaser,omitempty"`
-            // SaasSubscriptionStatus - Indicates the status of the operation. Possible values include: 'NotStarted', 'PendingFulfillmentStart', 'Subscribed', 'Suspended', 'Unsubscribed'
-            SaasSubscriptionStatus SaasSubscriptionStatus `json:"saasSubscriptionStatus,omitempty"`
             }
 
             // Tenant the properties of a tenant.

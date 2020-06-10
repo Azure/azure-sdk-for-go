@@ -190,7 +190,7 @@ The following environment variables help determine authentication configuration:
   Service Identity (MSI).
 - `AZURE_AD_RESOURCE`: Specifies the AAD resource ID to use. If not set, it
   defaults to `ResourceManagerEndpoint` for operations with Azure Resource
-  Manager. You can also choose an alternate resource programatically with
+  Manager. You can also choose an alternate resource programmatically with
   `auth.NewAuthorizerFromEnvironmentWithResource(resource string)`.
 
 ### More Authentication Details

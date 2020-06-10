@@ -32,7 +32,7 @@ var (
 	subscriptionID = os.Getenv("AZURE_SUBSCRIPTION_ID")
 )
 
-// returns a credential that can be used to authenticate with blob storage
+// returns a credential that can be used to authenticate with Azure Active Directory
 func getCredential() azcore.Credential {
 	// NewEnvironmentCredential() will read various environment vars
 	// to obtain a credential.  see the documentation for more info.

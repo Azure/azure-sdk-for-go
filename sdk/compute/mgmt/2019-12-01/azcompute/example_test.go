@@ -44,18 +44,15 @@ func getCredential() azcore.Credential {
 }
 
 func getVMClient() VirtualMachinesOperations {
-	vmClient, err := NewClient("https://management.azure.com", getCredential(), nil)
+	vmClient, err := NewDefaultClient(getCredential(), nil)
 	if err != nil {
-		return nil
+		panic(err)
 	}
 	return vmClient.VirtualMachinesOperations(subscriptionID)
 }
 
 func ExampleVirtualMachinesOperations_BeginCreateOrUpdate() {
-	nic, err := getNIC()
-	if err != nil {
-		panic(err)
-	}
+	nic := getNIC()
 	client := getVMClient()
 	vm, err := client.BeginCreateOrUpdate(
 		context.Background(),
@@ -104,7 +101,7 @@ func ExampleVirtualMachinesOperations_BeginCreateOrUpdate() {
 		panic(err)
 	}
 	if result != nil {
-		fmt.Println(*vm.VirtualMachine.Name)
+		fmt.Println(*result.VirtualMachine.Name)
 	}
 	// Output:
 	// sampleVM
@@ -129,23 +126,16 @@ func ExampleVirtualMachinesOperations_List() {
 	if err != nil {
 		panic(err)
 	}
-	var vmListResult []VirtualMachine
 	count := 0
 	for vmList.NextPage(context.Background()) {
 		resp := vmList.PageResponse()
-		if len(*resp.VirtualMachineListResult.Value) == 0 {
-			panic("missing payload")
-		}
 		for _, vm := range *resp.VirtualMachineListResult.Value {
-			vmListResult = append(vmListResult, vm)
+			fmt.Println(*vm.Name)
 		}
 		count++
 	}
 	if err = vmList.Err(); err != nil {
 		panic(err)
-	}
-	for _, vm := range vmListResult {
-		fmt.Println(*vm.Name)
 	}
 	// Output:
 	// sampleVM
@@ -153,7 +143,7 @@ func ExampleVirtualMachinesOperations_List() {
 
 // client for using the operations on the NetworkInterfacesOperations
 func getNetworkInterfacesClient() aznetwork.NetworkInterfacesOperations {
-	nicClient, err := aznetwork.NewClient("https://management.azure.com", getCredential(), nil)
+	nicClient, err := aznetwork.NewDefaultClient(getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -161,7 +151,11 @@ func getNetworkInterfacesClient() aznetwork.NetworkInterfacesOperations {
 }
 
 // returns the specified network interface from Azure
-func getNIC() (*aznetwork.NetworkInterfaceResponse, error) {
+func getNIC() *aznetwork.NetworkInterfaceResponse {
 	client := getNetworkInterfacesClient()
-	return client.Get(context.Background(), resourceGroupName, nicName, nil)
+	nic, err := client.Get(context.Background(), resourceGroupName, nicName, nil)
+	if err != nil {
+		panic(err)
+	}
+	return nic
 }

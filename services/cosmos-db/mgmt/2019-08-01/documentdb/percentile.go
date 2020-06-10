@@ -32,14 +32,14 @@ type PercentileClient struct {
 }
 
 // NewPercentileClient creates an instance of the PercentileClient client.
-func NewPercentileClient(subscriptionID string) PercentileClient {
-	return NewPercentileClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewPercentileClient(subscriptionID string, subscriptionID1 string) PercentileClient {
+	return NewPercentileClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewPercentileClientWithBaseURI creates an instance of the PercentileClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewPercentileClientWithBaseURI(baseURI string, subscriptionID string) PercentileClient {
-	return PercentileClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewPercentileClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PercentileClient {
+	return PercentileClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given database account. This url is only
@@ -127,7 +127,6 @@ func (client PercentileClient) ListMetricsSender(req *http.Request) (*http.Respo
 func (client PercentileClient) ListMetricsResponder(resp *http.Response) (result PercentileMetricListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

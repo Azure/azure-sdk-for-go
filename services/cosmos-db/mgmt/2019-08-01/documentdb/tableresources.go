@@ -32,14 +32,14 @@ type TableResourcesClient struct {
 }
 
 // NewTableResourcesClient creates an instance of the TableResourcesClient client.
-func NewTableResourcesClient(subscriptionID string) TableResourcesClient {
-	return NewTableResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewTableResourcesClient(subscriptionID string, subscriptionID1 string) TableResourcesClient {
+	return NewTableResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewTableResourcesClientWithBaseURI creates an instance of the TableResourcesClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string) TableResourcesClient {
-	return TableResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) TableResourcesClient {
+	return TableResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // CreateUpdateTable create or update an Azure Cosmos DB Table
@@ -133,7 +133,6 @@ func (client TableResourcesClient) CreateUpdateTableSender(req *http.Request) (f
 func (client TableResourcesClient) CreateUpdateTableResponder(resp *http.Response) (result TableGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -223,7 +222,6 @@ func (client TableResourcesClient) DeleteTableSender(req *http.Request) (future 
 func (client TableResourcesClient) DeleteTableResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -312,7 +310,6 @@ func (client TableResourcesClient) GetTableSender(req *http.Request) (*http.Resp
 func (client TableResourcesClient) GetTableResponder(resp *http.Response) (result TableGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -403,7 +400,6 @@ func (client TableResourcesClient) GetTableThroughputSender(req *http.Request) (
 func (client TableResourcesClient) GetTableThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -491,7 +487,6 @@ func (client TableResourcesClient) ListTablesSender(req *http.Request) (*http.Re
 func (client TableResourcesClient) ListTablesResponder(resp *http.Response) (result TableListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -589,7 +584,6 @@ func (client TableResourcesClient) UpdateTableThroughputSender(req *http.Request
 func (client TableResourcesClient) UpdateTableThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

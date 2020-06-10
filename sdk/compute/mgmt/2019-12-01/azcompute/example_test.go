@@ -141,6 +141,23 @@ func ExampleVirtualMachinesOperations_List() {
 	// sampleVM
 }
 
+func ExampleVirtualMachinesOperations_BeginDelete() {
+	client := getVMClient()
+	resp, err := client.BeginDelete(context.Background(), resourceGroupName, vmName)
+	if err != nil {
+		panic(err)
+	}
+	result, err := resp.PollUntilDone(context.Background(), 5*time.Second)
+	if err != nil {
+		panic(err)
+	}
+	if result != nil {
+		fmt.Println(result.StatusCode)
+	}
+	// Output:
+	// 200
+}
+
 // client for using the operations on the NetworkInterfacesOperations
 func getNetworkInterfacesClient() aznetwork.NetworkInterfacesOperations {
 	nicClient, err := aznetwork.NewDefaultClient(getCredential(), nil)

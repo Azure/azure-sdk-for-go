@@ -121,7 +121,6 @@ func (client ReplicationVaultSettingClient) CreateSender(req *http.Request) (*ht
 func (client ReplicationVaultSettingClient) CreateResponder(resp *http.Response) (result VaultSetting, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -197,7 +196,6 @@ func (client ReplicationVaultSettingClient) GetSender(req *http.Request) (*http.
 func (client ReplicationVaultSettingClient) GetResponder(resp *http.Response) (result VaultSetting, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -271,7 +269,6 @@ func (client ReplicationVaultSettingClient) ListSender(req *http.Request) (*http
 func (client ReplicationVaultSettingClient) ListResponder(resp *http.Response) (result VaultSettingCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

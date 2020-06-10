@@ -63,7 +63,7 @@ func newAADIdentityClient(options *TokenCredentialOptions) (*aadIdentityClient, 
 // refreshAccessToken creates a refresh token request and returns the resulting Access Token or
 // an error in case of an authentication failure.
 // ctx: The current request context
-// tenantID: The Azure Active Directory tenant (directory) Id of the service principal
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal
 // clientID: The client (application) ID of the service principal
 // clientSecret: A client secret that was generated for the App Registration used to authenticate the client
 // scopes: The scopes for the given access token
@@ -88,7 +88,7 @@ func (c *aadIdentityClient) refreshAccessToken(ctx context.Context, tenantID str
 // Authenticate creates a client secret authentication request and returns the resulting Access Token or
 // an error in case of authentication failure.
 // ctx: The current request context
-// tenantID: The Azure Active Directory tenant (directory) Id of the service principal
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal
 // clientID: The client (application) ID of the service principal
 // clientSecret: A client secret that was generated for the App Registration used to authenticate the client
 // scopes: The scopes required for the token
@@ -113,7 +113,7 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 // AuthenticateCertificate creates a client certificate authentication request and returns an Access Token or
 // an error.
 // ctx: The current request context
-// tenantID: The Azure Active Directory tenant (directory) Id of the service principal
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal
 // clientID: The client (application) ID of the service principal
 // clientCertificatePath: The path to the client certificate PEM file
 // scopes: The scopes required for the token
@@ -245,7 +245,7 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, 
 // authenticateUsernamePassword creates a client username and password authentication request and returns an Access Token or
 // an error.
 // ctx: The current request context
-// tenantID: The Azure Active Directory tenant (directory) Id of the service principal
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal
 // clientID: The client (application) ID of the service principal
 // username: User's account username
 // password: User's account password
@@ -298,7 +298,7 @@ func createDeviceCodeResult(res *azcore.Response) (*deviceCodeResult, error) {
 // authenticateDeviceCode creates a device code authentication request and returns an Access Token or
 // an error in case of failure.
 // ctx: The current request context
-// tenantID: The Azure Active Directory tenant (directory) Id of the service principal
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal
 // clientID: The client (application) ID of the service principal
 // deviceCode: The device code associated with the request
 // scopes: The scopes required for the token

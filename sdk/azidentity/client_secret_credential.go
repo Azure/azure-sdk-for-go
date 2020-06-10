@@ -15,13 +15,13 @@ import (
 // https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-configure-app-access-web-apis#add-credentials-to-your-web-application
 type ClientSecretCredential struct {
 	client       *aadIdentityClient
-	tenantID     string // Gets the Azure Active Directory tenant (directory) Id of the service principal
+	tenantID     string // Gets the Azure Active Directory tenant (directory) ID of the service principal
 	clientID     string // Gets the client (application) ID of the service principal
 	clientSecret string // Gets the client secret that was generated for the App Registration used to authenticate the client.
 }
 
 // NewClientSecretCredential constructs a new ClientSecretCredential with the details needed to authenticate against Azure Active Directory with a client secret.
-// tenantID: The Azure Active Directory tenant (directory) Id of the service principal.
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
 // clientSecret: A client secret that was generated for the App Registration used to authenticate the client.
 // options: allow to configure the management of the requests sent to Azure Active Directory.

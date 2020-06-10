@@ -13,7 +13,7 @@ import (
 
 const defaultSuffix = "/.default"
 
-// ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential
+// ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential.
 type ManagedIdentityCredentialOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	// Leave this as nil to use the default HTTP transport.
@@ -42,7 +42,7 @@ type ManagedIdentityCredential struct {
 }
 
 // NewManagedIdentityCredential creates an instance of the ManagedIdentityCredential capable of authenticating a resource that has a managed identity.
-// clientID: The client id to authenticate for a user assigned managed identity.
+// clientID: The client ID to authenticate for a user assigned managed identity.
 // options: ManagedIdentityCredentialOptions that configure the pipeline for requests sent to Azure Active Directory.
 // More information on user assigned managed identities cam be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview#how-a-user-assigned-managed-identity-works-with-an-azure-vm

@@ -19,7 +19,7 @@ const (
 // For more information on the device code authentication flow see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code.
 type DeviceCodeCredential struct {
 	client       *aadIdentityClient
-	tenantID     string       // Gets the Azure Active Directory tenant (directory) Id of the service principal
+	tenantID     string       // Gets the Azure Active Directory tenant (directory) ID of the service principal
 	clientID     string       // Gets the client (application) ID of the service principal
 	callback     func(string) // Sends the user a message with a verification URL and device code to sign in to the login server
 	refreshToken string       // Gets the refresh token sent from the service and will be used to retreive new access tokens after the initial request for a token. Thread safety for updates is handled in the AuthenticationPolicy since only one goroutine will be updating at a time
@@ -40,7 +40,7 @@ func NewDeviceCodeCredential(tenantID string, clientID string, callback func(str
 
 // GetToken obtains a token from Azure Active Directory, following the device code authentication
 // flow. This function first requests a device code and requests that the user login before continuing to authenticate the device.
-// This function will keep polling the service for a token meanwhile the user logs in.
+// This function will keep polling the service for a token until the user logs in.
 // scopes: The list of scopes for which the token will have access. The "offline_access" scope is checked for and automatically added in case it isn't present to allow for silent token refresh.
 // ctx: The context for controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.

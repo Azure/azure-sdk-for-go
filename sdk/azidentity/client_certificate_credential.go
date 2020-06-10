@@ -16,13 +16,13 @@ import (
 // https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-certificate-credentials#register-your-certificate-with-azure-ad
 type ClientCertificateCredential struct {
 	client            *aadIdentityClient
-	tenantID          string // The Azure Active Directory tenant (directory) Id of the service principal
+	tenantID          string // The Azure Active Directory tenant (directory) ID of the service principal
 	clientID          string // The client (application) ID of the service principal
 	clientCertificate string // Path to the client certificate generated for the App Registration used to authenticate the client
 }
 
 // NewClientCertificateCredential creates an instance of ClientCertificateCredential with the details needed to authenticate against Azure Active Directory with the specified certificate.
-// tenantID: The Azure Active Directory tenant (directory) Id of the service principal.
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
 // clientCertificate: The path to the client certificate that was generated for the App Registration used to authenticate the client.
 // options: configure the management of the requests sent to Azure Active Directory.

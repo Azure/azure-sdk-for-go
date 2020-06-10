@@ -16,7 +16,7 @@ import (
 type UsernamePasswordCredential struct {
 	azcore.TokenCredential
 	client   *aadIdentityClient
-	tenantID string // Gets the Azure Active Directory tenant (directory) Id of the service principal
+	tenantID string // Gets the Azure Active Directory tenant (directory) ID of the service principal
 	clientID string // Gets the client (application) ID of the service principal
 	username string // Gets the user account's user name
 	password string // Gets the user account's password
@@ -24,7 +24,7 @@ type UsernamePasswordCredential struct {
 
 // NewUsernamePasswordCredential constructs a new UsernamePasswordCredential with the details needed to authenticate against Azure Active Directory with
 // a simple username and password.
-// tenantID: The Azure Active Directory tenant (directory) Id of the service principal.
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
 // username: A user's account username
 // password: A user's account password

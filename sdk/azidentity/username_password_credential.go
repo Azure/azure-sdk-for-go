@@ -3,9 +3,6 @@
 
 package azidentity
 
-// ------------------------ NOTES:
-// CP: To test this I need to create my own tenant in my own personal azure account create a user with auth permissions and an app registration.
-
 import (
 	"context"
 	"path"
@@ -19,7 +16,7 @@ import (
 type UsernamePasswordCredential struct {
 	azcore.TokenCredential
 	client   *aadIdentityClient
-	tenantID string // Gets the Azure Active Directory tenant (directory) Id of the service principal
+	tenantID string // Gets the Azure Active Directory tenant (directory) ID of the service principal
 	clientID string // Gets the client (application) ID of the service principal
 	username string // Gets the user account's user name
 	password string // Gets the user account's password
@@ -27,11 +24,11 @@ type UsernamePasswordCredential struct {
 
 // NewUsernamePasswordCredential constructs a new UsernamePasswordCredential with the details needed to authenticate against Azure Active Directory with
 // a simple username and password.
-// - tenantID: The Azure Active Directory tenant (directory) Id of the service principal.
-// - clientID: The client (application) ID of the service principal.
-// - username: A user's account username
-// - password: A user's account password
-// - options: The options configure the management of the requests sent to the Azure Active Directory service.
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
+// clientID: The client (application) ID of the service principal.
+// username: A user's account username
+// password: A user's account password
+// options: TokenCredentialOptions used to configure the pipeline for the requests sent to Azure Active Directory.
 func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *TokenCredentialOptions) (*UsernamePasswordCredential, error) {
 	c, err := newAADIdentityClient(options)
 	if err != nil {
@@ -41,15 +38,15 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 	return &UsernamePasswordCredential{tenantID: tenantID, clientID: clientID, username: username, password: password, client: c}, nil
 }
 
-// GetToken obtains a token from the Azure Active Directory service, using the specified username and password.
-// - scopes: The list of scopes for which the token will have access.
-// - ctx: controlling the request lifetime.
+// GetToken obtains a token from Azure Active Directory using the specified username and password.
+// scopes: The list of scopes for which the token will have access.
+// ctx: The context used to control the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	return c.client.authenticateUsernamePassword(ctx, c.tenantID, c.clientID, c.username, c.password, opts.Scopes)
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.
+// AuthenticationPolicy implements the azcore.Credential interface on UsernamePasswordCredential.
 func (c *UsernamePasswordCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }

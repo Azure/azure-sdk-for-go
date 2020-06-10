@@ -16,20 +16,20 @@ const (
 )
 
 // DeviceCodeCredential authenticates a user using the device code flow, and provides access tokens for that user account.
-// For more information on the device code authentication flow see https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code
+// For more information on the device code authentication flow see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code.
 type DeviceCodeCredential struct {
 	client       *aadIdentityClient
-	tenantID     string       // Gets the Azure Active Directory tenant (directory) Id of the service principal
+	tenantID     string       // Gets the Azure Active Directory tenant (directory) ID of the service principal
 	clientID     string       // Gets the client (application) ID of the service principal
 	callback     func(string) // Sends the user a message with a verification URL and device code to sign in to the login server
 	refreshToken string       // Gets the refresh token sent from the service and will be used to retreive new access tokens after the initial request for a token. Thread safety for updates is handled in the AuthenticationPolicy since only one goroutine will be updating at a time
 }
 
-// NewDeviceCodeCredential constructs a new DeviceCodeCredential with the details needed to authenticate against Azure Active Directory with a device code.
+// NewDeviceCodeCredential constructs a new DeviceCodeCredential used to authenticate against Azure Active Directory with a device code.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal. If none is set then the default value ("organizations") will be used in place of the tenantID.
 // clientID: The client (application) ID of the service principal.
 // callback: The callback function used to send the login message back to the user
-// options: allow to configure the management of the requests sent to the Azure Active Directory service.
+// options: Options used to configure the management of the requests sent to Azure Active Directory.
 func NewDeviceCodeCredential(tenantID string, clientID string, callback func(string), options *TokenCredentialOptions) (*DeviceCodeCredential, error) {
 	c, err := newAADIdentityClient(options)
 	if err != nil {
@@ -38,11 +38,11 @@ func NewDeviceCodeCredential(tenantID string, clientID string, callback func(str
 	return &DeviceCodeCredential{tenantID: tenantID, clientID: clientID, callback: callback, client: c}, nil
 }
 
-// GetToken obtains a token from the Azure Active Directory service, following the device code authentication
-// flow. This function first requests a device code and requests that the user login to continue authenticating.
-// This function will keep polling the service for a token meanwhile the user logs.
+// GetToken obtains a token from Azure Active Directory, following the device code authentication
+// flow. This function first requests a device code and requests that the user login before continuing to authenticate the device.
+// This function will keep polling the service for a token until the user logs in.
 // scopes: The list of scopes for which the token will have access. The "offline_access" scope is checked for and automatically added in case it isn't present to allow for silent token refresh.
-// ctx: controlling the request lifetime.
+// ctx: The context for controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	for i, scope := range opts.Scopes {
@@ -67,7 +67,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 	// make initial request to the device code endpoint for a device code and instructions for authentication
 	dc, err := c.client.requestNewDeviceCode(ctx, c.tenantID, c.clientID, opts.Scopes)
 	if err != nil {
-		return nil, err // TODO check what error type to return here
+		return nil, err
 	}
 	// send authentication flow instructions back to the user to log in and authorize the device
 	c.callback(dc.Message)

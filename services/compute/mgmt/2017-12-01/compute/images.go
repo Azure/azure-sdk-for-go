@@ -112,7 +112,6 @@ func (client ImagesClient) CreateOrUpdateSender(req *http.Request) (future Image
 func (client ImagesClient) CreateOrUpdateResponder(resp *http.Response) (result Image, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -188,7 +187,6 @@ func (client ImagesClient) DeleteSender(req *http.Request) (future ImagesDeleteF
 func (client ImagesClient) DeleteResponder(resp *http.Response) (result OperationStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -268,7 +266,6 @@ func (client ImagesClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client ImagesClient) GetResponder(resp *http.Response) (result Image, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -341,7 +338,6 @@ func (client ImagesClient) ListSender(req *http.Request) (*http.Response, error)
 func (client ImagesClient) ListResponder(resp *http.Response) (result ImageListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -453,7 +449,6 @@ func (client ImagesClient) ListByResourceGroupSender(req *http.Request) (*http.R
 func (client ImagesClient) ListByResourceGroupResponder(resp *http.Response) (result ImageListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -569,7 +564,6 @@ func (client ImagesClient) UpdateSender(req *http.Request) (future ImagesUpdateF
 func (client ImagesClient) UpdateResponder(resp *http.Response) (result Image, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

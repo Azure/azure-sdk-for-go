@@ -126,7 +126,6 @@ func (client IoTSecuritySolutionsAnalyticsAggregatedAlertClient) DismissSender(r
 func (client IoTSecuritySolutionsAnalyticsAggregatedAlertClient) DismissResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -214,7 +213,6 @@ func (client IoTSecuritySolutionsAnalyticsAggregatedAlertClient) GetSender(req *
 func (client IoTSecuritySolutionsAnalyticsAggregatedAlertClient) GetResponder(resp *http.Response) (result IoTSecurityAggregatedAlert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -100,7 +100,7 @@ func (client DedicatedHostGroupsClient) CreateOrUpdatePreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-07-01"
+	const APIVersion = "2019-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -126,7 +126,6 @@ func (client DedicatedHostGroupsClient) CreateOrUpdateSender(req *http.Request) 
 func (client DedicatedHostGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result DedicatedHostGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -178,7 +177,7 @@ func (client DedicatedHostGroupsClient) DeletePreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-07-01"
+	const APIVersion = "2019-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -202,7 +201,6 @@ func (client DedicatedHostGroupsClient) DeleteSender(req *http.Request) (*http.R
 func (client DedicatedHostGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -253,7 +251,7 @@ func (client DedicatedHostGroupsClient) GetPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-07-01"
+	const APIVersion = "2019-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -277,7 +275,6 @@ func (client DedicatedHostGroupsClient) GetSender(req *http.Request) (*http.Resp
 func (client DedicatedHostGroupsClient) GetResponder(resp *http.Response) (result DedicatedHostGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -329,7 +326,7 @@ func (client DedicatedHostGroupsClient) ListByResourceGroupPreparer(ctx context.
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-07-01"
+	const APIVersion = "2019-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -353,7 +350,6 @@ func (client DedicatedHostGroupsClient) ListByResourceGroupSender(req *http.Requ
 func (client DedicatedHostGroupsClient) ListByResourceGroupResponder(resp *http.Response) (result DedicatedHostGroupListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -439,7 +435,7 @@ func (client DedicatedHostGroupsClient) ListBySubscriptionPreparer(ctx context.C
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-07-01"
+	const APIVersion = "2019-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -463,7 +459,6 @@ func (client DedicatedHostGroupsClient) ListBySubscriptionSender(req *http.Reque
 func (client DedicatedHostGroupsClient) ListBySubscriptionResponder(resp *http.Response) (result DedicatedHostGroupListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -553,7 +548,7 @@ func (client DedicatedHostGroupsClient) UpdatePreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-07-01"
+	const APIVersion = "2019-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -579,7 +574,6 @@ func (client DedicatedHostGroupsClient) UpdateSender(req *http.Request) (*http.R
 func (client DedicatedHostGroupsClient) UpdateResponder(resp *http.Response) (result DedicatedHostGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

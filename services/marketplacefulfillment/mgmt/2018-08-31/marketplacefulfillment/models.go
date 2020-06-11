@@ -97,7 +97,7 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
             // PlanID - Plan Id.
             PlanID *string `json:"planId,omitempty"`
             // Quantity - Quantity.
-            Quantity *string `json:"quantity,omitempty"`
+            Quantity *int32 `json:"quantity,omitempty"`
             // Action - Action of operation.
             Action *string `json:"action,omitempty"`
             // Timestamp - Timestamp of operation.
@@ -206,7 +206,7 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
     }
                 case "quantity":
     if v != nil {
-        var quantity string
+        var quantity int32
         err = json.Unmarshal(*v, &quantity)
     if err != nil {
     return err
@@ -259,7 +259,7 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
             // PlanID - Plan Id.
             PlanID *string `json:"planId,omitempty"`
             // Quantity - Quantity.
-            Quantity *string `json:"quantity,omitempty"`
+            Quantity *int32 `json:"quantity,omitempty"`
             // Action - Action of operation.
             Action *string `json:"action,omitempty"`
             // Timestamp - Timestamp of operation.

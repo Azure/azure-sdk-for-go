@@ -60,8 +60,9 @@ func (client RegistrationsClient) CreateOrUpdate(ctx context.Context, resourceGr
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: tokenParameter,
-			Constraints: []validation.Constraint{{Target: "tokenParameter.RegistrationParameterProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "tokenParameter.RegistrationParameterProperties.RegistrationToken", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "tokenParameter.RegistrationParameterProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "tokenParameter.RegistrationParameterProperties.RegistrationToken", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "tokenParameter.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("azurestack.RegistrationsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -120,7 +121,6 @@ func (client RegistrationsClient) CreateOrUpdateSender(req *http.Request) (*http
 func (client RegistrationsClient) CreateOrUpdateResponder(resp *http.Response) (result Registration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -196,7 +196,6 @@ func (client RegistrationsClient) DeleteSender(req *http.Request) (*http.Respons
 func (client RegistrationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -271,7 +270,6 @@ func (client RegistrationsClient) GetSender(req *http.Request) (*http.Response, 
 func (client RegistrationsClient) GetResponder(resp *http.Response) (result Registration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -347,7 +345,6 @@ func (client RegistrationsClient) GetActivationKeySender(req *http.Request) (*ht
 func (client RegistrationsClient) GetActivationKeyResponder(resp *http.Response) (result ActivationKeyResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -422,7 +419,6 @@ func (client RegistrationsClient) ListSender(req *http.Request) (*http.Response,
 func (client RegistrationsClient) ListResponder(resp *http.Response) (result RegistrationList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -538,7 +534,6 @@ func (client RegistrationsClient) UpdateSender(req *http.Request) (*http.Respons
 func (client RegistrationsClient) UpdateResponder(resp *http.Response) (result Registration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

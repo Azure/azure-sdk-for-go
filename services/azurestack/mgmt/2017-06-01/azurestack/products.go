@@ -111,7 +111,6 @@ func (client ProductsClient) GetSender(req *http.Request) (*http.Response, error
 func (client ProductsClient) GetResponder(resp *http.Response) (result Product, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -197,7 +196,6 @@ func (client ProductsClient) GetProductSender(req *http.Request) (*http.Response
 func (client ProductsClient) GetProductResponder(resp *http.Response) (result Product, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -281,7 +279,6 @@ func (client ProductsClient) GetProductsSender(req *http.Request) (*http.Respons
 func (client ProductsClient) GetProductsResponder(resp *http.Response) (result ProductList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -358,7 +355,6 @@ func (client ProductsClient) ListSender(req *http.Request) (*http.Response, erro
 func (client ProductsClient) ListResponder(resp *http.Response) (result ProductList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -473,7 +469,6 @@ func (client ProductsClient) ListDetailsSender(req *http.Request) (*http.Respons
 func (client ProductsClient) ListDetailsResponder(resp *http.Response) (result ExtendedProduct, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -561,7 +556,6 @@ func (client ProductsClient) UploadLogSender(req *http.Request) (*http.Response,
 func (client ProductsClient) UploadLogResponder(resp *http.Response) (result ProductLog, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

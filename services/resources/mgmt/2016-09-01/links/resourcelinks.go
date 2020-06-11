@@ -126,7 +126,6 @@ func (client ResourceLinksClient) CreateOrUpdateSender(req *http.Request) (*http
 func (client ResourceLinksClient) CreateOrUpdateResponder(resp *http.Response) (result ResourceLink, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -202,7 +201,6 @@ func (client ResourceLinksClient) DeleteSender(req *http.Request) (*http.Respons
 func (client ResourceLinksClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -275,7 +273,6 @@ func (client ResourceLinksClient) GetSender(req *http.Request) (*http.Response, 
 func (client ResourceLinksClient) GetResponder(resp *http.Response) (result ResourceLink, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -356,7 +353,6 @@ func (client ResourceLinksClient) ListAtSourceScopeSender(req *http.Request) (*h
 func (client ResourceLinksClient) ListAtSourceScopeResponder(resp *http.Response) (result ResourceLinkResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -471,7 +467,6 @@ func (client ResourceLinksClient) ListAtSubscriptionSender(req *http.Request) (*
 func (client ResourceLinksClient) ListAtSubscriptionResponder(resp *http.Response) (result ResourceLinkResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

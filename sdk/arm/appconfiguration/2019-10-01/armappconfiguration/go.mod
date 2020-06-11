@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/appconfiguration/mgmt/2019-10-01/azappconfiguration
+module github.com/Azure/azure-sdk-for-go/sdk/arm/appconfiguration/2019-10-01/armappconfiguration
 
 go 1.13
 

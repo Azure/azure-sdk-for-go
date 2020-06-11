@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/network/mgmt/2020-03-01/aznetwork
+module github.com/Azure/azure-sdk-for-go/sdk/arm/network/2020-03-01/armnetwork
 
 go 1.13
 

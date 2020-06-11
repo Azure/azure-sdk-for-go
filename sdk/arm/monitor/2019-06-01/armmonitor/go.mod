@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/monitor/mgmt/2019-06-01/azmonitor
+module github.com/Azure/azure-sdk-for-go/sdk/arm/monitor/2019-06-01/armmonitor
 
 go 1.13
 

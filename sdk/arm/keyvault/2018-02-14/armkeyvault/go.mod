@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/keyvault/mgmt/2018-02-14/azkeyvault
+module github.com/Azure/azure-sdk-for-go/sdk/arm/keyvault/2018-02-14/armkeyvault
 
 go 1.13
 

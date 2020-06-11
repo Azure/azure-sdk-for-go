@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resources/mgmt/2019-05-01/azresources
+module github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2019-05-01/armresources
 
 go 1.13
 

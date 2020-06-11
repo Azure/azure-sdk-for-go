@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/storage/mgmt/2019-06-01/azstorage
+module github.com/Azure/azure-sdk-for-go/sdk/arm/storage/2019-06-01/armstorage
 
 go 1.13
 

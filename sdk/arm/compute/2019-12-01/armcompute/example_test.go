@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azcompute
+package armcompute
 
 import (
 	"context"
@@ -9,9 +9,9 @@ import (
 	"os"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/arm/network/2020-03-01/armnetwork"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/network/mgmt/2020-03-01/aznetwork"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
@@ -159,8 +159,8 @@ func ExampleVirtualMachinesOperations_BeginDelete() {
 }
 
 // client for using the operations on the NetworkInterfacesOperations
-func getNetworkInterfacesClient() aznetwork.NetworkInterfacesOperations {
-	nicClient, err := aznetwork.NewDefaultClient(getCredential(), nil)
+func getNetworkInterfacesClient() armnetwork.NetworkInterfacesOperations {
+	nicClient, err := armnetwork.NewDefaultClient(getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -168,7 +168,7 @@ func getNetworkInterfacesClient() aznetwork.NetworkInterfacesOperations {
 }
 
 // returns the specified network interface from Azure
-func getNIC() *aznetwork.NetworkInterfaceResponse {
+func getNIC() *armnetwork.NetworkInterfaceResponse {
 	client := getNetworkInterfacesClient()
 	nic, err := client.Get(context.Background(), resourceGroupName, nicName, nil)
 	if err != nil {

@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/eventhub/mgmt/2017-04-01/azeventhub
+module github.com/Azure/azure-sdk-for-go/sdk/arm/eventhub/2017-04-01/armeventhub
 
 go 1.13
 

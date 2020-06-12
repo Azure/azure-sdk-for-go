@@ -114,7 +114,6 @@ func (client VirtualMachineScaleSetsClient) CreateOrUpdateSender(req *http.Reque
 func (client VirtualMachineScaleSetsClient) CreateOrUpdateResponder(resp *http.Response) (result VirtualMachineScaleSet, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -197,7 +196,6 @@ func (client VirtualMachineScaleSetsClient) DeallocateSender(req *http.Request) 
 func (client VirtualMachineScaleSetsClient) DeallocateResponder(resp *http.Response) (result OperationStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -273,7 +271,6 @@ func (client VirtualMachineScaleSetsClient) DeleteSender(req *http.Request) (fut
 func (client VirtualMachineScaleSetsClient) DeleteResponder(resp *http.Response) (result OperationStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -358,7 +355,6 @@ func (client VirtualMachineScaleSetsClient) DeleteInstancesSender(req *http.Requ
 func (client VirtualMachineScaleSetsClient) DeleteInstancesResponder(resp *http.Response) (result OperationStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -434,7 +430,6 @@ func (client VirtualMachineScaleSetsClient) GetSender(req *http.Request) (*http.
 func (client VirtualMachineScaleSetsClient) GetResponder(resp *http.Response) (result VirtualMachineScaleSet, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -510,7 +505,6 @@ func (client VirtualMachineScaleSetsClient) GetInstanceViewSender(req *http.Requ
 func (client VirtualMachineScaleSetsClient) GetInstanceViewResponder(resp *http.Response) (result VirtualMachineScaleSetInstanceView, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -585,7 +579,6 @@ func (client VirtualMachineScaleSetsClient) ListSender(req *http.Request) (*http
 func (client VirtualMachineScaleSetsClient) ListResponder(resp *http.Response) (result VirtualMachineScaleSetListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -696,7 +689,6 @@ func (client VirtualMachineScaleSetsClient) ListAllSender(req *http.Request) (*h
 func (client VirtualMachineScaleSetsClient) ListAllResponder(resp *http.Response) (result VirtualMachineScaleSetListWithLinkResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -811,7 +803,6 @@ func (client VirtualMachineScaleSetsClient) ListSkusSender(req *http.Request) (*
 func (client VirtualMachineScaleSetsClient) ListSkusResponder(resp *http.Response) (result VirtualMachineScaleSetListSkusResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -931,7 +922,6 @@ func (client VirtualMachineScaleSetsClient) PowerOffSender(req *http.Request) (f
 func (client VirtualMachineScaleSetsClient) PowerOffResponder(resp *http.Response) (result OperationStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1007,7 +997,6 @@ func (client VirtualMachineScaleSetsClient) ReimageSender(req *http.Request) (fu
 func (client VirtualMachineScaleSetsClient) ReimageResponder(resp *http.Response) (result OperationStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1084,7 +1073,6 @@ func (client VirtualMachineScaleSetsClient) ReimageAllSender(req *http.Request) 
 func (client VirtualMachineScaleSetsClient) ReimageAllResponder(resp *http.Response) (result OperationStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1166,7 +1154,6 @@ func (client VirtualMachineScaleSetsClient) RestartSender(req *http.Request) (fu
 func (client VirtualMachineScaleSetsClient) RestartResponder(resp *http.Response) (result OperationStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1248,7 +1235,6 @@ func (client VirtualMachineScaleSetsClient) StartSender(req *http.Request) (futu
 func (client VirtualMachineScaleSetsClient) StartResponder(resp *http.Response) (result OperationStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1333,7 +1319,6 @@ func (client VirtualMachineScaleSetsClient) UpdateInstancesSender(req *http.Requ
 func (client VirtualMachineScaleSetsClient) UpdateInstancesResponder(resp *http.Response) (result OperationStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

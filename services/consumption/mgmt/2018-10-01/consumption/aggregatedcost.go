@@ -114,7 +114,6 @@ func (client AggregatedCostClient) GetByManagementGroupSender(req *http.Request)
 func (client AggregatedCostClient) GetByManagementGroupResponder(resp *http.Response) (result ManagementGroupAggregatedCostResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -190,7 +189,6 @@ func (client AggregatedCostClient) GetForBillingPeriodByManagementGroupSender(re
 func (client AggregatedCostClient) GetForBillingPeriodByManagementGroupResponder(resp *http.Response) (result ManagementGroupAggregatedCostResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -129,8 +129,7 @@ func (client APIIssuAttachmentClient) HeadPreparer(ctx context.Context, resource
 // HeadSender sends the Head request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssuAttachmentClient) HeadSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // HeadResponder handles the response to the Head request. The method always
@@ -138,7 +137,6 @@ func (client APIIssuAttachmentClient) HeadSender(req *http.Request) (*http.Respo
 func (client APIIssuAttachmentClient) HeadResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

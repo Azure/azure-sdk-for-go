@@ -112,7 +112,7 @@ var _ OperationsClientAPI = (*hdinsight.OperationsClient)(nil)
 
 // VirtualMachinesClientAPI contains the set of methods on the VirtualMachinesClient type.
 type VirtualMachinesClientAPI interface {
-	ListHosts(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.HostInfoListResult, err error)
+	ListHosts(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ListHostInfo, err error)
 	RestartHosts(ctx context.Context, resourceGroupName string, clusterName string, hosts []string) (result hdinsight.VirtualMachinesRestartHostsFuture, err error)
 }
 

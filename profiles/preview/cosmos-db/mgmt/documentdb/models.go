@@ -22,7 +22,7 @@ package documentdb
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2020-03-01/documentdb"
+	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2020-04-01/documentdb"
 )
 
 const (
@@ -134,6 +134,13 @@ const (
 	Enabled  PublicNetworkAccess = original.Enabled
 )
 
+type ServerVersion = original.ServerVersion
+
+const (
+	ThreeFullStopSix ServerVersion = original.ThreeFullStopSix
+	ThreeFullStopTwo ServerVersion = original.ThreeFullStopTwo
+)
+
 type SpatialType = original.SpatialType
 
 const (
@@ -172,9 +179,12 @@ const (
 	Seconds        UnitType = original.Seconds
 )
 
+type APIProperties = original.APIProperties
 type ARMProxyResource = original.ARMProxyResource
 type ARMResourceProperties = original.ARMResourceProperties
 type AutoUpgradePolicyResource = original.AutoUpgradePolicyResource
+type AutoscaleSettings = original.AutoscaleSettings
+type AutoscaleSettingsResource = original.AutoscaleSettingsResource
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type Capability = original.Capability
@@ -264,6 +274,7 @@ type GremlinResourcesDeleteGremlinDatabaseFuture = original.GremlinResourcesDele
 type GremlinResourcesDeleteGremlinGraphFuture = original.GremlinResourcesDeleteGremlinGraphFuture
 type GremlinResourcesUpdateGremlinDatabaseThroughputFuture = original.GremlinResourcesUpdateGremlinDatabaseThroughputFuture
 type GremlinResourcesUpdateGremlinGraphThroughputFuture = original.GremlinResourcesUpdateGremlinGraphThroughputFuture
+type IPAddressOrRange = original.IPAddressOrRange
 type IncludedPath = original.IncludedPath
 type Indexes = original.Indexes
 type IndexingPolicy = original.IndexingPolicy
@@ -342,7 +353,6 @@ type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
-type ProvisionedThroughputSettingsResource = original.ProvisionedThroughputSettingsResource
 type ProxyResource = original.ProxyResource
 type RegionForOnlineOffline = original.RegionForOnlineOffline
 type Resource = original.Resource
@@ -599,6 +609,9 @@ func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 }
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return original.PossiblePublicNetworkAccessValues()
+}
+func PossibleServerVersionValues() []ServerVersion {
+	return original.PossibleServerVersionValues()
 }
 func PossibleSpatialTypeValues() []SpatialType {
 	return original.PossibleSpatialTypeValues()

@@ -115,7 +115,6 @@ func (client ChargesClient) ListByDepartmentSender(req *http.Request) (*http.Res
 func (client ChargesClient) ListByDepartmentResponder(resp *http.Response) (result ChargesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -196,7 +195,6 @@ func (client ChargesClient) ListByEnrollmentAccountSender(req *http.Request) (*h
 func (client ChargesClient) ListByEnrollmentAccountResponder(resp *http.Response) (result ChargesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -279,7 +277,6 @@ func (client ChargesClient) ListForBillingPeriodByDepartmentSender(req *http.Req
 func (client ChargesClient) ListForBillingPeriodByDepartmentResponder(resp *http.Response) (result ChargeSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -362,7 +359,6 @@ func (client ChargesClient) ListForBillingPeriodByEnrollmentAccountSender(req *h
 func (client ChargesClient) ListForBillingPeriodByEnrollmentAccountResponder(resp *http.Response) (result ChargeSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

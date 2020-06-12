@@ -19,8 +19,10 @@
 
 package networkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-04-01/network/networkapi"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-05-01/network/networkapi"
 
+type ApplicationGatewayPrivateEndpointConnectionsClientAPI = original.ApplicationGatewayPrivateEndpointConnectionsClientAPI
+type ApplicationGatewayPrivateLinkResourcesClientAPI = original.ApplicationGatewayPrivateLinkResourcesClientAPI
 type ApplicationGatewaysClientAPI = original.ApplicationGatewaysClientAPI
 type ApplicationSecurityGroupsClientAPI = original.ApplicationSecurityGroupsClientAPI
 type AvailableDelegationsClientAPI = original.AvailableDelegationsClientAPI
@@ -50,7 +52,7 @@ type ExpressRoutePortsClientAPI = original.ExpressRoutePortsClientAPI
 type ExpressRoutePortsLocationsClientAPI = original.ExpressRoutePortsLocationsClientAPI
 type ExpressRouteServiceProvidersClientAPI = original.ExpressRouteServiceProvidersClientAPI
 type FirewallPoliciesClientAPI = original.FirewallPoliciesClientAPI
-type FirewallPolicyRuleGroupsClientAPI = original.FirewallPolicyRuleGroupsClientAPI
+type FirewallPolicyRuleCollectionGroupsClientAPI = original.FirewallPolicyRuleCollectionGroupsClientAPI
 type FlowLogsClientAPI = original.FlowLogsClientAPI
 type HubRouteTablesClientAPI = original.HubRouteTablesClientAPI
 type HubVirtualNetworkConnectionsClientAPI = original.HubVirtualNetworkConnectionsClientAPI
@@ -94,7 +96,12 @@ type ServiceEndpointPolicyDefinitionsClientAPI = original.ServiceEndpointPolicyD
 type ServiceTagsClientAPI = original.ServiceTagsClientAPI
 type SubnetsClientAPI = original.SubnetsClientAPI
 type UsagesClientAPI = original.UsagesClientAPI
+type VirtualApplianceSitesClientAPI = original.VirtualApplianceSitesClientAPI
+type VirtualApplianceSkusClientAPI = original.VirtualApplianceSkusClientAPI
 type VirtualAppliancesClientAPI = original.VirtualAppliancesClientAPI
+type VirtualHubBgpConnectionClientAPI = original.VirtualHubBgpConnectionClientAPI
+type VirtualHubBgpConnectionsClientAPI = original.VirtualHubBgpConnectionsClientAPI
+type VirtualHubIPConfigurationClientAPI = original.VirtualHubIPConfigurationClientAPI
 type VirtualHubRouteTableV2sClientAPI = original.VirtualHubRouteTableV2sClientAPI
 type VirtualHubsClientAPI = original.VirtualHubsClientAPI
 type VirtualNetworkGatewayConnectionsClientAPI = original.VirtualNetworkGatewayConnectionsClientAPI

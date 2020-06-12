@@ -138,8 +138,7 @@ func (client ReportsClient) ListByServicePreparer(ctx context.Context, resourceG
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByServiceResponder handles the response to the ListByService request. The method always
@@ -147,7 +146,6 @@ func (client ReportsClient) ListByServiceSender(req *http.Request) (*http.Respon
 func (client ReportsClient) ListByServiceResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

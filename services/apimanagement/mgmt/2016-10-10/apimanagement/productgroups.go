@@ -122,8 +122,7 @@ func (client ProductGroupsClient) CreatePreparer(ctx context.Context, resourceGr
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductGroupsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -131,7 +130,6 @@ func (client ProductGroupsClient) CreateSender(req *http.Request) (*http.Respons
 func (client ProductGroupsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -218,8 +216,7 @@ func (client ProductGroupsClient) DeletePreparer(ctx context.Context, resourceGr
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductGroupsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -227,7 +224,6 @@ func (client ProductGroupsClient) DeleteSender(req *http.Request) (*http.Respons
 func (client ProductGroupsClient) DeleteResponder(resp *http.Response) (result ErrorBodyContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -333,8 +329,7 @@ func (client ProductGroupsClient) ListByProductsPreparer(ctx context.Context, re
 // ListByProductsSender sends the ListByProducts request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductGroupsClient) ListByProductsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByProductsResponder handles the response to the ListByProducts request. The method always
@@ -342,7 +337,6 @@ func (client ProductGroupsClient) ListByProductsSender(req *http.Request) (*http
 func (client ProductGroupsClient) ListByProductsResponder(resp *http.Response) (result GroupCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

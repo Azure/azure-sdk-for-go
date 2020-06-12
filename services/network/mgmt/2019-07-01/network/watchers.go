@@ -122,7 +122,6 @@ func (client WatchersClient) CheckConnectivitySender(req *http.Request) (future 
 func (client WatchersClient) CheckConnectivityResponder(resp *http.Response) (result ConnectivityInformation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -201,7 +200,6 @@ func (client WatchersClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 func (client WatchersClient) CreateOrUpdateResponder(resp *http.Response) (result Watcher, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -277,7 +275,6 @@ func (client WatchersClient) DeleteSender(req *http.Request) (future WatchersDel
 func (client WatchersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -352,7 +349,6 @@ func (client WatchersClient) GetSender(req *http.Request) (*http.Response, error
 func (client WatchersClient) GetResponder(resp *http.Response) (result Watcher, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -441,7 +437,6 @@ func (client WatchersClient) GetAzureReachabilityReportSender(req *http.Request)
 func (client WatchersClient) GetAzureReachabilityReportResponder(resp *http.Response) (result AzureReachabilityReport, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -526,7 +521,6 @@ func (client WatchersClient) GetFlowLogStatusSender(req *http.Request) (future W
 func (client WatchersClient) GetFlowLogStatusResponder(resp *http.Response) (result FlowLogInformation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -616,7 +610,6 @@ func (client WatchersClient) GetNetworkConfigurationDiagnosticSender(req *http.R
 func (client WatchersClient) GetNetworkConfigurationDiagnosticResponder(resp *http.Response) (result ConfigurationDiagnosticResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -703,7 +696,6 @@ func (client WatchersClient) GetNextHopSender(req *http.Request) (future Watcher
 func (client WatchersClient) GetNextHopResponder(resp *http.Response) (result NextHopResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -782,7 +774,6 @@ func (client WatchersClient) GetTopologySender(req *http.Request) (*http.Respons
 func (client WatchersClient) GetTopologyResponder(resp *http.Response) (result Topology, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -871,7 +862,6 @@ func (client WatchersClient) GetTroubleshootingSender(req *http.Request) (future
 func (client WatchersClient) GetTroubleshootingResponder(resp *http.Response) (result TroubleshootingResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -956,7 +946,6 @@ func (client WatchersClient) GetTroubleshootingResultSender(req *http.Request) (
 func (client WatchersClient) GetTroubleshootingResultResponder(resp *http.Response) (result TroubleshootingResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1041,7 +1030,6 @@ func (client WatchersClient) GetVMSecurityRulesSender(req *http.Request) (future
 func (client WatchersClient) GetVMSecurityRulesResponder(resp *http.Response) (result SecurityGroupViewResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1115,7 +1103,6 @@ func (client WatchersClient) ListSender(req *http.Request) (*http.Response, erro
 func (client WatchersClient) ListResponder(resp *http.Response) (result WatcherListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1186,7 +1173,6 @@ func (client WatchersClient) ListAllSender(req *http.Request) (*http.Response, e
 func (client WatchersClient) ListAllResponder(resp *http.Response) (result WatcherListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1265,7 +1251,6 @@ func (client WatchersClient) ListAvailableProvidersSender(req *http.Request) (fu
 func (client WatchersClient) ListAvailableProvidersResponder(resp *http.Response) (result AvailableProvidersList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1358,7 +1343,6 @@ func (client WatchersClient) SetFlowLogConfigurationSender(req *http.Request) (f
 func (client WatchersClient) SetFlowLogConfigurationResponder(resp *http.Response) (result FlowLogInformation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1437,7 +1421,6 @@ func (client WatchersClient) UpdateTagsSender(req *http.Request) (*http.Response
 func (client WatchersClient) UpdateTagsResponder(resp *http.Response) (result Watcher, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1526,7 +1509,6 @@ func (client WatchersClient) VerifyIPFlowSender(req *http.Request) (future Watch
 func (client WatchersClient) VerifyIPFlowResponder(resp *http.Response) (result VerificationIPFlowResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

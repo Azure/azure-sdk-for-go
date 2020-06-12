@@ -22,7 +22,7 @@ package eventgrid
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2019-06-01/eventgrid"
+	original "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2020-06-01/eventgrid"
 )
 
 const (
@@ -54,10 +54,12 @@ const (
 type EndpointType = original.EndpointType
 
 const (
+	EndpointTypeAzureFunction                EndpointType = original.EndpointTypeAzureFunction
 	EndpointTypeEventHub                     EndpointType = original.EndpointTypeEventHub
 	EndpointTypeEventSubscriptionDestination EndpointType = original.EndpointTypeEventSubscriptionDestination
 	EndpointTypeHybridConnection             EndpointType = original.EndpointTypeHybridConnection
 	EndpointTypeServiceBusQueue              EndpointType = original.EndpointTypeServiceBusQueue
+	EndpointTypeServiceBusTopic              EndpointType = original.EndpointTypeServiceBusTopic
 	EndpointTypeStorageQueue                 EndpointType = original.EndpointTypeStorageQueue
 	EndpointTypeWebHook                      EndpointType = original.EndpointTypeWebHook
 )
@@ -67,6 +69,14 @@ type EndpointTypeBasicDeadLetterDestination = original.EndpointTypeBasicDeadLett
 const (
 	EndpointTypeDeadLetterDestination EndpointTypeBasicDeadLetterDestination = original.EndpointTypeDeadLetterDestination
 	EndpointTypeStorageBlob           EndpointTypeBasicDeadLetterDestination = original.EndpointTypeStorageBlob
+)
+
+type EventDeliverySchema = original.EventDeliverySchema
+
+const (
+	CloudEventSchemaV10 EventDeliverySchema = original.CloudEventSchemaV10
+	CustomInputSchema   EventDeliverySchema = original.CustomInputSchema
+	EventGridSchema     EventDeliverySchema = original.EventGridSchema
 )
 
 type EventSubscriptionProvisioningState = original.EventSubscriptionProvisioningState
@@ -79,6 +89,27 @@ const (
 	EventSubscriptionProvisioningStateFailed               EventSubscriptionProvisioningState = original.EventSubscriptionProvisioningStateFailed
 	EventSubscriptionProvisioningStateSucceeded            EventSubscriptionProvisioningState = original.EventSubscriptionProvisioningStateSucceeded
 	EventSubscriptionProvisioningStateUpdating             EventSubscriptionProvisioningState = original.EventSubscriptionProvisioningStateUpdating
+)
+
+type IPActionType = original.IPActionType
+
+const (
+	Allow IPActionType = original.Allow
+)
+
+type InputSchema = original.InputSchema
+
+const (
+	InputSchemaCloudEventSchemaV10 InputSchema = original.InputSchemaCloudEventSchemaV10
+	InputSchemaCustomEventSchema   InputSchema = original.InputSchemaCustomEventSchema
+	InputSchemaEventGridSchema     InputSchema = original.InputSchemaEventGridSchema
+)
+
+type InputSchemaMappingType = original.InputSchemaMappingType
+
+const (
+	InputSchemaMappingTypeInputSchemaMapping InputSchemaMappingType = original.InputSchemaMappingTypeInputSchemaMapping
+	InputSchemaMappingTypeJSON               InputSchemaMappingType = original.InputSchemaMappingTypeJSON
 )
 
 type OperatorType = original.OperatorType
@@ -97,6 +128,33 @@ const (
 	OperatorTypeStringEndsWith            OperatorType = original.OperatorTypeStringEndsWith
 	OperatorTypeStringIn                  OperatorType = original.OperatorTypeStringIn
 	OperatorTypeStringNotIn               OperatorType = original.OperatorTypeStringNotIn
+)
+
+type PersistedConnectionStatus = original.PersistedConnectionStatus
+
+const (
+	Approved     PersistedConnectionStatus = original.Approved
+	Disconnected PersistedConnectionStatus = original.Disconnected
+	Pending      PersistedConnectionStatus = original.Pending
+	Rejected     PersistedConnectionStatus = original.Rejected
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	Disabled PublicNetworkAccess = original.Disabled
+	Enabled  PublicNetworkAccess = original.Enabled
+)
+
+type ResourceProvisioningState = original.ResourceProvisioningState
+
+const (
+	ResourceProvisioningStateCanceled  ResourceProvisioningState = original.ResourceProvisioningStateCanceled
+	ResourceProvisioningStateCreating  ResourceProvisioningState = original.ResourceProvisioningStateCreating
+	ResourceProvisioningStateDeleting  ResourceProvisioningState = original.ResourceProvisioningStateDeleting
+	ResourceProvisioningStateFailed    ResourceProvisioningState = original.ResourceProvisioningStateFailed
+	ResourceProvisioningStateSucceeded ResourceProvisioningState = original.ResourceProvisioningStateSucceeded
+	ResourceProvisioningStateUpdating  ResourceProvisioningState = original.ResourceProvisioningStateUpdating
 )
 
 type ResourceRegionType = original.ResourceRegionType
@@ -129,11 +187,15 @@ const (
 )
 
 type AdvancedFilter = original.AdvancedFilter
+type AzureFunctionEventSubscriptionDestination = original.AzureFunctionEventSubscriptionDestination
+type AzureFunctionEventSubscriptionDestinationProperties = original.AzureFunctionEventSubscriptionDestinationProperties
 type BaseClient = original.BaseClient
 type BasicAdvancedFilter = original.BasicAdvancedFilter
 type BasicDeadLetterDestination = original.BasicDeadLetterDestination
 type BasicEventSubscriptionDestination = original.BasicEventSubscriptionDestination
+type BasicInputSchemaMapping = original.BasicInputSchemaMapping
 type BoolEqualsAdvancedFilter = original.BoolEqualsAdvancedFilter
+type ConnectionState = original.ConnectionState
 type DeadLetterDestination = original.DeadLetterDestination
 type Domain = original.Domain
 type DomainProperties = original.DomainProperties
@@ -147,6 +209,7 @@ type DomainTopicsDeleteFuture = original.DomainTopicsDeleteFuture
 type DomainTopicsListResult = original.DomainTopicsListResult
 type DomainTopicsListResultIterator = original.DomainTopicsListResultIterator
 type DomainTopicsListResultPage = original.DomainTopicsListResultPage
+type DomainUpdateParameterProperties = original.DomainUpdateParameterProperties
 type DomainUpdateParameters = original.DomainUpdateParameters
 type DomainsClient = original.DomainsClient
 type DomainsCreateOrUpdateFuture = original.DomainsCreateOrUpdateFuture
@@ -175,6 +238,12 @@ type EventTypeProperties = original.EventTypeProperties
 type EventTypesListResult = original.EventTypesListResult
 type HybridConnectionEventSubscriptionDestination = original.HybridConnectionEventSubscriptionDestination
 type HybridConnectionEventSubscriptionDestinationProperties = original.HybridConnectionEventSubscriptionDestinationProperties
+type InboundIPRule = original.InboundIPRule
+type InputSchemaMapping = original.InputSchemaMapping
+type JSONField = original.JSONField
+type JSONFieldWithDefault = original.JSONFieldWithDefault
+type JSONInputSchemaMapping = original.JSONInputSchemaMapping
+type JSONInputSchemaMappingProperties = original.JSONInputSchemaMappingProperties
 type NumberGreaterThanAdvancedFilter = original.NumberGreaterThanAdvancedFilter
 type NumberGreaterThanOrEqualsAdvancedFilter = original.NumberGreaterThanOrEqualsAdvancedFilter
 type NumberInAdvancedFilter = original.NumberInAdvancedFilter
@@ -185,10 +254,27 @@ type Operation = original.Operation
 type OperationInfo = original.OperationInfo
 type OperationsClient = original.OperationsClient
 type OperationsListResult = original.OperationsListResult
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
+type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateEndpointConnectionsUpdateFuture = original.PrivateEndpointConnectionsUpdateFuture
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkResourcesListResult = original.PrivateLinkResourcesListResult
+type PrivateLinkResourcesListResultIterator = original.PrivateLinkResourcesListResultIterator
+type PrivateLinkResourcesListResultPage = original.PrivateLinkResourcesListResultPage
 type Resource = original.Resource
 type RetryPolicy = original.RetryPolicy
 type ServiceBusQueueEventSubscriptionDestination = original.ServiceBusQueueEventSubscriptionDestination
 type ServiceBusQueueEventSubscriptionDestinationProperties = original.ServiceBusQueueEventSubscriptionDestinationProperties
+type ServiceBusTopicEventSubscriptionDestination = original.ServiceBusTopicEventSubscriptionDestination
+type ServiceBusTopicEventSubscriptionDestinationProperties = original.ServiceBusTopicEventSubscriptionDestinationProperties
 type StorageBlobDeadLetterDestination = original.StorageBlobDeadLetterDestination
 type StorageBlobDeadLetterDestinationProperties = original.StorageBlobDeadLetterDestinationProperties
 type StorageQueueEventSubscriptionDestination = original.StorageQueueEventSubscriptionDestination
@@ -206,6 +292,7 @@ type TopicTypeInfo = original.TopicTypeInfo
 type TopicTypeProperties = original.TopicTypeProperties
 type TopicTypesClient = original.TopicTypesClient
 type TopicTypesListResult = original.TopicTypesListResult
+type TopicUpdateParameterProperties = original.TopicUpdateParameterProperties
 type TopicUpdateParameters = original.TopicUpdateParameters
 type TopicsClient = original.TopicsClient
 type TopicsCreateOrUpdateFuture = original.TopicsCreateOrUpdateFuture
@@ -263,6 +350,30 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return original.NewPrivateEndpointConnectionListResultIterator(page)
+}
+func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(getNextPage)
+}
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesListResultIterator(page PrivateLinkResourcesListResultPage) PrivateLinkResourcesListResultIterator {
+	return original.NewPrivateLinkResourcesListResultIterator(page)
+}
+func NewPrivateLinkResourcesListResultPage(getNextPage func(context.Context, PrivateLinkResourcesListResult) (PrivateLinkResourcesListResult, error)) PrivateLinkResourcesListResultPage {
+	return original.NewPrivateLinkResourcesListResultPage(getNextPage)
+}
 func NewTopicTypesClient(subscriptionID string) TopicTypesClient {
 	return original.NewTopicTypesClient(subscriptionID)
 }
@@ -296,11 +407,32 @@ func PossibleEndpointTypeBasicDeadLetterDestinationValues() []EndpointTypeBasicD
 func PossibleEndpointTypeValues() []EndpointType {
 	return original.PossibleEndpointTypeValues()
 }
+func PossibleEventDeliverySchemaValues() []EventDeliverySchema {
+	return original.PossibleEventDeliverySchemaValues()
+}
 func PossibleEventSubscriptionProvisioningStateValues() []EventSubscriptionProvisioningState {
 	return original.PossibleEventSubscriptionProvisioningStateValues()
 }
+func PossibleIPActionTypeValues() []IPActionType {
+	return original.PossibleIPActionTypeValues()
+}
+func PossibleInputSchemaMappingTypeValues() []InputSchemaMappingType {
+	return original.PossibleInputSchemaMappingTypeValues()
+}
+func PossibleInputSchemaValues() []InputSchema {
+	return original.PossibleInputSchemaValues()
+}
 func PossibleOperatorTypeValues() []OperatorType {
 	return original.PossibleOperatorTypeValues()
+}
+func PossiblePersistedConnectionStatusValues() []PersistedConnectionStatus {
+	return original.PossiblePersistedConnectionStatusValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
+}
+func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
+	return original.PossibleResourceProvisioningStateValues()
 }
 func PossibleResourceRegionTypeValues() []ResourceRegionType {
 	return original.PossibleResourceRegionTypeValues()

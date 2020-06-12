@@ -121,7 +121,6 @@ func (client RegistriesClient) CheckNameAvailabilitySender(req *http.Request) (*
 func (client RegistriesClient) CheckNameAvailabilityResponder(resp *http.Response) (result RegistryNameStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -220,7 +219,6 @@ func (client RegistriesClient) CreateSender(req *http.Request) (future Registrie
 func (client RegistriesClient) CreateResponder(resp *http.Response) (result Registry, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -306,7 +304,6 @@ func (client RegistriesClient) DeleteSender(req *http.Request) (*http.Response, 
 func (client RegistriesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -391,7 +388,6 @@ func (client RegistriesClient) GetSender(req *http.Request) (*http.Response, err
 func (client RegistriesClient) GetResponder(resp *http.Response) (result Registry, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -463,7 +459,6 @@ func (client RegistriesClient) ListSender(req *http.Request) (*http.Response, er
 func (client RegistriesClient) ListResponder(resp *http.Response) (result RegistryListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -581,7 +576,6 @@ func (client RegistriesClient) ListByResourceGroupSender(req *http.Request) (*ht
 func (client RegistriesClient) ListByResourceGroupResponder(resp *http.Response) (result RegistryListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -704,7 +698,6 @@ func (client RegistriesClient) ListCredentialsSender(req *http.Request) (*http.R
 func (client RegistriesClient) ListCredentialsResponder(resp *http.Response) (result RegistryListCredentialsResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -794,7 +787,6 @@ func (client RegistriesClient) RegenerateCredentialSender(req *http.Request) (*h
 func (client RegistriesClient) RegenerateCredentialResponder(resp *http.Response) (result RegistryListCredentialsResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -883,7 +875,6 @@ func (client RegistriesClient) UpdateSender(req *http.Request) (*http.Response, 
 func (client RegistriesClient) UpdateResponder(resp *http.Response) (result Registry, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

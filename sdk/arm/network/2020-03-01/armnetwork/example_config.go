@@ -17,6 +17,10 @@ var (
 	resourceGroupName = os.Getenv("AZURE_RESOURCE_GROUP")
 	// The subscription ID where the resource group exists
 	subscriptionID = os.Getenv("AZURE_SUBSCRIPTION_ID")
+	// The Virtual Network that will be used in the examples
+	vnetName = os.Getenv("AZURE_VNET")
+	// The subnet to be used in the samples
+	subnetName = os.Getenv("AZURE_SUBNET")
 )
 
 // returns a credential that can be used to authenticate with Azure Active Directory

@@ -46,7 +46,7 @@ func ExampleNetworkInterfacesOperations_BeginCreateOrUpdate() {
 			},
 			Properties: &NetworkInterfacePropertiesFormat{
 				IPConfigurations: &[]NetworkInterfaceIPConfiguration{
-					NetworkInterfaceIPConfiguration{
+					{
 						Name: to.StringPtr(nicName),
 						Properties: &NetworkInterfaceIPConfigurationPropertiesFormat{
 							Subnet:                    subnet,

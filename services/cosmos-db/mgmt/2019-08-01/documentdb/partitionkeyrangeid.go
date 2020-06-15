@@ -32,15 +32,15 @@ type PartitionKeyRangeIDClient struct {
 }
 
 // NewPartitionKeyRangeIDClient creates an instance of the PartitionKeyRangeIDClient client.
-func NewPartitionKeyRangeIDClient(subscriptionID string) PartitionKeyRangeIDClient {
-	return NewPartitionKeyRangeIDClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewPartitionKeyRangeIDClient(subscriptionID string, subscriptionID1 string) PartitionKeyRangeIDClient {
+	return NewPartitionKeyRangeIDClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewPartitionKeyRangeIDClientWithBaseURI creates an instance of the PartitionKeyRangeIDClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewPartitionKeyRangeIDClientWithBaseURI(baseURI string, subscriptionID string) PartitionKeyRangeIDClient {
-	return PartitionKeyRangeIDClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewPartitionKeyRangeIDClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PartitionKeyRangeIDClient {
+	return PartitionKeyRangeIDClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given partition key range id.
@@ -133,7 +133,6 @@ func (client PartitionKeyRangeIDClient) ListMetricsSender(req *http.Request) (*h
 func (client PartitionKeyRangeIDClient) ListMetricsResponder(resp *http.Response) (result PartitionMetricListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

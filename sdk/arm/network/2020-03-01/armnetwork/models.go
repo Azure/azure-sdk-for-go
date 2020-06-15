@@ -5098,6 +5098,34 @@ type FirewallPolicyRuleGroupProperties struct {
 	Rules *[]FirewallPolicyRuleClassification `json:"rules,omitempty"`
 }
 
+func (f *FirewallPolicyRuleGroupProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]*json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for k, v := range rawMsg {
+		var err error
+		switch k {
+		case "priority":
+			if v != nil {
+				err = json.Unmarshal(*v, &f.Priority)
+			}
+		case "provisioningState":
+			if v != nil {
+				err = json.Unmarshal(*v, &f.ProvisioningState)
+			}
+		case "rules":
+			if v != nil {
+				f.Rules, err = unmarshalFirewallPolicyRuleClassificationArray(*v)
+			}
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // FirewallPolicyRuleGroupResponse is the response envelope for operations that return a FirewallPolicyRuleGroup type.
 type FirewallPolicyRuleGroupResponse struct {
 	// Rule Group resource.

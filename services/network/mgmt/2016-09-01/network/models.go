@@ -2718,7 +2718,7 @@ type BgpPeerStatus struct {
 	// MessagesSent - READ-ONLY; The number of BGP messages sent
 	MessagesSent *int64 `json:"messagesSent,omitempty"`
 	// MessagesReceived - READ-ONLY; The number of BGP messages received
-	MessagesReceived *int32 `json:"messagesReceived,omitempty"`
+	MessagesReceived *int64 `json:"messagesReceived,omitempty"`
 }
 
 // BgpPeerStatusListResult response for list BGP peer status API service call

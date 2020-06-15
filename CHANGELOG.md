@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## `v43.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| documentdb | 2020-04-01 |
+| eventgrid | 2020-06-01 |
+| network | 2020-05-01 |
+| vmware | 2019-08-09-preview |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| hdinsight | 2018-06-01-preview |
+
 ## `v43.1.0`
 
 ### New Packages

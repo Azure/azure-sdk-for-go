@@ -32,6 +32,9 @@ func getFirewallPoliciesOperations() FirewallPoliciesOperations {
 	return client.FirewallPoliciesOperations(subscriptionID)
 }
 
+// Environment variables that are required to run this example:
+// AZURE_SUBSCRIPTION_ID, AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET,
+// AZURE_RESOURCE_GROUP, AZURE_LOCATION
 func ExampleFirewallPolicyRuleGroupsOperations_BeginCreateOrUpdate() {
 	// get FirewallPoliciesOperations and create a new FirewallPolicy to use in the FirewallPolicyRuleGroup
 	fwPolicy := createFirewallPolicy(resourceGroupName, location, policyName)
@@ -72,6 +75,9 @@ func ExampleFirewallPolicyRuleGroupsOperations_BeginCreateOrUpdate() {
 	// 200
 }
 
+// Environment variables that are required to run this example:
+// AZURE_SUBSCRIPTION_ID, AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET,
+// AZURE_RESOURCE_GROUP
 func ExampleFirewallPolicyRuleGroupsOperations_BeginDelete() {
 	fwClient := getFirewallPolicyRuleGroupsOperations()
 	fwResp, err := fwClient.BeginDelete(context.Background(), resourceGroupName, policyName, ruleGroupName)

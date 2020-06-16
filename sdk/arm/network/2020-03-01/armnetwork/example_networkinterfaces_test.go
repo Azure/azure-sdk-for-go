@@ -31,6 +31,10 @@ func getSubnetClient() SubnetsOperations {
 	return nicClient.SubnetsOperations(subscriptionID)
 }
 
+// Environment variables that are required to run this example:
+// AZURE_SUBSCRIPTION_ID, AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET,
+// AZURE_RESOURCE_GROUP, AZURE_LOCATION, AZURE_IP.
+// See example_config.go for information about the environment variables.
 func ExampleNetworkInterfacesOperations_BeginCreateOrUpdate() {
 	ip := getIP()
 	subnet := getSubnet()
@@ -71,6 +75,10 @@ func ExampleNetworkInterfacesOperations_BeginCreateOrUpdate() {
 	// sampleNIC
 }
 
+// Environment variables that are required to run this example:
+// AZURE_SUBSCRIPTION_ID, AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET,
+// AZURE_RESOURCE_GROUP.
+// See example_config.go for information about the environment variables.
 func ExampleNetworkInterfacesOperations_Get() {
 	client := getNetworkInterfacesClient()
 	nic, err := client.Get(context.Background(), resourceGroupName, nicName, nil)
@@ -82,6 +90,10 @@ func ExampleNetworkInterfacesOperations_Get() {
 	// sampleNIC
 }
 
+// Environment variables that are required to run this example:
+// AZURE_SUBSCRIPTION_ID, AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET,
+// AZURE_RESOURCE_GROUP.
+// See example_config.go for information about the environment variables.
 func ExampleNetworkInterfacesOperations_BeginDelete() {
 	client := getNetworkInterfacesClient()
 	nic, err := client.BeginDelete(context.Background(), resourceGroupName, nicName)
@@ -99,7 +111,7 @@ func ExampleNetworkInterfacesOperations_BeginDelete() {
 
 func getIP() *PublicIPAddress {
 	client := getPublicIPClient()
-	resp, err := client.Get(context.Background(), resourceGroupName, ipName, nil)
+	resp, err := client.Get(context.Background(), resourceGroupName, ip, nil)
 	if err != nil {
 		panic(err)
 	}

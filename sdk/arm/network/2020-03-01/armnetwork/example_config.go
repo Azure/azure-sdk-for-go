@@ -11,6 +11,8 @@ import (
 )
 
 var (
+	// The name of the public IP addresses created in Azure
+	ip = os.Getenv("AZURE_IP")
 	// Azure location where the resource will be created
 	location = os.Getenv("AZURE_LOCATION")
 	// Azure resource group to retrieve and create resources

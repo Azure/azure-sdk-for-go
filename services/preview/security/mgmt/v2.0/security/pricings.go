@@ -114,7 +114,6 @@ func (client PricingsClient) GetSender(req *http.Request) (*http.Response, error
 func (client PricingsClient) GetResponder(resp *http.Response) (result Pricing, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -191,7 +190,6 @@ func (client PricingsClient) ListSender(req *http.Request) (*http.Response, erro
 func (client PricingsClient) ListResponder(resp *http.Response) (result PricingList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -274,7 +272,6 @@ func (client PricingsClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client PricingsClient) UpdateResponder(resp *http.Response) (result Pricing, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

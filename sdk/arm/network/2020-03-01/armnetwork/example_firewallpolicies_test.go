@@ -11,6 +11,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
+// This sample requires the following environment variables to be set correctly in order to run:
+// AZURE_LOCATION: Azure location where the resource will be created
+// AZURE_RESOURCE_GROUP: Azure resource group to retrieve and create resources
+// AZURE_SUBSCRIPTION_ID: The subscription ID where the resource group exists
+// AZURE_TENANT_ID: The Azure Active Directory tenant (directory) ID of the service principal.
+// AZURE_CLIENT_ID: The client (application) ID of the service principal.
+// AZURE_CLIENT_SECRET: A client secret that was generated for the App Registration used to authenticate the client.
+
 const (
 	policyName    = "samplepolicy"
 	ruleGroupName = "sampleRuleGroup"

@@ -67,6 +67,8 @@ func ExampleNetworkInterfacesOperations_BeginCreateOrUpdate() {
 	if result != nil {
 		fmt.Println(*result.NetworkInterface.Name)
 	}
+	// Output:
+	// sampleNIC
 }
 
 func ExampleNetworkInterfacesOperations_Get() {
@@ -76,6 +78,8 @@ func ExampleNetworkInterfacesOperations_Get() {
 		panic(err)
 	}
 	fmt.Println(*nic.NetworkInterface.Name)
+	// Output:
+	// sampleNIC
 }
 
 func ExampleNetworkInterfacesOperations_BeginDelete() {
@@ -89,6 +93,8 @@ func ExampleNetworkInterfacesOperations_BeginDelete() {
 		panic(err)
 	}
 	fmt.Println(res.StatusCode)
+	// Output:
+	// 200
 }
 
 func getIP() *PublicIPAddress {

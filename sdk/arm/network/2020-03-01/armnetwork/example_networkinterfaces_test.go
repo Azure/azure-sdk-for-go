@@ -18,7 +18,7 @@ const (
 func getNetworkInterfacesClient() NetworkInterfacesOperations {
 	nicClient, err := NewDefaultClient(getCredential(), nil)
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 	return nicClient.NetworkInterfacesOperations(subscriptionID)
 }
@@ -26,7 +26,7 @@ func getNetworkInterfacesClient() NetworkInterfacesOperations {
 func getSubnetClient() SubnetsOperations {
 	nicClient, err := NewDefaultClient(getCredential(), nil)
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 	return nicClient.SubnetsOperations(subscriptionID)
 }
@@ -62,11 +62,11 @@ func ExampleNetworkInterfacesOperations_BeginCreateOrUpdate() {
 			},
 		})
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 	result, err := nic.PollUntilDone(context.Background(), 1*time.Second)
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 	if result != nil {
 		fmt.Println(*result.NetworkInterface.Name)
@@ -83,7 +83,7 @@ func ExampleNetworkInterfacesOperations_Get() {
 	client := getNetworkInterfacesClient()
 	nic, err := client.Get(context.Background(), resourceGroupName, nicName, nil)
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 	fmt.Println(*nic.NetworkInterface.Name)
 	// Output:
@@ -98,11 +98,11 @@ func ExampleNetworkInterfacesOperations_BeginDelete() {
 	client := getNetworkInterfacesClient()
 	nic, err := client.BeginDelete(context.Background(), resourceGroupName, nicName)
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 	res, err := nic.PollUntilDone(context.Background(), 5*time.Second)
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 	fmt.Println(res.StatusCode)
 	// Output:
@@ -113,7 +113,7 @@ func getIP() *PublicIPAddress {
 	client := getPublicIPClient()
 	resp, err := client.Get(context.Background(), resourceGroupName, ip, nil)
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 	return resp.PublicIPAddress
 }
@@ -122,7 +122,7 @@ func getSubnet() *Subnet {
 	client := getSubnetClient()
 	resp, err := client.Get(context.Background(), resourceGroupName, vnetName, subnetName, nil)
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 	return resp.Subnet
 }

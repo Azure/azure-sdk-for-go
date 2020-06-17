@@ -11,6 +11,17 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
+// This sample requires the following environment variables to be set correctly in order to run:
+// AZURE_LOCATION: Azure location where the resource will be created.
+// AZURE_RESOURCE_GROUP: Azure resource group to retrieve and create resources.
+// AZURE_SUBSCRIPTION_ID: The subscription ID where the resource group exists.
+// AZURE_TENANT_ID: The Azure Active Directory tenant (directory) ID of the service principal.
+// AZURE_CLIENT_ID: The client (application) ID of the service principal.
+// AZURE_CLIENT_SECRET: A client secret that was generated for the App Registration used to authenticate the client.
+// AZURE_IP: The name of the public IP addresses created in Azure.
+// AZURE_VNET: The Virtual Network that will be used in the examples.
+// AZURE_SUBNET: The subnet that exists in the Virtual Network.
+
 const (
 	nicName = "sampleNIC"
 )
@@ -33,8 +44,7 @@ func getSubnetClient() SubnetsOperations {
 
 // Environment variables that are required to run this example:
 // AZURE_SUBSCRIPTION_ID, AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET,
-// AZURE_RESOURCE_GROUP, AZURE_LOCATION, AZURE_IP.
-// See example_config.go for information about the environment variables.
+// AZURE_RESOURCE_GROUP, AZURE_LOCATION, AZURE_IP, AZURE_VNET, AZURE_SUBNET.
 func ExampleNetworkInterfacesOperations_BeginCreateOrUpdate() {
 	ip := getIP()
 	subnet := getSubnet()
@@ -78,7 +88,6 @@ func ExampleNetworkInterfacesOperations_BeginCreateOrUpdate() {
 // Environment variables that are required to run this example:
 // AZURE_SUBSCRIPTION_ID, AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET,
 // AZURE_RESOURCE_GROUP.
-// See example_config.go for information about the environment variables.
 func ExampleNetworkInterfacesOperations_Get() {
 	client := getNetworkInterfacesClient()
 	nic, err := client.Get(context.Background(), resourceGroupName, nicName, nil)
@@ -93,7 +102,6 @@ func ExampleNetworkInterfacesOperations_Get() {
 // Environment variables that are required to run this example:
 // AZURE_SUBSCRIPTION_ID, AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET,
 // AZURE_RESOURCE_GROUP.
-// See example_config.go for information about the environment variables.
 func ExampleNetworkInterfacesOperations_BeginDelete() {
 	client := getNetworkInterfacesClient()
 	nic, err := client.BeginDelete(context.Background(), resourceGroupName, nicName)

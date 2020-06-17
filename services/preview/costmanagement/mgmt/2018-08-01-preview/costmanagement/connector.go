@@ -115,7 +115,6 @@ func (client ConnectorClient) CreateOrUpdateSender(req *http.Request) (*http.Res
 func (client ConnectorClient) CreateOrUpdateResponder(resp *http.Response) (result ConnectorDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -191,7 +190,6 @@ func (client ConnectorClient) DeleteSender(req *http.Request) (*http.Response, e
 func (client ConnectorClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -266,7 +264,6 @@ func (client ConnectorClient) GetSender(req *http.Request) (*http.Response, erro
 func (client ConnectorClient) GetResponder(resp *http.Response) (result ConnectorDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -337,7 +334,6 @@ func (client ConnectorClient) ListSender(req *http.Request) (*http.Response, err
 func (client ConnectorClient) ListResponder(resp *http.Response) (result ConnectorDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -411,7 +407,6 @@ func (client ConnectorClient) ListByResourceGroupNameSender(req *http.Request) (
 func (client ConnectorClient) ListByResourceGroupNameResponder(resp *http.Response) (result ConnectorDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -493,7 +488,6 @@ func (client ConnectorClient) UpdateSender(req *http.Request) (*http.Response, e
 func (client ConnectorClient) UpdateResponder(resp *http.Response) (result ConnectorDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

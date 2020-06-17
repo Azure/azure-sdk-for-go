@@ -114,7 +114,6 @@ func (client ShowbackRuleClient) CreateUpdateRuleSender(req *http.Request) (*htt
 func (client ShowbackRuleClient) CreateUpdateRuleResponder(resp *http.Response) (result ShowbackRule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -189,7 +188,6 @@ func (client ShowbackRuleClient) GetBillingAccountIDSender(req *http.Request) (*
 func (client ShowbackRuleClient) GetBillingAccountIDResponder(resp *http.Response) (result ShowbackRule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

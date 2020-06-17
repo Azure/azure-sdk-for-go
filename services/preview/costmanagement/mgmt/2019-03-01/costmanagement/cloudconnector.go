@@ -112,7 +112,6 @@ func (client CloudConnectorClient) CreateOrUpdateSender(req *http.Request) (*htt
 func (client CloudConnectorClient) CreateOrUpdateResponder(resp *http.Response) (result ConnectorDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -185,7 +184,6 @@ func (client CloudConnectorClient) DeleteSender(req *http.Request) (*http.Respon
 func (client CloudConnectorClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -261,7 +259,6 @@ func (client CloudConnectorClient) GetSender(req *http.Request) (*http.Response,
 func (client CloudConnectorClient) GetResponder(resp *http.Response) (result ConnectorDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -328,7 +325,6 @@ func (client CloudConnectorClient) ListSender(req *http.Request) (*http.Response
 func (client CloudConnectorClient) ListResponder(resp *http.Response) (result ConnectorDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -407,7 +403,6 @@ func (client CloudConnectorClient) UpdateSender(req *http.Request) (*http.Respon
 func (client CloudConnectorClient) UpdateResponder(resp *http.Response) (result ConnectorDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

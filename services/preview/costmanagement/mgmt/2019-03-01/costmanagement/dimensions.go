@@ -136,7 +136,6 @@ func (client DimensionsClient) ListByBillingAccountSender(req *http.Request) (*h
 func (client DimensionsClient) ListByBillingAccountResponder(resp *http.Response) (result DimensionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -240,7 +239,6 @@ func (client DimensionsClient) ListByDepartmentSender(req *http.Request) (*http.
 func (client DimensionsClient) ListByDepartmentResponder(resp *http.Response) (result DimensionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -344,7 +342,6 @@ func (client DimensionsClient) ListByEnrollmentAccountSender(req *http.Request) 
 func (client DimensionsClient) ListByEnrollmentAccountResponder(resp *http.Response) (result DimensionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -446,7 +443,6 @@ func (client DimensionsClient) ListByManagementGroupSender(req *http.Request) (*
 func (client DimensionsClient) ListByManagementGroupResponder(resp *http.Response) (result DimensionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -549,7 +545,6 @@ func (client DimensionsClient) ListByResourceGroupSender(req *http.Request) (*ht
 func (client DimensionsClient) ListByResourceGroupResponder(resp *http.Response) (result DimensionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -650,7 +645,6 @@ func (client DimensionsClient) ListBySubscriptionSender(req *http.Request) (*htt
 func (client DimensionsClient) ListBySubscriptionResponder(resp *http.Response) (result DimensionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -9,3 +9,5 @@ require (
 )
 
 replace github.com/Azure/azure-sdk-for-go/sdk/azidentity => ../../../../azidentity
+
+replace github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2019-05-01/armresources => ../../../resources/2019-05-01/armresources

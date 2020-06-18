@@ -108,7 +108,6 @@ func (client RoleDefinitionsClient) GetByBillingAccountNameSender(req *http.Requ
 func (client RoleDefinitionsClient) GetByBillingAccountNameResponder(resp *http.Response) (result RoleDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -185,7 +184,6 @@ func (client RoleDefinitionsClient) GetByBillingProfileNameSender(req *http.Requ
 func (client RoleDefinitionsClient) GetByBillingProfileNameResponder(resp *http.Response) (result RoleDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -262,7 +260,6 @@ func (client RoleDefinitionsClient) GetByInvoiceSectionNameSender(req *http.Requ
 func (client RoleDefinitionsClient) GetByInvoiceSectionNameResponder(resp *http.Response) (result RoleDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -335,7 +332,6 @@ func (client RoleDefinitionsClient) ListByBillingAccountNameSender(req *http.Req
 func (client RoleDefinitionsClient) ListByBillingAccountNameResponder(resp *http.Response) (result RoleDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -410,7 +406,6 @@ func (client RoleDefinitionsClient) ListByBillingProfileNameSender(req *http.Req
 func (client RoleDefinitionsClient) ListByBillingProfileNameResponder(resp *http.Response) (result RoleDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -485,7 +480,6 @@ func (client RoleDefinitionsClient) ListByInvoiceSectionNameSender(req *http.Req
 func (client RoleDefinitionsClient) ListByInvoiceSectionNameResponder(resp *http.Response) (result RoleDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

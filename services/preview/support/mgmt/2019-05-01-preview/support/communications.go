@@ -118,7 +118,6 @@ func (client CommunicationsClient) CheckNameAvailabilitySender(req *http.Request
 func (client CommunicationsClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameAvailabilityOutput, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -213,7 +212,6 @@ func (client CommunicationsClient) CreateSender(req *http.Request) (future Commu
 func (client CommunicationsClient) CreateResponder(resp *http.Response) (result CommunicationDetails, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -289,7 +287,6 @@ func (client CommunicationsClient) GetSender(req *http.Request) (*http.Response,
 func (client CommunicationsClient) GetResponder(resp *http.Response) (result CommunicationDetails, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -300,8 +297,8 @@ func (client CommunicationsClient) GetResponder(resp *http.Response) (result Com
 // List lists all communications (attachments not included) for a support ticket. <br/></br> You can also filter
 // support ticket communications by <i>CreatedDate</i>�or <i>CommunicationType</i> using the $filter parameter. The
 // only type of communication supported today is <i>Web</i>. Output will be a paged result with <i>nextLink</i>, using
-// which you can retrieve the next set of Communication results. <br/><br/> Support ticket data is available for 12
-// months after ticket creation. If a ticket was created more than 12 months ago, a request for data might cause an
+// which you can retrieve the next set of Communication results. <br/><br/> Support ticket data is available for 18
+// months after ticket creation. If a ticket was created more than 18 months ago, a request for data might cause an
 // error.
 // Parameters:
 // supportTicketName - support ticket name
@@ -380,7 +377,6 @@ func (client CommunicationsClient) ListSender(req *http.Request) (*http.Response
 func (client CommunicationsClient) ListResponder(resp *http.Response) (result CommunicationsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

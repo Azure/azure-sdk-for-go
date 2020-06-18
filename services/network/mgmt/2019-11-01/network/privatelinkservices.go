@@ -111,7 +111,6 @@ func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilitySender(
 func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilityResponder(resp *http.Response) (result PrivateLinkServiceVisibility, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -191,7 +190,6 @@ func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilityByResou
 func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilityByResourceGroupResponder(resp *http.Response) (result PrivateLinkServiceVisibility, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -271,7 +269,6 @@ func (client PrivateLinkServicesClient) CreateOrUpdateSender(req *http.Request) 
 func (client PrivateLinkServicesClient) CreateOrUpdateResponder(resp *http.Response) (result PrivateLinkService, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -347,7 +344,6 @@ func (client PrivateLinkServicesClient) DeleteSender(req *http.Request) (future 
 func (client PrivateLinkServicesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -424,7 +420,6 @@ func (client PrivateLinkServicesClient) DeletePrivateEndpointConnectionSender(re
 func (client PrivateLinkServicesClient) DeletePrivateEndpointConnectionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -503,7 +498,6 @@ func (client PrivateLinkServicesClient) GetSender(req *http.Request) (*http.Resp
 func (client PrivateLinkServicesClient) GetResponder(resp *http.Response) (result PrivateLinkService, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -586,7 +580,6 @@ func (client PrivateLinkServicesClient) GetPrivateEndpointConnectionSender(req *
 func (client PrivateLinkServicesClient) GetPrivateEndpointConnectionResponder(resp *http.Response) (result PrivateEndpointConnection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -661,7 +654,6 @@ func (client PrivateLinkServicesClient) ListSender(req *http.Request) (*http.Res
 func (client PrivateLinkServicesClient) ListResponder(resp *http.Response) (result PrivateLinkServiceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -774,7 +766,6 @@ func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesSende
 func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesResponder(resp *http.Response) (result AutoApprovedPrivateLinkServicesResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -889,7 +880,6 @@ func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesByRes
 func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesByResourceGroupResponder(resp *http.Response) (result AutoApprovedPrivateLinkServicesResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -998,7 +988,6 @@ func (client PrivateLinkServicesClient) ListBySubscriptionSender(req *http.Reque
 func (client PrivateLinkServicesClient) ListBySubscriptionResponder(resp *http.Response) (result PrivateLinkServiceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1112,7 +1101,6 @@ func (client PrivateLinkServicesClient) ListPrivateEndpointConnectionsSender(req
 func (client PrivateLinkServicesClient) ListPrivateEndpointConnectionsResponder(resp *http.Response) (result PrivateEndpointConnectionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1233,7 +1221,6 @@ func (client PrivateLinkServicesClient) UpdatePrivateEndpointConnectionSender(re
 func (client PrivateLinkServicesClient) UpdatePrivateEndpointConnectionResponder(resp *http.Response) (result PrivateEndpointConnection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

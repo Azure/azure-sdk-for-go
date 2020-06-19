@@ -66,14 +66,7 @@ func (client BigDataPoolsClient) CreateOrUpdate(ctx context.Context, resourceGro
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: bigDataPoolInfo,
-			Constraints: []validation.Constraint{{Target: "bigDataPoolInfo.BigDataPoolResourceProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "bigDataPoolInfo.BigDataPoolResourceProperties.NodeCount", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "bigDataPoolInfo.BigDataPoolResourceProperties.NodeCount", Name: validation.InclusiveMaximum, Rule: int64(200), Chain: nil},
-						{Target: "bigDataPoolInfo.BigDataPoolResourceProperties.NodeCount", Name: validation.InclusiveMinimum, Rule: int64(3), Chain: nil},
-					}},
-				}}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("synapse.BigDataPoolsClient", "CreateOrUpdate", err.Error())
 	}
 

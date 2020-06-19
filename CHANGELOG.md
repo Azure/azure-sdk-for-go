@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v43.3.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| accesscontrol | 2020-02-01-preview |
+| artifacts | 2019-06-01-preview |
+| spark | 2019-11-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| synapse | 2019-06-01-preview |
+
 ## `v43.2.0`
 
 ### New Packages

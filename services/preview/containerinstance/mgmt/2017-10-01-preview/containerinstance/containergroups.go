@@ -125,7 +125,6 @@ func (client ContainerGroupsClient) CreateOrUpdateSender(req *http.Request) (*ht
 func (client ContainerGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result ContainerGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -202,7 +201,6 @@ func (client ContainerGroupsClient) DeleteSender(req *http.Request) (*http.Respo
 func (client ContainerGroupsClient) DeleteResponder(resp *http.Response) (result ContainerGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -280,7 +278,6 @@ func (client ContainerGroupsClient) GetSender(req *http.Request) (*http.Response
 func (client ContainerGroupsClient) GetResponder(resp *http.Response) (result ContainerGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -354,7 +351,6 @@ func (client ContainerGroupsClient) ListSender(req *http.Request) (*http.Respons
 func (client ContainerGroupsClient) ListResponder(resp *http.Response) (result ContainerGroupListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -468,7 +464,6 @@ func (client ContainerGroupsClient) ListByResourceGroupSender(req *http.Request)
 func (client ContainerGroupsClient) ListByResourceGroupResponder(resp *http.Response) (result ContainerGroupListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

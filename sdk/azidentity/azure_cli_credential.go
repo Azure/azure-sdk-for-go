@@ -18,17 +18,34 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+type AzureCLITokenProvider interface {
+	GetCLIToken(ctx context.Context, resource string) ([]byte, error)
+}
+
+type azureCLITokenProvider struct{}
+
 // AzureCLICredentialOptions contains options used to configure the AzureCLICredential
-type AzureCLICredentialOptions struct{}
+type AzureCLICredentialOptions struct {
+	TokenProvider AzureCLITokenProvider
+}
 
 // AzureCLICredential enables authentication to Azure Active Directory using the Azure CLI command "az account get-access-token".
-type AzureCLICredential struct{}
+type AzureCLICredential struct {
+	tokenProvider AzureCLITokenProvider
+}
 
 // TODO: do we want an options bag for this credential that includes a developer specified Azure CLI path or only specify with env var?
 // NewAzureCLICredential constructs a new AzureCLICredential with the details needed to authenticate against Azure Active Directory
 // options: configure the management of the requests sent to Azure Active Directory.
 func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredential, error) {
-	return &AzureCLICredential{}, nil
+	if options != nil {
+		return &AzureCLICredential{
+			tokenProvider: options.TokenProvider,
+		}, nil
+	}
+	return &AzureCLICredential{
+		tokenProvider: &azureCLITokenProvider{},
+	}, nil
 }
 
 // GetToken obtains a token from Azure Active Directory, using the Azure CLI command to authenticate.
@@ -52,26 +69,12 @@ func (c *AzureCLICredential) AuthenticationPolicy(options azcore.AuthenticationP
 // TODO: should the CLI request have a timeout? This is currently not being used
 const timeoutCLIRequest = 10000
 
-// cliToken represents an AccessToken from the Azure CLI
-type cliToken struct {
-	AccessToken      string `json:"accessToken"`
-	Authority        string `json:"_authority"`
-	ClientID         string `json:"_clientId"`
-	ExpiresOn        string `json:"expiresOn"`
-	IdentityProvider string `json:"identityProvider"`
-	IsMRRT           bool   `json:"isMRRT"`
-	RefreshToken     string `json:"refreshToken"`
-	Resource         string `json:"resource"`
-	TokenType        string `json:"tokenType"`
-	UserID           string `json:"userId"`
-}
-
 // authenticate creates a client secret authentication request and returns the resulting Access Token or
 // an error in case of authentication failure.
 // ctx: The current request context
 // scopes: The scopes for which the token has access
 func (c *AzureCLICredential) authenticate(ctx context.Context, resource string) (*azcore.AccessToken, error) {
-	output, err := c.executeCLICommand(ctx, resource)
+	output, err := c.tokenProvider.GetCLIToken(ctx, resource)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +82,7 @@ func (c *AzureCLICredential) authenticate(ctx context.Context, resource string) 
 	return c.createAccessToken(output)
 }
 
-func (c *AzureCLICredential) executeCLICommand(ctx context.Context, resource string) (*cliToken, error) {
+func (c *azureCLITokenProvider) GetCLIToken(ctx context.Context, resource string) ([]byte, error) {
 	// This is the path that a developer can set to tell this class what the install path for Azure CLI is.
 	const azureCLIPath = "AZURE_CLI_PATH"
 
@@ -124,16 +127,27 @@ func (c *AzureCLICredential) executeCLICommand(ctx context.Context, resource str
 		return nil, &CredentialUnavailableError{CredentialType: "Azure CLI Credential", Message: stderr.String()}
 	}
 
-	tokenResponse := cliToken{}
-	err = json.Unmarshal(output, &tokenResponse)
+	return output, nil
+}
+
+func (c *AzureCLICredential) createAccessToken(tk []byte) (*azcore.AccessToken, error) {
+	t := struct {
+		AccessToken      string `json:"accessToken"`
+		Authority        string `json:"_authority"`
+		ClientID         string `json:"_clientId"`
+		ExpiresOn        string `json:"expiresOn"`
+		IdentityProvider string `json:"identityProvider"`
+		IsMRRT           bool   `json:"isMRRT"`
+		RefreshToken     string `json:"refreshToken"`
+		Resource         string `json:"resource"`
+		TokenType        string `json:"tokenType"`
+		UserID           string `json:"userId"`
+	}{}
+	err := json.Unmarshal(tk, &t)
 	if err != nil {
 		return nil, err
 	}
 
-	return &tokenResponse, err
-}
-
-func (c *AzureCLICredential) createAccessToken(t *cliToken) (*azcore.AccessToken, error) {
 	tokenExpirationDate, err := parseExpirationDate(t.ExpiresOn)
 	if err != nil {
 		return nil, fmt.Errorf("Error parsing Token Expiration Date %q: %+v", t.ExpiresOn, err)

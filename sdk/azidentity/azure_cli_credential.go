@@ -35,9 +35,7 @@ type AzureCLICredential struct {
 // options: configure the management of the requests sent to Azure Active Directory.
 func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredential, error) {
 	if options == nil {
-		var o AzureCLICredentialOptions
-		o.TokenProvider = defaultTokenProvider()
-		options = &o
+		options = &AzureCLICredentialOptions{TokenProvider: defaultTokenProvider()}
 	}
 	return &AzureCLICredential{
 		tokenProvider: options.TokenProvider,

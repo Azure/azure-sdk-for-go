@@ -93,7 +93,6 @@ func (client AlterationsClient) GetSender(req *http.Request) (*http.Response, er
 func (client AlterationsClient) GetResponder(resp *http.Response) (result WordAlterationsDTO, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -168,7 +167,6 @@ func (client AlterationsClient) ReplaceSender(req *http.Request) (*http.Response
 func (client AlterationsClient) ReplaceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

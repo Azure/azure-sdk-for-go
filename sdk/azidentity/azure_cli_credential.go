@@ -60,8 +60,7 @@ func (c *AzureCLICredential) AuthenticationPolicy(options azcore.AuthenticationP
 	return newBearerTokenPolicy(c, options)
 }
 
-// TODO: should the CLI request have a timeout? This is currently not being used
-const timeoutCLIRequest = 10000
+const timeoutCLIRequest = 10000 * time.Millisecond
 
 // authenticate creates a client secret authentication request and returns the resulting Access Token or
 // an error in case of authentication failure.
@@ -97,7 +96,7 @@ func defaultTokenProvider() func(ctx context.Context, resource string) ([]byte, 
 			return nil, fmt.Errorf(invalidResourceErrorTemplate, resource)
 		}
 
-		ctx, cancel := context.WithTimeout(ctx, timeoutCLIRequest*time.Second)
+		ctx, cancel := context.WithTimeout(ctx, timeoutCLIRequest)
 		defer cancel()
 
 		// Execute Azure CLI to get token

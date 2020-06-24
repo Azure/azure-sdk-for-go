@@ -116,7 +116,6 @@ func (client ContainerLogsClient) ListSender(req *http.Request) (*http.Response,
 func (client ContainerLogsClient) ListResponder(resp *http.Response) (result Logs, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

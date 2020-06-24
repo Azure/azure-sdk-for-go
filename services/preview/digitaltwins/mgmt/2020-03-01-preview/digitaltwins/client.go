@@ -22,7 +22,6 @@ package digitaltwins
 
 import (
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/satori/go.uuid"
 )
 
 const (
@@ -34,17 +33,17 @@ const (
 type BaseClient struct {
 	autorest.Client
 	BaseURI        string
-	SubscriptionID uuid.UUID
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID uuid.UUID) BaseClient {
+func New(subscriptionID string) BaseClient {
 	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client using a custom endpoint.  Use this when interacting with
 // an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewWithBaseURI(baseURI string, subscriptionID uuid.UUID) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
 		Client:         autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI:        baseURI,

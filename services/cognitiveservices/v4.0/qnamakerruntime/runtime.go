@@ -101,7 +101,6 @@ func (client RuntimeClient) GenerateAnswerSender(req *http.Request) (*http.Respo
 func (client RuntimeClient) GenerateAnswerResponder(resp *http.Response) (result QnASearchResultList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -175,7 +174,6 @@ func (client RuntimeClient) TrainSender(req *http.Request) (*http.Response, erro
 func (client RuntimeClient) TrainResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

@@ -103,7 +103,7 @@ func ExampleFirewallPolicyRuleGroupsOperations_BeginDelete() {
 
 func createFirewallPolicy(rgName, loc, policyName string) *FirewallPolicy {
 	fpClient := getFirewallPoliciesOperations()
-	poller, err := fpClient.BeginCreateOrUpdate(
+	pollerResp, err := fpClient.BeginCreateOrUpdate(
 		context.Background(),
 		rgName,
 		policyName,
@@ -116,7 +116,7 @@ func createFirewallPolicy(rgName, loc, policyName string) *FirewallPolicy {
 	if err != nil {
 		panic(err)
 	}
-	resp, err := poller.PollUntilDone(context.Background(), 15*time.Second)
+	resp, err := pollerResp.PollUntilDone(context.Background(), 15*time.Second)
 	if err != nil {
 		panic(err)
 	}

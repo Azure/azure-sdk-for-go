@@ -18,11 +18,11 @@ import (
 // VirtualNetworkTapsOperations contains the methods for the VirtualNetworkTaps group.
 type VirtualNetworkTapsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a Virtual Network Tap.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, tapName string, parameters VirtualNetworkTap) (*VirtualNetworkTapResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, tapName string, parameters VirtualNetworkTap) (*VirtualNetworkTapPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VirtualNetworkTapPoller, error)
 	// BeginDelete - Deletes the specified virtual network tap.
-	BeginDelete(ctx context.Context, resourceGroupName string, tapName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, tapName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets information about the specified virtual network tap.
@@ -42,7 +42,7 @@ type virtualNetworkTapsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a Virtual Network Tap.
-func (client *virtualNetworkTapsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, tapName string, parameters VirtualNetworkTap) (*VirtualNetworkTapResponse, error) {
+func (client *virtualNetworkTapsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, tapName string, parameters VirtualNetworkTap) (*VirtualNetworkTapPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, tapName, parameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *virtualNetworkTapsOperations) createOrUpdateCreateRequest(resource
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *virtualNetworkTapsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualNetworkTapResponse, error) {
+func (client *virtualNetworkTapsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualNetworkTapPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := VirtualNetworkTapResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualNetworkTap)
+	return &VirtualNetworkTapPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *virtualNetworkTapsOperations) createOrUpdateHandleError(resp *azco
 }
 
 // Delete - Deletes the specified virtual network tap.
-func (client *virtualNetworkTapsOperations) BeginDelete(ctx context.Context, resourceGroupName string, tapName string) (*HTTPResponse, error) {
+func (client *virtualNetworkTapsOperations) BeginDelete(ctx context.Context, resourceGroupName string, tapName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, tapName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *virtualNetworkTapsOperations) deleteCreateRequest(resourceGroupNam
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *virtualNetworkTapsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *virtualNetworkTapsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

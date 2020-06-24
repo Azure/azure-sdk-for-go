@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -84,7 +85,14 @@ func (client *sshPublicKeysOperations) createHandleResponse(resp *azcore.Respons
 
 // createHandleError handles the Create error response.
 func (client *sshPublicKeysOperations) createHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Delete - Delete an SSH public key.
@@ -131,7 +139,14 @@ func (client *sshPublicKeysOperations) deleteHandleResponse(resp *azcore.Respons
 
 // deleteHandleError handles the Delete error response.
 func (client *sshPublicKeysOperations) deleteHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // GenerateKeyPair - Generates and returns a public/private key pair and populates the SSH public key resource with the public key. The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
@@ -179,7 +194,14 @@ func (client *sshPublicKeysOperations) generateKeyPairHandleResponse(resp *azcor
 
 // generateKeyPairHandleError handles the GenerateKeyPair error response.
 func (client *sshPublicKeysOperations) generateKeyPairHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Get - Retrieves information about an SSH public key.
@@ -227,7 +249,14 @@ func (client *sshPublicKeysOperations) getHandleResponse(resp *azcore.Response) 
 
 // getHandleError handles the Get error response.
 func (client *sshPublicKeysOperations) getHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListByResourceGroup - Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to get the next page of SSH public keys.
@@ -280,7 +309,14 @@ func (client *sshPublicKeysOperations) listByResourceGroupHandleResponse(resp *a
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *sshPublicKeysOperations) listByResourceGroupHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListBySubscription - Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next page of SSH public keys.
@@ -332,7 +368,14 @@ func (client *sshPublicKeysOperations) listBySubscriptionHandleResponse(resp *az
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
 func (client *sshPublicKeysOperations) listBySubscriptionHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Update - Updates a new SSH public key resource.
@@ -380,5 +423,12 @@ func (client *sshPublicKeysOperations) updateHandleResponse(resp *azcore.Respons
 
 // updateHandleError handles the Update error response.
 func (client *sshPublicKeysOperations) updateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

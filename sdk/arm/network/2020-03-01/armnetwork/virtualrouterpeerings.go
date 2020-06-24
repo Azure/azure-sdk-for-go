@@ -18,11 +18,11 @@ import (
 // VirtualRouterPeeringsOperations contains the methods for the VirtualRouterPeerings group.
 type VirtualRouterPeeringsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates the specified Virtual Router Peering.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualRouterName string, peeringName string, parameters VirtualRouterPeering) (*VirtualRouterPeeringResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualRouterName string, peeringName string, parameters VirtualRouterPeering) (*VirtualRouterPeeringPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VirtualRouterPeeringPoller, error)
 	// BeginDelete - Deletes the specified peering from a Virtual Router.
-	BeginDelete(ctx context.Context, resourceGroupName string, virtualRouterName string, peeringName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, virtualRouterName string, peeringName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified Virtual Router Peering.
@@ -38,7 +38,7 @@ type virtualRouterPeeringsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates the specified Virtual Router Peering.
-func (client *virtualRouterPeeringsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualRouterName string, peeringName string, parameters VirtualRouterPeering) (*VirtualRouterPeeringResponse, error) {
+func (client *virtualRouterPeeringsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualRouterName string, peeringName string, parameters VirtualRouterPeering) (*VirtualRouterPeeringPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, virtualRouterName, peeringName, parameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *virtualRouterPeeringsOperations) createOrUpdateCreateRequest(resou
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *virtualRouterPeeringsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualRouterPeeringResponse, error) {
+func (client *virtualRouterPeeringsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualRouterPeeringPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := VirtualRouterPeeringResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualRouterPeering)
+	return &VirtualRouterPeeringPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *virtualRouterPeeringsOperations) createOrUpdateHandleError(resp *a
 }
 
 // Delete - Deletes the specified peering from a Virtual Router.
-func (client *virtualRouterPeeringsOperations) BeginDelete(ctx context.Context, resourceGroupName string, virtualRouterName string, peeringName string) (*HTTPResponse, error) {
+func (client *virtualRouterPeeringsOperations) BeginDelete(ctx context.Context, resourceGroupName string, virtualRouterName string, peeringName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, virtualRouterName, peeringName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *virtualRouterPeeringsOperations) deleteCreateRequest(resourceGroup
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *virtualRouterPeeringsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *virtualRouterPeeringsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

@@ -18,11 +18,11 @@ import (
 // RoutesOperations contains the methods for the Routes group.
 type RoutesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a route in the specified route table.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, routeParameters Route) (*RouteResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, routeParameters Route) (*RoutePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (RoutePoller, error)
 	// BeginDelete - Deletes the specified route from a route table.
-	BeginDelete(ctx context.Context, resourceGroupName string, routeTableName string, routeName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, routeTableName string, routeName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified route from a route table.
@@ -38,7 +38,7 @@ type routesOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a route in the specified route table.
-func (client *routesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, routeParameters Route) (*RouteResponse, error) {
+func (client *routesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, routeParameters Route) (*RoutePollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, routeTableName, routeName, routeParameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *routesOperations) createOrUpdateCreateRequest(resourceGroupName st
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *routesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*RouteResponse, error) {
+func (client *routesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*RoutePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := RouteResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Route)
+	return &RoutePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *routesOperations) createOrUpdateHandleError(resp *azcore.Response)
 }
 
 // Delete - Deletes the specified route from a route table.
-func (client *routesOperations) BeginDelete(ctx context.Context, resourceGroupName string, routeTableName string, routeName string) (*HTTPResponse, error) {
+func (client *routesOperations) BeginDelete(ctx context.Context, resourceGroupName string, routeTableName string, routeName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, routeTableName, routeName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *routesOperations) deleteCreateRequest(resourceGroupName string, ro
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *routesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *routesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

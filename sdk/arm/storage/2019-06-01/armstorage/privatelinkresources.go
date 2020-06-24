@@ -8,7 +8,9 @@ package armstorage
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -71,5 +73,12 @@ func (client *privateLinkResourcesOperations) listByStorageAccountHandleResponse
 
 // listByStorageAccountHandleError handles the ListByStorageAccount error response.
 func (client *privateLinkResourcesOperations) listByStorageAccountHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

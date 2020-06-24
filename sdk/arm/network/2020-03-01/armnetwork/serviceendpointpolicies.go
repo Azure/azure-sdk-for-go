@@ -18,11 +18,11 @@ import (
 // ServiceEndpointPoliciesOperations contains the methods for the ServiceEndpointPolicies group.
 type ServiceEndpointPoliciesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a service Endpoint Policies.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters ServiceEndpointPolicy) (*ServiceEndpointPolicyResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters ServiceEndpointPolicy) (*ServiceEndpointPolicyPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ServiceEndpointPolicyPoller, error)
 	// BeginDelete - Deletes the specified service endpoint policy.
-	BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified service Endpoint Policies in a specified resource group.
@@ -42,7 +42,7 @@ type serviceEndpointPoliciesOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a service Endpoint Policies.
-func (client *serviceEndpointPoliciesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters ServiceEndpointPolicy) (*ServiceEndpointPolicyResponse, error) {
+func (client *serviceEndpointPoliciesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters ServiceEndpointPolicy) (*ServiceEndpointPolicyPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, serviceEndpointPolicyName, parameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *serviceEndpointPoliciesOperations) createOrUpdateCreateRequest(res
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *serviceEndpointPoliciesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyResponse, error) {
+func (client *serviceEndpointPoliciesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := ServiceEndpointPolicyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ServiceEndpointPolicy)
+	return &ServiceEndpointPolicyPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *serviceEndpointPoliciesOperations) createOrUpdateHandleError(resp 
 }
 
 // Delete - Deletes the specified service endpoint policy.
-func (client *serviceEndpointPoliciesOperations) BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string) (*HTTPResponse, error) {
+func (client *serviceEndpointPoliciesOperations) BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, serviceEndpointPolicyName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *serviceEndpointPoliciesOperations) deleteCreateRequest(resourceGro
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *serviceEndpointPoliciesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *serviceEndpointPoliciesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

@@ -17,23 +17,23 @@ import (
 // PacketCapturesOperations contains the methods for the PacketCaptures group.
 type PacketCapturesOperations interface {
 	// BeginCreate - Create and start a packet capture on the specified VM.
-	BeginCreate(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, parameters PacketCapture) (*PacketCaptureResultResponse, error)
+	BeginCreate(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, parameters PacketCapture) (*PacketCaptureResultPollerResponse, error)
 	// ResumeCreate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreate(token string) (PacketCaptureResultPoller, error)
 	// BeginDelete - Deletes the specified packet capture session.
-	BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets a packet capture session by name.
 	Get(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string) (*PacketCaptureResultResponse, error)
 	// BeginGetStatus - Query the status of a running packet capture session.
-	BeginGetStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string) (*PacketCaptureQueryStatusResultResponse, error)
+	BeginGetStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string) (*PacketCaptureQueryStatusResultPollerResponse, error)
 	// ResumeGetStatus - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeGetStatus(token string) (PacketCaptureQueryStatusResultPoller, error)
 	// List - Lists all packet capture sessions within the specified resource group.
 	List(ctx context.Context, resourceGroupName string, networkWatcherName string) (*PacketCaptureListResultResponse, error)
 	// BeginStop - Stops a specified packet capture session.
-	BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string) (*HTTPResponse, error)
+	BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string) (*HTTPPollerResponse, error)
 	// ResumeStop - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeStop(token string) (HTTPPoller, error)
 }
@@ -45,7 +45,7 @@ type packetCapturesOperations struct {
 }
 
 // Create - Create and start a packet capture on the specified VM.
-func (client *packetCapturesOperations) BeginCreate(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, parameters PacketCapture) (*PacketCaptureResultResponse, error) {
+func (client *packetCapturesOperations) BeginCreate(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, parameters PacketCapture) (*PacketCaptureResultPollerResponse, error) {
 	req, err := client.createCreateRequest(resourceGroupName, networkWatcherName, packetCaptureName, parameters)
 	if err != nil {
 		return nil, err
@@ -104,12 +104,11 @@ func (client *packetCapturesOperations) createCreateRequest(resourceGroupName st
 }
 
 // createHandleResponse handles the Create response.
-func (client *packetCapturesOperations) createHandleResponse(resp *azcore.Response) (*PacketCaptureResultResponse, error) {
+func (client *packetCapturesOperations) createHandleResponse(resp *azcore.Response) (*PacketCaptureResultPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createHandleError(resp)
 	}
-	result := PacketCaptureResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PacketCaptureResult)
+	return &PacketCaptureResultPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createHandleError handles the Create error response.
@@ -122,7 +121,7 @@ func (client *packetCapturesOperations) createHandleError(resp *azcore.Response)
 }
 
 // Delete - Deletes the specified packet capture session.
-func (client *packetCapturesOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string) (*HTTPResponse, error) {
+func (client *packetCapturesOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, networkWatcherName, packetCaptureName)
 	if err != nil {
 		return nil, err
@@ -181,11 +180,11 @@ func (client *packetCapturesOperations) deleteCreateRequest(resourceGroupName st
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *packetCapturesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *packetCapturesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
@@ -251,7 +250,7 @@ func (client *packetCapturesOperations) getHandleError(resp *azcore.Response) er
 }
 
 // GetStatus - Query the status of a running packet capture session.
-func (client *packetCapturesOperations) BeginGetStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string) (*PacketCaptureQueryStatusResultResponse, error) {
+func (client *packetCapturesOperations) BeginGetStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string) (*PacketCaptureQueryStatusResultPollerResponse, error) {
 	req, err := client.getStatusCreateRequest(resourceGroupName, networkWatcherName, packetCaptureName)
 	if err != nil {
 		return nil, err
@@ -310,12 +309,11 @@ func (client *packetCapturesOperations) getStatusCreateRequest(resourceGroupName
 }
 
 // getStatusHandleResponse handles the GetStatus response.
-func (client *packetCapturesOperations) getStatusHandleResponse(resp *azcore.Response) (*PacketCaptureQueryStatusResultResponse, error) {
+func (client *packetCapturesOperations) getStatusHandleResponse(resp *azcore.Response) (*PacketCaptureQueryStatusResultPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.getStatusHandleError(resp)
 	}
-	result := PacketCaptureQueryStatusResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PacketCaptureQueryStatusResult)
+	return &PacketCaptureQueryStatusResultPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // getStatusHandleError handles the GetStatus error response.
@@ -380,7 +378,7 @@ func (client *packetCapturesOperations) listHandleError(resp *azcore.Response) e
 }
 
 // Stop - Stops a specified packet capture session.
-func (client *packetCapturesOperations) BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string) (*HTTPResponse, error) {
+func (client *packetCapturesOperations) BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string) (*HTTPPollerResponse, error) {
 	req, err := client.stopCreateRequest(resourceGroupName, networkWatcherName, packetCaptureName)
 	if err != nil {
 		return nil, err
@@ -439,11 +437,11 @@ func (client *packetCapturesOperations) stopCreateRequest(resourceGroupName stri
 }
 
 // stopHandleResponse handles the Stop response.
-func (client *packetCapturesOperations) stopHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *packetCapturesOperations) stopHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.stopHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // stopHandleError handles the Stop error response.

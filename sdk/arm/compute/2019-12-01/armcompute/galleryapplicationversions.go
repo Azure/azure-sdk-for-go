@@ -18,11 +18,11 @@ import (
 // GalleryApplicationVersionsOperations contains the methods for the GalleryApplicationVersions group.
 type GalleryApplicationVersionsOperations interface {
 	// BeginCreateOrUpdate - Create or update a gallery Application Version.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersion) (*GalleryApplicationVersionResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersion) (*GalleryApplicationVersionPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (GalleryApplicationVersionPoller, error)
 	// BeginDelete - Delete a gallery Application Version.
-	BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Retrieves information about a gallery Application Version.
@@ -30,7 +30,7 @@ type GalleryApplicationVersionsOperations interface {
 	// ListByGalleryApplication - List gallery Application Versions in a gallery Application Definition.
 	ListByGalleryApplication(resourceGroupName string, galleryName string, galleryApplicationName string) (GalleryApplicationVersionListPager, error)
 	// BeginUpdate - Update a gallery Application Version.
-	BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersionUpdate) (*GalleryApplicationVersionResponse, error)
+	BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersionUpdate) (*GalleryApplicationVersionPollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (GalleryApplicationVersionPoller, error)
 }
@@ -42,7 +42,7 @@ type galleryApplicationVersionsOperations struct {
 }
 
 // CreateOrUpdate - Create or update a gallery Application Version.
-func (client *galleryApplicationVersionsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersion) (*GalleryApplicationVersionResponse, error) {
+func (client *galleryApplicationVersionsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersion) (*GalleryApplicationVersionPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, galleryApplicationVersion)
 	if err != nil {
 		return nil, err
@@ -102,12 +102,11 @@ func (client *galleryApplicationVersionsOperations) createOrUpdateCreateRequest(
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *galleryApplicationVersionsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*GalleryApplicationVersionResponse, error) {
+func (client *galleryApplicationVersionsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*GalleryApplicationVersionPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := GalleryApplicationVersionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GalleryApplicationVersion)
+	return &GalleryApplicationVersionPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -120,7 +119,7 @@ func (client *galleryApplicationVersionsOperations) createOrUpdateHandleError(re
 }
 
 // Delete - Delete a gallery Application Version.
-func (client *galleryApplicationVersionsOperations) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string) (*HTTPResponse, error) {
+func (client *galleryApplicationVersionsOperations) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName)
 	if err != nil {
 		return nil, err
@@ -180,11 +179,11 @@ func (client *galleryApplicationVersionsOperations) deleteCreateRequest(resource
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *galleryApplicationVersionsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *galleryApplicationVersionsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
@@ -310,7 +309,7 @@ func (client *galleryApplicationVersionsOperations) listByGalleryApplicationHand
 }
 
 // Update - Update a gallery Application Version.
-func (client *galleryApplicationVersionsOperations) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersionUpdate) (*GalleryApplicationVersionResponse, error) {
+func (client *galleryApplicationVersionsOperations) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersionUpdate) (*GalleryApplicationVersionPollerResponse, error) {
 	req, err := client.updateCreateRequest(resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, galleryApplicationVersion)
 	if err != nil {
 		return nil, err
@@ -370,12 +369,11 @@ func (client *galleryApplicationVersionsOperations) updateCreateRequest(resource
 }
 
 // updateHandleResponse handles the Update response.
-func (client *galleryApplicationVersionsOperations) updateHandleResponse(resp *azcore.Response) (*GalleryApplicationVersionResponse, error) {
+func (client *galleryApplicationVersionsOperations) updateHandleResponse(resp *azcore.Response) (*GalleryApplicationVersionPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
 		return nil, client.updateHandleError(resp)
 	}
-	result := GalleryApplicationVersionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GalleryApplicationVersion)
+	return &GalleryApplicationVersionPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // updateHandleError handles the Update error response.

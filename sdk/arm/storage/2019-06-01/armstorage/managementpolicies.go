@@ -8,7 +8,9 @@ package armstorage
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -76,7 +78,14 @@ func (client *managementPoliciesOperations) createOrUpdateHandleResponse(resp *a
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *managementPoliciesOperations) createOrUpdateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Delete - Deletes the managementpolicy associated with the specified storage account.
@@ -124,7 +133,14 @@ func (client *managementPoliciesOperations) deleteHandleResponse(resp *azcore.Re
 
 // deleteHandleError handles the Delete error response.
 func (client *managementPoliciesOperations) deleteHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Get - Gets the managementpolicy associated with the specified storage account.
@@ -173,5 +189,12 @@ func (client *managementPoliciesOperations) getHandleResponse(resp *azcore.Respo
 
 // getHandleError handles the Get error response.
 func (client *managementPoliciesOperations) getHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

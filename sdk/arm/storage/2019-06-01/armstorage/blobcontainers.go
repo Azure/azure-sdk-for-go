@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -97,7 +98,14 @@ func (client *blobContainersOperations) clearLegalHoldHandleResponse(resp *azcor
 
 // clearLegalHoldHandleError handles the ClearLegalHold error response.
 func (client *blobContainersOperations) clearLegalHoldHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Create - Creates a new container under the specified account as described by request body. The container resource includes metadata and properties for that container. It does not include a list of the blobs contained by the container.
@@ -146,7 +154,14 @@ func (client *blobContainersOperations) createHandleResponse(resp *azcore.Respon
 
 // createHandleError handles the Create error response.
 func (client *blobContainersOperations) createHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // CreateOrUpdateImmutabilityPolicy - Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for this operation.
@@ -205,7 +220,14 @@ func (client *blobContainersOperations) createOrUpdateImmutabilityPolicyHandleRe
 
 // createOrUpdateImmutabilityPolicyHandleError handles the CreateOrUpdateImmutabilityPolicy error response.
 func (client *blobContainersOperations) createOrUpdateImmutabilityPolicyHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Delete - Deletes specified container under its account.
@@ -253,7 +275,14 @@ func (client *blobContainersOperations) deleteHandleResponse(resp *azcore.Respon
 
 // deleteHandleError handles the Delete error response.
 func (client *blobContainersOperations) deleteHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // DeleteImmutabilityPolicy - Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, only way is to delete the container after deleting all blobs inside the container.
@@ -307,7 +336,14 @@ func (client *blobContainersOperations) deleteImmutabilityPolicyHandleResponse(r
 
 // deleteImmutabilityPolicyHandleError handles the DeleteImmutabilityPolicy error response.
 func (client *blobContainersOperations) deleteImmutabilityPolicyHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ExtendImmutabilityPolicy - Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a Locked policy will be this action. ETag in If-Match is required for this operation.
@@ -363,7 +399,14 @@ func (client *blobContainersOperations) extendImmutabilityPolicyHandleResponse(r
 
 // extendImmutabilityPolicyHandleError handles the ExtendImmutabilityPolicy error response.
 func (client *blobContainersOperations) extendImmutabilityPolicyHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Get - Gets properties of a specified container.
@@ -412,7 +455,14 @@ func (client *blobContainersOperations) getHandleResponse(resp *azcore.Response)
 
 // getHandleError handles the Get error response.
 func (client *blobContainersOperations) getHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // GetImmutabilityPolicy - Gets the existing immutability policy along with the corresponding ETag in response headers and body.
@@ -468,7 +518,14 @@ func (client *blobContainersOperations) getImmutabilityPolicyHandleResponse(resp
 
 // getImmutabilityPolicyHandleError handles the GetImmutabilityPolicy error response.
 func (client *blobContainersOperations) getImmutabilityPolicyHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Lease - The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
@@ -520,7 +577,14 @@ func (client *blobContainersOperations) leaseHandleResponse(resp *azcore.Respons
 
 // leaseHandleError handles the Lease error response.
 func (client *blobContainersOperations) leaseHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // List - Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
@@ -580,7 +644,14 @@ func (client *blobContainersOperations) listHandleResponse(resp *azcore.Response
 
 // listHandleError handles the List error response.
 func (client *blobContainersOperations) listHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // LockImmutabilityPolicy - Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is ExtendImmutabilityPolicy action. ETag in If-Match is required for this operation.
@@ -633,7 +704,14 @@ func (client *blobContainersOperations) lockImmutabilityPolicyHandleResponse(res
 
 // lockImmutabilityPolicyHandleError handles the LockImmutabilityPolicy error response.
 func (client *blobContainersOperations) lockImmutabilityPolicyHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // SetLegalHold - Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append pattern and does not clear out the existing tags that are not specified in the request.
@@ -682,7 +760,14 @@ func (client *blobContainersOperations) setLegalHoldHandleResponse(resp *azcore.
 
 // setLegalHoldHandleError handles the SetLegalHold error response.
 func (client *blobContainersOperations) setLegalHoldHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Update - Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged. Update fails if the specified container doesn't already exist.
@@ -731,5 +816,12 @@ func (client *blobContainersOperations) updateHandleResponse(resp *azcore.Respon
 
 // updateHandleError handles the Update error response.
 func (client *blobContainersOperations) updateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

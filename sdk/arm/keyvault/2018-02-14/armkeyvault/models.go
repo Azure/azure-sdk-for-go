@@ -169,12 +169,12 @@ type DeletedVaultResponse struct {
 	RawResponse *http.Response
 }
 
-// HTTPResponse contains the HTTP response from the call to the service endpoint
-type HTTPResponse struct {
+// HTTPPollerResponse contains the asynchronous HTTP response from the call to the service endpoint.
+type HTTPPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
 	PollUntilDone func(ctx context.Context, frequency time.Duration) (*http.Response, error)
 
-	// Poller contains an initialized poller
+	// Poller contains an initialized poller.
 	Poller HTTPPoller
 
 	// RawResponse contains the underlying HTTP response.
@@ -306,6 +306,19 @@ type PrivateEndpointConnectionItem struct {
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 }
 
+// PrivateEndpointConnectionPollerResponse is the response envelope for operations that asynchronously return a PrivateEndpointConnection
+// type.
+type PrivateEndpointConnectionPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (*PrivateEndpointConnectionResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller PrivateEndpointConnectionPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // Properties of the private endpoint connection resource.
 type PrivateEndpointConnectionProperties struct {
 	// Properties of the private endpoint object.
@@ -320,23 +333,11 @@ type PrivateEndpointConnectionProperties struct {
 
 // PrivateEndpointConnectionResponse is the response envelope for operations that return a PrivateEndpointConnection type.
 type PrivateEndpointConnectionResponse struct {
-	// Location contains the information returned from the Location header response.
-	Location *string
-
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*PrivateEndpointConnectionResponse, error)
-
-	// Poller contains an initialized poller
-	Poller PrivateEndpointConnectionPoller
-
 	// Private endpoint connection resource.
 	PrivateEndpointConnection *PrivateEndpointConnection
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// RetryAfter contains the information returned from the Retry-After header response.
-	RetryAfter *int32
 }
 
 // A private link resource
@@ -578,6 +579,18 @@ type VaultPatchProperties struct {
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
+// VaultPollerResponse is the response envelope for operations that asynchronously return a Vault type.
+type VaultPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VaultResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VaultPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // Properties of the vault
 type VaultProperties struct {
 	// An array of 0 to 1024 identities that have access to the key vault. All identities in the array must use the same tenant
@@ -625,12 +638,6 @@ type VaultProperties struct {
 
 // VaultResponse is the response envelope for operations that return a Vault type.
 type VaultResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*VaultResponse, error)
-
-	// Poller contains an initialized poller
-	Poller VaultPoller
-
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 

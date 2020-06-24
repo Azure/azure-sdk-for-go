@@ -22,15 +22,15 @@ type PrivateLinkServicesOperations interface {
 	// CheckPrivateLinkServiceVisibilityByResourceGroup - Checks whether the subscription is visible to private link service in the specified resource group.
 	CheckPrivateLinkServiceVisibilityByResourceGroup(ctx context.Context, location string, resourceGroupName string, parameters CheckPrivateLinkServiceVisibilityRequest) (*PrivateLinkServiceVisibilityResponse, error)
 	// BeginCreateOrUpdate - Creates or updates an private link service in the specified resource group.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PrivateLinkService) (*PrivateLinkServiceResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PrivateLinkService) (*PrivateLinkServicePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (PrivateLinkServicePoller, error)
 	// BeginDelete - Deletes the specified private link service.
-	BeginDelete(ctx context.Context, resourceGroupName string, serviceName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, serviceName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// BeginDeletePrivateEndpointConnection - Delete private end point connection for a private link service in a subscription.
-	BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string) (*HTTPResponse, error)
+	BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string) (*HTTPPollerResponse, error)
 	// ResumeDeletePrivateEndpointConnection - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDeletePrivateEndpointConnection(token string) (HTTPPoller, error)
 	// Get - Gets the specified private link service by resource group.
@@ -161,7 +161,7 @@ func (client *privateLinkServicesOperations) checkPrivateLinkServiceVisibilityBy
 }
 
 // CreateOrUpdate - Creates or updates an private link service in the specified resource group.
-func (client *privateLinkServicesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PrivateLinkService) (*PrivateLinkServiceResponse, error) {
+func (client *privateLinkServicesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PrivateLinkService) (*PrivateLinkServicePollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, serviceName, parameters)
 	if err != nil {
 		return nil, err
@@ -219,12 +219,11 @@ func (client *privateLinkServicesOperations) createOrUpdateCreateRequest(resourc
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *privateLinkServicesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*PrivateLinkServiceResponse, error) {
+func (client *privateLinkServicesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*PrivateLinkServicePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := PrivateLinkServiceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PrivateLinkService)
+	return &PrivateLinkServicePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -237,7 +236,7 @@ func (client *privateLinkServicesOperations) createOrUpdateHandleError(resp *azc
 }
 
 // Delete - Deletes the specified private link service.
-func (client *privateLinkServicesOperations) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string) (*HTTPResponse, error) {
+func (client *privateLinkServicesOperations) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, serviceName)
 	if err != nil {
 		return nil, err
@@ -295,11 +294,11 @@ func (client *privateLinkServicesOperations) deleteCreateRequest(resourceGroupNa
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *privateLinkServicesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *privateLinkServicesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
@@ -312,7 +311,7 @@ func (client *privateLinkServicesOperations) deleteHandleError(resp *azcore.Resp
 }
 
 // DeletePrivateEndpointConnection - Delete private end point connection for a private link service in a subscription.
-func (client *privateLinkServicesOperations) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string) (*HTTPResponse, error) {
+func (client *privateLinkServicesOperations) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string) (*HTTPPollerResponse, error) {
 	req, err := client.deletePrivateEndpointConnectionCreateRequest(resourceGroupName, serviceName, peConnectionName)
 	if err != nil {
 		return nil, err
@@ -371,11 +370,11 @@ func (client *privateLinkServicesOperations) deletePrivateEndpointConnectionCrea
 }
 
 // deletePrivateEndpointConnectionHandleResponse handles the DeletePrivateEndpointConnection response.
-func (client *privateLinkServicesOperations) deletePrivateEndpointConnectionHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *privateLinkServicesOperations) deletePrivateEndpointConnectionHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deletePrivateEndpointConnectionHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deletePrivateEndpointConnectionHandleError handles the DeletePrivateEndpointConnection error response.

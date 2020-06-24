@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -19,11 +20,11 @@ import (
 // ImagesOperations contains the methods for the Images group.
 type ImagesOperations interface {
 	// BeginCreateOrUpdate - Create or update an image.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image) (*ImageResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image) (*ImagePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ImagePoller, error)
 	// BeginDelete - Deletes an Image.
-	BeginDelete(ctx context.Context, resourceGroupName string, imageName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, imageName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets an image.
@@ -33,7 +34,7 @@ type ImagesOperations interface {
 	// ListByResourceGroup - Gets the list of images under a resource group.
 	ListByResourceGroup(resourceGroupName string) (ImageListResultPager, error)
 	// BeginUpdate - Update an image.
-	BeginUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate) (*ImageResponse, error)
+	BeginUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate) (*ImagePollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (ImagePoller, error)
 }
@@ -45,7 +46,7 @@ type imagesOperations struct {
 }
 
 // CreateOrUpdate - Create or update an image.
-func (client *imagesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image) (*ImageResponse, error) {
+func (client *imagesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image) (*ImagePollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, imageName, parameters)
 	if err != nil {
 		return nil, err
@@ -103,21 +104,27 @@ func (client *imagesOperations) createOrUpdateCreateRequest(resourceGroupName st
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *imagesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ImageResponse, error) {
+func (client *imagesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ImagePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := ImageResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Image)
+	return &ImagePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *imagesOperations) createOrUpdateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Delete - Deletes an Image.
-func (client *imagesOperations) BeginDelete(ctx context.Context, resourceGroupName string, imageName string) (*HTTPResponse, error) {
+func (client *imagesOperations) BeginDelete(ctx context.Context, resourceGroupName string, imageName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, imageName)
 	if err != nil {
 		return nil, err
@@ -175,16 +182,23 @@ func (client *imagesOperations) deleteCreateRequest(resourceGroupName string, im
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *imagesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *imagesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
 func (client *imagesOperations) deleteHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Get - Gets an image.
@@ -235,7 +249,14 @@ func (client *imagesOperations) getHandleResponse(resp *azcore.Response) (*Image
 
 // getHandleError handles the Get error response.
 func (client *imagesOperations) getHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // List - Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is null to fetch all the Images.
@@ -287,7 +308,14 @@ func (client *imagesOperations) listHandleResponse(resp *azcore.Response) (*Imag
 
 // listHandleError handles the List error response.
 func (client *imagesOperations) listHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListByResourceGroup - Gets the list of images under a resource group.
@@ -340,11 +368,18 @@ func (client *imagesOperations) listByResourceGroupHandleResponse(resp *azcore.R
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *imagesOperations) listByResourceGroupHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Update - Update an image.
-func (client *imagesOperations) BeginUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate) (*ImageResponse, error) {
+func (client *imagesOperations) BeginUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate) (*ImagePollerResponse, error) {
 	req, err := client.updateCreateRequest(resourceGroupName, imageName, parameters)
 	if err != nil {
 		return nil, err
@@ -402,15 +437,21 @@ func (client *imagesOperations) updateCreateRequest(resourceGroupName string, im
 }
 
 // updateHandleResponse handles the Update response.
-func (client *imagesOperations) updateHandleResponse(resp *azcore.Response) (*ImageResponse, error) {
+func (client *imagesOperations) updateHandleResponse(resp *azcore.Response) (*ImagePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.updateHandleError(resp)
 	}
-	result := ImageResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Image)
+	return &ImagePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // updateHandleError handles the Update error response.
 func (client *imagesOperations) updateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

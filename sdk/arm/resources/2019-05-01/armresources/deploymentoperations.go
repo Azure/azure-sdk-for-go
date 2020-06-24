@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -84,7 +85,14 @@ func (client *deploymentOperations) getHandleResponse(resp *azcore.Response) (*D
 
 // getHandleError handles the Get error response.
 func (client *deploymentOperations) getHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // GetAtManagementGroupScope - Gets a deployments operation.
@@ -132,7 +140,14 @@ func (client *deploymentOperations) getAtManagementGroupScopeHandleResponse(resp
 
 // getAtManagementGroupScopeHandleError handles the GetAtManagementGroupScope error response.
 func (client *deploymentOperations) getAtManagementGroupScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // GetAtSubscriptionScope - Gets a deployments operation.
@@ -180,7 +195,14 @@ func (client *deploymentOperations) getAtSubscriptionScopeHandleResponse(resp *a
 
 // getAtSubscriptionScopeHandleError handles the GetAtSubscriptionScope error response.
 func (client *deploymentOperations) getAtSubscriptionScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // List - Gets all deployments operations for a deployment.
@@ -237,7 +259,14 @@ func (client *deploymentOperations) listHandleResponse(resp *azcore.Response) (*
 
 // listHandleError handles the List error response.
 func (client *deploymentOperations) listHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListAtManagementGroupScope - Gets all deployments operations for a deployment.
@@ -293,7 +322,14 @@ func (client *deploymentOperations) listAtManagementGroupScopeHandleResponse(res
 
 // listAtManagementGroupScopeHandleError handles the ListAtManagementGroupScope error response.
 func (client *deploymentOperations) listAtManagementGroupScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListAtSubscriptionScope - Gets all deployments operations for a deployment.
@@ -349,5 +385,12 @@ func (client *deploymentOperations) listAtSubscriptionScopeHandleResponse(resp *
 
 // listAtSubscriptionScopeHandleError handles the ListAtSubscriptionScope error response.
 func (client *deploymentOperations) listAtSubscriptionScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

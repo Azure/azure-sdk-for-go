@@ -18,11 +18,11 @@ import (
 // ExpressRouteCircuitAuthorizationsOperations contains the methods for the ExpressRouteCircuitAuthorizations group.
 type ExpressRouteCircuitAuthorizationsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates an authorization in the specified express route circuit.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization) (*ExpressRouteCircuitAuthorizationResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization) (*ExpressRouteCircuitAuthorizationPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ExpressRouteCircuitAuthorizationPoller, error)
 	// BeginDelete - Deletes the specified authorization from the specified express route circuit.
-	BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified authorization from the specified express route circuit.
@@ -38,7 +38,7 @@ type expressRouteCircuitAuthorizationsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates an authorization in the specified express route circuit.
-func (client *expressRouteCircuitAuthorizationsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization) (*ExpressRouteCircuitAuthorizationResponse, error) {
+func (client *expressRouteCircuitAuthorizationsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization) (*ExpressRouteCircuitAuthorizationPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, circuitName, authorizationName, authorizationParameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *expressRouteCircuitAuthorizationsOperations) createOrUpdateCreateR
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *expressRouteCircuitAuthorizationsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitAuthorizationResponse, error) {
+func (client *expressRouteCircuitAuthorizationsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitAuthorizationPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := ExpressRouteCircuitAuthorizationResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCircuitAuthorization)
+	return &ExpressRouteCircuitAuthorizationPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *expressRouteCircuitAuthorizationsOperations) createOrUpdateHandleE
 }
 
 // Delete - Deletes the specified authorization from the specified express route circuit.
-func (client *expressRouteCircuitAuthorizationsOperations) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string) (*HTTPResponse, error) {
+func (client *expressRouteCircuitAuthorizationsOperations) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, circuitName, authorizationName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *expressRouteCircuitAuthorizationsOperations) deleteCreateRequest(r
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *expressRouteCircuitAuthorizationsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *expressRouteCircuitAuthorizationsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

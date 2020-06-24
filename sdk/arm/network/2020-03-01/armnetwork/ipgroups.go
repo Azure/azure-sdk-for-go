@@ -18,11 +18,11 @@ import (
 // IPGroupsOperations contains the methods for the IPGroups group.
 type IPGroupsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates an ipGroups in a specified resource group.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters IPGroup) (*IPGroupResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters IPGroup) (*IPGroupPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (IPGroupPoller, error)
 	// BeginDelete - Deletes the specified ipGroups.
-	BeginDelete(ctx context.Context, resourceGroupName string, ipGroupsName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, ipGroupsName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified ipGroups.
@@ -42,7 +42,7 @@ type ipGroupsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates an ipGroups in a specified resource group.
-func (client *ipGroupsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters IPGroup) (*IPGroupResponse, error) {
+func (client *ipGroupsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters IPGroup) (*IPGroupPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, ipGroupsName, parameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *ipGroupsOperations) createOrUpdateCreateRequest(resourceGroupName 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ipGroupsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*IPGroupResponse, error) {
+func (client *ipGroupsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*IPGroupPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := IPGroupResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.IPGroup)
+	return &IPGroupPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *ipGroupsOperations) createOrUpdateHandleError(resp *azcore.Respons
 }
 
 // Delete - Deletes the specified ipGroups.
-func (client *ipGroupsOperations) BeginDelete(ctx context.Context, resourceGroupName string, ipGroupsName string) (*HTTPResponse, error) {
+func (client *ipGroupsOperations) BeginDelete(ctx context.Context, resourceGroupName string, ipGroupsName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, ipGroupsName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *ipGroupsOperations) deleteCreateRequest(resourceGroupName string, 
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *ipGroupsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *ipGroupsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

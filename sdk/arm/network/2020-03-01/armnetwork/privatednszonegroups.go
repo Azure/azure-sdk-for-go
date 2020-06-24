@@ -18,11 +18,11 @@ import (
 // PrivateDNSZoneGroupsOperations contains the methods for the PrivateDNSZoneGroups group.
 type PrivateDNSZoneGroupsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a private dns zone group in the specified private endpoint.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointName string, privateDnsZoneGroupName string, parameters PrivateDNSZoneGroup) (*PrivateDNSZoneGroupResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointName string, privateDnsZoneGroupName string, parameters PrivateDNSZoneGroup) (*PrivateDNSZoneGroupPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (PrivateDNSZoneGroupPoller, error)
 	// BeginDelete - Deletes the specified private dns zone group.
-	BeginDelete(ctx context.Context, resourceGroupName string, privateEndpointName string, privateDnsZoneGroupName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, privateEndpointName string, privateDnsZoneGroupName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the private dns zone group resource by specified private dns zone group name.
@@ -38,7 +38,7 @@ type privateDnsZoneGroupsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a private dns zone group in the specified private endpoint.
-func (client *privateDnsZoneGroupsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointName string, privateDnsZoneGroupName string, parameters PrivateDNSZoneGroup) (*PrivateDNSZoneGroupResponse, error) {
+func (client *privateDnsZoneGroupsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointName string, privateDnsZoneGroupName string, parameters PrivateDNSZoneGroup) (*PrivateDNSZoneGroupPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, parameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *privateDnsZoneGroupsOperations) createOrUpdateCreateRequest(resour
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *privateDnsZoneGroupsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*PrivateDNSZoneGroupResponse, error) {
+func (client *privateDnsZoneGroupsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*PrivateDNSZoneGroupPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := PrivateDNSZoneGroupResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PrivateDNSZoneGroup)
+	return &PrivateDNSZoneGroupPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *privateDnsZoneGroupsOperations) createOrUpdateHandleError(resp *az
 }
 
 // Delete - Deletes the specified private dns zone group.
-func (client *privateDnsZoneGroupsOperations) BeginDelete(ctx context.Context, resourceGroupName string, privateEndpointName string, privateDnsZoneGroupName string) (*HTTPResponse, error) {
+func (client *privateDnsZoneGroupsOperations) BeginDelete(ctx context.Context, resourceGroupName string, privateEndpointName string, privateDnsZoneGroupName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, privateEndpointName, privateDnsZoneGroupName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *privateDnsZoneGroupsOperations) deleteCreateRequest(resourceGroupN
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *privateDnsZoneGroupsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *privateDnsZoneGroupsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -82,7 +83,14 @@ func (client *proximityPlacementGroupsOperations) createOrUpdateHandleResponse(r
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *proximityPlacementGroupsOperations) createOrUpdateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Delete - Delete a proximity placement group.
@@ -129,7 +137,14 @@ func (client *proximityPlacementGroupsOperations) deleteHandleResponse(resp *azc
 
 // deleteHandleError handles the Delete error response.
 func (client *proximityPlacementGroupsOperations) deleteHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Get - Retrieves information about a proximity placement group .
@@ -180,7 +195,14 @@ func (client *proximityPlacementGroupsOperations) getHandleResponse(resp *azcore
 
 // getHandleError handles the Get error response.
 func (client *proximityPlacementGroupsOperations) getHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListByResourceGroup - Lists all proximity placement groups in a resource group.
@@ -233,7 +255,14 @@ func (client *proximityPlacementGroupsOperations) listByResourceGroupHandleRespo
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *proximityPlacementGroupsOperations) listByResourceGroupHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListBySubscription - Lists all proximity placement groups in a subscription.
@@ -285,7 +314,14 @@ func (client *proximityPlacementGroupsOperations) listBySubscriptionHandleRespon
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
 func (client *proximityPlacementGroupsOperations) listBySubscriptionHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Update - Update a proximity placement group.
@@ -333,5 +369,12 @@ func (client *proximityPlacementGroupsOperations) updateHandleResponse(resp *azc
 
 // updateHandleError handles the Update error response.
 func (client *proximityPlacementGroupsOperations) updateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

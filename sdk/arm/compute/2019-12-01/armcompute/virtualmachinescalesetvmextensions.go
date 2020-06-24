@@ -17,11 +17,11 @@ import (
 // VirtualMachineScaleSetVMExtensionsOperations contains the methods for the VirtualMachineScaleSetVMExtensions group.
 type VirtualMachineScaleSetVMExtensionsOperations interface {
 	// BeginCreateOrUpdate - The operation to create or update the VMSS VM extension.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineExtension) (*VirtualMachineExtensionResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineExtension) (*VirtualMachineExtensionPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VirtualMachineExtensionPoller, error)
 	// BeginDelete - The operation to delete the VMSS VM extension.
-	BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - The operation to get the VMSS VM extension.
@@ -29,7 +29,7 @@ type VirtualMachineScaleSetVMExtensionsOperations interface {
 	// List - The operation to get all extensions of an instance in Virtual Machine Scaleset.
 	List(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, virtualMachineScaleSetVMExtensionsListOptions *VirtualMachineScaleSetVMExtensionsListOptions) (*VirtualMachineExtensionsListResultResponse, error)
 	// BeginUpdate - The operation to update the VMSS VM extension.
-	BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate) (*VirtualMachineExtensionResponse, error)
+	BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate) (*VirtualMachineExtensionPollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (VirtualMachineExtensionPoller, error)
 }
@@ -41,7 +41,7 @@ type virtualMachineScaleSetVMExtensionsOperations struct {
 }
 
 // CreateOrUpdate - The operation to create or update the VMSS VM extension.
-func (client *virtualMachineScaleSetVMExtensionsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineExtension) (*VirtualMachineExtensionResponse, error) {
+func (client *virtualMachineScaleSetVMExtensionsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineExtension) (*VirtualMachineExtensionPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters)
 	if err != nil {
 		return nil, err
@@ -101,12 +101,11 @@ func (client *virtualMachineScaleSetVMExtensionsOperations) createOrUpdateCreate
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *virtualMachineScaleSetVMExtensionsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualMachineExtensionResponse, error) {
+func (client *virtualMachineScaleSetVMExtensionsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualMachineExtensionPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := VirtualMachineExtensionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineExtension)
+	return &VirtualMachineExtensionPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -119,7 +118,7 @@ func (client *virtualMachineScaleSetVMExtensionsOperations) createOrUpdateHandle
 }
 
 // Delete - The operation to delete the VMSS VM extension.
-func (client *virtualMachineScaleSetVMExtensionsOperations) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string) (*HTTPResponse, error) {
+func (client *virtualMachineScaleSetVMExtensionsOperations) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName)
 	if err != nil {
 		return nil, err
@@ -179,11 +178,11 @@ func (client *virtualMachineScaleSetVMExtensionsOperations) deleteCreateRequest(
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *virtualMachineScaleSetVMExtensionsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *virtualMachineScaleSetVMExtensionsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
@@ -309,7 +308,7 @@ func (client *virtualMachineScaleSetVMExtensionsOperations) listHandleError(resp
 }
 
 // Update - The operation to update the VMSS VM extension.
-func (client *virtualMachineScaleSetVMExtensionsOperations) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate) (*VirtualMachineExtensionResponse, error) {
+func (client *virtualMachineScaleSetVMExtensionsOperations) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate) (*VirtualMachineExtensionPollerResponse, error) {
 	req, err := client.updateCreateRequest(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters)
 	if err != nil {
 		return nil, err
@@ -369,12 +368,11 @@ func (client *virtualMachineScaleSetVMExtensionsOperations) updateCreateRequest(
 }
 
 // updateHandleResponse handles the Update response.
-func (client *virtualMachineScaleSetVMExtensionsOperations) updateHandleResponse(resp *azcore.Response) (*VirtualMachineExtensionResponse, error) {
+func (client *virtualMachineScaleSetVMExtensionsOperations) updateHandleResponse(resp *azcore.Response) (*VirtualMachineExtensionPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
 		return nil, client.updateHandleError(resp)
 	}
-	result := VirtualMachineExtensionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineExtension)
+	return &VirtualMachineExtensionPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // updateHandleError handles the Update error response.

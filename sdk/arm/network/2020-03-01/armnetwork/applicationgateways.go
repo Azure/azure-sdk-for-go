@@ -18,19 +18,19 @@ import (
 // ApplicationGatewaysOperations contains the methods for the ApplicationGateways group.
 type ApplicationGatewaysOperations interface {
 	// BeginBackendHealth - Gets the backend health of the specified application gateway in a resource group.
-	BeginBackendHealth(ctx context.Context, resourceGroupName string, applicationGatewayName string, applicationGatewaysBackendHealthOptions *ApplicationGatewaysBackendHealthOptions) (*ApplicationGatewayBackendHealthResponse, error)
+	BeginBackendHealth(ctx context.Context, resourceGroupName string, applicationGatewayName string, applicationGatewaysBackendHealthOptions *ApplicationGatewaysBackendHealthOptions) (*ApplicationGatewayBackendHealthPollerResponse, error)
 	// ResumeBackendHealth - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeBackendHealth(token string) (ApplicationGatewayBackendHealthPoller, error)
 	// BeginBackendHealthOnDemand - Gets the backend health for given combination of backend pool and http setting of the specified application gateway in a resource group.
-	BeginBackendHealthOnDemand(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, applicationGatewaysBackendHealthOnDemandOptions *ApplicationGatewaysBackendHealthOnDemandOptions) (*ApplicationGatewayBackendHealthOnDemandResponse, error)
+	BeginBackendHealthOnDemand(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, applicationGatewaysBackendHealthOnDemandOptions *ApplicationGatewaysBackendHealthOnDemandOptions) (*ApplicationGatewayBackendHealthOnDemandPollerResponse, error)
 	// ResumeBackendHealthOnDemand - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeBackendHealthOnDemand(token string) (ApplicationGatewayBackendHealthOnDemandPoller, error)
 	// BeginCreateOrUpdate - Creates or updates the specified application gateway.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway) (*ApplicationGatewayResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway) (*ApplicationGatewayPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ApplicationGatewayPoller, error)
 	// BeginDelete - Deletes the specified application gateway.
-	BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified application gateway.
@@ -54,11 +54,11 @@ type ApplicationGatewaysOperations interface {
 	// ListAvailableWafRuleSets - Lists all available web application firewall rule sets.
 	ListAvailableWafRuleSets(ctx context.Context) (*ApplicationGatewayAvailableWafRuleSetsResultResponse, error)
 	// BeginStart - Starts the specified application gateway.
-	BeginStart(ctx context.Context, resourceGroupName string, applicationGatewayName string) (*HTTPResponse, error)
+	BeginStart(ctx context.Context, resourceGroupName string, applicationGatewayName string) (*HTTPPollerResponse, error)
 	// ResumeStart - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeStart(token string) (HTTPPoller, error)
 	// BeginStop - Stops the specified application gateway in a resource group.
-	BeginStop(ctx context.Context, resourceGroupName string, applicationGatewayName string) (*HTTPResponse, error)
+	BeginStop(ctx context.Context, resourceGroupName string, applicationGatewayName string) (*HTTPPollerResponse, error)
 	// ResumeStop - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeStop(token string) (HTTPPoller, error)
 	// UpdateTags - Updates the specified application gateway tags.
@@ -72,7 +72,7 @@ type applicationGatewaysOperations struct {
 }
 
 // BackendHealth - Gets the backend health of the specified application gateway in a resource group.
-func (client *applicationGatewaysOperations) BeginBackendHealth(ctx context.Context, resourceGroupName string, applicationGatewayName string, applicationGatewaysBackendHealthOptions *ApplicationGatewaysBackendHealthOptions) (*ApplicationGatewayBackendHealthResponse, error) {
+func (client *applicationGatewaysOperations) BeginBackendHealth(ctx context.Context, resourceGroupName string, applicationGatewayName string, applicationGatewaysBackendHealthOptions *ApplicationGatewaysBackendHealthOptions) (*ApplicationGatewayBackendHealthPollerResponse, error) {
 	req, err := client.backendHealthCreateRequest(resourceGroupName, applicationGatewayName, applicationGatewaysBackendHealthOptions)
 	if err != nil {
 		return nil, err
@@ -133,12 +133,11 @@ func (client *applicationGatewaysOperations) backendHealthCreateRequest(resource
 }
 
 // backendHealthHandleResponse handles the BackendHealth response.
-func (client *applicationGatewaysOperations) backendHealthHandleResponse(resp *azcore.Response) (*ApplicationGatewayBackendHealthResponse, error) {
+func (client *applicationGatewaysOperations) backendHealthHandleResponse(resp *azcore.Response) (*ApplicationGatewayBackendHealthPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.backendHealthHandleError(resp)
 	}
-	result := ApplicationGatewayBackendHealthResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ApplicationGatewayBackendHealth)
+	return &ApplicationGatewayBackendHealthPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // backendHealthHandleError handles the BackendHealth error response.
@@ -151,7 +150,7 @@ func (client *applicationGatewaysOperations) backendHealthHandleError(resp *azco
 }
 
 // BackendHealthOnDemand - Gets the backend health for given combination of backend pool and http setting of the specified application gateway in a resource group.
-func (client *applicationGatewaysOperations) BeginBackendHealthOnDemand(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, applicationGatewaysBackendHealthOnDemandOptions *ApplicationGatewaysBackendHealthOnDemandOptions) (*ApplicationGatewayBackendHealthOnDemandResponse, error) {
+func (client *applicationGatewaysOperations) BeginBackendHealthOnDemand(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, applicationGatewaysBackendHealthOnDemandOptions *ApplicationGatewaysBackendHealthOnDemandOptions) (*ApplicationGatewayBackendHealthOnDemandPollerResponse, error) {
 	req, err := client.backendHealthOnDemandCreateRequest(resourceGroupName, applicationGatewayName, probeRequest, applicationGatewaysBackendHealthOnDemandOptions)
 	if err != nil {
 		return nil, err
@@ -212,12 +211,11 @@ func (client *applicationGatewaysOperations) backendHealthOnDemandCreateRequest(
 }
 
 // backendHealthOnDemandHandleResponse handles the BackendHealthOnDemand response.
-func (client *applicationGatewaysOperations) backendHealthOnDemandHandleResponse(resp *azcore.Response) (*ApplicationGatewayBackendHealthOnDemandResponse, error) {
+func (client *applicationGatewaysOperations) backendHealthOnDemandHandleResponse(resp *azcore.Response) (*ApplicationGatewayBackendHealthOnDemandPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.backendHealthOnDemandHandleError(resp)
 	}
-	result := ApplicationGatewayBackendHealthOnDemandResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ApplicationGatewayBackendHealthOnDemand)
+	return &ApplicationGatewayBackendHealthOnDemandPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // backendHealthOnDemandHandleError handles the BackendHealthOnDemand error response.
@@ -230,7 +228,7 @@ func (client *applicationGatewaysOperations) backendHealthOnDemandHandleError(re
 }
 
 // CreateOrUpdate - Creates or updates the specified application gateway.
-func (client *applicationGatewaysOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway) (*ApplicationGatewayResponse, error) {
+func (client *applicationGatewaysOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway) (*ApplicationGatewayPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, applicationGatewayName, parameters)
 	if err != nil {
 		return nil, err
@@ -288,12 +286,11 @@ func (client *applicationGatewaysOperations) createOrUpdateCreateRequest(resourc
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *applicationGatewaysOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ApplicationGatewayResponse, error) {
+func (client *applicationGatewaysOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ApplicationGatewayPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := ApplicationGatewayResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ApplicationGateway)
+	return &ApplicationGatewayPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -306,7 +303,7 @@ func (client *applicationGatewaysOperations) createOrUpdateHandleError(resp *azc
 }
 
 // Delete - Deletes the specified application gateway.
-func (client *applicationGatewaysOperations) BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string) (*HTTPResponse, error) {
+func (client *applicationGatewaysOperations) BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, applicationGatewayName)
 	if err != nil {
 		return nil, err
@@ -364,12 +361,11 @@ func (client *applicationGatewaysOperations) deleteCreateRequest(resourceGroupNa
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *applicationGatewaysOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *applicationGatewaysOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	result := HTTPResponse{RawResponse: resp.Response}
-	return &result, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
@@ -904,7 +900,7 @@ func (client *applicationGatewaysOperations) listAvailableWafRuleSetsHandleError
 }
 
 // Start - Starts the specified application gateway.
-func (client *applicationGatewaysOperations) BeginStart(ctx context.Context, resourceGroupName string, applicationGatewayName string) (*HTTPResponse, error) {
+func (client *applicationGatewaysOperations) BeginStart(ctx context.Context, resourceGroupName string, applicationGatewayName string) (*HTTPPollerResponse, error) {
 	req, err := client.startCreateRequest(resourceGroupName, applicationGatewayName)
 	if err != nil {
 		return nil, err
@@ -962,11 +958,11 @@ func (client *applicationGatewaysOperations) startCreateRequest(resourceGroupNam
 }
 
 // startHandleResponse handles the Start response.
-func (client *applicationGatewaysOperations) startHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *applicationGatewaysOperations) startHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.startHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // startHandleError handles the Start error response.
@@ -979,7 +975,7 @@ func (client *applicationGatewaysOperations) startHandleError(resp *azcore.Respo
 }
 
 // Stop - Stops the specified application gateway in a resource group.
-func (client *applicationGatewaysOperations) BeginStop(ctx context.Context, resourceGroupName string, applicationGatewayName string) (*HTTPResponse, error) {
+func (client *applicationGatewaysOperations) BeginStop(ctx context.Context, resourceGroupName string, applicationGatewayName string) (*HTTPPollerResponse, error) {
 	req, err := client.stopCreateRequest(resourceGroupName, applicationGatewayName)
 	if err != nil {
 		return nil, err
@@ -1037,11 +1033,11 @@ func (client *applicationGatewaysOperations) stopCreateRequest(resourceGroupName
 }
 
 // stopHandleResponse handles the Stop response.
-func (client *applicationGatewaysOperations) stopHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *applicationGatewaysOperations) stopHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.stopHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // stopHandleError handles the Stop error response.

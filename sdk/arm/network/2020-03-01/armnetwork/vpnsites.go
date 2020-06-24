@@ -18,11 +18,11 @@ import (
 // VpnSitesOperations contains the methods for the VpnSites group.
 type VpnSitesOperations interface {
 	// BeginCreateOrUpdate - Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VpnSite) (*VpnSiteResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VpnSite) (*VpnSitePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VpnSitePoller, error)
 	// BeginDelete - Deletes a VpnSite.
-	BeginDelete(ctx context.Context, resourceGroupName string, vpnSiteName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, vpnSiteName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Retrieves the details of a VPN site.
@@ -42,7 +42,7 @@ type vpnSitesOperations struct {
 }
 
 // CreateOrUpdate - Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-func (client *vpnSitesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VpnSite) (*VpnSiteResponse, error) {
+func (client *vpnSitesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VpnSite) (*VpnSitePollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, vpnSiteName, vpnSiteParameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *vpnSitesOperations) createOrUpdateCreateRequest(resourceGroupName 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *vpnSitesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VpnSiteResponse, error) {
+func (client *vpnSitesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VpnSitePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := VpnSiteResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VpnSite)
+	return &VpnSitePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *vpnSitesOperations) createOrUpdateHandleError(resp *azcore.Respons
 }
 
 // Delete - Deletes a VpnSite.
-func (client *vpnSitesOperations) BeginDelete(ctx context.Context, resourceGroupName string, vpnSiteName string) (*HTTPResponse, error) {
+func (client *vpnSitesOperations) BeginDelete(ctx context.Context, resourceGroupName string, vpnSiteName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, vpnSiteName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *vpnSitesOperations) deleteCreateRequest(resourceGroupName string, 
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *vpnSitesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *vpnSitesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

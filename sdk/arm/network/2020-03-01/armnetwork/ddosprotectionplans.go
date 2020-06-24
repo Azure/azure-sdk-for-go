@@ -18,11 +18,11 @@ import (
 // DdosProtectionPlansOperations contains the methods for the DdosProtectionPlans group.
 type DdosProtectionPlansOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a DDoS protection plan.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters DdosProtectionPlan) (*DdosProtectionPlanResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters DdosProtectionPlan) (*DdosProtectionPlanPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (DdosProtectionPlanPoller, error)
 	// BeginDelete - Deletes the specified DDoS protection plan.
-	BeginDelete(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets information about the specified DDoS protection plan.
@@ -42,7 +42,7 @@ type ddosProtectionPlansOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a DDoS protection plan.
-func (client *ddosProtectionPlansOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters DdosProtectionPlan) (*DdosProtectionPlanResponse, error) {
+func (client *ddosProtectionPlansOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters DdosProtectionPlan) (*DdosProtectionPlanPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, ddosProtectionPlanName, parameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *ddosProtectionPlansOperations) createOrUpdateCreateRequest(resourc
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ddosProtectionPlansOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*DdosProtectionPlanResponse, error) {
+func (client *ddosProtectionPlansOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*DdosProtectionPlanPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := DdosProtectionPlanResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DdosProtectionPlan)
+	return &DdosProtectionPlanPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *ddosProtectionPlansOperations) createOrUpdateHandleError(resp *azc
 }
 
 // Delete - Deletes the specified DDoS protection plan.
-func (client *ddosProtectionPlansOperations) BeginDelete(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string) (*HTTPResponse, error) {
+func (client *ddosProtectionPlansOperations) BeginDelete(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, ddosProtectionPlanName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *ddosProtectionPlansOperations) deleteCreateRequest(resourceGroupNa
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *ddosProtectionPlansOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *ddosProtectionPlansOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

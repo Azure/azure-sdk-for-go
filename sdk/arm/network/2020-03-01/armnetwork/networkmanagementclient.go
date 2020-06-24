@@ -20,21 +20,21 @@ type NetworkManagementClientOperations interface {
 	// CheckDNSNameAvailability - Checks whether a domain name in the cloudapp.azure.com zone is available for use.
 	CheckDNSNameAvailability(ctx context.Context, location string, domainNameLabel string) (*DNSNameAvailabilityResultResponse, error)
 	// BeginDeleteBastionShareableLink - Deletes the Bastion Shareable Links for all the VMs specified in the request.
-	BeginDeleteBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest) (*HTTPResponse, error)
+	BeginDeleteBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest) (*HTTPPollerResponse, error)
 	// ResumeDeleteBastionShareableLink - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDeleteBastionShareableLink(token string) (HTTPPoller, error)
 	// DisconnectActiveSessions - Returns the list of currently active sessions on the Bastion.
 	DisconnectActiveSessions(resourceGroupName string, bastionHostName string, sessionIds SessionIDs) (BastionSessionDeleteResultPager, error)
 	// BeginGeneratevirtualwanvpnserverconfigurationvpnprofile - Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination in the specified resource group.
-	BeginGeneratevirtualwanvpnserverconfigurationvpnprofile(ctx context.Context, resourceGroupName string, virtualWanName string, vpnClientParams VirtualWanVpnProfileParameters) (*VpnProfileResponseResponse, error)
+	BeginGeneratevirtualwanvpnserverconfigurationvpnprofile(ctx context.Context, resourceGroupName string, virtualWanName string, vpnClientParams VirtualWanVpnProfileParameters) (*VpnProfileResponsePollerResponse, error)
 	// ResumeGeneratevirtualwanvpnserverconfigurationvpnprofile - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeGeneratevirtualwanvpnserverconfigurationvpnprofile(token string) (VpnProfileResponsePoller, error)
 	// BeginGetActiveSessions - Returns the list of currently active sessions on the Bastion.
-	BeginGetActiveSessions(resourceGroupName string, bastionHostName string) (BastionActiveSessionListResultPager, error)
+	BeginGetActiveSessions(resourceGroupName string, bastionHostName string) (*BastionActiveSessionListResultResponse, error)
 	// GetBastionShareableLink - Return the Bastion Shareable Links for all the VMs specified in the request.
 	GetBastionShareableLink(resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest) (BastionShareableLinkListResultPager, error)
 	// BeginPutBastionShareableLink - Creates a Bastion Shareable Links for all the VMs specified in the request.
-	BeginPutBastionShareableLink(resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest) (BastionShareableLinkListResultPager, error)
+	BeginPutBastionShareableLink(resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest) (*BastionShareableLinkListResultResponse, error)
 	// SupportedSecurityProviders - Gives the supported security providers for the virtual wan.
 	SupportedSecurityProviders(ctx context.Context, resourceGroupName string, virtualWanName string) (*VirtualWanSecurityProvidersResponse, error)
 }
@@ -98,7 +98,7 @@ func (client *networkManagementClientOperations) checkDnsNameAvailabilityHandleE
 }
 
 // DeleteBastionShareableLink - Deletes the Bastion Shareable Links for all the VMs specified in the request.
-func (client *networkManagementClientOperations) BeginDeleteBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest) (*HTTPResponse, error) {
+func (client *networkManagementClientOperations) BeginDeleteBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest) (*HTTPPollerResponse, error) {
 	req, err := client.deleteBastionShareableLinkCreateRequest(resourceGroupName, bastionHostName, bslRequest)
 	if err != nil {
 		return nil, err
@@ -156,11 +156,11 @@ func (client *networkManagementClientOperations) deleteBastionShareableLinkCreat
 }
 
 // deleteBastionShareableLinkHandleResponse handles the DeleteBastionShareableLink response.
-func (client *networkManagementClientOperations) deleteBastionShareableLinkHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *networkManagementClientOperations) deleteBastionShareableLinkHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteBastionShareableLinkHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteBastionShareableLinkHandleError handles the DeleteBastionShareableLink error response.
@@ -231,7 +231,7 @@ func (client *networkManagementClientOperations) disconnectActiveSessionsHandleE
 }
 
 // Generatevirtualwanvpnserverconfigurationvpnprofile - Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination in the specified resource group.
-func (client *networkManagementClientOperations) BeginGeneratevirtualwanvpnserverconfigurationvpnprofile(ctx context.Context, resourceGroupName string, virtualWanName string, vpnClientParams VirtualWanVpnProfileParameters) (*VpnProfileResponseResponse, error) {
+func (client *networkManagementClientOperations) BeginGeneratevirtualwanvpnserverconfigurationvpnprofile(ctx context.Context, resourceGroupName string, virtualWanName string, vpnClientParams VirtualWanVpnProfileParameters) (*VpnProfileResponsePollerResponse, error) {
 	req, err := client.generatevirtualwanvpnserverconfigurationvpnprofileCreateRequest(resourceGroupName, virtualWanName, vpnClientParams)
 	if err != nil {
 		return nil, err
@@ -289,12 +289,11 @@ func (client *networkManagementClientOperations) generatevirtualwanvpnserverconf
 }
 
 // generatevirtualwanvpnserverconfigurationvpnprofileHandleResponse handles the Generatevirtualwanvpnserverconfigurationvpnprofile response.
-func (client *networkManagementClientOperations) generatevirtualwanvpnserverconfigurationvpnprofileHandleResponse(resp *azcore.Response) (*VpnProfileResponseResponse, error) {
+func (client *networkManagementClientOperations) generatevirtualwanvpnserverconfigurationvpnprofileHandleResponse(resp *azcore.Response) (*VpnProfileResponsePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.generatevirtualwanvpnserverconfigurationvpnprofileHandleError(resp)
 	}
-	result := VpnProfileResponseResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VpnProfileResponse)
+	return &VpnProfileResponsePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // generatevirtualwanvpnserverconfigurationvpnprofileHandleError handles the Generatevirtualwanvpnserverconfigurationvpnprofile error response.
@@ -307,7 +306,7 @@ func (client *networkManagementClientOperations) generatevirtualwanvpnserverconf
 }
 
 // GetActiveSessions - Returns the list of currently active sessions on the Bastion.
-func (client *networkManagementClientOperations) BeginGetActiveSessions(resourceGroupName string, bastionHostName string) (BastionActiveSessionListResultPager, error) {
+func (client *networkManagementClientOperations) BeginGetActiveSessions(resourceGroupName string, bastionHostName string) (*BastionActiveSessionListResultResponse, error) {
 	return nil, nil
 }
 
@@ -405,7 +404,7 @@ func (client *networkManagementClientOperations) getBastionShareableLinkHandleEr
 }
 
 // PutBastionShareableLink - Creates a Bastion Shareable Links for all the VMs specified in the request.
-func (client *networkManagementClientOperations) BeginPutBastionShareableLink(resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest) (BastionShareableLinkListResultPager, error) {
+func (client *networkManagementClientOperations) BeginPutBastionShareableLink(resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest) (*BastionShareableLinkListResultResponse, error) {
 	return nil, nil
 }
 

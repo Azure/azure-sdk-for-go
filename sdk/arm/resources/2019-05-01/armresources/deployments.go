@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -34,27 +35,27 @@ type DeploymentsOperations interface {
 	// CheckExistenceAtSubscriptionScope - Checks whether the deployment exists.
 	CheckExistenceAtSubscriptionScope(ctx context.Context, deploymentName string) (*http.Response, error)
 	// BeginCreateOrUpdate - You can provide the template and parameters directly in the request or link to JSON files.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment) (*DeploymentExtendedResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment) (*DeploymentExtendedPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (DeploymentExtendedPoller, error)
 	// BeginCreateOrUpdateAtManagementGroupScope - You can provide the template and parameters directly in the request or link to JSON files.
-	BeginCreateOrUpdateAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters Deployment) (*DeploymentExtendedResponse, error)
+	BeginCreateOrUpdateAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters Deployment) (*DeploymentExtendedPollerResponse, error)
 	// ResumeCreateOrUpdateAtManagementGroupScope - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdateAtManagementGroupScope(token string) (DeploymentExtendedPoller, error)
 	// BeginCreateOrUpdateAtSubscriptionScope - You can provide the template and parameters directly in the request or link to JSON files.
-	BeginCreateOrUpdateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment) (*DeploymentExtendedResponse, error)
+	BeginCreateOrUpdateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment) (*DeploymentExtendedPollerResponse, error)
 	// ResumeCreateOrUpdateAtSubscriptionScope - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdateAtSubscriptionScope(token string) (DeploymentExtendedPoller, error)
 	// BeginDelete - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-	BeginDelete(ctx context.Context, resourceGroupName string, deploymentName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, deploymentName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// BeginDeleteAtManagementGroupScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-	BeginDeleteAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string) (*HTTPResponse, error)
+	BeginDeleteAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string) (*HTTPPollerResponse, error)
 	// ResumeDeleteAtManagementGroupScope - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDeleteAtManagementGroupScope(token string) (HTTPPoller, error)
 	// BeginDeleteAtSubscriptionScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-	BeginDeleteAtSubscriptionScope(ctx context.Context, deploymentName string) (*HTTPResponse, error)
+	BeginDeleteAtSubscriptionScope(ctx context.Context, deploymentName string) (*HTTPPollerResponse, error)
 	// ResumeDeleteAtSubscriptionScope - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDeleteAtSubscriptionScope(token string) (HTTPPoller, error)
 	// ExportTemplate - Exports the template used for specified deployment.
@@ -182,7 +183,14 @@ func (client *deploymentsOperations) cancelHandleResponse(resp *azcore.Response)
 
 // cancelHandleError handles the Cancel error response.
 func (client *deploymentsOperations) cancelHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // CancelAtManagementGroupScope - You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
@@ -228,7 +236,14 @@ func (client *deploymentsOperations) cancelAtManagementGroupScopeHandleResponse(
 
 // cancelAtManagementGroupScopeHandleError handles the CancelAtManagementGroupScope error response.
 func (client *deploymentsOperations) cancelAtManagementGroupScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // CancelAtSubscriptionScope - You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
@@ -274,7 +289,14 @@ func (client *deploymentsOperations) cancelAtSubscriptionScopeHandleResponse(res
 
 // cancelAtSubscriptionScopeHandleError handles the CancelAtSubscriptionScope error response.
 func (client *deploymentsOperations) cancelAtSubscriptionScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // CheckExistence - Checks whether the deployment exists.
@@ -321,7 +343,14 @@ func (client *deploymentsOperations) checkExistenceHandleResponse(resp *azcore.R
 
 // checkExistenceHandleError handles the CheckExistence error response.
 func (client *deploymentsOperations) checkExistenceHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // CheckExistenceAtManagementGroupScope - Checks whether the deployment exists.
@@ -367,7 +396,14 @@ func (client *deploymentsOperations) checkExistenceAtManagementGroupScopeHandleR
 
 // checkExistenceAtManagementGroupScopeHandleError handles the CheckExistenceAtManagementGroupScope error response.
 func (client *deploymentsOperations) checkExistenceAtManagementGroupScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // CheckExistenceAtSubscriptionScope - Checks whether the deployment exists.
@@ -413,11 +449,18 @@ func (client *deploymentsOperations) checkExistenceAtSubscriptionScopeHandleResp
 
 // checkExistenceAtSubscriptionScopeHandleError handles the CheckExistenceAtSubscriptionScope error response.
 func (client *deploymentsOperations) checkExistenceAtSubscriptionScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // CreateOrUpdate - You can provide the template and parameters directly in the request or link to JSON files.
-func (client *deploymentsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment) (*DeploymentExtendedResponse, error) {
+func (client *deploymentsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment) (*DeploymentExtendedPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, deploymentName, parameters)
 	if err != nil {
 		return nil, err
@@ -475,21 +518,27 @@ func (client *deploymentsOperations) createOrUpdateCreateRequest(resourceGroupNa
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *deploymentsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*DeploymentExtendedResponse, error) {
+func (client *deploymentsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*DeploymentExtendedPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := DeploymentExtendedResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DeploymentExtended)
+	return &DeploymentExtendedPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *deploymentsOperations) createOrUpdateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // CreateOrUpdateAtManagementGroupScope - You can provide the template and parameters directly in the request or link to JSON files.
-func (client *deploymentsOperations) BeginCreateOrUpdateAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters Deployment) (*DeploymentExtendedResponse, error) {
+func (client *deploymentsOperations) BeginCreateOrUpdateAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters Deployment) (*DeploymentExtendedPollerResponse, error) {
 	req, err := client.createOrUpdateAtManagementGroupScopeCreateRequest(groupId, deploymentName, parameters)
 	if err != nil {
 		return nil, err
@@ -546,21 +595,27 @@ func (client *deploymentsOperations) createOrUpdateAtManagementGroupScopeCreateR
 }
 
 // createOrUpdateAtManagementGroupScopeHandleResponse handles the CreateOrUpdateAtManagementGroupScope response.
-func (client *deploymentsOperations) createOrUpdateAtManagementGroupScopeHandleResponse(resp *azcore.Response) (*DeploymentExtendedResponse, error) {
+func (client *deploymentsOperations) createOrUpdateAtManagementGroupScopeHandleResponse(resp *azcore.Response) (*DeploymentExtendedPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateAtManagementGroupScopeHandleError(resp)
 	}
-	result := DeploymentExtendedResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DeploymentExtended)
+	return &DeploymentExtendedPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateAtManagementGroupScopeHandleError handles the CreateOrUpdateAtManagementGroupScope error response.
 func (client *deploymentsOperations) createOrUpdateAtManagementGroupScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // CreateOrUpdateAtSubscriptionScope - You can provide the template and parameters directly in the request or link to JSON files.
-func (client *deploymentsOperations) BeginCreateOrUpdateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment) (*DeploymentExtendedResponse, error) {
+func (client *deploymentsOperations) BeginCreateOrUpdateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment) (*DeploymentExtendedPollerResponse, error) {
 	req, err := client.createOrUpdateAtSubscriptionScopeCreateRequest(deploymentName, parameters)
 	if err != nil {
 		return nil, err
@@ -617,21 +672,27 @@ func (client *deploymentsOperations) createOrUpdateAtSubscriptionScopeCreateRequ
 }
 
 // createOrUpdateAtSubscriptionScopeHandleResponse handles the CreateOrUpdateAtSubscriptionScope response.
-func (client *deploymentsOperations) createOrUpdateAtSubscriptionScopeHandleResponse(resp *azcore.Response) (*DeploymentExtendedResponse, error) {
+func (client *deploymentsOperations) createOrUpdateAtSubscriptionScopeHandleResponse(resp *azcore.Response) (*DeploymentExtendedPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateAtSubscriptionScopeHandleError(resp)
 	}
-	result := DeploymentExtendedResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DeploymentExtended)
+	return &DeploymentExtendedPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateAtSubscriptionScopeHandleError handles the CreateOrUpdateAtSubscriptionScope error response.
 func (client *deploymentsOperations) createOrUpdateAtSubscriptionScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Delete - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-func (client *deploymentsOperations) BeginDelete(ctx context.Context, resourceGroupName string, deploymentName string) (*HTTPResponse, error) {
+func (client *deploymentsOperations) BeginDelete(ctx context.Context, resourceGroupName string, deploymentName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, deploymentName)
 	if err != nil {
 		return nil, err
@@ -689,20 +750,27 @@ func (client *deploymentsOperations) deleteCreateRequest(resourceGroupName strin
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *deploymentsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *deploymentsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
 func (client *deploymentsOperations) deleteHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // DeleteAtManagementGroupScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-func (client *deploymentsOperations) BeginDeleteAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string) (*HTTPResponse, error) {
+func (client *deploymentsOperations) BeginDeleteAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteAtManagementGroupScopeCreateRequest(groupId, deploymentName)
 	if err != nil {
 		return nil, err
@@ -759,21 +827,27 @@ func (client *deploymentsOperations) deleteAtManagementGroupScopeCreateRequest(g
 }
 
 // deleteAtManagementGroupScopeHandleResponse handles the DeleteAtManagementGroupScope response.
-func (client *deploymentsOperations) deleteAtManagementGroupScopeHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *deploymentsOperations) deleteAtManagementGroupScopeHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteAtManagementGroupScopeHandleError(resp)
 	}
-	result := HTTPResponse{RawResponse: resp.Response}
-	return &result, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteAtManagementGroupScopeHandleError handles the DeleteAtManagementGroupScope error response.
 func (client *deploymentsOperations) deleteAtManagementGroupScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // DeleteAtSubscriptionScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-func (client *deploymentsOperations) BeginDeleteAtSubscriptionScope(ctx context.Context, deploymentName string) (*HTTPResponse, error) {
+func (client *deploymentsOperations) BeginDeleteAtSubscriptionScope(ctx context.Context, deploymentName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteAtSubscriptionScopeCreateRequest(deploymentName)
 	if err != nil {
 		return nil, err
@@ -830,16 +904,23 @@ func (client *deploymentsOperations) deleteAtSubscriptionScopeCreateRequest(depl
 }
 
 // deleteAtSubscriptionScopeHandleResponse handles the DeleteAtSubscriptionScope response.
-func (client *deploymentsOperations) deleteAtSubscriptionScopeHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *deploymentsOperations) deleteAtSubscriptionScopeHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteAtSubscriptionScopeHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteAtSubscriptionScopeHandleError handles the DeleteAtSubscriptionScope error response.
 func (client *deploymentsOperations) deleteAtSubscriptionScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ExportTemplate - Exports the template used for specified deployment.
@@ -887,7 +968,14 @@ func (client *deploymentsOperations) exportTemplateHandleResponse(resp *azcore.R
 
 // exportTemplateHandleError handles the ExportTemplate error response.
 func (client *deploymentsOperations) exportTemplateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ExportTemplateAtManagementGroupScope - Exports the template used for specified deployment.
@@ -934,7 +1022,14 @@ func (client *deploymentsOperations) exportTemplateAtManagementGroupScopeHandleR
 
 // exportTemplateAtManagementGroupScopeHandleError handles the ExportTemplateAtManagementGroupScope error response.
 func (client *deploymentsOperations) exportTemplateAtManagementGroupScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ExportTemplateAtSubscriptionScope - Exports the template used for specified deployment.
@@ -981,7 +1076,14 @@ func (client *deploymentsOperations) exportTemplateAtSubscriptionScopeHandleResp
 
 // exportTemplateAtSubscriptionScopeHandleError handles the ExportTemplateAtSubscriptionScope error response.
 func (client *deploymentsOperations) exportTemplateAtSubscriptionScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Get - Gets a deployment.
@@ -1029,7 +1131,14 @@ func (client *deploymentsOperations) getHandleResponse(resp *azcore.Response) (*
 
 // getHandleError handles the Get error response.
 func (client *deploymentsOperations) getHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // GetAtManagementGroupScope - Gets a deployment.
@@ -1076,7 +1185,14 @@ func (client *deploymentsOperations) getAtManagementGroupScopeHandleResponse(res
 
 // getAtManagementGroupScopeHandleError handles the GetAtManagementGroupScope error response.
 func (client *deploymentsOperations) getAtManagementGroupScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // GetAtSubscriptionScope - Gets a deployment.
@@ -1123,7 +1239,14 @@ func (client *deploymentsOperations) getAtSubscriptionScopeHandleResponse(resp *
 
 // getAtSubscriptionScopeHandleError handles the GetAtSubscriptionScope error response.
 func (client *deploymentsOperations) getAtSubscriptionScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListAtManagementGroupScope - Get all the deployments for a management group.
@@ -1181,7 +1304,14 @@ func (client *deploymentsOperations) listAtManagementGroupScopeHandleResponse(re
 
 // listAtManagementGroupScopeHandleError handles the ListAtManagementGroupScope error response.
 func (client *deploymentsOperations) listAtManagementGroupScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListAtSubscriptionScope - Get all the deployments for a subscription.
@@ -1239,7 +1369,14 @@ func (client *deploymentsOperations) listAtSubscriptionScopeHandleResponse(resp 
 
 // listAtSubscriptionScopeHandleError handles the ListAtSubscriptionScope error response.
 func (client *deploymentsOperations) listAtSubscriptionScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListByResourceGroup - Get all the deployments for a resource group.
@@ -1298,7 +1435,14 @@ func (client *deploymentsOperations) listByResourceGroupHandleResponse(resp *azc
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *deploymentsOperations) listByResourceGroupHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Validate - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
@@ -1346,7 +1490,14 @@ func (client *deploymentsOperations) validateHandleResponse(resp *azcore.Respons
 
 // validateHandleError handles the Validate error response.
 func (client *deploymentsOperations) validateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ValidateAtManagementGroupScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
@@ -1393,7 +1544,14 @@ func (client *deploymentsOperations) validateAtManagementGroupScopeHandleRespons
 
 // validateAtManagementGroupScopeHandleError handles the ValidateAtManagementGroupScope error response.
 func (client *deploymentsOperations) validateAtManagementGroupScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ValidateAtSubscriptionScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
@@ -1440,5 +1598,12 @@ func (client *deploymentsOperations) validateAtSubscriptionScopeHandleResponse(r
 
 // validateAtSubscriptionScopeHandleError handles the ValidateAtSubscriptionScope error response.
 func (client *deploymentsOperations) validateAtSubscriptionScopeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

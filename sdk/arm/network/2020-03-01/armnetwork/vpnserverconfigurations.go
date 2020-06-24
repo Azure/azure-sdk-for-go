@@ -18,11 +18,11 @@ import (
 // VpnServerConfigurationsOperations contains the methods for the VpnServerConfigurations group.
 type VpnServerConfigurationsOperations interface {
 	// BeginCreateOrUpdate - Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, vpnServerConfigurationParameters VpnServerConfiguration) (*VpnServerConfigurationResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, vpnServerConfigurationParameters VpnServerConfiguration) (*VpnServerConfigurationPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VpnServerConfigurationPoller, error)
 	// BeginDelete - Deletes a VpnServerConfiguration.
-	BeginDelete(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Retrieves the details of a VpnServerConfiguration.
@@ -42,7 +42,7 @@ type vpnServerConfigurationsOperations struct {
 }
 
 // CreateOrUpdate - Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-func (client *vpnServerConfigurationsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, vpnServerConfigurationParameters VpnServerConfiguration) (*VpnServerConfigurationResponse, error) {
+func (client *vpnServerConfigurationsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, vpnServerConfigurationParameters VpnServerConfiguration) (*VpnServerConfigurationPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *vpnServerConfigurationsOperations) createOrUpdateCreateRequest(res
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *vpnServerConfigurationsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VpnServerConfigurationResponse, error) {
+func (client *vpnServerConfigurationsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VpnServerConfigurationPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := VpnServerConfigurationResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VpnServerConfiguration)
+	return &VpnServerConfigurationPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *vpnServerConfigurationsOperations) createOrUpdateHandleError(resp 
 }
 
 // Delete - Deletes a VpnServerConfiguration.
-func (client *vpnServerConfigurationsOperations) BeginDelete(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string) (*HTTPResponse, error) {
+func (client *vpnServerConfigurationsOperations) BeginDelete(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, vpnServerConfigurationName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *vpnServerConfigurationsOperations) deleteCreateRequest(resourceGro
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *vpnServerConfigurationsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *vpnServerConfigurationsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

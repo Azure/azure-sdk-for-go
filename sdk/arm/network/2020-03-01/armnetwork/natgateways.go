@@ -18,11 +18,11 @@ import (
 // NatGatewaysOperations contains the methods for the NatGateways group.
 type NatGatewaysOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a nat gateway.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, natGatewayName string, parameters NatGateway) (*NatGatewayResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, natGatewayName string, parameters NatGateway) (*NatGatewayPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (NatGatewayPoller, error)
 	// BeginDelete - Deletes the specified nat gateway.
-	BeginDelete(ctx context.Context, resourceGroupName string, natGatewayName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, natGatewayName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified nat gateway in a specified resource group.
@@ -42,7 +42,7 @@ type natGatewaysOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a nat gateway.
-func (client *natGatewaysOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, natGatewayName string, parameters NatGateway) (*NatGatewayResponse, error) {
+func (client *natGatewaysOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, natGatewayName string, parameters NatGateway) (*NatGatewayPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, natGatewayName, parameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *natGatewaysOperations) createOrUpdateCreateRequest(resourceGroupNa
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *natGatewaysOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*NatGatewayResponse, error) {
+func (client *natGatewaysOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*NatGatewayPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := NatGatewayResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NatGateway)
+	return &NatGatewayPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *natGatewaysOperations) createOrUpdateHandleError(resp *azcore.Resp
 }
 
 // Delete - Deletes the specified nat gateway.
-func (client *natGatewaysOperations) BeginDelete(ctx context.Context, resourceGroupName string, natGatewayName string) (*HTTPResponse, error) {
+func (client *natGatewaysOperations) BeginDelete(ctx context.Context, resourceGroupName string, natGatewayName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, natGatewayName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *natGatewaysOperations) deleteCreateRequest(resourceGroupName strin
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *natGatewaysOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *natGatewaysOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

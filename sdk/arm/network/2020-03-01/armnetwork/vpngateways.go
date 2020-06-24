@@ -18,11 +18,11 @@ import (
 // VpnGatewaysOperations contains the methods for the VpnGateways group.
 type VpnGatewaysOperations interface {
 	// BeginCreateOrUpdate - Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, vpnGatewayParameters VpnGateway) (*VpnGatewayResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, vpnGatewayParameters VpnGateway) (*VpnGatewayPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VpnGatewayPoller, error)
 	// BeginDelete - Deletes a virtual wan vpn gateway.
-	BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Retrieves the details of a virtual wan vpn gateway.
@@ -32,7 +32,7 @@ type VpnGatewaysOperations interface {
 	// ListByResourceGroup - Lists all the VpnGateways in a resource group.
 	ListByResourceGroup(resourceGroupName string) (ListVpnGatewaysResultPager, error)
 	// BeginReset - Resets the primary of the vpn gateway in the specified resource group.
-	BeginReset(ctx context.Context, resourceGroupName string, gatewayName string) (*VpnGatewayResponse, error)
+	BeginReset(ctx context.Context, resourceGroupName string, gatewayName string) (*VpnGatewayPollerResponse, error)
 	// ResumeReset - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeReset(token string) (VpnGatewayPoller, error)
 	// UpdateTags - Updates virtual wan vpn gateway tags.
@@ -46,7 +46,7 @@ type vpnGatewaysOperations struct {
 }
 
 // CreateOrUpdate - Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-func (client *vpnGatewaysOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, vpnGatewayParameters VpnGateway) (*VpnGatewayResponse, error) {
+func (client *vpnGatewaysOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, vpnGatewayParameters VpnGateway) (*VpnGatewayPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, gatewayName, vpnGatewayParameters)
 	if err != nil {
 		return nil, err
@@ -104,12 +104,11 @@ func (client *vpnGatewaysOperations) createOrUpdateCreateRequest(resourceGroupNa
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *vpnGatewaysOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VpnGatewayResponse, error) {
+func (client *vpnGatewaysOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VpnGatewayPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := VpnGatewayResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VpnGateway)
+	return &VpnGatewayPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -122,7 +121,7 @@ func (client *vpnGatewaysOperations) createOrUpdateHandleError(resp *azcore.Resp
 }
 
 // Delete - Deletes a virtual wan vpn gateway.
-func (client *vpnGatewaysOperations) BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string) (*HTTPResponse, error) {
+func (client *vpnGatewaysOperations) BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, gatewayName)
 	if err != nil {
 		return nil, err
@@ -180,11 +179,11 @@ func (client *vpnGatewaysOperations) deleteCreateRequest(resourceGroupName strin
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *vpnGatewaysOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *vpnGatewaysOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
@@ -362,7 +361,7 @@ func (client *vpnGatewaysOperations) listByResourceGroupHandleError(resp *azcore
 }
 
 // Reset - Resets the primary of the vpn gateway in the specified resource group.
-func (client *vpnGatewaysOperations) BeginReset(ctx context.Context, resourceGroupName string, gatewayName string) (*VpnGatewayResponse, error) {
+func (client *vpnGatewaysOperations) BeginReset(ctx context.Context, resourceGroupName string, gatewayName string) (*VpnGatewayPollerResponse, error) {
 	req, err := client.resetCreateRequest(resourceGroupName, gatewayName)
 	if err != nil {
 		return nil, err
@@ -420,12 +419,11 @@ func (client *vpnGatewaysOperations) resetCreateRequest(resourceGroupName string
 }
 
 // resetHandleResponse handles the Reset response.
-func (client *vpnGatewaysOperations) resetHandleResponse(resp *azcore.Response) (*VpnGatewayResponse, error) {
+func (client *vpnGatewaysOperations) resetHandleResponse(resp *azcore.Response) (*VpnGatewayPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.resetHandleError(resp)
 	}
-	result := VpnGatewayResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VpnGateway)
+	return &VpnGatewayPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // resetHandleError handles the Reset error response.

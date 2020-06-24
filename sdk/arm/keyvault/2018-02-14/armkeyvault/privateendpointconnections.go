@@ -10,7 +10,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -18,7 +17,7 @@ import (
 // PrivateEndpointConnectionsOperations contains the methods for the PrivateEndpointConnections group.
 type PrivateEndpointConnectionsOperations interface {
 	// BeginDelete - Deletes the specified private endpoint connection associated with the key vault.
-	BeginDelete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (*PrivateEndpointConnectionResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (*PrivateEndpointConnectionPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (PrivateEndpointConnectionPoller, error)
 	// Get - Gets the specified private endpoint connection associated with the key vault.
@@ -34,7 +33,7 @@ type privateEndpointConnectionsOperations struct {
 }
 
 // Delete - Deletes the specified private endpoint connection associated with the key vault.
-func (client *privateEndpointConnectionsOperations) BeginDelete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (*PrivateEndpointConnectionResponse, error) {
+func (client *privateEndpointConnectionsOperations) BeginDelete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (*PrivateEndpointConnectionPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, vaultName, privateEndpointConnectionName)
 	if err != nil {
 		return nil, err
@@ -93,23 +92,11 @@ func (client *privateEndpointConnectionsOperations) deleteCreateRequest(resource
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *privateEndpointConnectionsOperations) deleteHandleResponse(resp *azcore.Response) (*PrivateEndpointConnectionResponse, error) {
+func (client *privateEndpointConnectionsOperations) deleteHandleResponse(resp *azcore.Response) (*PrivateEndpointConnectionPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	result := PrivateEndpointConnectionResponse{RawResponse: resp.Response}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return nil, err
-		}
-		result.RetryAfter = &retryAfter
-	}
-	if val := resp.Header.Get("Location"); val != "" {
-		result.Location = &val
-	}
-	return &result, resp.UnmarshalAsJSON(&result.PrivateEndpointConnection)
+	return &PrivateEndpointConnectionPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
@@ -162,17 +149,6 @@ func (client *privateEndpointConnectionsOperations) getHandleResponse(resp *azco
 		return nil, client.getHandleError(resp)
 	}
 	result := PrivateEndpointConnectionResponse{RawResponse: resp.Response}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return nil, err
-		}
-		result.RetryAfter = &retryAfter
-	}
-	if val := resp.Header.Get("Location"); val != "" {
-		result.Location = &val
-	}
 	return &result, resp.UnmarshalAsJSON(&result.PrivateEndpointConnection)
 }
 
@@ -226,17 +202,6 @@ func (client *privateEndpointConnectionsOperations) putHandleResponse(resp *azco
 		return nil, client.putHandleError(resp)
 	}
 	result := PrivateEndpointConnectionResponse{RawResponse: resp.Response}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return nil, err
-		}
-		result.RetryAfter = &retryAfter
-	}
-	if val := resp.Header.Get("Location"); val != "" {
-		result.Location = &val
-	}
 	return &result, resp.UnmarshalAsJSON(&result.PrivateEndpointConnection)
 }
 

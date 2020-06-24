@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -84,7 +85,14 @@ func (client *availabilitySetsOperations) createOrUpdateHandleResponse(resp *azc
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *availabilitySetsOperations) createOrUpdateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Delete - Delete an availability set.
@@ -131,7 +139,14 @@ func (client *availabilitySetsOperations) deleteHandleResponse(resp *azcore.Resp
 
 // deleteHandleError handles the Delete error response.
 func (client *availabilitySetsOperations) deleteHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Get - Retrieves information about an availability set.
@@ -179,7 +194,14 @@ func (client *availabilitySetsOperations) getHandleResponse(resp *azcore.Respons
 
 // getHandleError handles the Get error response.
 func (client *availabilitySetsOperations) getHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // List - Lists all availability sets in a resource group.
@@ -232,7 +254,14 @@ func (client *availabilitySetsOperations) listHandleResponse(resp *azcore.Respon
 
 // listHandleError handles the List error response.
 func (client *availabilitySetsOperations) listHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListAvailableSizes - Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing availability set.
@@ -280,7 +309,14 @@ func (client *availabilitySetsOperations) listAvailableSizesHandleResponse(resp 
 
 // listAvailableSizesHandleError handles the ListAvailableSizes error response.
 func (client *availabilitySetsOperations) listAvailableSizesHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListBySubscription - Lists all availability sets in a subscription.
@@ -335,7 +371,14 @@ func (client *availabilitySetsOperations) listBySubscriptionHandleResponse(resp 
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
 func (client *availabilitySetsOperations) listBySubscriptionHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Update - Update an availability set.
@@ -383,5 +426,12 @@ func (client *availabilitySetsOperations) updateHandleResponse(resp *azcore.Resp
 
 // updateHandleError handles the Update error response.
 func (client *availabilitySetsOperations) updateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

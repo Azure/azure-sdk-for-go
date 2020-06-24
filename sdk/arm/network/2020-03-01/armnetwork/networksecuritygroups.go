@@ -18,11 +18,11 @@ import (
 // NetworkSecurityGroupsOperations contains the methods for the NetworkSecurityGroups group.
 type NetworkSecurityGroupsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a network security group in the specified resource group.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, parameters NetworkSecurityGroup) (*NetworkSecurityGroupResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, parameters NetworkSecurityGroup) (*NetworkSecurityGroupPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (NetworkSecurityGroupPoller, error)
 	// BeginDelete - Deletes the specified network security group.
-	BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified network security group.
@@ -42,7 +42,7 @@ type networkSecurityGroupsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a network security group in the specified resource group.
-func (client *networkSecurityGroupsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, parameters NetworkSecurityGroup) (*NetworkSecurityGroupResponse, error) {
+func (client *networkSecurityGroupsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, parameters NetworkSecurityGroup) (*NetworkSecurityGroupPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, networkSecurityGroupName, parameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *networkSecurityGroupsOperations) createOrUpdateCreateRequest(resou
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *networkSecurityGroupsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*NetworkSecurityGroupResponse, error) {
+func (client *networkSecurityGroupsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*NetworkSecurityGroupPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := NetworkSecurityGroupResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkSecurityGroup)
+	return &NetworkSecurityGroupPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *networkSecurityGroupsOperations) createOrUpdateHandleError(resp *a
 }
 
 // Delete - Deletes the specified network security group.
-func (client *networkSecurityGroupsOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string) (*HTTPResponse, error) {
+func (client *networkSecurityGroupsOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, networkSecurityGroupName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *networkSecurityGroupsOperations) deleteCreateRequest(resourceGroup
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *networkSecurityGroupsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *networkSecurityGroupsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

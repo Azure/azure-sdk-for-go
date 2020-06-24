@@ -18,11 +18,11 @@ import (
 // NetworkInterfaceTapConfigurationsOperations contains the methods for the NetworkInterfaceTapConfigurations group.
 type NetworkInterfaceTapConfigurationsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a Tap configuration in the specified NetworkInterface.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, tapConfigurationParameters NetworkInterfaceTapConfiguration) (*NetworkInterfaceTapConfigurationResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, tapConfigurationParameters NetworkInterfaceTapConfiguration) (*NetworkInterfaceTapConfigurationPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (NetworkInterfaceTapConfigurationPoller, error)
 	// BeginDelete - Deletes the specified tap configuration from the NetworkInterface.
-	BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Get the specified tap configuration on a network interface.
@@ -38,7 +38,7 @@ type networkInterfaceTapConfigurationsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a Tap configuration in the specified NetworkInterface.
-func (client *networkInterfaceTapConfigurationsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, tapConfigurationParameters NetworkInterfaceTapConfiguration) (*NetworkInterfaceTapConfigurationResponse, error) {
+func (client *networkInterfaceTapConfigurationsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, tapConfigurationParameters NetworkInterfaceTapConfiguration) (*NetworkInterfaceTapConfigurationPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *networkInterfaceTapConfigurationsOperations) createOrUpdateCreateR
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *networkInterfaceTapConfigurationsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*NetworkInterfaceTapConfigurationResponse, error) {
+func (client *networkInterfaceTapConfigurationsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*NetworkInterfaceTapConfigurationPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := NetworkInterfaceTapConfigurationResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkInterfaceTapConfiguration)
+	return &NetworkInterfaceTapConfigurationPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *networkInterfaceTapConfigurationsOperations) createOrUpdateHandleE
 }
 
 // Delete - Deletes the specified tap configuration from the NetworkInterface.
-func (client *networkInterfaceTapConfigurationsOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string) (*HTTPResponse, error) {
+func (client *networkInterfaceTapConfigurationsOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, networkInterfaceName, tapConfigurationName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *networkInterfaceTapConfigurationsOperations) deleteCreateRequest(r
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *networkInterfaceTapConfigurationsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *networkInterfaceTapConfigurationsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

@@ -20,7 +20,7 @@ type NamespacesOperations interface {
 	// CheckNameAvailability - Check the give Namespace name availability.
 	CheckNameAvailability(ctx context.Context, parameters CheckNameAvailabilityParameter) (*CheckNameAvailabilityResultResponse, error)
 	// BeginCreateOrUpdate - Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is idempotent.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace) (*EhNamespaceResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace) (*EhNamespacePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (EhNamespacePoller, error)
 	// CreateOrUpdateAuthorizationRule - Creates or updates an AuthorizationRule for a Namespace.
@@ -28,7 +28,7 @@ type NamespacesOperations interface {
 	// CreateOrUpdateNetworkRuleSet - Create or update NetworkRuleSet for a Namespace.
 	CreateOrUpdateNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSet) (*NetworkRuleSetResponse, error)
 	// BeginDelete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-	BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// DeleteAuthorizationRule - Deletes an AuthorizationRule for a Namespace.
@@ -114,7 +114,7 @@ func (client *namespacesOperations) checkNameAvailabilityHandleError(resp *azcor
 }
 
 // CreateOrUpdate - Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is idempotent.
-func (client *namespacesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace) (*EhNamespaceResponse, error) {
+func (client *namespacesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace) (*EhNamespacePollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, namespaceName, parameters)
 	if err != nil {
 		return nil, err
@@ -172,12 +172,11 @@ func (client *namespacesOperations) createOrUpdateCreateRequest(resourceGroupNam
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *namespacesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*EhNamespaceResponse, error) {
+func (client *namespacesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*EhNamespacePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := EhNamespaceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.EhNamespace)
+	return &EhNamespacePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -295,7 +294,7 @@ func (client *namespacesOperations) createOrUpdateNetworkRuleSetHandleError(resp
 }
 
 // Delete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-func (client *namespacesOperations) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string) (*HTTPResponse, error) {
+func (client *namespacesOperations) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, namespaceName)
 	if err != nil {
 		return nil, err
@@ -353,12 +352,11 @@ func (client *namespacesOperations) deleteCreateRequest(resourceGroupName string
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *namespacesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *namespacesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	result := HTTPResponse{RawResponse: resp.Response}
-	return &result, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

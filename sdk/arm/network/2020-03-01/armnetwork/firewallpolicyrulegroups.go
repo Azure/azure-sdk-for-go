@@ -18,11 +18,11 @@ import (
 // FirewallPolicyRuleGroupsOperations contains the methods for the FirewallPolicyRuleGroups group.
 type FirewallPolicyRuleGroupsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates the specified FirewallPolicyRuleGroup.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, parameters FirewallPolicyRuleGroup) (*FirewallPolicyRuleGroupResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, parameters FirewallPolicyRuleGroup) (*FirewallPolicyRuleGroupPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (FirewallPolicyRuleGroupPoller, error)
 	// BeginDelete - Deletes the specified FirewallPolicyRuleGroup.
-	BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified FirewallPolicyRuleGroup.
@@ -38,7 +38,7 @@ type firewallPolicyRuleGroupsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates the specified FirewallPolicyRuleGroup.
-func (client *firewallPolicyRuleGroupsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, parameters FirewallPolicyRuleGroup) (*FirewallPolicyRuleGroupResponse, error) {
+func (client *firewallPolicyRuleGroupsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, parameters FirewallPolicyRuleGroup) (*FirewallPolicyRuleGroupPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, firewallPolicyName, ruleGroupName, parameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *firewallPolicyRuleGroupsOperations) createOrUpdateCreateRequest(re
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *firewallPolicyRuleGroupsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*FirewallPolicyRuleGroupResponse, error) {
+func (client *firewallPolicyRuleGroupsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*FirewallPolicyRuleGroupPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := FirewallPolicyRuleGroupResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FirewallPolicyRuleGroup)
+	return &FirewallPolicyRuleGroupPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *firewallPolicyRuleGroupsOperations) createOrUpdateHandleError(resp
 }
 
 // Delete - Deletes the specified FirewallPolicyRuleGroup.
-func (client *firewallPolicyRuleGroupsOperations) BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (*HTTPResponse, error) {
+func (client *firewallPolicyRuleGroupsOperations) BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, firewallPolicyName, ruleGroupName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *firewallPolicyRuleGroupsOperations) deleteCreateRequest(resourceGr
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *firewallPolicyRuleGroupsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *firewallPolicyRuleGroupsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

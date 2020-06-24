@@ -18,11 +18,11 @@ import (
 // RouteFiltersOperations contains the methods for the RouteFilters group.
 type RouteFiltersOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a route filter in a specified resource group.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters RouteFilter) (*RouteFilterResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters RouteFilter) (*RouteFilterPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (RouteFilterPoller, error)
 	// BeginDelete - Deletes the specified route filter.
-	BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified route filter.
@@ -42,7 +42,7 @@ type routeFiltersOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a route filter in a specified resource group.
-func (client *routeFiltersOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters RouteFilter) (*RouteFilterResponse, error) {
+func (client *routeFiltersOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters RouteFilter) (*RouteFilterPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, routeFilterName, routeFilterParameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *routeFiltersOperations) createOrUpdateCreateRequest(resourceGroupN
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *routeFiltersOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*RouteFilterResponse, error) {
+func (client *routeFiltersOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*RouteFilterPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := RouteFilterResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.RouteFilter)
+	return &RouteFilterPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *routeFiltersOperations) createOrUpdateHandleError(resp *azcore.Res
 }
 
 // Delete - Deletes the specified route filter.
-func (client *routeFiltersOperations) BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string) (*HTTPResponse, error) {
+func (client *routeFiltersOperations) BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, routeFilterName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *routeFiltersOperations) deleteCreateRequest(resourceGroupName stri
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *routeFiltersOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *routeFiltersOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

@@ -17,11 +17,11 @@ import (
 // ExpressRouteGatewaysOperations contains the methods for the ExpressRouteGateways group.
 type ExpressRouteGatewaysOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a ExpressRoute gateway in a specified resource group.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, putExpressRouteGatewayParameters ExpressRouteGateway) (*ExpressRouteGatewayResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, putExpressRouteGatewayParameters ExpressRouteGateway) (*ExpressRouteGatewayPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ExpressRouteGatewayPoller, error)
 	// BeginDelete - Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be deleted when there are no connection subresources.
-	BeginDelete(ctx context.Context, resourceGroupName string, expressRouteGatewayName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, expressRouteGatewayName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Fetches the details of a ExpressRoute gateway in a resource group.
@@ -39,7 +39,7 @@ type expressRouteGatewaysOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a ExpressRoute gateway in a specified resource group.
-func (client *expressRouteGatewaysOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, putExpressRouteGatewayParameters ExpressRouteGateway) (*ExpressRouteGatewayResponse, error) {
+func (client *expressRouteGatewaysOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, putExpressRouteGatewayParameters ExpressRouteGateway) (*ExpressRouteGatewayPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, expressRouteGatewayName, putExpressRouteGatewayParameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *expressRouteGatewaysOperations) createOrUpdateCreateRequest(resour
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *expressRouteGatewaysOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteGatewayResponse, error) {
+func (client *expressRouteGatewaysOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteGatewayPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := ExpressRouteGatewayResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteGateway)
+	return &ExpressRouteGatewayPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *expressRouteGatewaysOperations) createOrUpdateHandleError(resp *az
 }
 
 // Delete - Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be deleted when there are no connection subresources.
-func (client *expressRouteGatewaysOperations) BeginDelete(ctx context.Context, resourceGroupName string, expressRouteGatewayName string) (*HTTPResponse, error) {
+func (client *expressRouteGatewaysOperations) BeginDelete(ctx context.Context, resourceGroupName string, expressRouteGatewayName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, expressRouteGatewayName)
 	if err != nil {
 		return nil, err
@@ -173,11 +172,11 @@ func (client *expressRouteGatewaysOperations) deleteCreateRequest(resourceGroupN
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *expressRouteGatewaysOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *expressRouteGatewaysOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

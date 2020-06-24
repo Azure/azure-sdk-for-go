@@ -136,7 +136,6 @@ func (client SnapshotClient) ApplySender(req *http.Request) (*http.Response, err
 func (client SnapshotClient) ApplyResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -208,7 +207,6 @@ func (client SnapshotClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client SnapshotClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -279,7 +277,6 @@ func (client SnapshotClient) GetSender(req *http.Request) (*http.Response, error
 func (client SnapshotClient) GetResponder(resp *http.Response) (result Snapshot, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -350,7 +347,6 @@ func (client SnapshotClient) GetOperationStatusSender(req *http.Request) (*http.
 func (client SnapshotClient) GetOperationStatusResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -429,7 +425,6 @@ func (client SnapshotClient) ListSender(req *http.Request) (*http.Response, erro
 func (client SnapshotClient) ListResponder(resp *http.Response) (result ListSnapshot, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -533,7 +528,6 @@ func (client SnapshotClient) TakeSender(req *http.Request) (*http.Response, erro
 func (client SnapshotClient) TakeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -607,7 +601,6 @@ func (client SnapshotClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client SnapshotClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

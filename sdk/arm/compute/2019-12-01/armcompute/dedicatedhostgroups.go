@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -82,7 +83,14 @@ func (client *dedicatedHostGroupsOperations) createOrUpdateHandleResponse(resp *
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *dedicatedHostGroupsOperations) createOrUpdateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Delete - Delete a dedicated host group.
@@ -129,7 +137,14 @@ func (client *dedicatedHostGroupsOperations) deleteHandleResponse(resp *azcore.R
 
 // deleteHandleError handles the Delete error response.
 func (client *dedicatedHostGroupsOperations) deleteHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Get - Retrieves information about a dedicated host group.
@@ -177,7 +192,14 @@ func (client *dedicatedHostGroupsOperations) getHandleResponse(resp *azcore.Resp
 
 // getHandleError handles the Get error response.
 func (client *dedicatedHostGroupsOperations) getHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListByResourceGroup - Lists all of the dedicated host groups in the specified resource group. Use the nextLink property in the response to get the next page of dedicated host groups.
@@ -230,7 +252,14 @@ func (client *dedicatedHostGroupsOperations) listByResourceGroupHandleResponse(r
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *dedicatedHostGroupsOperations) listByResourceGroupHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListBySubscription - Lists all of the dedicated host groups in the subscription. Use the nextLink property in the response to get the next page of dedicated host groups.
@@ -282,7 +311,14 @@ func (client *dedicatedHostGroupsOperations) listBySubscriptionHandleResponse(re
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
 func (client *dedicatedHostGroupsOperations) listBySubscriptionHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Update - Update an dedicated host group.
@@ -330,5 +366,12 @@ func (client *dedicatedHostGroupsOperations) updateHandleResponse(resp *azcore.R
 
 // updateHandleError handles the Update error response.
 func (client *dedicatedHostGroupsOperations) updateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

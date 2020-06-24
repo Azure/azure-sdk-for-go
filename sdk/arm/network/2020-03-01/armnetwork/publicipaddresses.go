@@ -18,11 +18,11 @@ import (
 // PublicIPAddressesOperations contains the methods for the PublicIPAddresses group.
 type PublicIPAddressesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a static or dynamic public IP address.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (*PublicIPAddressResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (*PublicIPAddressPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (PublicIPAddressPoller, error)
 	// BeginDelete - Deletes the specified public IP address.
-	BeginDelete(ctx context.Context, resourceGroupName string, publicIPAddressName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, publicIPAddressName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified public IP address in a specified resource group.
@@ -48,7 +48,7 @@ type publicIPAddressesOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a static or dynamic public IP address.
-func (client *publicIPAddressesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (*PublicIPAddressResponse, error) {
+func (client *publicIPAddressesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (*PublicIPAddressPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, publicIPAddressName, parameters)
 	if err != nil {
 		return nil, err
@@ -106,12 +106,11 @@ func (client *publicIPAddressesOperations) createOrUpdateCreateRequest(resourceG
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *publicIPAddressesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*PublicIPAddressResponse, error) {
+func (client *publicIPAddressesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*PublicIPAddressPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := PublicIPAddressResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PublicIPAddress)
+	return &PublicIPAddressPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -124,7 +123,7 @@ func (client *publicIPAddressesOperations) createOrUpdateHandleError(resp *azcor
 }
 
 // Delete - Deletes the specified public IP address.
-func (client *publicIPAddressesOperations) BeginDelete(ctx context.Context, resourceGroupName string, publicIPAddressName string) (*HTTPResponse, error) {
+func (client *publicIPAddressesOperations) BeginDelete(ctx context.Context, resourceGroupName string, publicIPAddressName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, publicIPAddressName)
 	if err != nil {
 		return nil, err
@@ -182,11 +181,11 @@ func (client *publicIPAddressesOperations) deleteCreateRequest(resourceGroupName
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *publicIPAddressesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *publicIPAddressesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

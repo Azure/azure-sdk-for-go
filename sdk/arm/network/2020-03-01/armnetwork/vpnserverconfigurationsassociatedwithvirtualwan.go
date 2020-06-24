@@ -17,7 +17,7 @@ import (
 // VpnServerConfigurationsAssociatedWithVirtualWanOperations contains the methods for the VpnServerConfigurationsAssociatedWithVirtualWan group.
 type VpnServerConfigurationsAssociatedWithVirtualWanOperations interface {
 	// BeginList - Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-	BeginList(ctx context.Context, resourceGroupName string, virtualWanName string) (*VpnServerConfigurationsResponseResponse, error)
+	BeginList(ctx context.Context, resourceGroupName string, virtualWanName string) (*VpnServerConfigurationsResponsePollerResponse, error)
 	// ResumeList - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeList(token string) (VpnServerConfigurationsResponsePoller, error)
 }
@@ -29,7 +29,7 @@ type vpnServerConfigurationsAssociatedWithVirtualWanOperations struct {
 }
 
 // List - Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-func (client *vpnServerConfigurationsAssociatedWithVirtualWanOperations) BeginList(ctx context.Context, resourceGroupName string, virtualWanName string) (*VpnServerConfigurationsResponseResponse, error) {
+func (client *vpnServerConfigurationsAssociatedWithVirtualWanOperations) BeginList(ctx context.Context, resourceGroupName string, virtualWanName string) (*VpnServerConfigurationsResponsePollerResponse, error) {
 	req, err := client.listCreateRequest(resourceGroupName, virtualWanName)
 	if err != nil {
 		return nil, err
@@ -87,12 +87,11 @@ func (client *vpnServerConfigurationsAssociatedWithVirtualWanOperations) listCre
 }
 
 // listHandleResponse handles the List response.
-func (client *vpnServerConfigurationsAssociatedWithVirtualWanOperations) listHandleResponse(resp *azcore.Response) (*VpnServerConfigurationsResponseResponse, error) {
+func (client *vpnServerConfigurationsAssociatedWithVirtualWanOperations) listHandleResponse(resp *azcore.Response) (*VpnServerConfigurationsResponsePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.listHandleError(resp)
 	}
-	result := VpnServerConfigurationsResponseResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VpnServerConfigurationsResponse)
+	return &VpnServerConfigurationsResponsePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // listHandleError handles the List error response.

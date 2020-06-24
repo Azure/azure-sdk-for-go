@@ -140,16 +140,23 @@ type DeploymentExtendedFilter struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
+// DeploymentExtendedPollerResponse is the response envelope for operations that asynchronously return a DeploymentExtended
+// type.
+type DeploymentExtendedPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (*DeploymentExtendedResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller DeploymentExtendedPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // DeploymentExtendedResponse is the response envelope for operations that return a DeploymentExtended type.
 type DeploymentExtendedResponse struct {
 	// Deployment information.
 	DeploymentExtended *DeploymentExtended
-
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*DeploymentExtendedResponse, error)
-
-	// Poller contains an initialized poller
-	Poller DeploymentExtendedPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -553,16 +560,22 @@ type GenericResourceFilter struct {
 	Tagvalue *string `json:"tagvalue,omitempty"`
 }
 
+// GenericResourcePollerResponse is the response envelope for operations that asynchronously return a GenericResource type.
+type GenericResourcePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (*GenericResourceResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GenericResourcePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // GenericResourceResponse is the response envelope for operations that return a GenericResource type.
 type GenericResourceResponse struct {
 	// Resource information.
 	GenericResource *GenericResource
-
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*GenericResourceResponse, error)
-
-	// Poller contains an initialized poller
-	Poller GenericResourcePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -574,12 +587,12 @@ type HTTPMessage struct {
 	Content *interface{} `json:"content,omitempty"`
 }
 
-// HTTPResponse contains the HTTP response from the call to the service endpoint
-type HTTPResponse struct {
+// HTTPPollerResponse contains the asynchronous HTTP response from the call to the service endpoint.
+type HTTPPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
 	PollUntilDone func(ctx context.Context, frequency time.Duration) (*http.Response, error)
 
-	// Poller contains an initialized poller
+	// Poller contains an initialized poller.
 	Poller HTTPPoller
 
 	// RawResponse contains the underlying HTTP response.

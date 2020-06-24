@@ -18,11 +18,11 @@ import (
 // SecurityRulesOperations contains the methods for the SecurityRules group.
 type SecurityRulesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a security rule in the specified network security group.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string, securityRuleParameters SecurityRule) (*SecurityRuleResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string, securityRuleParameters SecurityRule) (*SecurityRulePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (SecurityRulePoller, error)
 	// BeginDelete - Deletes the specified network security rule.
-	BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Get the specified network security rule.
@@ -38,7 +38,7 @@ type securityRulesOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a security rule in the specified network security group.
-func (client *securityRulesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string, securityRuleParameters SecurityRule) (*SecurityRuleResponse, error) {
+func (client *securityRulesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string, securityRuleParameters SecurityRule) (*SecurityRulePollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *securityRulesOperations) createOrUpdateCreateRequest(resourceGroup
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *securityRulesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*SecurityRuleResponse, error) {
+func (client *securityRulesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*SecurityRulePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := SecurityRuleResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.SecurityRule)
+	return &SecurityRulePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *securityRulesOperations) createOrUpdateHandleError(resp *azcore.Re
 }
 
 // Delete - Deletes the specified network security rule.
-func (client *securityRulesOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string) (*HTTPResponse, error) {
+func (client *securityRulesOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, networkSecurityGroupName, securityRuleName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *securityRulesOperations) deleteCreateRequest(resourceGroupName str
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *securityRulesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *securityRulesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

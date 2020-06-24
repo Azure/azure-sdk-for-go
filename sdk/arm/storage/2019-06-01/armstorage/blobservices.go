@@ -8,7 +8,9 @@ package armstorage
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -76,7 +78,14 @@ func (client *blobServicesOperations) getServicePropertiesHandleResponse(resp *a
 
 // getServicePropertiesHandleError handles the GetServiceProperties error response.
 func (client *blobServicesOperations) getServicePropertiesHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // List - List blob services of storage account. It returns a collection of one object named default.
@@ -124,7 +133,14 @@ func (client *blobServicesOperations) listHandleResponse(resp *azcore.Response) 
 
 // listHandleError handles the List error response.
 func (client *blobServicesOperations) listHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // SetServiceProperties - Sets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
@@ -173,5 +189,12 @@ func (client *blobServicesOperations) setServicePropertiesHandleResponse(resp *a
 
 // setServicePropertiesHandleError handles the SetServiceProperties error response.
 func (client *blobServicesOperations) setServicePropertiesHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

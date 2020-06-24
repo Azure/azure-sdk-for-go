@@ -18,11 +18,11 @@ import (
 // BastionHostsOperations contains the methods for the BastionHosts group.
 type BastionHostsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates the specified Bastion Host.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost) (*BastionHostResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost) (*BastionHostPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (BastionHostPoller, error)
 	// BeginDelete - Deletes the specified Bastion Host.
-	BeginDelete(ctx context.Context, resourceGroupName string, bastionHostName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, bastionHostName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified Bastion Host.
@@ -40,7 +40,7 @@ type bastionHostsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates the specified Bastion Host.
-func (client *bastionHostsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost) (*BastionHostResponse, error) {
+func (client *bastionHostsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost) (*BastionHostPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, bastionHostName, parameters)
 	if err != nil {
 		return nil, err
@@ -98,12 +98,11 @@ func (client *bastionHostsOperations) createOrUpdateCreateRequest(resourceGroupN
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *bastionHostsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*BastionHostResponse, error) {
+func (client *bastionHostsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*BastionHostPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := BastionHostResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.BastionHost)
+	return &BastionHostPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -116,7 +115,7 @@ func (client *bastionHostsOperations) createOrUpdateHandleError(resp *azcore.Res
 }
 
 // Delete - Deletes the specified Bastion Host.
-func (client *bastionHostsOperations) BeginDelete(ctx context.Context, resourceGroupName string, bastionHostName string) (*HTTPResponse, error) {
+func (client *bastionHostsOperations) BeginDelete(ctx context.Context, resourceGroupName string, bastionHostName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, bastionHostName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *bastionHostsOperations) deleteCreateRequest(resourceGroupName stri
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *bastionHostsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *bastionHostsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

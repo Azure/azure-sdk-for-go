@@ -8,7 +8,9 @@ package armcompute
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -18,11 +20,11 @@ import (
 // LogAnalyticsOperations contains the methods for the LogAnalytics group.
 type LogAnalyticsOperations interface {
 	// BeginExportRequestRateByInterval - Export logs that show Api requests made by this subscription in the given time window to show throttling activities.
-	BeginExportRequestRateByInterval(ctx context.Context, location string, parameters RequestRateByIntervalInput) (*LogAnalyticsOperationResultResponse, error)
+	BeginExportRequestRateByInterval(ctx context.Context, location string, parameters RequestRateByIntervalInput) (*LogAnalyticsOperationResultPollerResponse, error)
 	// ResumeExportRequestRateByInterval - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeExportRequestRateByInterval(token string) (LogAnalyticsOperationResultPoller, error)
 	// BeginExportThrottledRequests - Export logs that show total throttled Api requests for this subscription in the given time window.
-	BeginExportThrottledRequests(ctx context.Context, location string, parameters LogAnalyticsInputBase) (*LogAnalyticsOperationResultResponse, error)
+	BeginExportThrottledRequests(ctx context.Context, location string, parameters LogAnalyticsInputBase) (*LogAnalyticsOperationResultPollerResponse, error)
 	// ResumeExportThrottledRequests - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeExportThrottledRequests(token string) (LogAnalyticsOperationResultPoller, error)
 }
@@ -34,7 +36,7 @@ type logAnalyticsOperations struct {
 }
 
 // ExportRequestRateByInterval - Export logs that show Api requests made by this subscription in the given time window to show throttling activities.
-func (client *logAnalyticsOperations) BeginExportRequestRateByInterval(ctx context.Context, location string, parameters RequestRateByIntervalInput) (*LogAnalyticsOperationResultResponse, error) {
+func (client *logAnalyticsOperations) BeginExportRequestRateByInterval(ctx context.Context, location string, parameters RequestRateByIntervalInput) (*LogAnalyticsOperationResultPollerResponse, error) {
 	req, err := client.exportRequestRateByIntervalCreateRequest(location, parameters)
 	if err != nil {
 		return nil, err
@@ -91,21 +93,27 @@ func (client *logAnalyticsOperations) exportRequestRateByIntervalCreateRequest(l
 }
 
 // exportRequestRateByIntervalHandleResponse handles the ExportRequestRateByInterval response.
-func (client *logAnalyticsOperations) exportRequestRateByIntervalHandleResponse(resp *azcore.Response) (*LogAnalyticsOperationResultResponse, error) {
+func (client *logAnalyticsOperations) exportRequestRateByIntervalHandleResponse(resp *azcore.Response) (*LogAnalyticsOperationResultPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.exportRequestRateByIntervalHandleError(resp)
 	}
-	result := LogAnalyticsOperationResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.LogAnalyticsOperationResult)
+	return &LogAnalyticsOperationResultPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // exportRequestRateByIntervalHandleError handles the ExportRequestRateByInterval error response.
 func (client *logAnalyticsOperations) exportRequestRateByIntervalHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ExportThrottledRequests - Export logs that show total throttled Api requests for this subscription in the given time window.
-func (client *logAnalyticsOperations) BeginExportThrottledRequests(ctx context.Context, location string, parameters LogAnalyticsInputBase) (*LogAnalyticsOperationResultResponse, error) {
+func (client *logAnalyticsOperations) BeginExportThrottledRequests(ctx context.Context, location string, parameters LogAnalyticsInputBase) (*LogAnalyticsOperationResultPollerResponse, error) {
 	req, err := client.exportThrottledRequestsCreateRequest(location, parameters)
 	if err != nil {
 		return nil, err
@@ -162,15 +170,21 @@ func (client *logAnalyticsOperations) exportThrottledRequestsCreateRequest(locat
 }
 
 // exportThrottledRequestsHandleResponse handles the ExportThrottledRequests response.
-func (client *logAnalyticsOperations) exportThrottledRequestsHandleResponse(resp *azcore.Response) (*LogAnalyticsOperationResultResponse, error) {
+func (client *logAnalyticsOperations) exportThrottledRequestsHandleResponse(resp *azcore.Response) (*LogAnalyticsOperationResultPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.exportThrottledRequestsHandleError(resp)
 	}
-	result := LogAnalyticsOperationResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.LogAnalyticsOperationResult)
+	return &LogAnalyticsOperationResultPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // exportThrottledRequestsHandleError handles the ExportThrottledRequests error response.
 func (client *logAnalyticsOperations) exportThrottledRequestsHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

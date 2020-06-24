@@ -18,11 +18,11 @@ import (
 // ExpressRouteCircuitPeeringsOperations contains the methods for the ExpressRouteCircuitPeerings group.
 type ExpressRouteCircuitPeeringsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a peering in the specified express route circuits.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering) (*ExpressRouteCircuitPeeringResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering) (*ExpressRouteCircuitPeeringPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ExpressRouteCircuitPeeringPoller, error)
 	// BeginDelete - Deletes the specified peering from the specified express route circuit.
-	BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified peering for the express route circuit.
@@ -38,7 +38,7 @@ type expressRouteCircuitPeeringsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a peering in the specified express route circuits.
-func (client *expressRouteCircuitPeeringsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering) (*ExpressRouteCircuitPeeringResponse, error) {
+func (client *expressRouteCircuitPeeringsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering) (*ExpressRouteCircuitPeeringPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, circuitName, peeringName, peeringParameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *expressRouteCircuitPeeringsOperations) createOrUpdateCreateRequest
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *expressRouteCircuitPeeringsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitPeeringResponse, error) {
+func (client *expressRouteCircuitPeeringsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitPeeringPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := ExpressRouteCircuitPeeringResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCircuitPeering)
+	return &ExpressRouteCircuitPeeringPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *expressRouteCircuitPeeringsOperations) createOrUpdateHandleError(r
 }
 
 // Delete - Deletes the specified peering from the specified express route circuit.
-func (client *expressRouteCircuitPeeringsOperations) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (*HTTPResponse, error) {
+func (client *expressRouteCircuitPeeringsOperations) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, circuitName, peeringName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *expressRouteCircuitPeeringsOperations) deleteCreateRequest(resourc
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *expressRouteCircuitPeeringsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *expressRouteCircuitPeeringsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

@@ -20,11 +20,11 @@ type VirtualNetworksOperations interface {
 	// CheckIPAddressAvailability - Checks whether a private IP address is available for use.
 	CheckIPAddressAvailability(ctx context.Context, resourceGroupName string, virtualNetworkName string, ipAddress string) (*IPAddressAvailabilityResultResponse, error)
 	// BeginCreateOrUpdate - Creates or updates a virtual network in the specified resource group.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork) (*VirtualNetworkResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork) (*VirtualNetworkPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VirtualNetworkPoller, error)
 	// BeginDelete - Deletes the specified virtual network.
-	BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified virtual network by resource group.
@@ -99,7 +99,7 @@ func (client *virtualNetworksOperations) checkIPAddressAvailabilityHandleError(r
 }
 
 // CreateOrUpdate - Creates or updates a virtual network in the specified resource group.
-func (client *virtualNetworksOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork) (*VirtualNetworkResponse, error) {
+func (client *virtualNetworksOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork) (*VirtualNetworkPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, virtualNetworkName, parameters)
 	if err != nil {
 		return nil, err
@@ -157,12 +157,11 @@ func (client *virtualNetworksOperations) createOrUpdateCreateRequest(resourceGro
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *virtualNetworksOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualNetworkResponse, error) {
+func (client *virtualNetworksOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualNetworkPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := VirtualNetworkResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualNetwork)
+	return &VirtualNetworkPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -175,7 +174,7 @@ func (client *virtualNetworksOperations) createOrUpdateHandleError(resp *azcore.
 }
 
 // Delete - Deletes the specified virtual network.
-func (client *virtualNetworksOperations) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string) (*HTTPResponse, error) {
+func (client *virtualNetworksOperations) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, virtualNetworkName)
 	if err != nil {
 		return nil, err
@@ -233,11 +232,11 @@ func (client *virtualNetworksOperations) deleteCreateRequest(resourceGroupName s
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *virtualNetworksOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *virtualNetworksOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

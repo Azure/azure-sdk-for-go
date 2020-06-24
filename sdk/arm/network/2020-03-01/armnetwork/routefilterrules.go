@@ -18,11 +18,11 @@ import (
 // RouteFilterRulesOperations contains the methods for the RouteFilterRules group.
 type RouteFilterRulesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a route in the specified route filter.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule) (*RouteFilterRuleResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule) (*RouteFilterRulePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (RouteFilterRulePoller, error)
 	// BeginDelete - Deletes the specified rule from a route filter.
-	BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified rule from a route filter.
@@ -38,7 +38,7 @@ type routeFilterRulesOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a route in the specified route filter.
-func (client *routeFilterRulesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule) (*RouteFilterRuleResponse, error) {
+func (client *routeFilterRulesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule) (*RouteFilterRulePollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *routeFilterRulesOperations) createOrUpdateCreateRequest(resourceGr
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *routeFilterRulesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*RouteFilterRuleResponse, error) {
+func (client *routeFilterRulesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*RouteFilterRulePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := RouteFilterRuleResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.RouteFilterRule)
+	return &RouteFilterRulePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *routeFilterRulesOperations) createOrUpdateHandleError(resp *azcore
 }
 
 // Delete - Deletes the specified rule from a route filter.
-func (client *routeFilterRulesOperations) BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (*HTTPResponse, error) {
+func (client *routeFilterRulesOperations) BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, routeFilterName, ruleName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *routeFilterRulesOperations) deleteCreateRequest(resourceGroupName 
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *routeFilterRulesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *routeFilterRulesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

@@ -18,11 +18,11 @@ import (
 // VirtualHubRouteTableV2SOperations contains the methods for the VirtualHubRouteTableV2S group.
 type VirtualHubRouteTableV2SOperations interface {
 	// BeginCreateOrUpdate - Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, virtualHubRouteTableV2Parameters VirtualHubRouteTableV2) (*VirtualHubRouteTableV2Response, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, virtualHubRouteTableV2Parameters VirtualHubRouteTableV2) (*VirtualHubRouteTableV2PollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VirtualHubRouteTableV2Poller, error)
 	// BeginDelete - Deletes a VirtualHubRouteTableV2.
-	BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Retrieves the details of a VirtualHubRouteTableV2.
@@ -38,7 +38,7 @@ type virtualHubRouteTableV2SOperations struct {
 }
 
 // CreateOrUpdate - Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
-func (client *virtualHubRouteTableV2SOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, virtualHubRouteTableV2Parameters VirtualHubRouteTableV2) (*VirtualHubRouteTableV2Response, error) {
+func (client *virtualHubRouteTableV2SOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, virtualHubRouteTableV2Parameters VirtualHubRouteTableV2) (*VirtualHubRouteTableV2PollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *virtualHubRouteTableV2SOperations) createOrUpdateCreateRequest(res
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *virtualHubRouteTableV2SOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualHubRouteTableV2Response, error) {
+func (client *virtualHubRouteTableV2SOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualHubRouteTableV2PollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := VirtualHubRouteTableV2Response{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualHubRouteTableV2)
+	return &VirtualHubRouteTableV2PollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *virtualHubRouteTableV2SOperations) createOrUpdateHandleError(resp 
 }
 
 // Delete - Deletes a VirtualHubRouteTableV2.
-func (client *virtualHubRouteTableV2SOperations) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string) (*HTTPResponse, error) {
+func (client *virtualHubRouteTableV2SOperations) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, virtualHubName, routeTableName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *virtualHubRouteTableV2SOperations) deleteCreateRequest(resourceGro
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *virtualHubRouteTableV2SOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *virtualHubRouteTableV2SOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

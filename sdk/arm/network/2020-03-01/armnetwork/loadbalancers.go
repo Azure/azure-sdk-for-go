@@ -18,11 +18,11 @@ import (
 // LoadBalancersOperations contains the methods for the LoadBalancers group.
 type LoadBalancersOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a load balancer.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer) (*LoadBalancerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer) (*LoadBalancerPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (LoadBalancerPoller, error)
 	// BeginDelete - Deletes the specified load balancer.
-	BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified load balancer.
@@ -42,7 +42,7 @@ type loadBalancersOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a load balancer.
-func (client *loadBalancersOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer) (*LoadBalancerResponse, error) {
+func (client *loadBalancersOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer) (*LoadBalancerPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, loadBalancerName, parameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *loadBalancersOperations) createOrUpdateCreateRequest(resourceGroup
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *loadBalancersOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*LoadBalancerResponse, error) {
+func (client *loadBalancersOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*LoadBalancerPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := LoadBalancerResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.LoadBalancer)
+	return &LoadBalancerPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *loadBalancersOperations) createOrUpdateHandleError(resp *azcore.Re
 }
 
 // Delete - Deletes the specified load balancer.
-func (client *loadBalancersOperations) BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string) (*HTTPResponse, error) {
+func (client *loadBalancersOperations) BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, loadBalancerName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *loadBalancersOperations) deleteCreateRequest(resourceGroupName str
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *loadBalancersOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *loadBalancersOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

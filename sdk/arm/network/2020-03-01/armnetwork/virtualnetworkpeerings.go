@@ -18,11 +18,11 @@ import (
 // VirtualNetworkPeeringsOperations contains the methods for the VirtualNetworkPeerings group.
 type VirtualNetworkPeeringsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a peering in the specified virtual network.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering) (*VirtualNetworkPeeringResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering) (*VirtualNetworkPeeringPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VirtualNetworkPeeringPoller, error)
 	// BeginDelete - Deletes the specified virtual network peering.
-	BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified virtual network peering.
@@ -38,7 +38,7 @@ type virtualNetworkPeeringsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a peering in the specified virtual network.
-func (client *virtualNetworkPeeringsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering) (*VirtualNetworkPeeringResponse, error) {
+func (client *virtualNetworkPeeringsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering) (*VirtualNetworkPeeringPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *virtualNetworkPeeringsOperations) createOrUpdateCreateRequest(reso
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *virtualNetworkPeeringsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualNetworkPeeringResponse, error) {
+func (client *virtualNetworkPeeringsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualNetworkPeeringPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := VirtualNetworkPeeringResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualNetworkPeering)
+	return &VirtualNetworkPeeringPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *virtualNetworkPeeringsOperations) createOrUpdateHandleError(resp *
 }
 
 // Delete - Deletes the specified virtual network peering.
-func (client *virtualNetworkPeeringsOperations) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string) (*HTTPResponse, error) {
+func (client *virtualNetworkPeeringsOperations) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *virtualNetworkPeeringsOperations) deleteCreateRequest(resourceGrou
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *virtualNetworkPeeringsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *virtualNetworkPeeringsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

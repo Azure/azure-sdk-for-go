@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -19,11 +20,11 @@ import (
 // ContainerServicesOperations contains the methods for the ContainerServices group.
 type ContainerServicesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService) (*ContainerServiceResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService) (*ContainerServicePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ContainerServicePoller, error)
 	// BeginDelete - Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-	BeginDelete(ctx context.Context, resourceGroupName string, containerServiceName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, containerServiceName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
@@ -41,7 +42,7 @@ type containerServicesOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-func (client *containerServicesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService) (*ContainerServiceResponse, error) {
+func (client *containerServicesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService) (*ContainerServicePollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, containerServiceName, parameters)
 	if err != nil {
 		return nil, err
@@ -99,21 +100,27 @@ func (client *containerServicesOperations) createOrUpdateCreateRequest(resourceG
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *containerServicesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ContainerServiceResponse, error) {
+func (client *containerServicesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ContainerServicePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := ContainerServiceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ContainerService)
+	return &ContainerServicePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *containerServicesOperations) createOrUpdateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Delete - Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-func (client *containerServicesOperations) BeginDelete(ctx context.Context, resourceGroupName string, containerServiceName string) (*HTTPResponse, error) {
+func (client *containerServicesOperations) BeginDelete(ctx context.Context, resourceGroupName string, containerServiceName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, containerServiceName)
 	if err != nil {
 		return nil, err
@@ -171,16 +178,23 @@ func (client *containerServicesOperations) deleteCreateRequest(resourceGroupName
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *containerServicesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *containerServicesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
 func (client *containerServicesOperations) deleteHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Get - Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
@@ -228,7 +242,14 @@ func (client *containerServicesOperations) getHandleResponse(resp *azcore.Respon
 
 // getHandleError handles the Get error response.
 func (client *containerServicesOperations) getHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // List - Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
@@ -280,7 +301,14 @@ func (client *containerServicesOperations) listHandleResponse(resp *azcore.Respo
 
 // listHandleError handles the List error response.
 func (client *containerServicesOperations) listHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListByResourceGroup - Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
@@ -333,5 +361,12 @@ func (client *containerServicesOperations) listByResourceGroupHandleResponse(res
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *containerServicesOperations) listByResourceGroupHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

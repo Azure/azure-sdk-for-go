@@ -18,11 +18,11 @@ import (
 // FirewallPoliciesOperations contains the methods for the FirewallPolicies group.
 type FirewallPoliciesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates the specified Firewall Policy.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters FirewallPolicy) (*FirewallPolicyResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters FirewallPolicy) (*FirewallPolicyPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (FirewallPolicyPoller, error)
 	// BeginDelete - Deletes the specified Firewall Policy.
-	BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified Firewall Policy.
@@ -40,7 +40,7 @@ type firewallPoliciesOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates the specified Firewall Policy.
-func (client *firewallPoliciesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters FirewallPolicy) (*FirewallPolicyResponse, error) {
+func (client *firewallPoliciesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters FirewallPolicy) (*FirewallPolicyPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, firewallPolicyName, parameters)
 	if err != nil {
 		return nil, err
@@ -98,12 +98,11 @@ func (client *firewallPoliciesOperations) createOrUpdateCreateRequest(resourceGr
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *firewallPoliciesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*FirewallPolicyResponse, error) {
+func (client *firewallPoliciesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*FirewallPolicyPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := FirewallPolicyResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FirewallPolicy)
+	return &FirewallPolicyPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -116,7 +115,7 @@ func (client *firewallPoliciesOperations) createOrUpdateHandleError(resp *azcore
 }
 
 // Delete - Deletes the specified Firewall Policy.
-func (client *firewallPoliciesOperations) BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string) (*HTTPResponse, error) {
+func (client *firewallPoliciesOperations) BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, firewallPolicyName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *firewallPoliciesOperations) deleteCreateRequest(resourceGroupName 
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *firewallPoliciesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *firewallPoliciesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

@@ -8,7 +8,9 @@ package armcompute
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -18,17 +20,17 @@ import (
 // VirtualMachineScaleSetRollingUpgradesOperations contains the methods for the VirtualMachineScaleSetRollingUpgrades group.
 type VirtualMachineScaleSetRollingUpgradesOperations interface {
 	// BeginCancel - Cancels the current virtual machine scale set rolling upgrade.
-	BeginCancel(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPResponse, error)
+	BeginCancel(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPPollerResponse, error)
 	// ResumeCancel - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCancel(token string) (HTTPPoller, error)
 	// GetLatest - Gets the status of the latest virtual machine scale set rolling upgrade.
 	GetLatest(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*RollingUpgradeStatusInfoResponse, error)
 	// BeginStartExtensionUpgrade - Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest available extension version. Instances which are already running the latest extension versions are not affected.
-	BeginStartExtensionUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPResponse, error)
+	BeginStartExtensionUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPPollerResponse, error)
 	// ResumeStartExtensionUpgrade - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeStartExtensionUpgrade(token string) (HTTPPoller, error)
 	// BeginStartOSUpgrade - Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image OS version. Instances which are already running the latest available OS version are not affected.
-	BeginStartOSUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPResponse, error)
+	BeginStartOSUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPPollerResponse, error)
 	// ResumeStartOSUpgrade - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeStartOSUpgrade(token string) (HTTPPoller, error)
 }
@@ -40,7 +42,7 @@ type virtualMachineScaleSetRollingUpgradesOperations struct {
 }
 
 // Cancel - Cancels the current virtual machine scale set rolling upgrade.
-func (client *virtualMachineScaleSetRollingUpgradesOperations) BeginCancel(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPResponse, error) {
+func (client *virtualMachineScaleSetRollingUpgradesOperations) BeginCancel(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPPollerResponse, error) {
 	req, err := client.cancelCreateRequest(resourceGroupName, vmScaleSetName)
 	if err != nil {
 		return nil, err
@@ -98,16 +100,23 @@ func (client *virtualMachineScaleSetRollingUpgradesOperations) cancelCreateReque
 }
 
 // cancelHandleResponse handles the Cancel response.
-func (client *virtualMachineScaleSetRollingUpgradesOperations) cancelHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *virtualMachineScaleSetRollingUpgradesOperations) cancelHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.cancelHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // cancelHandleError handles the Cancel error response.
 func (client *virtualMachineScaleSetRollingUpgradesOperations) cancelHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // GetLatest - Gets the status of the latest virtual machine scale set rolling upgrade.
@@ -155,11 +164,18 @@ func (client *virtualMachineScaleSetRollingUpgradesOperations) getLatestHandleRe
 
 // getLatestHandleError handles the GetLatest error response.
 func (client *virtualMachineScaleSetRollingUpgradesOperations) getLatestHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // StartExtensionUpgrade - Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest available extension version. Instances which are already running the latest extension versions are not affected.
-func (client *virtualMachineScaleSetRollingUpgradesOperations) BeginStartExtensionUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPResponse, error) {
+func (client *virtualMachineScaleSetRollingUpgradesOperations) BeginStartExtensionUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPPollerResponse, error) {
 	req, err := client.startExtensionUpgradeCreateRequest(resourceGroupName, vmScaleSetName)
 	if err != nil {
 		return nil, err
@@ -217,20 +233,27 @@ func (client *virtualMachineScaleSetRollingUpgradesOperations) startExtensionUpg
 }
 
 // startExtensionUpgradeHandleResponse handles the StartExtensionUpgrade response.
-func (client *virtualMachineScaleSetRollingUpgradesOperations) startExtensionUpgradeHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *virtualMachineScaleSetRollingUpgradesOperations) startExtensionUpgradeHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.startExtensionUpgradeHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // startExtensionUpgradeHandleError handles the StartExtensionUpgrade error response.
 func (client *virtualMachineScaleSetRollingUpgradesOperations) startExtensionUpgradeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // StartOSUpgrade - Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image OS version. Instances which are already running the latest available OS version are not affected.
-func (client *virtualMachineScaleSetRollingUpgradesOperations) BeginStartOSUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPResponse, error) {
+func (client *virtualMachineScaleSetRollingUpgradesOperations) BeginStartOSUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPPollerResponse, error) {
 	req, err := client.startOSUpgradeCreateRequest(resourceGroupName, vmScaleSetName)
 	if err != nil {
 		return nil, err
@@ -288,14 +311,21 @@ func (client *virtualMachineScaleSetRollingUpgradesOperations) startOSUpgradeCre
 }
 
 // startOSUpgradeHandleResponse handles the StartOSUpgrade response.
-func (client *virtualMachineScaleSetRollingUpgradesOperations) startOSUpgradeHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *virtualMachineScaleSetRollingUpgradesOperations) startOSUpgradeHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.startOSUpgradeHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // startOSUpgradeHandleError handles the StartOSUpgrade error response.
 func (client *virtualMachineScaleSetRollingUpgradesOperations) startOSUpgradeHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

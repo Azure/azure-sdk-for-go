@@ -17,7 +17,7 @@ import (
 // VpnSitesConfigurationOperations contains the methods for the VpnSitesConfiguration group.
 type VpnSitesConfigurationOperations interface {
 	// BeginDownload - Gives the sas-url to download the configurations for vpn-sites in a resource group.
-	BeginDownload(ctx context.Context, resourceGroupName string, virtualWanName string, request GetVpnSitesConfigurationRequest) (*HTTPResponse, error)
+	BeginDownload(ctx context.Context, resourceGroupName string, virtualWanName string, request GetVpnSitesConfigurationRequest) (*HTTPPollerResponse, error)
 	// ResumeDownload - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDownload(token string) (HTTPPoller, error)
 }
@@ -29,7 +29,7 @@ type vpnSitesConfigurationOperations struct {
 }
 
 // Download - Gives the sas-url to download the configurations for vpn-sites in a resource group.
-func (client *vpnSitesConfigurationOperations) BeginDownload(ctx context.Context, resourceGroupName string, virtualWanName string, request GetVpnSitesConfigurationRequest) (*HTTPResponse, error) {
+func (client *vpnSitesConfigurationOperations) BeginDownload(ctx context.Context, resourceGroupName string, virtualWanName string, request GetVpnSitesConfigurationRequest) (*HTTPPollerResponse, error) {
 	req, err := client.downloadCreateRequest(resourceGroupName, virtualWanName, request)
 	if err != nil {
 		return nil, err
@@ -87,11 +87,11 @@ func (client *vpnSitesConfigurationOperations) downloadCreateRequest(resourceGro
 }
 
 // downloadHandleResponse handles the Download response.
-func (client *vpnSitesConfigurationOperations) downloadHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *vpnSitesConfigurationOperations) downloadHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.downloadHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // downloadHandleError handles the Download error response.

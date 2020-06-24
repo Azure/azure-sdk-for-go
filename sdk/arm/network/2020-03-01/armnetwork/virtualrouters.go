@@ -18,11 +18,11 @@ import (
 // VirtualRoutersOperations contains the methods for the VirtualRouters group.
 type VirtualRoutersOperations interface {
 	// BeginCreateOrUpdate - Creates or updates the specified Virtual Router.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualRouterName string, parameters VirtualRouter) (*VirtualRouterResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualRouterName string, parameters VirtualRouter) (*VirtualRouterPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VirtualRouterPoller, error)
 	// BeginDelete - Deletes the specified Virtual Router.
-	BeginDelete(ctx context.Context, resourceGroupName string, virtualRouterName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, virtualRouterName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified Virtual Router.
@@ -40,7 +40,7 @@ type virtualRoutersOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates the specified Virtual Router.
-func (client *virtualRoutersOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualRouterName string, parameters VirtualRouter) (*VirtualRouterResponse, error) {
+func (client *virtualRoutersOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualRouterName string, parameters VirtualRouter) (*VirtualRouterPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, virtualRouterName, parameters)
 	if err != nil {
 		return nil, err
@@ -98,12 +98,11 @@ func (client *virtualRoutersOperations) createOrUpdateCreateRequest(resourceGrou
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *virtualRoutersOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualRouterResponse, error) {
+func (client *virtualRoutersOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualRouterPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := VirtualRouterResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualRouter)
+	return &VirtualRouterPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -116,7 +115,7 @@ func (client *virtualRoutersOperations) createOrUpdateHandleError(resp *azcore.R
 }
 
 // Delete - Deletes the specified Virtual Router.
-func (client *virtualRoutersOperations) BeginDelete(ctx context.Context, resourceGroupName string, virtualRouterName string) (*HTTPResponse, error) {
+func (client *virtualRoutersOperations) BeginDelete(ctx context.Context, resourceGroupName string, virtualRouterName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, virtualRouterName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *virtualRoutersOperations) deleteCreateRequest(resourceGroupName st
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *virtualRoutersOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *virtualRoutersOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

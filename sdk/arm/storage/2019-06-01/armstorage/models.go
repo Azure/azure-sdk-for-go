@@ -227,16 +227,23 @@ type BlobRestoreStatus struct {
 	Status *BlobRestoreProgressStatus `json:"status,omitempty"`
 }
 
+// BlobRestoreStatusPollerResponse is the response envelope for operations that asynchronously return a BlobRestoreStatus
+// type.
+type BlobRestoreStatusPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (*BlobRestoreStatusResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller BlobRestoreStatusPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // BlobRestoreStatusResponse is the response envelope for operations that return a BlobRestoreStatus type.
 type BlobRestoreStatusResponse struct {
 	// Blob restore status.
 	BlobRestoreStatus *BlobRestoreStatus
-
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*BlobRestoreStatusResponse, error)
-
-	// Poller contains an initialized poller
-	Poller BlobRestoreStatusPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -934,12 +941,12 @@ func (g *GeoReplicationStats) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// HTTPResponse contains the HTTP response from the call to the service endpoint
-type HTTPResponse struct {
+// HTTPPollerResponse contains the asynchronous HTTP response from the call to the service endpoint.
+type HTTPPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
 	PollUntilDone func(ctx context.Context, frequency time.Duration) (*http.Response, error)
 
-	// Poller contains an initialized poller
+	// Poller contains an initialized poller.
 	Poller HTTPPoller
 
 	// RawResponse contains the underlying HTTP response.
@@ -1940,6 +1947,18 @@ type StorageAccountMicrosoftEndpoints struct {
 	Web *string `json:"web,omitempty"`
 }
 
+// StorageAccountPollerResponse is the response envelope for operations that asynchronously return a StorageAccount type.
+type StorageAccountPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (*StorageAccountResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller StorageAccountPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // Properties of the storage account.
 type StorageAccountProperties struct {
 	// Required for storage accounts where kind = BlobStorage. The access tier used for billing.
@@ -2113,12 +2132,6 @@ type StorageAccountRegenerateKeyParameters struct {
 
 // StorageAccountResponse is the response envelope for operations that return a StorageAccount type.
 type StorageAccountResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*StorageAccountResponse, error)
-
-	// Poller contains an initialized poller
-	Poller StorageAccountPoller
-
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 

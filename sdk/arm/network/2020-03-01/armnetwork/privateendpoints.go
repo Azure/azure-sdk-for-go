@@ -18,11 +18,11 @@ import (
 // PrivateEndpointsOperations contains the methods for the PrivateEndpoints group.
 type PrivateEndpointsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates an private endpoint in the specified resource group.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointName string, parameters PrivateEndpoint) (*PrivateEndpointResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointName string, parameters PrivateEndpoint) (*PrivateEndpointPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (PrivateEndpointPoller, error)
 	// BeginDelete - Deletes the specified private endpoint.
-	BeginDelete(ctx context.Context, resourceGroupName string, privateEndpointName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, privateEndpointName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified private endpoint by resource group.
@@ -40,7 +40,7 @@ type privateEndpointsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates an private endpoint in the specified resource group.
-func (client *privateEndpointsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointName string, parameters PrivateEndpoint) (*PrivateEndpointResponse, error) {
+func (client *privateEndpointsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointName string, parameters PrivateEndpoint) (*PrivateEndpointPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, privateEndpointName, parameters)
 	if err != nil {
 		return nil, err
@@ -98,12 +98,11 @@ func (client *privateEndpointsOperations) createOrUpdateCreateRequest(resourceGr
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *privateEndpointsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*PrivateEndpointResponse, error) {
+func (client *privateEndpointsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*PrivateEndpointPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := PrivateEndpointResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PrivateEndpoint)
+	return &PrivateEndpointPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -116,7 +115,7 @@ func (client *privateEndpointsOperations) createOrUpdateHandleError(resp *azcore
 }
 
 // Delete - Deletes the specified private endpoint.
-func (client *privateEndpointsOperations) BeginDelete(ctx context.Context, resourceGroupName string, privateEndpointName string) (*HTTPResponse, error) {
+func (client *privateEndpointsOperations) BeginDelete(ctx context.Context, resourceGroupName string, privateEndpointName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, privateEndpointName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *privateEndpointsOperations) deleteCreateRequest(resourceGroupName 
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *privateEndpointsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *privateEndpointsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

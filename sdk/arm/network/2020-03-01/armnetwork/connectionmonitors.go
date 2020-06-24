@@ -17,11 +17,11 @@ import (
 // ConnectionMonitorsOperations contains the methods for the ConnectionMonitors group.
 type ConnectionMonitorsOperations interface {
 	// BeginCreateOrUpdate - Create or update a connection monitor.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor) (*ConnectionMonitorResultResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor) (*ConnectionMonitorResultPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ConnectionMonitorResultPoller, error)
 	// BeginDelete - Deletes the specified connection monitor.
-	BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets a connection monitor by name.
@@ -29,15 +29,15 @@ type ConnectionMonitorsOperations interface {
 	// List - Lists all connection monitors for the specified Network Watcher.
 	List(ctx context.Context, resourceGroupName string, networkWatcherName string) (*ConnectionMonitorListResultResponse, error)
 	// BeginQuery - Query a snapshot of the most recent connection states.
-	BeginQuery(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*ConnectionMonitorQueryResultResponse, error)
+	BeginQuery(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*ConnectionMonitorQueryResultPollerResponse, error)
 	// ResumeQuery - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeQuery(token string) (ConnectionMonitorQueryResultPoller, error)
 	// BeginStart - Starts the specified connection monitor.
-	BeginStart(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPResponse, error)
+	BeginStart(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error)
 	// ResumeStart - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeStart(token string) (HTTPPoller, error)
 	// BeginStop - Stops the specified connection monitor.
-	BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPResponse, error)
+	BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error)
 	// ResumeStop - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeStop(token string) (HTTPPoller, error)
 	// UpdateTags - Update tags of the specified connection monitor.
@@ -51,7 +51,7 @@ type connectionMonitorsOperations struct {
 }
 
 // CreateOrUpdate - Create or update a connection monitor.
-func (client *connectionMonitorsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor) (*ConnectionMonitorResultResponse, error) {
+func (client *connectionMonitorsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor) (*ConnectionMonitorResultPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
 	if err != nil {
 		return nil, err
@@ -110,12 +110,11 @@ func (client *connectionMonitorsOperations) createOrUpdateCreateRequest(resource
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *connectionMonitorsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ConnectionMonitorResultResponse, error) {
+func (client *connectionMonitorsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ConnectionMonitorResultPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := ConnectionMonitorResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ConnectionMonitorResult)
+	return &ConnectionMonitorResultPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -128,7 +127,7 @@ func (client *connectionMonitorsOperations) createOrUpdateHandleError(resp *azco
 }
 
 // Delete - Deletes the specified connection monitor.
-func (client *connectionMonitorsOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPResponse, error) {
+func (client *connectionMonitorsOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, networkWatcherName, connectionMonitorName)
 	if err != nil {
 		return nil, err
@@ -187,11 +186,11 @@ func (client *connectionMonitorsOperations) deleteCreateRequest(resourceGroupNam
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *connectionMonitorsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *connectionMonitorsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
@@ -309,7 +308,7 @@ func (client *connectionMonitorsOperations) listHandleError(resp *azcore.Respons
 }
 
 // Query - Query a snapshot of the most recent connection states.
-func (client *connectionMonitorsOperations) BeginQuery(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*ConnectionMonitorQueryResultResponse, error) {
+func (client *connectionMonitorsOperations) BeginQuery(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*ConnectionMonitorQueryResultPollerResponse, error) {
 	req, err := client.queryCreateRequest(resourceGroupName, networkWatcherName, connectionMonitorName)
 	if err != nil {
 		return nil, err
@@ -368,12 +367,11 @@ func (client *connectionMonitorsOperations) queryCreateRequest(resourceGroupName
 }
 
 // queryHandleResponse handles the Query response.
-func (client *connectionMonitorsOperations) queryHandleResponse(resp *azcore.Response) (*ConnectionMonitorQueryResultResponse, error) {
+func (client *connectionMonitorsOperations) queryHandleResponse(resp *azcore.Response) (*ConnectionMonitorQueryResultPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.queryHandleError(resp)
 	}
-	result := ConnectionMonitorQueryResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ConnectionMonitorQueryResult)
+	return &ConnectionMonitorQueryResultPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // queryHandleError handles the Query error response.
@@ -386,7 +384,7 @@ func (client *connectionMonitorsOperations) queryHandleError(resp *azcore.Respon
 }
 
 // Start - Starts the specified connection monitor.
-func (client *connectionMonitorsOperations) BeginStart(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPResponse, error) {
+func (client *connectionMonitorsOperations) BeginStart(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error) {
 	req, err := client.startCreateRequest(resourceGroupName, networkWatcherName, connectionMonitorName)
 	if err != nil {
 		return nil, err
@@ -445,11 +443,11 @@ func (client *connectionMonitorsOperations) startCreateRequest(resourceGroupName
 }
 
 // startHandleResponse handles the Start response.
-func (client *connectionMonitorsOperations) startHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *connectionMonitorsOperations) startHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.startHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // startHandleError handles the Start error response.
@@ -462,7 +460,7 @@ func (client *connectionMonitorsOperations) startHandleError(resp *azcore.Respon
 }
 
 // Stop - Stops the specified connection monitor.
-func (client *connectionMonitorsOperations) BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPResponse, error) {
+func (client *connectionMonitorsOperations) BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error) {
 	req, err := client.stopCreateRequest(resourceGroupName, networkWatcherName, connectionMonitorName)
 	if err != nil {
 		return nil, err
@@ -521,11 +519,11 @@ func (client *connectionMonitorsOperations) stopCreateRequest(resourceGroupName 
 }
 
 // stopHandleResponse handles the Stop response.
-func (client *connectionMonitorsOperations) stopHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *connectionMonitorsOperations) stopHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.stopHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // stopHandleError handles the Stop error response.

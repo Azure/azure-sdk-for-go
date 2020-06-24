@@ -20,7 +20,7 @@ type WebApplicationFirewallPoliciesOperations interface {
 	// CreateOrUpdate - Creates or update policy with specified rule set name within a resource group.
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy) (*WebApplicationFirewallPolicyResponse, error)
 	// BeginDelete - Deletes Policy.
-	BeginDelete(ctx context.Context, resourceGroupName string, policyName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, policyName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Retrieve protection policy with specified name within a resource group.
@@ -90,7 +90,7 @@ func (client *webApplicationFirewallPoliciesOperations) createOrUpdateHandleErro
 }
 
 // Delete - Deletes Policy.
-func (client *webApplicationFirewallPoliciesOperations) BeginDelete(ctx context.Context, resourceGroupName string, policyName string) (*HTTPResponse, error) {
+func (client *webApplicationFirewallPoliciesOperations) BeginDelete(ctx context.Context, resourceGroupName string, policyName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, policyName)
 	if err != nil {
 		return nil, err
@@ -148,11 +148,11 @@ func (client *webApplicationFirewallPoliciesOperations) deleteCreateRequest(reso
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *webApplicationFirewallPoliciesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *webApplicationFirewallPoliciesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

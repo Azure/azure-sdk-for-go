@@ -18,11 +18,11 @@ import (
 // ExpressRoutePortsOperations contains the methods for the ExpressRoutePorts group.
 type ExpressRoutePortsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates the specified ExpressRoutePort resource.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters ExpressRoutePort) (*ExpressRoutePortResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters ExpressRoutePort) (*ExpressRoutePortPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ExpressRoutePortPoller, error)
 	// BeginDelete - Deletes the specified ExpressRoutePort resource.
-	BeginDelete(ctx context.Context, resourceGroupName string, expressRoutePortName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, expressRoutePortName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Retrieves the requested ExpressRoutePort resource.
@@ -42,7 +42,7 @@ type expressRoutePortsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates the specified ExpressRoutePort resource.
-func (client *expressRoutePortsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters ExpressRoutePort) (*ExpressRoutePortResponse, error) {
+func (client *expressRoutePortsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, expressRoutePortName string, parameters ExpressRoutePort) (*ExpressRoutePortPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, expressRoutePortName, parameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *expressRoutePortsOperations) createOrUpdateCreateRequest(resourceG
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *expressRoutePortsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRoutePortResponse, error) {
+func (client *expressRoutePortsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRoutePortPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := ExpressRoutePortResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ExpressRoutePort)
+	return &ExpressRoutePortPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *expressRoutePortsOperations) createOrUpdateHandleError(resp *azcor
 }
 
 // Delete - Deletes the specified ExpressRoutePort resource.
-func (client *expressRoutePortsOperations) BeginDelete(ctx context.Context, resourceGroupName string, expressRoutePortName string) (*HTTPResponse, error) {
+func (client *expressRoutePortsOperations) BeginDelete(ctx context.Context, resourceGroupName string, expressRoutePortName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, expressRoutePortName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *expressRoutePortsOperations) deleteCreateRequest(resourceGroupName
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *expressRoutePortsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *expressRoutePortsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

@@ -18,11 +18,11 @@ import (
 // AzureFirewallsOperations contains the methods for the AzureFirewalls group.
 type AzureFirewallsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates the specified Azure Firewall.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters AzureFirewall) (*AzureFirewallResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters AzureFirewall) (*AzureFirewallPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (AzureFirewallPoller, error)
 	// BeginDelete - Deletes the specified Azure Firewall.
-	BeginDelete(ctx context.Context, resourceGroupName string, azureFirewallName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, azureFirewallName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified Azure Firewall.
@@ -32,7 +32,7 @@ type AzureFirewallsOperations interface {
 	// ListAll - Gets all the Azure Firewalls in a subscription.
 	ListAll() (AzureFirewallListResultPager, error)
 	// BeginUpdateTags - Updates tags of an Azure Firewall resource.
-	BeginUpdateTags(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters TagsObject) (*AzureFirewallResponse, error)
+	BeginUpdateTags(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters TagsObject) (*AzureFirewallPollerResponse, error)
 	// ResumeUpdateTags - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdateTags(token string) (AzureFirewallPoller, error)
 }
@@ -44,7 +44,7 @@ type azureFirewallsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates the specified Azure Firewall.
-func (client *azureFirewallsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters AzureFirewall) (*AzureFirewallResponse, error) {
+func (client *azureFirewallsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters AzureFirewall) (*AzureFirewallPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, azureFirewallName, parameters)
 	if err != nil {
 		return nil, err
@@ -102,12 +102,11 @@ func (client *azureFirewallsOperations) createOrUpdateCreateRequest(resourceGrou
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *azureFirewallsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*AzureFirewallResponse, error) {
+func (client *azureFirewallsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*AzureFirewallPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := AzureFirewallResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.AzureFirewall)
+	return &AzureFirewallPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -120,7 +119,7 @@ func (client *azureFirewallsOperations) createOrUpdateHandleError(resp *azcore.R
 }
 
 // Delete - Deletes the specified Azure Firewall.
-func (client *azureFirewallsOperations) BeginDelete(ctx context.Context, resourceGroupName string, azureFirewallName string) (*HTTPResponse, error) {
+func (client *azureFirewallsOperations) BeginDelete(ctx context.Context, resourceGroupName string, azureFirewallName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, azureFirewallName)
 	if err != nil {
 		return nil, err
@@ -178,11 +177,11 @@ func (client *azureFirewallsOperations) deleteCreateRequest(resourceGroupName st
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *azureFirewallsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *azureFirewallsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
@@ -360,7 +359,7 @@ func (client *azureFirewallsOperations) listAllHandleError(resp *azcore.Response
 }
 
 // UpdateTags - Updates tags of an Azure Firewall resource.
-func (client *azureFirewallsOperations) BeginUpdateTags(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters TagsObject) (*AzureFirewallResponse, error) {
+func (client *azureFirewallsOperations) BeginUpdateTags(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters TagsObject) (*AzureFirewallPollerResponse, error) {
 	req, err := client.updateTagsCreateRequest(resourceGroupName, azureFirewallName, parameters)
 	if err != nil {
 		return nil, err
@@ -418,12 +417,11 @@ func (client *azureFirewallsOperations) updateTagsCreateRequest(resourceGroupNam
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *azureFirewallsOperations) updateTagsHandleResponse(resp *azcore.Response) (*AzureFirewallResponse, error) {
+func (client *azureFirewallsOperations) updateTagsHandleResponse(resp *azcore.Response) (*AzureFirewallPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.updateTagsHandleError(resp)
 	}
-	result := AzureFirewallResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.AzureFirewall)
+	return &AzureFirewallPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.

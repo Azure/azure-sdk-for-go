@@ -18,11 +18,11 @@ import (
 // GalleryImagesOperations contains the methods for the GalleryImages group.
 type GalleryImagesOperations interface {
 	// BeginCreateOrUpdate - Create or update a gallery Image Definition.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImage) (*GalleryImageResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImage) (*GalleryImagePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (GalleryImagePoller, error)
 	// BeginDelete - Delete a gallery image.
-	BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Retrieves information about a gallery Image Definition.
@@ -30,7 +30,7 @@ type GalleryImagesOperations interface {
 	// ListByGallery - List gallery Image Definitions in a gallery.
 	ListByGallery(resourceGroupName string, galleryName string) (GalleryImageListPager, error)
 	// BeginUpdate - Update a gallery Image Definition.
-	BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImageUpdate) (*GalleryImageResponse, error)
+	BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImageUpdate) (*GalleryImagePollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (GalleryImagePoller, error)
 }
@@ -42,7 +42,7 @@ type galleryImagesOperations struct {
 }
 
 // CreateOrUpdate - Create or update a gallery Image Definition.
-func (client *galleryImagesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImage) (*GalleryImageResponse, error) {
+func (client *galleryImagesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImage) (*GalleryImagePollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, galleryName, galleryImageName, galleryImage)
 	if err != nil {
 		return nil, err
@@ -101,12 +101,11 @@ func (client *galleryImagesOperations) createOrUpdateCreateRequest(resourceGroup
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *galleryImagesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*GalleryImageResponse, error) {
+func (client *galleryImagesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*GalleryImagePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := GalleryImageResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GalleryImage)
+	return &GalleryImagePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -119,7 +118,7 @@ func (client *galleryImagesOperations) createOrUpdateHandleError(resp *azcore.Re
 }
 
 // Delete - Delete a gallery image.
-func (client *galleryImagesOperations) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string) (*HTTPResponse, error) {
+func (client *galleryImagesOperations) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, galleryName, galleryImageName)
 	if err != nil {
 		return nil, err
@@ -178,11 +177,11 @@ func (client *galleryImagesOperations) deleteCreateRequest(resourceGroupName str
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *galleryImagesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *galleryImagesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
@@ -306,7 +305,7 @@ func (client *galleryImagesOperations) listByGalleryHandleError(resp *azcore.Res
 }
 
 // Update - Update a gallery Image Definition.
-func (client *galleryImagesOperations) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImageUpdate) (*GalleryImageResponse, error) {
+func (client *galleryImagesOperations) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImageUpdate) (*GalleryImagePollerResponse, error) {
 	req, err := client.updateCreateRequest(resourceGroupName, galleryName, galleryImageName, galleryImage)
 	if err != nil {
 		return nil, err
@@ -365,12 +364,11 @@ func (client *galleryImagesOperations) updateCreateRequest(resourceGroupName str
 }
 
 // updateHandleResponse handles the Update response.
-func (client *galleryImagesOperations) updateHandleResponse(resp *azcore.Response) (*GalleryImageResponse, error) {
+func (client *galleryImagesOperations) updateHandleResponse(resp *azcore.Response) (*GalleryImagePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
 		return nil, client.updateHandleError(resp)
 	}
-	result := GalleryImageResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.GalleryImage)
+	return &GalleryImagePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // updateHandleError handles the Update error response.

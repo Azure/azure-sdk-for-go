@@ -18,11 +18,11 @@ import (
 // SecurityPartnerProvidersOperations contains the methods for the SecurityPartnerProviders group.
 type SecurityPartnerProvidersOperations interface {
 	// BeginCreateOrUpdate - Creates or updates the specified Security Partner Provider.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, parameters SecurityPartnerProvider) (*SecurityPartnerProviderResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, parameters SecurityPartnerProvider) (*SecurityPartnerProviderPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (SecurityPartnerProviderPoller, error)
 	// BeginDelete - Deletes the specified Security Partner Provider.
-	BeginDelete(ctx context.Context, resourceGroupName string, securityPartnerProviderName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, securityPartnerProviderName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified Security Partner Provider.
@@ -42,7 +42,7 @@ type securityPartnerProvidersOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates the specified Security Partner Provider.
-func (client *securityPartnerProvidersOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, parameters SecurityPartnerProvider) (*SecurityPartnerProviderResponse, error) {
+func (client *securityPartnerProvidersOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, parameters SecurityPartnerProvider) (*SecurityPartnerProviderPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, securityPartnerProviderName, parameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *securityPartnerProvidersOperations) createOrUpdateCreateRequest(re
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *securityPartnerProvidersOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*SecurityPartnerProviderResponse, error) {
+func (client *securityPartnerProvidersOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*SecurityPartnerProviderPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := SecurityPartnerProviderResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.SecurityPartnerProvider)
+	return &SecurityPartnerProviderPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *securityPartnerProvidersOperations) createOrUpdateHandleError(resp
 }
 
 // Delete - Deletes the specified Security Partner Provider.
-func (client *securityPartnerProvidersOperations) BeginDelete(ctx context.Context, resourceGroupName string, securityPartnerProviderName string) (*HTTPResponse, error) {
+func (client *securityPartnerProvidersOperations) BeginDelete(ctx context.Context, resourceGroupName string, securityPartnerProviderName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, securityPartnerProviderName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *securityPartnerProvidersOperations) deleteCreateRequest(resourceGr
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *securityPartnerProvidersOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *securityPartnerProvidersOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

@@ -18,17 +18,17 @@ import (
 // NetworkInterfacesOperations contains the methods for the NetworkInterfaces group.
 type NetworkInterfacesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a network interface.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters NetworkInterface) (*NetworkInterfaceResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters NetworkInterface) (*NetworkInterfacePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (NetworkInterfacePoller, error)
 	// BeginDelete - Deletes the specified network interface.
-	BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets information about the specified network interface.
 	Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, networkInterfacesGetOptions *NetworkInterfacesGetOptions) (*NetworkInterfaceResponse, error)
 	// BeginGetEffectiveRouteTable - Gets all route tables applied to a network interface.
-	BeginGetEffectiveRouteTable(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*EffectiveRouteListResultResponse, error)
+	BeginGetEffectiveRouteTable(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*EffectiveRouteListResultPollerResponse, error)
 	// ResumeGetEffectiveRouteTable - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeGetEffectiveRouteTable(token string) (EffectiveRouteListResultPoller, error)
 	// GetVirtualMachineScaleSetIPConfiguration - Get the specified network interface ip configuration in a virtual machine scale set.
@@ -40,7 +40,7 @@ type NetworkInterfacesOperations interface {
 	// ListAll - Gets all network interfaces in a subscription.
 	ListAll() (NetworkInterfaceListResultPager, error)
 	// BeginListEffectiveNetworkSecurityGroups - Gets all network security groups applied to a network interface.
-	BeginListEffectiveNetworkSecurityGroups(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*EffectiveNetworkSecurityGroupListResultResponse, error)
+	BeginListEffectiveNetworkSecurityGroups(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*EffectiveNetworkSecurityGroupListResultPollerResponse, error)
 	// ResumeListEffectiveNetworkSecurityGroups - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeListEffectiveNetworkSecurityGroups(token string) (EffectiveNetworkSecurityGroupListResultPoller, error)
 	// ListVirtualMachineScaleSetIPConfigurations - Get the specified network interface ip configuration in a virtual machine scale set.
@@ -60,7 +60,7 @@ type networkInterfacesOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a network interface.
-func (client *networkInterfacesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters NetworkInterface) (*NetworkInterfaceResponse, error) {
+func (client *networkInterfacesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters NetworkInterface) (*NetworkInterfacePollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, networkInterfaceName, parameters)
 	if err != nil {
 		return nil, err
@@ -118,12 +118,11 @@ func (client *networkInterfacesOperations) createOrUpdateCreateRequest(resourceG
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *networkInterfacesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*NetworkInterfaceResponse, error) {
+func (client *networkInterfacesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*NetworkInterfacePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := NetworkInterfaceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkInterface)
+	return &NetworkInterfacePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -136,7 +135,7 @@ func (client *networkInterfacesOperations) createOrUpdateHandleError(resp *azcor
 }
 
 // Delete - Deletes the specified network interface.
-func (client *networkInterfacesOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*HTTPResponse, error) {
+func (client *networkInterfacesOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, networkInterfaceName)
 	if err != nil {
 		return nil, err
@@ -194,11 +193,11 @@ func (client *networkInterfacesOperations) deleteCreateRequest(resourceGroupName
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *networkInterfacesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *networkInterfacesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
@@ -266,7 +265,7 @@ func (client *networkInterfacesOperations) getHandleError(resp *azcore.Response)
 }
 
 // GetEffectiveRouteTable - Gets all route tables applied to a network interface.
-func (client *networkInterfacesOperations) BeginGetEffectiveRouteTable(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*EffectiveRouteListResultResponse, error) {
+func (client *networkInterfacesOperations) BeginGetEffectiveRouteTable(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*EffectiveRouteListResultPollerResponse, error) {
 	req, err := client.getEffectiveRouteTableCreateRequest(resourceGroupName, networkInterfaceName)
 	if err != nil {
 		return nil, err
@@ -324,12 +323,11 @@ func (client *networkInterfacesOperations) getEffectiveRouteTableCreateRequest(r
 }
 
 // getEffectiveRouteTableHandleResponse handles the GetEffectiveRouteTable response.
-func (client *networkInterfacesOperations) getEffectiveRouteTableHandleResponse(resp *azcore.Response) (*EffectiveRouteListResultResponse, error) {
+func (client *networkInterfacesOperations) getEffectiveRouteTableHandleResponse(resp *azcore.Response) (*EffectiveRouteListResultPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.getEffectiveRouteTableHandleError(resp)
 	}
-	result := EffectiveRouteListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.EffectiveRouteListResult)
+	return &EffectiveRouteListResultPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // getEffectiveRouteTableHandleError handles the GetEffectiveRouteTable error response.
@@ -570,7 +568,7 @@ func (client *networkInterfacesOperations) listAllHandleError(resp *azcore.Respo
 }
 
 // ListEffectiveNetworkSecurityGroups - Gets all network security groups applied to a network interface.
-func (client *networkInterfacesOperations) BeginListEffectiveNetworkSecurityGroups(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*EffectiveNetworkSecurityGroupListResultResponse, error) {
+func (client *networkInterfacesOperations) BeginListEffectiveNetworkSecurityGroups(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*EffectiveNetworkSecurityGroupListResultPollerResponse, error) {
 	req, err := client.listEffectiveNetworkSecurityGroupsCreateRequest(resourceGroupName, networkInterfaceName)
 	if err != nil {
 		return nil, err
@@ -628,12 +626,11 @@ func (client *networkInterfacesOperations) listEffectiveNetworkSecurityGroupsCre
 }
 
 // listEffectiveNetworkSecurityGroupsHandleResponse handles the ListEffectiveNetworkSecurityGroups response.
-func (client *networkInterfacesOperations) listEffectiveNetworkSecurityGroupsHandleResponse(resp *azcore.Response) (*EffectiveNetworkSecurityGroupListResultResponse, error) {
+func (client *networkInterfacesOperations) listEffectiveNetworkSecurityGroupsHandleResponse(resp *azcore.Response) (*EffectiveNetworkSecurityGroupListResultPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.listEffectiveNetworkSecurityGroupsHandleError(resp)
 	}
-	result := EffectiveNetworkSecurityGroupListResultResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.EffectiveNetworkSecurityGroupListResult)
+	return &EffectiveNetworkSecurityGroupListResultPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // listEffectiveNetworkSecurityGroupsHandleError handles the ListEffectiveNetworkSecurityGroups error response.

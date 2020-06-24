@@ -327,6 +327,18 @@ type EhNamespaceListResultResponse struct {
 	RawResponse *http.Response
 }
 
+// EhNamespacePollerResponse is the response envelope for operations that asynchronously return a EhNamespace type.
+type EhNamespacePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (*EhNamespaceResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller EhNamespacePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // Namespace properties supplied for create namespace operation.
 type EhNamespaceProperties struct {
 	// The time the Namespace was created.
@@ -390,12 +402,6 @@ func (e *EhNamespaceProperties) UnmarshalJSON(data []byte) error {
 type EhNamespaceResponse struct {
 	// Single Namespace item in List or Get Operation
 	EhNamespace *EhNamespace
-
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*EhNamespaceResponse, error)
-
-	// Poller contains an initialized poller
-	Poller EhNamespacePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -523,12 +529,12 @@ type EventhubResponse struct {
 	RawResponse *http.Response
 }
 
-// HTTPResponse contains the HTTP response from the call to the service endpoint
-type HTTPResponse struct {
+// HTTPPollerResponse contains the asynchronous HTTP response from the call to the service endpoint.
+type HTTPPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
 	PollUntilDone func(ctx context.Context, frequency time.Duration) (*http.Response, error)
 
-	// Poller contains an initialized poller
+	// Poller contains an initialized poller.
 	Poller HTTPPoller
 
 	// RawResponse contains the underlying HTTP response.

@@ -18,11 +18,11 @@ import (
 // GalleriesOperations contains the methods for the Galleries group.
 type GalleriesOperations interface {
 	// BeginCreateOrUpdate - Create or update a Shared Image Gallery.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery) (*GalleryResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery) (*GalleryPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (GalleryPoller, error)
 	// BeginDelete - Delete a Shared Image Gallery.
-	BeginDelete(ctx context.Context, resourceGroupName string, galleryName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, galleryName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Retrieves information about a Shared Image Gallery.
@@ -32,7 +32,7 @@ type GalleriesOperations interface {
 	// ListByResourceGroup - List galleries under a resource group.
 	ListByResourceGroup(resourceGroupName string) (GalleryListPager, error)
 	// BeginUpdate - Update a Shared Image Gallery.
-	BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate) (*GalleryResponse, error)
+	BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate) (*GalleryPollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (GalleryPoller, error)
 }
@@ -44,7 +44,7 @@ type galleriesOperations struct {
 }
 
 // CreateOrUpdate - Create or update a Shared Image Gallery.
-func (client *galleriesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery) (*GalleryResponse, error) {
+func (client *galleriesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery) (*GalleryPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, galleryName, gallery)
 	if err != nil {
 		return nil, err
@@ -102,12 +102,11 @@ func (client *galleriesOperations) createOrUpdateCreateRequest(resourceGroupName
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *galleriesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*GalleryResponse, error) {
+func (client *galleriesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*GalleryPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := GalleryResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Gallery)
+	return &GalleryPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -120,7 +119,7 @@ func (client *galleriesOperations) createOrUpdateHandleError(resp *azcore.Respon
 }
 
 // Delete - Delete a Shared Image Gallery.
-func (client *galleriesOperations) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string) (*HTTPResponse, error) {
+func (client *galleriesOperations) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, galleryName)
 	if err != nil {
 		return nil, err
@@ -178,11 +177,11 @@ func (client *galleriesOperations) deleteCreateRequest(resourceGroupName string,
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *galleriesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *galleriesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
@@ -360,7 +359,7 @@ func (client *galleriesOperations) listByResourceGroupHandleError(resp *azcore.R
 }
 
 // Update - Update a Shared Image Gallery.
-func (client *galleriesOperations) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate) (*GalleryResponse, error) {
+func (client *galleriesOperations) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate) (*GalleryPollerResponse, error) {
 	req, err := client.updateCreateRequest(resourceGroupName, galleryName, gallery)
 	if err != nil {
 		return nil, err
@@ -418,12 +417,11 @@ func (client *galleriesOperations) updateCreateRequest(resourceGroupName string,
 }
 
 // updateHandleResponse handles the Update response.
-func (client *galleriesOperations) updateHandleResponse(resp *azcore.Response) (*GalleryResponse, error) {
+func (client *galleriesOperations) updateHandleResponse(resp *azcore.Response) (*GalleryPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
 		return nil, client.updateHandleError(resp)
 	}
-	result := GalleryResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.Gallery)
+	return &GalleryPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // updateHandleError handles the Update error response.

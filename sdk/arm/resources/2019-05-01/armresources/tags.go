@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -79,7 +80,14 @@ func (client *tagsOperations) createOrUpdateHandleResponse(resp *azcore.Response
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *tagsOperations) createOrUpdateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // CreateOrUpdateValue - Creates a tag value. The name of the tag must already exist.
@@ -127,7 +135,14 @@ func (client *tagsOperations) createOrUpdateValueHandleResponse(resp *azcore.Res
 
 // createOrUpdateValueHandleError handles the CreateOrUpdateValue error response.
 func (client *tagsOperations) createOrUpdateValueHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Delete - You must remove all values from a resource tag before you can delete it.
@@ -173,7 +188,14 @@ func (client *tagsOperations) deleteHandleResponse(resp *azcore.Response) (*http
 
 // deleteHandleError handles the Delete error response.
 func (client *tagsOperations) deleteHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // DeleteValue - Deletes a tag value.
@@ -220,7 +242,14 @@ func (client *tagsOperations) deleteValueHandleResponse(resp *azcore.Response) (
 
 // deleteValueHandleError handles the DeleteValue error response.
 func (client *tagsOperations) deleteValueHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // List - Gets the names and values of all resource tags that are defined in a subscription.
@@ -272,5 +301,12 @@ func (client *tagsOperations) listHandleResponse(resp *azcore.Response) (*TagsLi
 
 // listHandleError handles the List error response.
 func (client *tagsOperations) listHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

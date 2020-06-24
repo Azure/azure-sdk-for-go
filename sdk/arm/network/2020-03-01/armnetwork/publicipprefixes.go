@@ -18,11 +18,11 @@ import (
 // PublicIPPrefixesOperations contains the methods for the PublicIPPrefixes group.
 type PublicIPPrefixesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a static or dynamic public IP prefix.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPPrefixName string, parameters PublicIPPrefix) (*PublicIPPrefixResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPPrefixName string, parameters PublicIPPrefix) (*PublicIPPrefixPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (PublicIPPrefixPoller, error)
 	// BeginDelete - Deletes the specified public IP prefix.
-	BeginDelete(ctx context.Context, resourceGroupName string, publicIPPrefixName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, publicIPPrefixName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified public IP prefix in a specified resource group.
@@ -42,7 +42,7 @@ type publicIPPrefixesOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a static or dynamic public IP prefix.
-func (client *publicIPPrefixesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPPrefixName string, parameters PublicIPPrefix) (*PublicIPPrefixResponse, error) {
+func (client *publicIPPrefixesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPPrefixName string, parameters PublicIPPrefix) (*PublicIPPrefixPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, publicIPPrefixName, parameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *publicIPPrefixesOperations) createOrUpdateCreateRequest(resourceGr
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *publicIPPrefixesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*PublicIPPrefixResponse, error) {
+func (client *publicIPPrefixesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*PublicIPPrefixPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := PublicIPPrefixResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PublicIPPrefix)
+	return &PublicIPPrefixPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *publicIPPrefixesOperations) createOrUpdateHandleError(resp *azcore
 }
 
 // Delete - Deletes the specified public IP prefix.
-func (client *publicIPPrefixesOperations) BeginDelete(ctx context.Context, resourceGroupName string, publicIPPrefixName string) (*HTTPResponse, error) {
+func (client *publicIPPrefixesOperations) BeginDelete(ctx context.Context, resourceGroupName string, publicIPPrefixName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, publicIPPrefixName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *publicIPPrefixesOperations) deleteCreateRequest(resourceGroupName 
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *publicIPPrefixesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *publicIPPrefixesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

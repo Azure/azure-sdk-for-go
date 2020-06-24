@@ -18,11 +18,11 @@ import (
 // LocalNetworkGatewaysOperations contains the methods for the LocalNetworkGateways group.
 type LocalNetworkGatewaysOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a local network gateway in the specified resource group.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, localNetworkGatewayName string, parameters LocalNetworkGateway) (*LocalNetworkGatewayResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, localNetworkGatewayName string, parameters LocalNetworkGateway) (*LocalNetworkGatewayPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (LocalNetworkGatewayPoller, error)
 	// BeginDelete - Deletes the specified local network gateway.
-	BeginDelete(ctx context.Context, resourceGroupName string, localNetworkGatewayName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, localNetworkGatewayName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified local network gateway in a resource group.
@@ -40,7 +40,7 @@ type localNetworkGatewaysOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a local network gateway in the specified resource group.
-func (client *localNetworkGatewaysOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, localNetworkGatewayName string, parameters LocalNetworkGateway) (*LocalNetworkGatewayResponse, error) {
+func (client *localNetworkGatewaysOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, localNetworkGatewayName string, parameters LocalNetworkGateway) (*LocalNetworkGatewayPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, localNetworkGatewayName, parameters)
 	if err != nil {
 		return nil, err
@@ -98,12 +98,11 @@ func (client *localNetworkGatewaysOperations) createOrUpdateCreateRequest(resour
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *localNetworkGatewaysOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*LocalNetworkGatewayResponse, error) {
+func (client *localNetworkGatewaysOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*LocalNetworkGatewayPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := LocalNetworkGatewayResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.LocalNetworkGateway)
+	return &LocalNetworkGatewayPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -116,7 +115,7 @@ func (client *localNetworkGatewaysOperations) createOrUpdateHandleError(resp *az
 }
 
 // Delete - Deletes the specified local network gateway.
-func (client *localNetworkGatewaysOperations) BeginDelete(ctx context.Context, resourceGroupName string, localNetworkGatewayName string) (*HTTPResponse, error) {
+func (client *localNetworkGatewaysOperations) BeginDelete(ctx context.Context, resourceGroupName string, localNetworkGatewayName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, localNetworkGatewayName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *localNetworkGatewaysOperations) deleteCreateRequest(resourceGroupN
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *localNetworkGatewaysOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *localNetworkGatewaysOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

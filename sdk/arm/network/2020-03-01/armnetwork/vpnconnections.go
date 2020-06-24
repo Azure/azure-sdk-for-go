@@ -18,11 +18,11 @@ import (
 // VpnConnectionsOperations contains the methods for the VpnConnections group.
 type VpnConnectionsOperations interface {
 	// BeginCreateOrUpdate - Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VpnConnection) (*VpnConnectionResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VpnConnection) (*VpnConnectionPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VpnConnectionPoller, error)
 	// BeginDelete - Deletes a vpn connection.
-	BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Retrieves the details of a vpn connection.
@@ -38,7 +38,7 @@ type vpnConnectionsOperations struct {
 }
 
 // CreateOrUpdate - Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-func (client *vpnConnectionsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VpnConnection) (*VpnConnectionResponse, error) {
+func (client *vpnConnectionsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VpnConnection) (*VpnConnectionPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, gatewayName, connectionName, vpnConnectionParameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *vpnConnectionsOperations) createOrUpdateCreateRequest(resourceGrou
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *vpnConnectionsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VpnConnectionResponse, error) {
+func (client *vpnConnectionsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VpnConnectionPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := VpnConnectionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VpnConnection)
+	return &VpnConnectionPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *vpnConnectionsOperations) createOrUpdateHandleError(resp *azcore.R
 }
 
 // Delete - Deletes a vpn connection.
-func (client *vpnConnectionsOperations) BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (*HTTPResponse, error) {
+func (client *vpnConnectionsOperations) BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, gatewayName, connectionName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *vpnConnectionsOperations) deleteCreateRequest(resourceGroupName st
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *vpnConnectionsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *vpnConnectionsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

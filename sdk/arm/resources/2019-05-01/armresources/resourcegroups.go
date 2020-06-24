@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -24,7 +25,7 @@ type ResourceGroupsOperations interface {
 	// CreateOrUpdate - Creates or updates a resource group.
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, parameters ResourceGroup) (*ResourceGroupResponse, error)
 	// BeginDelete - When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
-	BeginDelete(ctx context.Context, resourceGroupName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// ExportTemplate - Captures the specified resource group as a template.
@@ -86,7 +87,14 @@ func (client *resourceGroupsOperations) checkExistenceHandleResponse(resp *azcor
 
 // checkExistenceHandleError handles the CheckExistence error response.
 func (client *resourceGroupsOperations) checkExistenceHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // CreateOrUpdate - Creates or updates a resource group.
@@ -133,11 +141,18 @@ func (client *resourceGroupsOperations) createOrUpdateHandleResponse(resp *azcor
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *resourceGroupsOperations) createOrUpdateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Delete - When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
-func (client *resourceGroupsOperations) BeginDelete(ctx context.Context, resourceGroupName string) (*HTTPResponse, error) {
+func (client *resourceGroupsOperations) BeginDelete(ctx context.Context, resourceGroupName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName)
 	if err != nil {
 		return nil, err
@@ -194,16 +209,23 @@ func (client *resourceGroupsOperations) deleteCreateRequest(resourceGroupName st
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *resourceGroupsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *resourceGroupsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
 func (client *resourceGroupsOperations) deleteHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ExportTemplate - Captures the specified resource group as a template.
@@ -250,7 +272,14 @@ func (client *resourceGroupsOperations) exportTemplateHandleResponse(resp *azcor
 
 // exportTemplateHandleError handles the ExportTemplate error response.
 func (client *resourceGroupsOperations) exportTemplateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Get - Gets a resource group.
@@ -297,7 +326,14 @@ func (client *resourceGroupsOperations) getHandleResponse(resp *azcore.Response)
 
 // getHandleError handles the Get error response.
 func (client *resourceGroupsOperations) getHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // List - Gets all the resource groups for a subscription.
@@ -355,7 +391,14 @@ func (client *resourceGroupsOperations) listHandleResponse(resp *azcore.Response
 
 // listHandleError handles the List error response.
 func (client *resourceGroupsOperations) listHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Update - Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating a resource group. If a field is unspecified, the current value is retained.
@@ -402,5 +445,12 @@ func (client *resourceGroupsOperations) updateHandleResponse(resp *azcore.Respon
 
 // updateHandleError handles the Update error response.
 func (client *resourceGroupsOperations) updateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

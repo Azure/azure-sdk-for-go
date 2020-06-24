@@ -20,7 +20,7 @@ type NetworkProfilesOperations interface {
 	// CreateOrUpdate - Creates or updates a network profile.
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, networkProfileName string, parameters NetworkProfile) (*NetworkProfileResponse, error)
 	// BeginDelete - Deletes the specified network profile.
-	BeginDelete(ctx context.Context, resourceGroupName string, networkProfileName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, networkProfileName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified network profile in a specified resource group.
@@ -92,7 +92,7 @@ func (client *networkProfilesOperations) createOrUpdateHandleError(resp *azcore.
 }
 
 // Delete - Deletes the specified network profile.
-func (client *networkProfilesOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkProfileName string) (*HTTPResponse, error) {
+func (client *networkProfilesOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkProfileName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, networkProfileName)
 	if err != nil {
 		return nil, err
@@ -150,11 +150,11 @@ func (client *networkProfilesOperations) deleteCreateRequest(resourceGroupName s
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *networkProfilesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *networkProfilesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

@@ -18,11 +18,11 @@ import (
 // ApplicationSecurityGroupsOperations contains the methods for the ApplicationSecurityGroups group.
 type ApplicationSecurityGroupsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates an application security group.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, parameters ApplicationSecurityGroup) (*ApplicationSecurityGroupResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, parameters ApplicationSecurityGroup) (*ApplicationSecurityGroupPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ApplicationSecurityGroupPoller, error)
 	// BeginDelete - Deletes the specified application security group.
-	BeginDelete(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets information about the specified application security group.
@@ -42,7 +42,7 @@ type applicationSecurityGroupsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates an application security group.
-func (client *applicationSecurityGroupsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, parameters ApplicationSecurityGroup) (*ApplicationSecurityGroupResponse, error) {
+func (client *applicationSecurityGroupsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, parameters ApplicationSecurityGroup) (*ApplicationSecurityGroupPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, applicationSecurityGroupName, parameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *applicationSecurityGroupsOperations) createOrUpdateCreateRequest(r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *applicationSecurityGroupsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ApplicationSecurityGroupResponse, error) {
+func (client *applicationSecurityGroupsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ApplicationSecurityGroupPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := ApplicationSecurityGroupResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ApplicationSecurityGroup)
+	return &ApplicationSecurityGroupPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *applicationSecurityGroupsOperations) createOrUpdateHandleError(res
 }
 
 // Delete - Deletes the specified application security group.
-func (client *applicationSecurityGroupsOperations) BeginDelete(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string) (*HTTPResponse, error) {
+func (client *applicationSecurityGroupsOperations) BeginDelete(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, applicationSecurityGroupName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *applicationSecurityGroupsOperations) deleteCreateRequest(resourceG
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *applicationSecurityGroupsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *applicationSecurityGroupsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

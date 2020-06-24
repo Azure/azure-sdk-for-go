@@ -8,7 +8,9 @@ package armmonitor
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -132,7 +134,14 @@ func (client *alertRulesOperations) deleteHandleResponse(resp *azcore.Response) 
 
 // deleteHandleError handles the Delete error response.
 func (client *alertRulesOperations) deleteHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Get - Gets a classic metric alert rule
@@ -180,7 +189,14 @@ func (client *alertRulesOperations) getHandleResponse(resp *azcore.Response) (*A
 
 // getHandleError handles the Get error response.
 func (client *alertRulesOperations) getHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListByResourceGroup - List the classic metric alert rules within a resource group.
@@ -227,7 +243,14 @@ func (client *alertRulesOperations) listByResourceGroupHandleResponse(resp *azco
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *alertRulesOperations) listByResourceGroupHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListBySubscription - List the classic metric alert rules within a subscription.
@@ -273,7 +296,14 @@ func (client *alertRulesOperations) listBySubscriptionHandleResponse(resp *azcor
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
 func (client *alertRulesOperations) listBySubscriptionHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Update - Updates an existing classic metric AlertRuleResource. To update other fields use the CreateOrUpdate method.

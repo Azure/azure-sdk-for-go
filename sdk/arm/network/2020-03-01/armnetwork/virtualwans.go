@@ -18,11 +18,11 @@ import (
 // VirtualWansOperations contains the methods for the VirtualWans group.
 type VirtualWansOperations interface {
 	// BeginCreateOrUpdate - Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualWanName string, wanParameters VirtualWan) (*VirtualWanResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualWanName string, wanParameters VirtualWan) (*VirtualWanPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VirtualWanPoller, error)
 	// BeginDelete - Deletes a VirtualWAN.
-	BeginDelete(ctx context.Context, resourceGroupName string, virtualWanName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, virtualWanName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Retrieves the details of a VirtualWAN.
@@ -42,7 +42,7 @@ type virtualWansOperations struct {
 }
 
 // CreateOrUpdate - Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
-func (client *virtualWansOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualWanName string, wanParameters VirtualWan) (*VirtualWanResponse, error) {
+func (client *virtualWansOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualWanName string, wanParameters VirtualWan) (*VirtualWanPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, virtualWanName, wanParameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *virtualWansOperations) createOrUpdateCreateRequest(resourceGroupNa
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *virtualWansOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualWanResponse, error) {
+func (client *virtualWansOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualWanPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := VirtualWanResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.VirtualWan)
+	return &VirtualWanPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *virtualWansOperations) createOrUpdateHandleError(resp *azcore.Resp
 }
 
 // Delete - Deletes a VirtualWAN.
-func (client *virtualWansOperations) BeginDelete(ctx context.Context, resourceGroupName string, virtualWanName string) (*HTTPResponse, error) {
+func (client *virtualWansOperations) BeginDelete(ctx context.Context, resourceGroupName string, virtualWanName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, virtualWanName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *virtualWansOperations) deleteCreateRequest(resourceGroupName strin
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *virtualWansOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *virtualWansOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

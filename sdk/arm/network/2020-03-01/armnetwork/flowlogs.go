@@ -18,11 +18,11 @@ import (
 // FlowLogsOperations contains the methods for the FlowLogs group.
 type FlowLogsOperations interface {
 	// BeginCreateOrUpdate - Create or update a flow log for the specified network security group.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters FlowLog) (*FlowLogResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters FlowLog) (*FlowLogPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (FlowLogPoller, error)
 	// BeginDelete - Deletes the specified flow log resource.
-	BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets a flow log resource by name.
@@ -38,7 +38,7 @@ type flowLogsOperations struct {
 }
 
 // CreateOrUpdate - Create or update a flow log for the specified network security group.
-func (client *flowLogsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters FlowLog) (*FlowLogResponse, error) {
+func (client *flowLogsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters FlowLog) (*FlowLogPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, networkWatcherName, flowLogName, parameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *flowLogsOperations) createOrUpdateCreateRequest(resourceGroupName 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *flowLogsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*FlowLogResponse, error) {
+func (client *flowLogsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*FlowLogPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := FlowLogResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.FlowLog)
+	return &FlowLogPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *flowLogsOperations) createOrUpdateHandleError(resp *azcore.Respons
 }
 
 // Delete - Deletes the specified flow log resource.
-func (client *flowLogsOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string) (*HTTPResponse, error) {
+func (client *flowLogsOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, networkWatcherName, flowLogName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *flowLogsOperations) deleteCreateRequest(resourceGroupName string, 
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *flowLogsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *flowLogsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

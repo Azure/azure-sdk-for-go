@@ -130,6 +130,19 @@ type ConfigurationStoreListResultResponse struct {
 	RawResponse *http.Response
 }
 
+// ConfigurationStorePollerResponse is the response envelope for operations that asynchronously return a ConfigurationStore
+// type.
+type ConfigurationStorePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ConfigurationStoreResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller ConfigurationStorePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // The properties of a configuration store.
 type ConfigurationStoreProperties struct {
 	// The creation date of configuration store.
@@ -174,12 +187,6 @@ type ConfigurationStoreResponse struct {
 	// The configuration store along with all resource properties. The Configuration Store will have all information to begin
 	// utilizing it.
 	ConfigurationStore *ConfigurationStore
-
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*ConfigurationStoreResponse, error)
-
-	// Poller contains an initialized poller
-	Poller ConfigurationStorePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -248,12 +255,12 @@ func (e Error) Error() string {
 	return msg
 }
 
-// HTTPResponse contains the HTTP response from the call to the service endpoint
-type HTTPResponse struct {
+// HTTPPollerResponse contains the asynchronous HTTP response from the call to the service endpoint.
+type HTTPPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
 	PollUntilDone func(ctx context.Context, frequency time.Duration) (*http.Response, error)
 
-	// Poller contains an initialized poller
+	// Poller contains an initialized poller.
 	Poller HTTPPoller
 
 	// RawResponse contains the underlying HTTP response.

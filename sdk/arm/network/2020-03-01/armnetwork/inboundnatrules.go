@@ -18,11 +18,11 @@ import (
 // InboundNatRulesOperations contains the methods for the InboundNatRules group.
 type InboundNatRulesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a load balancer inbound nat rule.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string, inboundNatRuleParameters InboundNatRule) (*InboundNatRuleResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string, inboundNatRuleParameters InboundNatRule) (*InboundNatRulePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (InboundNatRulePoller, error)
 	// BeginDelete - Deletes the specified load balancer inbound nat rule.
-	BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified load balancer inbound nat rule.
@@ -38,7 +38,7 @@ type inboundNatRulesOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a load balancer inbound nat rule.
-func (client *inboundNatRulesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string, inboundNatRuleParameters InboundNatRule) (*InboundNatRuleResponse, error) {
+func (client *inboundNatRulesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string, inboundNatRuleParameters InboundNatRule) (*InboundNatRulePollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, loadBalancerName, inboundNatRuleName, inboundNatRuleParameters)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *inboundNatRulesOperations) createOrUpdateCreateRequest(resourceGro
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *inboundNatRulesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*InboundNatRuleResponse, error) {
+func (client *inboundNatRulesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*InboundNatRulePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := InboundNatRuleResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.InboundNatRule)
+	return &InboundNatRulePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *inboundNatRulesOperations) createOrUpdateHandleError(resp *azcore.
 }
 
 // Delete - Deletes the specified load balancer inbound nat rule.
-func (client *inboundNatRulesOperations) BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string) (*HTTPResponse, error) {
+func (client *inboundNatRulesOperations) BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, loadBalancerName, inboundNatRuleName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *inboundNatRulesOperations) deleteCreateRequest(resourceGroupName s
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *inboundNatRulesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *inboundNatRulesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

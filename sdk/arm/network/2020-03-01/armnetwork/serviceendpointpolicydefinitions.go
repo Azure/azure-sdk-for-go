@@ -18,11 +18,11 @@ import (
 // ServiceEndpointPolicyDefinitionsOperations contains the methods for the ServiceEndpointPolicyDefinitions group.
 type ServiceEndpointPolicyDefinitionsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition) (*ServiceEndpointPolicyDefinitionResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition) (*ServiceEndpointPolicyDefinitionPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ServiceEndpointPolicyDefinitionPoller, error)
 	// BeginDelete - Deletes the specified ServiceEndpoint policy definitions.
-	BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Get the specified service endpoint policy definitions from service endpoint policy.
@@ -38,7 +38,7 @@ type serviceEndpointPolicyDefinitionsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-func (client *serviceEndpointPolicyDefinitionsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition) (*ServiceEndpointPolicyDefinitionResponse, error) {
+func (client *serviceEndpointPolicyDefinitionsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition) (*ServiceEndpointPolicyDefinitionPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, serviceEndpointPolicyDefinitions)
 	if err != nil {
 		return nil, err
@@ -97,12 +97,11 @@ func (client *serviceEndpointPolicyDefinitionsOperations) createOrUpdateCreateRe
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *serviceEndpointPolicyDefinitionsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyDefinitionResponse, error) {
+func (client *serviceEndpointPolicyDefinitionsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyDefinitionPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := ServiceEndpointPolicyDefinitionResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.ServiceEndpointPolicyDefinition)
+	return &ServiceEndpointPolicyDefinitionPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -115,7 +114,7 @@ func (client *serviceEndpointPolicyDefinitionsOperations) createOrUpdateHandleEr
 }
 
 // Delete - Deletes the specified ServiceEndpoint policy definitions.
-func (client *serviceEndpointPolicyDefinitionsOperations) BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string) (*HTTPResponse, error) {
+func (client *serviceEndpointPolicyDefinitionsOperations) BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName)
 	if err != nil {
 		return nil, err
@@ -174,11 +173,11 @@ func (client *serviceEndpointPolicyDefinitionsOperations) deleteCreateRequest(re
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *serviceEndpointPolicyDefinitionsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *serviceEndpointPolicyDefinitionsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

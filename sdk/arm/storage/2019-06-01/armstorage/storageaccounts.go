@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -21,13 +22,13 @@ type StorageAccountsOperations interface {
 	// CheckNameAvailability - Checks that the storage account name is valid and is not already in use.
 	CheckNameAvailability(ctx context.Context, accountName StorageAccountCheckNameAvailabilityParameters) (*CheckNameAvailabilityResultResponse, error)
 	// BeginCreate - Asynchronously creates a new storage account with the specified parameters. If an account is already created and a subsequent create request is issued with different properties, the account properties will be updated. If an account is already created and a subsequent create or update request is issued with the exact same set of properties, the request will succeed.
-	BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters) (*StorageAccountResponse, error)
+	BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters) (*StorageAccountPollerResponse, error)
 	// ResumeCreate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreate(token string) (StorageAccountPoller, error)
 	// Delete - Deletes a storage account in Microsoft Azure.
 	Delete(ctx context.Context, resourceGroupName string, accountName string) (*http.Response, error)
 	// BeginFailover - Failover request can be triggered for a storage account in case of availability issues. The failover occurs from the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become primary after failover.
-	BeginFailover(ctx context.Context, resourceGroupName string, accountName string) (*HTTPResponse, error)
+	BeginFailover(ctx context.Context, resourceGroupName string, accountName string) (*HTTPPollerResponse, error)
 	// ResumeFailover - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeFailover(token string) (HTTPPoller, error)
 	// GetProperties - Returns the properties for the specified storage account including but not limited to name, SKU name, location, and account status. The ListKeys operation should be used to retrieve storage keys.
@@ -45,7 +46,7 @@ type StorageAccountsOperations interface {
 	// RegenerateKey - Regenerates one of the access keys or Kerberos keys for the specified storage account.
 	RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, regenerateKey StorageAccountRegenerateKeyParameters) (*StorageAccountListKeysResultResponse, error)
 	// BeginRestoreBlobRanges - Restore blobs in the specified blob ranges
-	BeginRestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters) (*BlobRestoreStatusResponse, error)
+	BeginRestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters) (*BlobRestoreStatusPollerResponse, error)
 	// ResumeRestoreBlobRanges - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeRestoreBlobRanges(token string) (BlobRestoreStatusPoller, error)
 	// RevokeUserDelegationKeys - Revoke user delegation keys.
@@ -103,11 +104,18 @@ func (client *storageAccountsOperations) checkNameAvailabilityHandleResponse(res
 
 // checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
 func (client *storageAccountsOperations) checkNameAvailabilityHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Create - Asynchronously creates a new storage account with the specified parameters. If an account is already created and a subsequent create request is issued with different properties, the account properties will be updated. If an account is already created and a subsequent create or update request is issued with the exact same set of properties, the request will succeed.
-func (client *storageAccountsOperations) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters) (*StorageAccountResponse, error) {
+func (client *storageAccountsOperations) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters) (*StorageAccountPollerResponse, error) {
 	req, err := client.createCreateRequest(resourceGroupName, accountName, parameters)
 	if err != nil {
 		return nil, err
@@ -165,17 +173,23 @@ func (client *storageAccountsOperations) createCreateRequest(resourceGroupName s
 }
 
 // createHandleResponse handles the Create response.
-func (client *storageAccountsOperations) createHandleResponse(resp *azcore.Response) (*StorageAccountResponse, error) {
+func (client *storageAccountsOperations) createHandleResponse(resp *azcore.Response) (*StorageAccountPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.createHandleError(resp)
 	}
-	result := StorageAccountResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.StorageAccount)
+	return &StorageAccountPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createHandleError handles the Create error response.
 func (client *storageAccountsOperations) createHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Delete - Deletes a storage account in Microsoft Azure.
@@ -222,11 +236,18 @@ func (client *storageAccountsOperations) deleteHandleResponse(resp *azcore.Respo
 
 // deleteHandleError handles the Delete error response.
 func (client *storageAccountsOperations) deleteHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Failover - Failover request can be triggered for a storage account in case of availability issues. The failover occurs from the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become primary after failover.
-func (client *storageAccountsOperations) BeginFailover(ctx context.Context, resourceGroupName string, accountName string) (*HTTPResponse, error) {
+func (client *storageAccountsOperations) BeginFailover(ctx context.Context, resourceGroupName string, accountName string) (*HTTPPollerResponse, error) {
 	req, err := client.failoverCreateRequest(resourceGroupName, accountName)
 	if err != nil {
 		return nil, err
@@ -284,17 +305,23 @@ func (client *storageAccountsOperations) failoverCreateRequest(resourceGroupName
 }
 
 // failoverHandleResponse handles the Failover response.
-func (client *storageAccountsOperations) failoverHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *storageAccountsOperations) failoverHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.failoverHandleError(resp)
 	}
-	result := HTTPResponse{RawResponse: resp.Response}
-	return &result, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // failoverHandleError handles the Failover error response.
 func (client *storageAccountsOperations) failoverHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // GetProperties - Returns the properties for the specified storage account including but not limited to name, SKU name, location, and account status. The ListKeys operation should be used to retrieve storage keys.
@@ -345,7 +372,14 @@ func (client *storageAccountsOperations) getPropertiesHandleResponse(resp *azcor
 
 // getPropertiesHandleError handles the GetProperties error response.
 func (client *storageAccountsOperations) getPropertiesHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // List - Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the ListKeys operation for this.
@@ -397,7 +431,14 @@ func (client *storageAccountsOperations) listHandleResponse(resp *azcore.Respons
 
 // listHandleError handles the List error response.
 func (client *storageAccountsOperations) listHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListAccountSas - List SAS credentials of a storage account.
@@ -445,7 +486,14 @@ func (client *storageAccountsOperations) listAccountSasHandleResponse(resp *azco
 
 // listAccountSasHandleError handles the ListAccountSas error response.
 func (client *storageAccountsOperations) listAccountSasHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListByResourceGroup - Lists all the storage accounts available under the given resource group. Note that storage keys are not returned; use the ListKeys operation for this.
@@ -492,7 +540,14 @@ func (client *storageAccountsOperations) listByResourceGroupHandleResponse(resp 
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *storageAccountsOperations) listByResourceGroupHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListKeys - Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
@@ -540,7 +595,14 @@ func (client *storageAccountsOperations) listKeysHandleResponse(resp *azcore.Res
 
 // listKeysHandleError handles the ListKeys error response.
 func (client *storageAccountsOperations) listKeysHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // ListServiceSas - List service SAS credentials of a specific resource.
@@ -588,7 +650,14 @@ func (client *storageAccountsOperations) listServiceSasHandleResponse(resp *azco
 
 // listServiceSasHandleError handles the ListServiceSas error response.
 func (client *storageAccountsOperations) listServiceSasHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // RegenerateKey - Regenerates one of the access keys or Kerberos keys for the specified storage account.
@@ -636,11 +705,18 @@ func (client *storageAccountsOperations) regenerateKeyHandleResponse(resp *azcor
 
 // regenerateKeyHandleError handles the RegenerateKey error response.
 func (client *storageAccountsOperations) regenerateKeyHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // RestoreBlobRanges - Restore blobs in the specified blob ranges
-func (client *storageAccountsOperations) BeginRestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters) (*BlobRestoreStatusResponse, error) {
+func (client *storageAccountsOperations) BeginRestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters) (*BlobRestoreStatusPollerResponse, error) {
 	req, err := client.restoreBlobRangesCreateRequest(resourceGroupName, accountName, parameters)
 	if err != nil {
 		return nil, err
@@ -698,17 +774,23 @@ func (client *storageAccountsOperations) restoreBlobRangesCreateRequest(resource
 }
 
 // restoreBlobRangesHandleResponse handles the RestoreBlobRanges response.
-func (client *storageAccountsOperations) restoreBlobRangesHandleResponse(resp *azcore.Response) (*BlobRestoreStatusResponse, error) {
+func (client *storageAccountsOperations) restoreBlobRangesHandleResponse(resp *azcore.Response) (*BlobRestoreStatusPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.restoreBlobRangesHandleError(resp)
 	}
-	result := BlobRestoreStatusResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.BlobRestoreStatus)
+	return &BlobRestoreStatusPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // restoreBlobRangesHandleError handles the RestoreBlobRanges error response.
 func (client *storageAccountsOperations) restoreBlobRangesHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // RevokeUserDelegationKeys - Revoke user delegation keys.
@@ -755,7 +837,14 @@ func (client *storageAccountsOperations) revokeUserDelegationKeysHandleResponse(
 
 // revokeUserDelegationKeysHandleError handles the RevokeUserDelegationKeys error response.
 func (client *storageAccountsOperations) revokeUserDelegationKeysHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Update - The update operation can be used to update the SKU, encryption, access tier, or tags for a storage account. It can also be used to map the account to a custom domain. Only one custom domain is supported per storage account; the replacement/change of custom domain is not supported. In order to replace an old custom domain, the old value must be cleared/unregistered before a new value can be set. The update of multiple properties is supported. This call does not change the storage keys for the account. If you want to change the storage account keys, use the regenerate keys operation. The location and name of the storage account cannot be changed after creation.
@@ -803,5 +892,12 @@ func (client *storageAccountsOperations) updateHandleResponse(resp *azcore.Respo
 
 // updateHandleError handles the Update error response.
 func (client *storageAccountsOperations) updateHandleError(resp *azcore.Response) error {
-	return errors.New(resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }

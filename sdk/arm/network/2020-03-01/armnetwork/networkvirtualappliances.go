@@ -18,11 +18,11 @@ import (
 // NetworkVirtualAppliancesOperations contains the methods for the NetworkVirtualAppliances group.
 type NetworkVirtualAppliancesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates the specified Network Virtual Appliance.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance) (*NetworkVirtualApplianceResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance) (*NetworkVirtualAppliancePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (NetworkVirtualAppliancePoller, error)
 	// BeginDelete - Deletes the specified Network Virtual Appliance.
-	BeginDelete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified Network Virtual Appliance.
@@ -42,7 +42,7 @@ type networkVirtualAppliancesOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates the specified Network Virtual Appliance.
-func (client *networkVirtualAppliancesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance) (*NetworkVirtualApplianceResponse, error) {
+func (client *networkVirtualAppliancesOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance) (*NetworkVirtualAppliancePollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, networkVirtualApplianceName, parameters)
 	if err != nil {
 		return nil, err
@@ -100,12 +100,11 @@ func (client *networkVirtualAppliancesOperations) createOrUpdateCreateRequest(re
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *networkVirtualAppliancesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*NetworkVirtualApplianceResponse, error) {
+func (client *networkVirtualAppliancesOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*NetworkVirtualAppliancePollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := NetworkVirtualApplianceResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.NetworkVirtualAppliance)
+	return &NetworkVirtualAppliancePollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -118,7 +117,7 @@ func (client *networkVirtualAppliancesOperations) createOrUpdateHandleError(resp
 }
 
 // Delete - Deletes the specified Network Virtual Appliance.
-func (client *networkVirtualAppliancesOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string) (*HTTPResponse, error) {
+func (client *networkVirtualAppliancesOperations) BeginDelete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, networkVirtualApplianceName)
 	if err != nil {
 		return nil, err
@@ -176,11 +175,11 @@ func (client *networkVirtualAppliancesOperations) deleteCreateRequest(resourceGr
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *networkVirtualAppliancesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *networkVirtualAppliancesOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.

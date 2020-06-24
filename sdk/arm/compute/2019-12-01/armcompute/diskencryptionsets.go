@@ -18,11 +18,11 @@ import (
 // DiskEncryptionSetsOperations contains the methods for the DiskEncryptionSets group.
 type DiskEncryptionSetsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a disk encryption set
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSet) (*DiskEncryptionSetResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSet) (*DiskEncryptionSetPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (DiskEncryptionSetPoller, error)
 	// BeginDelete - Deletes a disk encryption set.
-	BeginDelete(ctx context.Context, resourceGroupName string, diskEncryptionSetName string) (*HTTPResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, diskEncryptionSetName string) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets information about a disk encryption set.
@@ -32,7 +32,7 @@ type DiskEncryptionSetsOperations interface {
 	// ListByResourceGroup - Lists all the disk encryption sets under a resource group.
 	ListByResourceGroup(resourceGroupName string) (DiskEncryptionSetListPager, error)
 	// BeginUpdate - Updates (patches) a disk encryption set.
-	BeginUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSetUpdate) (*DiskEncryptionSetResponse, error)
+	BeginUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSetUpdate) (*DiskEncryptionSetPollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (DiskEncryptionSetPoller, error)
 }
@@ -44,7 +44,7 @@ type diskEncryptionSetsOperations struct {
 }
 
 // CreateOrUpdate - Creates or updates a disk encryption set
-func (client *diskEncryptionSetsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSet) (*DiskEncryptionSetResponse, error) {
+func (client *diskEncryptionSetsOperations) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSet) (*DiskEncryptionSetPollerResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(resourceGroupName, diskEncryptionSetName, diskEncryptionSet)
 	if err != nil {
 		return nil, err
@@ -102,12 +102,11 @@ func (client *diskEncryptionSetsOperations) createOrUpdateCreateRequest(resource
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *diskEncryptionSetsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*DiskEncryptionSetResponse, error) {
+func (client *diskEncryptionSetsOperations) createOrUpdateHandleResponse(resp *azcore.Response) (*DiskEncryptionSetPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result := DiskEncryptionSetResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DiskEncryptionSet)
+	return &DiskEncryptionSetPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -120,7 +119,7 @@ func (client *diskEncryptionSetsOperations) createOrUpdateHandleError(resp *azco
 }
 
 // Delete - Deletes a disk encryption set.
-func (client *diskEncryptionSetsOperations) BeginDelete(ctx context.Context, resourceGroupName string, diskEncryptionSetName string) (*HTTPResponse, error) {
+func (client *diskEncryptionSetsOperations) BeginDelete(ctx context.Context, resourceGroupName string, diskEncryptionSetName string) (*HTTPPollerResponse, error) {
 	req, err := client.deleteCreateRequest(resourceGroupName, diskEncryptionSetName)
 	if err != nil {
 		return nil, err
@@ -178,11 +177,11 @@ func (client *diskEncryptionSetsOperations) deleteCreateRequest(resourceGroupNam
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *diskEncryptionSetsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPResponse, error) {
+func (client *diskEncryptionSetsOperations) deleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return &HTTPResponse{RawResponse: resp.Response}, nil
+	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHandleError handles the Delete error response.
@@ -360,7 +359,7 @@ func (client *diskEncryptionSetsOperations) listByResourceGroupHandleError(resp 
 }
 
 // Update - Updates (patches) a disk encryption set.
-func (client *diskEncryptionSetsOperations) BeginUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSetUpdate) (*DiskEncryptionSetResponse, error) {
+func (client *diskEncryptionSetsOperations) BeginUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSetUpdate) (*DiskEncryptionSetPollerResponse, error) {
 	req, err := client.updateCreateRequest(resourceGroupName, diskEncryptionSetName, diskEncryptionSet)
 	if err != nil {
 		return nil, err
@@ -418,12 +417,11 @@ func (client *diskEncryptionSetsOperations) updateCreateRequest(resourceGroupNam
 }
 
 // updateHandleResponse handles the Update response.
-func (client *diskEncryptionSetsOperations) updateHandleResponse(resp *azcore.Response) (*DiskEncryptionSetResponse, error) {
+func (client *diskEncryptionSetsOperations) updateHandleResponse(resp *azcore.Response) (*DiskEncryptionSetPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.updateHandleError(resp)
 	}
-	result := DiskEncryptionSetResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.DiskEncryptionSet)
+	return &DiskEncryptionSetPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // updateHandleError handles the Update error response.

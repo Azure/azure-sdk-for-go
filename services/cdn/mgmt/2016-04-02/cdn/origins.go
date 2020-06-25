@@ -124,7 +124,6 @@ func (client OriginsClient) CreateSender(req *http.Request) (future OriginsCreat
 func (client OriginsClient) CreateResponder(resp *http.Response) (result Origin, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -204,7 +203,6 @@ func (client OriginsClient) DeleteIfExistsSender(req *http.Request) (future Orig
 func (client OriginsClient) DeleteIfExistsResponder(resp *http.Response) (result Origin, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -284,7 +282,6 @@ func (client OriginsClient) GetSender(req *http.Request) (*http.Response, error)
 func (client OriginsClient) GetResponder(resp *http.Response) (result Origin, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -362,7 +359,6 @@ func (client OriginsClient) ListByEndpointSender(req *http.Request) (*http.Respo
 func (client OriginsClient) ListByEndpointResponder(resp *http.Response) (result OriginListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -445,7 +441,6 @@ func (client OriginsClient) UpdateSender(req *http.Request) (future OriginsUpdat
 func (client OriginsClient) UpdateResponder(resp *http.Response) (result Origin, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

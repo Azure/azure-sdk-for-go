@@ -11,8 +11,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-const defaultSuffix = "/.default"
-
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential.
 type ManagedIdentityCredentialOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.

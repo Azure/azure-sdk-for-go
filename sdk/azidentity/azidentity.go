@@ -21,6 +21,8 @@ const (
 	AzureGovernment = "https://login.microsoftonline.us/"
 	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud.
 	AzurePublicCloud = "https://login.microsoftonline.com/"
+	// defaultSuffix is a suffix the signals that a string is in scope format
+	defaultSuffix = "/.default"
 )
 
 var (

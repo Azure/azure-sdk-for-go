@@ -85,7 +85,7 @@ func (c *aadIdentityClient) refreshAccessToken(ctx context.Context, tenantID str
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
 }
 
-// Authenticate creates a client secret authentication request and returns the resulting Access Token or
+// authenticate creates a client secret authentication request and returns the resulting Access Token or
 // an error in case of authentication failure.
 // ctx: The current request context
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal
@@ -110,7 +110,7 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
 }
 
-// AuthenticateCertificate creates a client certificate authentication request and returns an Access Token or
+// authenticateCertificate creates a client certificate authentication request and returns an Access Token or
 // an error.
 // ctx: The current request context
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal

@@ -53,7 +53,7 @@ func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*Chained
 
 	if len(creds) == 0 {
 		err := &CredentialUnavailableError{CredentialType: "Default Token Credential", Message: errMsg}
-		msg := fmt.Sprintf("Azure Identity => ERROR in GetToken() call for NewDefaultTokenCredential(): %s", err.Error())
+		msg := fmt.Sprintf("Azure Identity => ERROR in GetToken() call for NewDefaultTokenCredential(): an error was returned from an underlying credential type")
 		log.Write(azcore.LogError, msg)
 		return nil, err
 	}

@@ -53,6 +53,7 @@ type aadIdentityClient struct {
 // options: IdentityClientOptions that adds policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
 func newAADIdentityClient(options *TokenCredentialOptions) (*aadIdentityClient, error) {
+	logEnvVars()
 	options, err := options.setDefaultValues()
 	if err != nil {
 		return nil, err

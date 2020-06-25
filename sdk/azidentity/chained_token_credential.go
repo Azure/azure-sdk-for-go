@@ -51,7 +51,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 			return nil, fmt.Errorf("Received an unexpected error: %w", err) // if we receive some other error type this is unexpected and we simple return the unexpected error
 		} else {
 			log := azcore.Log()
-			msg := fmt.Sprintf("Azure Identity => GetToken() result for %T: SUCCESS", cred)
+			msg := fmt.Sprintf("Azure Identity => GetToken() result for %T: SUCCESS", c)
 			log.Write(LogCredential, msg)
 			vmsg := fmt.Sprintf("Azure Identity => Scopes: [%s]", strings.Join(opts.Scopes, ", "))
 			log.Write(LogCredential, vmsg)

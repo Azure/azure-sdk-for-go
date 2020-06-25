@@ -85,6 +85,7 @@ func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
 // options: IdentityClientOptions that adds policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
 func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *managedIdentityClient {
+	logEnvVars()
 	options = options.setDefaultValues()
 	return &managedIdentityClient{
 		pipeline:               newDefaultMSIPipeline(*options), // a pipeline that includes the specific requirements for MSI authentication, such as custom retry policy options

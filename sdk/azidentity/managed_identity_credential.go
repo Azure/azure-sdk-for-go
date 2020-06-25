@@ -80,9 +80,9 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.To
 		case 1:
 			log.Write(LogCredential, "Azure Identity => Managed Identity environment: IMDS")
 		case 2:
-			log.Write(LogCredential, "Azure Identity => Managed Identity environment: Azure App Service")
+			log.Write(LogCredential, "Azure Identity => Managed Identity environment: MSI_ENDPOINT")
 		case 3:
-			log.Write(LogCredential, "Azure Identity => Managed Identity environment: Azure Cloud Shell")
+			log.Write(LogCredential, "Azure Identity => Managed Identity environment: MSI_ENDPOINT")
 		case 4:
 			log.Write(LogCredential, "Azure Identity => Managed Identity environment: Unavailable")
 		default:

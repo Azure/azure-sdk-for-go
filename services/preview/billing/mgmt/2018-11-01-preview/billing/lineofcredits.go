@@ -104,7 +104,6 @@ func (client LineOfCreditsClient) GetSender(req *http.Request) (*http.Response, 
 func (client LineOfCreditsClient) GetResponder(resp *http.Response) (result LineOfCredit, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -179,7 +178,6 @@ func (client LineOfCreditsClient) UpdateSender(req *http.Request) (future LineOf
 func (client LineOfCreditsClient) UpdateResponder(resp *http.Response) (result LineOfCredit, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

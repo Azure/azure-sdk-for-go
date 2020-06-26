@@ -33,7 +33,9 @@ func TestProgressReporting(t *testing.T) {
 	reqRpt := NewRequestBodyProgress(NopCloser(body), func(bytesTransferred int64) {
 		bytesSent = bytesTransferred
 	})
-	req.SetBody(reqRpt)
+	if err := req.SetBody(reqRpt); err != nil {
+		t.Fatal(err)
+	}
 	resp, err := pl.Do(context.Background(), req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

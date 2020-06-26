@@ -82,10 +82,10 @@ func (p *requestLogPolicy) Do(ctx context.Context, req *Request) (*Response, err
 
 	if err == nil { // We got a response from the service
 		sc := response.StatusCode
+		// Promote to Error any 4xx (except those listed is an error) or any 5xx.
+		// For other status codes, we leave the level as is.
 		if ((sc >= 400 && sc <= 499) && sc != http.StatusNotFound && sc != http.StatusConflict && sc != http.StatusPreconditionFailed && sc != http.StatusRequestedRangeNotSatisfiable) || (sc >= 500 && sc <= 599) {
-			logClass = LogError // Promote to Error any 4xx (except those listed is an error) or any 5xx
-		} else {
-			// For other status codes, we leave the level as is.
+			logClass = LogError
 		}
 	} else { // This error did not get an HTTP response from the service; upgrade the severity to Error
 		logClass = LogError

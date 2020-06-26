@@ -114,7 +114,7 @@ func (r *Response) UnmarshalAsXML(v interface{}) error {
 // Drain reads the response body to completion then closes it.  The bytes read are discarded.
 func (r *Response) Drain() {
 	if r != nil && r.Body != nil {
-		io.Copy(ioutil.Discard, r.Body)
+		_, _ = io.Copy(ioutil.Discard, r.Body)
 		r.Body.Close()
 	}
 }
@@ -150,7 +150,7 @@ func RetryAfter(resp *http.Response) time.Duration {
 	if retryAfter, _ := strconv.Atoi(ra); retryAfter > 0 {
 		return time.Duration(retryAfter) * time.Second
 	} else if t, err := time.Parse(time.RFC1123, ra); err == nil {
-		return t.Sub(time.Now())
+		return time.Until(t)
 	}
 	return 0
 }

@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"os"
 	"strings"
 	"time"
 
@@ -57,6 +58,10 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 	}
 	// Assign the msiType discovered onto the client
 	client.msiType = msiType
+	// check if no clientID is specified then check if it exists in an environment variable
+	if len(clientID) == 0 {
+		clientID = os.Getenv("AZURE_CLIENT_ID")
+	}
 	return &ManagedIdentityCredential{clientID: clientID, client: client}, nil
 }
 

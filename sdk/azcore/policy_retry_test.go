@@ -30,7 +30,9 @@ func TestRetryPolicySuccess(t *testing.T) {
 	pl := NewPipeline(srv, NewRetryPolicy(nil))
 	req := NewRequest(http.MethodGet, srv.URL())
 	body := newRewindTrackingBody("stuff")
-	req.SetBody(body)
+	if err := req.SetBody(body); err != nil {
+		t.Fatal(err)
+	}
 	resp, err := pl.Do(context.Background(), req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -53,7 +55,9 @@ func TestRetryPolicyFailOnStatusCode(t *testing.T) {
 	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
 	req := NewRequest(http.MethodGet, srv.URL())
 	body := newRewindTrackingBody("stuff")
-	req.SetBody(body)
+	if err := req.SetBody(body); err != nil {
+		t.Fatal(err)
+	}
 	resp, err := pl.Do(context.Background(), req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -81,7 +85,9 @@ func TestRetryPolicySuccessWithRetry(t *testing.T) {
 	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
 	req := NewRequest(http.MethodGet, srv.URL())
 	body := newRewindTrackingBody("stuff")
-	req.SetBody(body)
+	if err := req.SetBody(body); err != nil {
+		t.Fatal(err)
+	}
 	resp, err := pl.Do(context.Background(), req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -108,7 +114,9 @@ func TestRetryPolicyFailOnError(t *testing.T) {
 	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
 	req := NewRequest(http.MethodPost, srv.URL())
 	body := newRewindTrackingBody("stuff")
-	req.SetBody(body)
+	if err := req.SetBody(body); err != nil {
+		t.Fatal(err)
+	}
 	resp, err := pl.Do(context.Background(), req)
 	if !errors.Is(err, fakeErr) {
 		t.Fatalf("unexpected error: %v", err)
@@ -137,7 +145,9 @@ func TestRetryPolicySuccessWithRetryComplex(t *testing.T) {
 	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
 	req := NewRequest(http.MethodGet, srv.URL())
 	body := newRewindTrackingBody("stuff")
-	req.SetBody(body)
+	if err := req.SetBody(body); err != nil {
+		t.Fatal(err)
+	}
 	resp, err := pl.Do(context.Background(), req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -163,7 +173,9 @@ func TestRetryPolicyRequestTimedOut(t *testing.T) {
 	pl := NewPipeline(srv, NewRetryPolicy(nil))
 	req := NewRequest(http.MethodPost, srv.URL())
 	body := newRewindTrackingBody("stuff")
-	req.SetBody(body)
+	if err := req.SetBody(body); err != nil {
+		t.Fatal(err)
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 	resp, err := pl.Do(ctx, req)
@@ -225,7 +237,9 @@ func TestWithRetryOptions(t *testing.T) {
 	retryCtx := WithRetryOptions(context.Background(), customOptions)
 	req := NewRequest(http.MethodGet, srv.URL())
 	body := newRewindTrackingBody("stuff")
-	req.SetBody(body)
+	if err := req.SetBody(body); err != nil {
+		t.Fatal(err)
+	}
 	resp, err := pl.Do(retryCtx, req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

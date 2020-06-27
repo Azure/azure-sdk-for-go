@@ -48,9 +48,7 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	// The following code will remove the /.default suffix from the scope passed into the method since AzureCLI expect a resource string instead of a scope string
-	if strings.HasSuffix(opts.Scopes[0], defaultSuffix) {
-		opts.Scopes[0] = opts.Scopes[0][:len(opts.Scopes[0])-len(defaultSuffix)]
-	}
+	opts.Scopes[0] = strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
 	return c.authenticate(ctx, opts.Scopes[0])
 }
 

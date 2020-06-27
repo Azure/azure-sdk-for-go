@@ -18,11 +18,6 @@ import (
 )
 
 const (
-	authenticationResponseInvalidFormatError = "Invalid response, the authentication response was not in the expected format."
-	msiEndpointInvalidURIError               = "The environment variable MSI_ENDPOINT contains an invalid URL."
-)
-
-const (
 	imdsEndpoint = "http://169.254.169.254/metadata/identity/oauth2/token"
 )
 
@@ -46,7 +41,6 @@ const (
 // managedIdentityClient provides the base for authenticating in managed identity environments
 // This type includes an azcore.Pipeline and TokenCredentialOptions.
 type managedIdentityClient struct {
-	options                TokenCredentialOptions
 	pipeline               azcore.Pipeline
 	imdsAPIVersion         string
 	imdsAvailableTimeoutMS time.Duration

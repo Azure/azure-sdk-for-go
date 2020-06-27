@@ -379,10 +379,10 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(tenantID string, clien
 
 func getPrivateKey(cert string) (*rsa.PrivateKey, error) {
 	privateKeyFile, err := os.Open(cert)
-	defer privateKeyFile.Close()
 	if err != nil {
 		return nil, fmt.Errorf("Opening certificate file path: %w", err)
 	}
+	defer privateKeyFile.Close()
 
 	pemFileInfo, err := privateKeyFile.Stat()
 	if err != nil {

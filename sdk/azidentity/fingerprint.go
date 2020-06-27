@@ -33,20 +33,23 @@ func (f fingerprint) String() string {
 // signing algorithm.
 func spkiFingerprint(cert string) (fingerprint, error) {
 	privateKeyFile, err := os.Open(cert)
-	defer privateKeyFile.Close()
-	if err != nil { // TODO: check os error message
-		return fingerprint{}, fmt.Errorf("%s: %w", cert, err)
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", cert, err)
 	}
+	defer privateKeyFile.Close()
 
 	pemFileInfo, err := privateKeyFile.Stat()
 	if err != nil {
-		return fingerprint{}, err
+		return nil, err
 	}
 
 	var size int64 = pemFileInfo.Size()
 	pemBytes := make([]byte, size)
 	buffer := bufio.NewReader(privateKeyFile)
 	_, err = buffer.Read(pemBytes)
+	if err != nil {
+		return nil, err
+	}
 	// Get first block of PEM file
 	data, rest := pem.Decode([]byte(pemBytes))
 	const certificateBlock = "CERTIFICATE"
@@ -56,7 +59,10 @@ func spkiFingerprint(cert string) (fingerprint, error) {
 			if data.Type == certificateBlock {
 				// Sign the CERTIFICATE block with SHA1
 				h := sha1.New()
-				h.Write(data.Bytes)
+				_, err := h.Write(data.Bytes)
+				if err != nil {
+					return nil, err
+				}
 
 				return fingerprint(h.Sum(nil)), nil
 			}
@@ -64,7 +70,10 @@ func spkiFingerprint(cert string) (fingerprint, error) {
 		return nil, errors.New("Cannot find CERTIFICATE in file")
 	}
 	h := sha1.New()
-	h.Write(data.Bytes)
+	_, err = h.Write(data.Bytes)
+	if err != nil {
+		return nil, err
+	}
 
 	return fingerprint(h.Sum(nil)), nil
 }

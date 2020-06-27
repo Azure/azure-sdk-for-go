@@ -88,6 +88,9 @@ func Test_DefaultAuthorityHost(t *testing.T) {
 func Test_AzureGermanyAuthorityHost(t *testing.T) {
 	opts := &TokenCredentialOptions{}
 	opts, err := opts.setDefaultValues()
+	if err != nil {
+		t.Fatal(err)
+	}
 	u, err := url.Parse(AzureGermany)
 	if err != nil {
 		t.Fatal(err)
@@ -101,6 +104,9 @@ func Test_AzureGermanyAuthorityHost(t *testing.T) {
 func Test_AzureChinaAuthorityHost(t *testing.T) {
 	opts := &TokenCredentialOptions{}
 	opts, err := opts.setDefaultValues()
+	if err != nil {
+		t.Fatal(err)
+	}
 	u, err := url.Parse(AzureChina)
 	if err != nil {
 		t.Fatal(err)
@@ -114,6 +120,9 @@ func Test_AzureChinaAuthorityHost(t *testing.T) {
 func Test_AzureGovernmentAuthorityHost(t *testing.T) {
 	opts := &TokenCredentialOptions{}
 	opts, err := opts.setDefaultValues()
+	if err != nil {
+		t.Fatal(err)
+	}
 	u, err := url.Parse(AzureGovernment)
 	if err != nil {
 		t.Fatal(err)

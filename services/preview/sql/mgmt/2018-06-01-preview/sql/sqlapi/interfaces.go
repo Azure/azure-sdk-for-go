@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2018-06-01-preview/sql"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/satori/go.uuid"
 )
 
 // DatabaseSecurityAlertPoliciesClientAPI contains the set of methods on the DatabaseSecurityAlertPoliciesClient type.
@@ -61,6 +62,7 @@ var _ ManagedInstanceVulnerabilityAssessmentsClientAPI = (*sql.ManagedInstanceVu
 
 // ManagedInstanceOperationsClientAPI contains the set of methods on the ManagedInstanceOperationsClient type.
 type ManagedInstanceOperationsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID uuid.UUID) (result sql.ManagedInstanceOperation, err error)
 	ListByManagedInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceOperationListResultPage, err error)
 	ListByManagedInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceOperationListResultIterator, err error)
 }

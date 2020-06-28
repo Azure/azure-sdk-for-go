@@ -111,7 +111,6 @@ func (client ScriptExecutionHistoryClient) ListSender(req *http.Request) (*http.
 func (client ScriptExecutionHistoryClient) ListResponder(resp *http.Response) (result ScriptActionExecutionHistoryList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -226,7 +225,6 @@ func (client ScriptExecutionHistoryClient) PromoteSender(req *http.Request) (*ht
 func (client ScriptExecutionHistoryClient) PromoteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

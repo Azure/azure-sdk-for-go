@@ -126,7 +126,6 @@ func (client AssessmentsMetadataClient) CreateInSubscriptionSender(req *http.Req
 func (client AssessmentsMetadataClient) CreateInSubscriptionResponder(resp *http.Response) (result AssessmentMetadata, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -207,7 +206,6 @@ func (client AssessmentsMetadataClient) DeleteInSubscriptionSender(req *http.Req
 func (client AssessmentsMetadataClient) DeleteInSubscriptionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -279,7 +277,6 @@ func (client AssessmentsMetadataClient) GetSender(req *http.Request) (*http.Resp
 func (client AssessmentsMetadataClient) GetResponder(resp *http.Response) (result AssessmentMetadata, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -359,7 +356,6 @@ func (client AssessmentsMetadataClient) GetInSubscriptionSender(req *http.Reques
 func (client AssessmentsMetadataClient) GetInSubscriptionResponder(resp *http.Response) (result AssessmentMetadata, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -427,7 +423,6 @@ func (client AssessmentsMetadataClient) ListSender(req *http.Request) (*http.Res
 func (client AssessmentsMetadataClient) ListResponder(resp *http.Response) (result AssessmentMetadataList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -542,7 +537,6 @@ func (client AssessmentsMetadataClient) ListBySubscriptionSender(req *http.Reque
 func (client AssessmentsMetadataClient) ListBySubscriptionResponder(resp *http.Response) (result AssessmentMetadataList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

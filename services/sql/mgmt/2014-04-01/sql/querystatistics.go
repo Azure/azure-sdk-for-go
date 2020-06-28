@@ -116,7 +116,6 @@ func (client QueryStatisticsClient) ListByQuerySender(req *http.Request) (*http.
 func (client QueryStatisticsClient) ListByQueryResponder(resp *http.Response) (result QueryStatisticListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

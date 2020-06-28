@@ -114,7 +114,6 @@ func (client RestorePointsClient) ListByDatabaseSender(req *http.Request) (*http
 func (client RestorePointsClient) ListByDatabaseResponder(resp *http.Response) (result RestorePointListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

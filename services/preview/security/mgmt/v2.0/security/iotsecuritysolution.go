@@ -138,7 +138,6 @@ func (client IotSecuritySolutionClient) CreateSender(req *http.Request) (*http.R
 func (client IotSecuritySolutionClient) CreateResponder(resp *http.Response) (result IoTSecuritySolutionModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -225,7 +224,6 @@ func (client IotSecuritySolutionClient) DeleteSender(req *http.Request) (*http.R
 func (client IotSecuritySolutionClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -311,7 +309,6 @@ func (client IotSecuritySolutionClient) GetSender(req *http.Request) (*http.Resp
 func (client IotSecuritySolutionClient) GetResponder(resp *http.Response) (result IoTSecuritySolutionModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -402,7 +399,6 @@ func (client IotSecuritySolutionClient) UpdateSender(req *http.Request) (*http.R
 func (client IotSecuritySolutionClient) UpdateResponder(resp *http.Response) (result IoTSecuritySolutionModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

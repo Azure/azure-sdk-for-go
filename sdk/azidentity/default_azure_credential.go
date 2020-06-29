@@ -28,7 +28,7 @@ type DefaultAzureCredentialOptions struct {
 // - EnvironmentCredential
 // - ManagedIdentityCredential
 // Consult the documentation for these credential types for more information on how they attempt authentication.
-func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*ChainedTokenCredential, error) {
+func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*ChainedTokenCredential, error) {
 	log := azcore.Log()
 	var creds []azcore.TokenCredential
 	errMsg := ""
@@ -56,11 +56,11 @@ func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*Chained
 	}
 	// if no credentials are added to the slice of TokenCredentials then return a CredentialUnavailableError
 	if len(creds) == 0 {
-		err := &CredentialUnavailableError{CredentialType: "Default Token Credential", Message: errMsg}
-		msg := fmt.Sprintf("Azure Identity => ERROR in GetToken() call for NewDefaultTokenCredential(): an error was returned from an underlying credential type")
+		err := &CredentialUnavailableError{CredentialType: "Default Azure Credential", Message: errMsg}
+		msg := fmt.Sprintf("Azure Identity => ERROR in GetToken() call for NewDefaultAzureCredential(): an error was returned from an underlying credential type")
 		log.Write(azcore.LogError, msg)
 		return nil, err
 	}
-	log.Write(LogCredential, "Azure Identity => NewDefaultTokenCredential() invoking NewChainedTokenCredential()")
+	log.Write(LogCredential, "Azure Identity => NewDefaultAzureCredential() invoking NewChainedTokenCredential()")
 	return NewChainedTokenCredential(creds...)
 }

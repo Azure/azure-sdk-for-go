@@ -29,6 +29,9 @@ const (
 
 // log environment variables that can be used for credential types
 func logEnvVars() {
+	if !azcore.Log().Should(LogCredential) {
+		return
+	}
 	// Log available environment variables
 	envVars := []string{}
 	log := azcore.Log()

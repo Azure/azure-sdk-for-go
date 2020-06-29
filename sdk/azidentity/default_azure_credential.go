@@ -4,8 +4,6 @@
 package azidentity
 
 import (
-	"fmt"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
@@ -57,7 +55,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 	// if no credentials are added to the slice of TokenCredentials then return a CredentialUnavailableError
 	if len(creds) == 0 {
 		err := &CredentialUnavailableError{CredentialType: "Default Azure Credential", Message: errMsg}
-		msg := fmt.Sprintf("Azure Identity => ERROR in GetToken() call for NewDefaultAzureCredential(): an error was returned from an underlying credential type")
+		msg := "Azure Identity => ERROR in GetToken() call for NewDefaultAzureCredential(): an error was returned from an underlying credential type"
 		log.Write(azcore.LogError, msg)
 		return nil, err
 	}

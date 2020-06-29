@@ -84,12 +84,6 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
-	l := azcore.Log()
-	defer l.SetClassifications()
-	l.SetClassifications(LogCredential, LogCredentialVerbose)
-	l.SetListener(func(c azcore.LogClassification, s string) {
-		fmt.Println(s)
-	})
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))

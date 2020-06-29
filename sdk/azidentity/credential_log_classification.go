@@ -8,6 +8,6 @@ import (
 )
 
 const (
-	LogCredential        azcore.LogClassification = "credential"
-	LogCredentialVerbose azcore.LogClassification = "credentialVerbose"
+	// LogCredential is the log classification that can be used for logging Azure Identity related information
+	LogCredential azcore.LogClassification = "credential"
 )

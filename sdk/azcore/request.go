@@ -29,7 +29,10 @@ const (
 type Base64Encoding int
 
 const (
+	// Base64StdFormat uses base64.StdEncoding for encoding and decoding payloads.
 	Base64StdFormat Base64Encoding = 0
+
+	// Base64URLFormat uses base64.RawURLEncoding for encoding and decoding payloads.
 	Base64URLFormat Base64Encoding = 1
 )
 

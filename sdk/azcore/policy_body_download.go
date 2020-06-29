@@ -28,8 +28,9 @@ func newBodyDownloadPolicy() Policy {
 			resp.Body.Close()
 			if err != nil {
 				err = fmt.Errorf("body download policy: %w", err)
+			} else {
+				resp.Body = &nopClosingBytesReader{s: b}
 			}
-			resp.Body = &nopClosingBytesReader{s: b}
 		}
 		return resp, err
 	})

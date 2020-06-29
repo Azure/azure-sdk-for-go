@@ -7,9 +7,16 @@ package mock
 
 import (
 	"context"
+	"errors"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"time"
+)
+
+const (
+	mockReadError = "mock-read-error"
 )
 
 // Server is a wrapper around an httptest.Server.
@@ -94,11 +101,24 @@ func (s *Server) Do(ctx context.Context, req *http.Request) (*http.Response, err
 		resp := s.getResponse()
 		return nil, resp.err
 	}
-	return s.srv.Client().Do(req.WithContext(ctx))
+	resp, err := s.srv.Client().Do(req.WithContext(ctx))
+	if err != nil {
+		return resp, err
+	}
+	// wrap the response body in a readFailer if the mock-read-error header is set
+	if resp.Header.Get(mockReadError) != "" {
+		resp.Body = &readFailer{wrapped: resp.Body}
+		resp.Header.Del(mockReadError)
+	}
+	return resp, err
 }
 
 func (s *Server) serveHTTP(w http.ResponseWriter, req *http.Request) {
-	s.getResponse().write(w)
+	resp := s.getResponse()
+	if resp.delay > 0 {
+		time.Sleep(resp.delay)
+	}
+	resp.write(w)
 }
 
 // Requests returns the number of times an HTTP request was made.
@@ -169,19 +189,24 @@ type mockResponse struct {
 	body    []byte
 	headers http.Header
 	err     error
+	rerr    bool
+	delay   time.Duration
 }
 
 func (mr mockResponse) write(w http.ResponseWriter) {
-	w.WriteHeader(mr.code)
-	if mr.body != nil {
-		w.Write(mr.body)
-	}
 	if len(mr.headers) > 0 {
 		for k, v := range mr.headers {
 			for _, vv := range v {
 				w.Header().Add(k, vv)
 			}
 		}
+	}
+	if mr.rerr {
+		w.Header().Add(mockReadError, "true")
+	}
+	w.WriteHeader(mr.code)
+	if mr.body != nil {
+		w.Write(mr.body)
 	}
 }
 
@@ -204,4 +229,30 @@ func WithHeader(k, v string) ResponseOption {
 	return fnRespOpt(func(mr *mockResponse) {
 		mr.headers.Add(k, v)
 	})
+}
+
+// WithSlowResponse will sleep for the specified duration before returning the HTTP response.
+func WithSlowResponse(d time.Duration) ResponseOption {
+	return fnRespOpt(func(mr *mockResponse) {
+		mr.delay = d
+	})
+}
+
+// WithBodyReadError returns a response that will fail when reading the body.
+func WithBodyReadError() ResponseOption {
+	return fnRespOpt(func(mr *mockResponse) {
+		mr.rerr = true
+	})
+}
+
+type readFailer struct {
+	wrapped io.ReadCloser
+}
+
+func (r *readFailer) Close() error {
+	return r.wrapped.Close()
+}
+
+func (r *readFailer) Read(p []byte) (int, error) {
+	return 0, errors.New("mock read failure")
 }

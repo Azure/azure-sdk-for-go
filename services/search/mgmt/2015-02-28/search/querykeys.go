@@ -109,7 +109,6 @@ func (client QueryKeysClient) ListSender(req *http.Request) (*http.Response, err
 func (client QueryKeysClient) ListResponder(resp *http.Response) (result ListQueryKeysResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

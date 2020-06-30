@@ -109,7 +109,6 @@ func (client AdminKeysClient) ListSender(req *http.Request) (*http.Response, err
 func (client AdminKeysClient) ListResponder(resp *http.Response) (result AdminKeyResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

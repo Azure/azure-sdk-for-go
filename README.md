@@ -249,8 +249,24 @@ below.
      client as described above.
 
 - The `auth.NewAuthorizerFromCLI()` method creates an authorizer which
-  uses [Azure CLI][] to obtain its credentials. The default audience being requested is `https://management.azure.com` (ARM API). If you need a different audience in your access token you'll probably want `auth.NewAuthorizerFromCLIWithResource("https://YOUR_CUSTOM_AUDIENCE")` instead. See more under [this issue](https://github.com/Azure/azure-sdk-for-go/issues/10814). To use this method follow
-  these steps:
+  uses [Azure CLI][] to obtain its credentials.
+  
+  The default audience being requested is `https://management.azure.com` (Azure ARM API).
+  To specify your own audience, export `AZURE_AD_RESOURCE` as an evironment variable.
+  This is read by `auth.NewAuthorizerFromCLI()` and passed to Azure CLI to acquire the access token.
+  
+  For example, to request an access token for Azure Key Vault, export
+  ```
+  AZURE_AD_RESOURCE="https://vault.azure.net"
+  ```
+  
+- `auth.NewAuthorizerFromCLIWithResource("https://YOUR_CUSTOM_AUDIENCE")` - this method is self contained and does
+  not require exporting environment variables. For example, to request an access token for Azure Key Vault:
+  ```
+  auth.NewAuthorizerFromCLIWithResource("https://vault.azure.net")
+  ```
+
+  To use `NewAuthorizerFromCLI()` or `NewAuthorizerFromCLIWithResource()`, follow these steps:
 
   1. Install [Azure CLI v2.0.12](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) or later. Upgrade earlier versions.
   2. Use `az login` to sign in to Azure.

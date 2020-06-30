@@ -54,7 +54,9 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 	msiType, err := client.getMSIType(ctx)
 	// If there is an error that means that the code is not running in a Managed Identity environment
 	if err != nil {
-		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
+		credErr := &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
+		azcore.Log().Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
+		return nil, credErr
 	}
 	// Assign the msiType discovered onto the client
 	client.msiType = msiType
@@ -69,7 +71,14 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 // scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return c.client.authenticate(ctx, c.clientID, opts.Scopes)
+	tk, err := c.client.authenticate(ctx, c.clientID, opts.Scopes)
+	if err != nil {
+		addGetTokenFailureLogs("Managed Identity Credential", err)
+		return nil, err
+	}
+	azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
+	azcore.Log().Write(LogCredential, logMSIEnv(c.client.msiType))
+	return tk, err
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on ManagedIdentityCredential.

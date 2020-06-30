@@ -6,7 +6,6 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -20,11 +19,15 @@ type ChainedTokenCredential struct {
 // NewChainedTokenCredential creates an instance of ChainedTokenCredential with the specified TokenCredential sources.
 func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedTokenCredential, error) {
 	if len(sources) == 0 {
-		return nil, &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: "Length of sources cannot be 0"}
+		credErr := &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: "Length of sources cannot be 0"}
+		azcore.Log().Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
+		return nil, credErr
 	}
 	for _, source := range sources {
 		if source == nil { // cannot have a nil credential in the chain or else the application will panic when GetToken() is called on nil
-			return nil, &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: "Sources cannot contain a nil TokenCredential"}
+			credErr := &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: "Sources cannot contain a nil TokenCredential"}
+			azcore.Log().Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
+			return nil, credErr
 		}
 	}
 	return &ChainedTokenCredential{sources: sources}, nil
@@ -41,15 +44,21 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 		} else if err != nil { // if we receive some other type of error then we must stop looping and process the error accordingly
 			var authenticationFailed *AuthenticationFailedError
 			if errors.As(err, &authenticationFailed) { // if the error is an AuthenticationFailedError we return the error related to the invalid credential and append all of the other error messages received prior to this point
-				return nil, &AuthenticationFailedError{msg: "Received an AuthenticationFailedError, there is an invalid credential in the chain. " + createChainedErrorMessage(errList), inner: err}
+				authErr := &AuthenticationFailedError{msg: "Received an AuthenticationFailedError, there is an invalid credential in the chain. " + createChainedErrorMessage(errList), inner: err}
+				addGetTokenFailureLogs("Chained Token Credential", authErr)
+				return nil, authErr
 			}
-			return nil, fmt.Errorf("Received an unexpected error: %w", err) // if we receive some other error type this is unexpected and we simple return the unexpected error
+			addGetTokenFailureLogs("Chained Token Credential", err)
+			return nil, err // if we receive some other error type this is unexpected and we simple return the unexpected error
 		} else {
+			azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
 			return token, nil // if we did not receive an error then we return the token
 		}
 	}
 	// if we reach this point it means that all of the credentials in the chain returned CredentialUnavailableErrors
-	return nil, &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: createChainedErrorMessage(errList)}
+	credErr := &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: createChainedErrorMessage(errList)}
+	addGetTokenFailureLogs("Chained Token Credential", credErr)
+	return nil, credErr
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on ChainedTokenCredential and sets the bearer token

@@ -49,7 +49,13 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	// The following code will remove the /.default suffix from the scope passed into the method since AzureCLI expect a resource string instead of a scope string
 	opts.Scopes[0] = strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
-	return c.authenticate(ctx, opts.Scopes[0])
+	at, err := c.authenticate(ctx, opts.Scopes[0])
+	if err != nil {
+		addGetTokenFailureLogs("Azure CLI Credential", err)
+		return nil, err
+	}
+	azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
+	return at, nil
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential and calls the Bearer Token policy

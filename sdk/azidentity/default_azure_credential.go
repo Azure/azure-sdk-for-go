@@ -3,7 +3,9 @@
 
 package azidentity
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+)
 
 const (
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
@@ -51,7 +53,10 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 	}
 	// if no credentials are added to the slice of TokenCredentials then return a CredentialUnavailableError
 	if len(creds) == 0 {
-		return nil, &CredentialUnavailableError{CredentialType: "Default Token Credential", Message: errMsg}
+		err := &CredentialUnavailableError{CredentialType: "Default Azure Credential", Message: errMsg}
+		azcore.Log().Write(azcore.LogError, logCredentialError(err.CredentialType, err))
+		return nil, err
 	}
+	azcore.Log().Write(LogCredential, "Azure Identity => NewDefaultAzureCredential() invoking NewChainedTokenCredential()")
 	return NewChainedTokenCredential(creds...)
 }

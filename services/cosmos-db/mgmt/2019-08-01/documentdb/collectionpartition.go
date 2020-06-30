@@ -32,15 +32,15 @@ type CollectionPartitionClient struct {
 }
 
 // NewCollectionPartitionClient creates an instance of the CollectionPartitionClient client.
-func NewCollectionPartitionClient(subscriptionID string) CollectionPartitionClient {
-	return NewCollectionPartitionClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewCollectionPartitionClient(subscriptionID string, subscriptionID1 string) CollectionPartitionClient {
+	return NewCollectionPartitionClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewCollectionPartitionClientWithBaseURI creates an instance of the CollectionPartitionClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewCollectionPartitionClientWithBaseURI(baseURI string, subscriptionID string) CollectionPartitionClient {
-	return CollectionPartitionClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewCollectionPartitionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionPartitionClient {
+	return CollectionPartitionClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given collection, split by partition.
@@ -131,7 +131,6 @@ func (client CollectionPartitionClient) ListMetricsSender(req *http.Request) (*h
 func (client CollectionPartitionClient) ListMetricsResponder(resp *http.Response) (result PartitionMetricListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -228,7 +227,6 @@ func (client CollectionPartitionClient) ListUsagesSender(req *http.Request) (*ht
 func (client CollectionPartitionClient) ListUsagesResponder(resp *http.Response) (result PartitionUsagesResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

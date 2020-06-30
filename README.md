@@ -260,7 +260,7 @@ below.
   AZURE_AD_RESOURCE="https://vault.azure.net"
   ```
   
-- `auth.NewAuthorizerFromCLIWithResource("https://YOUR_CUSTOM_AUDIENCE")` - this method is self contained and does
+- `auth.NewAuthorizerFromCLIWithResource(AUDIENCE_URL_OR_APPLICATION_ID)` - this method is self contained and does
   not require exporting environment variables. For example, to request an access token for Azure Key Vault:
   ```
   auth.NewAuthorizerFromCLIWithResource("https://vault.azure.net")

@@ -46,7 +46,8 @@ type AccessToken struct {
 	ExpiresOn time.Time
 }
 
-// TokenRequestOptions contain specific parameter that may be used by credentials types when attempting to get a token
+// TokenRequestOptions contain specific parameter that may be used by credentials types when attempting to get a token.
 type TokenRequestOptions struct {
+	// Scopes contains the list of permission scopes required for the token.
 	Scopes []string
 }

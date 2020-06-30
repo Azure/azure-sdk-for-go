@@ -49,3 +49,19 @@ func TestSkipBodyDownload(t *testing.T) {
 		t.Fatalf("unexpected download: %s", string(resp.payload()))
 	}
 }
+
+func TestDownloadBodyFail(t *testing.T) {
+	const message = "downloaded"
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithBodyReadError())
+	// download policy is automatically added during pipeline construction
+	pl := NewPipeline(srv)
+	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if resp.payload() != nil {
+		t.Fatal("expected nil payload")
+	}
+}

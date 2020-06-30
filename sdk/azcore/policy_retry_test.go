@@ -20,6 +20,7 @@ import (
 func testRetryOptions() *RetryOptions {
 	def := DefaultRetryOptions()
 	def.RetryDelay = 20 * time.Millisecond
+	def.TryTimeout = 1 * time.Second
 	return &def
 }
 
@@ -309,9 +310,88 @@ func TestRetryPolicySuccessNoDownloadNoBody(t *testing.T) {
 	resp.Body.Close()
 }
 
-// TODO: add test for retry failing to read response body
+func TestRetryPolicySuccessWithRetryReadingResponse(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBodyReadError())
+	srv.AppendResponse(mock.WithBodyReadError())
+	srv.AppendResponse()
+	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	req := NewRequest(http.MethodGet, srv.URL())
+	body := newRewindTrackingBody("stuff")
+	if err := req.SetBody(body); err != nil {
+		t.Fatal(err)
+	}
+	resp, err := pl.Do(context.Background(), req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if r := srv.Requests(); r != 3 {
+		t.Fatalf("wrong retry count, got %d expected %d", r, 3)
+	}
+	if body.rcount != 2 {
+		t.Fatalf("unexpected rewind count: %d", body.rcount)
+	}
+	if !body.closed {
+		t.Fatal("request body wasn't closed")
+	}
+}
 
-// TODO: add test for per-retry timeout failed but e2e succeeded
+func TestRetryPolicyRequestTimedOutTooSlow(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithSlowResponse(5 * time.Second))
+	pl := NewPipeline(srv, NewRetryPolicy(nil))
+	req := NewRequest(http.MethodPost, srv.URL())
+	body := newRewindTrackingBody("stuff")
+	if err := req.SetBody(body); err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+	resp, err := pl.Do(ctx, req)
+	if !errors.Is(err, context.DeadlineExceeded) {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp != nil {
+		t.Fatal("unexpected response")
+	}
+	if body.rcount > 0 {
+		t.Fatalf("unexpected rewind count: %d", body.rcount)
+	}
+	if !body.closed {
+		t.Fatal("request body wasn't closed")
+	}
+}
+
+func TestRetryPolicySuccessWithPerTryTimeout(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithSlowResponse(5 * time.Second))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	req := NewRequest(http.MethodGet, srv.URL())
+	body := newRewindTrackingBody("stuff")
+	if err := req.SetBody(body); err != nil {
+		t.Fatal(err)
+	}
+	resp, err := pl.Do(context.Background(), req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if body.rcount > 1 {
+		t.Fatalf("unexpected rewind count: %d", body.rcount)
+	}
+	if !body.closed {
+		t.Fatal("request body wasn't closed")
+	}
+}
 
 func newRewindTrackingBody(s string) *rewindTrackingBody {
 	// there are two rewinds that happen before rewinding for a retry

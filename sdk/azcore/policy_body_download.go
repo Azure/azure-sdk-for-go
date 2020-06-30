@@ -27,7 +27,7 @@ func newBodyDownloadPolicy() Policy {
 			b, err = ioutil.ReadAll(resp.Body)
 			resp.Body.Close()
 			if err != nil {
-				err = fmt.Errorf("body download policy: %w", err)
+				return resp, fmt.Errorf("body download policy: %w", err)
 			}
 			resp.Body = &nopClosingBytesReader{s: b}
 		}

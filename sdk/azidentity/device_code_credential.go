@@ -45,7 +45,6 @@ func NewDeviceCodeCredential(tenantID string, clientID string, callback func(str
 // ctx: The context for controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	log := azcore.Log()
 	for i, scope := range opts.Scopes {
 		if scope == "offline_access" { // if we find that the opts.Scopes slice contains "offline_access" then we don't need to do anything and exit
 			break
@@ -57,12 +56,12 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 	if len(c.refreshToken) != 0 {
 		tk, err := c.client.refreshAccessToken(ctx, c.tenantID, c.clientID, "", c.refreshToken, opts.Scopes)
 		if err != nil {
-			addGetTokenFailureLogs(log, "Device Code Credential", err)
+			addGetTokenFailureLogs("Device Code Credential", err)
 			return nil, err
 		}
 		// assign new refresh token to the credential for future use
 		c.refreshToken = tk.refreshToken
-		log.Write(LogCredential, logGetTokenSuccess(c, opts))
+		azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
 		// passing the access token and/or error back up
 		return tk.token, nil
 	}
@@ -70,7 +69,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 	// make initial request to the device code endpoint for a device code and instructions for authentication
 	dc, err := c.client.requestNewDeviceCode(ctx, c.tenantID, c.clientID, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs(log, "Device Code Credential", err)
+		addGetTokenFailureLogs("Device Code Credential", err)
 		return nil, err // TODO check what error type to return here
 	}
 	// send authentication flow instructions back to the user to log in and authorize the device
@@ -81,7 +80,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 		// if there is no error, save the refresh token and return the token credential
 		if err == nil {
 			c.refreshToken = tk.refreshToken
-			log.Write(LogCredential, logGetTokenSuccess(c, opts))
+			azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
 			return tk.token, err
 		}
 		// if there is an error, check for an AADAuthenticationFailedError in order to check the status for token retrieval
@@ -90,7 +89,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 			// wait for the interval specified from the initial device code endpoint and then poll for the token again
 			time.Sleep(time.Duration(dc.Interval) * time.Second)
 		} else {
-			addGetTokenFailureLogs(log, "Device Code Credential", err)
+			addGetTokenFailureLogs("Device Code Credential", err)
 			// any other error should be returned
 			return nil, err
 		}

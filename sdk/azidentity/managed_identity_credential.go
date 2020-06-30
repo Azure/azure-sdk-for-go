@@ -45,7 +45,6 @@ type ManagedIdentityCredential struct {
 // More information on user assigned managed identities cam be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview#how-a-user-assigned-managed-identity-works-with-an-azure-vm
 func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
-	log := azcore.Log()
 	// Create a new Managed Identity Client with default options
 	client := newManagedIdentityClient(options)
 	// Create a context that will timeout after 500 milliseconds (that is the amount of time designated to find out if the IMDS endpoint is available)
@@ -55,7 +54,7 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 	// If there is an error that means that the code is not running in a Managed Identity environment
 	if err != nil {
 		credErr := &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
-		log.Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
+		azcore.Log().Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
 		return nil, credErr
 	}
 	// Assign the msiType discovered onto the client
@@ -67,14 +66,13 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 // scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	log := azcore.Log()
 	tk, err := c.client.authenticate(ctx, c.clientID, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs(log, "Managed Identity Credential", err)
+		addGetTokenFailureLogs("Managed Identity Credential", err)
 		return nil, err
 	}
-	log.Write(LogCredential, logGetTokenSuccess(c, opts))
-	log.Write(LogCredential, logMSIEnv(c.client.msiType))
+	azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
+	azcore.Log().Write(LogCredential, logMSIEnv(c.client.msiType))
 	return tk, err
 }
 
@@ -82,10 +80,8 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.To
 // Please note: the TokenRequestOptions included in AuthenticationPolicyOptions must be a slice of resources in this case and not scopes
 func (c *ManagedIdentityCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	// The following code will remove the /.default suffix from any scopes passed into the method since ManagedIdentityCredentials expect a resource string instead of a scope string
-	for i, s := range options.Options.Scopes {
-		if strings.HasSuffix(s, defaultSuffix) {
-			options.Options.Scopes[i] = s[:len(s)-len(defaultSuffix)]
-		}
+	for i := range options.Options.Scopes {
+		options.Options.Scopes[i] = strings.TrimSuffix(options.Options.Scopes[i], defaultSuffix)
 	}
 	return newBearerTokenPolicy(c, options)
 }

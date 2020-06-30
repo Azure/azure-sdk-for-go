@@ -44,12 +44,11 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticateUsernamePassword(ctx, c.tenantID, c.clientID, c.username, c.password, opts.Scopes)
-	log := azcore.Log()
 	if err != nil {
-		addGetTokenFailureLogs(log, "Username Password Credential", err)
+		addGetTokenFailureLogs("Username Password Credential", err)
 		return nil, err
 	}
-	log.Write(LogCredential, logGetTokenSuccess(c, opts))
+	azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
 	return tk, err
 }
 

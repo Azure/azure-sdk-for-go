@@ -27,11 +27,10 @@ type ClientCertificateCredential struct {
 // clientCertificate: The path to the client certificate that was generated for the App Registration used to authenticate the client.
 // options: configure the management of the requests sent to Azure Active Directory.
 func NewClientCertificateCredential(tenantID string, clientID string, clientCertificate string, options *TokenCredentialOptions) (*ClientCertificateCredential, error) {
-	log := azcore.Log()
 	_, err := os.Stat(clientCertificate)
 	if err != nil {
 		credErr := &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: "Certificate file not found in path: " + clientCertificate}
-		log.Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
+		azcore.Log().Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
 		return nil, credErr
 	}
 	c, err := newAADIdentityClient(options)
@@ -48,12 +47,11 @@ func NewClientCertificateCredential(tenantID string, clientID string, clientCert
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.clientCertificate, opts.Scopes)
-	log := azcore.Log()
 	if err != nil {
-		addGetTokenFailureLogs(log, "Client Certificate Credential", err)
+		addGetTokenFailureLogs("Client Certificate Credential", err)
 		return nil, err
 	}
-	log.Write(LogCredential, logGetTokenSuccess(c, opts))
+	azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
 	return tk, nil
 }
 

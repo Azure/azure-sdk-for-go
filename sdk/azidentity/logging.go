@@ -21,7 +21,6 @@ func logEnvVars() {
 	}
 	// Log available environment variables
 	envVars := []string{}
-	log := azcore.Log()
 	if envCheck := os.Getenv("AZURE_TENANT_ID"); len(envCheck) > 0 {
 		envVars = append(envVars, "AZURE_TENANT_ID")
 	}
@@ -38,7 +37,7 @@ func logEnvVars() {
 		envVars = append(envVars, "AZURE_CLI_PATH")
 	}
 	if len(envVars) > 0 {
-		log.Write(LogCredential, fmt.Sprintf("Azure Identity => Found the following environment variables: %s", strings.Join(envVars, ", ")))
+		azcore.Log().Write(LogCredential, fmt.Sprintf("Azure Identity => Found the following environment variables: %s", strings.Join(envVars, ", ")))
 	}
 }
 
@@ -48,8 +47,8 @@ func logGetTokenSuccess(cred azcore.TokenCredential, opts azcore.TokenRequestOpt
 	return msg
 }
 
-func logGetTokenFailure(credName string, err error) string {
-	return fmt.Sprintf("Azure Identity => ERROR in GetToken() call for %s: %s", credName, err.Error())
+func logGetTokenFailure(credName string) string {
+	return fmt.Sprintf("Azure Identity => ERROR in GetToken() call for %s. Please check the log for the error.", credName)
 }
 
 func logCredentialError(credName string, err error) string {
@@ -71,7 +70,7 @@ func logMSIEnv(msi msiType) string {
 	}
 }
 
-func addGetTokenFailureLogs(log *azcore.Logger, credName string, err error) {
-	log.Write(azcore.LogError, logCredentialError(credName, err))
-	log.Write(azcore.LogError, logGetTokenFailure(credName, err))
+func addGetTokenFailureLogs(credName string, err error) {
+	azcore.Log().Write(azcore.LogError, logCredentialError(credName, err))
+	azcore.Log().Write(azcore.LogError, logGetTokenFailure(credName))
 }

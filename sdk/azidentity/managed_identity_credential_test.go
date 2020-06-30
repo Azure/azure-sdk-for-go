@@ -250,3 +250,30 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 		t.Fatalf("Wrong request scheme")
 	}
 }
+
+func TestManagedIdentityCredential_GetTokenEnvVar(t *testing.T) {
+	err := resetEnvironmentVarsForTest()
+	if err != nil {
+		t.Fatalf("Unable to set environment variables")
+	}
+	err = os.Setenv("AZURE_CLIENT_ID", "test_client_id")
+	if err != nil {
+		t.Fatal(err)
+	}
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	testURL := srv.URL()
+	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
+	msiCred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	at, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	if err != nil {
+		t.Fatalf("Received an error when attempting to retrieve a token")
+	}
+	if at.Token != "new_token" {
+		t.Fatalf("Did not receive the correct access token")
+	}
+}

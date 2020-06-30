@@ -249,7 +249,7 @@ below.
      client as described above.
 
 - The `auth.NewAuthorizerFromCLI()` method creates an authorizer which
-  uses [Azure CLI][] to obtain its credentials. To use this method follow
+  uses [Azure CLI][] to obtain its credentials. The default audience being requested is `https://management.azure.com` (ARM API). If you need a different audience in your access token you'll probably want `auth.NewAuthorizerFromCLIWithResource("https://YOUR_CUSTOM_AUDIENCE")` instead. See more under [this issue](https://github.com/Azure/azure-sdk-for-go/issues/10814). To use this method follow
   these steps:
 
   1. Install [Azure CLI v2.0.12](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) or later. Upgrade earlier versions.

@@ -47,11 +47,18 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 // opts: TokenRequestOptions contains the list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+	log := azcore.Log()
 	// The following code will remove the /.default suffix from the scope passed into the method since AzureCLI expect a resource string instead of a scope string
 	if strings.HasSuffix(opts.Scopes[0], defaultSuffix) {
 		opts.Scopes[0] = opts.Scopes[0][:len(opts.Scopes[0])-len(defaultSuffix)]
 	}
-	return c.authenticate(ctx, opts.Scopes[0])
+	at, err := c.authenticate(ctx, opts.Scopes[0])
+	if err != nil {
+		addGetTokenFailureLogs(log, "Azure CLI Credential", err)
+		return nil, err
+	}
+	log.Write(LogCredential, logGetTokenSuccess(c, opts))
+	return at, nil
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential and calls the Bearer Token policy

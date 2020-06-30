@@ -5,10 +5,8 @@ package azidentity
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"path"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -29,9 +27,12 @@ type ClientCertificateCredential struct {
 // clientCertificate: The path to the client certificate that was generated for the App Registration used to authenticate the client.
 // options: configure the management of the requests sent to Azure Active Directory.
 func NewClientCertificateCredential(tenantID string, clientID string, clientCertificate string, options *TokenCredentialOptions) (*ClientCertificateCredential, error) {
+	log := azcore.Log()
 	_, err := os.Stat(clientCertificate)
 	if err != nil {
-		return nil, &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: "Certificate file not found in path: " + clientCertificate}
+		credErr := &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: "Certificate file not found in path: " + clientCertificate}
+		log.Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
+		return nil, credErr
 	}
 	c, err := newAADIdentityClient(options)
 	if err != nil {
@@ -49,15 +50,11 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts azcore.
 	tk, err := c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.clientCertificate, opts.Scopes)
 	log := azcore.Log()
 	if err != nil {
-		msg := fmt.Sprintf("Azure Identity => ERROR in GetToken() call for %T: %s", c, err.Error())
-		log.Write(azcore.LogError, msg)
-	} else {
-		msg := fmt.Sprintf("Azure Identity => GetToken() result for %T: SUCCESS", c)
-		log.Write(LogCredential, msg)
-		vmsg := fmt.Sprintf("Azure Identity => Scopes: [%s]", strings.Join(opts.Scopes, ", "))
-		log.Write(LogCredential, vmsg)
+		addGetTokenFailureLogs(log, "Client Certificate Credential", err)
+		return nil, err
 	}
-	return tk, err
+	log.Write(LogCredential, logGetTokenSuccess(c, opts))
+	return tk, nil
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.

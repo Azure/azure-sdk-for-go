@@ -41,3 +41,37 @@ func logEnvVars() {
 		log.Write(LogCredential, fmt.Sprintf("Azure Identity => Found the following environment variables: %s", strings.Join(envVars, ", ")))
 	}
 }
+
+func logGetTokenSuccess(cred azcore.TokenCredential, opts azcore.TokenRequestOptions) string {
+	msg := fmt.Sprintf("Azure Identity => GetToken() result for %T: SUCCESS\n", cred)
+	msg += fmt.Sprintf("Azure Identity => Scopes: [%s]", strings.Join(opts.Scopes, ", "))
+	return msg
+}
+
+func logGetTokenFailure(credName string, err error) string {
+	return fmt.Sprintf("Azure Identity => ERROR in GetToken() call for %s: %s", credName, err.Error())
+}
+
+func logCredentialError(credName string, err error) string {
+	return fmt.Sprintf("Azure Identity => ERROR in %s: %s", credName, err.Error())
+}
+
+func logMSIEnv(msi msiType) string {
+	switch msi {
+	case 1:
+		return "Azure Identity => Managed Identity environment: IMDS"
+	case 2:
+		return "Azure Identity => Managed Identity environment: MSI_ENDPOINT"
+	case 3:
+		return "Azure Identity => Managed Identity environment: MSI_ENDPOINT"
+	case 4:
+		return "Azure Identity => Managed Identity environment: Unavailable"
+	default:
+		return "Azure Identity => Managed Identity environment: Unknown"
+	}
+}
+
+func addGetTokenFailureLogs(log *azcore.Logger, credName string, err error) {
+	log.Write(azcore.LogError, logCredentialError(credName, err))
+	log.Write(azcore.LogError, logGetTokenFailure(credName, err))
+}

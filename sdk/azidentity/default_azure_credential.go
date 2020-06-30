@@ -55,8 +55,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 	// if no credentials are added to the slice of TokenCredentials then return a CredentialUnavailableError
 	if len(creds) == 0 {
 		err := &CredentialUnavailableError{CredentialType: "Default Azure Credential", Message: errMsg}
-		msg := "Azure Identity => ERROR in GetToken() call for NewDefaultAzureCredential(): an error was returned from an underlying credential type"
-		log.Write(azcore.LogError, msg)
+		log.Write(azcore.LogError, logCredentialError(err.CredentialType, err))
 		return nil, err
 	}
 	log.Write(LogCredential, "Azure Identity => NewDefaultAzureCredential() invoking NewChainedTokenCredential()")

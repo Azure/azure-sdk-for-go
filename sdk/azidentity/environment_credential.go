@@ -4,7 +4,6 @@
 package azidentity
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -18,24 +17,21 @@ func NewEnvironmentCredential(options *TokenCredentialOptions) (*ClientSecretCre
 	log := azcore.Log()
 	if tenantID == "" {
 		err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_TENANT_ID"}
-		msg := fmt.Sprintf("Azure Identity => ERROR in NewEnvironmentCredential() call: %s", err.Error())
-		log.Write(azcore.LogError, msg)
+		log.Write(azcore.LogError, logCredentialError(err.CredentialType, err))
 		return nil, err
 	}
 
 	clientID := os.Getenv("AZURE_CLIENT_ID")
 	if clientID == "" {
 		err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_CLIENT_ID"}
-		msg := fmt.Sprintf("Azure Identity => ERROR in NewEnvironmentCredential() call: %s", err.Error())
-		log.Write(azcore.LogError, msg)
+		log.Write(azcore.LogError, logCredentialError(err.CredentialType, err))
 		return nil, err
 	}
 
 	clientSecret := os.Getenv("AZURE_CLIENT_SECRET")
 	if clientSecret == "" {
 		err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_CLIENT_SECRET"}
-		msg := fmt.Sprintf("Azure Identity => ERROR in NewEnvironmentCredential() call: %s", err.Error())
-		log.Write(azcore.LogError, msg)
+		log.Write(azcore.LogError, logCredentialError(err.CredentialType, err))
 		return nil, err
 	}
 	log.Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientSecretCredential")

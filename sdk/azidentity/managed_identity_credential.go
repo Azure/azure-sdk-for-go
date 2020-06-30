@@ -5,7 +5,6 @@ package azidentity
 
 import (
 	"context"
-	"fmt"
 	"strings"
 	"time"
 
@@ -46,6 +45,7 @@ type ManagedIdentityCredential struct {
 // More information on user assigned managed identities cam be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview#how-a-user-assigned-managed-identity-works-with-an-azure-vm
 func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
+	log := azcore.Log()
 	// Create a new Managed Identity Client with default options
 	client := newManagedIdentityClient(options)
 	// Create a context that will timeout after 500 milliseconds (that is the amount of time designated to find out if the IMDS endpoint is available)
@@ -54,7 +54,9 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 	msiType, err := client.getMSIType(ctx)
 	// If there is an error that means that the code is not running in a Managed Identity environment
 	if err != nil {
-		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
+		credErr := &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
+		log.Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
+		return nil, credErr
 	}
 	// Assign the msiType discovered onto the client
 	client.msiType = msiType
@@ -65,30 +67,14 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 // scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	tk, err := c.client.authenticate(ctx, c.clientID, opts.Scopes)
 	log := azcore.Log()
+	tk, err := c.client.authenticate(ctx, c.clientID, opts.Scopes)
 	if err != nil {
-		msg := fmt.Sprintf("Azure Identity => ERROR in GetToken() call for %T: %s", c, err.Error())
-		log.Write(azcore.LogError, msg)
-	} else {
-		msg := fmt.Sprintf("Azure Identity => GetToken() result for %T: SUCCESS", c)
-		log.Write(LogCredential, msg)
-		vmsg := fmt.Sprintf("Azure Identity => Scopes: [%s]", strings.Join(opts.Scopes, ", "))
-		log.Write(LogCredential, vmsg)
-		switch c.client.msiType {
-		case 1:
-			log.Write(LogCredential, "Azure Identity => Managed Identity environment: IMDS")
-		case 2:
-			log.Write(LogCredential, "Azure Identity => Managed Identity environment: MSI_ENDPOINT")
-		case 3:
-			log.Write(LogCredential, "Azure Identity => Managed Identity environment: MSI_ENDPOINT")
-		case 4:
-			log.Write(LogCredential, "Azure Identity => Managed Identity environment: Unavailable")
-		default:
-			log.Write(LogCredential, "Azure Identity => Managed Identity environment: Unknown")
-		}
-
+		addGetTokenFailureLogs(log, "Managed Identity Credential", err)
+		return nil, err
 	}
+	log.Write(LogCredential, logGetTokenSuccess(c, opts))
+	log.Write(LogCredential, logMSIEnv(c.client.msiType))
 	return tk, err
 }
 

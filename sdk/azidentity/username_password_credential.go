@@ -5,9 +5,7 @@ package azidentity
 
 import (
 	"context"
-	"fmt"
 	"path"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -48,14 +46,10 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts azcore.T
 	tk, err := c.client.authenticateUsernamePassword(ctx, c.tenantID, c.clientID, c.username, c.password, opts.Scopes)
 	log := azcore.Log()
 	if err != nil {
-		msg := fmt.Sprintf("Azure Identity => ERROR in GetToken() call for %T: %s", c, err.Error())
-		log.Write(azcore.LogError, msg)
-	} else {
-		msg := fmt.Sprintf("Azure Identity => GetToken() result for %T: SUCCESS", c)
-		log.Write(LogCredential, msg)
-		vmsg := fmt.Sprintf("Azure Identity => Scopes: [%s]", strings.Join(opts.Scopes, ", "))
-		log.Write(LogCredential, vmsg)
+		addGetTokenFailureLogs(log, "Username Password Credential", err)
+		return nil, err
 	}
+	log.Write(LogCredential, logGetTokenSuccess(c, opts))
 	return tk, err
 }
 

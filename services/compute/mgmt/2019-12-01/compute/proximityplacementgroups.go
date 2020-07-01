@@ -87,7 +87,7 @@ func (client ProximityPlacementGroupsClient) CreateOrUpdatePreparer(ctx context.
 		"subscriptionId":              autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-07-01"
+	const APIVersion = "2019-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -113,7 +113,6 @@ func (client ProximityPlacementGroupsClient) CreateOrUpdateSender(req *http.Requ
 func (client ProximityPlacementGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result ProximityPlacementGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -165,7 +164,7 @@ func (client ProximityPlacementGroupsClient) DeletePreparer(ctx context.Context,
 		"subscriptionId":              autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-07-01"
+	const APIVersion = "2019-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -189,7 +188,6 @@ func (client ProximityPlacementGroupsClient) DeleteSender(req *http.Request) (*h
 func (client ProximityPlacementGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -242,7 +240,7 @@ func (client ProximityPlacementGroupsClient) GetPreparer(ctx context.Context, re
 		"subscriptionId":              autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-07-01"
+	const APIVersion = "2019-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -269,7 +267,6 @@ func (client ProximityPlacementGroupsClient) GetSender(req *http.Request) (*http
 func (client ProximityPlacementGroupsClient) GetResponder(resp *http.Response) (result ProximityPlacementGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -320,7 +317,7 @@ func (client ProximityPlacementGroupsClient) ListByResourceGroupPreparer(ctx con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-07-01"
+	const APIVersion = "2019-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -344,7 +341,6 @@ func (client ProximityPlacementGroupsClient) ListByResourceGroupSender(req *http
 func (client ProximityPlacementGroupsClient) ListByResourceGroupResponder(resp *http.Response) (result ProximityPlacementGroupListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -429,7 +425,7 @@ func (client ProximityPlacementGroupsClient) ListBySubscriptionPreparer(ctx cont
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-07-01"
+	const APIVersion = "2019-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -453,7 +449,6 @@ func (client ProximityPlacementGroupsClient) ListBySubscriptionSender(req *http.
 func (client ProximityPlacementGroupsClient) ListBySubscriptionResponder(resp *http.Response) (result ProximityPlacementGroupListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -543,7 +538,7 @@ func (client ProximityPlacementGroupsClient) UpdatePreparer(ctx context.Context,
 		"subscriptionId":              autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-07-01"
+	const APIVersion = "2019-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -569,7 +564,6 @@ func (client ProximityPlacementGroupsClient) UpdateSender(req *http.Request) (*h
 func (client ProximityPlacementGroupsClient) UpdateResponder(resp *http.Response) (result ProximityPlacementGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

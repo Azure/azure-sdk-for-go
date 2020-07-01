@@ -1,5 +1,73 @@
 # CHANGELOG
 
+## `v44.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| appconfiguration | 2020-06-01 |
+| avs | 2019-08-09-preview |
+| billing | 2020-05-01 |
+| compute | 2020-06-01 |
+| containerinstance | 2019-12-01 |
+| containerservice | 2020-06-01 |
+| digitaltwins | 2020-05-31 |
+| documentdb | 2020-06-01-preview |
+| hardwaresecuritymodules | 2018-10-31-preview |
+| search | 2020-03-13 |
+| training | customvision |
+| translatortext | v1.0_preview.1 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| attestation | 2018-09-01-preview |
+| azuredata | 2019-07-24-preview |
+| backup | 2019-06-15<br/>2020-02-02 |
+| cdn | 2020-04-15 |
+| containerregistry | 2019-06-01-preview<br/>2019-12-01-preview |
+| face | v1.0 |
+| frontdoor | 2020-05-01 |
+| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+| insights | 2015-05-01 |
+| iotcentral | 2018-09-01 |
+| siterecovery | 2018-07-10 |
+| sql | v3.0 |
+| storage | 2019-04-01<br/>2019-06-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| accesscontrol | 2020-02-01-preview |
+| alertsmanagement | 2019-03-01 |
+| apimanagement | 2019-12-01 |
+| azurestack | 2017-06-01 |
+| blueprint | 2018-11-01-preview |
+| compute | 2019-07-01 |
+| databricks | 2018-04-01 |
+| datafactory | 2018-06-01 |
+| desktopvirtualization | 2019-01-23-preview<br/>2019-09-24-preview<br/>2019-12-10-preview |
+| eventhub | 2018-01-01-preview |
+| formrecognizer | v1.0 |
+| hdinsight | 2018-11-01-preview |
+| machinelearningservices | 2018-03-01-preview<br/>2018-11-19<br/>2019-05-01<br/>2019-06-01<br/>2019-11-01<br/>2020-01-01<br/>2020-02-18-preview<br/>2020-03-01<br/>2020-04-01 |
+| migrate | 2018-09-01-preview |
+| network | 2019-04-01<br/>2019-06-01<br/>2019-07-01<br/>2019-08-01<br/>2019-09-01<br/>2019-11-01<br/>2019-12-01<br/>2020-03-01<br/>2020-04-01<br/>2020-05-01 |
+| operationalinsights | 2020-03-01-preview |
+| reservations | 2019-07-19-preview |
+| security | v1.0<br/>v2.0<br/>v3.0 |
+| sql | 2014-04-01<br/>2015-05-01-preview<br/>2017-03-01-preview |
+
+### Removed Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| billing | 2020-05-01-preview |
+| vmware | 2019-08-09-preview |
+
 ## `v43.3.0`
 
 ### New Packages

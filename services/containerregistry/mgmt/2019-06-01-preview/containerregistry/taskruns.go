@@ -125,7 +125,6 @@ func (client TaskRunsClient) CreateSender(req *http.Request) (future TaskRunsCre
 func (client TaskRunsClient) CreateResponder(resp *http.Response) (result TaskRun, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -213,7 +212,6 @@ func (client TaskRunsClient) DeleteSender(req *http.Request) (future TaskRunsDel
 func (client TaskRunsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -300,7 +298,6 @@ func (client TaskRunsClient) GetSender(req *http.Request) (*http.Response, error
 func (client TaskRunsClient) GetResponder(resp *http.Response) (result TaskRun, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -388,7 +385,6 @@ func (client TaskRunsClient) GetDetailsSender(req *http.Request) (*http.Response
 func (client TaskRunsClient) GetDetailsResponder(resp *http.Response) (result TaskRun, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -475,7 +471,6 @@ func (client TaskRunsClient) ListSender(req *http.Request) (*http.Response, erro
 func (client TaskRunsClient) ListResponder(resp *http.Response) (result TaskRunListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -603,7 +598,6 @@ func (client TaskRunsClient) UpdateSender(req *http.Request) (future TaskRunsUpd
 func (client TaskRunsClient) UpdateResponder(resp *http.Response) (result TaskRun, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

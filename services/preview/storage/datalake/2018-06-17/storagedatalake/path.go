@@ -310,7 +310,6 @@ func (client PathClient) CreateSender(req *http.Request) (*http.Response, error)
 func (client PathClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
@@ -466,7 +465,6 @@ func (client PathClient) DeleteSender(req *http.Request) (*http.Response, error)
 func (client PathClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -608,7 +606,6 @@ func (client PathClient) GetPropertiesSender(req *http.Request) (*http.Response,
 func (client PathClient) GetPropertiesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -784,7 +781,6 @@ func (client PathClient) LeaseSender(req *http.Request) (*http.Response, error) 
 func (client PathClient) LeaseResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -915,7 +911,6 @@ func (client PathClient) ListSender(req *http.Request) (*http.Response, error) {
 func (client PathClient) ListResponder(resp *http.Response) (result PathList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1059,7 +1054,6 @@ func (client PathClient) ReadResponder(resp *http.Response) (result ReadCloser, 
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusPartialContent))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -1330,7 +1324,6 @@ func (client PathClient) UpdateSender(req *http.Request) (*http.Response, error)
 func (client PathClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

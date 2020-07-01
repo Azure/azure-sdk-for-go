@@ -247,6 +247,11 @@ type MachineLearningComputeCreateOrUpdateFuture = original.MachineLearningComput
 type MachineLearningComputeDeleteFuture = original.MachineLearningComputeDeleteFuture
 type MachineLearningComputeUpdateFuture = original.MachineLearningComputeUpdateFuture
 type NodeStateCounts = original.NodeStateCounts
+type NotebookListCredentialsResult = original.NotebookListCredentialsResult
+type NotebookPreparationError = original.NotebookPreparationError
+type NotebookResourceInfo = original.NotebookResourceInfo
+type NotebooksClient = original.NotebooksClient
+type NotebooksPrepareFuture = original.NotebooksPrepareFuture
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -310,6 +315,7 @@ type WorkspaceSku = original.WorkspaceSku
 type WorkspaceUpdateParameters = original.WorkspaceUpdateParameters
 type WorkspacesClient = original.WorkspacesClient
 type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
+type WorkspacesDeleteFuture = original.WorkspacesDeleteFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -337,6 +343,12 @@ func NewMachineLearningComputeClient(subscriptionID string) MachineLearningCompu
 }
 func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
 	return original.NewMachineLearningComputeClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNotebooksClient(subscriptionID string) NotebooksClient {
+	return original.NewNotebooksClient(subscriptionID)
+}
+func NewNotebooksClientWithBaseURI(baseURI string, subscriptionID string) NotebooksClient {
+	return original.NewNotebooksClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

@@ -127,7 +127,6 @@ func (client SQLServerInstancesClient) CreateSender(req *http.Request) (*http.Re
 func (client SQLServerInstancesClient) CreateResponder(resp *http.Response) (result SQLServerInstance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -203,7 +202,6 @@ func (client SQLServerInstancesClient) DeleteSender(req *http.Request) (*http.Re
 func (client SQLServerInstancesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -278,7 +276,6 @@ func (client SQLServerInstancesClient) GetSender(req *http.Request) (*http.Respo
 func (client SQLServerInstancesClient) GetResponder(resp *http.Response) (result SQLServerInstance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -350,7 +347,6 @@ func (client SQLServerInstancesClient) ListSender(req *http.Request) (*http.Resp
 func (client SQLServerInstancesClient) ListResponder(resp *http.Response) (result SQLServerInstanceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -462,7 +458,6 @@ func (client SQLServerInstancesClient) ListByResourceGroupSender(req *http.Reque
 func (client SQLServerInstancesClient) ListByResourceGroupResponder(resp *http.Response) (result SQLServerInstanceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -578,7 +573,6 @@ func (client SQLServerInstancesClient) UpdateSender(req *http.Request) (*http.Re
 func (client SQLServerInstancesClient) UpdateResponder(resp *http.Response) (result SQLServerInstance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

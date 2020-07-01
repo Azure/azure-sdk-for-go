@@ -55,8 +55,9 @@ func NewPersonGroupClient(endpoint string) PersonGroupClient {
 // * 'recognition_01': The default recognition model for [PersonGroup -
 // Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/create). All those person groups
 // created before 2019 March are bonded with this recognition model.
-// * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall
-// accuracy is improved compared with 'recognition_01'.
+// * 'recognition_02': Recognition model released in 2019 March.
+// * 'recognition_03': Recognition model released in 2020 May. 'recognition_03' is recommended since its overall
+// accuracy is improved compared with 'recognition_01' and 'recognition_02'.
 //
 // Person group quota:
 // * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
@@ -135,7 +136,6 @@ func (client PersonGroupClient) CreateSender(req *http.Request) (*http.Response,
 func (client PersonGroupClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -213,7 +213,6 @@ func (client PersonGroupClient) DeleteSender(req *http.Request) (*http.Response,
 func (client PersonGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -301,7 +300,6 @@ func (client PersonGroupClient) GetSender(req *http.Request) (*http.Response, er
 func (client PersonGroupClient) GetResponder(resp *http.Response) (result PersonGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -379,7 +377,6 @@ func (client PersonGroupClient) GetTrainingStatusSender(req *http.Request) (*htt
 func (client PersonGroupClient) GetTrainingStatusResponder(resp *http.Response) (result TrainingStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -487,7 +484,6 @@ func (client PersonGroupClient) ListSender(req *http.Request) (*http.Response, e
 func (client PersonGroupClient) ListResponder(resp *http.Response) (result ListPersonGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -565,7 +561,6 @@ func (client PersonGroupClient) TrainSender(req *http.Request) (*http.Response, 
 func (client PersonGroupClient) TrainResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -646,7 +641,6 @@ func (client PersonGroupClient) UpdateSender(req *http.Request) (*http.Response,
 func (client PersonGroupClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

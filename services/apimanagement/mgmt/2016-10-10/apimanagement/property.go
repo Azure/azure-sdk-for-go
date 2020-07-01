@@ -138,7 +138,6 @@ func (client PropertyClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 func (client PropertyClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -229,7 +228,6 @@ func (client PropertyClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client PropertyClient) DeleteResponder(resp *http.Response) (result ErrorBodyContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusMethodNotAllowed),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -318,7 +316,6 @@ func (client PropertyClient) GetSender(req *http.Request) (*http.Response, error
 func (client PropertyClient) GetResponder(resp *http.Response) (result PropertyContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -413,7 +410,6 @@ func (client PropertyClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client PropertyClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

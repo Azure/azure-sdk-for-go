@@ -126,7 +126,6 @@ func (client PrivateEndpointConnectionClient) GetSender(req *http.Request) (*htt
 func (client PrivateEndpointConnectionClient) GetResponder(resp *http.Response) (result PrivateEndpointConnection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -215,7 +214,6 @@ func (client PrivateEndpointConnectionClient) ListByBatchAccountSender(req *http
 func (client PrivateEndpointConnectionClient) ListByBatchAccountResponder(resp *http.Response) (result ListPrivateEndpointConnectionsResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -353,7 +351,6 @@ func (client PrivateEndpointConnectionClient) UpdateSender(req *http.Request) (*
 func (client PrivateEndpointConnectionClient) UpdateResponder(resp *http.Response) (result PrivateEndpointConnection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

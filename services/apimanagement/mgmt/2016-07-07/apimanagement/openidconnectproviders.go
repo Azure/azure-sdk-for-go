@@ -132,7 +132,6 @@ func (client OpenIDConnectProvidersClient) CreateOrUpdateSender(req *http.Reques
 func (client OpenIDConnectProvidersClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -220,7 +219,6 @@ func (client OpenIDConnectProvidersClient) DeleteSender(req *http.Request) (*htt
 func (client OpenIDConnectProvidersClient) DeleteResponder(resp *http.Response) (result ErrorBodyContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusMethodNotAllowed),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -306,7 +304,6 @@ func (client OpenIDConnectProvidersClient) GetSender(req *http.Request) (*http.R
 func (client OpenIDConnectProvidersClient) GetResponder(resp *http.Response) (result OpenidConnectProviderContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -412,7 +409,6 @@ func (client OpenIDConnectProvidersClient) ListByServiceSender(req *http.Request
 func (client OpenIDConnectProvidersClient) ListByServiceResponder(resp *http.Response) (result OpenIDConnectProviderCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -541,7 +537,6 @@ func (client OpenIDConnectProvidersClient) UpdateSender(req *http.Request) (*htt
 func (client OpenIDConnectProvidersClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

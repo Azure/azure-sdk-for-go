@@ -128,7 +128,6 @@ func (client HostPoolsClient) CreateOrUpdateSender(req *http.Request) (*http.Res
 func (client HostPoolsClient) CreateOrUpdateResponder(resp *http.Response) (result HostPool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -221,7 +220,6 @@ func (client HostPoolsClient) DeleteSender(req *http.Request) (*http.Response, e
 func (client HostPoolsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -309,7 +307,6 @@ func (client HostPoolsClient) GetSender(req *http.Request) (*http.Response, erro
 func (client HostPoolsClient) GetResponder(resp *http.Response) (result HostPool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -387,7 +384,6 @@ func (client HostPoolsClient) ListSender(req *http.Request) (*http.Response, err
 func (client HostPoolsClient) ListResponder(resp *http.Response) (result HostPoolList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -509,7 +505,6 @@ func (client HostPoolsClient) ListByResourceGroupSender(req *http.Request) (*htt
 func (client HostPoolsClient) ListByResourceGroupResponder(resp *http.Response) (result HostPoolList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -641,7 +636,6 @@ func (client HostPoolsClient) UpdateSender(req *http.Request) (*http.Response, e
 func (client HostPoolsClient) UpdateResponder(resp *http.Response) (result HostPool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

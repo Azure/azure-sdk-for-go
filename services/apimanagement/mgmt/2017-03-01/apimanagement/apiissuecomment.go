@@ -150,7 +150,6 @@ func (client APIIssueCommentClient) CreateOrUpdateSender(req *http.Request) (*ht
 func (client APIIssueCommentClient) CreateOrUpdateResponder(resp *http.Response) (result IssueCommentContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -255,7 +254,6 @@ func (client APIIssueCommentClient) DeleteSender(req *http.Request) (*http.Respo
 func (client APIIssueCommentClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -356,7 +354,6 @@ func (client APIIssueCommentClient) GetSender(req *http.Request) (*http.Response
 func (client APIIssueCommentClient) GetResponder(resp *http.Response) (result IssueCommentContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

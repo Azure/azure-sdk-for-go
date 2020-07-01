@@ -140,7 +140,6 @@ func (client ReviewsClient) AddVideoFrameSender(req *http.Request) (*http.Respon
 func (client ReviewsClient) AddVideoFrameResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -232,7 +231,6 @@ func (client ReviewsClient) AddVideoFrameStreamSender(req *http.Request) (*http.
 func (client ReviewsClient) AddVideoFrameStreamResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -325,7 +323,6 @@ func (client ReviewsClient) AddVideoFrameURLSender(req *http.Request) (*http.Res
 func (client ReviewsClient) AddVideoFrameURLResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -402,7 +399,6 @@ func (client ReviewsClient) AddVideoTranscriptSender(req *http.Request) (*http.R
 func (client ReviewsClient) AddVideoTranscriptResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -487,7 +483,6 @@ func (client ReviewsClient) AddVideoTranscriptModerationResultSender(req *http.R
 func (client ReviewsClient) AddVideoTranscriptModerationResultResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -630,7 +625,6 @@ func (client ReviewsClient) CreateJobSender(req *http.Request) (*http.Response, 
 func (client ReviewsClient) CreateJobResponder(resp *http.Response) (result JobID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -743,7 +737,6 @@ func (client ReviewsClient) CreateReviewsSender(req *http.Request) (*http.Respon
 func (client ReviewsClient) CreateReviewsResponder(resp *http.Response) (result ListString, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -856,7 +849,6 @@ func (client ReviewsClient) CreateVideoReviewsSender(req *http.Request) (*http.R
 func (client ReviewsClient) CreateVideoReviewsResponder(resp *http.Response) (result ListString, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -929,7 +921,6 @@ func (client ReviewsClient) GetJobDetailsSender(req *http.Request) (*http.Respon
 func (client ReviewsClient) GetJobDetailsResponder(resp *http.Response) (result Job, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1002,7 +993,6 @@ func (client ReviewsClient) GetReviewSender(req *http.Request) (*http.Response, 
 func (client ReviewsClient) GetReviewResponder(resp *http.Response) (result Review, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1114,7 +1104,6 @@ func (client ReviewsClient) GetVideoFramesSender(req *http.Request) (*http.Respo
 func (client ReviewsClient) GetVideoFramesResponder(resp *http.Response) (result Frames, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1187,7 +1176,6 @@ func (client ReviewsClient) PublishVideoReviewSender(req *http.Request) (*http.R
 func (client ReviewsClient) PublishVideoReviewResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

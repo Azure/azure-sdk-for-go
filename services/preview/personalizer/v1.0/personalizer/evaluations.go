@@ -111,7 +111,6 @@ func (client EvaluationsClient) CreateSender(req *http.Request) (*http.Response,
 func (client EvaluationsClient) CreateResponder(resp *http.Response) (result Evaluation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -188,7 +187,6 @@ func (client EvaluationsClient) DeleteSender(req *http.Request) (*http.Response,
 func (client EvaluationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -264,7 +262,6 @@ func (client EvaluationsClient) GetSender(req *http.Request) (*http.Response, er
 func (client EvaluationsClient) GetResponder(resp *http.Response) (result Evaluation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -329,7 +326,6 @@ func (client EvaluationsClient) ListSender(req *http.Request) (*http.Response, e
 func (client EvaluationsClient) ListResponder(resp *http.Response) (result ListEvaluation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

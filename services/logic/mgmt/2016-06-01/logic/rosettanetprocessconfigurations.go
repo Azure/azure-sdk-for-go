@@ -159,7 +159,6 @@ func (client RosettaNetProcessConfigurationsClient) CreateOrUpdateSender(req *ht
 func (client RosettaNetProcessConfigurationsClient) CreateOrUpdateResponder(resp *http.Response) (result IntegrationAccountRosettaNetProcessConfiguration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -237,7 +236,6 @@ func (client RosettaNetProcessConfigurationsClient) DeleteSender(req *http.Reque
 func (client RosettaNetProcessConfigurationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -314,7 +312,6 @@ func (client RosettaNetProcessConfigurationsClient) GetSender(req *http.Request)
 func (client RosettaNetProcessConfigurationsClient) GetResponder(resp *http.Response) (result IntegrationAccountRosettaNetProcessConfiguration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -399,7 +396,6 @@ func (client RosettaNetProcessConfigurationsClient) ListByIntegrationAccountsSen
 func (client RosettaNetProcessConfigurationsClient) ListByIntegrationAccountsResponder(resp *http.Response) (result IntegrationAccountRosettaNetProcessConfigurationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

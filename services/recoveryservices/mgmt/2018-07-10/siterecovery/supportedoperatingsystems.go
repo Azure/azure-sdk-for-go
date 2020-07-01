@@ -107,7 +107,6 @@ func (client SupportedOperatingSystemsClient) GetSender(req *http.Request) (*htt
 func (client SupportedOperatingSystemsClient) GetResponder(resp *http.Response) (result SupportedOperatingSystems, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

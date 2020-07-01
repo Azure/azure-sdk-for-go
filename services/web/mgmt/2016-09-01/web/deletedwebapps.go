@@ -105,7 +105,6 @@ func (client DeletedWebAppsClient) ListSender(req *http.Request) (*http.Response
 func (client DeletedWebAppsClient) ListResponder(resp *http.Response) (result DeletedWebAppCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

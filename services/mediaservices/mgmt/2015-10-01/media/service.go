@@ -120,7 +120,6 @@ func (client ServiceClient) CheckNameAvailabilitySender(req *http.Request) (*htt
 func (client ServiceClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameAvailabilityOutput, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -207,7 +206,6 @@ func (client ServiceClient) CreateSender(req *http.Request) (*http.Response, err
 func (client ServiceClient) CreateResponder(resp *http.Response) (result Service, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -291,7 +289,6 @@ func (client ServiceClient) DeleteSender(req *http.Request) (*http.Response, err
 func (client ServiceClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -374,7 +371,6 @@ func (client ServiceClient) GetSender(req *http.Request) (*http.Response, error)
 func (client ServiceClient) GetResponder(resp *http.Response) (result Service, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -448,7 +444,6 @@ func (client ServiceClient) ListByResourceGroupSender(req *http.Request) (*http.
 func (client ServiceClient) ListByResourceGroupResponder(resp *http.Response) (result ServiceCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -532,7 +527,6 @@ func (client ServiceClient) ListKeysSender(req *http.Request) (*http.Response, e
 func (client ServiceClient) ListKeysResponder(resp *http.Response) (result ServiceKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -619,7 +613,6 @@ func (client ServiceClient) RegenerateKeySender(req *http.Request) (*http.Respon
 func (client ServiceClient) RegenerateKeyResponder(resp *http.Response) (result RegenerateKeyOutput, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -708,7 +701,6 @@ func (client ServiceClient) SyncStorageKeysSender(req *http.Request) (*http.Resp
 func (client ServiceClient) SyncStorageKeysResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -794,7 +786,6 @@ func (client ServiceClient) UpdateSender(req *http.Request) (*http.Response, err
 func (client ServiceClient) UpdateResponder(resp *http.Response) (result Service, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

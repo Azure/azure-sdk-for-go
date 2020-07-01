@@ -120,7 +120,6 @@ func (client BaseClient) PublishEventsSender(req *http.Request) (*http.Response,
 func (client BaseClient) PublishEventsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

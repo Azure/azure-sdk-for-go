@@ -131,7 +131,6 @@ func (client RegistrationDefinitionsClient) CreateOrUpdateSender(req *http.Reque
 func (client RegistrationDefinitionsClient) CreateOrUpdateResponder(resp *http.Response) (result RegistrationDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -206,7 +205,6 @@ func (client RegistrationDefinitionsClient) DeleteSender(req *http.Request) (*ht
 func (client RegistrationDefinitionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -280,7 +278,6 @@ func (client RegistrationDefinitionsClient) GetSender(req *http.Request) (*http.
 func (client RegistrationDefinitionsClient) GetResponder(resp *http.Response) (result RegistrationDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -354,7 +351,6 @@ func (client RegistrationDefinitionsClient) ListSender(req *http.Request) (*http
 func (client RegistrationDefinitionsClient) ListResponder(resp *http.Response) (result RegistrationDefinitionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

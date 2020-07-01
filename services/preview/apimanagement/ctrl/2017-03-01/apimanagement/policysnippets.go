@@ -105,7 +105,6 @@ func (client PolicySnippetsClient) ListSender(req *http.Request) (*http.Response
 func (client PolicySnippetsClient) ListResponder(resp *http.Response) (result PolicySnippetsCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

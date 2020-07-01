@@ -122,7 +122,6 @@ func (client WorkflowsClient) AbortSender(req *http.Request) (*http.Response, er
 func (client WorkflowsClient) AbortResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -209,7 +208,6 @@ func (client WorkflowsClient) GetSender(req *http.Request) (*http.Response, erro
 func (client WorkflowsClient) GetResponder(resp *http.Response) (result Workflow, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -295,7 +293,6 @@ func (client WorkflowsClient) ListByStorageSyncServiceSender(req *http.Request) 
 func (client WorkflowsClient) ListByStorageSyncServiceResponder(resp *http.Response) (result WorkflowArray, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

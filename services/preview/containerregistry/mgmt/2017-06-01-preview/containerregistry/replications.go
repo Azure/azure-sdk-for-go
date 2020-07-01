@@ -127,7 +127,6 @@ func (client ReplicationsClient) CreateSender(req *http.Request) (future Replica
 func (client ReplicationsClient) CreateResponder(resp *http.Response) (result Replication, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -217,7 +216,6 @@ func (client ReplicationsClient) DeleteSender(req *http.Request) (future Replica
 func (client ReplicationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -306,7 +304,6 @@ func (client ReplicationsClient) GetSender(req *http.Request) (*http.Response, e
 func (client ReplicationsClient) GetResponder(resp *http.Response) (result Replication, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -391,7 +388,6 @@ func (client ReplicationsClient) ListSender(req *http.Request) (*http.Response, 
 func (client ReplicationsClient) ListResponder(resp *http.Response) (result ReplicationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -521,7 +517,6 @@ func (client ReplicationsClient) UpdateSender(req *http.Request) (future Replica
 func (client ReplicationsClient) UpdateResponder(resp *http.Response) (result Replication, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

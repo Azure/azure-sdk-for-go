@@ -108,7 +108,6 @@ func (client AddsServicesReplicationStatusClient) GetSender(req *http.Request) (
 func (client AddsServicesReplicationStatusClient) GetResponder(resp *http.Response) (result ReplicationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

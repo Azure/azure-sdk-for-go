@@ -113,7 +113,6 @@ func (client WidgetTypesClient) GetSender(req *http.Request) (*http.Response, er
 func (client WidgetTypesClient) GetResponder(resp *http.Response) (result WidgetTypeResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -190,7 +189,6 @@ func (client WidgetTypesClient) ListByHubSender(req *http.Request) (*http.Respon
 func (client WidgetTypesClient) ListByHubResponder(resp *http.Response) (result WidgetTypeListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

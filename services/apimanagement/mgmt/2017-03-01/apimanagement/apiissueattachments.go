@@ -153,7 +153,6 @@ func (client APIIssueAttachmentsClient) ListByServiceSender(req *http.Request) (
 func (client APIIssueAttachmentsClient) ListByServiceResponder(resp *http.Response) (result IssueAttachmentCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

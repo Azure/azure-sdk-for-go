@@ -111,7 +111,6 @@ func (client ListClient) IPAddressAggregatesByServiceSender(req *http.Request) (
 func (client ListClient) IPAddressAggregatesByServiceResponder(resp *http.Response) (result IPAddressAggregates, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -221,7 +220,6 @@ func (client ListClient) IPAddressAggregateSettingsSender(req *http.Request) (*h
 func (client ListClient) IPAddressAggregateSettingsResponder(resp *http.Response) (result IPAddressAggregateSetting, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

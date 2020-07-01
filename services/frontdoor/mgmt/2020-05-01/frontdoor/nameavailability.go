@@ -112,7 +112,6 @@ func (client NameAvailabilityClient) CheckSender(req *http.Request) (*http.Respo
 func (client NameAvailabilityClient) CheckResponder(resp *http.Response) (result CheckNameAvailabilityOutput, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

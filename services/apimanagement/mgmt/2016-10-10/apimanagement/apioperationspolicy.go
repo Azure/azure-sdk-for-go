@@ -139,7 +139,6 @@ func (client APIOperationsPolicyClient) CreateOrUpdateSender(req *http.Request) 
 func (client APIOperationsPolicyClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -238,7 +237,6 @@ func (client APIOperationsPolicyClient) DeleteSender(req *http.Request) (*http.R
 func (client APIOperationsPolicyClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -335,7 +333,6 @@ func (client APIOperationsPolicyClient) GetResponder(resp *http.Response) (resul
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return

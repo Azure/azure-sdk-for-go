@@ -113,7 +113,6 @@ func (client ListManagementTermClient) AddTermSender(req *http.Request) (*http.R
 func (client ListManagementTermClient) AddTermResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
@@ -189,7 +188,6 @@ func (client ListManagementTermClient) DeleteAllTermsSender(req *http.Request) (
 func (client ListManagementTermClient) DeleteAllTermsResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -268,7 +266,6 @@ func (client ListManagementTermClient) DeleteTermSender(req *http.Request) (*htt
 func (client ListManagementTermClient) DeleteTermResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -353,7 +350,6 @@ func (client ListManagementTermClient) GetAllTermsSender(req *http.Request) (*ht
 func (client ListManagementTermClient) GetAllTermsResponder(resp *http.Response) (result Terms, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

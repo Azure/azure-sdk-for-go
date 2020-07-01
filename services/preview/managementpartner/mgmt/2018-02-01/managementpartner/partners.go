@@ -100,7 +100,6 @@ func (client PartnersClient) GetSender(req *http.Request) (*http.Response, error
 func (client PartnersClient) GetResponder(resp *http.Response) (result PartnerResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

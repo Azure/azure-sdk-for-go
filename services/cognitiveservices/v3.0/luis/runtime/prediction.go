@@ -126,7 +126,6 @@ func (client PredictionClient) GetSlotPredictionSender(req *http.Request) (*http
 func (client PredictionClient) GetSlotPredictionResponder(resp *http.Response) (result PredictionResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -223,7 +222,6 @@ func (client PredictionClient) GetVersionPredictionSender(req *http.Request) (*h
 func (client PredictionClient) GetVersionPredictionResponder(resp *http.Response) (result PredictionResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -125,7 +125,6 @@ func (client MachinesClient) GetAllMachinesInSiteSender(req *http.Request) (*htt
 func (client MachinesClient) GetAllMachinesInSiteResponder(resp *http.Response) (result VMwareMachineCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -241,7 +240,6 @@ func (client MachinesClient) GetMachineSender(req *http.Request) (*http.Response
 func (client MachinesClient) GetMachineResponder(resp *http.Response) (result VMwareMachine, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -320,7 +318,6 @@ func (client MachinesClient) StartMachineSender(req *http.Request) (*http.Respon
 func (client MachinesClient) StartMachineResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -398,7 +395,6 @@ func (client MachinesClient) StopMachineSender(req *http.Request) (*http.Respons
 func (client MachinesClient) StopMachineResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

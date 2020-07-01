@@ -1703,7 +1703,7 @@ type QuotaLimitsResponse struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// QuotaProperties resource quota properties.
+// QuotaProperties quota properties for the resource.
 type QuotaProperties struct {
 	// Limit - The quota limit.
 	Limit *int32 `json:"limit,omitempty"`
@@ -2511,8 +2511,6 @@ type SubscriptionScopeProperties struct {
 
 // SupportRequestAction the SupportRequest action.
 type SupportRequestAction struct {
-	// AutoQuotaIncreaseState - Is support request action enabled.
-	AutoQuotaIncreaseState interface{} `json:"autoQuotaIncreaseState,omitempty"`
 	// Severity - The support request severity.
 	Severity interface{} `json:"severity,omitempty"`
 	// FirstName - The first name of the recipient.

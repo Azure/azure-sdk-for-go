@@ -318,7 +318,6 @@ func (client NewsClient) CategorySender(req *http.Request) (*http.Response, erro
 func (client NewsClient) CategoryResponder(resp *http.Response) (result News, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -602,7 +601,6 @@ func (client NewsClient) SearchSender(req *http.Request) (*http.Response, error)
 func (client NewsClient) SearchResponder(resp *http.Response) (result News, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -870,7 +868,6 @@ func (client NewsClient) TrendingSender(req *http.Request) (*http.Response, erro
 func (client NewsClient) TrendingResponder(resp *http.Response) (result TrendingTopics, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

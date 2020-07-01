@@ -112,7 +112,6 @@ func (client AddsServicesUserPreferenceClient) AddSender(req *http.Request) (*ht
 func (client AddsServicesUserPreferenceClient) AddResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -186,7 +185,6 @@ func (client AddsServicesUserPreferenceClient) DeleteSender(req *http.Request) (
 func (client AddsServicesUserPreferenceClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -260,7 +258,6 @@ func (client AddsServicesUserPreferenceClient) GetSender(req *http.Request) (*ht
 func (client AddsServicesUserPreferenceClient) GetResponder(resp *http.Response) (result UserPreference, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

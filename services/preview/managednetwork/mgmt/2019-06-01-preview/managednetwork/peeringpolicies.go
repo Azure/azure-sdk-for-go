@@ -117,7 +117,6 @@ func (client PeeringPoliciesClient) CreateOrUpdateSender(req *http.Request) (fut
 func (client PeeringPoliciesClient) CreateOrUpdateResponder(resp *http.Response) (result PeeringPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -196,7 +195,6 @@ func (client PeeringPoliciesClient) DeleteSender(req *http.Request) (future Peer
 func (client PeeringPoliciesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -274,7 +272,6 @@ func (client PeeringPoliciesClient) GetSender(req *http.Request) (*http.Response
 func (client PeeringPoliciesClient) GetResponder(resp *http.Response) (result PeeringPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -371,7 +368,6 @@ func (client PeeringPoliciesClient) ListByManagedNetworkSender(req *http.Request
 func (client PeeringPoliciesClient) ListByManagedNetworkResponder(resp *http.Response) (result PeeringPolicyListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

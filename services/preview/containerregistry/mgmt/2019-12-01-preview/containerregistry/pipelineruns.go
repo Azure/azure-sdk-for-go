@@ -138,7 +138,6 @@ func (client PipelineRunsClient) CreateSender(req *http.Request) (future Pipelin
 func (client PipelineRunsClient) CreateResponder(resp *http.Response) (result PipelineRun, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -230,7 +229,6 @@ func (client PipelineRunsClient) DeleteSender(req *http.Request) (future Pipelin
 func (client PipelineRunsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -321,7 +319,6 @@ func (client PipelineRunsClient) GetSender(req *http.Request) (*http.Response, e
 func (client PipelineRunsClient) GetResponder(resp *http.Response) (result PipelineRun, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -408,7 +405,6 @@ func (client PipelineRunsClient) ListSender(req *http.Request) (*http.Response, 
 func (client PipelineRunsClient) ListResponder(resp *http.Response) (result PipelineRunListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

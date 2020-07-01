@@ -147,7 +147,6 @@ func (client ComputeNodeClient) AddUserSender(req *http.Request) (*http.Response
 func (client ComputeNodeClient) AddUserResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
@@ -250,7 +249,6 @@ func (client ComputeNodeClient) DeleteUserSender(req *http.Request) (*http.Respo
 func (client ComputeNodeClient) DeleteUserResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -357,7 +355,6 @@ func (client ComputeNodeClient) DisableSchedulingSender(req *http.Request) (*htt
 func (client ComputeNodeClient) DisableSchedulingResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -458,7 +455,6 @@ func (client ComputeNodeClient) EnableSchedulingSender(req *http.Request) (*http
 func (client ComputeNodeClient) EnableSchedulingResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -563,7 +559,6 @@ func (client ComputeNodeClient) GetSender(req *http.Request) (*http.Response, er
 func (client ComputeNodeClient) GetResponder(resp *http.Response) (result ComputeNode, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -667,7 +662,6 @@ func (client ComputeNodeClient) GetRemoteDesktopResponder(resp *http.Response) (
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -769,7 +763,6 @@ func (client ComputeNodeClient) GetRemoteLoginSettingsSender(req *http.Request) 
 func (client ComputeNodeClient) GetRemoteLoginSettingsResponder(resp *http.Response) (result ComputeNodeGetRemoteLoginSettingsResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -893,7 +886,6 @@ func (client ComputeNodeClient) ListSender(req *http.Request) (*http.Response, e
 func (client ComputeNodeClient) ListResponder(resp *http.Response) (result ComputeNodeListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1038,7 +1030,6 @@ func (client ComputeNodeClient) RebootSender(req *http.Request) (*http.Response,
 func (client ComputeNodeClient) RebootResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1146,7 +1137,6 @@ func (client ComputeNodeClient) ReimageSender(req *http.Request) (*http.Response
 func (client ComputeNodeClient) ReimageResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1254,7 +1244,6 @@ func (client ComputeNodeClient) UpdateUserSender(req *http.Request) (*http.Respo
 func (client ComputeNodeClient) UpdateUserResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

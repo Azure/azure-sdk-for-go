@@ -137,7 +137,6 @@ func (client AuthorizationServersClient) CreateOrUpdateSender(req *http.Request)
 func (client AuthorizationServersClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -228,7 +227,6 @@ func (client AuthorizationServersClient) DeleteSender(req *http.Request) (*http.
 func (client AuthorizationServersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -316,7 +314,6 @@ func (client AuthorizationServersClient) GetSender(req *http.Request) (*http.Res
 func (client AuthorizationServersClient) GetResponder(resp *http.Response) (result OAuth2AuthorizationServerContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -422,7 +419,6 @@ func (client AuthorizationServersClient) ListByServiceSender(req *http.Request) 
 func (client AuthorizationServersClient) ListByServiceResponder(resp *http.Response) (result AuthorizationServerCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -554,7 +550,6 @@ func (client AuthorizationServersClient) UpdateSender(req *http.Request) (*http.
 func (client AuthorizationServersClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

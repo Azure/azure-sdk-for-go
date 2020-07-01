@@ -21,8 +21,6 @@ package desktopvirtualizationapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2019-12-10-preview/desktopvirtualization/desktopvirtualizationapi"
 
-type ActiveApplicationsClientAPI = original.ActiveApplicationsClientAPI
-type ApplicationGroupAssignmentsClientAPI = original.ApplicationGroupAssignmentsClientAPI
 type ApplicationGroupsClientAPI = original.ApplicationGroupsClientAPI
 type ApplicationsClientAPI = original.ApplicationsClientAPI
 type DesktopsClientAPI = original.DesktopsClientAPI

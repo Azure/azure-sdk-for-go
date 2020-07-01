@@ -128,7 +128,6 @@ func (client StorageDomainsClient) CreateOrUpdateSender(req *http.Request) (futu
 func (client StorageDomainsClient) CreateOrUpdateResponder(resp *http.Response) (result StorageDomain, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -213,7 +212,6 @@ func (client StorageDomainsClient) DeleteSender(req *http.Request) (future Stora
 func (client StorageDomainsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -297,7 +295,6 @@ func (client StorageDomainsClient) GetSender(req *http.Request) (*http.Response,
 func (client StorageDomainsClient) GetResponder(resp *http.Response) (result StorageDomain, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -380,7 +377,6 @@ func (client StorageDomainsClient) ListByManagerSender(req *http.Request) (*http
 func (client StorageDomainsClient) ListByManagerResponder(resp *http.Response) (result StorageDomainList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

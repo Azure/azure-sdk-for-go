@@ -120,7 +120,6 @@ func (client MeshSecretClient) CreateOrUpdateSender(req *http.Request) (*http.Re
 func (client MeshSecretClient) CreateOrUpdateResponder(resp *http.Response) (result SecretResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -193,7 +192,6 @@ func (client MeshSecretClient) DeleteSender(req *http.Request) (*http.Response, 
 func (client MeshSecretClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -266,7 +264,6 @@ func (client MeshSecretClient) GetSender(req *http.Request) (*http.Response, err
 func (client MeshSecretClient) GetResponder(resp *http.Response) (result SecretResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -334,7 +331,6 @@ func (client MeshSecretClient) ListSender(req *http.Request) (*http.Response, er
 func (client MeshSecretClient) ListResponder(resp *http.Response) (result PagedSecretResourceDescriptionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

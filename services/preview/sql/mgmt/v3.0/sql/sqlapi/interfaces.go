@@ -822,6 +822,7 @@ var _ UsagesClientAPI = (*sql.UsagesClient)(nil)
 type ManagedInstancesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstance) (result sql.ManagedInstancesCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstancesDeleteFuture, err error)
+	Failover(ctx context.Context, resourceGroupName string, managedInstanceName string, replicaType sql.ReplicaType) (result sql.ManagedInstancesFailoverFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstance, err error)
 	List(ctx context.Context) (result sql.ManagedInstanceListResultPage, err error)
 	ListComplete(ctx context.Context) (result sql.ManagedInstanceListResultIterator, err error)

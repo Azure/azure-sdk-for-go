@@ -124,7 +124,6 @@ func (client NetworkClient) CreateSender(req *http.Request) (*http.Response, err
 func (client NetworkClient) CreateResponder(resp *http.Response) (result NetworkResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -200,7 +199,6 @@ func (client NetworkClient) DeleteSender(req *http.Request) (*http.Response, err
 func (client NetworkClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -276,7 +274,6 @@ func (client NetworkClient) GetSender(req *http.Request) (*http.Response, error)
 func (client NetworkClient) GetResponder(resp *http.Response) (result NetworkResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -352,7 +349,6 @@ func (client NetworkClient) ListByResourceGroupSender(req *http.Request) (*http.
 func (client NetworkClient) ListByResourceGroupResponder(resp *http.Response) (result NetworkResourceDescriptionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -462,7 +458,6 @@ func (client NetworkClient) ListBySubscriptionSender(req *http.Request) (*http.R
 func (client NetworkClient) ListBySubscriptionResponder(resp *http.Response) (result NetworkResourceDescriptionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

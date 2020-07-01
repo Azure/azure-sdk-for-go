@@ -114,7 +114,6 @@ func (client ElasticPoolsClient) FailoverSender(req *http.Request) (future Elast
 func (client ElasticPoolsClient) FailoverResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

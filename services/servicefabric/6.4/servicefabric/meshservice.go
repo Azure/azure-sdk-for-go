@@ -110,7 +110,6 @@ func (client MeshServiceClient) GetSender(req *http.Request) (*http.Response, er
 func (client MeshServiceClient) GetResponder(resp *http.Response) (result ServiceResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -184,7 +183,6 @@ func (client MeshServiceClient) ListSender(req *http.Request) (*http.Response, e
 func (client MeshServiceClient) ListResponder(resp *http.Response) (result PagedServiceResourceDescriptionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

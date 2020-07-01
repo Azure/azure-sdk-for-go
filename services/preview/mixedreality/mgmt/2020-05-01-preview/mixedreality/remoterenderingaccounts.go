@@ -126,7 +126,6 @@ func (client RemoteRenderingAccountsClient) CreateSender(req *http.Request) (*ht
 func (client RemoteRenderingAccountsClient) CreateResponder(resp *http.Response) (result RemoteRenderingAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -214,7 +213,6 @@ func (client RemoteRenderingAccountsClient) DeleteSender(req *http.Request) (*ht
 func (client RemoteRenderingAccountsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -301,7 +299,6 @@ func (client RemoteRenderingAccountsClient) GetSender(req *http.Request) (*http.
 func (client RemoteRenderingAccountsClient) GetResponder(resp *http.Response) (result RemoteRenderingAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -384,7 +381,6 @@ func (client RemoteRenderingAccountsClient) ListByResourceGroupSender(req *http.
 func (client RemoteRenderingAccountsClient) ListByResourceGroupResponder(resp *http.Response) (result RemoteRenderingAccountPage, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -493,7 +489,6 @@ func (client RemoteRenderingAccountsClient) ListBySubscriptionSender(req *http.R
 func (client RemoteRenderingAccountsClient) ListBySubscriptionResponder(resp *http.Response) (result RemoteRenderingAccountPage, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -618,7 +613,6 @@ func (client RemoteRenderingAccountsClient) ListKeysSender(req *http.Request) (*
 func (client RemoteRenderingAccountsClient) ListKeysResponder(resp *http.Response) (result AccountKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -709,7 +703,6 @@ func (client RemoteRenderingAccountsClient) RegenerateKeysSender(req *http.Reque
 func (client RemoteRenderingAccountsClient) RegenerateKeysResponder(resp *http.Response) (result AccountKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -800,7 +793,6 @@ func (client RemoteRenderingAccountsClient) UpdateSender(req *http.Request) (*ht
 func (client RemoteRenderingAccountsClient) UpdateResponder(resp *http.Response) (result RemoteRenderingAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

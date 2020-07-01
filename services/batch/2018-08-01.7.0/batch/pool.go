@@ -164,7 +164,6 @@ func (client PoolClient) AddSender(req *http.Request) (*http.Response, error) {
 func (client PoolClient) AddResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
@@ -297,7 +296,6 @@ func (client PoolClient) DeleteSender(req *http.Request) (*http.Response, error)
 func (client PoolClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -396,7 +394,6 @@ func (client PoolClient) DisableAutoScaleSender(req *http.Request) (*http.Respon
 func (client PoolClient) DisableAutoScaleResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -528,7 +525,6 @@ func (client PoolClient) EnableAutoScaleSender(req *http.Request) (*http.Respons
 func (client PoolClient) EnableAutoScaleResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -637,7 +633,6 @@ func (client PoolClient) EvaluateAutoScaleSender(req *http.Request) (*http.Respo
 func (client PoolClient) EvaluateAutoScaleResponder(resp *http.Response) (result AutoScaleRun, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -764,7 +759,6 @@ func (client PoolClient) ExistsSender(req *http.Request) (*http.Response, error)
 func (client PoolClient) ExistsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
@@ -898,7 +892,6 @@ func (client PoolClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client PoolClient) GetResponder(resp *http.Response) (result CloudPool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -995,7 +988,6 @@ func (client PoolClient) GetAllLifetimeStatisticsSender(req *http.Request) (*htt
 func (client PoolClient) GetAllLifetimeStatisticsResponder(resp *http.Response) (result PoolStatistics, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1119,7 +1111,6 @@ func (client PoolClient) ListSender(req *http.Request) (*http.Response, error) {
 func (client PoolClient) ListResponder(resp *http.Response) (result CloudPoolListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1287,7 +1278,6 @@ func (client PoolClient) ListUsageMetricsSender(req *http.Request) (*http.Respon
 func (client PoolClient) ListUsageMetricsResponder(resp *http.Response) (result PoolListUsageMetricsResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1456,7 +1446,6 @@ func (client PoolClient) PatchSender(req *http.Request) (*http.Response, error) 
 func (client PoolClient) PatchResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1593,7 +1582,6 @@ func (client PoolClient) RemoveNodesSender(req *http.Request) (*http.Response, e
 func (client PoolClient) RemoveNodesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1726,7 +1714,6 @@ func (client PoolClient) ResizeSender(req *http.Request) (*http.Response, error)
 func (client PoolClient) ResizeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1856,7 +1843,6 @@ func (client PoolClient) StopResizeSender(req *http.Request) (*http.Response, er
 func (client PoolClient) StopResizeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1978,7 +1964,6 @@ func (client PoolClient) UpdatePropertiesSender(req *http.Request) (*http.Respon
 func (client PoolClient) UpdatePropertiesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -2123,7 +2108,6 @@ func (client PoolClient) UpgradeOSSender(req *http.Request) (*http.Response, err
 func (client PoolClient) UpgradeOSResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

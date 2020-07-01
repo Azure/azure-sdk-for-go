@@ -133,7 +133,6 @@ func (client MachineGroupsClient) CreateSender(req *http.Request) (*http.Respons
 func (client MachineGroupsClient) CreateResponder(resp *http.Response) (result MachineGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -226,7 +225,6 @@ func (client MachineGroupsClient) DeleteSender(req *http.Request) (*http.Respons
 func (client MachineGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -328,7 +326,6 @@ func (client MachineGroupsClient) GetSender(req *http.Request) (*http.Response, 
 func (client MachineGroupsClient) GetResponder(resp *http.Response) (result MachineGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -427,7 +424,6 @@ func (client MachineGroupsClient) ListByWorkspaceSender(req *http.Request) (*htt
 func (client MachineGroupsClient) ListByWorkspaceResponder(resp *http.Response) (result MachineGroupCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -567,7 +563,6 @@ func (client MachineGroupsClient) UpdateSender(req *http.Request) (*http.Respons
 func (client MachineGroupsClient) UpdateResponder(resp *http.Response) (result MachineGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

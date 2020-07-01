@@ -140,7 +140,6 @@ func (client SourceControlClient) CreateOrUpdateSender(req *http.Request) (*http
 func (client SourceControlClient) CreateOrUpdateResponder(resp *http.Response) (result SourceControl, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -226,7 +225,6 @@ func (client SourceControlClient) DeleteSender(req *http.Request) (*http.Respons
 func (client SourceControlClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -311,7 +309,6 @@ func (client SourceControlClient) GetSender(req *http.Request) (*http.Response, 
 func (client SourceControlClient) GetResponder(resp *http.Response) (result SourceControl, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -400,7 +397,6 @@ func (client SourceControlClient) ListByAutomationAccountSender(req *http.Reques
 func (client SourceControlClient) ListByAutomationAccountResponder(resp *http.Response) (result SourceControlListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -526,7 +522,6 @@ func (client SourceControlClient) UpdateSender(req *http.Request) (*http.Respons
 func (client SourceControlClient) UpdateResponder(resp *http.Response) (result SourceControl, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

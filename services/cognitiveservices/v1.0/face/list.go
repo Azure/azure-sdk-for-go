@@ -167,7 +167,6 @@ func (client ListClient) AddFaceFromStreamSender(req *http.Request) (*http.Respo
 func (client ListClient) AddFaceFromStreamResponder(resp *http.Response) (result PersistedFace, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -306,7 +305,6 @@ func (client ListClient) AddFaceFromURLSender(req *http.Request) (*http.Response
 func (client ListClient) AddFaceFromURLResponder(resp *http.Response) (result PersistedFace, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -337,8 +335,9 @@ func (client ListClient) AddFaceFromURLResponder(resp *http.Response) (result Pe
 // * 'recognition_01': The default recognition model for [FaceList-
 // Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/create). All those face lists created
 // before 2019 March are bonded with this recognition model.
-// * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall
-// accuracy is improved compared with 'recognition_01'.
+// * 'recognition_02': Recognition model released in 2019 March.
+// * 'recognition_03': Recognition model released in 2020 May. 'recognition_03' is recommended since its overall
+// accuracy is improved compared with 'recognition_01' and 'recognition_02'.
 // Parameters:
 // faceListID - id referencing a particular face list.
 // body - request body for creating a face list.
@@ -411,7 +410,6 @@ func (client ListClient) CreateSender(req *http.Request) (*http.Response, error)
 func (client ListClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -488,7 +486,6 @@ func (client ListClient) DeleteSender(req *http.Request) (*http.Response, error)
 func (client ListClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -569,7 +566,6 @@ func (client ListClient) DeleteFaceSender(req *http.Request) (*http.Response, er
 func (client ListClient) DeleteFaceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -656,7 +652,6 @@ func (client ListClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client ListClient) GetResponder(resp *http.Response) (result List, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -734,7 +729,6 @@ func (client ListClient) ListSender(req *http.Request) (*http.Response, error) {
 func (client ListClient) ListResponder(resp *http.Response) (result ListList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -815,7 +809,6 @@ func (client ListClient) UpdateSender(req *http.Request) (*http.Response, error)
 func (client ListClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

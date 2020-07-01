@@ -130,7 +130,6 @@ func (client GroupUsersClient) AddSender(req *http.Request) (*http.Response, err
 func (client GroupUsersClient) AddResponder(resp *http.Response) (result ErrorBodyContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent, http.StatusMethodNotAllowed),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -247,7 +246,6 @@ func (client GroupUsersClient) ListByGroupSender(req *http.Request) (*http.Respo
 func (client GroupUsersClient) ListByGroupResponder(resp *http.Response) (result UserCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -380,7 +378,6 @@ func (client GroupUsersClient) RemoveSender(req *http.Request) (*http.Response, 
 func (client GroupUsersClient) RemoveResponder(resp *http.Response) (result ErrorBodyContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusMethodNotAllowed),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

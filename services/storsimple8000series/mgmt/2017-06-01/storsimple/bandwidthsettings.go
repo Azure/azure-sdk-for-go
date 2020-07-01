@@ -126,7 +126,6 @@ func (client BandwidthSettingsClient) CreateOrUpdateSender(req *http.Request) (f
 func (client BandwidthSettingsClient) CreateOrUpdateResponder(resp *http.Response) (result BandwidthSetting, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -211,7 +210,6 @@ func (client BandwidthSettingsClient) DeleteSender(req *http.Request) (future Ba
 func (client BandwidthSettingsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -295,7 +293,6 @@ func (client BandwidthSettingsClient) GetSender(req *http.Request) (*http.Respon
 func (client BandwidthSettingsClient) GetResponder(resp *http.Response) (result BandwidthSetting, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -378,7 +375,6 @@ func (client BandwidthSettingsClient) ListByManagerSender(req *http.Request) (*h
 func (client BandwidthSettingsClient) ListByManagerResponder(resp *http.Response) (result BandwidthSettingList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

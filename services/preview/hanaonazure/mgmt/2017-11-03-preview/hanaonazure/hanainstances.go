@@ -112,7 +112,6 @@ func (client HanaInstancesClient) CreateSender(req *http.Request) (future HanaIn
 func (client HanaInstancesClient) CreateResponder(resp *http.Response) (result HanaInstance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -188,7 +187,6 @@ func (client HanaInstancesClient) DeleteSender(req *http.Request) (future HanaIn
 func (client HanaInstancesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -263,7 +261,6 @@ func (client HanaInstancesClient) GetSender(req *http.Request) (*http.Response, 
 func (client HanaInstancesClient) GetResponder(resp *http.Response) (result HanaInstance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -336,7 +333,6 @@ func (client HanaInstancesClient) ListSender(req *http.Request) (*http.Response,
 func (client HanaInstancesClient) ListResponder(resp *http.Response) (result HanaInstancesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -449,7 +445,6 @@ func (client HanaInstancesClient) ListByResourceGroupSender(req *http.Request) (
 func (client HanaInstancesClient) ListByResourceGroupResponder(resp *http.Response) (result HanaInstancesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -562,7 +557,6 @@ func (client HanaInstancesClient) RestartSender(req *http.Request) (future HanaI
 func (client HanaInstancesClient) RestartResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -637,7 +631,6 @@ func (client HanaInstancesClient) ShutdownSender(req *http.Request) (future Hana
 func (client HanaInstancesClient) ShutdownResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -712,7 +705,6 @@ func (client HanaInstancesClient) StartSender(req *http.Request) (future HanaIns
 func (client HanaInstancesClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -791,7 +783,6 @@ func (client HanaInstancesClient) UpdateSender(req *http.Request) (*http.Respons
 func (client HanaInstancesClient) UpdateResponder(resp *http.Response) (result HanaInstance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

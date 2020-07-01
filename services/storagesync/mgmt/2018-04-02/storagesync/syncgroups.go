@@ -125,7 +125,6 @@ func (client SyncGroupsClient) CreateSender(req *http.Request) (*http.Response, 
 func (client SyncGroupsClient) CreateResponder(resp *http.Response) (result SyncGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -213,7 +212,6 @@ func (client SyncGroupsClient) DeleteSender(req *http.Request) (*http.Response, 
 func (client SyncGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -300,7 +298,6 @@ func (client SyncGroupsClient) GetSender(req *http.Request) (*http.Response, err
 func (client SyncGroupsClient) GetResponder(resp *http.Response) (result SyncGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -386,7 +383,6 @@ func (client SyncGroupsClient) ListByStorageSyncServiceSender(req *http.Request)
 func (client SyncGroupsClient) ListByStorageSyncServiceResponder(resp *http.Response) (result SyncGroupArray, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

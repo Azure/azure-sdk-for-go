@@ -136,7 +136,6 @@ func (client ApplicationClient) GetSender(req *http.Request) (*http.Response, er
 func (client ApplicationClient) GetResponder(resp *http.Response) (result ApplicationSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -250,7 +249,6 @@ func (client ApplicationClient) ListSender(req *http.Request) (*http.Response, e
 func (client ApplicationClient) ListResponder(resp *http.Response) (result ApplicationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

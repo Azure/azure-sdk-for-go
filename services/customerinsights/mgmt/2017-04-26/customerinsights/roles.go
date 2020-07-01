@@ -112,7 +112,6 @@ func (client RolesClient) ListByHubSender(req *http.Request) (*http.Response, er
 func (client RolesClient) ListByHubResponder(resp *http.Response) (result RoleListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

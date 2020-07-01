@@ -49,13 +49,6 @@ const (
 	Enabled  AutoExecuteStatus = original.Enabled
 )
 
-type BackupLongTermRetentionPolicyState = original.BackupLongTermRetentionPolicyState
-
-const (
-	BackupLongTermRetentionPolicyStateDisabled BackupLongTermRetentionPolicyState = original.BackupLongTermRetentionPolicyStateDisabled
-	BackupLongTermRetentionPolicyStateEnabled  BackupLongTermRetentionPolicyState = original.BackupLongTermRetentionPolicyStateEnabled
-)
-
 type CapabilityStatus = original.CapabilityStatus
 
 const (
@@ -480,16 +473,6 @@ const (
 type Advisor = original.Advisor
 type AdvisorListResult = original.AdvisorListResult
 type AdvisorProperties = original.AdvisorProperties
-type BackupLongTermRetentionPoliciesClient = original.BackupLongTermRetentionPoliciesClient
-type BackupLongTermRetentionPoliciesCreateOrUpdateFuture = original.BackupLongTermRetentionPoliciesCreateOrUpdateFuture
-type BackupLongTermRetentionPolicy = original.BackupLongTermRetentionPolicy
-type BackupLongTermRetentionPolicyListResult = original.BackupLongTermRetentionPolicyListResult
-type BackupLongTermRetentionPolicyProperties = original.BackupLongTermRetentionPolicyProperties
-type BackupLongTermRetentionVault = original.BackupLongTermRetentionVault
-type BackupLongTermRetentionVaultListResult = original.BackupLongTermRetentionVaultListResult
-type BackupLongTermRetentionVaultProperties = original.BackupLongTermRetentionVaultProperties
-type BackupLongTermRetentionVaultsClient = original.BackupLongTermRetentionVaultsClient
-type BackupLongTermRetentionVaultsCreateOrUpdateFuture = original.BackupLongTermRetentionVaultsCreateOrUpdateFuture
 type BaseClient = original.BaseClient
 type CapabilitiesClient = original.CapabilitiesClient
 type CheckNameAvailabilityRequest = original.CheckNameAvailabilityRequest
@@ -679,18 +662,6 @@ type UnlinkParameters = original.UnlinkParameters
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewBackupLongTermRetentionPoliciesClient(subscriptionID string) BackupLongTermRetentionPoliciesClient {
-	return original.NewBackupLongTermRetentionPoliciesClient(subscriptionID)
-}
-func NewBackupLongTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupLongTermRetentionPoliciesClient {
-	return original.NewBackupLongTermRetentionPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewBackupLongTermRetentionVaultsClient(subscriptionID string) BackupLongTermRetentionVaultsClient {
-	return original.NewBackupLongTermRetentionVaultsClient(subscriptionID)
-}
-func NewBackupLongTermRetentionVaultsClientWithBaseURI(baseURI string, subscriptionID string) BackupLongTermRetentionVaultsClient {
-	return original.NewBackupLongTermRetentionVaultsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCapabilitiesClient(subscriptionID string) CapabilitiesClient {
 	return original.NewCapabilitiesClient(subscriptionID)
@@ -925,9 +896,6 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 }
 func PossibleAutoExecuteStatusValues() []AutoExecuteStatus {
 	return original.PossibleAutoExecuteStatusValues()
-}
-func PossibleBackupLongTermRetentionPolicyStateValues() []BackupLongTermRetentionPolicyState {
-	return original.PossibleBackupLongTermRetentionPolicyStateValues()
 }
 func PossibleCapabilityStatusValues() []CapabilityStatus {
 	return original.PossibleCapabilityStatusValues()

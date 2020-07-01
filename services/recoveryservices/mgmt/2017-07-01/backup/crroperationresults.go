@@ -109,7 +109,6 @@ func (client CrrOperationResultsClient) GetSender(req *http.Request) (future Crr
 func (client CrrOperationResultsClient) GetResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

@@ -847,14 +847,6 @@ type ErrorResponse struct {
 	Error *ErrorResponseBody `json:"error,omitempty"`
 }
 
-// ErrorResponse1 describe the format of an Error response.
-type ErrorResponse1 struct {
-	// Code - Error code
-	Code *string `json:"code,omitempty"`
-	// Message - Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty"`
-}
-
 // ErrorResponseBody details of error response.
 type ErrorResponseBody struct {
 	// Code - Error code, intended to be consumed programmatically.
@@ -1079,6 +1071,14 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
+}
+
+// SmartDetectorErrorResponse describe the format of an Error response.
+type SmartDetectorErrorResponse struct {
+	// Code - Error code
+	Code *string `json:"code,omitempty"`
+	// Message - Error message indicating why the operation failed.
+	Message *string `json:"message,omitempty"`
 }
 
 // SmartGroup set of related alerts grouped together smartly by AMS.

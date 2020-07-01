@@ -106,7 +106,6 @@ func (client FeaturesClient) AddPhraseListSender(req *http.Request) (*http.Respo
 func (client FeaturesClient) AddPhraseListResponder(resp *http.Response) (result Int32, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -181,7 +180,6 @@ func (client FeaturesClient) DeletePhraseListSender(req *http.Request) (*http.Re
 func (client FeaturesClient) DeletePhraseListResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -256,7 +254,6 @@ func (client FeaturesClient) GetPhraseListSender(req *http.Request) (*http.Respo
 func (client FeaturesClient) GetPhraseListResponder(resp *http.Response) (result PhraseListFeatureInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -356,7 +353,6 @@ func (client FeaturesClient) ListSender(req *http.Request) (*http.Response, erro
 func (client FeaturesClient) ListResponder(resp *http.Response) (result FeaturesResponseObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -457,7 +453,6 @@ func (client FeaturesClient) ListApplicationVersionPatternFeaturesSender(req *ht
 func (client FeaturesClient) ListApplicationVersionPatternFeaturesResponder(resp *http.Response) (result ListPatternFeatureInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -557,7 +552,6 @@ func (client FeaturesClient) ListPhraseListsSender(req *http.Request) (*http.Res
 func (client FeaturesClient) ListPhraseListsResponder(resp *http.Response) (result ListPhraseListFeatureInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -640,7 +634,6 @@ func (client FeaturesClient) UpdatePhraseListSender(req *http.Request) (*http.Re
 func (client FeaturesClient) UpdatePhraseListResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -111,7 +111,6 @@ func (client ServiceLocationsClient) ListSender(req *http.Request) (*http.Respon
 func (client ServiceLocationsClient) ListResponder(resp *http.Response) (result ServiceLocationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

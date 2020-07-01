@@ -113,7 +113,6 @@ func (client BaseClient) DetectLanguageSender(req *http.Request) (*http.Response
 func (client BaseClient) DetectLanguageResponder(resp *http.Response) (result LanguageBatchResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -185,7 +184,6 @@ func (client BaseClient) EntitiesSender(req *http.Request) (*http.Response, erro
 func (client BaseClient) EntitiesResponder(resp *http.Response) (result EntitiesBatchResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -257,7 +255,6 @@ func (client BaseClient) KeyPhrasesSender(req *http.Request) (*http.Response, er
 func (client BaseClient) KeyPhrasesResponder(resp *http.Response) (result KeyPhraseBatchResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -329,7 +326,6 @@ func (client BaseClient) SentimentSender(req *http.Request) (*http.Response, err
 func (client BaseClient) SentimentResponder(resp *http.Response) (result SentimentBatchResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

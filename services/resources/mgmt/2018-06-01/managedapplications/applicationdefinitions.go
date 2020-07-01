@@ -128,7 +128,6 @@ func (client ApplicationDefinitionsClient) CreateOrUpdateSender(req *http.Reques
 func (client ApplicationDefinitionsClient) CreateOrUpdateResponder(resp *http.Response) (result ApplicationDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -213,7 +212,6 @@ func (client ApplicationDefinitionsClient) CreateOrUpdateByIDSender(req *http.Re
 func (client ApplicationDefinitionsClient) CreateOrUpdateByIDResponder(resp *http.Response) (result ApplicationDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -300,7 +298,6 @@ func (client ApplicationDefinitionsClient) DeleteSender(req *http.Request) (futu
 func (client ApplicationDefinitionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -374,7 +371,6 @@ func (client ApplicationDefinitionsClient) DeleteByIDSender(req *http.Request) (
 func (client ApplicationDefinitionsClient) DeleteByIDResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -460,7 +456,6 @@ func (client ApplicationDefinitionsClient) GetSender(req *http.Request) (*http.R
 func (client ApplicationDefinitionsClient) GetResponder(resp *http.Response) (result ApplicationDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -535,7 +530,6 @@ func (client ApplicationDefinitionsClient) GetByIDSender(req *http.Request) (*ht
 func (client ApplicationDefinitionsClient) GetByIDResponder(resp *http.Response) (result ApplicationDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -618,7 +612,6 @@ func (client ApplicationDefinitionsClient) ListByResourceGroupSender(req *http.R
 func (client ApplicationDefinitionsClient) ListByResourceGroupResponder(resp *http.Response) (result ApplicationDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

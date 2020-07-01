@@ -128,7 +128,6 @@ func (client EnterpriseKnowledgeGraphClient) CreateSender(req *http.Request) (*h
 func (client EnterpriseKnowledgeGraphClient) CreateResponder(resp *http.Response) (result EnterpriseKnowledgeGraph, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -216,7 +215,6 @@ func (client EnterpriseKnowledgeGraphClient) DeleteSender(req *http.Request) (*h
 func (client EnterpriseKnowledgeGraphClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -303,7 +301,6 @@ func (client EnterpriseKnowledgeGraphClient) GetSender(req *http.Request) (*http
 func (client EnterpriseKnowledgeGraphClient) GetResponder(resp *http.Response) (result EnterpriseKnowledgeGraph, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -375,7 +372,6 @@ func (client EnterpriseKnowledgeGraphClient) ListSender(req *http.Request) (*htt
 func (client EnterpriseKnowledgeGraphClient) ListResponder(resp *http.Response) (result EnterpriseKnowledgeGraphResponseList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -495,7 +491,6 @@ func (client EnterpriseKnowledgeGraphClient) ListByResourceGroupSender(req *http
 func (client EnterpriseKnowledgeGraphClient) ListByResourceGroupResponder(resp *http.Response) (result EnterpriseKnowledgeGraphResponseList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -623,7 +618,6 @@ func (client EnterpriseKnowledgeGraphClient) UpdateSender(req *http.Request) (*h
 func (client EnterpriseKnowledgeGraphClient) UpdateResponder(resp *http.Response) (result EnterpriseKnowledgeGraph, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

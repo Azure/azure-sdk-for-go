@@ -5482,6 +5482,8 @@ type RunGetLogResult struct {
 	autorest.Response `json:"-"`
 	// LogLink - The link to logs for a run on a azure container registry.
 	LogLink *string `json:"logLink,omitempty"`
+	// LogArtifactLink - The link to logs in registry for a run on a azure container registry.
+	LogArtifactLink *string `json:"logArtifactLink,omitempty"`
 }
 
 // RunListResult collection of runs.

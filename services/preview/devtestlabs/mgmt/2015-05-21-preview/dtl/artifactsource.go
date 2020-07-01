@@ -113,7 +113,6 @@ func (client ArtifactSourceClient) CreateOrUpdateResourceSender(req *http.Reques
 func (client ArtifactSourceClient) CreateOrUpdateResourceResponder(resp *http.Response) (result ArtifactSource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -191,7 +190,6 @@ func (client ArtifactSourceClient) DeleteResourceSender(req *http.Request) (*htt
 func (client ArtifactSourceClient) DeleteResourceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -268,7 +266,6 @@ func (client ArtifactSourceClient) GetResourceSender(req *http.Request) (*http.R
 func (client ArtifactSourceClient) GetResourceResponder(resp *http.Response) (result ArtifactSource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -355,7 +352,6 @@ func (client ArtifactSourceClient) ListSender(req *http.Request) (*http.Response
 func (client ArtifactSourceClient) ListResponder(resp *http.Response) (result ResponseWithContinuationArtifactSource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -472,7 +468,6 @@ func (client ArtifactSourceClient) PatchResourceSender(req *http.Request) (*http
 func (client ArtifactSourceClient) PatchResourceResponder(resp *http.Response) (result ArtifactSource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

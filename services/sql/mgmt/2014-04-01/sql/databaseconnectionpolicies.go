@@ -122,7 +122,6 @@ func (client DatabaseConnectionPoliciesClient) CreateOrUpdateSender(req *http.Re
 func (client DatabaseConnectionPoliciesClient) CreateOrUpdateResponder(resp *http.Response) (result DatabaseConnectionPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -203,7 +202,6 @@ func (client DatabaseConnectionPoliciesClient) GetSender(req *http.Request) (*ht
 func (client DatabaseConnectionPoliciesClient) GetResponder(resp *http.Response) (result DatabaseConnectionPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

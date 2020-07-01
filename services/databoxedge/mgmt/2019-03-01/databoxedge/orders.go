@@ -133,7 +133,6 @@ func (client OrdersClient) CreateOrUpdateSender(req *http.Request) (future Order
 func (client OrdersClient) CreateOrUpdateResponder(resp *http.Response) (result Order, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -209,7 +208,6 @@ func (client OrdersClient) DeleteSender(req *http.Request) (future OrdersDeleteF
 func (client OrdersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -284,7 +282,6 @@ func (client OrdersClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client OrdersClient) GetResponder(resp *http.Response) (result Order, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -361,7 +358,6 @@ func (client OrdersClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*ht
 func (client OrdersClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response) (result OrderList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -125,7 +125,6 @@ func (client ManagersClient) CreateExtendedInfoSender(req *http.Request) (*http.
 func (client ManagersClient) CreateExtendedInfoResponder(resp *http.Response) (result ManagerExtendedInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -216,7 +215,6 @@ func (client ManagersClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 func (client ManagersClient) CreateOrUpdateResponder(resp *http.Response) (result Manager, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -299,7 +297,6 @@ func (client ManagersClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client ManagersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -381,7 +378,6 @@ func (client ManagersClient) DeleteExtendedInfoSender(req *http.Request) (*http.
 func (client ManagersClient) DeleteExtendedInfoResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -463,7 +459,6 @@ func (client ManagersClient) GetSender(req *http.Request) (*http.Response, error
 func (client ManagersClient) GetResponder(resp *http.Response) (result Manager, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -546,7 +541,6 @@ func (client ManagersClient) GetActivationKeySender(req *http.Request) (*http.Re
 func (client ManagersClient) GetActivationKeyResponder(resp *http.Response) (result Key, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -631,7 +625,6 @@ func (client ManagersClient) GetDevicePublicEncryptionKeySender(req *http.Reques
 func (client ManagersClient) GetDevicePublicEncryptionKeyResponder(resp *http.Response) (result PublicKey, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -714,7 +707,6 @@ func (client ManagersClient) GetEncryptionSettingsSender(req *http.Request) (*ht
 func (client ManagersClient) GetEncryptionSettingsResponder(resp *http.Response) (result EncryptionSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -797,7 +789,6 @@ func (client ManagersClient) GetExtendedInfoSender(req *http.Request) (*http.Res
 func (client ManagersClient) GetExtendedInfoResponder(resp *http.Response) (result ManagerExtendedInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -880,7 +871,6 @@ func (client ManagersClient) GetPublicEncryptionKeySender(req *http.Request) (*h
 func (client ManagersClient) GetPublicEncryptionKeyResponder(resp *http.Response) (result SymmetricEncryptedSecret, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -951,7 +941,6 @@ func (client ManagersClient) ListSender(req *http.Request) (*http.Response, erro
 func (client ManagersClient) ListResponder(resp *http.Response) (result ManagerList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1025,7 +1014,6 @@ func (client ManagersClient) ListByResourceGroupSender(req *http.Request) (*http
 func (client ManagersClient) ListByResourceGroupResponder(resp *http.Response) (result ManagerList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1112,7 +1100,6 @@ func (client ManagersClient) ListFeatureSupportStatusSender(req *http.Request) (
 func (client ManagersClient) ListFeatureSupportStatusResponder(resp *http.Response) (result FeatureList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1195,7 +1182,6 @@ func (client ManagersClient) ListMetricDefinitionSender(req *http.Request) (*htt
 func (client ManagersClient) ListMetricDefinitionResponder(resp *http.Response) (result MetricDefinitionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1280,7 +1266,6 @@ func (client ManagersClient) ListMetricsSender(req *http.Request) (*http.Respons
 func (client ManagersClient) ListMetricsResponder(resp *http.Response) (result MetricList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1363,7 +1348,6 @@ func (client ManagersClient) RegenerateActivationKeySender(req *http.Request) (*
 func (client ManagersClient) RegenerateActivationKeyResponder(resp *http.Response) (result Key, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1449,7 +1433,6 @@ func (client ManagersClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client ManagersClient) UpdateResponder(resp *http.Response) (result Manager, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1537,7 +1520,6 @@ func (client ManagersClient) UpdateExtendedInfoSender(req *http.Request) (*http.
 func (client ManagersClient) UpdateExtendedInfoResponder(resp *http.Response) (result ManagerExtendedInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

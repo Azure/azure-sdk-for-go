@@ -139,7 +139,6 @@ func (client BlobContainersClient) ClearLegalHoldSender(req *http.Request) (*htt
 func (client BlobContainersClient) ClearLegalHoldResponder(resp *http.Response) (result LegalHold, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -242,7 +241,6 @@ func (client BlobContainersClient) CreateSender(req *http.Request) (*http.Respon
 func (client BlobContainersClient) CreateResponder(resp *http.Response) (result BlobContainer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -358,7 +356,6 @@ func (client BlobContainersClient) CreateOrUpdateImmutabilityPolicySender(req *h
 func (client BlobContainersClient) CreateOrUpdateImmutabilityPolicyResponder(resp *http.Response) (result ImmutabilityPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -456,7 +453,6 @@ func (client BlobContainersClient) DeleteSender(req *http.Request) (*http.Respon
 func (client BlobContainersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -561,7 +557,6 @@ func (client BlobContainersClient) DeleteImmutabilityPolicySender(req *http.Requ
 func (client BlobContainersClient) DeleteImmutabilityPolicyResponder(resp *http.Response) (result ImmutabilityPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -673,7 +668,6 @@ func (client BlobContainersClient) ExtendImmutabilityPolicySender(req *http.Requ
 func (client BlobContainersClient) ExtendImmutabilityPolicyResponder(resp *http.Response) (result ImmutabilityPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -771,7 +765,6 @@ func (client BlobContainersClient) GetSender(req *http.Request) (*http.Response,
 func (client BlobContainersClient) GetResponder(resp *http.Response) (result BlobContainer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -878,7 +871,6 @@ func (client BlobContainersClient) GetImmutabilityPolicySender(req *http.Request
 func (client BlobContainersClient) GetImmutabilityPolicyResponder(resp *http.Response) (result ImmutabilityPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -983,7 +975,6 @@ func (client BlobContainersClient) LeaseSender(req *http.Request) (*http.Respons
 func (client BlobContainersClient) LeaseResponder(resp *http.Response) (result LeaseContainerResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1088,7 +1079,6 @@ func (client BlobContainersClient) ListSender(req *http.Request) (*http.Response
 func (client BlobContainersClient) ListResponder(resp *http.Response) (result ListContainerItems, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1228,7 +1218,6 @@ func (client BlobContainersClient) LockImmutabilityPolicySender(req *http.Reques
 func (client BlobContainersClient) LockImmutabilityPolicyResponder(resp *http.Response) (result ImmutabilityPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1333,7 +1322,6 @@ func (client BlobContainersClient) SetLegalHoldSender(req *http.Request) (*http.
 func (client BlobContainersClient) SetLegalHoldResponder(resp *http.Response) (result LegalHold, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1435,7 +1423,6 @@ func (client BlobContainersClient) UpdateSender(req *http.Request) (*http.Respon
 func (client BlobContainersClient) UpdateResponder(resp *http.Response) (result BlobContainer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

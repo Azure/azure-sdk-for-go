@@ -127,7 +127,6 @@ func (client HardwareComponentGroupsClient) ChangeControllerPowerStateSender(req
 func (client HardwareComponentGroupsClient) ChangeControllerPowerStateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -211,7 +210,6 @@ func (client HardwareComponentGroupsClient) ListByDeviceSender(req *http.Request
 func (client HardwareComponentGroupsClient) ListByDeviceResponder(resp *http.Response) (result HardwareComponentGroupList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

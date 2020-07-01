@@ -111,7 +111,6 @@ func (client AscOperationsClient) GetSender(req *http.Request) (*http.Response, 
 func (client AscOperationsClient) GetResponder(resp *http.Response) (result AscOperation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

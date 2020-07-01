@@ -125,7 +125,6 @@ func (client TenantPolicyClient) CreateOrUpdateSender(req *http.Request) (*http.
 func (client TenantPolicyClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -211,7 +210,6 @@ func (client TenantPolicyClient) DeleteSender(req *http.Request) (*http.Response
 func (client TenantPolicyClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -295,7 +293,6 @@ func (client TenantPolicyClient) GetResponder(resp *http.Response) (result ReadC
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return

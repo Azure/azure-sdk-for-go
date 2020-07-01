@@ -123,7 +123,6 @@ func (client NotificationRecipientEmailClient) CreateOrUpdateSender(req *http.Re
 func (client NotificationRecipientEmailClient) CreateOrUpdateResponder(resp *http.Response) (result RecipientEmailContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -211,7 +210,6 @@ func (client NotificationRecipientEmailClient) DeleteSender(req *http.Request) (
 func (client NotificationRecipientEmailClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -298,7 +296,6 @@ func (client NotificationRecipientEmailClient) GetSender(req *http.Request) (*ht
 func (client NotificationRecipientEmailClient) GetResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -383,7 +380,6 @@ func (client NotificationRecipientEmailClient) ListByNotificationSender(req *htt
 func (client NotificationRecipientEmailClient) ListByNotificationResponder(resp *http.Response) (result RecipientEmailCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

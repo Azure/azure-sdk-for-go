@@ -128,7 +128,6 @@ func (client AgentPoolsClient) CreateOrUpdateSender(req *http.Request) (future A
 func (client AgentPoolsClient) CreateOrUpdateResponder(resp *http.Response) (result AgentPool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -212,7 +211,6 @@ func (client AgentPoolsClient) DeleteSender(req *http.Request) (future AgentPool
 func (client AgentPoolsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -295,7 +293,6 @@ func (client AgentPoolsClient) GetSender(req *http.Request) (*http.Response, err
 func (client AgentPoolsClient) GetResponder(resp *http.Response) (result AgentPool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -379,7 +376,6 @@ func (client AgentPoolsClient) ListSender(req *http.Request) (*http.Response, er
 func (client AgentPoolsClient) ListResponder(resp *http.Response) (result AgentPoolListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

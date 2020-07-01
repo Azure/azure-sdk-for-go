@@ -134,7 +134,6 @@ func (client CassandraResourcesClient) CreateUpdateCassandraKeyspaceSender(req *
 func (client CassandraResourcesClient) CreateUpdateCassandraKeyspaceResponder(resp *http.Response) (result CassandraKeyspaceGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -235,7 +234,6 @@ func (client CassandraResourcesClient) CreateUpdateCassandraTableSender(req *htt
 func (client CassandraResourcesClient) CreateUpdateCassandraTableResponder(resp *http.Response) (result CassandraTableGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -325,7 +323,6 @@ func (client CassandraResourcesClient) DeleteCassandraKeyspaceSender(req *http.R
 func (client CassandraResourcesClient) DeleteCassandraKeyspaceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -416,7 +413,6 @@ func (client CassandraResourcesClient) DeleteCassandraTableSender(req *http.Requ
 func (client CassandraResourcesClient) DeleteCassandraTableResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -506,7 +502,6 @@ func (client CassandraResourcesClient) GetCassandraKeyspaceSender(req *http.Requ
 func (client CassandraResourcesClient) GetCassandraKeyspaceResponder(resp *http.Response) (result CassandraKeyspaceGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -597,7 +592,6 @@ func (client CassandraResourcesClient) GetCassandraKeyspaceThroughputSender(req 
 func (client CassandraResourcesClient) GetCassandraKeyspaceThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -689,7 +683,6 @@ func (client CassandraResourcesClient) GetCassandraTableSender(req *http.Request
 func (client CassandraResourcesClient) GetCassandraTableResponder(resp *http.Response) (result CassandraTableGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -782,7 +775,6 @@ func (client CassandraResourcesClient) GetCassandraTableThroughputSender(req *ht
 func (client CassandraResourcesClient) GetCassandraTableThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -870,7 +862,6 @@ func (client CassandraResourcesClient) ListCassandraKeyspacesSender(req *http.Re
 func (client CassandraResourcesClient) ListCassandraKeyspacesResponder(resp *http.Response) (result CassandraKeyspaceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -960,7 +951,6 @@ func (client CassandraResourcesClient) ListCassandraTablesSender(req *http.Reque
 func (client CassandraResourcesClient) ListCassandraTablesResponder(resp *http.Response) (result CassandraTableListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1061,7 +1051,6 @@ func (client CassandraResourcesClient) UpdateCassandraKeyspaceThroughputSender(r
 func (client CassandraResourcesClient) UpdateCassandraKeyspaceThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1164,7 +1153,6 @@ func (client CassandraResourcesClient) UpdateCassandraTableThroughputSender(req 
 func (client CassandraResourcesClient) UpdateCassandraTableThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

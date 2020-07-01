@@ -581,7 +581,7 @@ type UnderstandingResult struct {
 	// Pages - List of pages where the document is found.
 	Pages *[]int32 `json:"pages,omitempty"`
 	// Fields - Dictionary of recognized field values.
-	Fields map[string]*FieldValue `json:"fields"`
+	Fields map[string]BasicFieldValue `json:"fields"`
 }
 
 // MarshalJSON is the custom marshaler for UnderstandingResult.

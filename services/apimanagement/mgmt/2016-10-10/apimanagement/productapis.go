@@ -130,7 +130,6 @@ func (client ProductApisClient) CreateSender(req *http.Request) (*http.Response,
 func (client ProductApisClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -225,7 +224,6 @@ func (client ProductApisClient) DeleteSender(req *http.Request) (*http.Response,
 func (client ProductApisClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -339,7 +337,6 @@ func (client ProductApisClient) ListByProductsSender(req *http.Request) (*http.R
 func (client ProductApisClient) ListByProductsResponder(resp *http.Response) (result APICollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

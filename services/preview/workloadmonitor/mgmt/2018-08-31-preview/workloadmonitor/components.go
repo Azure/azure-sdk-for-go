@@ -135,7 +135,6 @@ func (client ComponentsClient) GetSender(req *http.Request) (*http.Response, err
 func (client ComponentsClient) GetResponder(resp *http.Response) (result Component, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -254,7 +253,6 @@ func (client ComponentsClient) ListByResourceSender(req *http.Request) (*http.Re
 func (client ComponentsClient) ListByResourceResponder(resp *http.Response) (result ComponentsCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

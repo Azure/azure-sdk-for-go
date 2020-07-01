@@ -41,19 +41,21 @@ func NewQuotaClientWithBaseURI(baseURI string) QuotaClient {
 	return QuotaClient{NewWithBaseURI(baseURI)}
 }
 
-// CreateOrUpdate submits Quota change request for a resource provider for the specified location for the specific
-// resource in the parameter. To use, first make a Get request to get quota information for the specific resource. This
-// information consists of information regarding that specific resources. For the specific resource, if it requires an
-// update to the quota, update the limit field in the response from the Get request to the new value of quota. Then,
-// submit this updated JSON object to this quota request API. This will update the quota to the value specified. The
-// location header in the response will be used to track the status of the quota request. Please check the
-// provisioningState field in the response. The Patch operation can be used also to update the quota.
+// CreateOrUpdate create or update the service limits (quota) of a resource to requested value.
+// Steps:
+//
+// 1. Make the Get request to get the quota information for specific resource.
+//
+// 2. To increase the quota, update the limit field in the response from Get request to new value.
+//
+// 3. Submit the JSON to the quota request API to update the quota.
+// The Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
 // Parameters:
 // subscriptionID - azure subscription id.
-// providerID - azure resource Provider id.
+// providerID - azure resource provider id.
 // location - azure region.
-// resourceName - the Resource name for the specific resource provider, such as SKU name for Microsoft.Compute,
-// pool for Microsoft.Batch.
+// resourceName - the resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
+// TotalLowPriorityCores for Microsoft.MachineLearningServices
 // createQuotaRequest - quota requests payload.
 func (client QuotaClient) CreateOrUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase) (result QuotaCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -122,7 +124,6 @@ func (client QuotaClient) CreateOrUpdateSender(req *http.Request) (future QuotaC
 func (client QuotaClient) CreateOrUpdateResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -130,14 +131,14 @@ func (client QuotaClient) CreateOrUpdateResponder(resp *http.Response) (result S
 	return
 }
 
-// Get this API gets the current quota limit and usages for the specific resource for resource provider for the
-// specified location. This response can be used to submit quotaRequests.
+// Get gets the current service limits (quotas) and usage of a resource. The response from Get API can be leveraged to
+// submit quota update requests.
 // Parameters:
 // subscriptionID - azure subscription id.
-// providerID - azure resource Provider id.
+// providerID - azure resource provider id.
 // location - azure region.
-// resourceName - the Resource name for the specific resource provider, such as SKU name for Microsoft.Compute,
-// pool for Microsoft.Batch.
+// resourceName - the resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
+// TotalLowPriorityCores for Microsoft.MachineLearningServices
 func (client QuotaClient) Get(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string) (result CurrentQuotaLimitBase, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/QuotaClient.Get")
@@ -203,7 +204,6 @@ func (client QuotaClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client QuotaClient) GetResponder(resp *http.Response) (result CurrentQuotaLimitBase, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -211,11 +211,11 @@ func (client QuotaClient) GetResponder(resp *http.Response) (result CurrentQuota
 	return
 }
 
-// List this API gets the current quota limits and usages for the resource provider for the specified location. This
-// response can be used to submit quotaRequests.
+// List get a list of current service limits (quota) and usages of all the resources. The response from List API can be
+// leveraged to submit quota update requests.
 // Parameters:
 // subscriptionID - azure subscription id.
-// providerID - azure resource Provider id.
+// providerID - azure resource provider id.
 // location - azure region.
 func (client QuotaClient) List(ctx context.Context, subscriptionID string, providerID string, location string) (result QuotaLimitsPage, err error) {
 	if tracing.IsEnabled() {
@@ -282,7 +282,6 @@ func (client QuotaClient) ListSender(req *http.Request) (*http.Response, error) 
 func (client QuotaClient) ListResponder(resp *http.Response) (result QuotaLimits, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -327,19 +326,21 @@ func (client QuotaClient) ListComplete(ctx context.Context, subscriptionID strin
 	return
 }
 
-// Update submits Quota change request for a resource provider for the specified location for the specific resource in
-// the parameter. To use, first make a Get request to get quota information for the specific resource. This information
-// consists of information regarding that specific resources. For the specific resource, if it requires an update to
-// the quota, update the limit field in the response from the Get request to the new value of quota. Then, submit this
-// updated JSON object to this quota request API. This will update the quota to the value specified. The location
-// header in the response will be used to track the status of the quota request. Please check the provisioningState
-// field in the response. The Put operation can be used also to update the quota.
+// Update update the service limits (quota) of a resource to requested value.
+// Steps:
+//
+// 1. Make the Get request to get the quota information for specific resource.
+//
+// 2. To increase the quota, update the limit field in the response from Get request to new value.
+//
+// 3. Submit the JSON to the quota request API to update the quota.
+// The Update quota request may be constructed as follows. The PATCH operation can be used to update the quota.
 // Parameters:
 // subscriptionID - azure subscription id.
-// providerID - azure resource Provider id.
+// providerID - azure resource provider id.
 // location - azure region.
-// resourceName - the Resource name for the specific resource provider, such as SKU name for Microsoft.Compute,
-// pool for Microsoft.Batch.
+// resourceName - the resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
+// TotalLowPriorityCores for Microsoft.MachineLearningServices
 // createQuotaRequest - quota requests payload.
 func (client QuotaClient) Update(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase) (result QuotaUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -408,7 +409,6 @@ func (client QuotaClient) UpdateSender(req *http.Request) (future QuotaUpdateFut
 func (client QuotaClient) UpdateResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

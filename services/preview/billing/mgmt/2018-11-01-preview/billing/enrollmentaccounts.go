@@ -118,7 +118,6 @@ func (client EnrollmentAccountsClient) GetByEnrollmentAccountIDSender(req *http.
 func (client EnrollmentAccountsClient) GetByEnrollmentAccountIDResponder(resp *http.Response) (result EnrollmentAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -201,7 +200,6 @@ func (client EnrollmentAccountsClient) ListByBillingAccountNameSender(req *http.
 func (client EnrollmentAccountsClient) ListByBillingAccountNameResponder(resp *http.Response) (result EnrollmentAccountListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

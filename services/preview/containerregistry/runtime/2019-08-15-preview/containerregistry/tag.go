@@ -100,7 +100,6 @@ func (client TagClient) DeleteSender(req *http.Request) (*http.Response, error) 
 func (client TagClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -172,7 +171,6 @@ func (client TagClient) GetAttributesSender(req *http.Request) (*http.Response, 
 func (client TagClient) GetAttributesResponder(resp *http.Response) (result TagAttributes, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -263,7 +261,6 @@ func (client TagClient) GetListSender(req *http.Request) (*http.Response, error)
 func (client TagClient) GetListResponder(resp *http.Response) (result TagList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -342,7 +339,6 @@ func (client TagClient) UpdateAttributesSender(req *http.Request) (*http.Respons
 func (client TagClient) UpdateAttributesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

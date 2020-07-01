@@ -263,7 +263,6 @@ func (client TranslatorClient) BreakSentenceSender(req *http.Request) (*http.Res
 func (client TranslatorClient) BreakSentenceResponder(resp *http.Response) (result ListBreakSentenceResultItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -372,7 +371,6 @@ func (client TranslatorClient) DetectSender(req *http.Request) (*http.Response, 
 func (client TranslatorClient) DetectResponder(resp *http.Response) (result ListDetectResultItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -503,7 +501,6 @@ func (client TranslatorClient) DictionaryExamplesSender(req *http.Request) (*htt
 func (client TranslatorClient) DictionaryExamplesResponder(resp *http.Response) (result ListDictionaryExampleResultItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -670,7 +667,6 @@ func (client TranslatorClient) DictionaryLookupSender(req *http.Request) (*http.
 func (client TranslatorClient) DictionaryLookupResponder(resp *http.Response) (result ListDictionaryLookupResultItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -914,7 +910,6 @@ func (client TranslatorClient) LanguagesSender(req *http.Request) (*http.Respons
 func (client TranslatorClient) LanguagesResponder(resp *http.Response) (result LanguagesResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1131,7 +1126,6 @@ func (client TranslatorClient) TranslateSender(req *http.Request) (*http.Respons
 func (client TranslatorClient) TranslateResponder(resp *http.Response) (result ListTranslateResultAllItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1241,7 +1235,6 @@ func (client TranslatorClient) TransliterateSender(req *http.Request) (*http.Res
 func (client TranslatorClient) TransliterateResponder(resp *http.Response) (result ListTransliterateResultItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

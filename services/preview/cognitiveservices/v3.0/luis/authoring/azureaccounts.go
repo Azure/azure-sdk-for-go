@@ -122,7 +122,6 @@ func (client AzureAccountsClient) AssignToAppSender(req *http.Request) (*http.Re
 func (client AzureAccountsClient) AssignToAppResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -199,7 +198,6 @@ func (client AzureAccountsClient) GetAssignedSender(req *http.Request) (*http.Re
 func (client AzureAccountsClient) GetAssignedResponder(resp *http.Response) (result ListAzureAccountInfoObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -271,7 +269,6 @@ func (client AzureAccountsClient) ListUserLUISAccountsSender(req *http.Request) 
 func (client AzureAccountsClient) ListUserLUISAccountsResponder(resp *http.Response) (result ListAzureAccountInfoObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -364,7 +361,6 @@ func (client AzureAccountsClient) RemoveFromAppSender(req *http.Request) (*http.
 func (client AzureAccountsClient) RemoveFromAppResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -133,7 +133,6 @@ func (client CollectionPartitionClient) ListMetricsSender(req *http.Request) (*h
 func (client CollectionPartitionClient) ListMetricsResponder(resp *http.Response) (result PartitionMetricListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -232,7 +231,6 @@ func (client CollectionPartitionClient) ListUsagesSender(req *http.Request) (*ht
 func (client CollectionPartitionClient) ListUsagesResponder(resp *http.Response) (result PartitionUsagesResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

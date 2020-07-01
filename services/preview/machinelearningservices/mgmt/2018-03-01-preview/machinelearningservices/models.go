@@ -1714,6 +1714,29 @@ type WorkspacePropertiesUpdateParameters struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 }
 
+// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type WorkspacesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *WorkspacesDeleteFuture) Result(client WorkspacesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("machinelearningservices.WorkspacesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // WorkspaceUpdateParameters the parameters for updating a machine learning workspace.
 type WorkspaceUpdateParameters struct {
 	// Tags - The resource tags for the machine learning workspace.

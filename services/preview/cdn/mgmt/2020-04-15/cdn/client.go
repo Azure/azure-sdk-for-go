@@ -129,7 +129,6 @@ func (client BaseClient) CheckNameAvailabilitySender(req *http.Request) (*http.R
 func (client BaseClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameAvailabilityOutput, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -212,7 +211,6 @@ func (client BaseClient) CheckNameAvailabilityWithSubscriptionSender(req *http.R
 func (client BaseClient) CheckNameAvailabilityWithSubscriptionResponder(resp *http.Response) (result CheckNameAvailabilityOutput, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -295,7 +293,6 @@ func (client BaseClient) ValidateProbeSender(req *http.Request) (*http.Response,
 func (client BaseClient) ValidateProbeResponder(resp *http.Response) (result ValidateProbeOutput, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

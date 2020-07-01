@@ -109,7 +109,6 @@ func (client RequestsClient) GetSender(req *http.Request) (*http.Response, error
 func (client RequestsClient) GetResponder(resp *http.Response) (result LockboxRequestResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -186,7 +185,6 @@ func (client RequestsClient) ListSender(req *http.Request) (*http.Response, erro
 func (client RequestsClient) ListResponder(resp *http.Response) (result RequestListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -302,7 +300,6 @@ func (client RequestsClient) UpdateStatusSender(req *http.Request) (*http.Respon
 func (client RequestsClient) UpdateStatusResponder(resp *http.Response) (result Approval, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

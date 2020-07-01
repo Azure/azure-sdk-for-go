@@ -2040,7 +2040,7 @@ type ProjectProperties struct {
 	// RegisteredTools - Gets or sets the list of tools registered with the migrate project.
 	RegisteredTools *[]string `json:"registeredTools,omitempty"`
 	// Summary - READ-ONLY; Gets the summary of the migrate project.
-	Summary map[string]*ProjectSummary `json:"summary"`
+	Summary map[string]BasicProjectSummary `json:"summary"`
 	// LastSummaryRefreshedTime - READ-ONLY; Gets the last time the project summary was refreshed.
 	LastSummaryRefreshedTime *date.Time `json:"lastSummaryRefreshedTime,omitempty"`
 	// RefreshSummaryState - READ-ONLY; Gets the refresh summary state. Possible values include: 'RefreshSummaryState1Started', 'RefreshSummaryState1InProgress', 'RefreshSummaryState1Completed', 'RefreshSummaryState1Failed'

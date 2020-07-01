@@ -4163,6 +4163,12 @@ func (rr *RoutingRule) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// RoutingRuleLink defines the Resource ID for a Routing Rule.
+type RoutingRuleLink struct {
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+}
+
 // RoutingRuleListResult result of the request to list Routing Rules. It contains a list of Routing Rule
 // objects and a URL link to get the next set of results.
 type RoutingRuleListResult struct {
@@ -4188,6 +4194,8 @@ type RoutingRuleProperties struct {
 	RouteConfiguration BasicRouteConfiguration `json:"routeConfiguration,omitempty"`
 	// RulesEngine - A reference to a specific Rules Engine Configuration to apply to this route.
 	RulesEngine *SubResource `json:"rulesEngine,omitempty"`
+	// WebApplicationFirewallPolicyLink - Defines the Web Application Firewall policy for each routing rule (if applicable)
+	WebApplicationFirewallPolicyLink *RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink `json:"webApplicationFirewallPolicyLink,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for RoutingRuleProperties struct.
@@ -4261,6 +4269,15 @@ func (rrp *RoutingRuleProperties) UnmarshalJSON(body []byte) error {
 				}
 				rrp.RulesEngine = &rulesEngine
 			}
+		case "webApplicationFirewallPolicyLink":
+			if v != nil {
+				var webApplicationFirewallPolicyLink RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink
+				err = json.Unmarshal(*v, &webApplicationFirewallPolicyLink)
+				if err != nil {
+					return err
+				}
+				rrp.WebApplicationFirewallPolicyLink = &webApplicationFirewallPolicyLink
+			}
 		}
 	}
 
@@ -4281,6 +4298,8 @@ type RoutingRuleUpdateParameters struct {
 	RouteConfiguration BasicRouteConfiguration `json:"routeConfiguration,omitempty"`
 	// RulesEngine - A reference to a specific Rules Engine Configuration to apply to this route.
 	RulesEngine *SubResource `json:"rulesEngine,omitempty"`
+	// WebApplicationFirewallPolicyLink - Defines the Web Application Firewall policy for each routing rule (if applicable)
+	WebApplicationFirewallPolicyLink *RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink `json:"webApplicationFirewallPolicyLink,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for RoutingRuleUpdateParameters struct.
@@ -4345,10 +4364,26 @@ func (rrup *RoutingRuleUpdateParameters) UnmarshalJSON(body []byte) error {
 				}
 				rrup.RulesEngine = &rulesEngine
 			}
+		case "webApplicationFirewallPolicyLink":
+			if v != nil {
+				var webApplicationFirewallPolicyLink RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink
+				err = json.Unmarshal(*v, &webApplicationFirewallPolicyLink)
+				if err != nil {
+					return err
+				}
+				rrup.WebApplicationFirewallPolicyLink = &webApplicationFirewallPolicyLink
+			}
 		}
 	}
 
 	return nil
+}
+
+// RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink defines the Web Application Firewall policy
+// for each routing rule (if applicable)
+type RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink struct {
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
 }
 
 // RulesEngine a rules engine configuration containing a list of rules that will run to modify the runtime
@@ -5180,6 +5215,8 @@ type WebApplicationFirewallPolicyProperties struct {
 	ManagedRules *ManagedRuleSetList `json:"managedRules,omitempty"`
 	// FrontendEndpointLinks - READ-ONLY; Describes Frontend Endpoints associated with this Web Application Firewall policy.
 	FrontendEndpointLinks *[]FrontendEndpointLink `json:"frontendEndpointLinks,omitempty"`
+	// RoutingRuleLinks - READ-ONLY; Describes Routing Rules associated with this Web Application Firewall policy.
+	RoutingRuleLinks *[]RoutingRuleLink `json:"routingRuleLinks,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of the policy.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// ResourceState - READ-ONLY; Possible values include: 'PolicyResourceStateCreating', 'PolicyResourceStateEnabling', 'PolicyResourceStateEnabled', 'PolicyResourceStateDisabling', 'PolicyResourceStateDisabled', 'PolicyResourceStateDeleting'

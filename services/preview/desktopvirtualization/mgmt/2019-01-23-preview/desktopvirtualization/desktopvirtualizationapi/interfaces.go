@@ -44,14 +44,6 @@ type WorkspacesClientAPI interface {
 
 var _ WorkspacesClientAPI = (*desktopvirtualization.WorkspacesClient)(nil)
 
-// ApplicationGroupAssignmentsClientAPI contains the set of methods on the ApplicationGroupAssignmentsClient type.
-type ApplicationGroupAssignmentsClientAPI interface {
-	WorkspaceLevelList(ctx context.Context, resourceGroupName string, workspaceName string, filter string) (result desktopvirtualization.ApplicationGroupListPage, err error)
-	WorkspaceLevelListComplete(ctx context.Context, resourceGroupName string, workspaceName string, filter string) (result desktopvirtualization.ApplicationGroupListIterator, err error)
-}
-
-var _ ApplicationGroupAssignmentsClientAPI = (*desktopvirtualization.ApplicationGroupAssignmentsClient)(nil)
-
 // ApplicationGroupsClientAPI contains the set of methods on the ApplicationGroupsClient type.
 type ApplicationGroupsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, applicationGroupName string, applicationGroup desktopvirtualization.ApplicationGroup) (result desktopvirtualization.ApplicationGroup, err error)
@@ -133,11 +125,3 @@ type SessionHostsClientAPI interface {
 }
 
 var _ SessionHostsClientAPI = (*desktopvirtualization.SessionHostsClient)(nil)
-
-// ActiveApplicationsClientAPI contains the set of methods on the ActiveApplicationsClient type.
-type ActiveApplicationsClientAPI interface {
-	ListBySessionHost(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, filter string) (result desktopvirtualization.ApplicationListPage, err error)
-	ListBySessionHostComplete(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, filter string) (result desktopvirtualization.ApplicationListIterator, err error)
-}
-
-var _ ActiveApplicationsClientAPI = (*desktopvirtualization.ActiveApplicationsClient)(nil)

@@ -137,7 +137,6 @@ func (client BillingAccountDimensionsClient) ListSender(req *http.Request) (*htt
 func (client BillingAccountDimensionsClient) ListResponder(resp *http.Response) (result DimensionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

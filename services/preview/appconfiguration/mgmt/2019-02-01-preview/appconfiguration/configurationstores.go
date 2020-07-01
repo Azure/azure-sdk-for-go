@@ -122,7 +122,6 @@ func (client ConfigurationStoresClient) CreateSender(req *http.Request) (future 
 func (client ConfigurationStoresClient) CreateResponder(resp *http.Response) (result ConfigurationStore, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -206,7 +205,6 @@ func (client ConfigurationStoresClient) DeleteSender(req *http.Request) (future 
 func (client ConfigurationStoresClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -289,7 +287,6 @@ func (client ConfigurationStoresClient) GetSender(req *http.Request) (*http.Resp
 func (client ConfigurationStoresClient) GetResponder(resp *http.Response) (result ConfigurationStore, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -368,7 +365,6 @@ func (client ConfigurationStoresClient) ListSender(req *http.Request) (*http.Res
 func (client ConfigurationStoresClient) ListResponder(resp *http.Response) (result ConfigurationStoreListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -486,7 +482,6 @@ func (client ConfigurationStoresClient) ListByResourceGroupSender(req *http.Requ
 func (client ConfigurationStoresClient) ListByResourceGroupResponder(resp *http.Response) (result ConfigurationStoreListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -614,7 +609,6 @@ func (client ConfigurationStoresClient) ListKeysSender(req *http.Request) (*http
 func (client ConfigurationStoresClient) ListKeysResponder(resp *http.Response) (result APIKeyListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -740,7 +734,6 @@ func (client ConfigurationStoresClient) ListKeyValueSender(req *http.Request) (*
 func (client ConfigurationStoresClient) ListKeyValueResponder(resp *http.Response) (result KeyValue, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -827,7 +820,6 @@ func (client ConfigurationStoresClient) RegenerateKeySender(req *http.Request) (
 func (client ConfigurationStoresClient) RegenerateKeyResponder(resp *http.Response) (result APIKey, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -914,7 +906,6 @@ func (client ConfigurationStoresClient) UpdateSender(req *http.Request) (future 
 func (client ConfigurationStoresClient) UpdateResponder(resp *http.Response) (result ConfigurationStore, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

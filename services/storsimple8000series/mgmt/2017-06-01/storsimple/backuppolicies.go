@@ -123,7 +123,6 @@ func (client BackupPoliciesClient) BackupNowSender(req *http.Request) (future Ba
 func (client BackupPoliciesClient) BackupNowResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -215,7 +214,6 @@ func (client BackupPoliciesClient) CreateOrUpdateSender(req *http.Request) (futu
 func (client BackupPoliciesClient) CreateOrUpdateResponder(resp *http.Response) (result BackupPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -302,7 +300,6 @@ func (client BackupPoliciesClient) DeleteSender(req *http.Request) (future Backu
 func (client BackupPoliciesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -388,7 +385,6 @@ func (client BackupPoliciesClient) GetSender(req *http.Request) (*http.Response,
 func (client BackupPoliciesClient) GetResponder(resp *http.Response) (result BackupPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -473,7 +469,6 @@ func (client BackupPoliciesClient) ListByDeviceSender(req *http.Request) (*http.
 func (client BackupPoliciesClient) ListByDeviceResponder(resp *http.Response) (result BackupPolicyList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

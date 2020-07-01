@@ -110,7 +110,6 @@ func (client HyperVSitesClient) DeleteSiteSender(req *http.Request) (*http.Respo
 func (client HyperVSitesClient) DeleteSiteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -186,7 +185,6 @@ func (client HyperVSitesClient) GetSiteSender(req *http.Request) (*http.Response
 func (client HyperVSitesClient) GetSiteResponder(resp *http.Response) (result HyperVSite, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -264,7 +262,6 @@ func (client HyperVSitesClient) GetSiteHealthSummarySender(req *http.Request) (*
 func (client HyperVSitesClient) GetSiteHealthSummaryResponder(resp *http.Response) (result SiteHealthSummaryCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -377,7 +374,6 @@ func (client HyperVSitesClient) GetSiteUsageSender(req *http.Request) (*http.Res
 func (client HyperVSitesClient) GetSiteUsageResponder(resp *http.Response) (result HyperVSiteUsage, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -459,7 +455,6 @@ func (client HyperVSitesClient) PatchSiteSender(req *http.Request) (*http.Respon
 func (client HyperVSitesClient) PatchSiteResponder(resp *http.Response) (result HyperVSite, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -541,7 +536,6 @@ func (client HyperVSitesClient) PutSiteSender(req *http.Request) (*http.Response
 func (client HyperVSitesClient) PutSiteResponder(resp *http.Response) (result HyperVSite, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -618,7 +612,6 @@ func (client HyperVSitesClient) RefreshSiteSender(req *http.Request) (*http.Resp
 func (client HyperVSitesClient) RefreshSiteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

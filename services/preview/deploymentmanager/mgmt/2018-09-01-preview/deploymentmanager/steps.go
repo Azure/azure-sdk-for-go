@@ -128,7 +128,6 @@ func (client StepsClient) CreateOrUpdateSender(req *http.Request) (*http.Respons
 func (client StepsClient) CreateOrUpdateResponder(resp *http.Response) (result StepResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -212,7 +211,6 @@ func (client StepsClient) DeleteSender(req *http.Request) (*http.Response, error
 func (client StepsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -295,7 +293,6 @@ func (client StepsClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client StepsClient) GetResponder(resp *http.Response) (result StepResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

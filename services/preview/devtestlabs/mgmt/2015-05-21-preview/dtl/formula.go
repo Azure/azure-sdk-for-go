@@ -113,7 +113,6 @@ func (client FormulaClient) CreateOrUpdateResourceSender(req *http.Request) (fut
 func (client FormulaClient) CreateOrUpdateResourceResponder(resp *http.Response) (result Formula, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -191,7 +190,6 @@ func (client FormulaClient) DeleteResourceSender(req *http.Request) (*http.Respo
 func (client FormulaClient) DeleteResourceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -268,7 +266,6 @@ func (client FormulaClient) GetResourceSender(req *http.Request) (*http.Response
 func (client FormulaClient) GetResourceResponder(resp *http.Response) (result Formula, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -355,7 +352,6 @@ func (client FormulaClient) ListSender(req *http.Request) (*http.Response, error
 func (client FormulaClient) ListResponder(resp *http.Response) (result ResponseWithContinuationFormula, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

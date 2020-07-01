@@ -113,7 +113,6 @@ func (client LocationsClient) CheckNameAvailabilitySender(req *http.Request) (*h
 func (client LocationsClient) CheckNameAvailabilityResponder(resp *http.Response) (result NameAvailability, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -187,7 +186,6 @@ func (client LocationsClient) ListConsortiumsSender(req *http.Request) (*http.Re
 func (client LocationsClient) ListConsortiumsResponder(resp *http.Response) (result ConsortiumCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

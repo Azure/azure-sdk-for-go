@@ -127,7 +127,6 @@ func (client SmartDetectorAlertRulesClient) CreateOrUpdateSender(req *http.Reque
 func (client SmartDetectorAlertRulesClient) CreateOrUpdateResponder(resp *http.Response) (result AlertRule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -203,7 +202,6 @@ func (client SmartDetectorAlertRulesClient) DeleteSender(req *http.Request) (*ht
 func (client SmartDetectorAlertRulesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -282,7 +280,6 @@ func (client SmartDetectorAlertRulesClient) GetSender(req *http.Request) (*http.
 func (client SmartDetectorAlertRulesClient) GetResponder(resp *http.Response) (result AlertRule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -354,7 +351,6 @@ func (client SmartDetectorAlertRulesClient) ListSender(req *http.Request) (*http
 func (client SmartDetectorAlertRulesClient) ListResponder(resp *http.Response) (result AlertRulesList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -466,7 +462,6 @@ func (client SmartDetectorAlertRulesClient) ListByResourceGroupSender(req *http.
 func (client SmartDetectorAlertRulesClient) ListByResourceGroupResponder(resp *http.Response) (result AlertRulesList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

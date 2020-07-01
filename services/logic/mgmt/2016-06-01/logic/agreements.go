@@ -550,7 +550,6 @@ func (client AgreementsClient) CreateOrUpdateSender(req *http.Request) (*http.Re
 func (client AgreementsClient) CreateOrUpdateResponder(resp *http.Response) (result IntegrationAccountAgreement, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -628,7 +627,6 @@ func (client AgreementsClient) DeleteSender(req *http.Request) (*http.Response, 
 func (client AgreementsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -705,7 +703,6 @@ func (client AgreementsClient) GetSender(req *http.Request) (*http.Response, err
 func (client AgreementsClient) GetResponder(resp *http.Response) (result IntegrationAccountAgreement, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -790,7 +787,6 @@ func (client AgreementsClient) ListByIntegrationAccountsSender(req *http.Request
 func (client AgreementsClient) ListByIntegrationAccountsResponder(resp *http.Response) (result IntegrationAccountAgreementListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -907,7 +903,6 @@ func (client AgreementsClient) ListContentCallbackURLSender(req *http.Request) (
 func (client AgreementsClient) ListContentCallbackURLResponder(resp *http.Response) (result WorkflowTriggerCallbackURL, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -112,7 +112,6 @@ func (client HyperVRunAsAccountsClient) GetAllRunAsAccountsInSiteSender(req *htt
 func (client HyperVRunAsAccountsClient) GetAllRunAsAccountsInSiteResponder(resp *http.Response) (result HyperVRunAsAccountCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -228,7 +227,6 @@ func (client HyperVRunAsAccountsClient) GetRunAsAccountSender(req *http.Request)
 func (client HyperVRunAsAccountsClient) GetRunAsAccountResponder(resp *http.Response) (result HyperVRunAsAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -303,7 +303,6 @@ func (client VideosClient) DetailsSender(req *http.Request) (*http.Response, err
 func (client VideosClient) DetailsResponder(resp *http.Response) (result VideoDetails, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -604,7 +603,6 @@ func (client VideosClient) SearchSender(req *http.Request) (*http.Response, erro
 func (client VideosClient) SearchResponder(resp *http.Response) (result Videos, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -844,7 +842,6 @@ func (client VideosClient) TrendingSender(req *http.Request) (*http.Response, er
 func (client VideosClient) TrendingResponder(resp *http.Response) (result TrendingVideos, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

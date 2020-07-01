@@ -113,7 +113,6 @@ func (client ScheduleClient) CreateOrUpdateResourceSender(req *http.Request) (fu
 func (client ScheduleClient) CreateOrUpdateResourceResponder(resp *http.Response) (result Schedule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -191,7 +190,6 @@ func (client ScheduleClient) DeleteResourceSender(req *http.Request) (future Sch
 func (client ScheduleClient) DeleteResourceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -268,7 +266,6 @@ func (client ScheduleClient) ExecuteSender(req *http.Request) (future ScheduleEx
 func (client ScheduleClient) ExecuteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -345,7 +342,6 @@ func (client ScheduleClient) GetResourceSender(req *http.Request) (*http.Respons
 func (client ScheduleClient) GetResourceResponder(resp *http.Response) (result Schedule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -432,7 +428,6 @@ func (client ScheduleClient) ListSender(req *http.Request) (*http.Response, erro
 func (client ScheduleClient) ListResponder(resp *http.Response) (result ResponseWithContinuationSchedule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -549,7 +544,6 @@ func (client ScheduleClient) PatchResourceSender(req *http.Request) (*http.Respo
 func (client ScheduleClient) PatchResourceResponder(resp *http.Response) (result Schedule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

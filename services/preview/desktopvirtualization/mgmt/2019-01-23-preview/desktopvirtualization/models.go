@@ -124,6 +124,23 @@ func PossiblePersonalDesktopAssignmentTypeValues() []PersonalDesktopAssignmentTy
 	return []PersonalDesktopAssignmentType{Automatic, Direct}
 }
 
+// PreferredAppGroupType enumerates the values for preferred app group type.
+type PreferredAppGroupType string
+
+const (
+	// PreferredAppGroupTypeDesktop ...
+	PreferredAppGroupTypeDesktop PreferredAppGroupType = "Desktop"
+	// PreferredAppGroupTypeNone ...
+	PreferredAppGroupTypeNone PreferredAppGroupType = "None"
+	// PreferredAppGroupTypeRailApplications ...
+	PreferredAppGroupTypeRailApplications PreferredAppGroupType = "RailApplications"
+)
+
+// PossiblePreferredAppGroupTypeValues returns an array of possible values for the PreferredAppGroupType const type.
+func PossiblePreferredAppGroupTypeValues() []PreferredAppGroupType {
+	return []PreferredAppGroupType{PreferredAppGroupTypeDesktop, PreferredAppGroupTypeNone, PreferredAppGroupTypeRailApplications}
+}
+
 // SessionState enumerates the values for session state.
 type SessionState string
 
@@ -1392,6 +1409,8 @@ type HostPoolPatchProperties struct {
 	RegistrationInfo *RegistrationInfoPatch `json:"registrationInfo,omitempty"`
 	// SsoContext - Path to keyvault containing ssoContext secret.
 	SsoContext *string `json:"ssoContext,omitempty"`
+	// PreferredAppGroupType - The type of preferred application group type, default to Desktop Application Group. Possible values include: 'PreferredAppGroupTypeNone', 'PreferredAppGroupTypeDesktop', 'PreferredAppGroupTypeRailApplications'
+	PreferredAppGroupType PreferredAppGroupType `json:"preferredAppGroupType,omitempty"`
 }
 
 // HostPoolProperties properties of HostPool.
@@ -1422,6 +1441,8 @@ type HostPoolProperties struct {
 	ApplicationGroupReferences *[]string `json:"applicationGroupReferences,omitempty"`
 	// SsoContext - Path to keyvault containing ssoContext secret.
 	SsoContext *string `json:"ssoContext,omitempty"`
+	// PreferredAppGroupType - The type of preferred application group type, default to Desktop Application Group. Possible values include: 'PreferredAppGroupTypeNone', 'PreferredAppGroupTypeDesktop', 'PreferredAppGroupTypeRailApplications'
+	PreferredAppGroupType PreferredAppGroupType `json:"preferredAppGroupType,omitempty"`
 }
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
@@ -1805,6 +1826,10 @@ type SessionHostProperties struct {
 	AgentVersion *string `json:"agentVersion,omitempty"`
 	// AllowNewSession - Allow a new session.
 	AllowNewSession *bool `json:"allowNewSession,omitempty"`
+	// VirtualMachineID - READ-ONLY; Virtual Machine Id of SessionHost's underlying virtual machine.
+	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+	// ResourceID - READ-ONLY; Resource Id of SessionHost's underlying virtual machine.
+	ResourceID *string `json:"resourceId,omitempty"`
 	// AssignedUser - User assigned to SessionHost.
 	AssignedUser *string `json:"assignedUser,omitempty"`
 	// Status - Status for a SessionHost. Possible values include: 'StatusAvailable', 'StatusUnavailable', 'StatusShutdown', 'StatusDisconnected', 'StatusUpgrading', 'StatusUpgradeFailed'

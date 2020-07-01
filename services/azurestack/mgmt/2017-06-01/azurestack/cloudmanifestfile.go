@@ -111,7 +111,6 @@ func (client CloudManifestFileClient) GetSender(req *http.Request) (*http.Respon
 func (client CloudManifestFileClient) GetResponder(resp *http.Response) (result CloudManifestFileResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -178,7 +177,6 @@ func (client CloudManifestFileClient) ListSender(req *http.Request) (*http.Respo
 func (client CloudManifestFileClient) ListResponder(resp *http.Response) (result CloudManifestFileResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

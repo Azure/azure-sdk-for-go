@@ -101,7 +101,6 @@ func (client BatchClient) CancelSparkBatchJobSender(req *http.Request) (*http.Re
 func (client BatchClient) CancelSparkBatchJobResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -185,7 +184,6 @@ func (client BatchClient) CreateSparkBatchJobSender(req *http.Request) (*http.Re
 func (client BatchClient) CreateSparkBatchJobResponder(resp *http.Response) (result BatchJob, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -265,7 +263,6 @@ func (client BatchClient) GetSparkBatchJobSender(req *http.Request) (*http.Respo
 func (client BatchClient) GetSparkBatchJobResponder(resp *http.Response) (result BatchJob, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -349,7 +346,6 @@ func (client BatchClient) GetSparkBatchJobsSender(req *http.Request) (*http.Resp
 func (client BatchClient) GetSparkBatchJobsResponder(resp *http.Response) (result BatchJobCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

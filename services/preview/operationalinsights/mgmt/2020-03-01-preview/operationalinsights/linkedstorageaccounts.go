@@ -133,7 +133,6 @@ func (client LinkedStorageAccountsClient) CreateOrUpdateSender(req *http.Request
 func (client LinkedStorageAccountsClient) CreateOrUpdateResponder(resp *http.Response) (result LinkedStorageAccountsResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -225,7 +224,6 @@ func (client LinkedStorageAccountsClient) DeleteSender(req *http.Request) (*http
 func (client LinkedStorageAccountsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -316,7 +314,6 @@ func (client LinkedStorageAccountsClient) GetSender(req *http.Request) (*http.Re
 func (client LinkedStorageAccountsClient) GetResponder(resp *http.Response) (result LinkedStorageAccountsResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -407,7 +404,6 @@ func (client LinkedStorageAccountsClient) ListByWorkspaceSender(req *http.Reques
 func (client LinkedStorageAccountsClient) ListByWorkspaceResponder(resp *http.Response) (result LinkedStorageAccountsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

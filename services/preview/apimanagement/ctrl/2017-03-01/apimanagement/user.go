@@ -131,7 +131,6 @@ func (client UserClient) CreateOrUpdateSender(req *http.Request) (*http.Response
 func (client UserClient) CreateOrUpdateResponder(resp *http.Response) (result UserContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -233,7 +232,6 @@ func (client UserClient) DeleteSender(req *http.Request) (*http.Response, error)
 func (client UserClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -320,7 +318,6 @@ func (client UserClient) GenerateSsoURLSender(req *http.Request) (*http.Response
 func (client UserClient) GenerateSsoURLResponder(resp *http.Response) (result GenerateSsoURLResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -407,7 +404,6 @@ func (client UserClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client UserClient) GetResponder(resp *http.Response) (result UserContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -499,7 +495,6 @@ func (client UserClient) GetSharedAccessTokenSender(req *http.Request) (*http.Re
 func (client UserClient) GetSharedAccessTokenResponder(resp *http.Response) (result UserTokenResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -604,7 +599,6 @@ func (client UserClient) ListSender(req *http.Request) (*http.Response, error) {
 func (client UserClient) ListResponder(resp *http.Response) (result UserCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -734,7 +728,6 @@ func (client UserClient) UpdateSender(req *http.Request) (*http.Response, error)
 func (client UserClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

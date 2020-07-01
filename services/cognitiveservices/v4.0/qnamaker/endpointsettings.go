@@ -92,7 +92,6 @@ func (client EndpointSettingsClient) GetSettingsSender(req *http.Request) (*http
 func (client EndpointSettingsClient) GetSettingsResponder(resp *http.Response) (result EndpointSettingsDTO, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -161,7 +160,6 @@ func (client EndpointSettingsClient) UpdateSettingsSender(req *http.Request) (*h
 func (client EndpointSettingsClient) UpdateSettingsResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

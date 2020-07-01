@@ -36,6 +36,14 @@ const (
 	User   OperationOrigin = original.User
 )
 
+type RequestType = original.RequestType
+
+const (
+	Handshake   RequestType = original.Handshake
+	Unknown     RequestType = original.Unknown
+	UsageUpload RequestType = original.UsageUpload
+)
+
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
@@ -51,9 +59,24 @@ const (
 	Standard SkuTier = original.Standard
 )
 
+type UsageUploadStatus = original.UsageUploadStatus
+
+const (
+	UsageUploadStatusCompleted      UsageUploadStatus = original.UsageUploadStatusCompleted
+	UsageUploadStatusFailed         UsageUploadStatus = original.UsageUploadStatusFailed
+	UsageUploadStatusPartialSuccess UsageUploadStatus = original.UsageUploadStatusPartialSuccess
+	UsageUploadStatusUnknown        UsageUploadStatus = original.UsageUploadStatusUnknown
+)
+
+type AzureResource = original.AzureResource
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type DataController = original.DataController
+type DataControllerProperties = original.DataControllerProperties
+type DataControllerResource = original.DataControllerResource
+type DataControllersClient = original.DataControllersClient
+type HandshakeResponse = original.HandshakeResponse
 type HybridDataManager = original.HybridDataManager
 type HybridDataManagerListResult = original.HybridDataManagerListResult
 type HybridDataManagerListResultIterator = original.HybridDataManagerListResultIterator
@@ -68,6 +91,9 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type PageOfDataControllerResource = original.PageOfDataControllerResource
+type PageOfDataControllerResourceIterator = original.PageOfDataControllerResourceIterator
+type PageOfDataControllerResourcePage = original.PageOfDataControllerResourcePage
 type Plan = original.Plan
 type PostgresInstance = original.PostgresInstance
 type PostgresInstanceListResult = original.PostgresInstanceListResult
@@ -82,6 +108,7 @@ type ResourceModelWithAllowedPropertySet = original.ResourceModelWithAllowedProp
 type ResourceModelWithAllowedPropertySetIdentity = original.ResourceModelWithAllowedPropertySetIdentity
 type ResourceModelWithAllowedPropertySetPlan = original.ResourceModelWithAllowedPropertySetPlan
 type ResourceModelWithAllowedPropertySetSku = original.ResourceModelWithAllowedPropertySetSku
+type ResourceSku = original.ResourceSku
 type SQLInstance = original.SQLInstance
 type SQLInstanceListResult = original.SQLInstanceListResult
 type SQLInstanceListResultIterator = original.SQLInstanceListResultIterator
@@ -89,6 +116,13 @@ type SQLInstanceListResultPage = original.SQLInstanceListResultPage
 type SQLInstanceProperties = original.SQLInstanceProperties
 type SQLInstanceUpdate = original.SQLInstanceUpdate
 type SQLInstancesClient = original.SQLInstancesClient
+type SQLManagedInstance = original.SQLManagedInstance
+type SQLManagedInstanceListResult = original.SQLManagedInstanceListResult
+type SQLManagedInstanceListResultIterator = original.SQLManagedInstanceListResultIterator
+type SQLManagedInstanceListResultPage = original.SQLManagedInstanceListResultPage
+type SQLManagedInstanceProperties = original.SQLManagedInstanceProperties
+type SQLManagedInstanceUpdate = original.SQLManagedInstanceUpdate
+type SQLManagedInstancesClient = original.SQLManagedInstancesClient
 type SQLServer = original.SQLServer
 type SQLServerInstance = original.SQLServerInstance
 type SQLServerInstanceListResult = original.SQLServerInstanceListResult
@@ -111,9 +145,18 @@ type SQLServerRegistrationsClient = original.SQLServerRegistrationsClient
 type SQLServersClient = original.SQLServersClient
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
+type UsageRecord = original.UsageRecord
+type UsageUploadRequest = original.UsageUploadRequest
+type UsageUploadResponse = original.UsageUploadResponse
 
 func New(subscriptionID string, subscriptionID1 string) BaseClient {
 	return original.New(subscriptionID, subscriptionID1)
+}
+func NewDataControllersClient(subscriptionID string, subscriptionID1 string) DataControllersClient {
+	return original.NewDataControllersClient(subscriptionID, subscriptionID1)
+}
+func NewDataControllersClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) DataControllersClient {
+	return original.NewDataControllersClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewHybridDataManagerListResultIterator(page HybridDataManagerListResultPage) HybridDataManagerListResultIterator {
 	return original.NewHybridDataManagerListResultIterator(page)
@@ -139,6 +182,12 @@ func NewOperationsClient(subscriptionID string, subscriptionID1 string) Operatio
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
+func NewPageOfDataControllerResourceIterator(page PageOfDataControllerResourcePage) PageOfDataControllerResourceIterator {
+	return original.NewPageOfDataControllerResourceIterator(page)
+}
+func NewPageOfDataControllerResourcePage(getNextPage func(context.Context, PageOfDataControllerResource) (PageOfDataControllerResource, error)) PageOfDataControllerResourcePage {
+	return original.NewPageOfDataControllerResourcePage(getNextPage)
+}
 func NewPostgresInstanceListResultIterator(page PostgresInstanceListResultPage) PostgresInstanceListResultIterator {
 	return original.NewPostgresInstanceListResultIterator(page)
 }
@@ -162,6 +211,18 @@ func NewSQLInstancesClient(subscriptionID string, subscriptionID1 string) SQLIns
 }
 func NewSQLInstancesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) SQLInstancesClient {
 	return original.NewSQLInstancesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+}
+func NewSQLManagedInstanceListResultIterator(page SQLManagedInstanceListResultPage) SQLManagedInstanceListResultIterator {
+	return original.NewSQLManagedInstanceListResultIterator(page)
+}
+func NewSQLManagedInstanceListResultPage(getNextPage func(context.Context, SQLManagedInstanceListResult) (SQLManagedInstanceListResult, error)) SQLManagedInstanceListResultPage {
+	return original.NewSQLManagedInstanceListResultPage(getNextPage)
+}
+func NewSQLManagedInstancesClient(subscriptionID string, subscriptionID1 string) SQLManagedInstancesClient {
+	return original.NewSQLManagedInstancesClient(subscriptionID, subscriptionID1)
+}
+func NewSQLManagedInstancesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) SQLManagedInstancesClient {
+	return original.NewSQLManagedInstancesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewSQLServerInstanceListResultIterator(page SQLServerInstanceListResultPage) SQLServerInstanceListResultIterator {
 	return original.NewSQLServerInstanceListResultIterator(page)
@@ -205,11 +266,17 @@ func NewWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 strin
 func PossibleOperationOriginValues() []OperationOrigin {
 	return original.PossibleOperationOriginValues()
 }
+func PossibleRequestTypeValues() []RequestType {
+	return original.PossibleRequestTypeValues()
+}
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
+}
+func PossibleUsageUploadStatusValues() []UsageUploadStatus {
+	return original.PossibleUsageUploadStatusValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

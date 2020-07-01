@@ -108,7 +108,6 @@ func (client BalancesClient) GetByBillingAccountSender(req *http.Request) (*http
 func (client BalancesClient) GetByBillingAccountResponder(resp *http.Response) (result Balance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -184,7 +183,6 @@ func (client BalancesClient) GetForBillingPeriodByBillingAccountSender(req *http
 func (client BalancesClient) GetForBillingPeriodByBillingAccountResponder(resp *http.Response) (result Balance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

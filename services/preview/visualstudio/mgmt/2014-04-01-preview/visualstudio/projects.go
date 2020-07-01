@@ -125,7 +125,6 @@ func (client ProjectsClient) CreateSender(req *http.Request) (future ProjectsCre
 func (client ProjectsClient) CreateResponder(resp *http.Response) (result ProjectResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -203,7 +202,6 @@ func (client ProjectsClient) GetSender(req *http.Request) (*http.Response, error
 func (client ProjectsClient) GetResponder(resp *http.Response) (result ProjectResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -289,7 +287,6 @@ func (client ProjectsClient) GetJobStatusSender(req *http.Request) (*http.Respon
 func (client ProjectsClient) GetJobStatusResponder(resp *http.Response) (result ProjectResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -366,7 +363,6 @@ func (client ProjectsClient) ListByResourceGroupSender(req *http.Request) (*http
 func (client ProjectsClient) ListByResourceGroupResponder(resp *http.Response) (result ProjectResourceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -447,7 +443,6 @@ func (client ProjectsClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client ProjectsClient) UpdateResponder(resp *http.Response) (result ProjectResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

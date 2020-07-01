@@ -117,7 +117,6 @@ func (client MachineLearningComputeClient) CreateOrUpdateSender(req *http.Reques
 func (client MachineLearningComputeClient) CreateOrUpdateResponder(resp *http.Response) (result ComputeResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -198,7 +197,6 @@ func (client MachineLearningComputeClient) DeleteSender(req *http.Request) (futu
 func (client MachineLearningComputeClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -276,7 +274,6 @@ func (client MachineLearningComputeClient) GetSender(req *http.Request) (*http.R
 func (client MachineLearningComputeClient) GetResponder(resp *http.Response) (result ComputeResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -357,7 +354,6 @@ func (client MachineLearningComputeClient) ListByWorkspaceSender(req *http.Reque
 func (client MachineLearningComputeClient) ListByWorkspaceResponder(resp *http.Response) (result PaginatedComputeResourcesList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -472,7 +468,6 @@ func (client MachineLearningComputeClient) ListKeysSender(req *http.Request) (*h
 func (client MachineLearningComputeClient) ListKeysResponder(resp *http.Response) (result ComputeSecretsModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -550,7 +545,6 @@ func (client MachineLearningComputeClient) ListNodesSender(req *http.Request) (*
 func (client MachineLearningComputeClient) ListNodesResponder(resp *http.Response) (result AmlComputeNodesInformation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -628,7 +622,6 @@ func (client MachineLearningComputeClient) RestartSender(req *http.Request) (*ht
 func (client MachineLearningComputeClient) RestartResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -705,7 +698,6 @@ func (client MachineLearningComputeClient) StartSender(req *http.Request) (*http
 func (client MachineLearningComputeClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -782,7 +774,6 @@ func (client MachineLearningComputeClient) StopSender(req *http.Request) (*http.
 func (client MachineLearningComputeClient) StopResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -863,7 +854,6 @@ func (client MachineLearningComputeClient) UpdateSender(req *http.Request) (futu
 func (client MachineLearningComputeClient) UpdateResponder(resp *http.Response) (result ComputeResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

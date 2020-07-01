@@ -110,7 +110,6 @@ func (client SmartGroupsClient) ChangeStateSender(req *http.Request) (*http.Resp
 func (client SmartGroupsClient) ChangeStateResponder(resp *http.Response) (result SmartGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -226,7 +225,6 @@ func (client SmartGroupsClient) GetAllSender(req *http.Request) (*http.Response,
 func (client SmartGroupsClient) GetAllResponder(resp *http.Response) (result SmartGroupsList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -300,7 +298,6 @@ func (client SmartGroupsClient) GetByIDSender(req *http.Request) (*http.Response
 func (client SmartGroupsClient) GetByIDResponder(resp *http.Response) (result SmartGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -374,7 +371,6 @@ func (client SmartGroupsClient) GetHistorySender(req *http.Request) (*http.Respo
 func (client SmartGroupsClient) GetHistoryResponder(resp *http.Response) (result SmartGroupModification, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

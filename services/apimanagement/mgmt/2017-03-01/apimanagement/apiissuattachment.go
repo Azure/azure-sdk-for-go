@@ -137,7 +137,6 @@ func (client APIIssuAttachmentClient) HeadSender(req *http.Request) (*http.Respo
 func (client APIIssuAttachmentClient) HeadResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

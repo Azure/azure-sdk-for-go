@@ -128,7 +128,6 @@ func (client BaseClient) ClassifyImageSender(req *http.Request) (*http.Response,
 func (client BaseClient) ClassifyImageResponder(resp *http.Response) (result ImagePrediction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -217,7 +216,6 @@ func (client BaseClient) ClassifyImageURLSender(req *http.Request) (*http.Respon
 func (client BaseClient) ClassifyImageURLResponder(resp *http.Response) (result ImagePrediction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -306,7 +304,6 @@ func (client BaseClient) ClassifyImageURLWithNoStoreSender(req *http.Request) (*
 func (client BaseClient) ClassifyImageURLWithNoStoreResponder(resp *http.Response) (result ImagePrediction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -392,7 +389,6 @@ func (client BaseClient) ClassifyImageWithNoStoreSender(req *http.Request) (*htt
 func (client BaseClient) ClassifyImageWithNoStoreResponder(resp *http.Response) (result ImagePrediction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -478,7 +474,6 @@ func (client BaseClient) DetectImageSender(req *http.Request) (*http.Response, e
 func (client BaseClient) DetectImageResponder(resp *http.Response) (result ImagePrediction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -567,7 +562,6 @@ func (client BaseClient) DetectImageURLSender(req *http.Request) (*http.Response
 func (client BaseClient) DetectImageURLResponder(resp *http.Response) (result ImagePrediction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -656,7 +650,6 @@ func (client BaseClient) DetectImageURLWithNoStoreSender(req *http.Request) (*ht
 func (client BaseClient) DetectImageURLWithNoStoreResponder(resp *http.Response) (result ImagePrediction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -742,7 +735,6 @@ func (client BaseClient) DetectImageWithNoStoreSender(req *http.Request) (*http.
 func (client BaseClient) DetectImageWithNoStoreResponder(resp *http.Response) (result ImagePrediction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

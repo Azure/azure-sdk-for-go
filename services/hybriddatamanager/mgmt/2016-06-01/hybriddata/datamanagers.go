@@ -124,7 +124,6 @@ func (client DataManagersClient) CreateSender(req *http.Request) (future DataMan
 func (client DataManagersClient) CreateResponder(resp *http.Response) (result DataManager, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -209,7 +208,6 @@ func (client DataManagersClient) DeleteSender(req *http.Request) (future DataMan
 func (client DataManagersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -293,7 +291,6 @@ func (client DataManagersClient) GetSender(req *http.Request) (*http.Response, e
 func (client DataManagersClient) GetResponder(resp *http.Response) (result DataManager, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -364,7 +361,6 @@ func (client DataManagersClient) ListSender(req *http.Request) (*http.Response, 
 func (client DataManagersClient) ListResponder(resp *http.Response) (result DataManagerList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -438,7 +434,6 @@ func (client DataManagersClient) ListByResourceGroupSender(req *http.Request) (*
 func (client DataManagersClient) ListByResourceGroupResponder(resp *http.Response) (result DataManagerList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -532,7 +527,6 @@ func (client DataManagersClient) UpdateSender(req *http.Request) (future DataMan
 func (client DataManagersClient) UpdateResponder(resp *http.Response) (result DataManager, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

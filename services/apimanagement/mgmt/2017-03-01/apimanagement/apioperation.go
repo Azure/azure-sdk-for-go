@@ -147,7 +147,6 @@ func (client APIOperationClient) CreateOrUpdateSender(req *http.Request) (*http.
 func (client APIOperationClient) CreateOrUpdateResponder(resp *http.Response) (result OperationContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -248,7 +247,6 @@ func (client APIOperationClient) DeleteSender(req *http.Request) (*http.Response
 func (client APIOperationClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -345,7 +343,6 @@ func (client APIOperationClient) GetSender(req *http.Request) (*http.Response, e
 func (client APIOperationClient) GetResponder(resp *http.Response) (result OperationContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -442,7 +439,6 @@ func (client APIOperationClient) GetEntityTagSender(req *http.Request) (*http.Re
 func (client APIOperationClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -556,7 +552,6 @@ func (client APIOperationClient) ListByAPISender(req *http.Request) (*http.Respo
 func (client APIOperationClient) ListByAPIResponder(resp *http.Response) (result OperationCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -697,7 +692,6 @@ func (client APIOperationClient) UpdateSender(req *http.Request) (*http.Response
 func (client APIOperationClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

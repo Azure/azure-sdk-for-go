@@ -357,7 +357,6 @@ func (client ImagesClient) DetailsSender(req *http.Request) (*http.Response, err
 func (client ImagesClient) DetailsResponder(resp *http.Response) (result ImageInsights, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -723,7 +722,6 @@ func (client ImagesClient) SearchSender(req *http.Request) (*http.Response, erro
 func (client ImagesClient) SearchResponder(resp *http.Response) (result Images, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -944,7 +942,6 @@ func (client ImagesClient) TrendingSender(req *http.Request) (*http.Response, er
 func (client ImagesClient) TrendingResponder(resp *http.Response) (result TrendingImages, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

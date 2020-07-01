@@ -115,7 +115,6 @@ func (client CommitmentAssociationsClient) GetSender(req *http.Request) (*http.R
 func (client CommitmentAssociationsClient) GetResponder(resp *http.Response) (result CommitmentAssociation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -196,7 +195,6 @@ func (client CommitmentAssociationsClient) ListSender(req *http.Request) (*http.
 func (client CommitmentAssociationsClient) ListResponder(resp *http.Response) (result CommitmentAssociationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -314,7 +312,6 @@ func (client CommitmentAssociationsClient) MoveSender(req *http.Request) (*http.
 func (client CommitmentAssociationsClient) MoveResponder(resp *http.Response) (result CommitmentAssociation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

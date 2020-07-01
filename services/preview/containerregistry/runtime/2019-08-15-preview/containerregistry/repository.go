@@ -98,7 +98,6 @@ func (client RepositoryClient) DeleteSender(req *http.Request) (*http.Response, 
 func (client RepositoryClient) DeleteResponder(resp *http.Response) (result DeletedRepository, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -169,7 +168,6 @@ func (client RepositoryClient) GetAttributesSender(req *http.Request) (*http.Res
 func (client RepositoryClient) GetAttributesResponder(resp *http.Response) (result RepositoryAttributes, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -247,7 +245,6 @@ func (client RepositoryClient) GetListSender(req *http.Request) (*http.Response,
 func (client RepositoryClient) GetListResponder(resp *http.Response) (result Repositories, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -324,7 +321,6 @@ func (client RepositoryClient) UpdateAttributesSender(req *http.Request) (*http.
 func (client RepositoryClient) UpdateAttributesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

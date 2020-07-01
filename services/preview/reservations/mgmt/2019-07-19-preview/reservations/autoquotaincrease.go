@@ -113,7 +113,6 @@ func (client AutoQuotaIncreaseClient) CreateSender(req *http.Request) (*http.Res
 func (client AutoQuotaIncreaseClient) CreateResponder(resp *http.Response) (result AutoQuotaIncreaseDetail, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -186,7 +185,6 @@ func (client AutoQuotaIncreaseClient) GetPropertiesSender(req *http.Request) (*h
 func (client AutoQuotaIncreaseClient) GetPropertiesResponder(resp *http.Response) (result AutoQuotaIncreaseDetail, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

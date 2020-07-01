@@ -143,7 +143,6 @@ func (client NotebookClient) CreateOrUpdateNotebookSender(req *http.Request) (*h
 func (client NotebookClient) CreateOrUpdateNotebookResponder(resp *http.Response) (result NotebookResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -220,7 +219,6 @@ func (client NotebookClient) DeleteNotebookSender(req *http.Request) (*http.Resp
 func (client NotebookClient) DeleteNotebookResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -302,7 +300,6 @@ func (client NotebookClient) GetNotebookSender(req *http.Request) (*http.Respons
 func (client NotebookClient) GetNotebookResponder(resp *http.Response) (result NotebookResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotModified),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -374,7 +371,6 @@ func (client NotebookClient) GetNotebooksByWorkspaceSender(req *http.Request) (*
 func (client NotebookClient) GetNotebooksByWorkspaceResponder(resp *http.Response) (result NotebookListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -483,7 +479,6 @@ func (client NotebookClient) GetNotebookSummaryByWorkSpaceSender(req *http.Reque
 func (client NotebookClient) GetNotebookSummaryByWorkSpaceResponder(resp *http.Response) (result NotebookListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

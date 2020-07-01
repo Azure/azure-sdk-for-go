@@ -141,7 +141,6 @@ func (client RunbookClient) CreateOrUpdateSender(req *http.Request) (*http.Respo
 func (client RunbookClient) CreateOrUpdateResponder(resp *http.Response) (result Runbook, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -227,7 +226,6 @@ func (client RunbookClient) DeleteSender(req *http.Request) (*http.Response, err
 func (client RunbookClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -312,7 +310,6 @@ func (client RunbookClient) GetSender(req *http.Request) (*http.Response, error)
 func (client RunbookClient) GetResponder(resp *http.Response) (result Runbook, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -399,7 +396,6 @@ func (client RunbookClient) GetContentResponder(resp *http.Response) (result Rea
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -482,7 +478,6 @@ func (client RunbookClient) ListByAutomationAccountSender(req *http.Request) (*h
 func (client RunbookClient) ListByAutomationAccountResponder(resp *http.Response) (result RunbookListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -605,7 +600,6 @@ func (client RunbookClient) PublishSender(req *http.Request) (future RunbookPubl
 func (client RunbookClient) PublishResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -693,7 +687,6 @@ func (client RunbookClient) UpdateSender(req *http.Request) (*http.Response, err
 func (client RunbookClient) UpdateResponder(resp *http.Response) (result Runbook, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

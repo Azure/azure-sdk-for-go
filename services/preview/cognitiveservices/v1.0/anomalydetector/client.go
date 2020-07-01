@@ -127,7 +127,6 @@ func (client BaseClient) ChangePointDetectSender(req *http.Request) (*http.Respo
 func (client BaseClient) ChangePointDetectResponder(resp *http.Response) (result ChangePointDetectResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -204,7 +203,6 @@ func (client BaseClient) EntireDetectSender(req *http.Request) (*http.Response, 
 func (client BaseClient) EntireDetectResponder(resp *http.Response) (result EntireDetectResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -281,7 +279,6 @@ func (client BaseClient) LastDetectSender(req *http.Request) (*http.Response, er
 func (client BaseClient) LastDetectResponder(resp *http.Response) (result LastDetectResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

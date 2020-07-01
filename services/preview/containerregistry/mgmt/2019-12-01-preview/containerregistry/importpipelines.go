@@ -134,7 +134,6 @@ func (client ImportPipelinesClient) CreateSender(req *http.Request) (future Impo
 func (client ImportPipelinesClient) CreateResponder(resp *http.Response) (result ImportPipeline, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -226,7 +225,6 @@ func (client ImportPipelinesClient) DeleteSender(req *http.Request) (future Impo
 func (client ImportPipelinesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -317,7 +315,6 @@ func (client ImportPipelinesClient) GetSender(req *http.Request) (*http.Response
 func (client ImportPipelinesClient) GetResponder(resp *http.Response) (result ImportPipeline, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -404,7 +401,6 @@ func (client ImportPipelinesClient) ListSender(req *http.Request) (*http.Respons
 func (client ImportPipelinesClient) ListResponder(resp *http.Response) (result ImportPipelineListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

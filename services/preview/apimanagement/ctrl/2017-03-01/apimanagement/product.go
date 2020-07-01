@@ -118,7 +118,6 @@ func (client ProductClient) CreateOrUpdateSender(req *http.Request) (*http.Respo
 func (client ProductClient) CreateOrUpdateResponder(resp *http.Response) (result ProductContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -212,7 +211,6 @@ func (client ProductClient) DeleteSender(req *http.Request) (*http.Response, err
 func (client ProductClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -298,7 +296,6 @@ func (client ProductClient) GetSender(req *http.Request) (*http.Response, error)
 func (client ProductClient) GetResponder(resp *http.Response) (result ProductContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -406,7 +403,6 @@ func (client ProductClient) ListSender(req *http.Request) (*http.Response, error
 func (client ProductClient) ListResponder(resp *http.Response) (result ProductCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -536,7 +532,6 @@ func (client ProductClient) UpdateSender(req *http.Request) (*http.Response, err
 func (client ProductClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

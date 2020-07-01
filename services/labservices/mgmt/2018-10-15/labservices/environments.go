@@ -116,7 +116,6 @@ func (client EnvironmentsClient) ClaimSender(req *http.Request) (*http.Response,
 func (client EnvironmentsClient) ClaimResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -200,7 +199,6 @@ func (client EnvironmentsClient) CreateOrUpdateSender(req *http.Request) (*http.
 func (client EnvironmentsClient) CreateOrUpdateResponder(resp *http.Response) (result Environment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -282,7 +280,6 @@ func (client EnvironmentsClient) DeleteSender(req *http.Request) (future Environ
 func (client EnvironmentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -367,7 +364,6 @@ func (client EnvironmentsClient) GetSender(req *http.Request) (*http.Response, e
 func (client EnvironmentsClient) GetResponder(resp *http.Response) (result Environment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -464,7 +460,6 @@ func (client EnvironmentsClient) ListSender(req *http.Request) (*http.Response, 
 func (client EnvironmentsClient) ListResponder(resp *http.Response) (result ResponseWithContinuationEnvironment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -592,7 +587,6 @@ func (client EnvironmentsClient) ResetPasswordSender(req *http.Request) (future 
 func (client EnvironmentsClient) ResetPasswordResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -674,7 +668,6 @@ func (client EnvironmentsClient) StartSender(req *http.Request) (future Environm
 func (client EnvironmentsClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -756,7 +749,6 @@ func (client EnvironmentsClient) StopSender(req *http.Request) (future Environme
 func (client EnvironmentsClient) StopResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -840,7 +832,6 @@ func (client EnvironmentsClient) UpdateSender(req *http.Request) (*http.Response
 func (client EnvironmentsClient) UpdateResponder(resp *http.Response) (result Environment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

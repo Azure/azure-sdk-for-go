@@ -128,7 +128,6 @@ func (client WCFRelaysClient) CreateOrUpdateSender(req *http.Request) (*http.Res
 func (client WCFRelaysClient) CreateOrUpdateResponder(resp *http.Response) (result WcfRelay, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -232,7 +231,6 @@ func (client WCFRelaysClient) CreateOrUpdateAuthorizationRuleSender(req *http.Re
 func (client WCFRelaysClient) CreateOrUpdateAuthorizationRuleResponder(resp *http.Response) (result AuthorizationRule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -323,7 +321,6 @@ func (client WCFRelaysClient) DeleteSender(req *http.Request) (*http.Response, e
 func (client WCFRelaysClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -418,7 +415,6 @@ func (client WCFRelaysClient) DeleteAuthorizationRuleSender(req *http.Request) (
 func (client WCFRelaysClient) DeleteAuthorizationRuleResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -508,7 +504,6 @@ func (client WCFRelaysClient) GetSender(req *http.Request) (*http.Response, erro
 func (client WCFRelaysClient) GetResponder(resp *http.Response) (result WcfRelay, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -604,7 +599,6 @@ func (client WCFRelaysClient) GetAuthorizationRuleSender(req *http.Request) (*ht
 func (client WCFRelaysClient) GetAuthorizationRuleResponder(resp *http.Response) (result AuthorizationRule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -696,7 +690,6 @@ func (client WCFRelaysClient) ListAuthorizationRulesSender(req *http.Request) (*
 func (client WCFRelaysClient) ListAuthorizationRulesResponder(resp *http.Response) (result AuthorizationRuleListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -820,7 +813,6 @@ func (client WCFRelaysClient) ListByNamespaceSender(req *http.Request) (*http.Re
 func (client WCFRelaysClient) ListByNamespaceResponder(resp *http.Response) (result WcfRelaysListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -953,7 +945,6 @@ func (client WCFRelaysClient) ListKeysSender(req *http.Request) (*http.Response,
 func (client WCFRelaysClient) ListKeysResponder(resp *http.Response) (result AuthorizationRuleKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1045,7 +1036,6 @@ func (client WCFRelaysClient) ListPostAuthorizationRulesSender(req *http.Request
 func (client WCFRelaysClient) ListPostAuthorizationRulesResponder(resp *http.Response) (result AuthorizationRuleListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1178,7 +1168,6 @@ func (client WCFRelaysClient) PostAuthorizationRuleSender(req *http.Request) (*h
 func (client WCFRelaysClient) PostAuthorizationRuleResponder(resp *http.Response) (result AuthorizationRule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1277,7 +1266,6 @@ func (client WCFRelaysClient) RegenerateKeysSender(req *http.Request) (*http.Res
 func (client WCFRelaysClient) RegenerateKeysResponder(resp *http.Response) (result AuthorizationRuleKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

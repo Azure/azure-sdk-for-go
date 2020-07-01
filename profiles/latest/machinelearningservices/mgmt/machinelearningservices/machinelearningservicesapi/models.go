@@ -23,6 +23,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/machinelearningservi
 
 type BaseClientAPI = original.BaseClientAPI
 type MachineLearningComputeClientAPI = original.MachineLearningComputeClientAPI
+type NotebooksClientAPI = original.NotebooksClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
 type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI

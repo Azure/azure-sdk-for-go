@@ -114,7 +114,6 @@ func (client BitLockerKeysClient) ListSender(req *http.Request) (*http.Response,
 func (client BitLockerKeysClient) ListResponder(resp *http.Response) (result GetBitLockerKeysResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

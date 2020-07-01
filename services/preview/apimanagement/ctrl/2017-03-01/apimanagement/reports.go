@@ -123,7 +123,6 @@ func (client ReportsClient) ListByAPISender(req *http.Request) (*http.Response, 
 func (client ReportsClient) ListByAPIResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -257,7 +256,6 @@ func (client ReportsClient) ListByGeoSender(req *http.Request) (*http.Response, 
 func (client ReportsClient) ListByGeoResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -389,7 +387,6 @@ func (client ReportsClient) ListByOperationSender(req *http.Request) (*http.Resp
 func (client ReportsClient) ListByOperationResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -521,7 +518,6 @@ func (client ReportsClient) ListByProductSender(req *http.Request) (*http.Respon
 func (client ReportsClient) ListByProductResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -652,7 +648,6 @@ func (client ReportsClient) ListByRequestSender(req *http.Request) (*http.Respon
 func (client ReportsClient) ListByRequestResponder(resp *http.Response) (result RequestReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -749,7 +744,6 @@ func (client ReportsClient) ListBySubscriptionSender(req *http.Request) (*http.R
 func (client ReportsClient) ListBySubscriptionResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -887,7 +881,6 @@ func (client ReportsClient) ListByTimeSender(req *http.Request) (*http.Response,
 func (client ReportsClient) ListByTimeResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1019,7 +1012,6 @@ func (client ReportsClient) ListByUserSender(req *http.Request) (*http.Response,
 func (client ReportsClient) ListByUserResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -67,7 +67,7 @@ var _ PublishedArtifactsClientAPI = (*blueprint.PublishedArtifactsClient)(nil)
 // AssignmentsClientAPI contains the set of methods on the AssignmentsClient type.
 type AssignmentsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceScope string, assignmentName string, assignment blueprint.Assignment) (result blueprint.Assignment, err error)
-	Delete(ctx context.Context, resourceScope string, assignmentName string) (result blueprint.Assignment, err error)
+	Delete(ctx context.Context, resourceScope string, assignmentName string, deleteBehavior blueprint.AssignmentDeleteBehavior) (result blueprint.Assignment, err error)
 	Get(ctx context.Context, resourceScope string, assignmentName string) (result blueprint.Assignment, err error)
 	List(ctx context.Context, resourceScope string) (result blueprint.AssignmentListPage, err error)
 	ListComplete(ctx context.Context, resourceScope string) (result blueprint.AssignmentListIterator, err error)

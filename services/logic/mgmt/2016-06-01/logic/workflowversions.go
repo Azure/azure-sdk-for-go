@@ -112,7 +112,6 @@ func (client WorkflowVersionsClient) GetSender(req *http.Request) (*http.Respons
 func (client WorkflowVersionsClient) GetResponder(resp *http.Response) (result WorkflowVersion, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -193,7 +192,6 @@ func (client WorkflowVersionsClient) ListSender(req *http.Request) (*http.Respon
 func (client WorkflowVersionsClient) ListResponder(resp *http.Response) (result WorkflowVersionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -316,7 +314,6 @@ func (client WorkflowVersionsClient) ListCallbackURLSender(req *http.Request) (*
 func (client WorkflowVersionsClient) ListCallbackURLResponder(resp *http.Response) (result WorkflowTriggerCallbackURL, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

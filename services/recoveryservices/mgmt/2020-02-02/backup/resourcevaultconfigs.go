@@ -110,7 +110,6 @@ func (client ResourceVaultConfigsClient) GetSender(req *http.Request) (*http.Res
 func (client ResourceVaultConfigsClient) GetResponder(resp *http.Response) (result ResourceVaultConfigResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -189,7 +188,6 @@ func (client ResourceVaultConfigsClient) PutSender(req *http.Request) (*http.Res
 func (client ResourceVaultConfigsClient) PutResponder(resp *http.Response) (result ResourceVaultConfigResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -268,7 +266,6 @@ func (client ResourceVaultConfigsClient) UpdateSender(req *http.Request) (*http.
 func (client ResourceVaultConfigsClient) UpdateResponder(resp *http.Response) (result ResourceVaultConfigResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

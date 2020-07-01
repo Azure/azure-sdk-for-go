@@ -124,7 +124,6 @@ func (client ADCCatalogsClient) CreateOrUpdateSender(req *http.Request) (*http.R
 func (client ADCCatalogsClient) CreateOrUpdateResponder(resp *http.Response) (result ADCCatalog, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -208,7 +207,6 @@ func (client ADCCatalogsClient) DeleteSender(req *http.Request) (future ADCCatal
 func (client ADCCatalogsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -291,7 +289,6 @@ func (client ADCCatalogsClient) GetSender(req *http.Request) (*http.Response, er
 func (client ADCCatalogsClient) GetResponder(resp *http.Response) (result ADCCatalog, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -375,7 +372,6 @@ func (client ADCCatalogsClient) ListtByResourceGroupSender(req *http.Request) (*
 func (client ADCCatalogsClient) ListtByResourceGroupResponder(resp *http.Response) (result ADCCatalogsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -463,7 +459,6 @@ func (client ADCCatalogsClient) UpdateSender(req *http.Request) (*http.Response,
 func (client ADCCatalogsClient) UpdateResponder(resp *http.Response) (result ADCCatalog, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

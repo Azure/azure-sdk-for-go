@@ -104,7 +104,6 @@ func (client ConnectorClient) CheckEligibilitySender(req *http.Request) (*http.R
 func (client ConnectorClient) CheckEligibilityResponder(resp *http.Response) (result ConnectorDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

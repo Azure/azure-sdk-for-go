@@ -106,7 +106,6 @@ func (client ShowbackRulesClient) ListSender(req *http.Request) (*http.Response,
 func (client ShowbackRulesClient) ListResponder(resp *http.Response) (result ShowbackRuleListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

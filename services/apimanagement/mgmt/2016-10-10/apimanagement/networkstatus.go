@@ -119,7 +119,6 @@ func (client NetworkStatusClient) GetByServiceSender(req *http.Request) (*http.R
 func (client NetworkStatusClient) GetByServiceResponder(resp *http.Response) (result NetworkStatusContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

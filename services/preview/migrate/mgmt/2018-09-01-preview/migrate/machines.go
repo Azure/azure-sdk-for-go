@@ -118,7 +118,6 @@ func (client MachinesClient) EnumerateMachinesSender(req *http.Request) (*http.R
 func (client MachinesClient) EnumerateMachinesResponder(resp *http.Response) (result MachineCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -196,7 +195,6 @@ func (client MachinesClient) GetMachineSender(req *http.Request) (*http.Response
 func (client MachinesClient) GetMachineResponder(resp *http.Response) (result Machine, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

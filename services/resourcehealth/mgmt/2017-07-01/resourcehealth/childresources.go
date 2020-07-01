@@ -119,7 +119,6 @@ func (client ChildResourcesClient) ListSender(req *http.Request) (*http.Response
 func (client ChildResourcesClient) ListResponder(resp *http.Response) (result AvailabilityStatusListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -105,7 +105,6 @@ func (client MachineLearningComputeClient) ListAvailableOperationsSender(req *ht
 func (client MachineLearningComputeClient) ListAvailableOperationsResponder(resp *http.Response) (result AvailableOperations, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -112,7 +112,6 @@ func (client DeletedWorkspacesClient) ListSender(req *http.Request) (*http.Respo
 func (client DeletedWorkspacesClient) ListResponder(resp *http.Response) (result WorkspaceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -196,7 +195,6 @@ func (client DeletedWorkspacesClient) ListByResourceGroupSender(req *http.Reques
 func (client DeletedWorkspacesClient) ListByResourceGroupResponder(resp *http.Response) (result WorkspaceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

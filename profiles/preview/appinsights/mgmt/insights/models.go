@@ -71,6 +71,14 @@ const (
 	Bluefield FlowType = original.Bluefield
 )
 
+type IngestionMode = original.IngestionMode
+
+const (
+	ApplicationInsights                       IngestionMode = original.ApplicationInsights
+	ApplicationInsightsWithDiagnosticSettings IngestionMode = original.ApplicationInsightsWithDiagnosticSettings
+	LogAnalytics                              IngestionMode = original.LogAnalytics
+)
+
 type ItemScope = original.ItemScope
 
 const (
@@ -348,6 +356,9 @@ func PossibleFavoriteTypeValues() []FavoriteType {
 }
 func PossibleFlowTypeValues() []FlowType {
 	return original.PossibleFlowTypeValues()
+}
+func PossibleIngestionModeValues() []IngestionMode {
+	return original.PossibleIngestionModeValues()
 }
 func PossibleItemScopePathValues() []ItemScopePath {
 	return original.PossibleItemScopePathValues()

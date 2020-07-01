@@ -124,7 +124,6 @@ func (client TriggerClient) CreateOrUpdateTriggerSender(req *http.Request) (*htt
 func (client TriggerClient) CreateOrUpdateTriggerResponder(resp *http.Response) (result TriggerResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -209,7 +208,6 @@ func (client TriggerClient) DeleteTriggerSender(req *http.Request) (*http.Respon
 func (client TriggerClient) DeleteTriggerResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -293,7 +291,6 @@ func (client TriggerClient) GetEventSubscriptionStatusSender(req *http.Request) 
 func (client TriggerClient) GetEventSubscriptionStatusResponder(resp *http.Response) (result TriggerSubscriptionOperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -384,7 +381,6 @@ func (client TriggerClient) GetTriggerSender(req *http.Request) (*http.Response,
 func (client TriggerClient) GetTriggerResponder(resp *http.Response) (result TriggerResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotModified),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -456,7 +452,6 @@ func (client TriggerClient) GetTriggersByWorkspaceSender(req *http.Request) (*ht
 func (client TriggerClient) GetTriggersByWorkspaceResponder(resp *http.Response) (result TriggerListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -578,7 +573,6 @@ func (client TriggerClient) StartTriggerSender(req *http.Request) (future Trigge
 func (client TriggerClient) StartTriggerResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -662,7 +656,6 @@ func (client TriggerClient) StopTriggerSender(req *http.Request) (future Trigger
 func (client TriggerClient) StopTriggerResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -746,7 +739,6 @@ func (client TriggerClient) SubscribeTriggerToEventsSender(req *http.Request) (f
 func (client TriggerClient) SubscribeTriggerToEventsResponder(resp *http.Response) (result TriggerSubscriptionOperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -831,7 +823,6 @@ func (client TriggerClient) UnsubscribeTriggerFromEventsSender(req *http.Request
 func (client TriggerClient) UnsubscribeTriggerFromEventsResponder(resp *http.Response) (result TriggerSubscriptionOperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

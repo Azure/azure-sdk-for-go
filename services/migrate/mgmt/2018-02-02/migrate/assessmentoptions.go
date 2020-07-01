@@ -112,7 +112,6 @@ func (client AssessmentOptionsClient) GetSender(req *http.Request) (*http.Respon
 func (client AssessmentOptionsClient) GetResponder(resp *http.Response) (result AssessmentOptionsResultList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

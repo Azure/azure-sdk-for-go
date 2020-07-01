@@ -144,7 +144,6 @@ func (client FileClient) DeleteFromComputeNodeSender(req *http.Request) (*http.R
 func (client FileClient) DeleteFromComputeNodeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -257,7 +256,6 @@ func (client FileClient) DeleteFromTaskSender(req *http.Request) (*http.Response
 func (client FileClient) DeleteFromTaskResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -384,7 +382,6 @@ func (client FileClient) GetFromComputeNodeResponder(resp *http.Response) (resul
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -510,7 +507,6 @@ func (client FileClient) GetFromTaskResponder(resp *http.Response) (result ReadC
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -629,7 +625,6 @@ func (client FileClient) GetPropertiesFromComputeNodeSender(req *http.Request) (
 func (client FileClient) GetPropertiesFromComputeNodeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -749,7 +744,6 @@ func (client FileClient) GetPropertiesFromTaskSender(req *http.Request) (*http.R
 func (client FileClient) GetPropertiesFromTaskResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -879,7 +873,6 @@ func (client FileClient) ListFromComputeNodeSender(req *http.Request) (*http.Res
 func (client FileClient) ListFromComputeNodeResponder(resp *http.Response) (result NodeFileListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1048,7 +1041,6 @@ func (client FileClient) ListFromTaskSender(req *http.Request) (*http.Response, 
 func (client FileClient) ListFromTaskResponder(resp *http.Response) (result NodeFileListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

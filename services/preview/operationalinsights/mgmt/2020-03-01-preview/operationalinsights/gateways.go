@@ -126,7 +126,6 @@ func (client GatewaysClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client GatewaysClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

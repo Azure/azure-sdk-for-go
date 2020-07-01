@@ -25,14 +25,14 @@ import (
 
 // ClustersClientAPI contains the set of methods on the ClustersClient type.
 type ClustersClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters eventhub.Cluster) (result eventhub.ClustersCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.ClustersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.Cluster, err error)
 	ListAvailableClusterRegion(ctx context.Context) (result eventhub.AvailableClustersList, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result eventhub.ClusterListResultPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result eventhub.ClusterListResultIterator, err error)
 	ListNamespaces(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.EHNamespaceIDListResult, err error)
-	Patch(ctx context.Context, resourceGroupName string, clusterName string, parameters eventhub.Cluster) (result eventhub.ClustersPatchFuture, err error)
-	Put(ctx context.Context, resourceGroupName string, clusterName string, parameters eventhub.Cluster) (result eventhub.ClustersPutFuture, err error)
+	Update(ctx context.Context, resourceGroupName string, clusterName string, parameters eventhub.Cluster) (result eventhub.ClustersUpdateFuture, err error)
 }
 
 var _ ClustersClientAPI = (*eventhub.ClustersClient)(nil)

@@ -111,7 +111,6 @@ func (client HyperVJobsClient) GetAllJobsInSiteSender(req *http.Request) (*http.
 func (client HyperVJobsClient) GetAllJobsInSiteResponder(resp *http.Response) (result HyperVJobCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -227,7 +226,6 @@ func (client HyperVJobsClient) GetJobSender(req *http.Request) (*http.Response, 
 func (client HyperVJobsClient) GetJobResponder(resp *http.Response) (result HyperVJob, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -153,7 +153,6 @@ func (client AccountClient) ListNodeAgentSkusSender(req *http.Request) (*http.Re
 func (client AccountClient) ListNodeAgentSkusResponder(resp *http.Response) (result AccountListNodeAgentSkusResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -305,7 +304,6 @@ func (client AccountClient) ListPoolNodeCountsSender(req *http.Request) (*http.R
 func (client AccountClient) ListPoolNodeCountsResponder(resp *http.Response) (result PoolNodeCountsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

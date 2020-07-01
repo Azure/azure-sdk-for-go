@@ -121,7 +121,6 @@ func (client NodeCountInformationClient) GetSender(req *http.Request) (*http.Res
 func (client NodeCountInformationClient) GetResponder(resp *http.Response) (result NodeCounts, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

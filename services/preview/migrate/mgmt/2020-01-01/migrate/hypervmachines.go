@@ -125,7 +125,6 @@ func (client HyperVMachinesClient) GetAllMachinesInSiteSender(req *http.Request)
 func (client HyperVMachinesClient) GetAllMachinesInSiteResponder(resp *http.Response) (result HyperVMachineCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -241,7 +240,6 @@ func (client HyperVMachinesClient) GetMachineSender(req *http.Request) (*http.Re
 func (client HyperVMachinesClient) GetMachineResponder(resp *http.Response) (result HyperVMachine, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -145,7 +145,6 @@ func (client APIProductsClient) ListByAPISender(req *http.Request) (*http.Respon
 func (client APIProductsClient) ListByAPIResponder(resp *http.Response) (result ProductCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

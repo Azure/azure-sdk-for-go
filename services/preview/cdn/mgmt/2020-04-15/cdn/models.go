@@ -1746,6 +1746,14 @@ type DeepCreatedOriginProperties struct {
 	Weight *int32 `json:"weight,omitempty"`
 	// Enabled - Origin is enabled for load balancing or not. By default, origin is always enabled.
 	Enabled *bool `json:"enabled,omitempty"`
+	// PrivateLinkAlias - The Alias of the Private Link resource. Populating this optional field indicates that this origin is 'Private'
+	PrivateLinkAlias *string `json:"privateLinkAlias,omitempty"`
+	// PrivateLinkResourceID - The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is 'Private'
+	PrivateLinkResourceID *string `json:"privateLinkResourceId,omitempty"`
+	// PrivateLinkLocation - The location of the Private Link resource. Required only if 'privateLinkResourceId' is populated
+	PrivateLinkLocation *string `json:"privateLinkLocation,omitempty"`
+	// PrivateLinkApprovalMessage - A custom message to be included in the approval request to connect to the Private Link.
+	PrivateLinkApprovalMessage *string `json:"privateLinkApprovalMessage,omitempty"`
 }
 
 // DeliveryRule a rule that specifies a set of actions and conditions

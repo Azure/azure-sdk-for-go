@@ -131,7 +131,6 @@ func (client ServerKeysClient) CreateOrUpdateSender(req *http.Request) (future S
 func (client ServerKeysClient) CreateOrUpdateResponder(resp *http.Response) (result ServerKey, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -219,7 +218,6 @@ func (client ServerKeysClient) DeleteSender(req *http.Request) (future ServerKey
 func (client ServerKeysClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -306,7 +304,6 @@ func (client ServerKeysClient) GetSender(req *http.Request) (*http.Response, err
 func (client ServerKeysClient) GetResponder(resp *http.Response) (result ServerKey, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -393,7 +390,6 @@ func (client ServerKeysClient) ListSender(req *http.Request) (*http.Response, er
 func (client ServerKeysClient) ListResponder(resp *http.Response) (result ServerKeyListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

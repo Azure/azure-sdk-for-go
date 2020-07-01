@@ -148,7 +148,6 @@ func (client ApisClient) CreateOrUpdateSender(req *http.Request) (*http.Response
 func (client ApisClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -240,7 +239,6 @@ func (client ApisClient) DeleteSender(req *http.Request) (*http.Response, error)
 func (client ApisClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -329,7 +327,6 @@ func (client ApisClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client ApisClient) GetResponder(resp *http.Response) (result APIContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -438,7 +435,6 @@ func (client ApisClient) ListByServiceSender(req *http.Request) (*http.Response,
 func (client ApisClient) ListByServiceResponder(resp *http.Response) (result APICollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -572,7 +568,6 @@ func (client ApisClient) UpdateSender(req *http.Request) (*http.Response, error)
 func (client ApisClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

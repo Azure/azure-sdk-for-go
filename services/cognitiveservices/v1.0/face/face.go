@@ -80,8 +80,9 @@ func NewClient(endpoint string) Client {
 // | 'recognition_01': | The default recognition model for [Face -
 // Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl). All those faceIds created
 // before 2019 March are bonded with this recognition model. |
-// | 'recognition_02': | Recognition model released in 2019 March. 'recognition_02' is recommended since its overall
-// accuracy is improved compared with 'recognition_01'. |
+// | 'recognition_02': | Recognition model released in 2019 March. |
+// | 'recognition_03': | Recognition model released in 2020 May. 'recognition_03' is recommended since its overall
+// accuracy is improved compared with 'recognition_01' and 'recognition_02'. |
 // Parameters:
 // imageParameter - an image stream.
 // returnFaceID - a value indicating whether the operation should return faceIds of detected faces.
@@ -190,7 +191,6 @@ func (client Client) DetectWithStreamSender(req *http.Request) (*http.Response, 
 func (client Client) DetectWithStreamResponder(resp *http.Response) (result ListDetectedFace, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -241,8 +241,9 @@ func (client Client) DetectWithStreamResponder(resp *http.Response) (result List
 // | 'recognition_01': | The default recognition model for [Face -
 // Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl). All those faceIds created
 // before 2019 March are bonded with this recognition model. |
-// | 'recognition_02': | Recognition model released in 2019 March. 'recognition_02' is recommended since its overall
-// accuracy is improved compared with 'recognition_01'. |
+// | 'recognition_02': | Recognition model released in 2019 March. |
+// | 'recognition_03': | Recognition model released in 2020 May. 'recognition_03' is recommended since its overall
+// accuracy is improved compared with 'recognition_01' and 'recognition_02'. |
 // Parameters:
 // imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
 // returnFaceID - a value indicating whether the operation should return faceIds of detected faces.
@@ -357,7 +358,6 @@ func (client Client) DetectWithURLSender(req *http.Request) (*http.Response, err
 func (client Client) DetectWithURLResponder(resp *http.Response) (result ListDetectedFace, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -461,7 +461,6 @@ func (client Client) FindSimilarSender(req *http.Request) (*http.Response, error
 func (client Client) FindSimilarResponder(resp *http.Response) (result ListSimilarFace, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -546,7 +545,6 @@ func (client Client) GroupSender(req *http.Request) (*http.Response, error) {
 func (client Client) GroupResponder(resp *http.Response) (result GroupResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -655,7 +653,6 @@ func (client Client) IdentifySender(req *http.Request) (*http.Response, error) {
 func (client Client) IdentifyResponder(resp *http.Response) (result ListIdentifyResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -738,7 +735,6 @@ func (client Client) VerifyFaceToFaceSender(req *http.Request) (*http.Response, 
 func (client Client) VerifyFaceToFaceResponder(resp *http.Response) (result VerifyResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -822,7 +818,6 @@ func (client Client) VerifyFaceToPersonSender(req *http.Request) (*http.Response
 func (client Client) VerifyFaceToPersonResponder(resp *http.Response) (result VerifyResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

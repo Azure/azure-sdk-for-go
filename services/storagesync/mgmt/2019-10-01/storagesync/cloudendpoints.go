@@ -127,7 +127,6 @@ func (client CloudEndpointsClient) CreateSender(req *http.Request) (future Cloud
 func (client CloudEndpointsClient) CreateResponder(resp *http.Response) (result CloudEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -217,7 +216,6 @@ func (client CloudEndpointsClient) DeleteSender(req *http.Request) (future Cloud
 func (client CloudEndpointsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -306,7 +304,6 @@ func (client CloudEndpointsClient) GetSender(req *http.Request) (*http.Response,
 func (client CloudEndpointsClient) GetResponder(resp *http.Response) (result CloudEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -394,7 +391,6 @@ func (client CloudEndpointsClient) ListBySyncGroupSender(req *http.Request) (*ht
 func (client CloudEndpointsClient) ListBySyncGroupResponder(resp *http.Response) (result CloudEndpointArray, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -487,7 +483,6 @@ func (client CloudEndpointsClient) PostBackupSender(req *http.Request) (future C
 func (client CloudEndpointsClient) PostBackupResponder(resp *http.Response) (result PostBackupResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -580,7 +575,6 @@ func (client CloudEndpointsClient) PostRestoreSender(req *http.Request) (future 
 func (client CloudEndpointsClient) PostRestoreResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -672,7 +666,6 @@ func (client CloudEndpointsClient) PreBackupSender(req *http.Request) (future Cl
 func (client CloudEndpointsClient) PreBackupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -764,7 +757,6 @@ func (client CloudEndpointsClient) PreRestoreSender(req *http.Request) (future C
 func (client CloudEndpointsClient) PreRestoreResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -853,7 +845,6 @@ func (client CloudEndpointsClient) RestoreheartbeatSender(req *http.Request) (*h
 func (client CloudEndpointsClient) RestoreheartbeatResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -946,7 +937,6 @@ func (client CloudEndpointsClient) TriggerChangeDetectionSender(req *http.Reques
 func (client CloudEndpointsClient) TriggerChangeDetectionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

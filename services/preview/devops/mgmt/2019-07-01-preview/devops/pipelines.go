@@ -134,7 +134,6 @@ func (client PipelinesClient) CreateOrUpdateSender(req *http.Request) (future Pi
 func (client PipelinesClient) CreateOrUpdateResponder(resp *http.Response) (result Pipeline, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -210,7 +209,6 @@ func (client PipelinesClient) DeleteSender(req *http.Request) (*http.Response, e
 func (client PipelinesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -285,7 +283,6 @@ func (client PipelinesClient) GetSender(req *http.Request) (*http.Response, erro
 func (client PipelinesClient) GetResponder(resp *http.Response) (result Pipeline, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -360,7 +357,6 @@ func (client PipelinesClient) ListByResourceGroupSender(req *http.Request) (*htt
 func (client PipelinesClient) ListByResourceGroupResponder(resp *http.Response) (result PipelineListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -469,7 +465,6 @@ func (client PipelinesClient) ListBySubscriptionSender(req *http.Request) (*http
 func (client PipelinesClient) ListBySubscriptionResponder(resp *http.Response) (result PipelineListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -585,7 +580,6 @@ func (client PipelinesClient) UpdateSender(req *http.Request) (*http.Response, e
 func (client PipelinesClient) UpdateResponder(resp *http.Response) (result Pipeline, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

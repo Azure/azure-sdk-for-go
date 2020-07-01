@@ -114,7 +114,6 @@ func (client HyperVHostClient) GetAllHostsInSiteSender(req *http.Request) (*http
 func (client HyperVHostClient) GetAllHostsInSiteResponder(resp *http.Response) (result HyperVHostCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -230,7 +229,6 @@ func (client HyperVHostClient) GetHostSender(req *http.Request) (*http.Response,
 func (client HyperVHostClient) GetHostResponder(resp *http.Response) (result HyperVHost, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -314,7 +312,6 @@ func (client HyperVHostClient) PutHostSender(req *http.Request) (*http.Response,
 func (client HyperVHostClient) PutHostResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

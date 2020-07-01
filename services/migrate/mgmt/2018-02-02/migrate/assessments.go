@@ -148,7 +148,6 @@ func (client AssessmentsClient) CreateSender(req *http.Request) (*http.Response,
 func (client AssessmentsClient) CreateResponder(resp *http.Response) (result Assessment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -236,7 +235,6 @@ func (client AssessmentsClient) DeleteSender(req *http.Request) (*http.Response,
 func (client AssessmentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -320,7 +318,6 @@ func (client AssessmentsClient) GetSender(req *http.Request) (*http.Response, er
 func (client AssessmentsClient) GetResponder(resp *http.Response) (result Assessment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -404,7 +401,6 @@ func (client AssessmentsClient) GetReportDownloadURLSender(req *http.Request) (*
 func (client AssessmentsClient) GetReportDownloadURLResponder(resp *http.Response) (result DownloadURL, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -488,7 +484,6 @@ func (client AssessmentsClient) ListByGroupSender(req *http.Request) (*http.Resp
 func (client AssessmentsClient) ListByGroupResponder(resp *http.Response) (result AssessmentResultList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -570,7 +565,6 @@ func (client AssessmentsClient) ListByProjectSender(req *http.Request) (*http.Re
 func (client AssessmentsClient) ListByProjectResponder(resp *http.Response) (result AssessmentResultList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -106,7 +106,6 @@ func (client ServiceCountriesClient) ListSender(req *http.Request) (*http.Respon
 func (client ServiceCountriesClient) ListResponder(resp *http.Response) (result ServiceCountryListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

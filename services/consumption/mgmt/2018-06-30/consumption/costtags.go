@@ -112,7 +112,6 @@ func (client CostTagsClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 func (client CostTagsClient) CreateOrUpdateResponder(resp *http.Response) (result CostTag, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -185,7 +184,6 @@ func (client CostTagsClient) GetSender(req *http.Request) (*http.Response, error
 func (client CostTagsClient) GetResponder(resp *http.Response) (result CostTag, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

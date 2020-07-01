@@ -101,7 +101,6 @@ func (client ADCOperationsClient) ListSender(req *http.Request) (*http.Response,
 func (client ADCOperationsClient) ListResponder(resp *http.Response) (result OperationEntityListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

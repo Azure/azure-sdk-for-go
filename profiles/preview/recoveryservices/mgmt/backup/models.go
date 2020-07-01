@@ -220,10 +220,15 @@ const (
 type HealthStatus = original.HealthStatus
 
 const (
-	HealthStatusActionRequired  HealthStatus = original.HealthStatusActionRequired
-	HealthStatusActionSuggested HealthStatus = original.HealthStatusActionSuggested
-	HealthStatusInvalid         HealthStatus = original.HealthStatusInvalid
-	HealthStatusPassed          HealthStatus = original.HealthStatusPassed
+	HealthStatusActionRequired      HealthStatus = original.HealthStatusActionRequired
+	HealthStatusActionSuggested     HealthStatus = original.HealthStatusActionSuggested
+	HealthStatusHealthy             HealthStatus = original.HealthStatusHealthy
+	HealthStatusInvalid             HealthStatus = original.HealthStatusInvalid
+	HealthStatusPassed              HealthStatus = original.HealthStatusPassed
+	HealthStatusPersistentDegraded  HealthStatus = original.HealthStatusPersistentDegraded
+	HealthStatusPersistentUnhealthy HealthStatus = original.HealthStatusPersistentUnhealthy
+	HealthStatusTransientDegraded   HealthStatus = original.HealthStatusTransientDegraded
+	HealthStatusTransientUnhealthy  HealthStatus = original.HealthStatusTransientUnhealthy
 )
 
 type InquiryStatus = original.InquiryStatus
@@ -1021,6 +1026,7 @@ type GenericProtectedItem = original.GenericProtectedItem
 type GenericProtectionPolicy = original.GenericProtectionPolicy
 type GenericRecoveryPoint = original.GenericRecoveryPoint
 type GetProtectedItemQueryObject = original.GetProtectedItemQueryObject
+type HealthDetails = original.HealthDetails
 type ILRRequest = original.ILRRequest
 type ILRRequestResource = original.ILRRequestResource
 type IaaSVMContainer = original.IaaSVMContainer

@@ -111,7 +111,6 @@ func (client PostgresInstancesClient) CreateSender(req *http.Request) (*http.Res
 func (client PostgresInstancesClient) CreateResponder(resp *http.Response) (result PostgresInstance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -187,7 +186,6 @@ func (client PostgresInstancesClient) DeleteSender(req *http.Request) (*http.Res
 func (client PostgresInstancesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -262,7 +260,6 @@ func (client PostgresInstancesClient) GetSender(req *http.Request) (*http.Respon
 func (client PostgresInstancesClient) GetResponder(resp *http.Response) (result PostgresInstance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -334,7 +331,6 @@ func (client PostgresInstancesClient) ListSender(req *http.Request) (*http.Respo
 func (client PostgresInstancesClient) ListResponder(resp *http.Response) (result PostgresInstanceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -446,7 +442,6 @@ func (client PostgresInstancesClient) ListByResourceGroupSender(req *http.Reques
 func (client PostgresInstancesClient) ListByResourceGroupResponder(resp *http.Response) (result PostgresInstanceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -562,7 +557,6 @@ func (client PostgresInstancesClient) UpdateSender(req *http.Request) (*http.Res
 func (client PostgresInstancesClient) UpdateResponder(resp *http.Response) (result PostgresInstance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

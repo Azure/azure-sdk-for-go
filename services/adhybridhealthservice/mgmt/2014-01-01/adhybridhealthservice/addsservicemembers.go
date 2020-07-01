@@ -117,7 +117,6 @@ func (client AddsServiceMembersClient) DeleteSender(req *http.Request) (*http.Re
 func (client AddsServiceMembersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -192,7 +191,6 @@ func (client AddsServiceMembersClient) GetSender(req *http.Request) (*http.Respo
 func (client AddsServiceMembersClient) GetResponder(resp *http.Response) (result ServiceMember, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -271,7 +269,6 @@ func (client AddsServiceMembersClient) ListSender(req *http.Request) (*http.Resp
 func (client AddsServiceMembersClient) ListResponder(resp *http.Response) (result AddsServiceMembers, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -388,7 +385,6 @@ func (client AddsServiceMembersClient) ListCredentialsSender(req *http.Request) 
 func (client AddsServiceMembersClient) ListCredentialsResponder(resp *http.Response) (result Credentials, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

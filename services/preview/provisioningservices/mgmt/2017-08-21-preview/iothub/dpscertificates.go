@@ -109,7 +109,6 @@ func (client DpsCertificatesClient) ListSender(req *http.Request) (*http.Respons
 func (client DpsCertificatesClient) ListResponder(resp *http.Response) (result CertificateListDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

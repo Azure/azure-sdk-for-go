@@ -131,7 +131,6 @@ func (client LinkedServicesClient) CreateOrUpdateSender(req *http.Request) (futu
 func (client LinkedServicesClient) CreateOrUpdateResponder(resp *http.Response) (result LinkedService, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -223,7 +222,6 @@ func (client LinkedServicesClient) DeleteSender(req *http.Request) (future Linke
 func (client LinkedServicesClient) DeleteResponder(resp *http.Response) (result LinkedService, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -315,7 +313,6 @@ func (client LinkedServicesClient) GetSender(req *http.Request) (*http.Response,
 func (client LinkedServicesClient) GetResponder(resp *http.Response) (result LinkedService, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -405,7 +402,6 @@ func (client LinkedServicesClient) ListByWorkspaceSender(req *http.Request) (*ht
 func (client LinkedServicesClient) ListByWorkspaceResponder(resp *http.Response) (result LinkedServiceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

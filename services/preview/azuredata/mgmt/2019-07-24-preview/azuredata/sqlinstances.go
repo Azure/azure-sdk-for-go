@@ -113,7 +113,6 @@ func (client SQLInstancesClient) CreateSender(req *http.Request) (*http.Response
 func (client SQLInstancesClient) CreateResponder(resp *http.Response) (result SQLInstance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -189,7 +188,6 @@ func (client SQLInstancesClient) DeleteSender(req *http.Request) (*http.Response
 func (client SQLInstancesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -264,7 +262,6 @@ func (client SQLInstancesClient) GetSender(req *http.Request) (*http.Response, e
 func (client SQLInstancesClient) GetResponder(resp *http.Response) (result SQLInstance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -336,7 +333,6 @@ func (client SQLInstancesClient) ListSender(req *http.Request) (*http.Response, 
 func (client SQLInstancesClient) ListResponder(resp *http.Response) (result SQLInstanceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -448,7 +444,6 @@ func (client SQLInstancesClient) ListByResourceGroupSender(req *http.Request) (*
 func (client SQLInstancesClient) ListByResourceGroupResponder(resp *http.Response) (result SQLInstanceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -564,7 +559,6 @@ func (client SQLInstancesClient) UpdateSender(req *http.Request) (*http.Response
 func (client SQLInstancesClient) UpdateResponder(resp *http.Response) (result SQLInstance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

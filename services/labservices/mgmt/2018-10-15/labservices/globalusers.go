@@ -121,7 +121,6 @@ func (client GlobalUsersClient) GetEnvironmentSender(req *http.Request) (*http.R
 func (client GlobalUsersClient) GetEnvironmentResponder(resp *http.Response) (result GetEnvironmentResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -203,7 +202,6 @@ func (client GlobalUsersClient) GetOperationBatchStatusSender(req *http.Request)
 func (client GlobalUsersClient) GetOperationBatchStatusResponder(resp *http.Response) (result OperationBatchStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -285,7 +283,6 @@ func (client GlobalUsersClient) GetOperationStatusSender(req *http.Request) (*ht
 func (client GlobalUsersClient) GetOperationStatusResponder(resp *http.Response) (result OperationStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -362,7 +359,6 @@ func (client GlobalUsersClient) GetPersonalPreferencesSender(req *http.Request) 
 func (client GlobalUsersClient) GetPersonalPreferencesResponder(resp *http.Response) (result GetPersonalPreferencesResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -438,7 +434,6 @@ func (client GlobalUsersClient) ListEnvironmentsSender(req *http.Request) (*http
 func (client GlobalUsersClient) ListEnvironmentsResponder(resp *http.Response) (result ListEnvironmentsResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -511,7 +506,6 @@ func (client GlobalUsersClient) ListLabsSender(req *http.Request) (*http.Respons
 func (client GlobalUsersClient) ListLabsResponder(resp *http.Response) (result ListLabsResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -587,7 +581,6 @@ func (client GlobalUsersClient) RegisterSender(req *http.Request) (*http.Respons
 func (client GlobalUsersClient) RegisterResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -668,7 +661,6 @@ func (client GlobalUsersClient) ResetPasswordSender(req *http.Request) (future G
 func (client GlobalUsersClient) ResetPasswordResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -751,7 +743,6 @@ func (client GlobalUsersClient) StartEnvironmentSender(req *http.Request) (futur
 func (client GlobalUsersClient) StartEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -834,7 +825,6 @@ func (client GlobalUsersClient) StopEnvironmentSender(req *http.Request) (future
 func (client GlobalUsersClient) StopEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

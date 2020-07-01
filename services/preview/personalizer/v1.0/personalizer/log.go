@@ -96,7 +96,6 @@ func (client LogClient) DeleteSender(req *http.Request) (*http.Response, error) 
 func (client LogClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -160,7 +159,6 @@ func (client LogClient) GetPropertiesSender(req *http.Request) (*http.Response, 
 func (client LogClient) GetPropertiesResponder(resp *http.Response) (result LogsProperties, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

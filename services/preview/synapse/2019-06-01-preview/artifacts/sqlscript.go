@@ -126,7 +126,6 @@ func (client SQLScriptClient) CreateOrUpdateSQLScriptSender(req *http.Request) (
 func (client SQLScriptClient) CreateOrUpdateSQLScriptResponder(resp *http.Response) (result SQLScriptResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -203,7 +202,6 @@ func (client SQLScriptClient) DeleteSQLScriptSender(req *http.Request) (*http.Re
 func (client SQLScriptClient) DeleteSQLScriptResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -285,7 +283,6 @@ func (client SQLScriptClient) GetSQLScriptSender(req *http.Request) (*http.Respo
 func (client SQLScriptClient) GetSQLScriptResponder(resp *http.Response) (result SQLScriptResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotModified),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -357,7 +354,6 @@ func (client SQLScriptClient) GetSQLScriptsByWorkspaceSender(req *http.Request) 
 func (client SQLScriptClient) GetSQLScriptsByWorkspaceResponder(resp *http.Response) (result SQLScriptsListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

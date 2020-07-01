@@ -127,7 +127,6 @@ func (client PipelineClient) CreateOrUpdatePipelineSender(req *http.Request) (*h
 func (client PipelineClient) CreateOrUpdatePipelineResponder(resp *http.Response) (result PipelineResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -234,7 +233,6 @@ func (client PipelineClient) CreatePipelineRunSender(req *http.Request) (*http.R
 func (client PipelineClient) CreatePipelineRunResponder(resp *http.Response) (result CreateRunResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -319,7 +317,6 @@ func (client PipelineClient) DeletePipelineSender(req *http.Request) (*http.Resp
 func (client PipelineClient) DeletePipelineResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -409,7 +406,6 @@ func (client PipelineClient) GetPipelineSender(req *http.Request) (*http.Respons
 func (client PipelineClient) GetPipelineResponder(resp *http.Response) (result PipelineResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotModified),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -481,7 +477,6 @@ func (client PipelineClient) GetPipelinesByWorkspaceSender(req *http.Request) (*
 func (client PipelineClient) GetPipelinesByWorkspaceResponder(resp *http.Response) (result PipelineListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -138,7 +138,6 @@ func (client ResourceGroupDimensionsClient) ListSender(req *http.Request) (*http
 func (client ResourceGroupDimensionsClient) ListResponder(resp *http.Response) (result DimensionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

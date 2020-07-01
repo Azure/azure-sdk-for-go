@@ -121,7 +121,6 @@ func (client LabsClient) AddUsersSender(req *http.Request) (*http.Response, erro
 func (client LabsClient) AddUsersResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -201,7 +200,6 @@ func (client LabsClient) CreateOrUpdateSender(req *http.Request) (*http.Response
 func (client LabsClient) CreateOrUpdateResponder(resp *http.Response) (result Lab, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -279,7 +277,6 @@ func (client LabsClient) DeleteSender(req *http.Request) (future LabsDeleteFutur
 func (client LabsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -360,7 +357,6 @@ func (client LabsClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client LabsClient) GetResponder(resp *http.Response) (result Lab, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -453,7 +449,6 @@ func (client LabsClient) ListSender(req *http.Request) (*http.Response, error) {
 func (client LabsClient) ListResponder(resp *http.Response) (result ResponseWithContinuationLab, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -568,7 +563,6 @@ func (client LabsClient) RegisterSender(req *http.Request) (*http.Response, erro
 func (client LabsClient) RegisterResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -648,7 +642,6 @@ func (client LabsClient) UpdateSender(req *http.Request) (*http.Response, error)
 func (client LabsClient) UpdateResponder(resp *http.Response) (result Lab, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

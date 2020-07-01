@@ -115,7 +115,6 @@ func (client PolicyClient) CreateOrUpdateResourceSender(req *http.Request) (*htt
 func (client PolicyClient) CreateOrUpdateResourceResponder(resp *http.Response) (result Policy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -195,7 +194,6 @@ func (client PolicyClient) DeleteResourceSender(req *http.Request) (*http.Respon
 func (client PolicyClient) DeleteResourceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -274,7 +272,6 @@ func (client PolicyClient) GetResourceSender(req *http.Request) (*http.Response,
 func (client PolicyClient) GetResourceResponder(resp *http.Response) (result Policy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -363,7 +360,6 @@ func (client PolicyClient) ListSender(req *http.Request) (*http.Response, error)
 func (client PolicyClient) ListResponder(resp *http.Response) (result ResponseWithContinuationPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -482,7 +478,6 @@ func (client PolicyClient) PatchResourceSender(req *http.Request) (*http.Respons
 func (client PolicyClient) PatchResourceResponder(resp *http.Response) (result Policy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

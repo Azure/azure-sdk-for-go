@@ -123,7 +123,6 @@ func (client MeshGatewayClient) CreateOrUpdateSender(req *http.Request) (*http.R
 func (client MeshGatewayClient) CreateOrUpdateResponder(resp *http.Response) (result GatewayResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -196,7 +195,6 @@ func (client MeshGatewayClient) DeleteSender(req *http.Request) (*http.Response,
 func (client MeshGatewayClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -269,7 +267,6 @@ func (client MeshGatewayClient) GetSender(req *http.Request) (*http.Response, er
 func (client MeshGatewayClient) GetResponder(resp *http.Response) (result GatewayResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -337,7 +334,6 @@ func (client MeshGatewayClient) ListSender(req *http.Request) (*http.Response, e
 func (client MeshGatewayClient) ListResponder(resp *http.Response) (result PagedGatewayResourceDescriptionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

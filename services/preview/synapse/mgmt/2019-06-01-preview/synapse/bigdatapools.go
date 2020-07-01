@@ -131,7 +131,6 @@ func (client BigDataPoolsClient) CreateOrUpdateSender(req *http.Request) (future
 func (client BigDataPoolsClient) CreateOrUpdateResponder(resp *http.Response) (result BigDataPoolResourceInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -219,7 +218,6 @@ func (client BigDataPoolsClient) DeleteSender(req *http.Request) (future BigData
 func (client BigDataPoolsClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -307,7 +305,6 @@ func (client BigDataPoolsClient) GetSender(req *http.Request) (*http.Response, e
 func (client BigDataPoolsClient) GetResponder(resp *http.Response) (result BigDataPoolResourceInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -394,7 +391,6 @@ func (client BigDataPoolsClient) ListByWorkspaceSender(req *http.Request) (*http
 func (client BigDataPoolsClient) ListByWorkspaceResponder(resp *http.Response) (result BigDataPoolResourceInfoListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -522,7 +518,6 @@ func (client BigDataPoolsClient) UpdateSender(req *http.Request) (*http.Response
 func (client BigDataPoolsClient) UpdateResponder(resp *http.Response) (result BigDataPoolResourceInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

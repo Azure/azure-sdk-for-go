@@ -101,7 +101,6 @@ func (client DiagnosticSettingsCategoryClient) ListSender(req *http.Request) (*h
 func (client DiagnosticSettingsCategoryClient) ListResponder(resp *http.Response) (result DiagnosticSettingsCategoryResourceCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -266,7 +266,6 @@ func (client CustomInstanceClient) SearchSender(req *http.Request) (*http.Respon
 func (client CustomInstanceClient) SearchResponder(resp *http.Response) (result SearchResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

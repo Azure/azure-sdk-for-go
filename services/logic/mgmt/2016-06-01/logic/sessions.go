@@ -121,7 +121,6 @@ func (client SessionsClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 func (client SessionsClient) CreateOrUpdateResponder(resp *http.Response) (result IntegrationAccountSession, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -199,7 +198,6 @@ func (client SessionsClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client SessionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -276,7 +274,6 @@ func (client SessionsClient) GetSender(req *http.Request) (*http.Response, error
 func (client SessionsClient) GetResponder(resp *http.Response) (result IntegrationAccountSession, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -361,7 +358,6 @@ func (client SessionsClient) ListByIntegrationAccountsSender(req *http.Request) 
 func (client SessionsClient) ListByIntegrationAccountsResponder(resp *http.Response) (result IntegrationAccountSessionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

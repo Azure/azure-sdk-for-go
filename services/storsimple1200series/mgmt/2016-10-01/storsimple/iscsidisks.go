@@ -131,7 +131,6 @@ func (client IscsiDisksClient) CreateOrUpdateSender(req *http.Request) (future I
 func (client IscsiDisksClient) CreateOrUpdateResponder(resp *http.Response) (result ISCSIDisk, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -220,7 +219,6 @@ func (client IscsiDisksClient) DeleteSender(req *http.Request) (future IscsiDisk
 func (client IscsiDisksClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -308,7 +306,6 @@ func (client IscsiDisksClient) GetSender(req *http.Request) (*http.Response, err
 func (client IscsiDisksClient) GetResponder(resp *http.Response) (result ISCSIDisk, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -393,7 +390,6 @@ func (client IscsiDisksClient) ListByDeviceSender(req *http.Request) (*http.Resp
 func (client IscsiDisksClient) ListByDeviceResponder(resp *http.Response) (result ISCSIDiskList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -480,7 +476,6 @@ func (client IscsiDisksClient) ListByIscsiServerSender(req *http.Request) (*http
 func (client IscsiDisksClient) ListByIscsiServerResponder(resp *http.Response) (result ISCSIDiskList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -569,7 +564,6 @@ func (client IscsiDisksClient) ListMetricDefinitionSender(req *http.Request) (*h
 func (client IscsiDisksClient) ListMetricDefinitionResponder(resp *http.Response) (result MetricDefinitionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -662,7 +656,6 @@ func (client IscsiDisksClient) ListMetricsSender(req *http.Request) (*http.Respo
 func (client IscsiDisksClient) ListMetricsResponder(resp *http.Response) (result MetricList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

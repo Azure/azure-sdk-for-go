@@ -21,8 +21,6 @@ package sqlapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql/sqlapi"
 
-type BackupLongTermRetentionPoliciesClientAPI = original.BackupLongTermRetentionPoliciesClientAPI
-type BackupLongTermRetentionVaultsClientAPI = original.BackupLongTermRetentionVaultsClientAPI
 type CapabilitiesClientAPI = original.CapabilitiesClientAPI
 type DataMaskingPoliciesClientAPI = original.DataMaskingPoliciesClientAPI
 type DataMaskingRulesClientAPI = original.DataMaskingRulesClientAPI

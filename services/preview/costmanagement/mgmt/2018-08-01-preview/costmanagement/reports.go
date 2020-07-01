@@ -124,7 +124,6 @@ func (client ReportsClient) CreateOrUpdateSender(req *http.Request) (*http.Respo
 func (client ReportsClient) CreateOrUpdateResponder(resp *http.Response) (result Report, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -215,7 +214,6 @@ func (client ReportsClient) CreateOrUpdateByBillingAccountSender(req *http.Reque
 func (client ReportsClient) CreateOrUpdateByBillingAccountResponder(resp *http.Response) (result Report, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -306,7 +304,6 @@ func (client ReportsClient) CreateOrUpdateByDepartmentSender(req *http.Request) 
 func (client ReportsClient) CreateOrUpdateByDepartmentResponder(resp *http.Response) (result Report, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -398,7 +395,6 @@ func (client ReportsClient) CreateOrUpdateByResourceGroupNameSender(req *http.Re
 func (client ReportsClient) CreateOrUpdateByResourceGroupNameResponder(resp *http.Response) (result Report, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -472,7 +468,6 @@ func (client ReportsClient) DeleteSender(req *http.Request) (*http.Response, err
 func (client ReportsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -546,7 +541,6 @@ func (client ReportsClient) DeleteByBillingAccountSender(req *http.Request) (*ht
 func (client ReportsClient) DeleteByBillingAccountResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -620,7 +614,6 @@ func (client ReportsClient) DeleteByDepartmentSender(req *http.Request) (*http.R
 func (client ReportsClient) DeleteByDepartmentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -695,7 +688,6 @@ func (client ReportsClient) DeleteByResourceGroupNameSender(req *http.Request) (
 func (client ReportsClient) DeleteByResourceGroupNameResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -768,7 +760,6 @@ func (client ReportsClient) ExecuteSender(req *http.Request) (*http.Response, er
 func (client ReportsClient) ExecuteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -842,7 +833,6 @@ func (client ReportsClient) ExecuteByBillingAccountSender(req *http.Request) (*h
 func (client ReportsClient) ExecuteByBillingAccountResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -916,7 +906,6 @@ func (client ReportsClient) ExecuteByDepartmentSender(req *http.Request) (*http.
 func (client ReportsClient) ExecuteByDepartmentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -991,7 +980,6 @@ func (client ReportsClient) ExecuteByResourceGroupNameSender(req *http.Request) 
 func (client ReportsClient) ExecuteByResourceGroupNameResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1064,7 +1052,6 @@ func (client ReportsClient) GetSender(req *http.Request) (*http.Response, error)
 func (client ReportsClient) GetResponder(resp *http.Response) (result Report, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1139,7 +1126,6 @@ func (client ReportsClient) GetByBillingAccountSender(req *http.Request) (*http.
 func (client ReportsClient) GetByBillingAccountResponder(resp *http.Response) (result Report, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1214,7 +1200,6 @@ func (client ReportsClient) GetByDepartmentSender(req *http.Request) (*http.Resp
 func (client ReportsClient) GetByDepartmentResponder(resp *http.Response) (result Report, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1290,7 +1275,6 @@ func (client ReportsClient) GetByResourceGroupNameSender(req *http.Request) (*ht
 func (client ReportsClient) GetByResourceGroupNameResponder(resp *http.Response) (result Report, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1364,7 +1348,6 @@ func (client ReportsClient) GetExecutionHistorySender(req *http.Request) (*http.
 func (client ReportsClient) GetExecutionHistoryResponder(resp *http.Response) (result ReportExecutionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1439,7 +1422,6 @@ func (client ReportsClient) GetExecutionHistoryByBillingAccountSender(req *http.
 func (client ReportsClient) GetExecutionHistoryByBillingAccountResponder(resp *http.Response) (result ReportExecutionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1514,7 +1496,6 @@ func (client ReportsClient) GetExecutionHistoryByDepartmentSender(req *http.Requ
 func (client ReportsClient) GetExecutionHistoryByDepartmentResponder(resp *http.Response) (result ReportExecutionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1590,7 +1571,6 @@ func (client ReportsClient) GetExecutionHistoryByResourceGroupNameSender(req *ht
 func (client ReportsClient) GetExecutionHistoryByResourceGroupNameResponder(resp *http.Response) (result ReportExecutionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1661,7 +1641,6 @@ func (client ReportsClient) ListSender(req *http.Request) (*http.Response, error
 func (client ReportsClient) ListResponder(resp *http.Response) (result ReportListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1734,7 +1713,6 @@ func (client ReportsClient) ListByBillingAccountSender(req *http.Request) (*http
 func (client ReportsClient) ListByBillingAccountResponder(resp *http.Response) (result ReportListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1807,7 +1785,6 @@ func (client ReportsClient) ListByDepartmentSender(req *http.Request) (*http.Res
 func (client ReportsClient) ListByDepartmentResponder(resp *http.Response) (result ReportListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1881,7 +1858,6 @@ func (client ReportsClient) ListByResourceGroupNameSender(req *http.Request) (*h
 func (client ReportsClient) ListByResourceGroupNameResponder(resp *http.Response) (result ReportListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

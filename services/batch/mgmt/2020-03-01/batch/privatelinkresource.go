@@ -125,7 +125,6 @@ func (client PrivateLinkResourceClient) GetSender(req *http.Request) (*http.Resp
 func (client PrivateLinkResourceClient) GetResponder(resp *http.Response) (result PrivateLinkResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -214,7 +213,6 @@ func (client PrivateLinkResourceClient) ListByBatchAccountSender(req *http.Reque
 func (client PrivateLinkResourceClient) ListByBatchAccountResponder(resp *http.Response) (result ListPrivateLinkResourcesResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

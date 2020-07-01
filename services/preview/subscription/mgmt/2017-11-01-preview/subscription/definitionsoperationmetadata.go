@@ -103,7 +103,6 @@ func (client DefinitionsOperationMetadataClient) ListSender(req *http.Request) (
 func (client DefinitionsOperationMetadataClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

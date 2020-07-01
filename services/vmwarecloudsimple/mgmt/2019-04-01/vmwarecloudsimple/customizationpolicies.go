@@ -112,7 +112,6 @@ func (client CustomizationPoliciesClient) GetSender(req *http.Request) (*http.Re
 func (client CustomizationPoliciesClient) GetResponder(resp *http.Response) (result CustomizationPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -194,7 +193,6 @@ func (client CustomizationPoliciesClient) ListSender(req *http.Request) (*http.R
 func (client CustomizationPoliciesClient) ListResponder(resp *http.Response) (result CustomizationPoliciesListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

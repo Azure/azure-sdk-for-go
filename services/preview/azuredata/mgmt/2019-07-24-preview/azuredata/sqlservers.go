@@ -116,7 +116,6 @@ func (client SQLServersClient) CreateOrUpdateSender(req *http.Request) (*http.Re
 func (client SQLServersClient) CreateOrUpdateResponder(resp *http.Response) (result SQLServer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -195,7 +194,6 @@ func (client SQLServersClient) DeleteSender(req *http.Request) (*http.Response, 
 func (client SQLServersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -277,7 +275,6 @@ func (client SQLServersClient) GetSender(req *http.Request) (*http.Response, err
 func (client SQLServersClient) GetResponder(resp *http.Response) (result SQLServer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -359,7 +356,6 @@ func (client SQLServersClient) ListByResourceGroupSender(req *http.Request) (*ht
 func (client SQLServersClient) ListByResourceGroupResponder(resp *http.Response) (result SQLServerListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

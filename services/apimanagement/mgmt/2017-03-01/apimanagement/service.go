@@ -127,7 +127,6 @@ func (client ServiceClient) ApplyNetworkConfigurationUpdatesSender(req *http.Req
 func (client ServiceClient) ApplyNetworkConfigurationUpdatesResponder(resp *http.Response) (result ServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -220,7 +219,6 @@ func (client ServiceClient) BackupSender(req *http.Request) (future ServiceBacku
 func (client ServiceClient) BackupResponder(resp *http.Response) (result ServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -301,7 +299,6 @@ func (client ServiceClient) CheckNameAvailabilitySender(req *http.Request) (*htt
 func (client ServiceClient) CheckNameAvailabilityResponder(resp *http.Response) (result ServiceNameAvailabilityResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -401,7 +398,6 @@ func (client ServiceClient) CreateOrUpdateSender(req *http.Request) (future Serv
 func (client ServiceClient) CreateOrUpdateResponder(resp *http.Response) (result ServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -485,7 +481,6 @@ func (client ServiceClient) DeleteSender(req *http.Request) (*http.Response, err
 func (client ServiceClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -568,7 +563,6 @@ func (client ServiceClient) GetSender(req *http.Request) (*http.Response, error)
 func (client ServiceClient) GetResponder(resp *http.Response) (result ServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -652,7 +646,6 @@ func (client ServiceClient) GetSsoTokenSender(req *http.Request) (*http.Response
 func (client ServiceClient) GetSsoTokenResponder(resp *http.Response) (result ServiceGetSsoTokenResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -724,7 +717,6 @@ func (client ServiceClient) ListSender(req *http.Request) (*http.Response, error
 func (client ServiceClient) ListResponder(resp *http.Response) (result ServiceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -836,7 +828,6 @@ func (client ServiceClient) ListByResourceGroupSender(req *http.Request) (*http.
 func (client ServiceClient) ListByResourceGroupResponder(resp *http.Response) (result ServiceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -966,7 +957,6 @@ func (client ServiceClient) RestoreSender(req *http.Request) (future ServiceRest
 func (client ServiceClient) RestoreResponder(resp *http.Response) (result ServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1054,7 +1044,6 @@ func (client ServiceClient) UpdateSender(req *http.Request) (future ServiceUpdat
 func (client ServiceClient) UpdateResponder(resp *http.Response) (result ServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1143,7 +1132,6 @@ func (client ServiceClient) UpdateHostnameSender(req *http.Request) (future Serv
 func (client ServiceClient) UpdateHostnameResponder(resp *http.Response) (result ServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1234,7 +1222,6 @@ func (client ServiceClient) UploadCertificateSender(req *http.Request) (*http.Re
 func (client ServiceClient) UploadCertificateResponder(resp *http.Response) (result CertificateInformation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -120,7 +120,6 @@ func (client GalleryImageClient) ListSender(req *http.Request) (*http.Response, 
 func (client GalleryImageClient) ListResponder(resp *http.Response) (result ResponseWithContinuationGalleryImage, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -113,7 +113,6 @@ func (client HyperVOperationsStatusClient) GetOperationStatusSender(req *http.Re
 func (client HyperVOperationsStatusClient) GetOperationStatusResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

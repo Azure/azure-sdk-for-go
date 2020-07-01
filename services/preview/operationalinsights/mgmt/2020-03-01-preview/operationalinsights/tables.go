@@ -126,7 +126,6 @@ func (client TablesClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client TablesClient) GetResponder(resp *http.Response) (result Table, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -216,7 +215,6 @@ func (client TablesClient) ListByWorkspaceSender(req *http.Request) (*http.Respo
 func (client TablesClient) ListByWorkspaceResponder(resp *http.Response) (result TablesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -311,7 +309,6 @@ func (client TablesClient) UpdateSender(req *http.Request) (*http.Response, erro
 func (client TablesClient) UpdateResponder(resp *http.Response) (result Table, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

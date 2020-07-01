@@ -113,7 +113,6 @@ func (client SkusAvailabilityClient) ListSender(req *http.Request) (*http.Respon
 func (client SkusAvailabilityClient) ListResponder(resp *http.Response) (result SkuAvailabilityListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

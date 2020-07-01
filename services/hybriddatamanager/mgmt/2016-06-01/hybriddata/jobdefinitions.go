@@ -131,7 +131,6 @@ func (client JobDefinitionsClient) CreateOrUpdateSender(req *http.Request) (futu
 func (client JobDefinitionsClient) CreateOrUpdateResponder(resp *http.Response) (result JobDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -220,7 +219,6 @@ func (client JobDefinitionsClient) DeleteSender(req *http.Request) (future JobDe
 func (client JobDefinitionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -308,7 +306,6 @@ func (client JobDefinitionsClient) GetSender(req *http.Request) (*http.Response,
 func (client JobDefinitionsClient) GetResponder(resp *http.Response) (result JobDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -398,7 +395,6 @@ func (client JobDefinitionsClient) ListByDataManagerSender(req *http.Request) (*
 func (client JobDefinitionsClient) ListByDataManagerResponder(resp *http.Response) (result JobDefinitionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -527,7 +523,6 @@ func (client JobDefinitionsClient) ListByDataServiceSender(req *http.Request) (*
 func (client JobDefinitionsClient) ListByDataServiceResponder(resp *http.Response) (result JobDefinitionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -656,7 +651,6 @@ func (client JobDefinitionsClient) RunSender(req *http.Request) (future JobDefin
 func (client JobDefinitionsClient) RunResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

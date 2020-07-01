@@ -114,7 +114,6 @@ func (client KnowledgebaseClient) CreateSender(req *http.Request) (*http.Respons
 func (client KnowledgebaseClient) CreateResponder(resp *http.Response) (result Operation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -185,7 +184,6 @@ func (client KnowledgebaseClient) DeleteSender(req *http.Request) (*http.Respons
 func (client KnowledgebaseClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -257,7 +255,6 @@ func (client KnowledgebaseClient) DownloadSender(req *http.Request) (*http.Respo
 func (client KnowledgebaseClient) DownloadResponder(resp *http.Response) (result QnADocumentsDTO, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -328,7 +325,6 @@ func (client KnowledgebaseClient) GetDetailsSender(req *http.Request) (*http.Res
 func (client KnowledgebaseClient) GetDetailsResponder(resp *http.Response) (result KnowledgebaseDTO, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -393,7 +389,6 @@ func (client KnowledgebaseClient) ListAllSender(req *http.Request) (*http.Respon
 func (client KnowledgebaseClient) ListAllResponder(resp *http.Response) (result KnowledgebasesDTO, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -464,7 +459,6 @@ func (client KnowledgebaseClient) PublishSender(req *http.Request) (*http.Respon
 func (client KnowledgebaseClient) PublishResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -543,7 +537,6 @@ func (client KnowledgebaseClient) ReplaceSender(req *http.Request) (*http.Respon
 func (client KnowledgebaseClient) ReplaceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -616,7 +609,6 @@ func (client KnowledgebaseClient) UpdateSender(req *http.Request) (*http.Respons
 func (client KnowledgebaseClient) UpdateResponder(resp *http.Response) (result Operation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

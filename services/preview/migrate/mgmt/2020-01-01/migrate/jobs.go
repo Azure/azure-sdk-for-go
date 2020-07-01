@@ -111,7 +111,6 @@ func (client JobsClient) GetAllJobsInSiteSender(req *http.Request) (*http.Respon
 func (client JobsClient) GetAllJobsInSiteResponder(resp *http.Response) (result VMwareJobCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -227,7 +226,6 @@ func (client JobsClient) GetJobSender(req *http.Request) (*http.Response, error)
 func (client JobsClient) GetJobResponder(resp *http.Response) (result VMwareJob, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

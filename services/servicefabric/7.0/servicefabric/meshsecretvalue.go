@@ -122,7 +122,6 @@ func (client MeshSecretValueClient) AddValueSender(req *http.Request) (*http.Res
 func (client MeshSecretValueClient) AddValueResponder(resp *http.Response) (result SecretValueResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -199,7 +198,6 @@ func (client MeshSecretValueClient) DeleteSender(req *http.Request) (*http.Respo
 func (client MeshSecretValueClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -275,7 +273,6 @@ func (client MeshSecretValueClient) GetSender(req *http.Request) (*http.Response
 func (client MeshSecretValueClient) GetResponder(resp *http.Response) (result SecretValueResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -349,7 +346,6 @@ func (client MeshSecretValueClient) ListSender(req *http.Request) (*http.Respons
 func (client MeshSecretValueClient) ListResponder(resp *http.Response) (result PagedSecretValueResourceDescriptionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -425,7 +421,6 @@ func (client MeshSecretValueClient) ShowSender(req *http.Request) (*http.Respons
 func (client MeshSecretValueClient) ShowResponder(resp *http.Response) (result SecretValue, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

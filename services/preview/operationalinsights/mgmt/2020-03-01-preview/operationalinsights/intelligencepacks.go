@@ -127,7 +127,6 @@ func (client IntelligencePacksClient) DisableSender(req *http.Request) (*http.Re
 func (client IntelligencePacksClient) DisableResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -218,7 +217,6 @@ func (client IntelligencePacksClient) EnableSender(req *http.Request) (*http.Res
 func (client IntelligencePacksClient) EnableResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -307,7 +305,6 @@ func (client IntelligencePacksClient) ListSender(req *http.Request) (*http.Respo
 func (client IntelligencePacksClient) ListResponder(resp *http.Response) (result ListIntelligencePack, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

@@ -110,7 +110,6 @@ func (client TriggerRunClient) QueryTriggerRunsByWorkspaceSender(req *http.Reque
 func (client TriggerRunClient) QueryTriggerRunsByWorkspaceResponder(resp *http.Response) (result TriggerRunsQueryResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -197,7 +196,6 @@ func (client TriggerRunClient) RerunTriggerInstanceSender(req *http.Request) (*h
 func (client TriggerRunClient) RerunTriggerInstanceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

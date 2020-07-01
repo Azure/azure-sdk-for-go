@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// OpenShiftClustersClient is the rest API for Azure Red Hat OpenShift
+// OpenShiftClustersClient is the rest API for Azure Red Hat OpenShift 4
 type OpenShiftClustersClient struct {
 	BaseClient
 }
@@ -43,8 +43,7 @@ func NewOpenShiftClustersClientWithBaseURI(baseURI string, subscriptionID string
 	return OpenShiftClustersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates a OpenShift cluster with the specified subscription, resource group and resource
-// name.  The operation returns properties of a OpenShift cluster.
+// CreateOrUpdate the operation returns properties of a OpenShift cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the OpenShift cluster resource.
@@ -125,7 +124,6 @@ func (client OpenShiftClustersClient) CreateOrUpdateSender(req *http.Request) (f
 func (client OpenShiftClustersClient) CreateOrUpdateResponder(resp *http.Response) (result OpenShiftCluster, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -133,8 +131,7 @@ func (client OpenShiftClustersClient) CreateOrUpdateResponder(resp *http.Respons
 	return
 }
 
-// Delete deletes a OpenShift cluster with the specified subscription, resource group and resource name.  The operation
-// returns nothing.
+// Delete the operation returns nothing.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the OpenShift cluster resource.
@@ -212,15 +209,13 @@ func (client OpenShiftClustersClient) DeleteSender(req *http.Request) (future Op
 func (client OpenShiftClustersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
 }
 
-// Get gets a OpenShift cluster with the specified subscription, resource group and resource name.  The operation
-// returns properties of a OpenShift cluster.
+// Get the operation returns properties of a OpenShift cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the OpenShift cluster resource.
@@ -298,7 +293,6 @@ func (client OpenShiftClustersClient) GetSender(req *http.Request) (*http.Respon
 func (client OpenShiftClustersClient) GetResponder(resp *http.Response) (result OpenShiftCluster, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -306,8 +300,7 @@ func (client OpenShiftClustersClient) GetResponder(resp *http.Response) (result 
 	return
 }
 
-// List lists OpenShift clusters in the specified subscription.  The operation returns properties of each OpenShift
-// cluster.
+// List the operation returns properties of each OpenShift cluster.
 func (client OpenShiftClustersClient) List(ctx context.Context) (result OpenShiftClusterListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OpenShiftClustersClient.List")
@@ -377,7 +370,6 @@ func (client OpenShiftClustersClient) ListSender(req *http.Request) (*http.Respo
 func (client OpenShiftClustersClient) ListResponder(resp *http.Response) (result OpenShiftClusterList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -422,8 +414,7 @@ func (client OpenShiftClustersClient) ListComplete(ctx context.Context) (result 
 	return
 }
 
-// ListByResourceGroup lists OpenShift clusters in the specified subscription and resource group.  The operation
-// returns properties of each OpenShift cluster.
+// ListByResourceGroup the operation returns properties of each OpenShift cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client OpenShiftClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result OpenShiftClusterListPage, err error) {
@@ -500,7 +491,6 @@ func (client OpenShiftClustersClient) ListByResourceGroupSender(req *http.Reques
 func (client OpenShiftClustersClient) ListByResourceGroupResponder(resp *http.Response) (result OpenShiftClusterList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -545,8 +535,7 @@ func (client OpenShiftClustersClient) ListByResourceGroupComplete(ctx context.Co
 	return
 }
 
-// ListCredentials lists credentials of an OpenShift cluster with the specified subscription, resource group and
-// resource name.  The operation returns the credentials.
+// ListCredentials the operation returns the credentials.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the OpenShift cluster resource.
@@ -624,7 +613,6 @@ func (client OpenShiftClustersClient) ListCredentialsSender(req *http.Request) (
 func (client OpenShiftClustersClient) ListCredentialsResponder(resp *http.Response) (result OpenShiftClusterCredentials, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -632,8 +620,7 @@ func (client OpenShiftClustersClient) ListCredentialsResponder(resp *http.Respon
 	return
 }
 
-// Update creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
-// The operation returns properties of a OpenShift cluster.
+// Update the operation returns properties of a OpenShift cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the OpenShift cluster resource.
@@ -714,7 +701,6 @@ func (client OpenShiftClustersClient) UpdateSender(req *http.Request) (future Op
 func (client OpenShiftClustersClient) UpdateResponder(resp *http.Response) (result OpenShiftCluster, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

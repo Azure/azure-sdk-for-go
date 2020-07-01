@@ -119,7 +119,6 @@ func (client RegionsClient) ListByServiceSender(req *http.Request) (*http.Respon
 func (client RegionsClient) ListByServiceResponder(resp *http.Response) (result RegionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

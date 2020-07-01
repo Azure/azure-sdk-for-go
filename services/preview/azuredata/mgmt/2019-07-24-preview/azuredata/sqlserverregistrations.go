@@ -115,7 +115,6 @@ func (client SQLServerRegistrationsClient) CreateOrUpdateSender(req *http.Reques
 func (client SQLServerRegistrationsClient) CreateOrUpdateResponder(resp *http.Response) (result SQLServerRegistration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -192,7 +191,6 @@ func (client SQLServerRegistrationsClient) DeleteSender(req *http.Request) (*htt
 func (client SQLServerRegistrationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -268,7 +266,6 @@ func (client SQLServerRegistrationsClient) GetSender(req *http.Request) (*http.R
 func (client SQLServerRegistrationsClient) GetResponder(resp *http.Response) (result SQLServerRegistration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -340,7 +337,6 @@ func (client SQLServerRegistrationsClient) ListSender(req *http.Request) (*http.
 func (client SQLServerRegistrationsClient) ListResponder(resp *http.Response) (result SQLServerRegistrationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -453,7 +449,6 @@ func (client SQLServerRegistrationsClient) ListByResourceGroupSender(req *http.R
 func (client SQLServerRegistrationsClient) ListByResourceGroupResponder(resp *http.Response) (result SQLServerRegistrationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -570,7 +565,6 @@ func (client SQLServerRegistrationsClient) UpdateSender(req *http.Request) (*htt
 func (client SQLServerRegistrationsClient) UpdateResponder(resp *http.Response) (result SQLServerRegistration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

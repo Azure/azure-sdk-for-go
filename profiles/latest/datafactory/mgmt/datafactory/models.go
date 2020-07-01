@@ -184,6 +184,17 @@ const (
 	FtpAuthenticationTypeBasic     FtpAuthenticationType = original.FtpAuthenticationTypeBasic
 )
 
+type GlobalParameterType = original.GlobalParameterType
+
+const (
+	Array  GlobalParameterType = original.Array
+	Bool   GlobalParameterType = original.Bool
+	Float  GlobalParameterType = original.Float
+	Int    GlobalParameterType = original.Int
+	Object GlobalParameterType = original.Object
+	String GlobalParameterType = original.String
+)
+
 type GoogleAdWordsAuthenticationType = original.GoogleAdWordsAuthenticationType
 
 const (
@@ -504,6 +515,14 @@ const (
 	RunQueryOrderByFieldTriggerRunTimestamp RunQueryOrderByField = original.RunQueryOrderByFieldTriggerRunTimestamp
 )
 
+type SQLPartitionOption = original.SQLPartitionOption
+
+const (
+	SQLPartitionOptionDynamicRange              SQLPartitionOption = original.SQLPartitionOptionDynamicRange
+	SQLPartitionOptionNone                      SQLPartitionOption = original.SQLPartitionOptionNone
+	SQLPartitionOptionPhysicalPartitionsOfTable SQLPartitionOption = original.SQLPartitionOptionPhysicalPartitionsOfTable
+)
+
 type SalesforceSinkWriteBehavior = original.SalesforceSinkWriteBehavior
 
 const (
@@ -623,13 +642,13 @@ const (
 type StoredProcedureParameterType = original.StoredProcedureParameterType
 
 const (
-	Boolean StoredProcedureParameterType = original.Boolean
-	Date    StoredProcedureParameterType = original.Date
-	Decimal StoredProcedureParameterType = original.Decimal
-	GUID    StoredProcedureParameterType = original.GUID
-	Int     StoredProcedureParameterType = original.Int
-	Int64   StoredProcedureParameterType = original.Int64
-	String  StoredProcedureParameterType = original.String
+	StoredProcedureParameterTypeBoolean StoredProcedureParameterType = original.StoredProcedureParameterTypeBoolean
+	StoredProcedureParameterTypeDate    StoredProcedureParameterType = original.StoredProcedureParameterTypeDate
+	StoredProcedureParameterTypeDecimal StoredProcedureParameterType = original.StoredProcedureParameterTypeDecimal
+	StoredProcedureParameterTypeGUID    StoredProcedureParameterType = original.StoredProcedureParameterTypeGUID
+	StoredProcedureParameterTypeInt     StoredProcedureParameterType = original.StoredProcedureParameterTypeInt
+	StoredProcedureParameterTypeInt64   StoredProcedureParameterType = original.StoredProcedureParameterTypeInt64
+	StoredProcedureParameterTypeString  StoredProcedureParameterType = original.StoredProcedureParameterTypeString
 )
 
 type SybaseAuthenticationType = original.SybaseAuthenticationType
@@ -1649,6 +1668,7 @@ type GetMetadataActivityTypeProperties = original.GetMetadataActivityTypePropert
 type GetSsisObjectMetadataRequest = original.GetSsisObjectMetadataRequest
 type GitHubAccessTokenRequest = original.GitHubAccessTokenRequest
 type GitHubAccessTokenResponse = original.GitHubAccessTokenResponse
+type GlobalParameterSpecification = original.GlobalParameterSpecification
 type GoogleAdWordsLinkedService = original.GoogleAdWordsLinkedService
 type GoogleAdWordsLinkedServiceTypeProperties = original.GoogleAdWordsLinkedServiceTypeProperties
 type GoogleAdWordsObjectDataset = original.GoogleAdWordsObjectDataset
@@ -1944,6 +1964,7 @@ type SQLDWSink = original.SQLDWSink
 type SQLDWSource = original.SQLDWSource
 type SQLMISink = original.SQLMISink
 type SQLMISource = original.SQLMISource
+type SQLPartitionSettings = original.SQLPartitionSettings
 type SQLServerLinkedService = original.SQLServerLinkedService
 type SQLServerLinkedServiceTypeProperties = original.SQLServerLinkedServiceTypeProperties
 type SQLServerSink = original.SQLServerSink
@@ -2360,6 +2381,9 @@ func PossibleEventSubscriptionStatusValues() []EventSubscriptionStatus {
 func PossibleFtpAuthenticationTypeValues() []FtpAuthenticationType {
 	return original.PossibleFtpAuthenticationTypeValues()
 }
+func PossibleGlobalParameterTypeValues() []GlobalParameterType {
+	return original.PossibleGlobalParameterTypeValues()
+}
 func PossibleGoogleAdWordsAuthenticationTypeValues() []GoogleAdWordsAuthenticationType {
 	return original.PossibleGoogleAdWordsAuthenticationTypeValues()
 }
@@ -2470,6 +2494,9 @@ func PossibleRunQueryOrderByFieldValues() []RunQueryOrderByField {
 }
 func PossibleRunQueryOrderValues() []RunQueryOrder {
 	return original.PossibleRunQueryOrderValues()
+}
+func PossibleSQLPartitionOptionValues() []SQLPartitionOption {
+	return original.PossibleSQLPartitionOptionValues()
 }
 func PossibleSalesforceSinkWriteBehaviorValues() []SalesforceSinkWriteBehavior {
 	return original.PossibleSalesforceSinkWriteBehaviorValues()

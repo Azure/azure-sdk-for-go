@@ -126,7 +126,6 @@ func (client BaseClient) ResourceChangeDetailsSender(req *http.Request) (*http.R
 func (client BaseClient) ResourceChangeDetailsResponder(resp *http.Response) (result ResourceChangeData, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -208,7 +207,6 @@ func (client BaseClient) ResourceChangesSender(req *http.Request) (*http.Respons
 func (client BaseClient) ResourceChangesResponder(resp *http.Response) (result ResourceChangeList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -294,7 +292,6 @@ func (client BaseClient) ResourcesSender(req *http.Request) (*http.Response, err
 func (client BaseClient) ResourcesResponder(resp *http.Response) (result QueryResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

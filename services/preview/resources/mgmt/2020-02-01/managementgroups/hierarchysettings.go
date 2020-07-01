@@ -112,7 +112,6 @@ func (client HierarchySettingsClient) CreateOrUpdateSender(req *http.Request) (*
 func (client HierarchySettingsClient) CreateOrUpdateResponder(resp *http.Response) (result HierarchySettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -185,7 +184,6 @@ func (client HierarchySettingsClient) DeleteSender(req *http.Request) (*http.Res
 func (client HierarchySettingsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -258,7 +256,6 @@ func (client HierarchySettingsClient) GetSender(req *http.Request) (*http.Respon
 func (client HierarchySettingsClient) GetResponder(resp *http.Response) (result HierarchySettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -332,7 +329,6 @@ func (client HierarchySettingsClient) ListSender(req *http.Request) (*http.Respo
 func (client HierarchySettingsClient) ListResponder(resp *http.Response) (result HierarchySettingsList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -408,7 +404,6 @@ func (client HierarchySettingsClient) UpdateSender(req *http.Request) (*http.Res
 func (client HierarchySettingsClient) UpdateResponder(resp *http.Response) (result HierarchySettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

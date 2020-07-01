@@ -73,6 +73,14 @@ const (
 	Direct    PersonalDesktopAssignmentType = original.Direct
 )
 
+type PreferredAppGroupType = original.PreferredAppGroupType
+
+const (
+	PreferredAppGroupTypeDesktop          PreferredAppGroupType = original.PreferredAppGroupTypeDesktop
+	PreferredAppGroupTypeNone             PreferredAppGroupType = original.PreferredAppGroupTypeNone
+	PreferredAppGroupTypeRailApplications PreferredAppGroupType = original.PreferredAppGroupTypeRailApplications
+)
+
 type RegistrationTokenOperation = original.RegistrationTokenOperation
 
 const (
@@ -113,10 +121,8 @@ const (
 	UpdateStateSucceeded UpdateState = original.UpdateStateSucceeded
 )
 
-type ActiveApplicationsClient = original.ActiveApplicationsClient
 type Application = original.Application
 type ApplicationGroup = original.ApplicationGroup
-type ApplicationGroupAssignmentsClient = original.ApplicationGroupAssignmentsClient
 type ApplicationGroupList = original.ApplicationGroupList
 type ApplicationGroupListIterator = original.ApplicationGroupListIterator
 type ApplicationGroupListPage = original.ApplicationGroupListPage
@@ -189,18 +195,6 @@ type WorkspacesClient = original.WorkspacesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewActiveApplicationsClient(subscriptionID string) ActiveApplicationsClient {
-	return original.NewActiveApplicationsClient(subscriptionID)
-}
-func NewActiveApplicationsClientWithBaseURI(baseURI string, subscriptionID string) ActiveApplicationsClient {
-	return original.NewActiveApplicationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewApplicationGroupAssignmentsClient(subscriptionID string) ApplicationGroupAssignmentsClient {
-	return original.NewApplicationGroupAssignmentsClient(subscriptionID)
-}
-func NewApplicationGroupAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationGroupAssignmentsClient {
-	return original.NewApplicationGroupAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewApplicationGroupListIterator(page ApplicationGroupListPage) ApplicationGroupListIterator {
 	return original.NewApplicationGroupListIterator(page)
@@ -318,6 +312,9 @@ func PossibleLoadBalancerTypeValues() []LoadBalancerType {
 }
 func PossiblePersonalDesktopAssignmentTypeValues() []PersonalDesktopAssignmentType {
 	return original.PossiblePersonalDesktopAssignmentTypeValues()
+}
+func PossiblePreferredAppGroupTypeValues() []PreferredAppGroupType {
+	return original.PossiblePreferredAppGroupTypeValues()
 }
 func PossibleRegistrationTokenOperationValues() []RegistrationTokenOperation {
 	return original.PossibleRegistrationTokenOperationValues()

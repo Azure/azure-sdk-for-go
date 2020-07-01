@@ -121,7 +121,6 @@ func (client MapsClient) CreateOrUpdateSender(req *http.Request) (*http.Response
 func (client MapsClient) CreateOrUpdateResponder(resp *http.Response) (result IntegrationAccountMap, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -199,7 +198,6 @@ func (client MapsClient) DeleteSender(req *http.Request) (*http.Response, error)
 func (client MapsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -276,7 +274,6 @@ func (client MapsClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client MapsClient) GetResponder(resp *http.Response) (result IntegrationAccountMap, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -361,7 +358,6 @@ func (client MapsClient) ListByIntegrationAccountsSender(req *http.Request) (*ht
 func (client MapsClient) ListByIntegrationAccountsResponder(resp *http.Response) (result IntegrationAccountMapListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -478,7 +474,6 @@ func (client MapsClient) ListContentCallbackURLSender(req *http.Request) (*http.
 func (client MapsClient) ListContentCallbackURLResponder(resp *http.Response) (result WorkflowTriggerCallbackURL, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

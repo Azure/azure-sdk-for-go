@@ -122,7 +122,6 @@ func (client Client) AddDataLakeStoreAccountSender(req *http.Request) (*http.Res
 func (client Client) AddDataLakeStoreAccountResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -209,7 +208,6 @@ func (client Client) AddStorageAccountSender(req *http.Request) (*http.Response,
 func (client Client) AddStorageAccountResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -291,7 +289,6 @@ func (client Client) CreateSender(req *http.Request) (future CreateFuture, err e
 func (client Client) CreateResponder(resp *http.Response) (result DataLakeAnalyticsAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -367,7 +364,6 @@ func (client Client) DeleteSender(req *http.Request) (future DeleteFuture, err e
 func (client Client) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
@@ -445,7 +441,6 @@ func (client Client) DeleteDataLakeStoreAccountSender(req *http.Request) (*http.
 func (client Client) DeleteDataLakeStoreAccountResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -522,7 +517,6 @@ func (client Client) DeleteStorageAccountSender(req *http.Request) (*http.Respon
 func (client Client) DeleteStorageAccountResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -597,7 +591,6 @@ func (client Client) GetSender(req *http.Request) (*http.Response, error) {
 func (client Client) GetResponder(resp *http.Response) (result DataLakeAnalyticsAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -677,7 +670,6 @@ func (client Client) GetDataLakeStoreAccountSender(req *http.Request) (*http.Res
 func (client Client) GetDataLakeStoreAccountResponder(resp *http.Response) (result DataLakeStoreAccountInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -756,7 +748,6 @@ func (client Client) GetStorageAccountSender(req *http.Request) (*http.Response,
 func (client Client) GetStorageAccountResponder(resp *http.Response) (result StorageAccountInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -837,7 +828,6 @@ func (client Client) GetStorageContainerSender(req *http.Request) (*http.Respons
 func (client Client) GetStorageContainerResponder(resp *http.Response) (result BlobContainer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -954,7 +944,6 @@ func (client Client) ListSender(req *http.Request) (*http.Response, error) {
 func (client Client) ListResponder(resp *http.Response) (result DataLakeAnalyticsAccountListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1110,7 +1099,6 @@ func (client Client) ListByResourceGroupSender(req *http.Request) (*http.Respons
 func (client Client) ListByResourceGroupResponder(resp *http.Response) (result DataLakeAnalyticsAccountListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1268,7 +1256,6 @@ func (client Client) ListDataLakeStoreAccountsSender(req *http.Request) (*http.R
 func (client Client) ListDataLakeStoreAccountsResponder(resp *http.Response) (result DataLakeAnalyticsAccountListDataLakeStoreResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1388,7 +1375,6 @@ func (client Client) ListSasTokensSender(req *http.Request) (*http.Response, err
 func (client Client) ListSasTokensResponder(resp *http.Response) (result ListSasTokensResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1546,7 +1532,6 @@ func (client Client) ListStorageAccountsSender(req *http.Request) (*http.Respons
 func (client Client) ListStorageAccountsResponder(resp *http.Response) (result DataLakeAnalyticsAccountListStorageAccountsResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1663,7 +1648,6 @@ func (client Client) ListStorageContainersSender(req *http.Request) (*http.Respo
 func (client Client) ListStorageContainersResponder(resp *http.Response) (result ListBlobContainersResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1782,7 +1766,6 @@ func (client Client) UpdateSender(req *http.Request) (future UpdateFuture, err e
 func (client Client) UpdateResponder(resp *http.Response) (result DataLakeAnalyticsAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1864,7 +1847,6 @@ func (client Client) UpdateStorageAccountSender(req *http.Request) (*http.Respon
 func (client Client) UpdateStorageAccountResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

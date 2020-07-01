@@ -169,7 +169,6 @@ func (client ManagedClustersClient) CreateOrUpdateSender(req *http.Request) (fut
 func (client ManagedClustersClient) CreateOrUpdateResponder(resp *http.Response) (result ManagedCluster, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -255,7 +254,6 @@ func (client ManagedClustersClient) DeleteSender(req *http.Request) (future Mana
 func (client ManagedClustersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -340,7 +338,6 @@ func (client ManagedClustersClient) GetSender(req *http.Request) (*http.Response
 func (client ManagedClustersClient) GetResponder(resp *http.Response) (result ManagedCluster, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -429,7 +426,6 @@ func (client ManagedClustersClient) GetAccessProfileSender(req *http.Request) (*
 func (client ManagedClustersClient) GetAccessProfileResponder(resp *http.Response) (result ManagedClusterAccessProfile, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -516,7 +512,6 @@ func (client ManagedClustersClient) GetUpgradeProfileSender(req *http.Request) (
 func (client ManagedClustersClient) GetUpgradeProfileResponder(resp *http.Response) (result ManagedClusterUpgradeProfile, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -589,7 +584,6 @@ func (client ManagedClustersClient) ListSender(req *http.Request) (*http.Respons
 func (client ManagedClustersClient) ListResponder(resp *http.Response) (result ManagedClusterListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -708,7 +702,6 @@ func (client ManagedClustersClient) ListByResourceGroupSender(req *http.Request)
 func (client ManagedClustersClient) ListByResourceGroupResponder(resp *http.Response) (result ManagedClusterListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -832,7 +825,6 @@ func (client ManagedClustersClient) ListClusterAdminCredentialsSender(req *http.
 func (client ManagedClustersClient) ListClusterAdminCredentialsResponder(resp *http.Response) (result CredentialResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -919,7 +911,6 @@ func (client ManagedClustersClient) ListClusterMonitoringUserCredentialsSender(r
 func (client ManagedClustersClient) ListClusterMonitoringUserCredentialsResponder(resp *http.Response) (result CredentialResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1006,7 +997,6 @@ func (client ManagedClustersClient) ListClusterUserCredentialsSender(req *http.R
 func (client ManagedClustersClient) ListClusterUserCredentialsResponder(resp *http.Response) (result CredentialResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1098,7 +1088,6 @@ func (client ManagedClustersClient) ResetAADProfileSender(req *http.Request) (fu
 func (client ManagedClustersClient) ResetAADProfileResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1188,7 +1177,6 @@ func (client ManagedClustersClient) ResetServicePrincipalProfileSender(req *http
 func (client ManagedClustersClient) ResetServicePrincipalProfileResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1273,7 +1261,6 @@ func (client ManagedClustersClient) RotateClusterCertificatesSender(req *http.Re
 func (client ManagedClustersClient) RotateClusterCertificatesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1361,7 +1348,6 @@ func (client ManagedClustersClient) UpdateTagsSender(req *http.Request) (future 
 func (client ManagedClustersClient) UpdateTagsResponder(resp *http.Response) (result ManagedCluster, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

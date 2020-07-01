@@ -131,6 +131,23 @@ type IotSecuritySolutionsAnalyticsRecommendationClientAPI interface {
 
 var _ IotSecuritySolutionsAnalyticsRecommendationClientAPI = (*security.IotSecuritySolutionsAnalyticsRecommendationClient)(nil)
 
+// IotAlertTypesClientAPI contains the set of methods on the IotAlertTypesClient type.
+type IotAlertTypesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, solutionName string, iotAlertTypeName string) (result security.IotAlertType, err error)
+	List(ctx context.Context, resourceGroupName string, solutionName string) (result security.IotAlertTypeList, err error)
+}
+
+var _ IotAlertTypesClientAPI = (*security.IotAlertTypesClient)(nil)
+
+// IotAlertsClientAPI contains the set of methods on the IotAlertsClient type.
+type IotAlertsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, solutionName string, iotAlertID string) (result security.IotAlert, err error)
+	List(ctx context.Context, resourceGroupName string, solutionName string, minStartTimeUtc string, maxStartTimeUtc string, alertType string, limit *int32, skipToken string) (result security.IotAlertListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, solutionName string, minStartTimeUtc string, maxStartTimeUtc string, alertType string, limit *int32, skipToken string) (result security.IotAlertListIterator, err error)
+}
+
+var _ IotAlertsClientAPI = (*security.IotAlertsClient)(nil)
+
 // LocationsClientAPI contains the set of methods on the LocationsClient type.
 type LocationsClientAPI interface {
 	Get(ctx context.Context) (result security.AscLocation, err error)
@@ -425,3 +442,14 @@ type SecureScoreControlDefinitionsClientAPI interface {
 }
 
 var _ SecureScoreControlDefinitionsClientAPI = (*security.SecureScoreControlDefinitionsClient)(nil)
+
+// ConnectorsClientAPI contains the set of methods on the ConnectorsClient type.
+type ConnectorsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, connectorName string, connectorSetting security.ConnectorSetting) (result security.ConnectorSetting, err error)
+	Delete(ctx context.Context, connectorName string) (result autorest.Response, err error)
+	Get(ctx context.Context, connectorName string) (result security.ConnectorSetting, err error)
+	List(ctx context.Context) (result security.ConnectorSettingListPage, err error)
+	ListComplete(ctx context.Context) (result security.ConnectorSettingListIterator, err error)
+}
+
+var _ ConnectorsClientAPI = (*security.ConnectorsClient)(nil)

@@ -107,7 +107,6 @@ func (client PaymentMethodsClient) ListByBillingAccountNameSender(req *http.Requ
 func (client PaymentMethodsClient) ListByBillingAccountNameResponder(resp *http.Response) (result PaymentMethodsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -220,7 +219,6 @@ func (client PaymentMethodsClient) ListByBillingProfileNameSender(req *http.Requ
 func (client PaymentMethodsClient) ListByBillingProfileNameResponder(resp *http.Response) (result PaymentMethodsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

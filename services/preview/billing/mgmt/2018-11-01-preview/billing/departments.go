@@ -117,7 +117,6 @@ func (client DepartmentsClient) GetSender(req *http.Request) (*http.Response, er
 func (client DepartmentsClient) GetResponder(resp *http.Response) (result Department, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -200,7 +199,6 @@ func (client DepartmentsClient) ListByBillingAccountNameSender(req *http.Request
 func (client DepartmentsClient) ListByBillingAccountNameResponder(resp *http.Response) (result DepartmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

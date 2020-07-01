@@ -371,13 +371,13 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(tenantID string, clien
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := azcore.NewRequest(http.MethodPost, u)
-	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-	err := msg.SetBody(body)
+	req := azcore.NewRequest(http.MethodPost, u)
+	req.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
+	err := req.SetBody(body)
 	if err != nil {
 		return nil, err
 	}
-	return msg, nil
+	return req, nil
 }
 
 func getPrivateKey(cert string) (*rsa.PrivateKey, error) {

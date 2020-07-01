@@ -33,7 +33,7 @@ var _ OperationsClientAPI = (*machinelearningservices.OperationsClient)(nil)
 // WorkspacesClientAPI contains the set of methods on the WorkspacesClient type.
 type WorkspacesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters machinelearningservices.Workspace) (result machinelearningservices.WorkspacesCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, workspaceName string) (result autorest.Response, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string) (result machinelearningservices.WorkspacesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string) (result machinelearningservices.Workspace, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, skiptoken string) (result machinelearningservices.WorkspaceListResultPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, skiptoken string) (result machinelearningservices.WorkspaceListResultIterator, err error)

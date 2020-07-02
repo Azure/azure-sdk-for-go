@@ -35,7 +35,28 @@ func TestChainedTokenCredential_InstantiateSuccess(t *testing.T) {
 			t.Fatalf("Expected 2 sources in the chained token credential, instead found %d", len(cred.sources))
 		}
 	}
+}
 
+func TestChainedTokenCredential_InstantiateFailure(t *testing.T) {
+	secCred, err := NewClientSecretCredential(tenantID, clientID, secret, nil)
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+	_, err = NewChainedTokenCredential(secCred, nil)
+	if err == nil {
+		t.Fatalf("Expected an error for sending a nil credential in the chain")
+	}
+	var credErr *CredentialUnavailableError
+	if !errors.As(err, &credErr) {
+		t.Fatalf("Expected a CredentialUnavailableError, but received: %T", credErr)
+	}
+	_, err = NewChainedTokenCredential()
+	if err == nil {
+		t.Fatalf("Expected an error for not sending any credential sources")
+	}
+	if !errors.As(err, &credErr) {
+		t.Fatalf("Expected a CredentialUnavailableError, but received: %T", credErr)
+	}
 }
 
 func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {

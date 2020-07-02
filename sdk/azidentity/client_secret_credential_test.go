@@ -123,3 +123,18 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 		}
 	}
 }
+
+func TestClientSecretCredential_GetTokenUnexpectedJSON(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
+	srvURL := srv.URL()
+	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("Failed to create the credential")
+	}
+	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	if err == nil {
+		t.Fatalf("Expected a JSON marshal error but received nil")
+	}
+}

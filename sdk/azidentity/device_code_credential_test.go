@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -222,7 +223,28 @@ func TestDeviceCodeCredential_GetTokenExpiredToken(t *testing.T) {
 	}
 }
 
-func TestDeviceCodeCredential_GetTokenWithRefreshToken(t *testing.T) {
+func TestDeviceCodeCredential_GetTokenWithRefreshTokenFailure(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
+	srvURL := srv.URL()
+	handler := func(string) {}
+	cred, err := NewDeviceCodeCredential(tenantID, clientID, handler, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+	cred.refreshToken = "refresh_token"
+	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
+	}
+	var aadErr *AADAuthenticationFailedError
+	if !errors.As(err, &aadErr) {
+		t.Fatalf("Did not receive an AADAuthenticationFailedError but was expecting one")
+	}
+}
+
+func TestDeviceCodeCredential_GetTokenWithRefreshTokenSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
@@ -235,10 +257,10 @@ func TestDeviceCodeCredential_GetTokenWithRefreshToken(t *testing.T) {
 	cred.refreshToken = "refresh_token"
 	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
 	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
+		t.Fatalf("Received an unexpected error: %s", err.Error())
 	}
 	if tk.Token != "new_token" {
-		t.Fatalf("Received an unexpected value in azcore.AccessToken.Token")
+		t.Fatalf("Unexpected value for token")
 	}
 }
 

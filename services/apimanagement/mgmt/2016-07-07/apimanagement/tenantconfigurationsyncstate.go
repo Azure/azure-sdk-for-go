@@ -111,8 +111,7 @@ func (client TenantConfigurationSyncStateClient) GetPreparer(ctx context.Context
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TenantConfigurationSyncStateClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -120,7 +119,6 @@ func (client TenantConfigurationSyncStateClient) GetSender(req *http.Request) (*
 func (client TenantConfigurationSyncStateClient) GetResponder(resp *http.Response) (result TenantConfigurationSyncStateContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

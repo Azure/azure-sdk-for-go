@@ -141,7 +141,6 @@ func (client QueryClient) UsageByBillingAccountSender(req *http.Request) (*http.
 func (client QueryClient) UsageByBillingAccountResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -250,7 +249,6 @@ func (client QueryClient) UsageByDepartmentSender(req *http.Request) (*http.Resp
 func (client QueryClient) UsageByDepartmentResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -359,7 +357,6 @@ func (client QueryClient) UsageByEnrollmentAccountSender(req *http.Request) (*ht
 func (client QueryClient) UsageByEnrollmentAccountResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -466,7 +463,6 @@ func (client QueryClient) UsageByManagementGroupSender(req *http.Request) (*http
 func (client QueryClient) UsageByManagementGroupResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -574,7 +570,6 @@ func (client QueryClient) UsageByResourceGroupSender(req *http.Request) (*http.R
 func (client QueryClient) UsageByResourceGroupResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -680,7 +675,6 @@ func (client QueryClient) UsageBySubscriptionSender(req *http.Request) (*http.Re
 func (client QueryClient) UsageBySubscriptionResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

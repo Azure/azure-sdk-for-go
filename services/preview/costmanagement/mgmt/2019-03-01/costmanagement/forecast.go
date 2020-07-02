@@ -141,7 +141,6 @@ func (client ForecastClient) UsageByBillingAccountSender(req *http.Request) (*ht
 func (client ForecastClient) UsageByBillingAccountResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -250,7 +249,6 @@ func (client ForecastClient) UsageByDepartmentSender(req *http.Request) (*http.R
 func (client ForecastClient) UsageByDepartmentResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -359,7 +357,6 @@ func (client ForecastClient) UsageByEnrollmentAccountSender(req *http.Request) (
 func (client ForecastClient) UsageByEnrollmentAccountResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -466,7 +463,6 @@ func (client ForecastClient) UsageByExternalBillingAccountSender(req *http.Reque
 func (client ForecastClient) UsageByExternalBillingAccountResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -573,7 +569,6 @@ func (client ForecastClient) UsageByManagementGroupSender(req *http.Request) (*h
 func (client ForecastClient) UsageByManagementGroupResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -681,7 +676,6 @@ func (client ForecastClient) UsageByResourceGroupSender(req *http.Request) (*htt
 func (client ForecastClient) UsageByResourceGroupResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -787,7 +781,6 @@ func (client ForecastClient) UsageBySubscriptionSender(req *http.Request) (*http
 func (client ForecastClient) UsageBySubscriptionResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

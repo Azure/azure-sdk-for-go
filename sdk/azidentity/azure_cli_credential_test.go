@@ -73,6 +73,6 @@ func TestBearerPolicy_AzureCLICredential(t *testing.T) {
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
 	_, err = pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
 	if err != nil {
-		t.Fatalf("Expected nil error but received one")
+		t.Fatal("Expected nil error but received one")
 	}
 }

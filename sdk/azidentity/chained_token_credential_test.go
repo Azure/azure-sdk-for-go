@@ -50,7 +50,10 @@ func TestChainedTokenCredential_InstantiateFailure(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error for not sending any credential sources")
 	}
-
+	var credErr *CredentialUnavailableError
+	if !errors.As(err, &credErr) {
+		t.Fatalf("Expected a CredentialUnavailableError, but received: %T", credErr)
+	}
 }
 
 func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {

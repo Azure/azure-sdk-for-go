@@ -4,32 +4,34 @@
 package azidentity
 
 import (
-	"context"
 	"net/url"
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-func TestCreateClientAssertionJWT(t *testing.T) {
+func TestAzurePublicCloudParse(t *testing.T) {
 	_, err := url.Parse(AzurePublicCloud)
 	if err != nil {
 		t.Fatalf("Failed to parse default authority host: %v", err)
 	}
 }
 
-func TestClientSecretCredential_GetTokenUnexpectedJSON(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
-	srvURL := srv.URL()
-	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+func TestAzureChinaParse(t *testing.T) {
+	_, err := url.Parse(AzureChina)
 	if err != nil {
-		t.Fatalf("Failed to create the credential")
+		t.Fatalf("Failed to parse AzureChina authority host: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
-	if err == nil {
-		t.Fatalf("Expected a JSON marshal error but received nil")
+}
+
+func TestAzureGermanyParse(t *testing.T) {
+	_, err := url.Parse(AzureGermany)
+	if err != nil {
+		t.Fatalf("Failed to parse AzureGermany authority host: %v", err)
+	}
+}
+
+func TestAzureGovernmentParse(t *testing.T) {
+	_, err := url.Parse(AzureGovernment)
+	if err != nil {
+		t.Fatalf("Failed to parse AzureGovernment authority host: %v", err)
 	}
 }

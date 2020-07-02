@@ -7,9 +7,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 var (
@@ -51,5 +53,26 @@ func TestAzureCLICredential_GetTokenInvalidToken(t *testing.T) {
 	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
+	}
+}
+
+func TestBearerPolicy_AzureCLICredential(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TokenProvider: mockCLITokenProviderSuccess})
+	if err != nil {
+		t.Fatalf("Did not expect an error but received: %v", err)
+	}
+	pipeline := azcore.NewPipeline(
+		srv,
+		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
+		azcore.NewUniqueRequestIDPolicy(),
+		azcore.NewRetryPolicy(nil),
+		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
+		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
+	_, err = pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
+	if err != nil {
+		t.Fatalf("Expected nil error but received one")
 	}
 }

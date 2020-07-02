@@ -80,13 +80,12 @@ func (e *AuthenticationFailedError) Error() string {
 }
 
 func newAADAuthenticationFailedError(resp *azcore.Response) error {
-	authFailed := &AADAuthenticationFailedError{}
+	authFailed := &AADAuthenticationFailedError{Response: resp}
 	err := resp.UnmarshalAsJSON(authFailed)
 	if err != nil {
 		authFailed.Message = resp.Status
 		authFailed.Description = "Failed to unmarshal response: " + err.Error()
 	}
-	authFailed.Response = resp
 	return authFailed
 }
 

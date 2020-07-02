@@ -54,11 +54,41 @@ const (
 	ActionTypeWorkspace        ActionType = original.ActionTypeWorkspace
 )
 
+type AlertIntent = original.AlertIntent
+
+const (
+	Collection          AlertIntent = original.Collection
+	CommandAndControl   AlertIntent = original.CommandAndControl
+	CredentialAccess    AlertIntent = original.CredentialAccess
+	DefenseEvasion      AlertIntent = original.DefenseEvasion
+	Discovery           AlertIntent = original.Discovery
+	Execution           AlertIntent = original.Execution
+	Exfiltration        AlertIntent = original.Exfiltration
+	Exploitation        AlertIntent = original.Exploitation
+	Impact              AlertIntent = original.Impact
+	InitialAccess       AlertIntent = original.InitialAccess
+	LateralMovement     AlertIntent = original.LateralMovement
+	Persistence         AlertIntent = original.Persistence
+	PreAttack           AlertIntent = original.PreAttack
+	PrivilegeEscalation AlertIntent = original.PrivilegeEscalation
+	Probing             AlertIntent = original.Probing
+	Unknown             AlertIntent = original.Unknown
+)
+
 type AlertNotifications = original.AlertNotifications
 
 const (
 	Off AlertNotifications = original.Off
 	On  AlertNotifications = original.On
+)
+
+type AlertSeverity = original.AlertSeverity
+
+const (
+	High          AlertSeverity = original.High
+	Informational AlertSeverity = original.Informational
+	Low           AlertSeverity = original.Low
+	Medium        AlertSeverity = original.Medium
 )
 
 type AlertsToAdmins = original.AlertsToAdmins
@@ -92,6 +122,24 @@ const (
 	CustomerManaged AssessmentType = original.CustomerManaged
 	CustomPolicy    AssessmentType = original.CustomPolicy
 	VerifiedPartner AssessmentType = original.VerifiedPartner
+)
+
+type AuthenticationProvisioningState = original.AuthenticationProvisioningState
+
+const (
+	Expired         AuthenticationProvisioningState = original.Expired
+	IncorrectPolicy AuthenticationProvisioningState = original.IncorrectPolicy
+	Invalid         AuthenticationProvisioningState = original.Invalid
+	Valid           AuthenticationProvisioningState = original.Valid
+)
+
+type AuthenticationType = original.AuthenticationType
+
+const (
+	AuthenticationTypeAuthenticationDetailsProperties AuthenticationType = original.AuthenticationTypeAuthenticationDetailsProperties
+	AuthenticationTypeAwsAssumeRole                   AuthenticationType = original.AuthenticationTypeAwsAssumeRole
+	AuthenticationTypeAwsCreds                        AuthenticationType = original.AuthenticationTypeAwsCreds
+	AuthenticationTypeGcpCredentials                  AuthenticationType = original.AuthenticationTypeGcpCredentials
 )
 
 type AutoProvision = original.AutoProvision
@@ -179,9 +227,9 @@ const (
 type EnforcementSupport = original.EnforcementSupport
 
 const (
-	NotSupported EnforcementSupport = original.NotSupported
-	Supported    EnforcementSupport = original.Supported
-	Unknown      EnforcementSupport = original.Unknown
+	EnforcementSupportNotSupported EnforcementSupport = original.EnforcementSupportNotSupported
+	EnforcementSupportSupported    EnforcementSupport = original.EnforcementSupportSupported
+	EnforcementSupportUnknown      EnforcementSupport = original.EnforcementSupportUnknown
 )
 
 type EventSource = original.EventSource
@@ -254,12 +302,20 @@ const (
 	FileTypeUnknown    FileType = original.FileTypeUnknown
 )
 
+type HybridComputeProvisioningState = original.HybridComputeProvisioningState
+
+const (
+	HybridComputeProvisioningStateExpired HybridComputeProvisioningState = original.HybridComputeProvisioningStateExpired
+	HybridComputeProvisioningStateInvalid HybridComputeProvisioningState = original.HybridComputeProvisioningStateInvalid
+	HybridComputeProvisioningStateValid   HybridComputeProvisioningState = original.HybridComputeProvisioningStateValid
+)
+
 type ImplementationEffort = original.ImplementationEffort
 
 const (
-	High     ImplementationEffort = original.High
-	Low      ImplementationEffort = original.Low
-	Moderate ImplementationEffort = original.Moderate
+	ImplementationEffortHigh     ImplementationEffort = original.ImplementationEffortHigh
+	ImplementationEffortLow      ImplementationEffort = original.ImplementationEffortLow
+	ImplementationEffortModerate ImplementationEffort = original.ImplementationEffortModerate
 )
 
 type Issue = original.Issue
@@ -310,6 +366,15 @@ const (
 	LesserThanOrEqualTo  Operator = original.LesserThanOrEqualTo
 	NotEquals            Operator = original.NotEquals
 	StartsWith           Operator = original.StartsWith
+)
+
+type PermissionProperty = original.PermissionProperty
+
+const (
+	AWSAmazonSSMAutomationRole      PermissionProperty = original.AWSAmazonSSMAutomationRole
+	AWSAWSSecurityHubReadOnlyAccess PermissionProperty = original.AWSAWSSecurityHubReadOnlyAccess
+	AWSSecurityAudit                PermissionProperty = original.AWSSecurityAudit
+	GCPSecurityCenterAdminViewer    PermissionProperty = original.GCPSecurityCenterAdminViewer
 )
 
 type PricingTier = original.PricingTier
@@ -525,9 +590,9 @@ const (
 type StatusReason = original.StatusReason
 
 const (
-	Expired               StatusReason = original.Expired
-	NewerRequestInitiated StatusReason = original.NewerRequestInitiated
-	UserRequested         StatusReason = original.UserRequested
+	StatusReasonExpired               StatusReason = original.StatusReasonExpired
+	StatusReasonNewerRequestInitiated StatusReason = original.StatusReasonNewerRequestInitiated
+	StatusReasonUserRequested         StatusReason = original.StatusReasonUserRequested
 )
 
 type SubAssessmentStatusCode = original.SubAssessmentStatusCode
@@ -658,6 +723,7 @@ type AssessmentsClient = original.AssessmentsClient
 type AssessmentsMetadataClient = original.AssessmentsMetadataClient
 type AtaExternalSecuritySolution = original.AtaExternalSecuritySolution
 type AtaSolutionProperties = original.AtaSolutionProperties
+type AuthenticationDetailsProperties = original.AuthenticationDetailsProperties
 type AutoProvisioningSetting = original.AutoProvisioningSetting
 type AutoProvisioningSettingList = original.AutoProvisioningSettingList
 type AutoProvisioningSettingListIterator = original.AutoProvisioningSettingListIterator
@@ -679,11 +745,14 @@ type AutomationSource = original.AutomationSource
 type AutomationTriggeringRule = original.AutomationTriggeringRule
 type AutomationValidationStatus = original.AutomationValidationStatus
 type AutomationsClient = original.AutomationsClient
+type AwAssumeRoleAuthenticationDetailsProperties = original.AwAssumeRoleAuthenticationDetailsProperties
+type AwsCredsAuthenticationDetailsProperties = original.AwsCredsAuthenticationDetailsProperties
 type AzureResourceDetails = original.AzureResourceDetails
 type AzureResourceLink = original.AzureResourceLink
 type BaseClient = original.BaseClient
 type BasicAdditionalData = original.BasicAdditionalData
 type BasicAllowlistCustomAlertRule = original.BasicAllowlistCustomAlertRule
+type BasicAuthenticationDetailsProperties = original.BasicAuthenticationDetailsProperties
 type BasicAutomationAction = original.BasicAutomationAction
 type BasicCustomAlertRule = original.BasicCustomAlertRule
 type BasicExternalSecuritySolution = original.BasicExternalSecuritySolution
@@ -716,6 +785,12 @@ type ConnectableResource = original.ConnectableResource
 type ConnectedResource = original.ConnectedResource
 type ConnectedWorkspace = original.ConnectedWorkspace
 type ConnectionToIPNotAllowed = original.ConnectionToIPNotAllowed
+type ConnectorSetting = original.ConnectorSetting
+type ConnectorSettingList = original.ConnectorSettingList
+type ConnectorSettingListIterator = original.ConnectorSettingListIterator
+type ConnectorSettingListPage = original.ConnectorSettingListPage
+type ConnectorSettingProperties = original.ConnectorSettingProperties
+type ConnectorsClient = original.ConnectorsClient
 type Contact = original.Contact
 type ContactList = original.ContactList
 type ContactListIterator = original.ContactListIterator
@@ -752,9 +827,11 @@ type ExternalSecuritySolutionProperties = original.ExternalSecuritySolutionPrope
 type ExternalSecuritySolutionsClient = original.ExternalSecuritySolutionsClient
 type FailedLocalLoginsNotInAllowedRange = original.FailedLocalLoginsNotInAllowedRange
 type FileUploadsNotInAllowedRange = original.FileUploadsNotInAllowedRange
+type GcpCredentialsDetailsProperties = original.GcpCredentialsDetailsProperties
 type HTTPC2DMessagesNotInAllowedRange = original.HTTPC2DMessagesNotInAllowedRange
 type HTTPC2DRejectedMessagesNotInAllowedRange = original.HTTPC2DRejectedMessagesNotInAllowedRange
 type HTTPD2CMessagesNotInAllowedRange = original.HTTPD2CMessagesNotInAllowedRange
+type HybridComputeSettingsProperties = original.HybridComputeSettingsProperties
 type InformationProtectionKeyword = original.InformationProtectionKeyword
 type InformationProtectionPoliciesClient = original.InformationProtectionPoliciesClient
 type InformationProtectionPolicy = original.InformationProtectionPolicy
@@ -787,6 +864,16 @@ type IoTSecuritySolutionsList = original.IoTSecuritySolutionsList
 type IoTSecuritySolutionsListIterator = original.IoTSecuritySolutionsListIterator
 type IoTSecuritySolutionsListPage = original.IoTSecuritySolutionsListPage
 type IoTSeverityMetrics = original.IoTSeverityMetrics
+type IotAlert = original.IotAlert
+type IotAlertList = original.IotAlertList
+type IotAlertListIterator = original.IotAlertListIterator
+type IotAlertListPage = original.IotAlertListPage
+type IotAlertProperties = original.IotAlertProperties
+type IotAlertType = original.IotAlertType
+type IotAlertTypeList = original.IotAlertTypeList
+type IotAlertTypeProperties = original.IotAlertTypeProperties
+type IotAlertTypesClient = original.IotAlertTypesClient
+type IotAlertsClient = original.IotAlertsClient
 type IotSecuritySolutionAnalyticsClient = original.IotSecuritySolutionAnalyticsClient
 type IotSecuritySolutionClient = original.IotSecuritySolutionClient
 type IotSecuritySolutionsAnalyticsAggregatedAlertClient = original.IotSecuritySolutionsAnalyticsAggregatedAlertClient
@@ -827,6 +914,7 @@ type PricingProperties = original.PricingProperties
 type PricingsClient = original.PricingsClient
 type ProcessNotAllowed = original.ProcessNotAllowed
 type ProtectionMode = original.ProtectionMode
+type ProxyServerProperties = original.ProxyServerProperties
 type PublisherInfo = original.PublisherInfo
 type QueuePurgesNotInAllowedRange = original.QueuePurgesNotInAllowedRange
 type RecommendationConfigurationProperties = original.RecommendationConfigurationProperties
@@ -880,6 +968,7 @@ type ServerVulnerabilityAssessmentClient = original.ServerVulnerabilityAssessmen
 type ServerVulnerabilityAssessmentProperties = original.ServerVulnerabilityAssessmentProperties
 type ServerVulnerabilityAssessmentsList = original.ServerVulnerabilityAssessmentsList
 type ServerVulnerabilityProperties = original.ServerVulnerabilityProperties
+type ServicePrincipalProperties = original.ServicePrincipalProperties
 type Setting = original.Setting
 type SettingResource = original.SettingResource
 type SettingsClient = original.SettingsClient
@@ -1071,6 +1160,18 @@ func NewCompliancesClient(subscriptionID string, ascLocation string) Compliances
 func NewCompliancesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) CompliancesClient {
 	return original.NewCompliancesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
+func NewConnectorSettingListIterator(page ConnectorSettingListPage) ConnectorSettingListIterator {
+	return original.NewConnectorSettingListIterator(page)
+}
+func NewConnectorSettingListPage(getNextPage func(context.Context, ConnectorSettingList) (ConnectorSettingList, error)) ConnectorSettingListPage {
+	return original.NewConnectorSettingListPage(getNextPage)
+}
+func NewConnectorsClient(subscriptionID string, ascLocation string) ConnectorsClient {
+	return original.NewConnectorsClient(subscriptionID, ascLocation)
+}
+func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ConnectorsClient {
+	return original.NewConnectorsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewContactListIterator(page ContactListPage) ContactListIterator {
 	return original.NewContactListIterator(page)
 }
@@ -1148,6 +1249,24 @@ func NewIoTSecuritySolutionsListIterator(page IoTSecuritySolutionsListPage) IoTS
 }
 func NewIoTSecuritySolutionsListPage(getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
 	return original.NewIoTSecuritySolutionsListPage(getNextPage)
+}
+func NewIotAlertListIterator(page IotAlertListPage) IotAlertListIterator {
+	return original.NewIotAlertListIterator(page)
+}
+func NewIotAlertListPage(getNextPage func(context.Context, IotAlertList) (IotAlertList, error)) IotAlertListPage {
+	return original.NewIotAlertListPage(getNextPage)
+}
+func NewIotAlertTypesClient(subscriptionID string, ascLocation string) IotAlertTypesClient {
+	return original.NewIotAlertTypesClient(subscriptionID, ascLocation)
+}
+func NewIotAlertTypesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotAlertTypesClient {
+	return original.NewIotAlertTypesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewIotAlertsClient(subscriptionID string, ascLocation string) IotAlertsClient {
+	return original.NewIotAlertsClient(subscriptionID, ascLocation)
+}
+func NewIotAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotAlertsClient {
+	return original.NewIotAlertsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewIotSecuritySolutionAnalyticsClient(subscriptionID string, ascLocation string) IotSecuritySolutionAnalyticsClient {
 	return original.NewIotSecuritySolutionAnalyticsClient(subscriptionID, ascLocation)
@@ -1359,8 +1478,14 @@ func PossibleActionTypeValues() []ActionType {
 func PossibleActionValues() []Action {
 	return original.PossibleActionValues()
 }
+func PossibleAlertIntentValues() []AlertIntent {
+	return original.PossibleAlertIntentValues()
+}
 func PossibleAlertNotificationsValues() []AlertNotifications {
 	return original.PossibleAlertNotificationsValues()
+}
+func PossibleAlertSeverityValues() []AlertSeverity {
+	return original.PossibleAlertSeverityValues()
 }
 func PossibleAlertsToAdminsValues() []AlertsToAdmins {
 	return original.PossibleAlertsToAdminsValues()
@@ -1373,6 +1498,12 @@ func PossibleAssessmentStatusCodeValues() []AssessmentStatusCode {
 }
 func PossibleAssessmentTypeValues() []AssessmentType {
 	return original.PossibleAssessmentTypeValues()
+}
+func PossibleAuthenticationProvisioningStateValues() []AuthenticationProvisioningState {
+	return original.PossibleAuthenticationProvisioningStateValues()
+}
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return original.PossibleAuthenticationTypeValues()
 }
 func PossibleAutoProvisionValues() []AutoProvision {
 	return original.PossibleAutoProvisionValues()
@@ -1434,6 +1565,9 @@ func PossibleFamilyValues() []Family {
 func PossibleFileTypeValues() []FileType {
 	return original.PossibleFileTypeValues()
 }
+func PossibleHybridComputeProvisioningStateValues() []HybridComputeProvisioningState {
+	return original.PossibleHybridComputeProvisioningStateValues()
+}
 func PossibleImplementationEffortValues() []ImplementationEffort {
 	return original.PossibleImplementationEffortValues()
 }
@@ -1451,6 +1585,9 @@ func PossibleMsiValues() []Msi {
 }
 func PossibleOperatorValues() []Operator {
 	return original.PossibleOperatorValues()
+}
+func PossiblePermissionPropertyValues() []PermissionProperty {
+	return original.PossiblePermissionPropertyValues()
 }
 func PossiblePricingTierValues() []PricingTier {
 	return original.PossiblePricingTierValues()

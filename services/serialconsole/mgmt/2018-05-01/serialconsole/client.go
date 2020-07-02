@@ -121,7 +121,6 @@ func (client BaseClient) DisableConsoleSender(req *http.Request) (*http.Response
 func (client BaseClient) DisableConsoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -195,7 +194,6 @@ func (client BaseClient) EnableConsoleSender(req *http.Request) (*http.Response,
 func (client BaseClient) EnableConsoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -269,7 +267,6 @@ func (client BaseClient) GetConsoleStatusSender(req *http.Request) (*http.Respon
 func (client BaseClient) GetConsoleStatusResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -336,7 +333,6 @@ func (client BaseClient) ListOperationsSender(req *http.Request) (*http.Response
 func (client BaseClient) ListOperationsResponder(resp *http.Response) (result Operations, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

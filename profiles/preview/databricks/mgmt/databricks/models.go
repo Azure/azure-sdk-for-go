@@ -37,27 +37,54 @@ const (
 	String CustomParameterType = original.String
 )
 
+type KeySource = original.KeySource
+
+const (
+	Default           KeySource = original.Default
+	MicrosoftKeyvault KeySource = original.MicrosoftKeyvault
+)
+
+type PeeringProvisioningState = original.PeeringProvisioningState
+
+const (
+	Deleting  PeeringProvisioningState = original.Deleting
+	Failed    PeeringProvisioningState = original.Failed
+	Succeeded PeeringProvisioningState = original.Succeeded
+	Updating  PeeringProvisioningState = original.Updating
+)
+
+type PeeringState = original.PeeringState
+
+const (
+	Connected    PeeringState = original.Connected
+	Disconnected PeeringState = original.Disconnected
+	Initiated    PeeringState = original.Initiated
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Accepted  ProvisioningState = original.Accepted
-	Canceled  ProvisioningState = original.Canceled
-	Created   ProvisioningState = original.Created
-	Creating  ProvisioningState = original.Creating
-	Deleted   ProvisioningState = original.Deleted
-	Deleting  ProvisioningState = original.Deleting
-	Failed    ProvisioningState = original.Failed
-	Ready     ProvisioningState = original.Ready
-	Running   ProvisioningState = original.Running
-	Succeeded ProvisioningState = original.Succeeded
-	Updating  ProvisioningState = original.Updating
+	ProvisioningStateAccepted  ProvisioningState = original.ProvisioningStateAccepted
+	ProvisioningStateCanceled  ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreated   ProvisioningState = original.ProvisioningStateCreated
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleted   ProvisioningState = original.ProvisioningStateDeleted
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateReady     ProvisioningState = original.ProvisioningStateReady
+	ProvisioningStateRunning   ProvisioningState = original.ProvisioningStateRunning
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
 )
 
+type AddressSpace = original.AddressSpace
 type BaseClient = original.BaseClient
 type CreatedBy = original.CreatedBy
+type Encryption = original.Encryption
 type ErrorDetail = original.ErrorDetail
 type ErrorInfo = original.ErrorInfo
 type ErrorResponse = original.ErrorResponse
+type ManagedIdentityConfiguration = original.ManagedIdentityConfiguration
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -67,11 +94,22 @@ type OperationsClient = original.OperationsClient
 type Resource = original.Resource
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
+type VNetPeeringClient = original.VNetPeeringClient
+type VNetPeeringCreateOrUpdateFuture = original.VNetPeeringCreateOrUpdateFuture
+type VNetPeeringDeleteFuture = original.VNetPeeringDeleteFuture
+type VirtualNetworkPeering = original.VirtualNetworkPeering
+type VirtualNetworkPeeringList = original.VirtualNetworkPeeringList
+type VirtualNetworkPeeringListIterator = original.VirtualNetworkPeeringListIterator
+type VirtualNetworkPeeringListPage = original.VirtualNetworkPeeringListPage
+type VirtualNetworkPeeringPropertiesFormat = original.VirtualNetworkPeeringPropertiesFormat
+type VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork = original.VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork
+type VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork = original.VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork
 type Workspace = original.Workspace
 type WorkspaceCustomBooleanParameter = original.WorkspaceCustomBooleanParameter
 type WorkspaceCustomObjectParameter = original.WorkspaceCustomObjectParameter
 type WorkspaceCustomParameters = original.WorkspaceCustomParameters
 type WorkspaceCustomStringParameter = original.WorkspaceCustomStringParameter
+type WorkspaceEncryptionParameter = original.WorkspaceEncryptionParameter
 type WorkspaceListResult = original.WorkspaceListResult
 type WorkspaceListResultIterator = original.WorkspaceListResultIterator
 type WorkspaceListResultPage = original.WorkspaceListResultPage
@@ -98,6 +136,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewVNetPeeringClient(subscriptionID string) VNetPeeringClient {
+	return original.NewVNetPeeringClient(subscriptionID)
+}
+func NewVNetPeeringClientWithBaseURI(baseURI string, subscriptionID string) VNetPeeringClient {
+	return original.NewVNetPeeringClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVirtualNetworkPeeringListIterator(page VirtualNetworkPeeringListPage) VirtualNetworkPeeringListIterator {
+	return original.NewVirtualNetworkPeeringListIterator(page)
+}
+func NewVirtualNetworkPeeringListPage(getNextPage func(context.Context, VirtualNetworkPeeringList) (VirtualNetworkPeeringList, error)) VirtualNetworkPeeringListPage {
+	return original.NewVirtualNetworkPeeringListPage(getNextPage)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -115,6 +165,15 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 }
 func PossibleCustomParameterTypeValues() []CustomParameterType {
 	return original.PossibleCustomParameterTypeValues()
+}
+func PossibleKeySourceValues() []KeySource {
+	return original.PossibleKeySourceValues()
+}
+func PossiblePeeringProvisioningStateValues() []PeeringProvisioningState {
+	return original.PossiblePeeringProvisioningStateValues()
+}
+func PossiblePeeringStateValues() []PeeringState {
+	return original.PossiblePeeringStateValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

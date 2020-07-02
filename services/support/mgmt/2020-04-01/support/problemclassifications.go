@@ -109,7 +109,6 @@ func (client ProblemClassificationsClient) GetSender(req *http.Request) (*http.R
 func (client ProblemClassificationsClient) GetResponder(resp *http.Response) (result ProblemClassification, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -184,7 +183,6 @@ func (client ProblemClassificationsClient) ListSender(req *http.Request) (*http.
 func (client ProblemClassificationsClient) ListResponder(resp *http.Response) (result ProblemClassificationsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

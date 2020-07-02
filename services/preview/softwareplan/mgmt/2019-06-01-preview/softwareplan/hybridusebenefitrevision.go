@@ -112,7 +112,6 @@ func (client HybridUseBenefitRevisionClient) ListSender(req *http.Request) (*htt
 func (client HybridUseBenefitRevisionClient) ListResponder(resp *http.Response) (result HybridUseBenefitListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

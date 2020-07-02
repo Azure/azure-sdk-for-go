@@ -137,7 +137,6 @@ func (client UserSessionsClient) DeleteSender(req *http.Request) (*http.Response
 func (client UserSessionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -235,7 +234,6 @@ func (client UserSessionsClient) DisconnectSender(req *http.Request) (*http.Resp
 func (client UserSessionsClient) DisconnectResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -333,7 +331,6 @@ func (client UserSessionsClient) GetSender(req *http.Request) (*http.Response, e
 func (client UserSessionsClient) GetResponder(resp *http.Response) (result UserSession, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -428,7 +425,6 @@ func (client UserSessionsClient) ListSender(req *http.Request) (*http.Response, 
 func (client UserSessionsClient) ListResponder(resp *http.Response) (result UserSessionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -559,7 +555,6 @@ func (client UserSessionsClient) ListByHostPoolSender(req *http.Request) (*http.
 func (client UserSessionsClient) ListByHostPoolResponder(resp *http.Response) (result UserSessionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -701,7 +696,6 @@ func (client UserSessionsClient) SendMessageMethodSender(req *http.Request) (*ht
 func (client UserSessionsClient) SendMessageMethodResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

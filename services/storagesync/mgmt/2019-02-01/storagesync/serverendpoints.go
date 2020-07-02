@@ -138,7 +138,6 @@ func (client ServerEndpointsClient) CreateSender(req *http.Request) (future Serv
 func (client ServerEndpointsClient) CreateResponder(resp *http.Response) (result ServerEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -228,7 +227,6 @@ func (client ServerEndpointsClient) DeleteSender(req *http.Request) (future Serv
 func (client ServerEndpointsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -317,7 +315,6 @@ func (client ServerEndpointsClient) GetSender(req *http.Request) (*http.Response
 func (client ServerEndpointsClient) GetResponder(resp *http.Response) (result ServerEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -405,7 +402,6 @@ func (client ServerEndpointsClient) ListBySyncGroupSender(req *http.Request) (*h
 func (client ServerEndpointsClient) ListBySyncGroupResponder(resp *http.Response) (result ServerEndpointArray, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -498,7 +494,6 @@ func (client ServerEndpointsClient) RecallActionSender(req *http.Request) (futur
 func (client ServerEndpointsClient) RecallActionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -593,7 +588,6 @@ func (client ServerEndpointsClient) UpdateSender(req *http.Request) (future Serv
 func (client ServerEndpointsClient) UpdateResponder(resp *http.Response) (result ServerEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

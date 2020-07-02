@@ -109,7 +109,6 @@ func (client LabsClient) ClaimAnyVMSender(req *http.Request) (future LabsClaimAn
 func (client LabsClient) ClaimAnyVMResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -187,7 +186,6 @@ func (client LabsClient) CreateEnvironmentSender(req *http.Request) (future Labs
 func (client LabsClient) CreateEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -265,7 +263,6 @@ func (client LabsClient) CreateOrUpdateSender(req *http.Request) (future LabsCre
 func (client LabsClient) CreateOrUpdateResponder(resp *http.Response) (result Lab, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -341,7 +338,6 @@ func (client LabsClient) DeleteSender(req *http.Request) (future LabsDeleteFutur
 func (client LabsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -420,7 +416,6 @@ func (client LabsClient) ExportResourceUsageSender(req *http.Request) (future La
 func (client LabsClient) ExportResourceUsageResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -498,7 +493,6 @@ func (client LabsClient) GenerateUploadURISender(req *http.Request) (*http.Respo
 func (client LabsClient) GenerateUploadURIResponder(resp *http.Response) (result GenerateUploadURIResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -578,7 +572,6 @@ func (client LabsClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client LabsClient) GetResponder(resp *http.Response) (result Lab, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -658,7 +651,6 @@ func (client LabsClient) ImportVirtualMachineSender(req *http.Request) (future L
 func (client LabsClient) ImportVirtualMachineResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -748,7 +740,6 @@ func (client LabsClient) ListByResourceGroupSender(req *http.Request) (*http.Res
 func (client LabsClient) ListByResourceGroupResponder(resp *http.Response) (result LabList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -874,7 +865,6 @@ func (client LabsClient) ListBySubscriptionSender(req *http.Request) (*http.Resp
 func (client LabsClient) ListBySubscriptionResponder(resp *http.Response) (result LabList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -988,7 +978,6 @@ func (client LabsClient) ListVhdsSender(req *http.Request) (*http.Response, erro
 func (client LabsClient) ListVhdsResponder(resp *http.Response) (result LabVhdList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1104,7 +1093,6 @@ func (client LabsClient) UpdateSender(req *http.Request) (*http.Response, error)
 func (client LabsClient) UpdateResponder(resp *http.Response) (result Lab, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

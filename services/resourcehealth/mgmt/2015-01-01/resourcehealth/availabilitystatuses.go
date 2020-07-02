@@ -120,7 +120,6 @@ func (client AvailabilityStatusesClient) GetByResourceSender(req *http.Request) 
 func (client AvailabilityStatusesClient) GetByResourceResponder(resp *http.Response) (result AvailabilityStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -208,7 +207,6 @@ func (client AvailabilityStatusesClient) ListSender(req *http.Request) (*http.Re
 func (client AvailabilityStatusesClient) ListResponder(resp *http.Response) (result AvailabilityStatusListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -330,7 +328,6 @@ func (client AvailabilityStatusesClient) ListByResourceGroupSender(req *http.Req
 func (client AvailabilityStatusesClient) ListByResourceGroupResponder(resp *http.Response) (result AvailabilityStatusListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -450,7 +447,6 @@ func (client AvailabilityStatusesClient) ListBySubscriptionIDSender(req *http.Re
 func (client AvailabilityStatusesClient) ListBySubscriptionIDResponder(resp *http.Response) (result AvailabilityStatusListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

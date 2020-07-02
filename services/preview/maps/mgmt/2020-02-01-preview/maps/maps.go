@@ -100,7 +100,6 @@ func (client Client) ListOperationsSender(req *http.Request) (*http.Response, er
 func (client Client) ListOperationsResponder(resp *http.Response) (result Operations, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

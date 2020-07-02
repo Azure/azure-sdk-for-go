@@ -26,7 +26,6 @@ import (
 )
 
 type BaseClient = original.BaseClient
-type Client = original.Client
 type ErrorContract = original.ErrorContract
 type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
@@ -41,9 +40,6 @@ type SynapseRole = original.SynapseRole
 
 func New(endpoint string) BaseClient {
 	return original.New(endpoint)
-}
-func NewClient(endpoint string) Client {
-	return original.NewClient(endpoint)
 }
 func NewRolesListResponseIterator(page RolesListResponsePage) RolesListResponseIterator {
 	return original.NewRolesListResponseIterator(page)

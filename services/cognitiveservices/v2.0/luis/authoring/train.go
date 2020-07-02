@@ -103,7 +103,6 @@ func (client TrainClient) GetStatusSender(req *http.Request) (*http.Response, er
 func (client TrainClient) GetStatusResponder(resp *http.Response) (result ListModelTrainingInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -180,7 +179,6 @@ func (client TrainClient) TrainVersionSender(req *http.Request) (*http.Response,
 func (client TrainClient) TrainVersionResponder(resp *http.Response) (result EnqueueTrainingResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

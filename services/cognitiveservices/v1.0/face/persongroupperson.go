@@ -172,7 +172,6 @@ func (client PersonGroupPersonClient) AddFaceFromStreamSender(req *http.Request)
 func (client PersonGroupPersonClient) AddFaceFromStreamResponder(resp *http.Response) (result PersistedFace, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -316,7 +315,6 @@ func (client PersonGroupPersonClient) AddFaceFromURLSender(req *http.Request) (*
 func (client PersonGroupPersonClient) AddFaceFromURLResponder(resp *http.Response) (result PersistedFace, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -402,7 +400,6 @@ func (client PersonGroupPersonClient) CreateSender(req *http.Request) (*http.Res
 func (client PersonGroupPersonClient) CreateResponder(resp *http.Response) (result Person, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -483,7 +480,6 @@ func (client PersonGroupPersonClient) DeleteSender(req *http.Request) (*http.Res
 func (client PersonGroupPersonClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -566,7 +562,6 @@ func (client PersonGroupPersonClient) DeleteFaceSender(req *http.Request) (*http
 func (client PersonGroupPersonClient) DeleteFaceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -645,7 +640,6 @@ func (client PersonGroupPersonClient) GetSender(req *http.Request) (*http.Respon
 func (client PersonGroupPersonClient) GetResponder(resp *http.Response) (result Person, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -728,7 +722,6 @@ func (client PersonGroupPersonClient) GetFaceSender(req *http.Request) (*http.Re
 func (client PersonGroupPersonClient) GetFaceResponder(resp *http.Response) (result PersistedFace, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -823,7 +816,6 @@ func (client PersonGroupPersonClient) ListSender(req *http.Request) (*http.Respo
 func (client PersonGroupPersonClient) ListResponder(resp *http.Response) (result ListPerson, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -906,7 +898,6 @@ func (client PersonGroupPersonClient) UpdateSender(req *http.Request) (*http.Res
 func (client PersonGroupPersonClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1009,7 +1000,6 @@ func (client PersonGroupPersonClient) UpdateFaceSender(req *http.Request) (*http
 func (client PersonGroupPersonClient) UpdateFaceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

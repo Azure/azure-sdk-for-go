@@ -22,7 +22,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-12-01/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-06-01/compute"
 )
 
 const (
@@ -198,8 +198,9 @@ const (
 type EncryptionType = original.EncryptionType
 
 const (
-	EncryptionAtRestWithCustomerKey EncryptionType = original.EncryptionAtRestWithCustomerKey
-	EncryptionAtRestWithPlatformKey EncryptionType = original.EncryptionAtRestWithPlatformKey
+	EncryptionAtRestWithCustomerKey             EncryptionType = original.EncryptionAtRestWithCustomerKey
+	EncryptionAtRestWithPlatformAndCustomerKeys EncryptionType = original.EncryptionAtRestWithPlatformAndCustomerKeys
+	EncryptionAtRestWithPlatformKey             EncryptionType = original.EncryptionAtRestWithPlatformKey
 )
 
 type HostCaching = original.HostCaching
@@ -238,6 +239,14 @@ const (
 	IPv6 IPVersion = original.IPv6
 )
 
+type InGuestPatchMode = original.InGuestPatchMode
+
+const (
+	AutomaticByOS       InGuestPatchMode = original.AutomaticByOS
+	AutomaticByPlatform InGuestPatchMode = original.AutomaticByPlatform
+	Manual              InGuestPatchMode = original.Manual
+)
+
 type InstanceViewTypes = original.InstanceViewTypes
 
 const (
@@ -260,6 +269,14 @@ const (
 	MaintenanceOperationResultCodeTypesMaintenanceCompleted MaintenanceOperationResultCodeTypes = original.MaintenanceOperationResultCodeTypesMaintenanceCompleted
 	MaintenanceOperationResultCodeTypesNone                 MaintenanceOperationResultCodeTypes = original.MaintenanceOperationResultCodeTypesNone
 	MaintenanceOperationResultCodeTypesRetryLater           MaintenanceOperationResultCodeTypes = original.MaintenanceOperationResultCodeTypesRetryLater
+)
+
+type NetworkAccessPolicy = original.NetworkAccessPolicy
+
+const (
+	AllowAll     NetworkAccessPolicy = original.AllowAll
+	AllowPrivate NetworkAccessPolicy = original.AllowPrivate
+	DenyAll      NetworkAccessPolicy = original.DenyAll
 )
 
 type OperatingSystemStateTypes = original.OperatingSystemStateTypes
@@ -301,6 +318,43 @@ type PassNames = original.PassNames
 
 const (
 	OobeSystem PassNames = original.OobeSystem
+)
+
+type PatchAssessmentState = original.PatchAssessmentState
+
+const (
+	PatchAssessmentStateAvailable   PatchAssessmentState = original.PatchAssessmentStateAvailable
+	PatchAssessmentStateExcluded    PatchAssessmentState = original.PatchAssessmentStateExcluded
+	PatchAssessmentStateFailed      PatchAssessmentState = original.PatchAssessmentStateFailed
+	PatchAssessmentStateInstalled   PatchAssessmentState = original.PatchAssessmentStateInstalled
+	PatchAssessmentStateNotSelected PatchAssessmentState = original.PatchAssessmentStateNotSelected
+	PatchAssessmentStatePending     PatchAssessmentState = original.PatchAssessmentStatePending
+)
+
+type PatchOperationStatus = original.PatchOperationStatus
+
+const (
+	PatchOperationStatusCompletedWithWarnings PatchOperationStatus = original.PatchOperationStatusCompletedWithWarnings
+	PatchOperationStatusFailed                PatchOperationStatus = original.PatchOperationStatusFailed
+	PatchOperationStatusInProgress            PatchOperationStatus = original.PatchOperationStatusInProgress
+	PatchOperationStatusSucceeded             PatchOperationStatus = original.PatchOperationStatusSucceeded
+)
+
+type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
+
+const (
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateCreating
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateDeleting
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateFailed
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
+)
+
+type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
+
+const (
+	Approved PrivateEndpointServiceConnectionStatus = original.Approved
+	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
+	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
 )
 
 type ProtocolTypes = original.ProtocolTypes
@@ -438,6 +492,14 @@ const (
 	SnapshotStorageAccountTypesStandardZRS SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypesStandardZRS
 )
 
+type SoftwareUpdateRebootBehavior = original.SoftwareUpdateRebootBehavior
+
+const (
+	AlwaysRequiresReboot SoftwareUpdateRebootBehavior = original.AlwaysRequiresReboot
+	CanRequestReboot     SoftwareUpdateRebootBehavior = original.CanRequestReboot
+	NeverReboots         SoftwareUpdateRebootBehavior = original.NeverReboots
+)
+
 type StatusLevelTypes = original.StatusLevelTypes
 
 const (
@@ -466,9 +528,9 @@ const (
 type UpgradeMode = original.UpgradeMode
 
 const (
-	Automatic UpgradeMode = original.Automatic
-	Manual    UpgradeMode = original.Manual
-	Rolling   UpgradeMode = original.Rolling
+	UpgradeModeAutomatic UpgradeMode = original.UpgradeModeAutomatic
+	UpgradeModeManual    UpgradeMode = original.UpgradeModeManual
+	UpgradeModeRolling   UpgradeMode = original.UpgradeModeRolling
 )
 
 type UpgradeOperationInvoker = original.UpgradeOperationInvoker
@@ -486,6 +548,13 @@ const (
 	UpgradeStateCompleted      UpgradeState = original.UpgradeStateCompleted
 	UpgradeStateFaulted        UpgradeState = original.UpgradeStateFaulted
 	UpgradeStateRollingForward UpgradeState = original.UpgradeStateRollingForward
+)
+
+type VMDiskTypes = original.VMDiskTypes
+
+const (
+	VMDiskTypesNone      VMDiskTypes = original.VMDiskTypesNone
+	VMDiskTypesUnmanaged VMDiskTypes = original.VMDiskTypesUnmanaged
 )
 
 type VirtualMachineEvictionPolicyTypes = original.VirtualMachineEvictionPolicyTypes
@@ -737,6 +806,7 @@ type DedicatedHost = original.DedicatedHost
 type DedicatedHostAllocatableVM = original.DedicatedHostAllocatableVM
 type DedicatedHostAvailableCapacity = original.DedicatedHostAvailableCapacity
 type DedicatedHostGroup = original.DedicatedHostGroup
+type DedicatedHostGroupInstanceView = original.DedicatedHostGroupInstanceView
 type DedicatedHostGroupListResult = original.DedicatedHostGroupListResult
 type DedicatedHostGroupListResultIterator = original.DedicatedHostGroupListResultIterator
 type DedicatedHostGroupListResultPage = original.DedicatedHostGroupListResultPage
@@ -744,6 +814,7 @@ type DedicatedHostGroupProperties = original.DedicatedHostGroupProperties
 type DedicatedHostGroupUpdate = original.DedicatedHostGroupUpdate
 type DedicatedHostGroupsClient = original.DedicatedHostGroupsClient
 type DedicatedHostInstanceView = original.DedicatedHostInstanceView
+type DedicatedHostInstanceViewWithName = original.DedicatedHostInstanceViewWithName
 type DedicatedHostListResult = original.DedicatedHostListResult
 type DedicatedHostListResultIterator = original.DedicatedHostListResultIterator
 type DedicatedHostListResultPage = original.DedicatedHostListResultPage
@@ -756,7 +827,18 @@ type DedicatedHostsUpdateFuture = original.DedicatedHostsUpdateFuture
 type DiagnosticsProfile = original.DiagnosticsProfile
 type DiffDiskSettings = original.DiffDiskSettings
 type Disallowed = original.Disallowed
+type DisallowedConfiguration = original.DisallowedConfiguration
 type Disk = original.Disk
+type DiskAccess = original.DiskAccess
+type DiskAccessList = original.DiskAccessList
+type DiskAccessListIterator = original.DiskAccessListIterator
+type DiskAccessListPage = original.DiskAccessListPage
+type DiskAccessProperties = original.DiskAccessProperties
+type DiskAccessUpdate = original.DiskAccessUpdate
+type DiskAccessesClient = original.DiskAccessesClient
+type DiskAccessesCreateOrUpdateFuture = original.DiskAccessesCreateOrUpdateFuture
+type DiskAccessesDeleteFuture = original.DiskAccessesDeleteFuture
+type DiskAccessesUpdateFuture = original.DiskAccessesUpdateFuture
 type DiskEncryptionSet = original.DiskEncryptionSet
 type DiskEncryptionSetList = original.DiskEncryptionSetList
 type DiskEncryptionSetListIterator = original.DiskEncryptionSetListIterator
@@ -904,7 +986,15 @@ type OperationValueDisplay = original.OperationValueDisplay
 type OperationsClient = original.OperationsClient
 type OrchestrationServiceStateInput = original.OrchestrationServiceStateInput
 type OrchestrationServiceSummary = original.OrchestrationServiceSummary
+type PatchSettings = original.PatchSettings
 type Plan = original.Plan
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProximityPlacementGroup = original.ProximityPlacementGroup
 type ProximityPlacementGroupListResult = original.ProximityPlacementGroupListResult
 type ProximityPlacementGroupListResultIterator = original.ProximityPlacementGroupListResultIterator
@@ -932,6 +1022,7 @@ type ResourceSkusClient = original.ResourceSkusClient
 type ResourceSkusResult = original.ResourceSkusResult
 type ResourceSkusResultIterator = original.ResourceSkusResultIterator
 type ResourceSkusResultPage = original.ResourceSkusResultPage
+type RetrieveBootDiagnosticsDataResult = original.RetrieveBootDiagnosticsDataResult
 type RollbackStatusInfo = original.RollbackStatusInfo
 type RollingUpgradePolicy = original.RollingUpgradePolicy
 type RollingUpgradeProgressInfo = original.RollingUpgradeProgressInfo
@@ -959,6 +1050,7 @@ type SSHPublicKeysGroupListResultIterator = original.SSHPublicKeysGroupListResul
 type SSHPublicKeysGroupListResultPage = original.SSHPublicKeysGroupListResultPage
 type ScaleInPolicy = original.ScaleInPolicy
 type ScheduledEventsProfile = original.ScheduledEventsProfile
+type SecurityProfile = original.SecurityProfile
 type ShareInfoElement = original.ShareInfoElement
 type Sku = original.Sku
 type Snapshot = original.Snapshot
@@ -999,6 +1091,7 @@ type VaultSecretGroup = original.VaultSecretGroup
 type VirtualHardDisk = original.VirtualHardDisk
 type VirtualMachine = original.VirtualMachine
 type VirtualMachineAgentInstanceView = original.VirtualMachineAgentInstanceView
+type VirtualMachineAssessPatchesResult = original.VirtualMachineAssessPatchesResult
 type VirtualMachineCaptureParameters = original.VirtualMachineCaptureParameters
 type VirtualMachineCaptureResult = original.VirtualMachineCaptureResult
 type VirtualMachineExtension = original.VirtualMachineExtension
@@ -1140,8 +1233,10 @@ type VirtualMachineScaleSetsUpdateInstancesFuture = original.VirtualMachineScale
 type VirtualMachineSize = original.VirtualMachineSize
 type VirtualMachineSizeListResult = original.VirtualMachineSizeListResult
 type VirtualMachineSizesClient = original.VirtualMachineSizesClient
+type VirtualMachineSoftwarePatchProperties = original.VirtualMachineSoftwarePatchProperties
 type VirtualMachineStatusCodeCount = original.VirtualMachineStatusCodeCount
 type VirtualMachineUpdate = original.VirtualMachineUpdate
+type VirtualMachinesAssessPatchesFuture = original.VirtualMachinesAssessPatchesFuture
 type VirtualMachinesCaptureFuture = original.VirtualMachinesCaptureFuture
 type VirtualMachinesClient = original.VirtualMachinesClient
 type VirtualMachinesConvertToManagedDisksFuture = original.VirtualMachinesConvertToManagedDisksFuture
@@ -1211,6 +1306,18 @@ func NewDedicatedHostsClient(subscriptionID string) DedicatedHostsClient {
 }
 func NewDedicatedHostsClientWithBaseURI(baseURI string, subscriptionID string) DedicatedHostsClient {
 	return original.NewDedicatedHostsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDiskAccessListIterator(page DiskAccessListPage) DiskAccessListIterator {
+	return original.NewDiskAccessListIterator(page)
+}
+func NewDiskAccessListPage(getNextPage func(context.Context, DiskAccessList) (DiskAccessList, error)) DiskAccessListPage {
+	return original.NewDiskAccessListPage(getNextPage)
+}
+func NewDiskAccessesClient(subscriptionID string) DiskAccessesClient {
+	return original.NewDiskAccessesClient(subscriptionID)
+}
+func NewDiskAccessesClientWithBaseURI(baseURI string, subscriptionID string) DiskAccessesClient {
+	return original.NewDiskAccessesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDiskEncryptionSetListIterator(page DiskEncryptionSetListPage) DiskEncryptionSetListIterator {
 	return original.NewDiskEncryptionSetListIterator(page)
@@ -1560,6 +1667,9 @@ func PossibleHyperVGenerationValues() []HyperVGeneration {
 func PossibleIPVersionValues() []IPVersion {
 	return original.PossibleIPVersionValues()
 }
+func PossibleInGuestPatchModeValues() []InGuestPatchMode {
+	return original.PossibleInGuestPatchModeValues()
+}
 func PossibleInstanceViewTypesValues() []InstanceViewTypes {
 	return original.PossibleInstanceViewTypesValues()
 }
@@ -1568,6 +1678,9 @@ func PossibleIntervalInMinsValues() []IntervalInMins {
 }
 func PossibleMaintenanceOperationResultCodeTypesValues() []MaintenanceOperationResultCodeTypes {
 	return original.PossibleMaintenanceOperationResultCodeTypesValues()
+}
+func PossibleNetworkAccessPolicyValues() []NetworkAccessPolicy {
+	return original.PossibleNetworkAccessPolicyValues()
 }
 func PossibleOperatingSystemStateTypesValues() []OperatingSystemStateTypes {
 	return original.PossibleOperatingSystemStateTypesValues()
@@ -1586,6 +1699,18 @@ func PossibleOrchestrationServiceStateValues() []OrchestrationServiceState {
 }
 func PossiblePassNamesValues() []PassNames {
 	return original.PossiblePassNamesValues()
+}
+func PossiblePatchAssessmentStateValues() []PatchAssessmentState {
+	return original.PossiblePatchAssessmentStateValues()
+}
+func PossiblePatchOperationStatusValues() []PatchOperationStatus {
+	return original.PossiblePatchOperationStatusValues()
+}
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
+}
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
 }
 func PossibleProtocolTypesValues() []ProtocolTypes {
 	return original.PossibleProtocolTypesValues()
@@ -1635,6 +1760,9 @@ func PossibleSettingNamesValues() []SettingNames {
 func PossibleSnapshotStorageAccountTypesValues() []SnapshotStorageAccountTypes {
 	return original.PossibleSnapshotStorageAccountTypesValues()
 }
+func PossibleSoftwareUpdateRebootBehaviorValues() []SoftwareUpdateRebootBehavior {
+	return original.PossibleSoftwareUpdateRebootBehaviorValues()
+}
 func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 	return original.PossibleStatusLevelTypesValues()
 }
@@ -1652,6 +1780,9 @@ func PossibleUpgradeOperationInvokerValues() []UpgradeOperationInvoker {
 }
 func PossibleUpgradeStateValues() []UpgradeState {
 	return original.PossibleUpgradeStateValues()
+}
+func PossibleVMDiskTypesValues() []VMDiskTypes {
+	return original.PossibleVMDiskTypesValues()
 }
 func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionPolicyTypes {
 	return original.PossibleVirtualMachineEvictionPolicyTypesValues()

@@ -121,7 +121,6 @@ func (client GroupUserClient) CreateSender(req *http.Request) (*http.Response, e
 func (client GroupUserClient) CreateResponder(resp *http.Response) (result UserContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -214,7 +213,6 @@ func (client GroupUserClient) DeleteSender(req *http.Request) (*http.Response, e
 func (client GroupUserClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -327,7 +325,6 @@ func (client GroupUserClient) ListSender(req *http.Request) (*http.Response, err
 func (client GroupUserClient) ListResponder(resp *http.Response) (result UserCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

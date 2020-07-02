@@ -128,7 +128,6 @@ func (client ConnectorsClient) CreateOrUpdateSender(req *http.Request) (future C
 func (client ConnectorsClient) CreateOrUpdateResponder(resp *http.Response) (result ConnectorResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -206,7 +205,6 @@ func (client ConnectorsClient) DeleteSender(req *http.Request) (future Connector
 func (client ConnectorsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -283,7 +281,6 @@ func (client ConnectorsClient) GetSender(req *http.Request) (*http.Response, err
 func (client ConnectorsClient) GetResponder(resp *http.Response) (result ConnectorResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -360,7 +357,6 @@ func (client ConnectorsClient) ListByHubSender(req *http.Request) (*http.Respons
 func (client ConnectorsClient) ListByHubResponder(resp *http.Response) (result ConnectorListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

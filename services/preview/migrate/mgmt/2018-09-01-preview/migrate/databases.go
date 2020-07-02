@@ -122,7 +122,6 @@ func (client DatabasesClient) EnumerateDatabasesSender(req *http.Request) (*http
 func (client DatabasesClient) EnumerateDatabasesResponder(resp *http.Response) (result DatabaseCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -204,7 +203,6 @@ func (client DatabasesClient) GetDatabaseSender(req *http.Request) (*http.Respon
 func (client DatabasesClient) GetDatabaseResponder(resp *http.Response) (result Database, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

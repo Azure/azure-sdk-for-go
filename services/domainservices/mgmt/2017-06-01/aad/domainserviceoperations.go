@@ -102,7 +102,6 @@ func (client DomainServiceOperationsClient) ListSender(req *http.Request) (*http
 func (client DomainServiceOperationsClient) ListResponder(resp *http.Response) (result OperationEntityListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

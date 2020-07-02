@@ -116,7 +116,6 @@ func (client DataFlowDebugSessionClient) AddDataFlowSender(req *http.Request) (*
 func (client DataFlowDebugSessionClient) AddDataFlowResponder(resp *http.Response) (result AddDataFlowToDebugSessionResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -204,7 +203,6 @@ func (client DataFlowDebugSessionClient) CreateDataFlowDebugSessionSender(req *h
 func (client DataFlowDebugSessionClient) CreateDataFlowDebugSessionResponder(resp *http.Response) (result CreateDataFlowDebugSessionResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -279,7 +277,6 @@ func (client DataFlowDebugSessionClient) DeleteDataFlowDebugSessionSender(req *h
 func (client DataFlowDebugSessionClient) DeleteDataFlowDebugSessionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -302,7 +299,8 @@ func (client DataFlowDebugSessionClient) ExecuteCommand(ctx context.Context, req
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: request,
-			Constraints: []validation.Constraint{{Target: "request.SessionID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "request.SessionID", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "request.CommandPayload", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("artifacts.DataFlowDebugSessionClient", "ExecuteCommand", err.Error())
 	}
 
@@ -359,7 +357,6 @@ func (client DataFlowDebugSessionClient) ExecuteCommandSender(req *http.Request)
 func (client DataFlowDebugSessionClient) ExecuteCommandResponder(resp *http.Response) (result DataFlowDebugCommandResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -431,7 +428,6 @@ func (client DataFlowDebugSessionClient) QueryDataFlowDebugSessionsByWorkspaceSe
 func (client DataFlowDebugSessionClient) QueryDataFlowDebugSessionsByWorkspaceResponder(resp *http.Response) (result QueryDataFlowDebugSessionsResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

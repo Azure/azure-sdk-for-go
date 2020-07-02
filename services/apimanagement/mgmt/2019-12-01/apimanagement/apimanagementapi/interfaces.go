@@ -615,7 +615,7 @@ var _ ProductPolicyClientAPI = (*apimanagement.ProductPolicyClient)(nil)
 // QuotaByCounterKeysClientAPI contains the set of methods on the QuotaByCounterKeysClient type.
 type QuotaByCounterKeysClientAPI interface {
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string) (result apimanagement.QuotaCounterCollection, err error)
-	Update(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, parameters apimanagement.QuotaCounterValueContractProperties) (result autorest.Response, err error)
+	Update(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, parameters apimanagement.QuotaCounterValueUpdateContract) (result autorest.Response, err error)
 }
 
 var _ QuotaByCounterKeysClientAPI = (*apimanagement.QuotaByCounterKeysClient)(nil)
@@ -623,7 +623,7 @@ var _ QuotaByCounterKeysClientAPI = (*apimanagement.QuotaByCounterKeysClient)(ni
 // QuotaByPeriodKeysClientAPI contains the set of methods on the QuotaByPeriodKeysClient type.
 type QuotaByPeriodKeysClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string) (result apimanagement.QuotaCounterContract, err error)
-	Update(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string, parameters apimanagement.QuotaCounterValueContractProperties) (result autorest.Response, err error)
+	Update(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string, parameters apimanagement.QuotaCounterValueUpdateContract) (result autorest.Response, err error)
 }
 
 var _ QuotaByPeriodKeysClientAPI = (*apimanagement.QuotaByPeriodKeysClient)(nil)

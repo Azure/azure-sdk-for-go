@@ -25,7 +25,7 @@ import (
 
 // DataExportsClientAPI contains the set of methods on the DataExportsClient type.
 type DataExportsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters operationalinsights.DataExport) (result operationalinsights.DataExportsCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters operationalinsights.DataExport) (result operationalinsights.DataExport, err error)
 	Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (result operationalinsights.DataExport, err error)
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.DataExportListResult, err error)

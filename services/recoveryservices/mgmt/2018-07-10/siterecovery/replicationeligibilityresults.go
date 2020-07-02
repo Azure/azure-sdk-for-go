@@ -110,7 +110,6 @@ func (client ReplicationEligibilityResultsClient) GetSender(req *http.Request) (
 func (client ReplicationEligibilityResultsClient) GetResponder(resp *http.Response) (result ReplicationEligibilityResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -185,7 +184,6 @@ func (client ReplicationEligibilityResultsClient) ListSender(req *http.Request) 
 func (client ReplicationEligibilityResultsClient) ListResponder(resp *http.Response) (result ReplicationEligibilityResultsCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

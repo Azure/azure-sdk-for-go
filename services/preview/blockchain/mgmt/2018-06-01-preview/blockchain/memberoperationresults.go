@@ -110,7 +110,6 @@ func (client MemberOperationResultsClient) GetSender(req *http.Request) (*http.R
 func (client MemberOperationResultsClient) GetResponder(resp *http.Response) (result OperationResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

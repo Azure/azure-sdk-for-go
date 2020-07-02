@@ -125,7 +125,6 @@ func (client AvailableServiceTiersClient) ListByWorkspaceSender(req *http.Reques
 func (client AvailableServiceTiersClient) ListByWorkspaceResponder(resp *http.Response) (result ListAvailableServiceTier, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

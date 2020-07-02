@@ -212,7 +212,6 @@ type DataExportErrorResponse = original.DataExportErrorResponse
 type DataExportListResult = original.DataExportListResult
 type DataExportProperties = original.DataExportProperties
 type DataExportsClient = original.DataExportsClient
-type DataExportsCreateOrUpdateFuture = original.DataExportsCreateOrUpdateFuture
 type DataSource = original.DataSource
 type DataSourceFilter = original.DataSourceFilter
 type DataSourceListResult = original.DataSourceListResult

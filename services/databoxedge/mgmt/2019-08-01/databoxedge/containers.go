@@ -123,7 +123,6 @@ func (client ContainersClient) CreateOrUpdateSender(req *http.Request) (future C
 func (client ContainersClient) CreateOrUpdateResponder(resp *http.Response) (result Container, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -203,7 +202,6 @@ func (client ContainersClient) DeleteSender(req *http.Request) (future Container
 func (client ContainersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -282,7 +280,6 @@ func (client ContainersClient) GetSender(req *http.Request) (*http.Response, err
 func (client ContainersClient) GetResponder(resp *http.Response) (result Container, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -361,7 +358,6 @@ func (client ContainersClient) ListByStorageAccountSender(req *http.Request) (*h
 func (client ContainersClient) ListByStorageAccountResponder(resp *http.Response) (result ContainerList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -478,7 +474,6 @@ func (client ContainersClient) RefreshSender(req *http.Request) (future Containe
 func (client ContainersClient) RefreshResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

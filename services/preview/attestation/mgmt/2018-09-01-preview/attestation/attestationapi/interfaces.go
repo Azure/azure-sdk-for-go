@@ -35,8 +35,10 @@ type ProvidersClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, providerName string, creationParams attestation.ServiceCreationParams) (result attestation.Provider, err error)
 	Delete(ctx context.Context, resourceGroupName string, providerName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, providerName string) (result attestation.Provider, err error)
+	GetDefaultByLocation(ctx context.Context, location string) (result attestation.Provider, err error)
 	List(ctx context.Context) (result attestation.ProviderListResult, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result attestation.ProviderListResult, err error)
+	ListDefault(ctx context.Context) (result attestation.ProviderListResult, err error)
 	Update(ctx context.Context, resourceGroupName string, providerName string, updateParams attestation.ServicePatchParams) (result attestation.Provider, err error)
 }
 

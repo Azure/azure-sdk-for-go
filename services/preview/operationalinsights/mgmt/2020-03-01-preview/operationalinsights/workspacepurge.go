@@ -126,7 +126,6 @@ func (client WorkspacePurgeClient) GetPurgeStatusSender(req *http.Request) (*htt
 func (client WorkspacePurgeClient) GetPurgeStatusResponder(resp *http.Response) (result WorkspacePurgeStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -227,7 +226,6 @@ func (client WorkspacePurgeClient) PurgeSender(req *http.Request) (*http.Respons
 func (client WorkspacePurgeClient) PurgeResponder(resp *http.Response) (result WorkspacePurgeResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

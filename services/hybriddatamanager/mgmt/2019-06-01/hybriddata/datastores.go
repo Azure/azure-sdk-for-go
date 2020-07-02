@@ -127,7 +127,6 @@ func (client DataStoresClient) CreateOrUpdateSender(req *http.Request) (future D
 func (client DataStoresClient) CreateOrUpdateResponder(resp *http.Response) (result DataStore, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -214,7 +213,6 @@ func (client DataStoresClient) DeleteSender(req *http.Request) (future DataStore
 func (client DataStoresClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -300,7 +298,6 @@ func (client DataStoresClient) GetSender(req *http.Request) (*http.Response, err
 func (client DataStoresClient) GetResponder(resp *http.Response) (result DataStore, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -390,7 +387,6 @@ func (client DataStoresClient) ListByDataManagerSender(req *http.Request) (*http
 func (client DataStoresClient) ListByDataManagerResponder(resp *http.Response) (result DataStoreList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

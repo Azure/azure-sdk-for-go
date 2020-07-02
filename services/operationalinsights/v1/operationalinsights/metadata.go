@@ -101,7 +101,6 @@ func (client MetadataClient) GetSender(req *http.Request) (*http.Response, error
 func (client MetadataClient) GetResponder(resp *http.Response) (result MetadataResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -169,7 +168,6 @@ func (client MetadataClient) PostSender(req *http.Request) (*http.Response, erro
 func (client MetadataClient) PostResponder(resp *http.Response) (result MetadataResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

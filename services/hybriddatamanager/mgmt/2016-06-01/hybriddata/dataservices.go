@@ -121,7 +121,6 @@ func (client DataServicesClient) GetSender(req *http.Request) (*http.Response, e
 func (client DataServicesClient) GetResponder(resp *http.Response) (result DataService, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -207,7 +206,6 @@ func (client DataServicesClient) ListByDataManagerSender(req *http.Request) (*ht
 func (client DataServicesClient) ListByDataManagerResponder(resp *http.Response) (result DataServiceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

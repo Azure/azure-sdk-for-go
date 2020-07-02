@@ -132,7 +132,6 @@ func (client UsageAggregatesClient) ListSender(req *http.Request) (*http.Respons
 func (client UsageAggregatesClient) ListResponder(resp *http.Response) (result UsageAggregationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

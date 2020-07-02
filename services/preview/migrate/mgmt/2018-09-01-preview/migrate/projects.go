@@ -113,7 +113,6 @@ func (client ProjectsClient) DeleteMigrateProjectSender(req *http.Request) (*htt
 func (client ProjectsClient) DeleteMigrateProjectResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -188,7 +187,6 @@ func (client ProjectsClient) GetMigrateProjectSender(req *http.Request) (*http.R
 func (client ProjectsClient) GetMigrateProjectResponder(resp *http.Response) (result Project, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -275,7 +273,6 @@ func (client ProjectsClient) PatchMigrateProjectSender(req *http.Request) (*http
 func (client ProjectsClient) PatchMigrateProjectResponder(resp *http.Response) (result Project, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -361,7 +358,6 @@ func (client ProjectsClient) PutMigrateProjectSender(req *http.Request) (*http.R
 func (client ProjectsClient) PutMigrateProjectResponder(resp *http.Response) (result Project, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -440,7 +436,6 @@ func (client ProjectsClient) RefreshMigrateProjectSummarySender(req *http.Reques
 func (client ProjectsClient) RefreshMigrateProjectSummaryResponder(resp *http.Response) (result RefreshSummaryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -523,7 +518,6 @@ func (client ProjectsClient) RegisterToolSender(req *http.Request) (*http.Respon
 func (client ProjectsClient) RegisterToolResponder(resp *http.Response) (result RegistrationResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

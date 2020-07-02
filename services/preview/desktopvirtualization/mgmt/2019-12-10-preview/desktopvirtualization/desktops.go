@@ -128,7 +128,6 @@ func (client DesktopsClient) GetSender(req *http.Request) (*http.Response, error
 func (client DesktopsClient) GetResponder(resp *http.Response) (result Desktop, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -217,7 +216,6 @@ func (client DesktopsClient) ListSender(req *http.Request) (*http.Response, erro
 func (client DesktopsClient) ListResponder(resp *http.Response) (result DesktopList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -317,7 +315,6 @@ func (client DesktopsClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client DesktopsClient) UpdateResponder(resp *http.Response) (result Desktop, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -101,7 +101,6 @@ func (client BlobClient) CancelUploadSender(req *http.Request) (*http.Response, 
 func (client BlobClient) CancelUploadResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -173,7 +172,6 @@ func (client BlobClient) CheckSender(req *http.Request) (*http.Response, error) 
 func (client BlobClient) CheckResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusTemporaryRedirect),
 		autorest.ByClosing())
 	result.Response = resp
@@ -247,7 +245,6 @@ func (client BlobClient) CheckChunkSender(req *http.Request) (*http.Response, er
 func (client BlobClient) CheckChunkResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -320,7 +317,6 @@ func (client BlobClient) DeleteResponder(resp *http.Response) (result ReadCloser
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -403,7 +399,6 @@ func (client BlobClient) EndUploadSender(req *http.Request) (*http.Response, err
 func (client BlobClient) EndUploadResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
@@ -476,7 +471,6 @@ func (client BlobClient) GetResponder(resp *http.Response) (result ReadCloser, e
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusTemporaryRedirect))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -552,7 +546,6 @@ func (client BlobClient) GetChunkResponder(resp *http.Response) (result ReadClos
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusPartialContent))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -623,7 +616,6 @@ func (client BlobClient) GetStatusSender(req *http.Request) (*http.Response, err
 func (client BlobClient) GetStatusResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -701,7 +693,6 @@ func (client BlobClient) MountSender(req *http.Request) (*http.Response, error) 
 func (client BlobClient) MountResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
@@ -771,7 +762,6 @@ func (client BlobClient) StartUploadSender(req *http.Request) (*http.Response, e
 func (client BlobClient) StartUploadResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -845,7 +835,6 @@ func (client BlobClient) UploadSender(req *http.Request) (*http.Response, error)
 func (client BlobClient) UploadResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

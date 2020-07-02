@@ -114,7 +114,6 @@ func (client HyperVClusterClient) GetAllClustersInSiteSender(req *http.Request) 
 func (client HyperVClusterClient) GetAllClustersInSiteResponder(resp *http.Response) (result HyperVClusterCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -230,7 +229,6 @@ func (client HyperVClusterClient) GetClusterSender(req *http.Request) (*http.Res
 func (client HyperVClusterClient) GetClusterResponder(resp *http.Response) (result HyperVCluster, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -314,7 +312,6 @@ func (client HyperVClusterClient) PutClusterSender(req *http.Request) (*http.Res
 func (client HyperVClusterClient) PutClusterResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

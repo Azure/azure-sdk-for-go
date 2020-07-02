@@ -113,7 +113,6 @@ func (client PolicySetClient) EvaluatePoliciesSender(req *http.Request) (*http.R
 func (client PolicySetClient) EvaluatePoliciesResponder(resp *http.Response) (result EvaluatePoliciesResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

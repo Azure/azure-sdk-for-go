@@ -110,7 +110,6 @@ func (client SitesClient) DeleteSiteSender(req *http.Request) (*http.Response, e
 func (client SitesClient) DeleteSiteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -186,7 +185,6 @@ func (client SitesClient) GetSiteSender(req *http.Request) (*http.Response, erro
 func (client SitesClient) GetSiteResponder(resp *http.Response) (result VMwareSite, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -264,7 +262,6 @@ func (client SitesClient) GetSiteHealthSummarySender(req *http.Request) (*http.R
 func (client SitesClient) GetSiteHealthSummaryResponder(resp *http.Response) (result SiteHealthSummaryCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -377,7 +374,6 @@ func (client SitesClient) GetSiteUsageSender(req *http.Request) (*http.Response,
 func (client SitesClient) GetSiteUsageResponder(resp *http.Response) (result VMwareSiteUsage, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -459,7 +455,6 @@ func (client SitesClient) PatchSiteSender(req *http.Request) (*http.Response, er
 func (client SitesClient) PatchSiteResponder(resp *http.Response) (result VMwareSite, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -541,7 +536,6 @@ func (client SitesClient) PutSiteSender(req *http.Request) (*http.Response, erro
 func (client SitesClient) PutSiteResponder(resp *http.Response) (result VMwareSite, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -618,7 +612,6 @@ func (client SitesClient) RefreshSiteSender(req *http.Request) (*http.Response, 
 func (client SitesClient) RefreshSiteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

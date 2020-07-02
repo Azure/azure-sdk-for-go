@@ -130,7 +130,6 @@ func (client EventHubsClient) CreateOrUpdateSender(req *http.Request) (*http.Res
 func (client EventHubsClient) CreateOrUpdateResponder(resp *http.Response) (result ResourceType, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -232,7 +231,6 @@ func (client EventHubsClient) CreateOrUpdateAuthorizationRuleSender(req *http.Re
 func (client EventHubsClient) CreateOrUpdateAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -323,7 +321,6 @@ func (client EventHubsClient) DeleteSender(req *http.Request) (*http.Response, e
 func (client EventHubsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -418,7 +415,6 @@ func (client EventHubsClient) DeleteAuthorizationRuleSender(req *http.Request) (
 func (client EventHubsClient) DeleteAuthorizationRuleResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -508,7 +504,6 @@ func (client EventHubsClient) GetSender(req *http.Request) (*http.Response, erro
 func (client EventHubsClient) GetResponder(resp *http.Response) (result ResourceType, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -604,7 +599,6 @@ func (client EventHubsClient) GetAuthorizationRuleSender(req *http.Request) (*ht
 func (client EventHubsClient) GetAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -691,7 +685,6 @@ func (client EventHubsClient) ListAllSender(req *http.Request) (*http.Response, 
 func (client EventHubsClient) ListAllResponder(resp *http.Response) (result ListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -820,7 +813,6 @@ func (client EventHubsClient) ListAuthorizationRulesSender(req *http.Request) (*
 func (client EventHubsClient) ListAuthorizationRulesResponder(resp *http.Response) (result SharedAccessAuthorizationRuleListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -953,7 +945,6 @@ func (client EventHubsClient) ListKeysSender(req *http.Request) (*http.Response,
 func (client EventHubsClient) ListKeysResponder(resp *http.Response) (result ResourceListKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1049,7 +1040,6 @@ func (client EventHubsClient) PostAuthorizationRuleSender(req *http.Request) (*h
 func (client EventHubsClient) PostAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1148,7 +1138,6 @@ func (client EventHubsClient) RegenerateKeysSender(req *http.Request) (*http.Res
 func (client EventHubsClient) RegenerateKeysResponder(resp *http.Response) (result ResourceListKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

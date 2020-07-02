@@ -147,7 +147,6 @@ func (client UserGroupsClient) ListByUsersSender(req *http.Request) (*http.Respo
 func (client UserGroupsClient) ListByUsersResponder(resp *http.Response) (result GroupCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

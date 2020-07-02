@@ -110,7 +110,6 @@ func (client BillingMetersClient) ListSender(req *http.Request) (*http.Response,
 func (client BillingMetersClient) ListResponder(resp *http.Response) (result BillingMeterCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -121,7 +121,6 @@ func (client PublicKeysClient) GetSender(req *http.Request) (*http.Response, err
 func (client PublicKeysClient) GetResponder(resp *http.Response) (result PublicKey, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -207,7 +206,6 @@ func (client PublicKeysClient) ListByDataManagerSender(req *http.Request) (*http
 func (client PublicKeysClient) ListByDataManagerResponder(resp *http.Response) (result PublicKeyList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

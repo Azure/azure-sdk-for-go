@@ -126,7 +126,6 @@ func (client NotificationSettingsClient) GetSender(req *http.Request) (*http.Res
 func (client NotificationSettingsClient) GetResponder(resp *http.Response) (result NotificationSetting, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -221,7 +220,6 @@ func (client NotificationSettingsClient) ListByResourceSender(req *http.Request)
 func (client NotificationSettingsClient) ListByResourceResponder(resp *http.Response) (result NotificationSettingsCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -354,7 +352,6 @@ func (client NotificationSettingsClient) UpdateSender(req *http.Request) (*http.
 func (client NotificationSettingsClient) UpdateResponder(resp *http.Response) (result NotificationSetting, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

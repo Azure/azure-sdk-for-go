@@ -114,7 +114,6 @@ func (client LegacyPeeringsClient) ListSender(req *http.Request) (*http.Response
 func (client LegacyPeeringsClient) ListResponder(resp *http.Response) (result ListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

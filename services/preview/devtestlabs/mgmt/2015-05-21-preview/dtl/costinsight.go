@@ -111,7 +111,6 @@ func (client CostInsightClient) GetResourceSender(req *http.Request) (*http.Resp
 func (client CostInsightClient) GetResourceResponder(resp *http.Response) (result CostInsight, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -198,7 +197,6 @@ func (client CostInsightClient) ListSender(req *http.Request) (*http.Response, e
 func (client CostInsightClient) ListResponder(resp *http.Response) (result ResponseWithContinuationCostInsight, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -313,7 +311,6 @@ func (client CostInsightClient) RefreshDataSender(req *http.Request) (future Cos
 func (client CostInsightClient) RefreshDataResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

@@ -128,7 +128,6 @@ func (client ExperimentsClient) CreateSender(req *http.Request) (future Experime
 func (client ExperimentsClient) CreateResponder(resp *http.Response) (result Experiment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -222,7 +221,6 @@ func (client ExperimentsClient) DeleteSender(req *http.Request) (future Experime
 func (client ExperimentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -315,7 +313,6 @@ func (client ExperimentsClient) GetSender(req *http.Request) (*http.Response, er
 func (client ExperimentsClient) GetResponder(resp *http.Response) (result Experiment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -414,7 +411,6 @@ func (client ExperimentsClient) ListByWorkspaceSender(req *http.Request) (*http.
 func (client ExperimentsClient) ListByWorkspaceResponder(resp *http.Response) (result ExperimentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -130,7 +130,6 @@ func (client ApplicationGroupsClient) CreateOrUpdateSender(req *http.Request) (*
 func (client ApplicationGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result ApplicationGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -219,7 +218,6 @@ func (client ApplicationGroupsClient) DeleteSender(req *http.Request) (*http.Res
 func (client ApplicationGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -307,7 +305,6 @@ func (client ApplicationGroupsClient) GetSender(req *http.Request) (*http.Respon
 func (client ApplicationGroupsClient) GetResponder(resp *http.Response) (result ApplicationGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -396,7 +393,6 @@ func (client ApplicationGroupsClient) ListByResourceGroupSender(req *http.Reques
 func (client ApplicationGroupsClient) ListByResourceGroupResponder(resp *http.Response) (result ApplicationGroupList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -516,7 +512,6 @@ func (client ApplicationGroupsClient) ListBySubscriptionSender(req *http.Request
 func (client ApplicationGroupsClient) ListBySubscriptionResponder(resp *http.Response) (result ApplicationGroupList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -648,7 +643,6 @@ func (client ApplicationGroupsClient) UpdateSender(req *http.Request) (*http.Res
 func (client ApplicationGroupsClient) UpdateResponder(resp *http.Response) (result ApplicationGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

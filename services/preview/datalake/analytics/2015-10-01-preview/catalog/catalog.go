@@ -118,7 +118,6 @@ func (client Client) CreateSecretSender(req *http.Request) (*http.Response, erro
 func (client Client) CreateSecretResponder(resp *http.Response) (result USQLSecret, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -197,7 +196,6 @@ func (client Client) DeleteAllSecretsSender(req *http.Request) (*http.Response, 
 func (client Client) DeleteAllSecretsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -277,7 +275,6 @@ func (client Client) DeleteSecretSender(req *http.Request) (*http.Response, erro
 func (client Client) DeleteSecretResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -357,7 +354,6 @@ func (client Client) GetAssemblySender(req *http.Request) (*http.Response, error
 func (client Client) GetAssemblyResponder(resp *http.Response) (result USQLAssembly, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -438,7 +434,6 @@ func (client Client) GetCredentialSender(req *http.Request) (*http.Response, err
 func (client Client) GetCredentialResponder(resp *http.Response) (result USQLCredential, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -517,7 +512,6 @@ func (client Client) GetDatabaseSender(req *http.Request) (*http.Response, error
 func (client Client) GetDatabaseResponder(resp *http.Response) (result USQLDatabase, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -598,7 +592,6 @@ func (client Client) GetExternalDataSourceSender(req *http.Request) (*http.Respo
 func (client Client) GetExternalDataSourceResponder(resp *http.Response) (result USQLExternalDataSource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -681,7 +674,6 @@ func (client Client) GetProcedureSender(req *http.Request) (*http.Response, erro
 func (client Client) GetProcedureResponder(resp *http.Response) (result USQLProcedure, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -762,7 +754,6 @@ func (client Client) GetSchemaSender(req *http.Request) (*http.Response, error) 
 func (client Client) GetSchemaResponder(resp *http.Response) (result USQLSchema, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -843,7 +834,6 @@ func (client Client) GetSecretSender(req *http.Request) (*http.Response, error) 
 func (client Client) GetSecretResponder(resp *http.Response) (result USQLSecret, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -926,7 +916,6 @@ func (client Client) GetTableSender(req *http.Request) (*http.Response, error) {
 func (client Client) GetTableResponder(resp *http.Response) (result USQLTable, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1011,7 +1000,6 @@ func (client Client) GetTablePartitionSender(req *http.Request) (*http.Response,
 func (client Client) GetTablePartitionResponder(resp *http.Response) (result USQLTablePartition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1096,7 +1084,6 @@ func (client Client) GetTableStatisticSender(req *http.Request) (*http.Response,
 func (client Client) GetTableStatisticResponder(resp *http.Response) (result USQLTableStatistics, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1179,7 +1166,6 @@ func (client Client) GetTableTypeSender(req *http.Request) (*http.Response, erro
 func (client Client) GetTableTypeResponder(resp *http.Response) (result USQLTableType, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1262,7 +1248,6 @@ func (client Client) GetTableValuedFunctionSender(req *http.Request) (*http.Resp
 func (client Client) GetTableValuedFunctionResponder(resp *http.Response) (result USQLTableValuedFunction, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1345,7 +1330,6 @@ func (client Client) GetViewSender(req *http.Request) (*http.Response, error) {
 func (client Client) GetViewResponder(resp *http.Response) (result USQLView, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1458,7 +1442,6 @@ func (client Client) ListAssembliesSender(req *http.Request) (*http.Response, er
 func (client Client) ListAssembliesResponder(resp *http.Response) (result USQLAssemblyList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1608,7 +1591,6 @@ func (client Client) ListCredentialsSender(req *http.Request) (*http.Response, e
 func (client Client) ListCredentialsResponder(resp *http.Response) (result USQLCredentialList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1753,7 +1735,6 @@ func (client Client) ListDatabasesSender(req *http.Request) (*http.Response, err
 func (client Client) ListDatabasesResponder(resp *http.Response) (result USQLDatabaseList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1903,7 +1884,6 @@ func (client Client) ListExternalDataSourcesSender(req *http.Request) (*http.Res
 func (client Client) ListExternalDataSourcesResponder(resp *http.Response) (result USQLExternalDataSourceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2055,7 +2035,6 @@ func (client Client) ListProceduresSender(req *http.Request) (*http.Response, er
 func (client Client) ListProceduresResponder(resp *http.Response) (result USQLProcedureList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2205,7 +2184,6 @@ func (client Client) ListSchemasSender(req *http.Request) (*http.Response, error
 func (client Client) ListSchemasResponder(resp *http.Response) (result USQLSchemaList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2359,7 +2337,6 @@ func (client Client) ListTablePartitionsSender(req *http.Request) (*http.Respons
 func (client Client) ListTablePartitionsResponder(resp *http.Response) (result USQLTablePartitionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2511,7 +2488,6 @@ func (client Client) ListTablesSender(req *http.Request) (*http.Response, error)
 func (client Client) ListTablesResponder(resp *http.Response) (result USQLTableList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2665,7 +2641,6 @@ func (client Client) ListTableStatisticsSender(req *http.Request) (*http.Respons
 func (client Client) ListTableStatisticsResponder(resp *http.Response) (result USQLTableStatisticsList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2817,7 +2792,6 @@ func (client Client) ListTableTypesSender(req *http.Request) (*http.Response, er
 func (client Client) ListTableTypesResponder(resp *http.Response) (result USQLTableTypeList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2969,7 +2943,6 @@ func (client Client) ListTableValuedFunctionsSender(req *http.Request) (*http.Re
 func (client Client) ListTableValuedFunctionsResponder(resp *http.Response) (result USQLTableValuedFunctionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3121,7 +3094,6 @@ func (client Client) ListTypesSender(req *http.Request) (*http.Response, error) 
 func (client Client) ListTypesResponder(resp *http.Response) (result USQLTypeList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3273,7 +3245,6 @@ func (client Client) ListViewsSender(req *http.Request) (*http.Response, error) 
 func (client Client) ListViewsResponder(resp *http.Response) (result USQLViewList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3394,7 +3365,6 @@ func (client Client) UpdateSecretSender(req *http.Request) (*http.Response, erro
 func (client Client) UpdateSecretResponder(resp *http.Response) (result USQLSecret, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

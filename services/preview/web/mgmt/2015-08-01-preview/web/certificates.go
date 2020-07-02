@@ -112,7 +112,6 @@ func (client CertificatesClient) CreateOrUpdateCertificateSender(req *http.Reque
 func (client CertificatesClient) CreateOrUpdateCertificateResponder(resp *http.Response) (result Certificate, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -191,7 +190,6 @@ func (client CertificatesClient) CreateOrUpdateCsrSender(req *http.Request) (*ht
 func (client CertificatesClient) CreateOrUpdateCsrResponder(resp *http.Response) (result Csr, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -267,7 +265,6 @@ func (client CertificatesClient) DeleteCertificateSender(req *http.Request) (*ht
 func (client CertificatesClient) DeleteCertificateResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -343,7 +340,6 @@ func (client CertificatesClient) DeleteCsrSender(req *http.Request) (*http.Respo
 func (client CertificatesClient) DeleteCsrResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -419,7 +415,6 @@ func (client CertificatesClient) GetCertificateSender(req *http.Request) (*http.
 func (client CertificatesClient) GetCertificateResponder(resp *http.Response) (result Certificate, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -494,7 +489,6 @@ func (client CertificatesClient) GetCertificatesSender(req *http.Request) (*http
 func (client CertificatesClient) GetCertificatesResponder(resp *http.Response) (result CertificateCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -607,7 +601,6 @@ func (client CertificatesClient) GetCsrSender(req *http.Request) (*http.Response
 func (client CertificatesClient) GetCsrResponder(resp *http.Response) (result Csr, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -681,7 +674,6 @@ func (client CertificatesClient) GetCsrsSender(req *http.Request) (*http.Respons
 func (client CertificatesClient) GetCsrsResponder(resp *http.Response) (result ListCsr, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -760,7 +752,6 @@ func (client CertificatesClient) UpdateCertificateSender(req *http.Request) (*ht
 func (client CertificatesClient) UpdateCertificateResponder(resp *http.Response) (result Certificate, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -839,7 +830,6 @@ func (client CertificatesClient) UpdateCsrSender(req *http.Request) (*http.Respo
 func (client CertificatesClient) UpdateCsrResponder(resp *http.Response) (result Csr, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

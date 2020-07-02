@@ -121,7 +121,6 @@ func (client RecoveryPointsCrrClient) ListSender(req *http.Request) (*http.Respo
 func (client RecoveryPointsCrrClient) ListResponder(resp *http.Response) (result RecoveryPointResourceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

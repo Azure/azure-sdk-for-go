@@ -117,7 +117,6 @@ func (client MeshCodePackageClient) GetContainerLogsSender(req *http.Request) (*
 func (client MeshCodePackageClient) GetContainerLogsResponder(resp *http.Response) (result ContainerLogs, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

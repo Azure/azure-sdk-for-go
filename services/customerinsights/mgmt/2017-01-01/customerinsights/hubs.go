@@ -136,7 +136,6 @@ func (client HubsClient) CreateOrUpdateSender(req *http.Request) (*http.Response
 func (client HubsClient) CreateOrUpdateResponder(resp *http.Response) (result Hub, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -212,7 +211,6 @@ func (client HubsClient) DeleteSender(req *http.Request) (future HubsDeleteFutur
 func (client HubsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -287,7 +285,6 @@ func (client HubsClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client HubsClient) GetResponder(resp *http.Response) (result Hub, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -359,7 +356,6 @@ func (client HubsClient) ListSender(req *http.Request) (*http.Response, error) {
 func (client HubsClient) ListResponder(resp *http.Response) (result HubListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -471,7 +467,6 @@ func (client HubsClient) ListByResourceGroupSender(req *http.Request) (*http.Res
 func (client HubsClient) ListByResourceGroupResponder(resp *http.Response) (result HubListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -587,7 +582,6 @@ func (client HubsClient) UpdateSender(req *http.Request) (*http.Response, error)
 func (client HubsClient) UpdateResponder(resp *http.Response) (result Hub, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -104,7 +104,6 @@ func (client EmergingIssuesClient) GetSender(req *http.Request) (*http.Response,
 func (client EmergingIssuesClient) GetResponder(resp *http.Response) (result EmergingIssuesGetResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -172,7 +171,6 @@ func (client EmergingIssuesClient) ListSender(req *http.Request) (*http.Response
 func (client EmergingIssuesClient) ListResponder(resp *http.Response) (result EmergingIssueListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

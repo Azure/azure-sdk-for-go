@@ -108,7 +108,6 @@ func (client TextModerationClient) DetectLanguageSender(req *http.Request) (*htt
 func (client TextModerationClient) DetectLanguageResponder(resp *http.Response) (result DetectedLanguage, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -208,7 +207,6 @@ func (client TextModerationClient) ScreenTextSender(req *http.Request) (*http.Re
 func (client TextModerationClient) ScreenTextResponder(resp *http.Response) (result Screen, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

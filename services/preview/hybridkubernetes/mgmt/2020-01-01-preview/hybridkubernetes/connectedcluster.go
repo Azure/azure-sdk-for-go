@@ -134,7 +134,6 @@ func (client ConnectedClusterClient) CreateSender(req *http.Request) (future Con
 func (client ConnectedClusterClient) CreateResponder(resp *http.Response) (result ConnectedCluster, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -220,7 +219,6 @@ func (client ConnectedClusterClient) DeleteSender(req *http.Request) (future Con
 func (client ConnectedClusterClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -306,7 +304,6 @@ func (client ConnectedClusterClient) GetSender(req *http.Request) (*http.Respons
 func (client ConnectedClusterClient) GetResponder(resp *http.Response) (result ConnectedCluster, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -391,7 +388,6 @@ func (client ConnectedClusterClient) ListByResourceGroupSender(req *http.Request
 func (client ConnectedClusterClient) ListByResourceGroupResponder(resp *http.Response) (result ConnectedClusterList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -506,7 +502,6 @@ func (client ConnectedClusterClient) ListBySubscriptionSender(req *http.Request)
 func (client ConnectedClusterClient) ListBySubscriptionResponder(resp *http.Response) (result ConnectedClusterList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -630,7 +625,6 @@ func (client ConnectedClusterClient) ListClusterUserCredentialsSender(req *http.
 func (client ConnectedClusterClient) ListClusterUserCredentialsResponder(resp *http.Response) (result CredentialResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -719,7 +713,6 @@ func (client ConnectedClusterClient) UpdateSender(req *http.Request) (*http.Resp
 func (client ConnectedClusterClient) UpdateResponder(resp *http.Response) (result ConnectedCluster, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

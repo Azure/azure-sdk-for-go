@@ -23,24 +23,6 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// BackupLongTermRetentionPoliciesClientAPI contains the set of methods on the BackupLongTermRetentionPoliciesClient type.
-type BackupLongTermRetentionPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.BackupLongTermRetentionPolicy) (result sql.BackupLongTermRetentionPoliciesCreateOrUpdateFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupLongTermRetentionPolicy, err error)
-	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupLongTermRetentionPolicyListResult, err error)
-}
-
-var _ BackupLongTermRetentionPoliciesClientAPI = (*sql.BackupLongTermRetentionPoliciesClient)(nil)
-
-// BackupLongTermRetentionVaultsClientAPI contains the set of methods on the BackupLongTermRetentionVaultsClient type.
-type BackupLongTermRetentionVaultsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.BackupLongTermRetentionVault) (result sql.BackupLongTermRetentionVaultsCreateOrUpdateFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.BackupLongTermRetentionVault, err error)
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.BackupLongTermRetentionVaultListResult, err error)
-}
-
-var _ BackupLongTermRetentionVaultsClientAPI = (*sql.BackupLongTermRetentionVaultsClient)(nil)
-
 // RecoverableDatabasesClientAPI contains the set of methods on the RecoverableDatabasesClient type.
 type RecoverableDatabasesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.RecoverableDatabase, err error)

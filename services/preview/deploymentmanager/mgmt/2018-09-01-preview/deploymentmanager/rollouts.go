@@ -119,7 +119,6 @@ func (client RolloutsClient) CancelSender(req *http.Request) (*http.Response, er
 func (client RolloutsClient) CancelResponder(resp *http.Response) (result Rollout, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -222,7 +221,6 @@ func (client RolloutsClient) CreateOrUpdateSender(req *http.Request) (future Rol
 func (client RolloutsClient) CreateOrUpdateResponder(resp *http.Response) (result RolloutRequest, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -306,7 +304,6 @@ func (client RolloutsClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client RolloutsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -394,7 +391,6 @@ func (client RolloutsClient) GetSender(req *http.Request) (*http.Response, error
 func (client RolloutsClient) GetResponder(resp *http.Response) (result Rollout, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -484,7 +480,6 @@ func (client RolloutsClient) RestartSender(req *http.Request) (*http.Response, e
 func (client RolloutsClient) RestartResponder(resp *http.Response) (result Rollout, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

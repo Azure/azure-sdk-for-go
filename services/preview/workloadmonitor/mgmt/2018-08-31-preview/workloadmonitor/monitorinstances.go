@@ -136,7 +136,6 @@ func (client MonitorInstancesClient) GetSender(req *http.Request) (*http.Respons
 func (client MonitorInstancesClient) GetResponder(resp *http.Response) (result MonitorInstance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -255,7 +254,6 @@ func (client MonitorInstancesClient) ListByResourceSender(req *http.Request) (*h
 func (client MonitorInstancesClient) ListByResourceResponder(resp *http.Response) (result MonitorInstancesCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

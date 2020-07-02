@@ -127,7 +127,6 @@ func (client ProvidersClient) CreateSender(req *http.Request) (*http.Response, e
 func (client ProvidersClient) CreateResponder(resp *http.Response) (result Provider, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -213,7 +212,6 @@ func (client ProvidersClient) DeleteSender(req *http.Request) (*http.Response, e
 func (client ProvidersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -298,7 +296,87 @@ func (client ProvidersClient) GetSender(req *http.Request) (*http.Response, erro
 func (client ProvidersClient) GetResponder(resp *http.Response) (result Provider, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetDefaultByLocation get the default provider by location.
+// Parameters:
+// location - the location of the default provider.
+func (client ProvidersClient) GetDefaultByLocation(ctx context.Context, location string) (result Provider, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProvidersClient.GetDefaultByLocation")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: location,
+			Constraints: []validation.Constraint{{Target: "location", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("attestation.ProvidersClient", "GetDefaultByLocation", err.Error())
+	}
+
+	req, err := client.GetDefaultByLocationPreparer(ctx, location)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "attestation.ProvidersClient", "GetDefaultByLocation", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetDefaultByLocationSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "attestation.ProvidersClient", "GetDefaultByLocation", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetDefaultByLocationResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "attestation.ProvidersClient", "GetDefaultByLocation", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetDefaultByLocationPreparer prepares the GetDefaultByLocation request.
+func (client ProvidersClient) GetDefaultByLocationPreparer(ctx context.Context, location string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       autorest.Encode("path", location),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-09-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Attestation/locations/{location}/defaultProvider", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetDefaultByLocationSender sends the GetDefaultByLocation request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProvidersClient) GetDefaultByLocationSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetDefaultByLocationResponder handles the response to the GetDefaultByLocation request. The method always
+// closes the http.Response Body.
+func (client ProvidersClient) GetDefaultByLocationResponder(resp *http.Response) (result Provider, err error) {
+	err = autorest.Respond(
+		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -375,7 +453,6 @@ func (client ProvidersClient) ListSender(req *http.Request) (*http.Response, err
 func (client ProvidersClient) ListResponder(resp *http.Response) (result ProviderListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -459,7 +536,82 @@ func (client ProvidersClient) ListByResourceGroupSender(req *http.Request) (*htt
 func (client ProvidersClient) ListByResourceGroupResponder(resp *http.Response) (result ProviderListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListDefault get the default provider
+func (client ProvidersClient) ListDefault(ctx context.Context) (result ProviderListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProvidersClient.ListDefault")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("attestation.ProvidersClient", "ListDefault", err.Error())
+	}
+
+	req, err := client.ListDefaultPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "attestation.ProvidersClient", "ListDefault", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListDefaultSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "attestation.ProvidersClient", "ListDefault", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListDefaultResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "attestation.ProvidersClient", "ListDefault", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListDefaultPreparer prepares the ListDefault request.
+func (client ProvidersClient) ListDefaultPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-09-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Attestation/defaultProviders", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListDefaultSender sends the ListDefault request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProvidersClient) ListDefaultSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListDefaultResponder handles the response to the ListDefault request. The method always
+// closes the http.Response Body.
+func (client ProvidersClient) ListDefaultResponder(resp *http.Response) (result ProviderListResult, err error) {
+	err = autorest.Respond(
+		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -548,7 +700,6 @@ func (client ProvidersClient) UpdateSender(req *http.Request) (*http.Response, e
 func (client ProvidersClient) UpdateResponder(resp *http.Response) (result Provider, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

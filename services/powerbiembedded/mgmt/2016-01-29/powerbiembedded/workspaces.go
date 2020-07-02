@@ -109,7 +109,6 @@ func (client WorkspacesClient) ListSender(req *http.Request) (*http.Response, er
 func (client WorkspacesClient) ListResponder(resp *http.Response) (result WorkspaceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

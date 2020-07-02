@@ -52,6 +52,17 @@ type SecureScoreControlDefinitionsClientAPI interface {
 
 var _ SecureScoreControlDefinitionsClientAPI = (*security.SecureScoreControlDefinitionsClient)(nil)
 
+// ConnectorsClientAPI contains the set of methods on the ConnectorsClient type.
+type ConnectorsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, connectorName string, connectorSetting security.ConnectorSetting) (result security.ConnectorSetting, err error)
+	Delete(ctx context.Context, connectorName string) (result autorest.Response, err error)
+	Get(ctx context.Context, connectorName string) (result security.ConnectorSetting, err error)
+	List(ctx context.Context) (result security.ConnectorSettingListPage, err error)
+	ListComplete(ctx context.Context) (result security.ConnectorSettingListIterator, err error)
+}
+
+var _ ConnectorsClientAPI = (*security.ConnectorsClient)(nil)
+
 // AutomationsClientAPI contains the set of methods on the AutomationsClient type.
 type AutomationsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, automationName string, automation security.Automation) (result security.Automation, err error)

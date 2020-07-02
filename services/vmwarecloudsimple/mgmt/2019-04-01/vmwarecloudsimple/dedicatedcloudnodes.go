@@ -140,7 +140,6 @@ func (client DedicatedCloudNodesClient) CreateOrUpdateSender(req *http.Request) 
 func (client DedicatedCloudNodesClient) CreateOrUpdateResponder(resp *http.Response) (result DedicatedCloudNode, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -222,7 +221,6 @@ func (client DedicatedCloudNodesClient) DeleteSender(req *http.Request) (*http.R
 func (client DedicatedCloudNodesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -303,7 +301,6 @@ func (client DedicatedCloudNodesClient) GetSender(req *http.Request) (*http.Resp
 func (client DedicatedCloudNodesClient) GetResponder(resp *http.Response) (result DedicatedCloudNode, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -390,7 +387,6 @@ func (client DedicatedCloudNodesClient) ListByResourceGroupSender(req *http.Requ
 func (client DedicatedCloudNodesClient) ListByResourceGroupResponder(resp *http.Response) (result DedicatedCloudNodeListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -512,7 +508,6 @@ func (client DedicatedCloudNodesClient) ListBySubscriptionSender(req *http.Reque
 func (client DedicatedCloudNodesClient) ListBySubscriptionResponder(resp *http.Response) (result DedicatedCloudNodeListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -634,7 +629,6 @@ func (client DedicatedCloudNodesClient) UpdateSender(req *http.Request) (*http.R
 func (client DedicatedCloudNodesClient) UpdateResponder(resp *http.Response) (result DedicatedCloudNode, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

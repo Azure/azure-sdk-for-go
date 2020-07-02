@@ -115,7 +115,6 @@ func (client RecommendationsClient) GetRecommendationBySubscriptionSender(req *h
 func (client RecommendationsClient) GetRecommendationBySubscriptionResponder(resp *http.Response) (result ListRecommendation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -201,7 +200,6 @@ func (client RecommendationsClient) GetRecommendationHistoryForSiteSender(req *h
 func (client RecommendationsClient) GetRecommendationHistoryForSiteResponder(resp *http.Response) (result ListRecommendation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -290,7 +288,6 @@ func (client RecommendationsClient) GetRecommendedRulesForSiteSender(req *http.R
 func (client RecommendationsClient) GetRecommendedRulesForSiteResponder(resp *http.Response) (result ListRecommendation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -368,7 +365,6 @@ func (client RecommendationsClient) GetRuleDetailsBySiteNameSender(req *http.Req
 func (client RecommendationsClient) GetRuleDetailsBySiteNameResponder(resp *http.Response) (result RecommendationRule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -47,7 +47,7 @@ func NewQuotaRequestStatusClientWithBaseURI(baseURI string) QuotaRequestStatusCl
 // a specific location. The requestId is returned as response to the Put requests for serviceLimits.
 // Parameters:
 // subscriptionID - azure subscription id.
-// providerID - azure resource Provider id.
+// providerID - azure resource provider id.
 // location - azure region.
 // ID - quota Request id.
 func (client QuotaRequestStatusClient) Get(ctx context.Context, subscriptionID string, providerID string, location string, ID string) (result QuotaRequestDetails, err error) {
@@ -115,7 +115,6 @@ func (client QuotaRequestStatusClient) GetSender(req *http.Request) (*http.Respo
 func (client QuotaRequestStatusClient) GetResponder(resp *http.Response) (result QuotaRequestDetails, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -127,7 +126,7 @@ func (client QuotaRequestStatusClient) GetResponder(resp *http.Response) (result
 // the time period of one year ago from now to one year back. oData filter can be used to select quota requests.
 // Parameters:
 // subscriptionID - azure subscription id.
-// providerID - azure resource Provider id.
+// providerID - azure resource provider id.
 // location - azure region.
 // filter - | Field                    | Supported operators
 // |---------------------|------------------------
@@ -218,7 +217,6 @@ func (client QuotaRequestStatusClient) ListSender(req *http.Request) (*http.Resp
 func (client QuotaRequestStatusClient) ListResponder(resp *http.Response) (result QuotaRequestDetailsList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

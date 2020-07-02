@@ -159,7 +159,6 @@ func (client BaseClient) BackupPartitionSender(req *http.Request) (*http.Respons
 func (client BaseClient) BackupPartitionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -264,7 +263,6 @@ func (client BaseClient) CancelOperationSender(req *http.Request) (*http.Respons
 func (client BaseClient) CancelOperationResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -340,7 +338,6 @@ func (client BaseClient) CancelRepairTaskSender(req *http.Request) (*http.Respon
 func (client BaseClient) CancelRepairTaskResponder(resp *http.Response) (result RepairTaskUpdateInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -430,7 +427,6 @@ func (client BaseClient) CommitImageStoreUploadSessionSender(req *http.Request) 
 func (client BaseClient) CommitImageStoreUploadSessionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -521,7 +517,6 @@ func (client BaseClient) CopyImageStoreContentSender(req *http.Request) (*http.R
 func (client BaseClient) CopyImageStoreContentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -618,7 +613,6 @@ func (client BaseClient) CreateApplicationSender(req *http.Request) (*http.Respo
 func (client BaseClient) CreateApplicationResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
@@ -715,7 +709,6 @@ func (client BaseClient) CreateBackupPolicySender(req *http.Request) (*http.Resp
 func (client BaseClient) CreateBackupPolicyResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
@@ -807,7 +800,6 @@ func (client BaseClient) CreateComposeDeploymentSender(req *http.Request) (*http
 func (client BaseClient) CreateComposeDeploymentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -896,7 +888,6 @@ func (client BaseClient) CreateNameSender(req *http.Request) (*http.Response, er
 func (client BaseClient) CreateNameResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
@@ -983,7 +974,6 @@ func (client BaseClient) CreateRepairTaskSender(req *http.Request) (*http.Respon
 func (client BaseClient) CreateRepairTaskResponder(resp *http.Response) (result RepairTaskUpdateInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1086,7 +1076,6 @@ func (client BaseClient) CreateServiceSender(req *http.Request) (*http.Response,
 func (client BaseClient) CreateServiceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1189,7 +1178,6 @@ func (client BaseClient) CreateServiceFromTemplateSender(req *http.Request) (*ht
 func (client BaseClient) CreateServiceFromTemplateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1292,7 +1280,6 @@ func (client BaseClient) DeleteApplicationSender(req *http.Request) (*http.Respo
 func (client BaseClient) DeleteApplicationResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1383,7 +1370,6 @@ func (client BaseClient) DeleteBackupPolicySender(req *http.Request) (*http.Resp
 func (client BaseClient) DeleteBackupPolicyResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1473,7 +1459,6 @@ func (client BaseClient) DeleteImageStoreContentSender(req *http.Request) (*http
 func (client BaseClient) DeleteImageStoreContentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1561,7 +1546,6 @@ func (client BaseClient) DeleteImageStoreUploadSessionSender(req *http.Request) 
 func (client BaseClient) DeleteImageStoreUploadSessionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1651,7 +1635,6 @@ func (client BaseClient) DeleteNameSender(req *http.Request) (*http.Response, er
 func (client BaseClient) DeleteNameResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1743,7 +1726,6 @@ func (client BaseClient) DeletePropertySender(req *http.Request) (*http.Response
 func (client BaseClient) DeletePropertyResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1819,7 +1801,6 @@ func (client BaseClient) DeleteRepairTaskSender(req *http.Request) (*http.Respon
 func (client BaseClient) DeleteRepairTaskResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1921,7 +1902,6 @@ func (client BaseClient) DeleteServiceSender(req *http.Request) (*http.Response,
 func (client BaseClient) DeleteServiceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -2022,7 +2002,6 @@ func (client BaseClient) DeployServicePackageToNodeSender(req *http.Request) (*h
 func (client BaseClient) DeployServicePackageToNodeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -2124,7 +2103,6 @@ func (client BaseClient) DisableApplicationBackupSender(req *http.Request) (*htt
 func (client BaseClient) DisableApplicationBackupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -2221,7 +2199,6 @@ func (client BaseClient) DisableNodeSender(req *http.Request) (*http.Response, e
 func (client BaseClient) DisableNodeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -2322,7 +2299,6 @@ func (client BaseClient) DisablePartitionBackupSender(req *http.Request) (*http.
 func (client BaseClient) DisablePartitionBackupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -2427,7 +2403,6 @@ func (client BaseClient) DisableServiceBackupSender(req *http.Request) (*http.Re
 func (client BaseClient) DisableServiceBackupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -2527,7 +2502,6 @@ func (client BaseClient) EnableApplicationBackupSender(req *http.Request) (*http
 func (client BaseClient) EnableApplicationBackupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -2618,7 +2592,6 @@ func (client BaseClient) EnableNodeSender(req *http.Request) (*http.Response, er
 func (client BaseClient) EnableNodeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -2716,7 +2689,6 @@ func (client BaseClient) EnablePartitionBackupSender(req *http.Request) (*http.R
 func (client BaseClient) EnablePartitionBackupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -2819,7 +2791,6 @@ func (client BaseClient) EnableServiceBackupSender(req *http.Request) (*http.Res
 func (client BaseClient) EnableServiceBackupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -2896,7 +2867,6 @@ func (client BaseClient) ForceApproveRepairTaskSender(req *http.Request) (*http.
 func (client BaseClient) ForceApproveRepairTaskResponder(resp *http.Response) (result RepairTaskUpdateInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2983,7 +2953,6 @@ func (client BaseClient) GetAadMetadataSender(req *http.Request) (*http.Response
 func (client BaseClient) GetAadMetadataResponder(resp *http.Response) (result AadMetadataObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3095,7 +3064,6 @@ func (client BaseClient) GetAllEntitiesBackedUpByPolicySender(req *http.Request)
 func (client BaseClient) GetAllEntitiesBackedUpByPolicyResponder(resp *http.Response) (result PagedBackupEntityList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3211,7 +3179,6 @@ func (client BaseClient) GetApplicationBackupConfigurationInfoSender(req *http.R
 func (client BaseClient) GetApplicationBackupConfigurationInfoResponder(resp *http.Response) (result PagedBackupConfigurationInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3348,7 +3315,6 @@ func (client BaseClient) GetApplicationBackupListSender(req *http.Request) (*htt
 func (client BaseClient) GetApplicationBackupListResponder(resp *http.Response) (result PagedBackupInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3461,7 +3427,6 @@ func (client BaseClient) GetApplicationEventListSender(req *http.Request) (*http
 func (client BaseClient) GetApplicationEventListResponder(resp *http.Response) (result ListApplicationEvent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3629,7 +3594,6 @@ func (client BaseClient) GetApplicationHealthSender(req *http.Request) (*http.Re
 func (client BaseClient) GetApplicationHealthResponder(resp *http.Response) (result ApplicationHealth, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3807,7 +3771,6 @@ func (client BaseClient) GetApplicationHealthUsingPolicySender(req *http.Request
 func (client BaseClient) GetApplicationHealthUsingPolicyResponder(resp *http.Response) (result ApplicationHealth, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3910,7 +3873,6 @@ func (client BaseClient) GetApplicationInfoSender(req *http.Request) (*http.Resp
 func (client BaseClient) GetApplicationInfoResponder(resp *http.Response) (result ApplicationInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4044,7 +4006,6 @@ func (client BaseClient) GetApplicationInfoListSender(req *http.Request) (*http.
 func (client BaseClient) GetApplicationInfoListResponder(resp *http.Response) (result PagedApplicationInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4141,7 +4102,6 @@ func (client BaseClient) GetApplicationLoadInfoSender(req *http.Request) (*http.
 func (client BaseClient) GetApplicationLoadInfoResponder(resp *http.Response) (result ApplicationLoadInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4233,7 +4193,6 @@ func (client BaseClient) GetApplicationManifestSender(req *http.Request) (*http.
 func (client BaseClient) GetApplicationManifestResponder(resp *http.Response) (result ApplicationTypeManifest, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4328,7 +4287,6 @@ func (client BaseClient) GetApplicationNameInfoSender(req *http.Request) (*http.
 func (client BaseClient) GetApplicationNameInfoResponder(resp *http.Response) (result ApplicationNameInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4432,7 +4390,6 @@ func (client BaseClient) GetApplicationsEventListSender(req *http.Request) (*htt
 func (client BaseClient) GetApplicationsEventListResponder(resp *http.Response) (result ListApplicationEvent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4564,7 +4521,6 @@ func (client BaseClient) GetApplicationTypeInfoListSender(req *http.Request) (*h
 func (client BaseClient) GetApplicationTypeInfoListResponder(resp *http.Response) (result PagedApplicationTypeInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4695,7 +4651,6 @@ func (client BaseClient) GetApplicationTypeInfoListByNameSender(req *http.Reques
 func (client BaseClient) GetApplicationTypeInfoListByNameResponder(resp *http.Response) (result PagedApplicationTypeInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4790,7 +4745,6 @@ func (client BaseClient) GetApplicationUpgradeSender(req *http.Request) (*http.R
 func (client BaseClient) GetApplicationUpgradeResponder(resp *http.Response) (result ApplicationUpgradeProgressInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4880,7 +4834,6 @@ func (client BaseClient) GetBackupPolicyByNameSender(req *http.Request) (*http.R
 func (client BaseClient) GetBackupPolicyByNameResponder(resp *http.Response) (result BackupPolicyDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4986,7 +4939,6 @@ func (client BaseClient) GetBackupPolicyListSender(req *http.Request) (*http.Res
 func (client BaseClient) GetBackupPolicyListResponder(resp *http.Response) (result PagedBackupPolicyDescriptionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5100,7 +5052,6 @@ func (client BaseClient) GetBackupsFromBackupLocationSender(req *http.Request) (
 func (client BaseClient) GetBackupsFromBackupLocationResponder(resp *http.Response) (result PagedBackupInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5186,7 +5137,6 @@ func (client BaseClient) GetChaosSender(req *http.Request) (*http.Response, erro
 func (client BaseClient) GetChaosResponder(resp *http.Response) (result Chaos, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5310,7 +5260,6 @@ func (client BaseClient) GetChaosEventsSender(req *http.Request) (*http.Response
 func (client BaseClient) GetChaosEventsResponder(resp *http.Response) (result ChaosEventsSegment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5396,7 +5345,6 @@ func (client BaseClient) GetChaosScheduleSender(req *http.Request) (*http.Respon
 func (client BaseClient) GetChaosScheduleResponder(resp *http.Response) (result ChaosScheduleDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5485,7 +5433,6 @@ func (client BaseClient) GetClusterConfigurationSender(req *http.Request) (*http
 func (client BaseClient) GetClusterConfigurationResponder(resp *http.Response) (result ClusterConfiguration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5571,7 +5518,6 @@ func (client BaseClient) GetClusterConfigurationUpgradeStatusSender(req *http.Re
 func (client BaseClient) GetClusterConfigurationUpgradeStatusResponder(resp *http.Response) (result ClusterConfigurationUpgradeStatusInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5675,7 +5621,6 @@ func (client BaseClient) GetClusterEventListSender(req *http.Request) (*http.Res
 func (client BaseClient) GetClusterEventListResponder(resp *http.Response) (result ListClusterEvent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5849,7 +5794,6 @@ func (client BaseClient) GetClusterHealthSender(req *http.Request) (*http.Respon
 func (client BaseClient) GetClusterHealthResponder(resp *http.Response) (result ClusterHealth, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5937,7 +5881,6 @@ func (client BaseClient) GetClusterHealthChunkSender(req *http.Request) (*http.R
 func (client BaseClient) GetClusterHealthChunkResponder(resp *http.Response) (result ClusterHealthChunk, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6049,7 +5992,6 @@ func (client BaseClient) GetClusterHealthChunkUsingPolicyAndAdvancedFiltersSende
 func (client BaseClient) GetClusterHealthChunkUsingPolicyAndAdvancedFiltersResponder(resp *http.Response) (result ClusterHealthChunk, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6237,7 +6179,6 @@ func (client BaseClient) GetClusterHealthUsingPolicySender(req *http.Request) (*
 func (client BaseClient) GetClusterHealthUsingPolicyResponder(resp *http.Response) (result ClusterHealth, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6332,7 +6273,6 @@ func (client BaseClient) GetClusterManifestSender(req *http.Request) (*http.Resp
 func (client BaseClient) GetClusterManifestResponder(resp *http.Response) (result ClusterManifest, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6418,7 +6358,6 @@ func (client BaseClient) GetClusterUpgradeProgressSender(req *http.Request) (*ht
 func (client BaseClient) GetClusterUpgradeProgressResponder(resp *http.Response) (result ClusterUpgradeProgressObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6504,7 +6443,6 @@ func (client BaseClient) GetClusterVersionSender(req *http.Request) (*http.Respo
 func (client BaseClient) GetClusterVersionResponder(resp *http.Response) (result ClusterVersion, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6596,7 +6534,6 @@ func (client BaseClient) GetComposeDeploymentStatusSender(req *http.Request) (*h
 func (client BaseClient) GetComposeDeploymentStatusResponder(resp *http.Response) (result ComposeDeploymentStatusInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6705,7 +6642,6 @@ func (client BaseClient) GetComposeDeploymentStatusListSender(req *http.Request)
 func (client BaseClient) GetComposeDeploymentStatusListResponder(resp *http.Response) (result PagedComposeDeploymentStatusInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6796,7 +6732,6 @@ func (client BaseClient) GetComposeDeploymentUpgradeProgressSender(req *http.Req
 func (client BaseClient) GetComposeDeploymentUpgradeProgressResponder(resp *http.Response) (result ComposeDeploymentUpgradeProgressInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -6909,7 +6844,6 @@ func (client BaseClient) GetContainerLogsDeployedOnNodeSender(req *http.Request)
 func (client BaseClient) GetContainerLogsDeployedOnNodeResponder(resp *http.Response) (result ContainerLogs, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7013,7 +6947,6 @@ func (client BaseClient) GetContainersEventListSender(req *http.Request) (*http.
 func (client BaseClient) GetContainersEventListResponder(resp *http.Response) (result ListContainerInstanceEvent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -7103,7 +7036,6 @@ func (client BaseClient) GetCorrelatedEventListSender(req *http.Request) (*http.
 func (client BaseClient) GetCorrelatedEventListResponder(resp *http.Response) (result ListFabricEvent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7202,7 +7134,6 @@ func (client BaseClient) GetDataLossProgressSender(req *http.Request) (*http.Res
 func (client BaseClient) GetDataLossProgressResponder(resp *http.Response) (result PartitionDataLossProgress, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7352,7 +7283,6 @@ func (client BaseClient) GetDeployedApplicationHealthSender(req *http.Request) (
 func (client BaseClient) GetDeployedApplicationHealthResponder(resp *http.Response) (result DeployedApplicationHealth, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7514,7 +7444,6 @@ func (client BaseClient) GetDeployedApplicationHealthUsingPolicySender(req *http
 func (client BaseClient) GetDeployedApplicationHealthUsingPolicyResponder(resp *http.Response) (result DeployedApplicationHealth, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7623,7 +7552,6 @@ func (client BaseClient) GetDeployedApplicationInfoSender(req *http.Request) (*h
 func (client BaseClient) GetDeployedApplicationInfoResponder(resp *http.Response) (result DeployedApplicationInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7748,7 +7676,6 @@ func (client BaseClient) GetDeployedApplicationInfoListSender(req *http.Request)
 func (client BaseClient) GetDeployedApplicationInfoListResponder(resp *http.Response) (result PagedDeployedApplicationInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7855,7 +7782,6 @@ func (client BaseClient) GetDeployedCodePackageInfoListSender(req *http.Request)
 func (client BaseClient) GetDeployedCodePackageInfoListResponder(resp *http.Response) (result ListDeployedCodePackageInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -7975,7 +7901,6 @@ func (client BaseClient) GetDeployedServicePackageHealthSender(req *http.Request
 func (client BaseClient) GetDeployedServicePackageHealthResponder(resp *http.Response) (result DeployedServicePackageHealth, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8107,7 +8032,6 @@ func (client BaseClient) GetDeployedServicePackageHealthUsingPolicySender(req *h
 func (client BaseClient) GetDeployedServicePackageHealthUsingPolicyResponder(resp *http.Response) (result DeployedServicePackageHealth, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8204,7 +8128,6 @@ func (client BaseClient) GetDeployedServicePackageInfoListSender(req *http.Reque
 func (client BaseClient) GetDeployedServicePackageInfoListResponder(resp *http.Response) (result ListDeployedServicePackageInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -8304,7 +8227,6 @@ func (client BaseClient) GetDeployedServicePackageInfoListByNameSender(req *http
 func (client BaseClient) GetDeployedServicePackageInfoListByNameResponder(resp *http.Response) (result ListDeployedServicePackageInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -8400,7 +8322,6 @@ func (client BaseClient) GetDeployedServiceReplicaDetailInfoSender(req *http.Req
 func (client BaseClient) GetDeployedServiceReplicaDetailInfoResponder(resp *http.Response) (result DeployedServiceReplicaDetailInfoModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8494,7 +8415,6 @@ func (client BaseClient) GetDeployedServiceReplicaDetailInfoByPartitionIDSender(
 func (client BaseClient) GetDeployedServiceReplicaDetailInfoByPartitionIDResponder(resp *http.Response) (result DeployedServiceReplicaDetailInfoModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8602,7 +8522,6 @@ func (client BaseClient) GetDeployedServiceReplicaInfoListSender(req *http.Reque
 func (client BaseClient) GetDeployedServiceReplicaInfoListResponder(resp *http.Response) (result ListDeployedServiceReplicaInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8709,7 +8628,6 @@ func (client BaseClient) GetDeployedServiceTypeInfoByNameSender(req *http.Reques
 func (client BaseClient) GetDeployedServiceTypeInfoByNameResponder(resp *http.Response) (result ListDeployedServiceTypeInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -8813,7 +8731,6 @@ func (client BaseClient) GetDeployedServiceTypeInfoListSender(req *http.Request)
 func (client BaseClient) GetDeployedServiceTypeInfoListResponder(resp *http.Response) (result ListDeployedServiceTypeInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -8916,7 +8833,6 @@ func (client BaseClient) GetFaultOperationListSender(req *http.Request) (*http.R
 func (client BaseClient) GetFaultOperationListResponder(resp *http.Response) (result ListOperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -9007,7 +8923,6 @@ func (client BaseClient) GetImageStoreContentSender(req *http.Request) (*http.Re
 func (client BaseClient) GetImageStoreContentResponder(resp *http.Response) (result ImageStoreContent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9092,7 +9007,6 @@ func (client BaseClient) GetImageStoreRootContentSender(req *http.Request) (*htt
 func (client BaseClient) GetImageStoreRootContentResponder(resp *http.Response) (result ImageStoreContent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9181,7 +9095,6 @@ func (client BaseClient) GetImageStoreUploadSessionByIDSender(req *http.Request)
 func (client BaseClient) GetImageStoreUploadSessionByIDResponder(resp *http.Response) (result UploadSession, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9272,7 +9185,6 @@ func (client BaseClient) GetImageStoreUploadSessionByPathSender(req *http.Reques
 func (client BaseClient) GetImageStoreUploadSessionByPathResponder(resp *http.Response) (result UploadSession, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9362,7 +9274,6 @@ func (client BaseClient) GetNameExistsInfoSender(req *http.Request) (*http.Respo
 func (client BaseClient) GetNameExistsInfoResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -9470,7 +9381,6 @@ func (client BaseClient) GetNodeEventListSender(req *http.Request) (*http.Respon
 func (client BaseClient) GetNodeEventListResponder(resp *http.Response) (result ListNodeEvent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9582,7 +9492,6 @@ func (client BaseClient) GetNodeHealthSender(req *http.Request) (*http.Response,
 func (client BaseClient) GetNodeHealthResponder(resp *http.Response) (result NodeHealth, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9702,7 +9611,6 @@ func (client BaseClient) GetNodeHealthUsingPolicySender(req *http.Request) (*htt
 func (client BaseClient) GetNodeHealthUsingPolicyResponder(resp *http.Response) (result NodeHealth, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9792,7 +9700,6 @@ func (client BaseClient) GetNodeInfoSender(req *http.Request) (*http.Response, e
 func (client BaseClient) GetNodeInfoResponder(resp *http.Response) (result NodeInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9905,7 +9812,6 @@ func (client BaseClient) GetNodeInfoListSender(req *http.Request) (*http.Respons
 func (client BaseClient) GetNodeInfoListResponder(resp *http.Response) (result PagedNodeInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -9996,7 +9902,6 @@ func (client BaseClient) GetNodeLoadInfoSender(req *http.Request) (*http.Respons
 func (client BaseClient) GetNodeLoadInfoResponder(resp *http.Response) (result NodeLoadInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10100,7 +10005,6 @@ func (client BaseClient) GetNodesEventListSender(req *http.Request) (*http.Respo
 func (client BaseClient) GetNodesEventListResponder(resp *http.Response) (result ListNodeEvent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10194,7 +10098,6 @@ func (client BaseClient) GetNodeTransitionProgressSender(req *http.Request) (*ht
 func (client BaseClient) GetNodeTransitionProgressResponder(resp *http.Response) (result NodeTransitionProgress, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10285,7 +10188,6 @@ func (client BaseClient) GetPartitionBackupConfigurationInfoSender(req *http.Req
 func (client BaseClient) GetPartitionBackupConfigurationInfoResponder(resp *http.Response) (result PartitionBackupConfigurationInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10396,7 +10298,6 @@ func (client BaseClient) GetPartitionBackupListSender(req *http.Request) (*http.
 func (client BaseClient) GetPartitionBackupListResponder(resp *http.Response) (result PagedBackupInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10487,7 +10388,6 @@ func (client BaseClient) GetPartitionBackupProgressSender(req *http.Request) (*h
 func (client BaseClient) GetPartitionBackupProgressResponder(resp *http.Response) (result BackupProgressInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10596,7 +10496,6 @@ func (client BaseClient) GetPartitionEventListSender(req *http.Request) (*http.R
 func (client BaseClient) GetPartitionEventListResponder(resp *http.Response) (result ListPartitionEvent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10737,7 +10636,6 @@ func (client BaseClient) GetPartitionHealthSender(req *http.Request) (*http.Resp
 func (client BaseClient) GetPartitionHealthResponder(resp *http.Response) (result PartitionHealth, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10892,7 +10790,6 @@ func (client BaseClient) GetPartitionHealthUsingPolicySender(req *http.Request) 
 func (client BaseClient) GetPartitionHealthUsingPolicyResponder(resp *http.Response) (result PartitionHealth, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -10984,7 +10881,6 @@ func (client BaseClient) GetPartitionInfoSender(req *http.Request) (*http.Respon
 func (client BaseClient) GetPartitionInfoResponder(resp *http.Response) (result ServicePartitionInfoModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11087,7 +10983,6 @@ func (client BaseClient) GetPartitionInfoListSender(req *http.Request) (*http.Re
 func (client BaseClient) GetPartitionInfoListResponder(resp *http.Response) (result PagedServicePartitionInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11179,7 +11074,6 @@ func (client BaseClient) GetPartitionLoadInformationSender(req *http.Request) (*
 func (client BaseClient) GetPartitionLoadInformationResponder(resp *http.Response) (result PartitionLoadInformation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11290,7 +11184,6 @@ func (client BaseClient) GetPartitionReplicaEventListSender(req *http.Request) (
 func (client BaseClient) GetPartitionReplicaEventListResponder(resp *http.Response) (result ListReplicaEvent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11399,7 +11292,6 @@ func (client BaseClient) GetPartitionReplicasEventListSender(req *http.Request) 
 func (client BaseClient) GetPartitionReplicasEventListResponder(resp *http.Response) (result ListReplicaEvent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11499,7 +11391,6 @@ func (client BaseClient) GetPartitionRestartProgressSender(req *http.Request) (*
 func (client BaseClient) GetPartitionRestartProgressResponder(resp *http.Response) (result PartitionRestartProgress, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11590,7 +11481,6 @@ func (client BaseClient) GetPartitionRestoreProgressSender(req *http.Request) (*
 func (client BaseClient) GetPartitionRestoreProgressResponder(resp *http.Response) (result RestoreProgressInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11694,7 +11584,6 @@ func (client BaseClient) GetPartitionsEventListSender(req *http.Request) (*http.
 func (client BaseClient) GetPartitionsEventListResponder(resp *http.Response) (result ListPartitionEvent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11787,7 +11676,6 @@ func (client BaseClient) GetPropertyInfoSender(req *http.Request) (*http.Respons
 func (client BaseClient) GetPropertyInfoResponder(resp *http.Response) (result PropertyInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11894,7 +11782,6 @@ func (client BaseClient) GetPropertyInfoListSender(req *http.Request) (*http.Res
 func (client BaseClient) GetPropertyInfoListResponder(resp *http.Response) (result PagedPropertyInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -11985,7 +11872,6 @@ func (client BaseClient) GetProvisionedFabricCodeVersionInfoListSender(req *http
 func (client BaseClient) GetProvisionedFabricCodeVersionInfoListResponder(resp *http.Response) (result ListFabricCodeVersionInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -12076,7 +11962,6 @@ func (client BaseClient) GetProvisionedFabricConfigVersionInfoListSender(req *ht
 func (client BaseClient) GetProvisionedFabricConfigVersionInfoListResponder(resp *http.Response) (result ListFabricConfigVersionInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -12176,7 +12061,6 @@ func (client BaseClient) GetQuorumLossProgressSender(req *http.Request) (*http.R
 func (client BaseClient) GetQuorumLossProgressResponder(resp *http.Response) (result PartitionQuorumLossProgress, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12265,7 +12149,6 @@ func (client BaseClient) GetRepairTaskListSender(req *http.Request) (*http.Respo
 func (client BaseClient) GetRepairTaskListResponder(resp *http.Response) (result ListRepairTask, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -12379,7 +12262,6 @@ func (client BaseClient) GetReplicaHealthSender(req *http.Request) (*http.Respon
 func (client BaseClient) GetReplicaHealthResponder(resp *http.Response) (result ReplicaHealthModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12506,7 +12388,6 @@ func (client BaseClient) GetReplicaHealthUsingPolicySender(req *http.Request) (*
 func (client BaseClient) GetReplicaHealthUsingPolicyResponder(resp *http.Response) (result ReplicaHealthModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12599,7 +12480,6 @@ func (client BaseClient) GetReplicaInfoSender(req *http.Request) (*http.Response
 func (client BaseClient) GetReplicaInfoResponder(resp *http.Response) (result ReplicaInfoModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12698,7 +12578,6 @@ func (client BaseClient) GetReplicaInfoListSender(req *http.Request) (*http.Resp
 func (client BaseClient) GetReplicaInfoListResponder(resp *http.Response) (result PagedReplicaInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12814,7 +12693,6 @@ func (client BaseClient) GetServiceBackupConfigurationInfoSender(req *http.Reque
 func (client BaseClient) GetServiceBackupConfigurationInfoResponder(resp *http.Response) (result PagedBackupConfigurationInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -12951,7 +12829,6 @@ func (client BaseClient) GetServiceBackupListSender(req *http.Request) (*http.Re
 func (client BaseClient) GetServiceBackupListResponder(resp *http.Response) (result PagedBackupInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13046,7 +12923,6 @@ func (client BaseClient) GetServiceDescriptionSender(req *http.Request) (*http.R
 func (client BaseClient) GetServiceDescriptionResponder(resp *http.Response) (result ServiceDescriptionModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13159,7 +13035,6 @@ func (client BaseClient) GetServiceEventListSender(req *http.Request) (*http.Res
 func (client BaseClient) GetServiceEventListResponder(resp *http.Response) (result ListServiceEvent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13307,7 +13182,6 @@ func (client BaseClient) GetServiceHealthSender(req *http.Request) (*http.Respon
 func (client BaseClient) GetServiceHealthResponder(resp *http.Response) (result ServiceHealth, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13467,7 +13341,6 @@ func (client BaseClient) GetServiceHealthUsingPolicySender(req *http.Request) (*
 func (client BaseClient) GetServiceHealthUsingPolicyResponder(resp *http.Response) (result ServiceHealth, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13568,7 +13441,6 @@ func (client BaseClient) GetServiceInfoSender(req *http.Request) (*http.Response
 func (client BaseClient) GetServiceInfoResponder(resp *http.Response) (result ServiceInfoModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13675,7 +13547,6 @@ func (client BaseClient) GetServiceInfoListSender(req *http.Request) (*http.Resp
 func (client BaseClient) GetServiceInfoListResponder(resp *http.Response) (result PagedServiceInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13771,7 +13642,6 @@ func (client BaseClient) GetServiceManifestSender(req *http.Request) (*http.Resp
 func (client BaseClient) GetServiceManifestResponder(resp *http.Response) (result ServiceTypeManifest, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13862,7 +13732,6 @@ func (client BaseClient) GetServiceNameInfoSender(req *http.Request) (*http.Resp
 func (client BaseClient) GetServiceNameInfoResponder(resp *http.Response) (result ServiceNameInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -13966,7 +13835,6 @@ func (client BaseClient) GetServicesEventListSender(req *http.Request) (*http.Re
 func (client BaseClient) GetServicesEventListResponder(resp *http.Response) (result ListServiceEvent, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -14062,7 +13930,6 @@ func (client BaseClient) GetServiceTypeInfoByNameSender(req *http.Request) (*htt
 func (client BaseClient) GetServiceTypeInfoByNameResponder(resp *http.Response) (result ServiceTypeInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -14156,7 +14023,6 @@ func (client BaseClient) GetServiceTypeInfoListSender(req *http.Request) (*http.
 func (client BaseClient) GetServiceTypeInfoListResponder(resp *http.Response) (result ListServiceTypeInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -14262,7 +14128,6 @@ func (client BaseClient) GetSubNameInfoListSender(req *http.Request) (*http.Resp
 func (client BaseClient) GetSubNameInfoListResponder(resp *http.Response) (result PagedSubNameInfoList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -14348,7 +14213,6 @@ func (client BaseClient) GetUpgradeOrchestrationServiceStateSender(req *http.Req
 func (client BaseClient) GetUpgradeOrchestrationServiceStateResponder(resp *http.Response) (result UpgradeOrchestrationServiceState, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -14458,7 +14322,6 @@ func (client BaseClient) InvokeContainerAPISender(req *http.Request) (*http.Resp
 func (client BaseClient) InvokeContainerAPIResponder(resp *http.Response) (result ContainerAPIResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -14558,7 +14421,6 @@ func (client BaseClient) InvokeInfrastructureCommandSender(req *http.Request) (*
 func (client BaseClient) InvokeInfrastructureCommandResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -14658,7 +14520,6 @@ func (client BaseClient) InvokeInfrastructureQuerySender(req *http.Request) (*ht
 func (client BaseClient) InvokeInfrastructureQueryResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -14753,7 +14614,6 @@ func (client BaseClient) PostChaosScheduleSender(req *http.Request) (*http.Respo
 func (client BaseClient) PostChaosScheduleResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -14846,7 +14706,6 @@ func (client BaseClient) ProvisionApplicationTypeSender(req *http.Request) (*htt
 func (client BaseClient) ProvisionApplicationTypeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -14933,7 +14792,6 @@ func (client BaseClient) ProvisionClusterSender(req *http.Request) (*http.Respon
 func (client BaseClient) ProvisionClusterResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -15028,7 +14886,6 @@ func (client BaseClient) PutPropertySender(req *http.Request) (*http.Response, e
 func (client BaseClient) PutPropertyResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -15113,7 +14970,6 @@ func (client BaseClient) RecoverAllPartitionsSender(req *http.Request) (*http.Re
 func (client BaseClient) RecoverAllPartitionsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -15203,7 +15059,6 @@ func (client BaseClient) RecoverPartitionSender(req *http.Request) (*http.Respon
 func (client BaseClient) RecoverPartitionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -15298,7 +15153,6 @@ func (client BaseClient) RecoverServicePartitionsSender(req *http.Request) (*htt
 func (client BaseClient) RecoverServicePartitionsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -15384,7 +15238,6 @@ func (client BaseClient) RecoverSystemPartitionsSender(req *http.Request) (*http
 func (client BaseClient) RecoverSystemPartitionsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -15473,7 +15326,6 @@ func (client BaseClient) RemoveComposeDeploymentSender(req *http.Request) (*http
 func (client BaseClient) RemoveComposeDeploymentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -15566,7 +15418,6 @@ func (client BaseClient) RemoveNodeStateSender(req *http.Request) (*http.Respons
 func (client BaseClient) RemoveNodeStateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -15670,7 +15521,6 @@ func (client BaseClient) RemoveReplicaSender(req *http.Request) (*http.Response,
 func (client BaseClient) RemoveReplicaResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -15793,7 +15643,6 @@ func (client BaseClient) ReportApplicationHealthSender(req *http.Request) (*http
 func (client BaseClient) ReportApplicationHealthResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -15907,7 +15756,6 @@ func (client BaseClient) ReportClusterHealthSender(req *http.Request) (*http.Res
 func (client BaseClient) ReportClusterHealthResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -16032,7 +15880,6 @@ func (client BaseClient) ReportDeployedApplicationHealthSender(req *http.Request
 func (client BaseClient) ReportDeployedApplicationHealthResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -16160,7 +16007,6 @@ func (client BaseClient) ReportDeployedServicePackageHealthSender(req *http.Requ
 func (client BaseClient) ReportDeployedServicePackageHealthResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -16279,7 +16125,6 @@ func (client BaseClient) ReportNodeHealthSender(req *http.Request) (*http.Respon
 func (client BaseClient) ReportNodeHealthResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -16398,7 +16243,6 @@ func (client BaseClient) ReportPartitionHealthSender(req *http.Request) (*http.R
 func (client BaseClient) ReportPartitionHealthResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -16522,7 +16366,6 @@ func (client BaseClient) ReportReplicaHealthSender(req *http.Request) (*http.Res
 func (client BaseClient) ReportReplicaHealthResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -16645,7 +16488,6 @@ func (client BaseClient) ReportServiceHealthSender(req *http.Request) (*http.Res
 func (client BaseClient) ReportServiceHealthResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -16734,7 +16576,6 @@ func (client BaseClient) ResetPartitionLoadSender(req *http.Request) (*http.Resp
 func (client BaseClient) ResetPartitionLoadResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -16852,7 +16693,6 @@ func (client BaseClient) ResolveServiceSender(req *http.Request) (*http.Response
 func (client BaseClient) ResolveServiceResponder(resp *http.Response) (result ResolvedServicePartition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -16957,7 +16797,6 @@ func (client BaseClient) RestartDeployedCodePackageSender(req *http.Request) (*h
 func (client BaseClient) RestartDeployedCodePackageResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -17052,7 +16891,6 @@ func (client BaseClient) RestartNodeSender(req *http.Request) (*http.Response, e
 func (client BaseClient) RestartNodeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -17147,7 +16985,6 @@ func (client BaseClient) RestartReplicaSender(req *http.Request) (*http.Response
 func (client BaseClient) RestartReplicaResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -17257,7 +17094,6 @@ func (client BaseClient) RestorePartitionSender(req *http.Request) (*http.Respon
 func (client BaseClient) RestorePartitionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -17351,7 +17187,6 @@ func (client BaseClient) ResumeApplicationBackupSender(req *http.Request) (*http
 func (client BaseClient) ResumeApplicationBackupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -17451,7 +17286,6 @@ func (client BaseClient) ResumeApplicationUpgradeSender(req *http.Request) (*htt
 func (client BaseClient) ResumeApplicationUpgradeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -17541,7 +17375,6 @@ func (client BaseClient) ResumeClusterUpgradeSender(req *http.Request) (*http.Re
 func (client BaseClient) ResumeClusterUpgradeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -17631,7 +17464,6 @@ func (client BaseClient) ResumePartitionBackupSender(req *http.Request) (*http.R
 func (client BaseClient) ResumePartitionBackupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -17725,7 +17557,6 @@ func (client BaseClient) ResumeServiceBackupSender(req *http.Request) (*http.Res
 func (client BaseClient) ResumeServiceBackupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -17821,7 +17652,6 @@ func (client BaseClient) RollbackApplicationUpgradeSender(req *http.Request) (*h
 func (client BaseClient) RollbackApplicationUpgradeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -17905,7 +17735,6 @@ func (client BaseClient) RollbackClusterUpgradeSender(req *http.Request) (*http.
 func (client BaseClient) RollbackClusterUpgradeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -17993,7 +17822,6 @@ func (client BaseClient) SetUpgradeOrchestrationServiceStateSender(req *http.Req
 func (client BaseClient) SetUpgradeOrchestrationServiceStateResponder(resp *http.Response) (result UpgradeOrchestrationServiceStateSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -18095,7 +17923,6 @@ func (client BaseClient) StartApplicationUpgradeSender(req *http.Request) (*http
 func (client BaseClient) StartApplicationUpgradeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -18203,7 +18030,6 @@ func (client BaseClient) StartChaosSender(req *http.Request) (*http.Response, er
 func (client BaseClient) StartChaosResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -18293,7 +18119,6 @@ func (client BaseClient) StartClusterConfigurationUpgradeSender(req *http.Reques
 func (client BaseClient) StartClusterConfigurationUpgradeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -18392,7 +18217,6 @@ func (client BaseClient) StartClusterUpgradeSender(req *http.Request) (*http.Res
 func (client BaseClient) StartClusterUpgradeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -18488,7 +18312,6 @@ func (client BaseClient) StartComposeDeploymentUpgradeSender(req *http.Request) 
 func (client BaseClient) StartComposeDeploymentUpgradeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -18605,7 +18428,6 @@ func (client BaseClient) StartDataLossSender(req *http.Request) (*http.Response,
 func (client BaseClient) StartDataLossResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -18711,7 +18533,6 @@ func (client BaseClient) StartNodeTransitionSender(req *http.Request) (*http.Res
 func (client BaseClient) StartNodeTransitionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -18815,7 +18636,6 @@ func (client BaseClient) StartPartitionRestartSender(req *http.Request) (*http.R
 func (client BaseClient) StartPartitionRestartResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -18925,7 +18745,6 @@ func (client BaseClient) StartQuorumLossSender(req *http.Request) (*http.Respons
 func (client BaseClient) StartQuorumLossResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -19014,7 +18833,6 @@ func (client BaseClient) StartRollbackComposeDeploymentUpgradeSender(req *http.R
 func (client BaseClient) StartRollbackComposeDeploymentUpgradeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -19101,7 +18919,6 @@ func (client BaseClient) StopChaosSender(req *http.Request) (*http.Response, err
 func (client BaseClient) StopChaosResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -19193,7 +19010,6 @@ func (client BaseClient) SubmitPropertyBatchSender(req *http.Request) (*http.Res
 func (client BaseClient) SubmitPropertyBatchResponder(resp *http.Response) (result PropertyBatchInfoModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -19289,7 +19105,6 @@ func (client BaseClient) SuspendApplicationBackupSender(req *http.Request) (*htt
 func (client BaseClient) SuspendApplicationBackupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -19379,7 +19194,6 @@ func (client BaseClient) SuspendPartitionBackupSender(req *http.Request) (*http.
 func (client BaseClient) SuspendPartitionBackupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -19474,7 +19288,6 @@ func (client BaseClient) SuspendServiceBackupSender(req *http.Request) (*http.Re
 func (client BaseClient) SuspendServiceBackupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -19571,7 +19384,6 @@ func (client BaseClient) UnprovisionApplicationTypeSender(req *http.Request) (*h
 func (client BaseClient) UnprovisionApplicationTypeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -19658,7 +19470,6 @@ func (client BaseClient) UnprovisionClusterSender(req *http.Request) (*http.Resp
 func (client BaseClient) UnprovisionClusterResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -19758,7 +19569,6 @@ func (client BaseClient) UpdateApplicationUpgradeSender(req *http.Request) (*htt
 func (client BaseClient) UpdateApplicationUpgradeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -19859,7 +19669,6 @@ func (client BaseClient) UpdateBackupPolicySender(req *http.Request) (*http.Resp
 func (client BaseClient) UpdateBackupPolicyResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -19957,7 +19766,6 @@ func (client BaseClient) UpdateClusterUpgradeSender(req *http.Request) (*http.Re
 func (client BaseClient) UpdateClusterUpgradeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -20035,7 +19843,6 @@ func (client BaseClient) UpdateRepairExecutionStateSender(req *http.Request) (*h
 func (client BaseClient) UpdateRepairExecutionStateResponder(resp *http.Response) (result RepairTaskUpdateInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -20113,7 +19920,6 @@ func (client BaseClient) UpdateRepairTaskHealthPolicySender(req *http.Request) (
 func (client BaseClient) UpdateRepairTaskHealthPolicyResponder(resp *http.Response) (result RepairTaskUpdateInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -20215,7 +20021,6 @@ func (client BaseClient) UpdateServiceSender(req *http.Request) (*http.Response,
 func (client BaseClient) UpdateServiceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -20310,7 +20115,6 @@ func (client BaseClient) UploadFileSender(req *http.Request) (*http.Response, er
 func (client BaseClient) UploadFileResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -20413,7 +20217,6 @@ func (client BaseClient) UploadFileChunkSender(req *http.Request) (*http.Respons
 func (client BaseClient) UploadFileChunkResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

@@ -117,7 +117,6 @@ func (client CloudAppliancesClient) ListSupportedConfigurationsSender(req *http.
 func (client CloudAppliancesClient) ListSupportedConfigurationsResponder(resp *http.Response) (result CloudApplianceConfigurationList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -206,7 +205,6 @@ func (client CloudAppliancesClient) ProvisionSender(req *http.Request) (future C
 func (client CloudAppliancesClient) ProvisionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

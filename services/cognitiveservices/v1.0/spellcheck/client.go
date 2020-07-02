@@ -300,7 +300,6 @@ func (client BaseClient) SpellCheckerMethodSender(req *http.Request) (*http.Resp
 func (client BaseClient) SpellCheckerMethodResponder(resp *http.Response) (result SpellCheck, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

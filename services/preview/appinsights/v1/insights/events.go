@@ -115,7 +115,6 @@ func (client EventsClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client EventsClient) GetResponder(resp *http.Response) (result EventsResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -232,7 +231,6 @@ func (client EventsClient) GetByTypeSender(req *http.Request) (*http.Response, e
 func (client EventsClient) GetByTypeResponder(resp *http.Response) (result EventsResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -300,7 +298,6 @@ func (client EventsClient) GetOdataMetadataSender(req *http.Request) (*http.Resp
 func (client EventsClient) GetOdataMetadataResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

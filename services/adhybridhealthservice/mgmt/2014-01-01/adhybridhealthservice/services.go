@@ -105,7 +105,6 @@ func (client ServicesClient) AddSender(req *http.Request) (*http.Response, error
 func (client ServicesClient) AddResponder(resp *http.Response) (result ServiceProperties, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -181,7 +180,6 @@ func (client ServicesClient) AddAlertFeedbackSender(req *http.Request) (*http.Re
 func (client ServicesClient) AddAlertFeedbackResponder(resp *http.Response) (result AlertFeedback, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -260,7 +258,6 @@ func (client ServicesClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client ServicesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -333,7 +330,6 @@ func (client ServicesClient) GetSender(req *http.Request) (*http.Response, error
 func (client ServicesClient) GetResponder(resp *http.Response) (result ServiceProperties, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -408,7 +404,6 @@ func (client ServicesClient) GetFeatureAvailibilitySender(req *http.Request) (*h
 func (client ServicesClient) GetFeatureAvailibilityResponder(resp *http.Response) (result Result, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -483,7 +478,6 @@ func (client ServicesClient) GetMetricMetadataSender(req *http.Request) (*http.R
 func (client ServicesClient) GetMetricMetadataResponder(resp *http.Response) (result MetricMetadata, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -572,7 +566,6 @@ func (client ServicesClient) GetMetricMetadataForGroupSender(req *http.Request) 
 func (client ServicesClient) GetMetricMetadataForGroupResponder(resp *http.Response) (result MetricSets, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -647,7 +640,6 @@ func (client ServicesClient) GetTenantWhitelistingSender(req *http.Request) (*ht
 func (client ServicesClient) GetTenantWhitelistingResponder(resp *http.Response) (result Result, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -735,7 +727,6 @@ func (client ServicesClient) ListSender(req *http.Request) (*http.Response, erro
 func (client ServicesClient) ListResponder(resp *http.Response) (result Services, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -847,7 +838,6 @@ func (client ServicesClient) ListAlertFeedbackSender(req *http.Request) (*http.R
 func (client ServicesClient) ListAlertFeedbackResponder(resp *http.Response) (result AlertFeedbacks, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -937,7 +927,6 @@ func (client ServicesClient) ListAlertsSender(req *http.Request) (*http.Response
 func (client ServicesClient) ListAlertsResponder(resp *http.Response) (result Alerts, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1047,7 +1036,6 @@ func (client ServicesClient) ListAllRiskyIPDownloadReportSender(req *http.Reques
 func (client ServicesClient) ListAllRiskyIPDownloadReportResponder(resp *http.Response) (result RiskyIPBlobUris, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1120,7 +1108,6 @@ func (client ServicesClient) ListCurrentRiskyIPDownloadReportSender(req *http.Re
 func (client ServicesClient) ListCurrentRiskyIPDownloadReportResponder(resp *http.Response) (result RiskyIPBlobUris, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1193,7 +1180,6 @@ func (client ServicesClient) ListExportErrorsSender(req *http.Request) (*http.Re
 func (client ServicesClient) ListExportErrorsResponder(resp *http.Response) (result ErrorCounts, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1268,7 +1254,6 @@ func (client ServicesClient) ListExportErrorsV2Sender(req *http.Request) (*http.
 func (client ServicesClient) ListExportErrorsV2Responder(resp *http.Response) (result MergedExportErrors, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1342,7 +1327,6 @@ func (client ServicesClient) ListExportStatusSender(req *http.Request) (*http.Re
 func (client ServicesClient) ListExportStatusResponder(resp *http.Response) (result ExportStatuses, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1461,7 +1445,6 @@ func (client ServicesClient) ListMetricMetadataSender(req *http.Request) (*http.
 func (client ServicesClient) ListMetricMetadataResponder(resp *http.Response) (result MetricMetadataList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1576,7 +1559,6 @@ func (client ServicesClient) ListMetricsAverageSender(req *http.Request) (*http.
 func (client ServicesClient) ListMetricsAverageResponder(resp *http.Response) (result Metrics, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1691,7 +1673,6 @@ func (client ServicesClient) ListMetricsSumSender(req *http.Request) (*http.Resp
 func (client ServicesClient) ListMetricsSumResponder(resp *http.Response) (result Metrics, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1801,7 +1782,6 @@ func (client ServicesClient) ListMonitoringConfigurationsSender(req *http.Reques
 func (client ServicesClient) ListMonitoringConfigurationsResponder(resp *http.Response) (result Items, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1890,7 +1870,6 @@ func (client ServicesClient) ListPremiumSender(req *http.Request) (*http.Respons
 func (client ServicesClient) ListPremiumResponder(resp *http.Response) (result Services, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2004,7 +1983,6 @@ func (client ServicesClient) ListUserBadPasswordReportSender(req *http.Request) 
 func (client ServicesClient) ListUserBadPasswordReportResponder(resp *http.Response) (result ErrorReportUsersEntries, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2080,7 +2058,6 @@ func (client ServicesClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client ServicesClient) UpdateResponder(resp *http.Response) (result ServiceProperties, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2156,7 +2133,6 @@ func (client ServicesClient) UpdateMonitoringConfigurationSender(req *http.Reque
 func (client ServicesClient) UpdateMonitoringConfigurationResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

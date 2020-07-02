@@ -130,7 +130,6 @@ func (client ProductGroupsClient) AddSender(req *http.Request) (*http.Response, 
 func (client ProductGroupsClient) AddResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -243,7 +242,6 @@ func (client ProductGroupsClient) ListByProductSender(req *http.Request) (*http.
 func (client ProductGroupsClient) ListByProductResponder(resp *http.Response) (result GroupCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -376,7 +374,6 @@ func (client ProductGroupsClient) RemoveSender(req *http.Request) (*http.Respons
 func (client ProductGroupsClient) RemoveResponder(resp *http.Response) (result ErrorBodyContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

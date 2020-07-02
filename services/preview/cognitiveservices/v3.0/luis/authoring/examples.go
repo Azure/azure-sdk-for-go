@@ -114,7 +114,6 @@ func (client ExamplesClient) AddSender(req *http.Request) (*http.Response, error
 func (client ExamplesClient) AddResponder(resp *http.Response) (result LabelExampleResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -205,7 +204,6 @@ func (client ExamplesClient) BatchSender(req *http.Request) (*http.Response, err
 func (client ExamplesClient) BatchResponder(resp *http.Response) (result ListBatchLabelExample, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusMultiStatus),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -280,7 +278,6 @@ func (client ExamplesClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client ExamplesClient) DeleteResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -386,7 +383,6 @@ func (client ExamplesClient) ListSender(req *http.Request) (*http.Response, erro
 func (client ExamplesClient) ListResponder(resp *http.Response) (result ListLabeledUtterance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

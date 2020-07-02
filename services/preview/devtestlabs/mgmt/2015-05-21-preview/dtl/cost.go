@@ -111,7 +111,6 @@ func (client CostClient) GetResourceSender(req *http.Request) (*http.Response, e
 func (client CostClient) GetResourceResponder(resp *http.Response) (result Cost, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -198,7 +197,6 @@ func (client CostClient) ListSender(req *http.Request) (*http.Response, error) {
 func (client CostClient) ListResponder(resp *http.Response) (result ResponseWithContinuationCost, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -313,7 +311,6 @@ func (client CostClient) RefreshDataSender(req *http.Request) (future CostRefres
 func (client CostClient) RefreshDataResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

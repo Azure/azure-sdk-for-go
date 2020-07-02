@@ -23,8 +23,8 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// ClientAPI contains the set of methods on the Client type.
-type ClientAPI interface {
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
 	CreateRoleAssignment(ctx context.Context, createRoleAssignmentOptions accesscontrol.RoleAssignmentOptions) (result accesscontrol.RoleAssignmentDetails, err error)
 	DeleteRoleAssignmentByID(ctx context.Context, roleAssignmentID string) (result autorest.Response, err error)
 	GetCallerRoleAssignments(ctx context.Context) (result accesscontrol.ListString, err error)
@@ -35,4 +35,4 @@ type ClientAPI interface {
 	GetRoleDefinitionsComplete(ctx context.Context) (result accesscontrol.RolesListResponseIterator, err error)
 }
 
-var _ ClientAPI = (*accesscontrol.Client)(nil)
+var _ BaseClientAPI = (*accesscontrol.BaseClient)(nil)

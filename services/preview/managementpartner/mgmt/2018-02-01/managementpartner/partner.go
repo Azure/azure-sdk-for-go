@@ -106,7 +106,6 @@ func (client PartnerClient) CreateSender(req *http.Request) (*http.Response, err
 func (client PartnerClient) CreateResponder(resp *http.Response) (result PartnerResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -179,7 +178,6 @@ func (client PartnerClient) DeleteSender(req *http.Request) (*http.Response, err
 func (client PartnerClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -251,7 +249,6 @@ func (client PartnerClient) GetSender(req *http.Request) (*http.Response, error)
 func (client PartnerClient) GetResponder(resp *http.Response) (result PartnerResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -324,7 +321,6 @@ func (client PartnerClient) UpdateSender(req *http.Request) (*http.Response, err
 func (client PartnerClient) UpdateResponder(resp *http.Response) (result PartnerResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -108,7 +108,6 @@ func (client GlobalClient) CheckNameAvailabilitySender(req *http.Request) (*http
 func (client GlobalClient) CheckNameAvailabilityResponder(resp *http.Response) (result ResourceNameAvailability, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -180,7 +179,6 @@ func (client GlobalClient) GetAllCertificatesSender(req *http.Request) (*http.Re
 func (client GlobalClient) GetAllCertificatesResponder(resp *http.Response) (result CertificateCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -289,7 +287,6 @@ func (client GlobalClient) GetAllClassicMobileServicesSender(req *http.Request) 
 func (client GlobalClient) GetAllClassicMobileServicesResponder(resp *http.Response) (result ClassicMobileServiceCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -398,7 +395,6 @@ func (client GlobalClient) GetAllHostingEnvironmentsSender(req *http.Request) (*
 func (client GlobalClient) GetAllHostingEnvironmentsResponder(resp *http.Response) (result HostingEnvironmentCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -507,7 +503,6 @@ func (client GlobalClient) GetAllManagedHostingEnvironmentsSender(req *http.Requ
 func (client GlobalClient) GetAllManagedHostingEnvironmentsResponder(resp *http.Response) (result ManagedHostingEnvironmentCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -622,7 +617,6 @@ func (client GlobalClient) GetAllServerFarmsSender(req *http.Request) (*http.Res
 func (client GlobalClient) GetAllServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -731,7 +725,6 @@ func (client GlobalClient) GetAllSitesSender(req *http.Request) (*http.Response,
 func (client GlobalClient) GetAllSitesResponder(resp *http.Response) (result SiteCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -849,7 +842,6 @@ func (client GlobalClient) GetSubscriptionGeoRegionsSender(req *http.Request) (*
 func (client GlobalClient) GetSubscriptionGeoRegionsResponder(resp *http.Response) (result GeoRegionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -957,7 +949,6 @@ func (client GlobalClient) GetSubscriptionPublishingCredentialsSender(req *http.
 func (client GlobalClient) GetSubscriptionPublishingCredentialsResponder(resp *http.Response) (result User, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1031,7 +1022,6 @@ func (client GlobalClient) IsHostingEnvironmentNameAvailableSender(req *http.Req
 func (client GlobalClient) IsHostingEnvironmentNameAvailableResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1105,7 +1095,6 @@ func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailableSender(req
 func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailableResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1176,7 +1165,6 @@ func (client GlobalClient) ListPremierAddOnOffersSender(req *http.Request) (*htt
 func (client GlobalClient) ListPremierAddOnOffersResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1251,7 +1239,6 @@ func (client GlobalClient) UpdateSubscriptionPublishingCredentialsSender(req *ht
 func (client GlobalClient) UpdateSubscriptionPublishingCredentialsResponder(resp *http.Response) (result User, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

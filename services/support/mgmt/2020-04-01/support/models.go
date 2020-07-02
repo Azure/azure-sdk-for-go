@@ -784,7 +784,7 @@ type TicketDetailsProperties struct {
 	ProblemClassificationID *string `json:"problemClassificationId,omitempty"`
 	// ProblemClassificationDisplayName - READ-ONLY; Localized name of problem classification.
 	ProblemClassificationDisplayName *string `json:"problemClassificationDisplayName,omitempty"`
-	// Severity - A value that indicates the urgency of the case, which in turn determines the response time according to the service level agreement of the technical support plan you have with Azure. Note: 'Highest critical impact' severity is reserved only for our Premium customers. Possible values include: 'Minimal', 'Moderate', 'Critical', 'Highestcriticalimpact'
+	// Severity - A value that indicates the urgency of the case, which in turn determines the response time according to the service level agreement of the technical support plan you have with Azure. Note: 'Highest critical impact', also known as the 'Emergency - Severe impact' level in the Azure portal is reserved only for our Premium customers. Possible values include: 'Minimal', 'Moderate', 'Critical', 'Highestcriticalimpact'
 	Severity SeverityLevel `json:"severity,omitempty"`
 	// EnrollmentID - READ-ONLY; Enrollment Id associated with the support ticket.
 	EnrollmentID *string `json:"enrollmentId,omitempty"`

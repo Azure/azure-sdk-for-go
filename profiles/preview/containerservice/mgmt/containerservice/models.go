@@ -22,7 +22,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-04-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-06-01/containerservice"
 )
 
 const (
@@ -41,6 +41,15 @@ type AgentPoolType = original.AgentPoolType
 const (
 	AvailabilitySet         AgentPoolType = original.AvailabilitySet
 	VirtualMachineScaleSets AgentPoolType = original.VirtualMachineScaleSets
+)
+
+type ConnectionStatus = original.ConnectionStatus
+
+const (
+	Approved     ConnectionStatus = original.Approved
+	Disconnected ConnectionStatus = original.Disconnected
+	Pending      ConnectionStatus = original.Pending
+	Rejected     ConnectionStatus = original.Rejected
 )
 
 type Kind = original.Kind
@@ -160,11 +169,21 @@ const (
 	UserDefinedRouting OutboundType = original.UserDefinedRouting
 )
 
+type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
+
+const (
+	Creating  PrivateEndpointConnectionProvisioningState = original.Creating
+	Deleting  PrivateEndpointConnectionProvisioningState = original.Deleting
+	Failed    PrivateEndpointConnectionProvisioningState = original.Failed
+	Succeeded PrivateEndpointConnectionProvisioningState = original.Succeeded
+)
+
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
 	None           ResourceIdentityType = original.None
 	SystemAssigned ResourceIdentityType = original.SystemAssigned
+	UserAssigned   ResourceIdentityType = original.UserAssigned
 )
 
 type ScaleSetEvictionPolicy = original.ScaleSetEvictionPolicy
@@ -409,6 +428,7 @@ type ManagedClusterAddonProfileIdentity = original.ManagedClusterAddonProfileIde
 type ManagedClusterAgentPoolProfile = original.ManagedClusterAgentPoolProfile
 type ManagedClusterAgentPoolProfileProperties = original.ManagedClusterAgentPoolProfileProperties
 type ManagedClusterIdentity = original.ManagedClusterIdentity
+type ManagedClusterIdentityUserAssignedIdentitiesValue = original.ManagedClusterIdentityUserAssignedIdentitiesValue
 type ManagedClusterListResult = original.ManagedClusterListResult
 type ManagedClusterListResultIterator = original.ManagedClusterListResultIterator
 type ManagedClusterListResultPage = original.ManagedClusterListResultPage
@@ -461,6 +481,13 @@ type OrchestratorProfileType = original.OrchestratorProfileType
 type OrchestratorVersionProfile = original.OrchestratorVersionProfile
 type OrchestratorVersionProfileListResult = original.OrchestratorVersionProfileListResult
 type OrchestratorVersionProfileProperties = original.OrchestratorVersionProfileProperties
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type Properties = original.Properties
 type PurchasePlan = original.PurchasePlan
 type Resource = original.Resource
@@ -531,6 +558,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -539,6 +572,9 @@ func PossibleAgentPoolModeValues() []AgentPoolMode {
 }
 func PossibleAgentPoolTypeValues() []AgentPoolType {
 	return original.PossibleAgentPoolTypeValues()
+}
+func PossibleConnectionStatusValues() []ConnectionStatus {
+	return original.PossibleConnectionStatusValues()
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
@@ -575,6 +611,9 @@ func PossibleOrchestratorTypesValues() []OrchestratorTypes {
 }
 func PossibleOutboundTypeValues() []OutboundType {
 	return original.PossibleOutboundTypeValues()
+}
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()

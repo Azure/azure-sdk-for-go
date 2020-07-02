@@ -116,7 +116,6 @@ func (client RegisteredPrefixesClient) CreateOrUpdateSender(req *http.Request) (
 func (client RegisteredPrefixesClient) CreateOrUpdateResponder(resp *http.Response) (result RegisteredPrefix, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -195,7 +194,6 @@ func (client RegisteredPrefixesClient) DeleteSender(req *http.Request) (*http.Re
 func (client RegisteredPrefixesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -273,7 +271,6 @@ func (client RegisteredPrefixesClient) GetSender(req *http.Request) (*http.Respo
 func (client RegisteredPrefixesClient) GetResponder(resp *http.Response) (result RegisteredPrefix, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -350,7 +347,6 @@ func (client RegisteredPrefixesClient) ListByPeeringSender(req *http.Request) (*
 func (client RegisteredPrefixesClient) ListByPeeringResponder(resp *http.Response) (result RegisteredPrefixListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

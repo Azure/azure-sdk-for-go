@@ -114,7 +114,6 @@ func (client RolesClient) CreateOrUpdateSender(req *http.Request) (future RolesC
 func (client RolesClient) CreateOrUpdateResponder(resp *http.Response) (result RoleModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -192,7 +191,6 @@ func (client RolesClient) DeleteSender(req *http.Request) (future RolesDeleteFut
 func (client RolesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -269,7 +267,6 @@ func (client RolesClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client RolesClient) GetResponder(resp *http.Response) (result RoleModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -346,7 +343,6 @@ func (client RolesClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*htt
 func (client RolesClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response) (result RoleList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

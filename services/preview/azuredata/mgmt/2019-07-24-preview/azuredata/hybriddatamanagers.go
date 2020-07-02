@@ -111,7 +111,6 @@ func (client HybridDataManagersClient) CreateSender(req *http.Request) (*http.Re
 func (client HybridDataManagersClient) CreateResponder(resp *http.Response) (result HybridDataManager, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -187,7 +186,6 @@ func (client HybridDataManagersClient) DeleteSender(req *http.Request) (*http.Re
 func (client HybridDataManagersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -262,7 +260,6 @@ func (client HybridDataManagersClient) GetSender(req *http.Request) (*http.Respo
 func (client HybridDataManagersClient) GetResponder(resp *http.Response) (result HybridDataManager, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -334,7 +331,6 @@ func (client HybridDataManagersClient) ListSender(req *http.Request) (*http.Resp
 func (client HybridDataManagersClient) ListResponder(resp *http.Response) (result HybridDataManagerListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -446,7 +442,6 @@ func (client HybridDataManagersClient) ListByResourceGroupSender(req *http.Reque
 func (client HybridDataManagersClient) ListByResourceGroupResponder(resp *http.Response) (result HybridDataManagerListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -562,7 +557,6 @@ func (client HybridDataManagersClient) UpdateSender(req *http.Request) (*http.Re
 func (client HybridDataManagersClient) UpdateResponder(resp *http.Response) (result HybridDataManager, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -139,7 +139,6 @@ func (client ProductClient) CreateOrUpdateSender(req *http.Request) (*http.Respo
 func (client ProductClient) CreateOrUpdateResponder(resp *http.Response) (result ProductContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -236,7 +235,6 @@ func (client ProductClient) DeleteSender(req *http.Request) (*http.Response, err
 func (client ProductClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -325,7 +323,6 @@ func (client ProductClient) GetSender(req *http.Request) (*http.Response, error)
 func (client ProductClient) GetResponder(resp *http.Response) (result ProductContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -415,7 +412,6 @@ func (client ProductClient) GetEntityTagSender(req *http.Request) (*http.Respons
 func (client ProductClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -534,7 +530,6 @@ func (client ProductClient) ListByServiceSender(req *http.Request) (*http.Respon
 func (client ProductClient) ListByServiceResponder(resp *http.Response) (result ProductCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -685,7 +680,6 @@ func (client ProductClient) ListByTagsSender(req *http.Request) (*http.Response,
 func (client ProductClient) ListByTagsResponder(resp *http.Response) (result TagResourceCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -818,7 +812,6 @@ func (client ProductClient) UpdateSender(req *http.Request) (*http.Response, err
 func (client ProductClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

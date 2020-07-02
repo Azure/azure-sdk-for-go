@@ -117,7 +117,6 @@ func (client AuthorizationServerClient) CreateOrUpdateSender(req *http.Request) 
 func (client AuthorizationServerClient) CreateOrUpdateResponder(resp *http.Response) (result AuthorizationServerContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -206,7 +205,6 @@ func (client AuthorizationServerClient) DeleteSender(req *http.Request) (*http.R
 func (client AuthorizationServerClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -291,7 +289,6 @@ func (client AuthorizationServerClient) GetSender(req *http.Request) (*http.Resp
 func (client AuthorizationServerClient) GetResponder(resp *http.Response) (result AuthorizationServerContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -391,7 +388,6 @@ func (client AuthorizationServerClient) ListSender(req *http.Request) (*http.Res
 func (client AuthorizationServerClient) ListResponder(resp *http.Response) (result AuthorizationServerCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -520,7 +516,6 @@ func (client AuthorizationServerClient) UpdateSender(req *http.Request) (*http.R
 func (client AuthorizationServerClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

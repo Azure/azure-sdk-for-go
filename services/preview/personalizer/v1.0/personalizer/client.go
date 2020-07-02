@@ -122,7 +122,6 @@ func (client BaseClient) RankSender(req *http.Request) (*http.Response, error) {
 func (client BaseClient) RankResponder(resp *http.Response) (result RankResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

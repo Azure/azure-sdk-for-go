@@ -115,7 +115,6 @@ func (client RegisteredAsnsClient) CreateOrUpdateSender(req *http.Request) (*htt
 func (client RegisteredAsnsClient) CreateOrUpdateResponder(resp *http.Response) (result RegisteredAsn, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -194,7 +193,6 @@ func (client RegisteredAsnsClient) DeleteSender(req *http.Request) (*http.Respon
 func (client RegisteredAsnsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -272,7 +270,6 @@ func (client RegisteredAsnsClient) GetSender(req *http.Request) (*http.Response,
 func (client RegisteredAsnsClient) GetResponder(resp *http.Response) (result RegisteredAsn, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -349,7 +346,6 @@ func (client RegisteredAsnsClient) ListByPeeringSender(req *http.Request) (*http
 func (client RegisteredAsnsClient) ListByPeeringResponder(resp *http.Response) (result RegisteredAsnListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

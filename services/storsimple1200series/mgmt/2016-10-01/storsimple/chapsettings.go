@@ -129,7 +129,6 @@ func (client ChapSettingsClient) CreateOrUpdateSender(req *http.Request) (future
 func (client ChapSettingsClient) CreateOrUpdateResponder(resp *http.Response) (result ChapSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -216,7 +215,6 @@ func (client ChapSettingsClient) DeleteSender(req *http.Request) (future ChapSet
 func (client ChapSettingsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -302,7 +300,6 @@ func (client ChapSettingsClient) GetSender(req *http.Request) (*http.Response, e
 func (client ChapSettingsClient) GetResponder(resp *http.Response) (result ChapSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -387,7 +384,6 @@ func (client ChapSettingsClient) ListByDeviceSender(req *http.Request) (*http.Re
 func (client ChapSettingsClient) ListByDeviceResponder(resp *http.Response) (result ChapSettingsList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

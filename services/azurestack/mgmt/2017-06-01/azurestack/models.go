@@ -92,19 +92,6 @@ func PossibleComputeRoleValues() []ComputeRole {
 	return []ComputeRole{IaaS, None, PaaS}
 }
 
-// Location enumerates the values for location.
-type Location string
-
-const (
-	// Global ...
-	Global Location = "global"
-)
-
-// PossibleLocationValues returns an array of possible values for the Location const type.
-func PossibleLocationValues() []Location {
-	return []Location{Global}
-}
-
 // OperatingSystem enumerates the values for operating system.
 type OperatingSystem string
 
@@ -1494,8 +1481,8 @@ func NewRegistrationListPage(getNextPage func(context.Context, RegistrationList)
 type RegistrationParameter struct {
 	// RegistrationParameterProperties - Properties of the Azure Stack registration resource
 	*RegistrationParameterProperties `json:"properties,omitempty"`
-	// Location - Location of the resource. Possible values include: 'Global'
-	Location Location `json:"location,omitempty"`
+	// Location - Location of the resource.
+	Location *string `json:"location,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RegistrationParameter.
@@ -1504,7 +1491,7 @@ func (rp RegistrationParameter) MarshalJSON() ([]byte, error) {
 	if rp.RegistrationParameterProperties != nil {
 		objectMap["properties"] = rp.RegistrationParameterProperties
 	}
-	if rp.Location != "" {
+	if rp.Location != nil {
 		objectMap["location"] = rp.Location
 	}
 	return json.Marshal(objectMap)
@@ -1530,12 +1517,12 @@ func (rp *RegistrationParameter) UnmarshalJSON(body []byte) error {
 			}
 		case "location":
 			if v != nil {
-				var location Location
+				var location string
 				err = json.Unmarshal(*v, &location)
 				if err != nil {
 					return err
 				}
-				rp.Location = location
+				rp.Location = &location
 			}
 		}
 	}

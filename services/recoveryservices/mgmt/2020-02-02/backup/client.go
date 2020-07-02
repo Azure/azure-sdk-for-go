@@ -127,7 +127,6 @@ func (client BaseClient) GetOperationStatusSender(req *http.Request) (*http.Resp
 func (client BaseClient) GetOperationStatusResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

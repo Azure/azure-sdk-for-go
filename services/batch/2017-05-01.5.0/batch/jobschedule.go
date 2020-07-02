@@ -172,7 +172,6 @@ func (client JobScheduleClient) AddSender(req *http.Request) (*http.Response, er
 func (client JobScheduleClient) AddResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
@@ -301,7 +300,6 @@ func (client JobScheduleClient) DeleteSender(req *http.Request) (*http.Response,
 func (client JobScheduleClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -427,7 +425,6 @@ func (client JobScheduleClient) DisableSender(req *http.Request) (*http.Response
 func (client JobScheduleClient) DisableResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -553,7 +550,6 @@ func (client JobScheduleClient) EnableSender(req *http.Request) (*http.Response,
 func (client JobScheduleClient) EnableResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -679,7 +675,6 @@ func (client JobScheduleClient) ExistsSender(req *http.Request) (*http.Response,
 func (client JobScheduleClient) ExistsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
@@ -813,7 +808,6 @@ func (client JobScheduleClient) GetSender(req *http.Request) (*http.Response, er
 func (client JobScheduleClient) GetResponder(resp *http.Response) (result CloudJobSchedule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -937,7 +931,6 @@ func (client JobScheduleClient) ListSender(req *http.Request) (*http.Response, e
 func (client JobScheduleClient) ListResponder(resp *http.Response) (result CloudJobScheduleListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1107,7 +1100,6 @@ func (client JobScheduleClient) PatchSender(req *http.Request) (*http.Response, 
 func (client JobScheduleClient) PatchResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1233,7 +1225,6 @@ func (client JobScheduleClient) TerminateSender(req *http.Request) (*http.Respon
 func (client JobScheduleClient) TerminateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1402,7 +1393,6 @@ func (client JobScheduleClient) UpdateSender(req *http.Request) (*http.Response,
 func (client JobScheduleClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

@@ -117,7 +117,6 @@ func (client TransactionsClient) ListByBillingAccountNameSender(req *http.Reques
 func (client TransactionsClient) ListByBillingAccountNameResponder(resp *http.Response) (result TransactionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -240,7 +239,6 @@ func (client TransactionsClient) ListByBillingProfileNameSender(req *http.Reques
 func (client TransactionsClient) ListByBillingProfileNameResponder(resp *http.Response) (result TransactionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -363,7 +361,6 @@ func (client TransactionsClient) ListByCustomerNameSender(req *http.Request) (*h
 func (client TransactionsClient) ListByCustomerNameResponder(resp *http.Response) (result TransactionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -486,7 +483,6 @@ func (client TransactionsClient) ListByInvoiceSectionNameSender(req *http.Reques
 func (client TransactionsClient) ListByInvoiceSectionNameResponder(resp *http.Response) (result TransactionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

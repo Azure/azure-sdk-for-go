@@ -136,7 +136,6 @@ func (client TagClient) AssignToAPISender(req *http.Request) (*http.Response, er
 func (client TagClient) AssignToAPIResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -245,7 +244,6 @@ func (client TagClient) AssignToOperationSender(req *http.Request) (*http.Respon
 func (client TagClient) AssignToOperationResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -346,7 +344,6 @@ func (client TagClient) AssignToProductSender(req *http.Request) (*http.Response
 func (client TagClient) AssignToProductResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -446,7 +443,6 @@ func (client TagClient) CreateOrUpdateSender(req *http.Request) (*http.Response,
 func (client TagClient) CreateOrUpdateResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -539,7 +535,6 @@ func (client TagClient) DeleteSender(req *http.Request) (*http.Response, error) 
 func (client TagClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -638,7 +633,6 @@ func (client TagClient) DetachFromAPISender(req *http.Request) (*http.Response, 
 func (client TagClient) DetachFromAPIResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -744,7 +738,6 @@ func (client TagClient) DetachFromOperationSender(req *http.Request) (*http.Resp
 func (client TagClient) DetachFromOperationResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -842,7 +835,6 @@ func (client TagClient) DetachFromProductSender(req *http.Request) (*http.Respon
 func (client TagClient) DetachFromProductResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -931,7 +923,6 @@ func (client TagClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client TagClient) GetResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1028,7 +1019,6 @@ func (client TagClient) GetByAPISender(req *http.Request) (*http.Response, error
 func (client TagClient) GetByAPIResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1132,7 +1122,6 @@ func (client TagClient) GetByOperationSender(req *http.Request) (*http.Response,
 func (client TagClient) GetByOperationResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1228,7 +1217,6 @@ func (client TagClient) GetByProductSender(req *http.Request) (*http.Response, e
 func (client TagClient) GetByProductResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1318,7 +1306,6 @@ func (client TagClient) GetEntityStateSender(req *http.Request) (*http.Response,
 func (client TagClient) GetEntityStateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1414,7 +1401,6 @@ func (client TagClient) GetEntityStateByAPISender(req *http.Request) (*http.Resp
 func (client TagClient) GetEntityStateByAPIResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1517,7 +1503,6 @@ func (client TagClient) GetEntityStateByOperationSender(req *http.Request) (*htt
 func (client TagClient) GetEntityStateByOperationResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1612,7 +1597,6 @@ func (client TagClient) GetEntityStateByProductSender(req *http.Request) (*http.
 func (client TagClient) GetEntityStateByProductResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1724,7 +1708,6 @@ func (client TagClient) ListByAPISender(req *http.Request) (*http.Response, erro
 func (client TagClient) ListByAPIResponder(resp *http.Response) (result TagCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1884,7 +1867,6 @@ func (client TagClient) ListByOperationSender(req *http.Request) (*http.Response
 func (client TagClient) ListByOperationResponder(resp *http.Response) (result TagCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2033,7 +2015,6 @@ func (client TagClient) ListByProductSender(req *http.Request) (*http.Response, 
 func (client TagClient) ListByProductResponder(resp *http.Response) (result TagCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2176,7 +2157,6 @@ func (client TagClient) ListByServiceSender(req *http.Request) (*http.Response, 
 func (client TagClient) ListByServiceResponder(resp *http.Response) (result TagCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2309,7 +2289,6 @@ func (client TagClient) UpdateSender(req *http.Request) (*http.Response, error) 
 func (client TagClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

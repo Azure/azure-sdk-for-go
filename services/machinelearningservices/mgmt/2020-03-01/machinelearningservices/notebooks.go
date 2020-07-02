@@ -109,7 +109,6 @@ func (client NotebooksClient) PrepareSender(req *http.Request) (future Notebooks
 func (client NotebooksClient) PrepareResponder(resp *http.Response) (result NotebookResourceInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

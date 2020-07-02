@@ -137,7 +137,6 @@ func (client StorageInsightConfigsClient) CreateOrUpdateSender(req *http.Request
 func (client StorageInsightConfigsClient) CreateOrUpdateResponder(resp *http.Response) (result StorageInsight, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -229,7 +228,6 @@ func (client StorageInsightConfigsClient) DeleteSender(req *http.Request) (*http
 func (client StorageInsightConfigsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -320,7 +318,6 @@ func (client StorageInsightConfigsClient) GetSender(req *http.Request) (*http.Re
 func (client StorageInsightConfigsClient) GetResponder(resp *http.Response) (result StorageInsight, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -411,7 +408,6 @@ func (client StorageInsightConfigsClient) ListByWorkspaceSender(req *http.Reques
 func (client StorageInsightConfigsClient) ListByWorkspaceResponder(resp *http.Response) (result StorageInsightListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

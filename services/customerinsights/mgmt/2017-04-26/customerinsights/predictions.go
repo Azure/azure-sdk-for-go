@@ -138,7 +138,6 @@ func (client PredictionsClient) CreateOrUpdateSender(req *http.Request) (future 
 func (client PredictionsClient) CreateOrUpdateResponder(resp *http.Response) (result PredictionResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -216,7 +215,6 @@ func (client PredictionsClient) DeleteSender(req *http.Request) (future Predicti
 func (client PredictionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -293,7 +291,6 @@ func (client PredictionsClient) GetSender(req *http.Request) (*http.Response, er
 func (client PredictionsClient) GetResponder(resp *http.Response) (result PredictionResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -371,7 +368,6 @@ func (client PredictionsClient) GetModelStatusSender(req *http.Request) (*http.R
 func (client PredictionsClient) GetModelStatusResponder(resp *http.Response) (result PredictionModelStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -449,7 +445,6 @@ func (client PredictionsClient) GetTrainingResultsSender(req *http.Request) (*ht
 func (client PredictionsClient) GetTrainingResultsResponder(resp *http.Response) (result PredictionTrainingResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -526,7 +521,6 @@ func (client PredictionsClient) ListByHubSender(req *http.Request) (*http.Respon
 func (client PredictionsClient) ListByHubResponder(resp *http.Response) (result PredictionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -654,7 +648,6 @@ func (client PredictionsClient) ModelStatusSender(req *http.Request) (*http.Resp
 func (client PredictionsClient) ModelStatusResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

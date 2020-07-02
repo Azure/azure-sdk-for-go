@@ -126,7 +126,6 @@ func (client AccessControlRecordsClient) CreateOrUpdateSender(req *http.Request)
 func (client AccessControlRecordsClient) CreateOrUpdateResponder(resp *http.Response) (result AccessControlRecord, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -211,7 +210,6 @@ func (client AccessControlRecordsClient) DeleteSender(req *http.Request) (future
 func (client AccessControlRecordsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -295,7 +293,6 @@ func (client AccessControlRecordsClient) GetSender(req *http.Request) (*http.Res
 func (client AccessControlRecordsClient) GetResponder(resp *http.Response) (result AccessControlRecord, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -378,7 +375,6 @@ func (client AccessControlRecordsClient) ListByManagerSender(req *http.Request) 
 func (client AccessControlRecordsClient) ListByManagerResponder(resp *http.Response) (result AccessControlRecordList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

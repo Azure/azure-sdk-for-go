@@ -106,7 +106,6 @@ func (client GlobalCertificateOrderClient) GetAllCertificateOrdersSender(req *ht
 func (client GlobalCertificateOrderClient) GetAllCertificateOrdersResponder(resp *http.Response) (result CertificateOrderCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -218,7 +217,6 @@ func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformatio
 func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformationResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

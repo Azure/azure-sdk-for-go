@@ -122,7 +122,6 @@ func (client ProjectsClient) CreateSender(req *http.Request) (*http.Response, er
 func (client ProjectsClient) CreateResponder(resp *http.Response) (result Project, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -202,7 +201,6 @@ func (client ProjectsClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client ProjectsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -281,7 +279,6 @@ func (client ProjectsClient) GetSender(req *http.Request) (*http.Response, error
 func (client ProjectsClient) GetResponder(resp *http.Response) (result Project, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -361,7 +358,6 @@ func (client ProjectsClient) GetKeysSender(req *http.Request) (*http.Response, e
 func (client ProjectsClient) GetKeysResponder(resp *http.Response) (result ProjectKey, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -439,7 +435,6 @@ func (client ProjectsClient) ListByResourceGroupSender(req *http.Request) (*http
 func (client ProjectsClient) ListByResourceGroupResponder(resp *http.Response) (result ProjectResultList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -514,7 +509,6 @@ func (client ProjectsClient) ListBySubscriptionSender(req *http.Request) (*http.
 func (client ProjectsClient) ListBySubscriptionResponder(resp *http.Response) (result ProjectResultList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -603,7 +597,6 @@ func (client ProjectsClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client ProjectsClient) UpdateResponder(resp *http.Response) (result Project, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

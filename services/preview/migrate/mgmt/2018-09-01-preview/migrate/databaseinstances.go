@@ -123,7 +123,6 @@ func (client DatabaseInstancesClient) EnumerateDatabaseInstancesSender(req *http
 func (client DatabaseInstancesClient) EnumerateDatabaseInstancesResponder(resp *http.Response) (result DatabaseInstanceCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -205,7 +204,6 @@ func (client DatabaseInstancesClient) GetDatabaseInstanceSender(req *http.Reques
 func (client DatabaseInstancesClient) GetDatabaseInstanceResponder(resp *http.Response) (result DatabaseInstance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

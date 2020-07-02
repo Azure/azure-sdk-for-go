@@ -110,7 +110,6 @@ func (client FirewallRulesClient) ListSender(req *http.Request) (*http.Response,
 func (client FirewallRulesClient) ListResponder(resp *http.Response) (result FirewallRuleListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

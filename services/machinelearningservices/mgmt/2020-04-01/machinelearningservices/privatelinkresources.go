@@ -111,7 +111,6 @@ func (client PrivateLinkResourcesClient) ListByWorkspaceSender(req *http.Request
 func (client PrivateLinkResourcesClient) ListByWorkspaceResponder(resp *http.Response) (result PrivateLinkResourceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

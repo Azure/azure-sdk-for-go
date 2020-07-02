@@ -132,7 +132,6 @@ func (client Python2PackageClient) CreateOrUpdateSender(req *http.Request) (*htt
 func (client Python2PackageClient) CreateOrUpdateResponder(resp *http.Response) (result Module, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -218,7 +217,6 @@ func (client Python2PackageClient) DeleteSender(req *http.Request) (*http.Respon
 func (client Python2PackageClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -303,7 +301,6 @@ func (client Python2PackageClient) GetSender(req *http.Request) (*http.Response,
 func (client Python2PackageClient) GetResponder(resp *http.Response) (result Module, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -388,7 +385,6 @@ func (client Python2PackageClient) ListByAutomationAccountSender(req *http.Reque
 func (client Python2PackageClient) ListByAutomationAccountResponder(resp *http.Response) (result ModuleListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -514,7 +510,6 @@ func (client Python2PackageClient) UpdateSender(req *http.Request) (*http.Respon
 func (client Python2PackageClient) UpdateResponder(resp *http.Response) (result Module, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -101,7 +101,6 @@ func (client SessionClient) CancelSparkSessionSender(req *http.Request) (*http.R
 func (client SessionClient) CancelSparkSessionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -175,7 +174,6 @@ func (client SessionClient) CancelSparkStatementSender(req *http.Request) (*http
 func (client SessionClient) CancelSparkStatementResponder(resp *http.Response) (result StatementCancellationResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -259,7 +257,6 @@ func (client SessionClient) CreateSparkSessionSender(req *http.Request) (*http.R
 func (client SessionClient) CreateSparkSessionResponder(resp *http.Response) (result Session, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -335,7 +332,6 @@ func (client SessionClient) CreateSparkStatementSender(req *http.Request) (*http
 func (client SessionClient) CreateSparkStatementResponder(resp *http.Response) (result Statement, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -415,7 +411,6 @@ func (client SessionClient) GetSparkSessionSender(req *http.Request) (*http.Resp
 func (client SessionClient) GetSparkSessionResponder(resp *http.Response) (result Session, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -499,7 +494,6 @@ func (client SessionClient) GetSparkSessionsSender(req *http.Request) (*http.Res
 func (client SessionClient) GetSparkSessionsResponder(resp *http.Response) (result SessionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -574,7 +568,6 @@ func (client SessionClient) GetSparkStatementSender(req *http.Request) (*http.Re
 func (client SessionClient) GetSparkStatementResponder(resp *http.Response) (result Statement, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -647,7 +640,6 @@ func (client SessionClient) GetSparkStatementsSender(req *http.Request) (*http.R
 func (client SessionClient) GetSparkStatementsResponder(resp *http.Response) (result StatementCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -720,7 +712,6 @@ func (client SessionClient) ResetSparkSessionTimeoutSender(req *http.Request) (*
 func (client SessionClient) ResetSparkSessionTimeoutResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

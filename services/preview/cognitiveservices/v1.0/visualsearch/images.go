@@ -264,7 +264,6 @@ func (client ImagesClient) VisualSearchSender(req *http.Request) (*http.Response
 func (client ImagesClient) VisualSearchResponder(resp *http.Response) (result ImageKnowledge, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

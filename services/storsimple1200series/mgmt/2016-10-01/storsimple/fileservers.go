@@ -121,7 +121,6 @@ func (client FileServersClient) BackupNowSender(req *http.Request) (future FileS
 func (client FileServersClient) BackupNowResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -216,7 +215,6 @@ func (client FileServersClient) CreateOrUpdateSender(req *http.Request) (future 
 func (client FileServersClient) CreateOrUpdateResponder(resp *http.Response) (result FileServer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -303,7 +301,6 @@ func (client FileServersClient) DeleteSender(req *http.Request) (future FileServ
 func (client FileServersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -389,7 +386,6 @@ func (client FileServersClient) GetSender(req *http.Request) (*http.Response, er
 func (client FileServersClient) GetResponder(resp *http.Response) (result FileServer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -474,7 +470,6 @@ func (client FileServersClient) ListByDeviceSender(req *http.Request) (*http.Res
 func (client FileServersClient) ListByDeviceResponder(resp *http.Response) (result FileServerList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -557,7 +552,6 @@ func (client FileServersClient) ListByManagerSender(req *http.Request) (*http.Re
 func (client FileServersClient) ListByManagerResponder(resp *http.Response) (result FileServerList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -644,7 +638,6 @@ func (client FileServersClient) ListMetricDefinitionSender(req *http.Request) (*
 func (client FileServersClient) ListMetricDefinitionResponder(resp *http.Response) (result MetricDefinitionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -735,7 +728,6 @@ func (client FileServersClient) ListMetricsSender(req *http.Request) (*http.Resp
 func (client FileServersClient) ListMetricsResponder(resp *http.Response) (result MetricList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

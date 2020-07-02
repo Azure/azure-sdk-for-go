@@ -111,7 +111,6 @@ func (client ServiceClient) GetSender(req *http.Request) (*http.Response, error)
 func (client ServiceClient) GetResponder(resp *http.Response) (result ServiceResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -189,7 +188,6 @@ func (client ServiceClient) ListByApplicationNameSender(req *http.Request) (*htt
 func (client ServiceClient) ListByApplicationNameResponder(resp *http.Response) (result ServiceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -112,7 +112,6 @@ func (client VCenterClient) DeleteVCenterSender(req *http.Request) (*http.Respon
 func (client VCenterClient) DeleteVCenterResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -192,7 +191,6 @@ func (client VCenterClient) GetAllVCentersInSiteSender(req *http.Request) (*http
 func (client VCenterClient) GetAllVCentersInSiteResponder(resp *http.Response) (result VCenterCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -308,7 +306,6 @@ func (client VCenterClient) GetVCenterSender(req *http.Request) (*http.Response,
 func (client VCenterClient) GetVCenterResponder(resp *http.Response) (result VCenter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -392,7 +389,6 @@ func (client VCenterClient) PutVCenterSender(req *http.Request) (*http.Response,
 func (client VCenterClient) PutVCenterResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

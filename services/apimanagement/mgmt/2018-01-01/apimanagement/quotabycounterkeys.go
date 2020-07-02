@@ -125,7 +125,6 @@ func (client QuotaByCounterKeysClient) ListByServiceSender(req *http.Request) (*
 func (client QuotaByCounterKeysClient) ListByServiceResponder(resp *http.Response) (result QuotaCounterCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -218,7 +217,6 @@ func (client QuotaByCounterKeysClient) UpdateSender(req *http.Request) (*http.Re
 func (client QuotaByCounterKeysClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

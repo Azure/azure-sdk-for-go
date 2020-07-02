@@ -129,7 +129,6 @@ func (client DatasetClient) CreateOrUpdateDatasetSender(req *http.Request) (*htt
 func (client DatasetClient) CreateOrUpdateDatasetResponder(resp *http.Response) (result DatasetResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -214,7 +213,6 @@ func (client DatasetClient) DeleteDatasetSender(req *http.Request) (*http.Respon
 func (client DatasetClient) DeleteDatasetResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -304,7 +302,6 @@ func (client DatasetClient) GetDatasetSender(req *http.Request) (*http.Response,
 func (client DatasetClient) GetDatasetResponder(resp *http.Response) (result DatasetResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotModified),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -376,7 +373,6 @@ func (client DatasetClient) GetDatasetsByWorkspaceSender(req *http.Request) (*ht
 func (client DatasetClient) GetDatasetsByWorkspaceResponder(resp *http.Response) (result DatasetListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

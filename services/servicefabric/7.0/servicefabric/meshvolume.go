@@ -125,7 +125,6 @@ func (client MeshVolumeClient) CreateOrUpdateSender(req *http.Request) (*http.Re
 func (client MeshVolumeClient) CreateOrUpdateResponder(resp *http.Response) (result VolumeResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -198,7 +197,6 @@ func (client MeshVolumeClient) DeleteSender(req *http.Request) (*http.Response, 
 func (client MeshVolumeClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -271,7 +269,6 @@ func (client MeshVolumeClient) GetSender(req *http.Request) (*http.Response, err
 func (client MeshVolumeClient) GetResponder(resp *http.Response) (result VolumeResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -339,7 +336,6 @@ func (client MeshVolumeClient) ListSender(req *http.Request) (*http.Response, er
 func (client MeshVolumeClient) ListResponder(resp *http.Response) (result PagedVolumeResourceDescriptionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

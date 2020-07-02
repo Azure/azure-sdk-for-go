@@ -142,7 +142,6 @@ func (client APISchemaClient) CreateOrUpdateSender(req *http.Request) (*http.Res
 func (client APISchemaClient) CreateOrUpdateResponder(resp *http.Response) (result SchemaContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -241,7 +240,6 @@ func (client APISchemaClient) DeleteSender(req *http.Request) (*http.Response, e
 func (client APISchemaClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -336,7 +334,6 @@ func (client APISchemaClient) GetSender(req *http.Request) (*http.Response, erro
 func (client APISchemaClient) GetResponder(resp *http.Response) (result SchemaContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -432,7 +429,6 @@ func (client APISchemaClient) GetEntityTagSender(req *http.Request) (*http.Respo
 func (client APISchemaClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -522,7 +518,6 @@ func (client APISchemaClient) ListByAPISender(req *http.Request) (*http.Response
 func (client APISchemaClient) ListByAPIResponder(resp *http.Response) (result SchemaCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

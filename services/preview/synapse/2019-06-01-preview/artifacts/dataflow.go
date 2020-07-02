@@ -124,7 +124,6 @@ func (client DataFlowClient) CreateOrUpdateDataFlowSender(req *http.Request) (*h
 func (client DataFlowClient) CreateOrUpdateDataFlowResponder(resp *http.Response) (result DataFlowResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -209,7 +208,6 @@ func (client DataFlowClient) DeleteDataFlowSender(req *http.Request) (*http.Resp
 func (client DataFlowClient) DeleteDataFlowResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -299,7 +297,6 @@ func (client DataFlowClient) GetDataFlowSender(req *http.Request) (*http.Respons
 func (client DataFlowClient) GetDataFlowResponder(resp *http.Response) (result DataFlowResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -371,7 +368,6 @@ func (client DataFlowClient) GetDataFlowsByWorkspaceSender(req *http.Request) (*
 func (client DataFlowClient) GetDataFlowsByWorkspaceResponder(resp *http.Response) (result DataFlowListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

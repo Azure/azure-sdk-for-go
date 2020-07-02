@@ -133,7 +133,6 @@ func (client TableResourcesClient) CreateUpdateTableSender(req *http.Request) (f
 func (client TableResourcesClient) CreateUpdateTableResponder(resp *http.Response) (result TableGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -223,7 +222,6 @@ func (client TableResourcesClient) DeleteTableSender(req *http.Request) (future 
 func (client TableResourcesClient) DeleteTableResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -312,7 +310,6 @@ func (client TableResourcesClient) GetTableSender(req *http.Request) (*http.Resp
 func (client TableResourcesClient) GetTableResponder(resp *http.Response) (result TableGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -403,7 +400,6 @@ func (client TableResourcesClient) GetTableThroughputSender(req *http.Request) (
 func (client TableResourcesClient) GetTableThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -491,7 +487,6 @@ func (client TableResourcesClient) ListTablesSender(req *http.Request) (*http.Re
 func (client TableResourcesClient) ListTablesResponder(resp *http.Response) (result TableListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -591,7 +586,6 @@ func (client TableResourcesClient) UpdateTableThroughputSender(req *http.Request
 func (client TableResourcesClient) UpdateTableThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

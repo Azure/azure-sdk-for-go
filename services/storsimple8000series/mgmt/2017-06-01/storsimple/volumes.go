@@ -131,7 +131,6 @@ func (client VolumesClient) CreateOrUpdateSender(req *http.Request) (future Volu
 func (client VolumesClient) CreateOrUpdateResponder(resp *http.Response) (result Volume, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -220,7 +219,6 @@ func (client VolumesClient) DeleteSender(req *http.Request) (future VolumesDelet
 func (client VolumesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -308,7 +306,6 @@ func (client VolumesClient) GetSender(req *http.Request) (*http.Response, error)
 func (client VolumesClient) GetResponder(resp *http.Response) (result Volume, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -393,7 +390,6 @@ func (client VolumesClient) ListByDeviceSender(req *http.Request) (*http.Respons
 func (client VolumesClient) ListByDeviceResponder(resp *http.Response) (result VolumeList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -480,7 +476,6 @@ func (client VolumesClient) ListByVolumeContainerSender(req *http.Request) (*htt
 func (client VolumesClient) ListByVolumeContainerResponder(resp *http.Response) (result VolumeList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -569,7 +564,6 @@ func (client VolumesClient) ListMetricDefinitionSender(req *http.Request) (*http
 func (client VolumesClient) ListMetricDefinitionResponder(resp *http.Response) (result MetricDefinitionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -660,7 +654,6 @@ func (client VolumesClient) ListMetricsSender(req *http.Request) (*http.Response
 func (client VolumesClient) ListMetricsResponder(resp *http.Response) (result MetricList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

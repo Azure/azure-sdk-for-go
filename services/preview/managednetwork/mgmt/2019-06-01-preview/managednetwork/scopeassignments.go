@@ -118,7 +118,6 @@ func (client ScopeAssignmentsClient) CreateOrUpdateSender(req *http.Request) (*h
 func (client ScopeAssignmentsClient) CreateOrUpdateResponder(resp *http.Response) (result ScopeAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -193,7 +192,6 @@ func (client ScopeAssignmentsClient) DeleteSender(req *http.Request) (*http.Resp
 func (client ScopeAssignmentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -267,7 +265,6 @@ func (client ScopeAssignmentsClient) GetSender(req *http.Request) (*http.Respons
 func (client ScopeAssignmentsClient) GetResponder(resp *http.Response) (result ScopeAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -341,7 +338,6 @@ func (client ScopeAssignmentsClient) ListSender(req *http.Request) (*http.Respon
 func (client ScopeAssignmentsClient) ListResponder(resp *http.Response) (result ScopeAssignmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -116,7 +116,6 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmSender(req *http.Request
 func (client ServerFarmsClient) CreateOrUpdateServerFarmResponder(resp *http.Response) (result ServerFarmWithRichSku, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -199,7 +198,6 @@ func (client ServerFarmsClient) CreateOrUpdateVnetRouteSender(req *http.Request)
 func (client ServerFarmsClient) CreateOrUpdateVnetRouteResponder(resp *http.Response) (result VnetRoute, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -275,7 +273,6 @@ func (client ServerFarmsClient) DeleteServerFarmSender(req *http.Request) (*http
 func (client ServerFarmsClient) DeleteServerFarmResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -355,7 +352,6 @@ func (client ServerFarmsClient) DeleteVnetRouteSender(req *http.Request) (*http.
 func (client ServerFarmsClient) DeleteVnetRouteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -435,7 +431,6 @@ func (client ServerFarmsClient) GetRouteForVnetSender(req *http.Request) (*http.
 func (client ServerFarmsClient) GetRouteForVnetResponder(resp *http.Response) (result ListVnetRoute, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -513,7 +508,6 @@ func (client ServerFarmsClient) GetRoutesForVnetSender(req *http.Request) (*http
 func (client ServerFarmsClient) GetRoutesForVnetResponder(resp *http.Response) (result ListVnetRoute, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -589,7 +583,6 @@ func (client ServerFarmsClient) GetServerFarmSender(req *http.Request) (*http.Re
 func (client ServerFarmsClient) GetServerFarmResponder(resp *http.Response) (result ServerFarmWithRichSku, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -666,7 +659,6 @@ func (client ServerFarmsClient) GetServerFarmMetricDefintionsSender(req *http.Re
 func (client ServerFarmsClient) GetServerFarmMetricDefintionsResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -790,7 +782,6 @@ func (client ServerFarmsClient) GetServerFarmMetricsSender(req *http.Request) (*
 func (client ServerFarmsClient) GetServerFarmMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -905,7 +896,6 @@ func (client ServerFarmsClient) GetServerFarmOperationSender(req *http.Request) 
 func (client ServerFarmsClient) GetServerFarmOperationResponder(resp *http.Response) (result ServerFarmWithRichSku, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -980,7 +970,6 @@ func (client ServerFarmsClient) GetServerFarmsSender(req *http.Request) (*http.R
 func (client ServerFarmsClient) GetServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1107,7 +1096,6 @@ func (client ServerFarmsClient) GetServerFarmSitesSender(req *http.Request) (*ht
 func (client ServerFarmsClient) GetServerFarmSitesResponder(resp *http.Response) (result SiteCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1224,7 +1212,6 @@ func (client ServerFarmsClient) GetServerFarmVnetGatewaySender(req *http.Request
 func (client ServerFarmsClient) GetServerFarmVnetGatewayResponder(resp *http.Response) (result VnetGateway, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1302,7 +1289,6 @@ func (client ServerFarmsClient) GetVnetFromServerFarmSender(req *http.Request) (
 func (client ServerFarmsClient) GetVnetFromServerFarmResponder(resp *http.Response) (result VnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1378,7 +1364,6 @@ func (client ServerFarmsClient) GetVnetsForServerFarmSender(req *http.Request) (
 func (client ServerFarmsClient) GetVnetsForServerFarmResponder(resp *http.Response) (result ListVnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1456,7 +1441,6 @@ func (client ServerFarmsClient) RebootWorkerForServerFarmSender(req *http.Reques
 func (client ServerFarmsClient) RebootWorkerForServerFarmResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1537,7 +1521,6 @@ func (client ServerFarmsClient) RestartSitesForServerFarmSender(req *http.Reques
 func (client ServerFarmsClient) RestartSitesForServerFarmResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1620,7 +1603,6 @@ func (client ServerFarmsClient) UpdateServerFarmVnetGatewaySender(req *http.Requ
 func (client ServerFarmsClient) UpdateServerFarmVnetGatewayResponder(resp *http.Response) (result VnetGateway, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1703,7 +1685,6 @@ func (client ServerFarmsClient) UpdateVnetRouteSender(req *http.Request) (*http.
 func (client ServerFarmsClient) UpdateVnetRouteResponder(resp *http.Response) (result VnetRoute, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

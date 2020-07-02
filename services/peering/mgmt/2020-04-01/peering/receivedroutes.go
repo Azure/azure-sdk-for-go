@@ -131,7 +131,6 @@ func (client ReceivedRoutesClient) ListByPeeringSender(req *http.Request) (*http
 func (client ReceivedRoutesClient) ListByPeeringResponder(resp *http.Response) (result ReceivedRouteListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

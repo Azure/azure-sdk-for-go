@@ -117,7 +117,6 @@ func (client UsageHistoryClient) ListSender(req *http.Request) (*http.Response, 
 func (client UsageHistoryClient) ListResponder(resp *http.Response) (result PlanUsageHistoryListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

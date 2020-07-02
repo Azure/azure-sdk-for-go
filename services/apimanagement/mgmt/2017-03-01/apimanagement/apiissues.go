@@ -147,7 +147,6 @@ func (client APIIssuesClient) ListByServiceSender(req *http.Request) (*http.Resp
 func (client APIIssuesClient) ListByServiceResponder(resp *http.Response) (result IssueCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

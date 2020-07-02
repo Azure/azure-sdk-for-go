@@ -132,7 +132,6 @@ func (client SourceControlSyncJobClient) CreateSender(req *http.Request) (*http.
 func (client SourceControlSyncJobClient) CreateResponder(resp *http.Response) (result SourceControlSyncJob, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -220,7 +219,6 @@ func (client SourceControlSyncJobClient) GetSender(req *http.Request) (*http.Res
 func (client SourceControlSyncJobClient) GetResponder(resp *http.Response) (result SourceControlSyncJobByID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -311,7 +309,6 @@ func (client SourceControlSyncJobClient) ListByAutomationAccountSender(req *http
 func (client SourceControlSyncJobClient) ListByAutomationAccountResponder(resp *http.Response) (result SourceControlSyncJobListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

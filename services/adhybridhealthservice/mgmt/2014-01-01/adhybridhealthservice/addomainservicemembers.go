@@ -125,7 +125,6 @@ func (client AdDomainServiceMembersClient) ListSender(req *http.Request) (*http.
 func (client AdDomainServiceMembersClient) ListResponder(resp *http.Response) (result AddsServiceMembers, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

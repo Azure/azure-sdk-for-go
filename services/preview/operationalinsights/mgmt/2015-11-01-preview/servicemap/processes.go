@@ -138,7 +138,6 @@ func (client ProcessesClient) GetSender(req *http.Request) (*http.Response, erro
 func (client ProcessesClient) GetResponder(resp *http.Response) (result Process, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -246,7 +245,6 @@ func (client ProcessesClient) GetLivenessSender(req *http.Request) (*http.Respon
 func (client ProcessesClient) GetLivenessResponder(resp *http.Response) (result Liveness, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -355,7 +353,6 @@ func (client ProcessesClient) ListAcceptingPortsSender(req *http.Request) (*http
 func (client ProcessesClient) ListAcceptingPortsResponder(resp *http.Response) (result PortCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -501,7 +498,6 @@ func (client ProcessesClient) ListConnectionsSender(req *http.Request) (*http.Re
 func (client ProcessesClient) ListConnectionsResponder(resp *http.Response) (result ConnectionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

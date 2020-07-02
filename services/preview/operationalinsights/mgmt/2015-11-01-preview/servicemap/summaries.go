@@ -133,7 +133,6 @@ func (client SummariesClient) GetMachinesSender(req *http.Request) (*http.Respon
 func (client SummariesClient) GetMachinesResponder(resp *http.Response) (result MachinesSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

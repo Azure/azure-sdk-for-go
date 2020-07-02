@@ -133,7 +133,6 @@ func (client SparkJobDefinitionClient) CreateOrUpdateSparkJobDefinitionSender(re
 func (client SparkJobDefinitionClient) CreateOrUpdateSparkJobDefinitionResponder(resp *http.Response) (result SparkJobDefinitionResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -227,7 +226,6 @@ func (client SparkJobDefinitionClient) DebugSparkJobDefinitionSender(req *http.R
 func (client SparkJobDefinitionClient) DebugSparkJobDefinitionResponder(resp *http.Response) (result SparkBatchJob, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -304,7 +302,6 @@ func (client SparkJobDefinitionClient) DeleteSparkJobDefinitionSender(req *http.
 func (client SparkJobDefinitionClient) DeleteSparkJobDefinitionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -380,7 +377,6 @@ func (client SparkJobDefinitionClient) ExecuteSparkJobDefinitionSender(req *http
 func (client SparkJobDefinitionClient) ExecuteSparkJobDefinitionResponder(resp *http.Response) (result SparkBatchJob, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -463,7 +459,6 @@ func (client SparkJobDefinitionClient) GetSparkJobDefinitionSender(req *http.Req
 func (client SparkJobDefinitionClient) GetSparkJobDefinitionResponder(resp *http.Response) (result SparkJobDefinitionResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotModified),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -535,7 +530,6 @@ func (client SparkJobDefinitionClient) GetSparkJobDefinitionsByWorkspaceSender(r
 func (client SparkJobDefinitionClient) GetSparkJobDefinitionsByWorkspaceResponder(resp *http.Response) (result SparkJobDefinitionsListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

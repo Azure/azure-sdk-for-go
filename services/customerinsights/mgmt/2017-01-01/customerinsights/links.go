@@ -131,7 +131,6 @@ func (client LinksClient) CreateOrUpdateSender(req *http.Request) (future LinksC
 func (client LinksClient) CreateOrUpdateResponder(resp *http.Response) (result LinkResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -209,7 +208,6 @@ func (client LinksClient) DeleteSender(req *http.Request) (*http.Response, error
 func (client LinksClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -286,7 +284,6 @@ func (client LinksClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client LinksClient) GetResponder(resp *http.Response) (result LinkResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -363,7 +360,6 @@ func (client LinksClient) ListByHubSender(req *http.Request) (*http.Response, er
 func (client LinksClient) ListByHubResponder(resp *http.Response) (result LinkListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

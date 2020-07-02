@@ -121,7 +121,6 @@ func (client RunbookDraftClient) GetSender(req *http.Request) (*http.Response, e
 func (client RunbookDraftClient) GetResponder(resp *http.Response) (result RunbookDraft, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -208,7 +207,6 @@ func (client RunbookDraftClient) GetContentResponder(resp *http.Response) (resul
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -295,7 +293,6 @@ func (client RunbookDraftClient) ReplaceContentSender(req *http.Request) (future
 func (client RunbookDraftClient) ReplaceContentResponder(resp *http.Response) (result ReadCloser, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -381,7 +378,6 @@ func (client RunbookDraftClient) UndoEditSender(req *http.Request) (*http.Respon
 func (client RunbookDraftClient) UndoEditResponder(resp *http.Response) (result RunbookDraftUndoEditResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

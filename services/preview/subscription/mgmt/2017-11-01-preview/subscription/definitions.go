@@ -114,7 +114,6 @@ func (client DefinitionsClient) CreateSender(req *http.Request) (future Definiti
 func (client DefinitionsClient) CreateResponder(resp *http.Response) (result Definition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -187,7 +186,6 @@ func (client DefinitionsClient) GetSender(req *http.Request) (*http.Response, er
 func (client DefinitionsClient) GetResponder(resp *http.Response) (result Definition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -262,7 +260,6 @@ func (client DefinitionsClient) GetOperationStatusSender(req *http.Request) (*ht
 func (client DefinitionsClient) GetOperationStatusResponder(resp *http.Response) (result Definition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -330,7 +327,6 @@ func (client DefinitionsClient) ListSender(req *http.Request) (*http.Response, e
 func (client DefinitionsClient) ListResponder(resp *http.Response) (result DefinitionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -103,7 +103,6 @@ func (client PermissionsClient) AddSender(req *http.Request) (*http.Response, er
 func (client PermissionsClient) AddResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -178,7 +177,6 @@ func (client PermissionsClient) DeleteSender(req *http.Request) (*http.Response,
 func (client PermissionsClient) DeleteResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -249,7 +247,6 @@ func (client PermissionsClient) ListSender(req *http.Request) (*http.Response, e
 func (client PermissionsClient) ListResponder(resp *http.Response) (result UserAccessList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -324,7 +321,6 @@ func (client PermissionsClient) UpdateSender(req *http.Request) (*http.Response,
 func (client PermissionsClient) UpdateResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

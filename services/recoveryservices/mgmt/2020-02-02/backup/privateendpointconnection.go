@@ -112,7 +112,6 @@ func (client PrivateEndpointConnectionClient) DeleteSender(req *http.Request) (f
 func (client PrivateEndpointConnectionClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -189,7 +188,6 @@ func (client PrivateEndpointConnectionClient) GetSender(req *http.Request) (*htt
 func (client PrivateEndpointConnectionClient) GetResponder(resp *http.Response) (result PrivateEndpointConnectionResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -270,7 +268,6 @@ func (client PrivateEndpointConnectionClient) PutSender(req *http.Request) (futu
 func (client PrivateEndpointConnectionClient) PutResponder(resp *http.Response) (result PrivateEndpointConnectionResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -145,7 +145,6 @@ func (client CachesClient) CreateOrUpdateSender(req *http.Request) (future Cache
 func (client CachesClient) CreateOrUpdateResponder(resp *http.Response) (result Cache, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -228,7 +227,6 @@ func (client CachesClient) DeleteSender(req *http.Request) (future CachesDeleteF
 func (client CachesClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -312,7 +310,6 @@ func (client CachesClient) FlushSender(req *http.Request) (future CachesFlushFut
 func (client CachesClient) FlushResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -395,7 +392,6 @@ func (client CachesClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client CachesClient) GetResponder(resp *http.Response) (result Cache, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -467,7 +463,6 @@ func (client CachesClient) ListSender(req *http.Request) (*http.Response, error)
 func (client CachesClient) ListResponder(resp *http.Response) (result CachesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -579,7 +574,6 @@ func (client CachesClient) ListByResourceGroupSender(req *http.Request) (*http.R
 func (client CachesClient) ListByResourceGroupResponder(resp *http.Response) (result CachesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -699,7 +693,6 @@ func (client CachesClient) StartSender(req *http.Request) (future CachesStartFut
 func (client CachesClient) StartResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -782,7 +775,6 @@ func (client CachesClient) StopSender(req *http.Request) (future CachesStopFutur
 func (client CachesClient) StopResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -875,7 +867,6 @@ func (client CachesClient) UpdateSender(req *http.Request) (*http.Response, erro
 func (client CachesClient) UpdateResponder(resp *http.Response) (result Cache, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -958,7 +949,6 @@ func (client CachesClient) UpgradeFirmwareSender(req *http.Request) (future Cach
 func (client CachesClient) UpgradeFirmwareResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -352,6 +352,7 @@ type WorkspaceSku = original.WorkspaceSku
 type WorkspaceUpdateParameters = original.WorkspaceUpdateParameters
 type WorkspacesClient = original.WorkspacesClient
 type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
+type WorkspacesDeleteFuture = original.WorkspacesDeleteFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

@@ -115,7 +115,6 @@ func (client BaseClient) CreateManifestSender(req *http.Request) (*http.Response
 func (client BaseClient) CreateManifestResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -186,7 +185,6 @@ func (client BaseClient) DeleteAcrRepositorySender(req *http.Request) (*http.Res
 func (client BaseClient) DeleteAcrRepositoryResponder(resp *http.Response) (result DeletedRepository, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -259,7 +257,6 @@ func (client BaseClient) DeleteAcrTagSender(req *http.Request) (*http.Response, 
 func (client BaseClient) DeleteAcrTagResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -332,7 +329,6 @@ func (client BaseClient) DeleteManifestSender(req *http.Request) (*http.Response
 func (client BaseClient) DeleteManifestResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -409,7 +405,6 @@ func (client BaseClient) GetAcrAccessTokenSender(req *http.Request) (*http.Respo
 func (client BaseClient) GetAcrAccessTokenResponder(resp *http.Response) (result AccessToken, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -484,7 +479,6 @@ func (client BaseClient) GetAcrAccessTokenFromLoginSender(req *http.Request) (*h
 func (client BaseClient) GetAcrAccessTokenFromLoginResponder(resp *http.Response) (result AccessToken, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -557,7 +551,6 @@ func (client BaseClient) GetAcrManifestAttributesSender(req *http.Request) (*htt
 func (client BaseClient) GetAcrManifestAttributesResponder(resp *http.Response) (result AcrManifestAttributes, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -644,7 +637,6 @@ func (client BaseClient) GetAcrManifestsSender(req *http.Request) (*http.Respons
 func (client BaseClient) GetAcrManifestsResponder(resp *http.Response) (result AcrManifests, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -730,7 +722,6 @@ func (client BaseClient) GetAcrRefreshTokenFromExchangeSender(req *http.Request)
 func (client BaseClient) GetAcrRefreshTokenFromExchangeResponder(resp *http.Response) (result RefreshToken, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -808,7 +799,6 @@ func (client BaseClient) GetAcrRepositoriesSender(req *http.Request) (*http.Resp
 func (client BaseClient) GetAcrRepositoriesResponder(resp *http.Response) (result Repositories, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -879,7 +869,6 @@ func (client BaseClient) GetAcrRepositoryAttributesSender(req *http.Request) (*h
 func (client BaseClient) GetAcrRepositoryAttributesResponder(resp *http.Response) (result RepositoryAttributes, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -952,7 +941,6 @@ func (client BaseClient) GetAcrTagAttributesSender(req *http.Request) (*http.Res
 func (client BaseClient) GetAcrTagAttributesResponder(resp *http.Response) (result AcrTagAttributes, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1043,7 +1031,6 @@ func (client BaseClient) GetAcrTagsSender(req *http.Request) (*http.Response, er
 func (client BaseClient) GetAcrTagsResponder(resp *http.Response) (result AcrRepositoryTags, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1108,7 +1095,6 @@ func (client BaseClient) GetDockerRegistryV2SupportSender(req *http.Request) (*h
 func (client BaseClient) GetDockerRegistryV2SupportResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1187,7 +1173,6 @@ func (client BaseClient) GetManifestSender(req *http.Request) (*http.Response, e
 func (client BaseClient) GetManifestResponder(resp *http.Response) (result Manifest, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1265,7 +1250,6 @@ func (client BaseClient) GetRepositoriesSender(req *http.Request) (*http.Respons
 func (client BaseClient) GetRepositoriesResponder(resp *http.Response) (result Repositories, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1336,7 +1320,6 @@ func (client BaseClient) GetTagListSender(req *http.Request) (*http.Response, er
 func (client BaseClient) GetTagListResponder(resp *http.Response) (result RepositoryTags, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1415,7 +1398,6 @@ func (client BaseClient) UpdateAcrManifestAttributesSender(req *http.Request) (*
 func (client BaseClient) UpdateAcrManifestAttributesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1492,7 +1474,6 @@ func (client BaseClient) UpdateAcrRepositoryAttributesSender(req *http.Request) 
 func (client BaseClient) UpdateAcrRepositoryAttributesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1570,7 +1551,6 @@ func (client BaseClient) UpdateAcrTagAttributesSender(req *http.Request) (*http.
 func (client BaseClient) UpdateAcrTagAttributesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

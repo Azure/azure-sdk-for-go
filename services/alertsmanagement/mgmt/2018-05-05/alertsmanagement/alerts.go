@@ -109,7 +109,6 @@ func (client AlertsClient) ChangeStateSender(req *http.Request) (*http.Response,
 func (client AlertsClient) ChangeStateResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -260,7 +259,6 @@ func (client AlertsClient) GetAllSender(req *http.Request) (*http.Response, erro
 func (client AlertsClient) GetAllResponder(resp *http.Response) (result AlertsList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -371,7 +369,6 @@ func (client AlertsClient) GetByIDSender(req *http.Request) (*http.Response, err
 func (client AlertsClient) GetByIDResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -446,7 +443,6 @@ func (client AlertsClient) GetHistorySender(req *http.Request) (*http.Response, 
 func (client AlertsClient) GetHistoryResponder(resp *http.Response) (result AlertModification, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -569,7 +565,6 @@ func (client AlertsClient) GetSummarySender(req *http.Request) (*http.Response, 
 func (client AlertsClient) GetSummaryResponder(resp *http.Response) (result AlertsSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

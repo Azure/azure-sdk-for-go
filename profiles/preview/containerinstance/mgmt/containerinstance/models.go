@@ -22,7 +22,7 @@ package containerinstance
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-10-01/containerinstance"
+	original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2019-12-01/containerinstance"
 )
 
 const (
@@ -49,6 +49,13 @@ const (
 	Always    ContainerGroupRestartPolicy = original.Always
 	Never     ContainerGroupRestartPolicy = original.Never
 	OnFailure ContainerGroupRestartPolicy = original.OnFailure
+)
+
+type ContainerGroupSku = original.ContainerGroupSku
+
+const (
+	Dedicated ContainerGroupSku = original.Dedicated
+	Standard  ContainerGroupSku = original.Standard
 )
 
 type ContainerNetworkProtocol = original.ContainerNetworkProtocol
@@ -107,13 +114,16 @@ type AzureFileVolume = original.AzureFileVolume
 type BaseClient = original.BaseClient
 type CachedImages = original.CachedImages
 type CachedImagesListResult = original.CachedImagesListResult
+type CachedImagesListResultIterator = original.CachedImagesListResultIterator
+type CachedImagesListResultPage = original.CachedImagesListResultPage
 type Capabilities = original.Capabilities
 type CapabilitiesCapabilities = original.CapabilitiesCapabilities
 type CapabilitiesListResult = original.CapabilitiesListResult
+type CapabilitiesListResultIterator = original.CapabilitiesListResultIterator
+type CapabilitiesListResultPage = original.CapabilitiesListResultPage
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type Container = original.Container
-type ContainerClient = original.ContainerClient
 type ContainerExec = original.ContainerExec
 type ContainerExecRequest = original.ContainerExecRequest
 type ContainerExecRequestTerminalSize = original.ContainerExecRequestTerminalSize
@@ -128,9 +138,9 @@ type ContainerGroupListResultPage = original.ContainerGroupListResultPage
 type ContainerGroupNetworkProfile = original.ContainerGroupNetworkProfile
 type ContainerGroupProperties = original.ContainerGroupProperties
 type ContainerGroupPropertiesInstanceView = original.ContainerGroupPropertiesInstanceView
-type ContainerGroupUsageClient = original.ContainerGroupUsageClient
 type ContainerGroupsClient = original.ContainerGroupsClient
 type ContainerGroupsCreateOrUpdateFuture = original.ContainerGroupsCreateOrUpdateFuture
+type ContainerGroupsDeleteFuture = original.ContainerGroupsDeleteFuture
 type ContainerGroupsRestartFuture = original.ContainerGroupsRestartFuture
 type ContainerGroupsStartFuture = original.ContainerGroupsStartFuture
 type ContainerHTTPGet = original.ContainerHTTPGet
@@ -139,25 +149,32 @@ type ContainerProbe = original.ContainerProbe
 type ContainerProperties = original.ContainerProperties
 type ContainerPropertiesInstanceView = original.ContainerPropertiesInstanceView
 type ContainerState = original.ContainerState
+type ContainersClient = original.ContainersClient
 type DNSConfiguration = original.DNSConfiguration
+type EncryptionProperties = original.EncryptionProperties
 type EnvironmentVariable = original.EnvironmentVariable
 type Event = original.Event
 type GitRepoVolume = original.GitRepoVolume
 type GpuResource = original.GpuResource
 type IPAddress = original.IPAddress
 type ImageRegistryCredential = original.ImageRegistryCredential
+type InitContainerDefinition = original.InitContainerDefinition
+type InitContainerPropertiesDefinition = original.InitContainerPropertiesDefinition
+type InitContainerPropertiesDefinitionInstanceView = original.InitContainerPropertiesDefinitionInstanceView
+type LocationClient = original.LocationClient
 type LogAnalytics = original.LogAnalytics
 type Logs = original.Logs
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
+type OperationListResultIterator = original.OperationListResultIterator
+type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type Port = original.Port
 type Resource = original.Resource
 type ResourceLimits = original.ResourceLimits
 type ResourceRequests = original.ResourceRequests
 type ResourceRequirements = original.ResourceRequirements
-type ServiceAssociationLinkClient = original.ServiceAssociationLinkClient
 type Usage = original.Usage
 type UsageListResult = original.UsageListResult
 type UsageName = original.UsageName
@@ -167,11 +184,17 @@ type VolumeMount = original.VolumeMount
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewContainerClient(subscriptionID string) ContainerClient {
-	return original.NewContainerClient(subscriptionID)
+func NewCachedImagesListResultIterator(page CachedImagesListResultPage) CachedImagesListResultIterator {
+	return original.NewCachedImagesListResultIterator(page)
 }
-func NewContainerClientWithBaseURI(baseURI string, subscriptionID string) ContainerClient {
-	return original.NewContainerClientWithBaseURI(baseURI, subscriptionID)
+func NewCachedImagesListResultPage(getNextPage func(context.Context, CachedImagesListResult) (CachedImagesListResult, error)) CachedImagesListResultPage {
+	return original.NewCachedImagesListResultPage(getNextPage)
+}
+func NewCapabilitiesListResultIterator(page CapabilitiesListResultPage) CapabilitiesListResultIterator {
+	return original.NewCapabilitiesListResultIterator(page)
+}
+func NewCapabilitiesListResultPage(getNextPage func(context.Context, CapabilitiesListResult) (CapabilitiesListResult, error)) CapabilitiesListResultPage {
+	return original.NewCapabilitiesListResultPage(getNextPage)
 }
 func NewContainerGroupListResultIterator(page ContainerGroupListResultPage) ContainerGroupListResultIterator {
 	return original.NewContainerGroupListResultIterator(page)
@@ -179,29 +202,35 @@ func NewContainerGroupListResultIterator(page ContainerGroupListResultPage) Cont
 func NewContainerGroupListResultPage(getNextPage func(context.Context, ContainerGroupListResult) (ContainerGroupListResult, error)) ContainerGroupListResultPage {
 	return original.NewContainerGroupListResultPage(getNextPage)
 }
-func NewContainerGroupUsageClient(subscriptionID string) ContainerGroupUsageClient {
-	return original.NewContainerGroupUsageClient(subscriptionID)
-}
-func NewContainerGroupUsageClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupUsageClient {
-	return original.NewContainerGroupUsageClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewContainerGroupsClient(subscriptionID string) ContainerGroupsClient {
 	return original.NewContainerGroupsClient(subscriptionID)
 }
 func NewContainerGroupsClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupsClient {
 	return original.NewContainerGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewContainersClient(subscriptionID string) ContainersClient {
+	return original.NewContainersClient(subscriptionID)
+}
+func NewContainersClientWithBaseURI(baseURI string, subscriptionID string) ContainersClient {
+	return original.NewContainersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLocationClient(subscriptionID string) LocationClient {
+	return original.NewLocationClient(subscriptionID)
+}
+func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) LocationClient {
+	return original.NewLocationClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewServiceAssociationLinkClient(subscriptionID string) ServiceAssociationLinkClient {
-	return original.NewServiceAssociationLinkClient(subscriptionID)
-}
-func NewServiceAssociationLinkClientWithBaseURI(baseURI string, subscriptionID string) ServiceAssociationLinkClient {
-	return original.NewServiceAssociationLinkClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -214,6 +243,9 @@ func PossibleContainerGroupNetworkProtocolValues() []ContainerGroupNetworkProtoc
 }
 func PossibleContainerGroupRestartPolicyValues() []ContainerGroupRestartPolicy {
 	return original.PossibleContainerGroupRestartPolicyValues()
+}
+func PossibleContainerGroupSkuValues() []ContainerGroupSku {
+	return original.PossibleContainerGroupSkuValues()
 }
 func PossibleContainerNetworkProtocolValues() []ContainerNetworkProtocol {
 	return original.PossibleContainerNetworkProtocolValues()

@@ -109,7 +109,6 @@ func (client UpdateClient) IPAddressAggregateSettingsSender(req *http.Request) (
 func (client UpdateClient) IPAddressAggregateSettingsResponder(resp *http.Response) (result IPAddressAggregateSetting, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

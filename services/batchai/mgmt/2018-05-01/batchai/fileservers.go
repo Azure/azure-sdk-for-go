@@ -146,7 +146,6 @@ func (client FileServersClient) CreateSender(req *http.Request) (future FileServ
 func (client FileServersClient) CreateResponder(resp *http.Response) (result FileServer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -241,7 +240,6 @@ func (client FileServersClient) DeleteSender(req *http.Request) (future FileServ
 func (client FileServersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -335,7 +333,6 @@ func (client FileServersClient) GetSender(req *http.Request) (*http.Response, er
 func (client FileServersClient) GetResponder(resp *http.Response) (result FileServer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -434,7 +431,6 @@ func (client FileServersClient) ListByWorkspaceSender(req *http.Request) (*http.
 func (client FileServersClient) ListByWorkspaceResponder(resp *http.Response) (result FileServerListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

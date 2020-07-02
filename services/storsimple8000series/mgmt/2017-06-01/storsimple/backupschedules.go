@@ -133,7 +133,6 @@ func (client BackupSchedulesClient) CreateOrUpdateSender(req *http.Request) (fut
 func (client BackupSchedulesClient) CreateOrUpdateResponder(resp *http.Response) (result BackupSchedule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -222,7 +221,6 @@ func (client BackupSchedulesClient) DeleteSender(req *http.Request) (future Back
 func (client BackupSchedulesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -310,7 +308,6 @@ func (client BackupSchedulesClient) GetSender(req *http.Request) (*http.Response
 func (client BackupSchedulesClient) GetResponder(resp *http.Response) (result BackupSchedule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -397,7 +394,6 @@ func (client BackupSchedulesClient) ListByBackupPolicySender(req *http.Request) 
 func (client BackupSchedulesClient) ListByBackupPolicyResponder(resp *http.Response) (result BackupScheduleList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

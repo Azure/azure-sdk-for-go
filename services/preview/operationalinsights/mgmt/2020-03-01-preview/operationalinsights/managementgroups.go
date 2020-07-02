@@ -125,7 +125,6 @@ func (client ManagementGroupsClient) ListSender(req *http.Request) (*http.Respon
 func (client ManagementGroupsClient) ListResponder(resp *http.Response) (result WorkspaceListManagementGroupsResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

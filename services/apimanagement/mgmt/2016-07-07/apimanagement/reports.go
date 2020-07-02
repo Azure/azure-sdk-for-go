@@ -146,7 +146,6 @@ func (client ReportsClient) ListByServiceSender(req *http.Request) (*http.Respon
 func (client ReportsClient) ListByServiceResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -148,7 +148,6 @@ func (client FilesystemClient) CreateSender(req *http.Request) (*http.Response, 
 func (client FilesystemClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
@@ -278,7 +277,6 @@ func (client FilesystemClient) DeleteSender(req *http.Request) (*http.Response, 
 func (client FilesystemClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -389,7 +387,6 @@ func (client FilesystemClient) GetPropertiesSender(req *http.Request) (*http.Res
 func (client FilesystemClient) GetPropertiesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -509,7 +506,6 @@ func (client FilesystemClient) ListSender(req *http.Request) (*http.Response, er
 func (client FilesystemClient) ListResponder(resp *http.Response) (result FilesystemList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -645,7 +641,6 @@ func (client FilesystemClient) SetPropertiesSender(req *http.Request) (*http.Res
 func (client FilesystemClient) SetPropertiesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

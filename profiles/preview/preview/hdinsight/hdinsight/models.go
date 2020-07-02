@@ -35,6 +35,15 @@ const (
 	SUBMITTED ApplicationState = original.SUBMITTED
 )
 
+type SessionJobKind = original.SessionJobKind
+
+const (
+	Pyspark SessionJobKind = original.Pyspark
+	Spark   SessionJobKind = original.Spark
+	Sparkr  SessionJobKind = original.Sparkr
+	SQL     SessionJobKind = original.SQL
+)
+
 type AppState = original.AppState
 type BaseClient = original.BaseClient
 type JobClient = original.JobClient
@@ -45,20 +54,37 @@ type JobOperationsErrorResponse = original.JobOperationsErrorResponse
 type JobSubmissionJSONResponse = original.JobSubmissionJSONResponse
 type ListJobListJSONObject = original.ListJobListJSONObject
 type Profile = original.Profile
+type SparkBatchJob = original.SparkBatchJob
+type SparkBatchJobCollection = original.SparkBatchJobCollection
+type SparkBatchJobRequest = original.SparkBatchJobRequest
+type SparkJobDeletedResult = original.SparkJobDeletedResult
+type SparkJobLog = original.SparkJobLog
+type SparkJobState = original.SparkJobState
+type SparkSessionCollection = original.SparkSessionCollection
+type SparkSessionJob = original.SparkSessionJob
+type SparkSessionJobRequest = original.SparkSessionJobRequest
+type SparkStatement = original.SparkStatement
+type SparkStatementCancellationResult = original.SparkStatementCancellationResult
+type SparkStatementCollection = original.SparkStatementCollection
+type SparkStatementOutput = original.SparkStatementOutput
+type SparkStatementRequest = original.SparkStatementRequest
 type Status = original.Status
 type Userargs = original.Userargs
 
-func New(clusterDNSName string, userName string) BaseClient {
-	return original.New(clusterDNSName, userName)
+func New(endpoint string, userName string) BaseClient {
+	return original.New(endpoint, userName)
 }
-func NewJobClient(clusterDNSName string, userName string) JobClient {
-	return original.NewJobClient(clusterDNSName, userName)
+func NewJobClient(endpoint string, userName string) JobClient {
+	return original.NewJobClient(endpoint, userName)
 }
-func NewWithoutDefaults(clusterDNSName string, userName string) BaseClient {
-	return original.NewWithoutDefaults(clusterDNSName, userName)
+func NewWithoutDefaults(endpoint string, userName string) BaseClient {
+	return original.NewWithoutDefaults(endpoint, userName)
 }
 func PossibleApplicationStateValues() []ApplicationState {
 	return original.PossibleApplicationStateValues()
+}
+func PossibleSessionJobKindValues() []SessionJobKind {
+	return original.PossibleSessionJobKindValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

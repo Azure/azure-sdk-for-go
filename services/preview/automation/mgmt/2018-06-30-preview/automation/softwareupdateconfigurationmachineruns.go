@@ -128,7 +128,6 @@ func (client SoftwareUpdateConfigurationMachineRunsClient) GetByIDSender(req *ht
 func (client SoftwareUpdateConfigurationMachineRunsClient) GetByIDResponder(resp *http.Response) (result SoftwareUpdateConfigurationMachineRun, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -230,7 +229,6 @@ func (client SoftwareUpdateConfigurationMachineRunsClient) ListSender(req *http.
 func (client SoftwareUpdateConfigurationMachineRunsClient) ListResponder(resp *http.Response) (result SoftwareUpdateConfigurationMachineRunListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

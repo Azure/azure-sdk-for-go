@@ -6716,6 +6716,10 @@ type HyperVReplicaAzureEnableProtectionInput struct {
 	TargetAzureV2ResourceGroupID *string `json:"targetAzureV2ResourceGroupId,omitempty"`
 	// UseManagedDisks - A value indicating whether managed disks should be used during failover.
 	UseManagedDisks *string `json:"useManagedDisks,omitempty"`
+	// TargetAvailabilityZone - The target availability zone.
+	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	// TargetProximityPlacementGroupID - The proximity placement group ARM Id.
+	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
 	InstanceType InstanceTypeBasicEnableProtectionProviderSpecificInput `json:"instanceType,omitempty"`
 }
@@ -6765,6 +6769,12 @@ func (hvraepi HyperVReplicaAzureEnableProtectionInput) MarshalJSON() ([]byte, er
 	}
 	if hvraepi.UseManagedDisks != nil {
 		objectMap["useManagedDisks"] = hvraepi.UseManagedDisks
+	}
+	if hvraepi.TargetAvailabilityZone != nil {
+		objectMap["targetAvailabilityZone"] = hvraepi.TargetAvailabilityZone
+	}
+	if hvraepi.TargetProximityPlacementGroupID != nil {
+		objectMap["targetProximityPlacementGroupId"] = hvraepi.TargetProximityPlacementGroupID
 	}
 	if hvraepi.InstanceType != "" {
 		objectMap["instanceType"] = hvraepi.InstanceType
@@ -7253,6 +7263,10 @@ type HyperVReplicaAzureReplicationDetails struct {
 	RecoveryAzureResourceGroupID *string `json:"recoveryAzureResourceGroupId,omitempty"`
 	// RecoveryAvailabilitySetID - The recovery availability set Id.
 	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
+	// TargetAvailabilityZone - The target availability zone.
+	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	// TargetProximityPlacementGroupID - The target proximity placement group Id.
+	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
 	// UseManagedDisks - A value indicating whether managed disks should be used during failover.
 	UseManagedDisks *string `json:"useManagedDisks,omitempty"`
 	// LicenseType - License Type of the VM to be used.
@@ -7330,6 +7344,12 @@ func (hvrard HyperVReplicaAzureReplicationDetails) MarshalJSON() ([]byte, error)
 	}
 	if hvrard.RecoveryAvailabilitySetID != nil {
 		objectMap["recoveryAvailabilitySetId"] = hvrard.RecoveryAvailabilitySetID
+	}
+	if hvrard.TargetAvailabilityZone != nil {
+		objectMap["targetAvailabilityZone"] = hvrard.TargetAvailabilityZone
+	}
+	if hvrard.TargetProximityPlacementGroupID != nil {
+		objectMap["targetProximityPlacementGroupId"] = hvrard.TargetProximityPlacementGroupID
 	}
 	if hvrard.UseManagedDisks != nil {
 		objectMap["useManagedDisks"] = hvrard.UseManagedDisks
@@ -7475,6 +7495,10 @@ type HyperVReplicaAzureUpdateReplicationProtectedItemInput struct {
 	UseManagedDisks *string `json:"useManagedDisks,omitempty"`
 	// DiskIDToDiskEncryptionMap - The dictionary of disk resource Id to disk encryption set ARM Id.
 	DiskIDToDiskEncryptionMap map[string]*string `json:"diskIdToDiskEncryptionMap"`
+	// TargetProximityPlacementGroupID - The target proximity placement group Id.
+	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	// TargetAvailabilityZone - The target availability zone.
+	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2'
 	InstanceType InstanceTypeBasicUpdateReplicationProtectedItemProviderInput `json:"instanceType,omitempty"`
 }
@@ -7494,6 +7518,12 @@ func (hvraurpii HyperVReplicaAzureUpdateReplicationProtectedItemInput) MarshalJS
 	}
 	if hvraurpii.DiskIDToDiskEncryptionMap != nil {
 		objectMap["diskIdToDiskEncryptionMap"] = hvraurpii.DiskIDToDiskEncryptionMap
+	}
+	if hvraurpii.TargetProximityPlacementGroupID != nil {
+		objectMap["targetProximityPlacementGroupId"] = hvraurpii.TargetProximityPlacementGroupID
+	}
+	if hvraurpii.TargetAvailabilityZone != nil {
+		objectMap["targetAvailabilityZone"] = hvraurpii.TargetAvailabilityZone
 	}
 	if hvraurpii.InstanceType != "" {
 		objectMap["instanceType"] = hvraurpii.InstanceType
@@ -8848,6 +8878,10 @@ type InMageAzureV2EnableProtectionInput struct {
 	DiskType DiskAccountType `json:"diskType,omitempty"`
 	// DiskEncryptionSetID - The DiskEncryptionSet ARM ID.
 	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	// TargetAvailabilityZone - The target availability zone.
+	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	// TargetProximityPlacementGroupID - The proximity placement group ARM Id.
+	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
 	InstanceType InstanceTypeBasicEnableProtectionProviderSpecificInput `json:"instanceType,omitempty"`
 }
@@ -8903,6 +8937,12 @@ func (imavepi InMageAzureV2EnableProtectionInput) MarshalJSON() ([]byte, error) 
 	}
 	if imavepi.DiskEncryptionSetID != nil {
 		objectMap["diskEncryptionSetId"] = imavepi.DiskEncryptionSetID
+	}
+	if imavepi.TargetAvailabilityZone != nil {
+		objectMap["targetAvailabilityZone"] = imavepi.TargetAvailabilityZone
+	}
+	if imavepi.TargetProximityPlacementGroupID != nil {
+		objectMap["targetProximityPlacementGroupId"] = imavepi.TargetProximityPlacementGroupID
 	}
 	if imavepi.InstanceType != "" {
 		objectMap["instanceType"] = imavepi.InstanceType
@@ -9443,6 +9483,8 @@ type InMageAzureV2ReplicationDetails struct {
 	VMNics *[]VMNicDetails `json:"vmNics,omitempty"`
 	// SelectedRecoveryAzureNetworkID - The selected recovery azure network Id.
 	SelectedRecoveryAzureNetworkID *string `json:"selectedRecoveryAzureNetworkId,omitempty"`
+	// SelectedTfoAzureNetworkID - The test failover virtual network.
+	SelectedTfoAzureNetworkID *string `json:"selectedTfoAzureNetworkId,omitempty"`
 	// SelectedSourceNicID - The selected source nic Id which will be used as the primary nic during failover.
 	SelectedSourceNicID *string `json:"selectedSourceNicId,omitempty"`
 	// DiscoveryType - A value indicating the discovery type of the machine. Value can be vCenter or physical.
@@ -9457,6 +9499,10 @@ type InMageAzureV2ReplicationDetails struct {
 	RecoveryAzureResourceGroupID *string `json:"recoveryAzureResourceGroupId,omitempty"`
 	// RecoveryAvailabilitySetID - The recovery availability set Id.
 	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
+	// TargetAvailabilityZone - The target availability zone.
+	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	// TargetProximityPlacementGroupID - The target proximity placement group Id.
+	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
 	// UseManagedDisks - A value indicating whether managed disks should be used during failover.
 	UseManagedDisks *string `json:"useManagedDisks,omitempty"`
 	// LicenseType - License Type of the VM to be used.
@@ -9586,6 +9632,9 @@ func (imavrd InMageAzureV2ReplicationDetails) MarshalJSON() ([]byte, error) {
 	if imavrd.SelectedRecoveryAzureNetworkID != nil {
 		objectMap["selectedRecoveryAzureNetworkId"] = imavrd.SelectedRecoveryAzureNetworkID
 	}
+	if imavrd.SelectedTfoAzureNetworkID != nil {
+		objectMap["selectedTfoAzureNetworkId"] = imavrd.SelectedTfoAzureNetworkID
+	}
 	if imavrd.SelectedSourceNicID != nil {
 		objectMap["selectedSourceNicId"] = imavrd.SelectedSourceNicID
 	}
@@ -9606,6 +9655,12 @@ func (imavrd InMageAzureV2ReplicationDetails) MarshalJSON() ([]byte, error) {
 	}
 	if imavrd.RecoveryAvailabilitySetID != nil {
 		objectMap["recoveryAvailabilitySetId"] = imavrd.RecoveryAvailabilitySetID
+	}
+	if imavrd.TargetAvailabilityZone != nil {
+		objectMap["targetAvailabilityZone"] = imavrd.TargetAvailabilityZone
+	}
+	if imavrd.TargetProximityPlacementGroupID != nil {
+		objectMap["targetProximityPlacementGroupId"] = imavrd.TargetProximityPlacementGroupID
 	}
 	if imavrd.UseManagedDisks != nil {
 		objectMap["useManagedDisks"] = imavrd.UseManagedDisks
@@ -9772,6 +9827,10 @@ type InMageAzureV2UpdateReplicationProtectedItemInput struct {
 	RecoveryAzureV2ResourceGroupID *string `json:"recoveryAzureV2ResourceGroupId,omitempty"`
 	// UseManagedDisks - A value indicating whether managed disks should be used during failover.
 	UseManagedDisks *string `json:"useManagedDisks,omitempty"`
+	// TargetProximityPlacementGroupID - The target proximity placement group Id.
+	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	// TargetAvailabilityZone - The target availability zone.
+	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2'
 	InstanceType InstanceTypeBasicUpdateReplicationProtectedItemProviderInput `json:"instanceType,omitempty"`
 }
@@ -9788,6 +9847,12 @@ func (imavurpii InMageAzureV2UpdateReplicationProtectedItemInput) MarshalJSON() 
 	}
 	if imavurpii.UseManagedDisks != nil {
 		objectMap["useManagedDisks"] = imavurpii.UseManagedDisks
+	}
+	if imavurpii.TargetProximityPlacementGroupID != nil {
+		objectMap["targetProximityPlacementGroupId"] = imavurpii.TargetProximityPlacementGroupID
+	}
+	if imavurpii.TargetAvailabilityZone != nil {
+		objectMap["targetAvailabilityZone"] = imavurpii.TargetAvailabilityZone
 	}
 	if imavurpii.InstanceType != "" {
 		objectMap["instanceType"] = imavurpii.InstanceType

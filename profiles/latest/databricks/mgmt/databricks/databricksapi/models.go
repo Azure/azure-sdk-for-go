@@ -22,4 +22,5 @@ package databricksapi
 import original "github.com/Azure/azure-sdk-for-go/services/databricks/mgmt/2018-04-01/databricks/databricksapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
+type VNetPeeringClientAPI = original.VNetPeeringClientAPI
 type WorkspacesClientAPI = original.WorkspacesClientAPI

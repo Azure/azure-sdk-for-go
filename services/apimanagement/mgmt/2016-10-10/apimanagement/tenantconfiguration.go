@@ -125,7 +125,6 @@ func (client TenantConfigurationClient) DeploySender(req *http.Request) (future 
 func (client TenantConfigurationClient) DeployResponder(resp *http.Response) (result OperationResultContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -215,7 +214,6 @@ func (client TenantConfigurationClient) SaveSender(req *http.Request) (future Te
 func (client TenantConfigurationClient) SaveResponder(resp *http.Response) (result OperationResultContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -305,7 +303,6 @@ func (client TenantConfigurationClient) ValidateSender(req *http.Request) (futur
 func (client TenantConfigurationClient) ValidateResponder(resp *http.Response) (result OperationResultContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -124,7 +124,6 @@ func (client DeviceSettingsClient) CreateOrUpdateAlertSettingsSender(req *http.R
 func (client DeviceSettingsClient) CreateOrUpdateAlertSettingsResponder(resp *http.Response) (result AlertSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -215,7 +214,6 @@ func (client DeviceSettingsClient) CreateOrUpdateTimeSettingsSender(req *http.Re
 func (client DeviceSettingsClient) CreateOrUpdateTimeSettingsResponder(resp *http.Response) (result TimeSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -300,7 +298,6 @@ func (client DeviceSettingsClient) GetAlertSettingsSender(req *http.Request) (*h
 func (client DeviceSettingsClient) GetAlertSettingsResponder(resp *http.Response) (result AlertSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -385,7 +382,6 @@ func (client DeviceSettingsClient) GetNetworkSettingsSender(req *http.Request) (
 func (client DeviceSettingsClient) GetNetworkSettingsResponder(resp *http.Response) (result NetworkSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -470,7 +466,6 @@ func (client DeviceSettingsClient) GetSecuritySettingsSender(req *http.Request) 
 func (client DeviceSettingsClient) GetSecuritySettingsResponder(resp *http.Response) (result SecuritySettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -555,7 +550,6 @@ func (client DeviceSettingsClient) GetTimeSettingsSender(req *http.Request) (*ht
 func (client DeviceSettingsClient) GetTimeSettingsResponder(resp *http.Response) (result TimeSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -640,7 +634,6 @@ func (client DeviceSettingsClient) SyncRemotemanagementCertificateSender(req *ht
 func (client DeviceSettingsClient) SyncRemotemanagementCertificateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -727,7 +720,6 @@ func (client DeviceSettingsClient) UpdateNetworkSettingsSender(req *http.Request
 func (client DeviceSettingsClient) UpdateNetworkSettingsResponder(resp *http.Response) (result NetworkSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -815,7 +807,6 @@ func (client DeviceSettingsClient) UpdateSecuritySettingsSender(req *http.Reques
 func (client DeviceSettingsClient) UpdateSecuritySettingsResponder(resp *http.Response) (result SecuritySettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

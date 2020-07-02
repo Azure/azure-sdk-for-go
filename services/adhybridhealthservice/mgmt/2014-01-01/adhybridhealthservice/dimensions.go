@@ -109,7 +109,6 @@ func (client DimensionsClient) ListAddsDimensionsSender(req *http.Request) (*htt
 func (client DimensionsClient) ListAddsDimensionsResponder(resp *http.Response) (result Dimensions, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

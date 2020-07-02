@@ -132,7 +132,6 @@ func (client SessionHostsClient) DeleteSender(req *http.Request) (*http.Response
 func (client SessionHostsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -225,7 +224,6 @@ func (client SessionHostsClient) GetSender(req *http.Request) (*http.Response, e
 func (client SessionHostsClient) GetResponder(resp *http.Response) (result SessionHost, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -315,7 +313,6 @@ func (client SessionHostsClient) ListSender(req *http.Request) (*http.Response, 
 func (client SessionHostsClient) ListResponder(resp *http.Response) (result SessionHostList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -452,7 +449,6 @@ func (client SessionHostsClient) UpdateSender(req *http.Request) (*http.Response
 func (client SessionHostsClient) UpdateResponder(resp *http.Response) (result SessionHost, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

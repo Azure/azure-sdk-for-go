@@ -116,7 +116,6 @@ func (client TicketsClient) CheckNameAvailabilitySender(req *http.Request) (*htt
 func (client TicketsClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameAvailabilityOutput, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -229,7 +228,6 @@ func (client TicketsClient) CreateSender(req *http.Request) (future TicketsCreat
 func (client TicketsClient) CreateResponder(resp *http.Response) (result TicketDetails, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -237,8 +235,8 @@ func (client TicketsClient) CreateResponder(resp *http.Response) (result TicketD
 	return
 }
 
-// Get get ticket details for an Azure subscription. Support ticket data is available for 12 months after ticket
-// creation. If a ticket was created more than 12 months ago, a request for data might cause an error.
+// Get get ticket details for an Azure subscription. Support ticket data is available for 18 months after ticket
+// creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
 // Parameters:
 // supportTicketName - support ticket name.
 func (client TicketsClient) Get(ctx context.Context, supportTicketName string) (result TicketDetails, err error) {
@@ -304,7 +302,6 @@ func (client TicketsClient) GetSender(req *http.Request) (*http.Response, error)
 func (client TicketsClient) GetResponder(resp *http.Response) (result TicketDetails, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -314,8 +311,8 @@ func (client TicketsClient) GetResponder(resp *http.Response) (result TicketDeta
 
 // List lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_ or
 // _CreatedDate_ using the $filter parameter. Output will be a paged result with _nextLink_, using which you can
-// retrieve the next set of support tickets. <br/><br/>Support ticket data is available for 12 months after ticket
-// creation. If a ticket was created more than 12 months ago, a request for data might cause an error.
+// retrieve the next set of support tickets. <br/><br/>Support ticket data is available for 18 months after ticket
+// creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
 // Parameters:
 // top - the number of values to return in the collection. Default is 25 and max is 100.
 // filter - the filter to apply on the operation. We support 'odata v4.0' filter semantics. [Learn
@@ -391,7 +388,6 @@ func (client TicketsClient) ListSender(req *http.Request) (*http.Response, error
 func (client TicketsClient) ListResponder(resp *http.Response) (result TicketsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -510,7 +506,6 @@ func (client TicketsClient) UpdateSender(req *http.Request) (*http.Response, err
 func (client TicketsClient) UpdateResponder(resp *http.Response) (result TicketDetails, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

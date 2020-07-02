@@ -124,7 +124,6 @@ func (client SharedKeysClient) GetSharedKeysSender(req *http.Request) (*http.Res
 func (client SharedKeysClient) GetSharedKeysResponder(resp *http.Response) (result SharedKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -215,7 +214,6 @@ func (client SharedKeysClient) RegenerateSender(req *http.Request) (*http.Respon
 func (client SharedKeysClient) RegenerateResponder(resp *http.Response) (result SharedKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

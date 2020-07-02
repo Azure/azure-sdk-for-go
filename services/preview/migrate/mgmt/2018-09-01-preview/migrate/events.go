@@ -111,7 +111,6 @@ func (client EventsClient) DeleteEventSender(req *http.Request) (*http.Response,
 func (client EventsClient) DeleteEventResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -199,7 +198,6 @@ func (client EventsClient) EnumerateEventsSender(req *http.Request) (*http.Respo
 func (client EventsClient) EnumerateEventsResponder(resp *http.Response) (result EventCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -277,7 +275,6 @@ func (client EventsClient) GetEventSender(req *http.Request) (*http.Response, er
 func (client EventsClient) GetEventResponder(resp *http.Response) (result Event, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

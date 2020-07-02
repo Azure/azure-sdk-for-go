@@ -105,7 +105,6 @@ func (client AccessTokensClient) GetSender(req *http.Request) (*http.Response, e
 func (client AccessTokensClient) GetResponder(resp *http.Response) (result AccessToken, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -180,7 +179,6 @@ func (client AccessTokensClient) GetFromLoginSender(req *http.Request) (*http.Re
 func (client AccessTokensClient) GetFromLoginResponder(resp *http.Response) (result AccessToken, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

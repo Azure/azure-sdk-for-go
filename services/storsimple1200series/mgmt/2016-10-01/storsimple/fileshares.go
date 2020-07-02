@@ -131,7 +131,6 @@ func (client FileSharesClient) CreateOrUpdateSender(req *http.Request) (future F
 func (client FileSharesClient) CreateOrUpdateResponder(resp *http.Response) (result FileShare, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -220,7 +219,6 @@ func (client FileSharesClient) DeleteSender(req *http.Request) (future FileShare
 func (client FileSharesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -308,7 +306,6 @@ func (client FileSharesClient) GetSender(req *http.Request) (*http.Response, err
 func (client FileSharesClient) GetResponder(resp *http.Response) (result FileShare, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -393,7 +390,6 @@ func (client FileSharesClient) ListByDeviceSender(req *http.Request) (*http.Resp
 func (client FileSharesClient) ListByDeviceResponder(resp *http.Response) (result FileShareList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -480,7 +476,6 @@ func (client FileSharesClient) ListByFileServerSender(req *http.Request) (*http.
 func (client FileSharesClient) ListByFileServerResponder(resp *http.Response) (result FileShareList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -569,7 +564,6 @@ func (client FileSharesClient) ListMetricDefinitionSender(req *http.Request) (*h
 func (client FileSharesClient) ListMetricDefinitionResponder(resp *http.Response) (result MetricDefinitionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -662,7 +656,6 @@ func (client FileSharesClient) ListMetricsSender(req *http.Request) (*http.Respo
 func (client FileSharesClient) ListMetricsResponder(resp *http.Response) (result MetricList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

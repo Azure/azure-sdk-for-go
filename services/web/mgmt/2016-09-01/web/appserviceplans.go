@@ -124,7 +124,6 @@ func (client AppServicePlansClient) CreateOrUpdateSender(req *http.Request) (fut
 func (client AppServicePlansClient) CreateOrUpdateResponder(resp *http.Response) (result AppServicePlan, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -215,7 +214,6 @@ func (client AppServicePlansClient) CreateOrUpdateVnetRouteSender(req *http.Requ
 func (client AppServicePlansClient) CreateOrUpdateVnetRouteResponder(resp *http.Response) (result VnetRoute, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -299,7 +297,6 @@ func (client AppServicePlansClient) DeleteSender(req *http.Request) (*http.Respo
 func (client AppServicePlansClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -386,7 +383,6 @@ func (client AppServicePlansClient) DeleteHybridConnectionSender(req *http.Reque
 func (client AppServicePlansClient) DeleteHybridConnectionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -473,7 +469,6 @@ func (client AppServicePlansClient) DeleteVnetRouteSender(req *http.Request) (*h
 func (client AppServicePlansClient) DeleteVnetRouteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
@@ -556,7 +551,6 @@ func (client AppServicePlansClient) GetSender(req *http.Request) (*http.Response
 func (client AppServicePlansClient) GetResponder(resp *http.Response) (result AppServicePlan, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -644,7 +638,6 @@ func (client AppServicePlansClient) GetHybridConnectionSender(req *http.Request)
 func (client AppServicePlansClient) GetHybridConnectionResponder(resp *http.Response) (result HybridConnection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -728,7 +721,6 @@ func (client AppServicePlansClient) GetHybridConnectionPlanLimitSender(req *http
 func (client AppServicePlansClient) GetHybridConnectionPlanLimitResponder(resp *http.Response) (result HybridConnectionLimits, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -816,7 +808,6 @@ func (client AppServicePlansClient) GetRouteForVnetSender(req *http.Request) (*h
 func (client AppServicePlansClient) GetRouteForVnetResponder(resp *http.Response) (result ListVnetRoute, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -900,7 +891,6 @@ func (client AppServicePlansClient) GetServerFarmSkusSender(req *http.Request) (
 func (client AppServicePlansClient) GetServerFarmSkusResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -986,7 +976,6 @@ func (client AppServicePlansClient) GetVnetFromServerFarmSender(req *http.Reques
 func (client AppServicePlansClient) GetVnetFromServerFarmResponder(resp *http.Response) (result VnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1074,7 +1063,6 @@ func (client AppServicePlansClient) GetVnetGatewaySender(req *http.Request) (*ht
 func (client AppServicePlansClient) GetVnetGatewayResponder(resp *http.Response) (result VnetGateway, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1153,7 +1141,6 @@ func (client AppServicePlansClient) ListSender(req *http.Request) (*http.Respons
 func (client AppServicePlansClient) ListResponder(resp *http.Response) (result AppServicePlanCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1273,7 +1260,6 @@ func (client AppServicePlansClient) ListByResourceGroupSender(req *http.Request)
 func (client AppServicePlansClient) ListByResourceGroupResponder(resp *http.Response) (result AppServicePlanCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1394,7 +1380,6 @@ func (client AppServicePlansClient) ListCapabilitiesSender(req *http.Request) (*
 func (client AppServicePlansClient) ListCapabilitiesResponder(resp *http.Response) (result ListCapability, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1482,7 +1467,6 @@ func (client AppServicePlansClient) ListHybridConnectionKeysSender(req *http.Req
 func (client AppServicePlansClient) ListHybridConnectionKeysResponder(resp *http.Response) (result HybridConnectionKey, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1567,7 +1551,6 @@ func (client AppServicePlansClient) ListHybridConnectionsSender(req *http.Reques
 func (client AppServicePlansClient) ListHybridConnectionsResponder(resp *http.Response) (result HybridConnectionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1689,7 +1672,6 @@ func (client AppServicePlansClient) ListMetricDefintionsSender(req *http.Request
 func (client AppServicePlansClient) ListMetricDefintionsResponder(resp *http.Response) (result ResourceMetricDefinitionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1821,7 +1803,6 @@ func (client AppServicePlansClient) ListMetricsSender(req *http.Request) (*http.
 func (client AppServicePlansClient) ListMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1944,7 +1925,6 @@ func (client AppServicePlansClient) ListRoutesForVnetSender(req *http.Request) (
 func (client AppServicePlansClient) ListRoutesForVnetResponder(resp *http.Response) (result ListVnetRoute, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2034,7 +2014,6 @@ func (client AppServicePlansClient) ListUsagesSender(req *http.Request) (*http.R
 func (client AppServicePlansClient) ListUsagesResponder(resp *http.Response) (result CsmUsageQuotaCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2155,7 +2134,6 @@ func (client AppServicePlansClient) ListVnetsSender(req *http.Request) (*http.Re
 func (client AppServicePlansClient) ListVnetsResponder(resp *http.Response) (result ListVnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2254,7 +2232,6 @@ func (client AppServicePlansClient) ListWebAppsSender(req *http.Request) (*http.
 func (client AppServicePlansClient) ListWebAppsResponder(resp *http.Response) (result AppCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2380,7 +2357,6 @@ func (client AppServicePlansClient) ListWebAppsByHybridConnectionSender(req *htt
 func (client AppServicePlansClient) ListWebAppsByHybridConnectionResponder(resp *http.Response) (result ResourceCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2503,7 +2479,6 @@ func (client AppServicePlansClient) RebootWorkerSender(req *http.Request) (*http
 func (client AppServicePlansClient) RebootWorkerResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -2592,7 +2567,6 @@ func (client AppServicePlansClient) RestartWebAppsSender(req *http.Request) (*ht
 func (client AppServicePlansClient) RestartWebAppsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -2678,7 +2652,6 @@ func (client AppServicePlansClient) UpdateSender(req *http.Request) (*http.Respo
 func (client AppServicePlansClient) UpdateResponder(resp *http.Response) (result AppServicePlan, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2772,7 +2745,6 @@ func (client AppServicePlansClient) UpdateVnetGatewaySender(req *http.Request) (
 func (client AppServicePlansClient) UpdateVnetGatewayResponder(resp *http.Response) (result VnetGateway, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2863,7 +2835,6 @@ func (client AppServicePlansClient) UpdateVnetRouteSender(req *http.Request) (*h
 func (client AppServicePlansClient) UpdateVnetRouteResponder(resp *http.Response) (result VnetRoute, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

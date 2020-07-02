@@ -171,7 +171,6 @@ func (client LargeFaceListClient) AddFaceFromStreamSender(req *http.Request) (*h
 func (client LargeFaceListClient) AddFaceFromStreamResponder(resp *http.Response) (result PersistedFace, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -314,7 +313,6 @@ func (client LargeFaceListClient) AddFaceFromURLSender(req *http.Request) (*http
 func (client LargeFaceListClient) AddFaceFromURLResponder(resp *http.Response) (result PersistedFace, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -345,8 +343,9 @@ func (client LargeFaceListClient) AddFaceFromURLResponder(resp *http.Response) (
 // * 'recognition_01': The default recognition model for [LargeFaceList-
 // Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/largefacelist/create). All those large face lists
 // created before 2019 March are bonded with this recognition model.
-// * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall
-// accuracy is improved compared with 'recognition_01'.
+// * 'recognition_02': Recognition model released in 2019 March.
+// * 'recognition_03': Recognition model released in 2020 May. 'recognition_03' is recommended since its overall
+// accuracy is improved compared with 'recognition_01' and 'recognition_02'.
 //
 // Large face list quota:
 // * Free-tier subscription quota: 64 large face lists.
@@ -423,7 +422,6 @@ func (client LargeFaceListClient) CreateSender(req *http.Request) (*http.Respons
 func (client LargeFaceListClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -500,7 +498,6 @@ func (client LargeFaceListClient) DeleteSender(req *http.Request) (*http.Respons
 func (client LargeFaceListClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -581,7 +578,6 @@ func (client LargeFaceListClient) DeleteFaceSender(req *http.Request) (*http.Res
 func (client LargeFaceListClient) DeleteFaceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -668,7 +664,6 @@ func (client LargeFaceListClient) GetSender(req *http.Request) (*http.Response, 
 func (client LargeFaceListClient) GetResponder(resp *http.Response) (result LargeFaceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -749,7 +744,6 @@ func (client LargeFaceListClient) GetFaceSender(req *http.Request) (*http.Respon
 func (client LargeFaceListClient) GetFaceResponder(resp *http.Response) (result PersistedFace, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -827,7 +821,6 @@ func (client LargeFaceListClient) GetTrainingStatusSender(req *http.Request) (*h
 func (client LargeFaceListClient) GetTrainingStatusResponder(resp *http.Response) (result TrainingStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -915,7 +908,6 @@ func (client LargeFaceListClient) ListSender(req *http.Request) (*http.Response,
 func (client LargeFaceListClient) ListResponder(resp *http.Response) (result ListLargeFaceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1010,7 +1002,6 @@ func (client LargeFaceListClient) ListFacesSender(req *http.Request) (*http.Resp
 func (client LargeFaceListClient) ListFacesResponder(resp *http.Response) (result ListPersistedFace, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1088,7 +1079,6 @@ func (client LargeFaceListClient) TrainSender(req *http.Request) (*http.Response
 func (client LargeFaceListClient) TrainResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1168,7 +1158,6 @@ func (client LargeFaceListClient) UpdateSender(req *http.Request) (*http.Respons
 func (client LargeFaceListClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1250,7 +1239,6 @@ func (client LargeFaceListClient) UpdateFaceSender(req *http.Request) (*http.Res
 func (client LargeFaceListClient) UpdateFaceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

@@ -120,7 +120,6 @@ func (client BuildsClient) CancelSender(req *http.Request) (future BuildsCancelF
 func (client BuildsClient) CancelResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -205,7 +204,6 @@ func (client BuildsClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client BuildsClient) GetResponder(resp *http.Response) (result Build, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -291,7 +289,6 @@ func (client BuildsClient) GetLogLinkSender(req *http.Request) (*http.Response, 
 func (client BuildsClient) GetLogLinkResponder(resp *http.Response) (result BuildGetLogResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -389,7 +386,6 @@ func (client BuildsClient) ListSender(req *http.Request) (*http.Response, error)
 func (client BuildsClient) ListResponder(resp *http.Response) (result BuildListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -515,7 +511,6 @@ func (client BuildsClient) UpdateSender(req *http.Request) (future BuildsUpdateF
 func (client BuildsClient) UpdateResponder(resp *http.Response) (result Build, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

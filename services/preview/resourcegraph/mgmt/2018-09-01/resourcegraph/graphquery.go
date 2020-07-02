@@ -120,7 +120,6 @@ func (client GraphQueryClient) CreateOrUpdateSender(req *http.Request) (*http.Re
 func (client GraphQueryClient) CreateOrUpdateResponder(resp *http.Response) (result GraphQueryResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -196,7 +195,6 @@ func (client GraphQueryClient) DeleteSender(req *http.Request) (*http.Response, 
 func (client GraphQueryClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -271,7 +269,6 @@ func (client GraphQueryClient) GetSender(req *http.Request) (*http.Response, err
 func (client GraphQueryClient) GetResponder(resp *http.Response) (result GraphQueryResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -346,7 +343,6 @@ func (client GraphQueryClient) ListSender(req *http.Request) (*http.Response, er
 func (client GraphQueryClient) ListResponder(resp *http.Response) (result GraphQueryListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -462,7 +458,6 @@ func (client GraphQueryClient) UpdateSender(req *http.Request) (*http.Response, 
 func (client GraphQueryClient) UpdateResponder(resp *http.Response) (result GraphQueryResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

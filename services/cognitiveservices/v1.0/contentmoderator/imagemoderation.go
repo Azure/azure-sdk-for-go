@@ -111,7 +111,6 @@ func (client ImageModerationClient) EvaluateFileInputSender(req *http.Request) (
 func (client ImageModerationClient) EvaluateFileInputResponder(resp *http.Response) (result Evaluate, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -184,7 +183,6 @@ func (client ImageModerationClient) EvaluateMethodSender(req *http.Request) (*ht
 func (client ImageModerationClient) EvaluateMethodResponder(resp *http.Response) (result Evaluate, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -262,7 +260,6 @@ func (client ImageModerationClient) EvaluateURLInputSender(req *http.Request) (*
 func (client ImageModerationClient) EvaluateURLInputResponder(resp *http.Response) (result Evaluate, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -335,7 +332,6 @@ func (client ImageModerationClient) FindFacesSender(req *http.Request) (*http.Re
 func (client ImageModerationClient) FindFacesResponder(resp *http.Response) (result FoundFaces, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -411,7 +407,6 @@ func (client ImageModerationClient) FindFacesFileInputSender(req *http.Request) 
 func (client ImageModerationClient) FindFacesFileInputResponder(resp *http.Response) (result FoundFaces, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -489,7 +484,6 @@ func (client ImageModerationClient) FindFacesURLInputSender(req *http.Request) (
 func (client ImageModerationClient) FindFacesURLInputResponder(resp *http.Response) (result FoundFaces, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -576,7 +570,6 @@ func (client ImageModerationClient) MatchFileInputSender(req *http.Request) (*ht
 func (client ImageModerationClient) MatchFileInputResponder(resp *http.Response) (result MatchResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -660,7 +653,6 @@ func (client ImageModerationClient) MatchMethodSender(req *http.Request) (*http.
 func (client ImageModerationClient) MatchMethodResponder(resp *http.Response) (result MatchResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -749,7 +741,6 @@ func (client ImageModerationClient) MatchURLInputSender(req *http.Request) (*htt
 func (client ImageModerationClient) MatchURLInputResponder(resp *http.Response) (result MatchResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -840,7 +831,6 @@ func (client ImageModerationClient) OCRFileInputSender(req *http.Request) (*http
 func (client ImageModerationClient) OCRFileInputResponder(resp *http.Response) (result OCR, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -928,7 +918,6 @@ func (client ImageModerationClient) OCRMethodSender(req *http.Request) (*http.Re
 func (client ImageModerationClient) OCRMethodResponder(resp *http.Response) (result OCR, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1021,7 +1010,6 @@ func (client ImageModerationClient) OCRURLInputSender(req *http.Request) (*http.
 func (client ImageModerationClient) OCRURLInputResponder(resp *http.Response) (result OCR, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

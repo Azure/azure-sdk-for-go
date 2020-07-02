@@ -130,7 +130,6 @@ func (client RelationshipsClient) CreateOrUpdateSender(req *http.Request) (futur
 func (client RelationshipsClient) CreateOrUpdateResponder(resp *http.Response) (result RelationshipResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -208,7 +207,6 @@ func (client RelationshipsClient) DeleteSender(req *http.Request) (future Relati
 func (client RelationshipsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -285,7 +283,6 @@ func (client RelationshipsClient) GetSender(req *http.Request) (*http.Response, 
 func (client RelationshipsClient) GetResponder(resp *http.Response) (result RelationshipResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -362,7 +359,6 @@ func (client RelationshipsClient) ListByHubSender(req *http.Request) (*http.Resp
 func (client RelationshipsClient) ListByHubResponder(resp *http.Response) (result RelationshipListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

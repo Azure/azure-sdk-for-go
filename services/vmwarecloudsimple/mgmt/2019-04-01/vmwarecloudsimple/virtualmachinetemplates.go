@@ -112,7 +112,6 @@ func (client VirtualMachineTemplatesClient) GetSender(req *http.Request) (*http.
 func (client VirtualMachineTemplatesClient) GetResponder(resp *http.Response) (result VirtualMachineTemplate, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -191,7 +190,6 @@ func (client VirtualMachineTemplatesClient) ListSender(req *http.Request) (*http
 func (client VirtualMachineTemplatesClient) ListResponder(resp *http.Response) (result VirtualMachineTemplateListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

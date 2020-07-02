@@ -689,6 +689,7 @@ type QuotaCounterCollection = original.QuotaCounterCollection
 type QuotaCounterContract = original.QuotaCounterContract
 type QuotaCounterValueContract = original.QuotaCounterValueContract
 type QuotaCounterValueContractProperties = original.QuotaCounterValueContractProperties
+type QuotaCounterValueUpdateContract = original.QuotaCounterValueUpdateContract
 type RecipientEmailCollection = original.RecipientEmailCollection
 type RecipientEmailContract = original.RecipientEmailContract
 type RecipientEmailContractProperties = original.RecipientEmailContractProperties

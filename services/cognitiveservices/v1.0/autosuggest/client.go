@@ -268,7 +268,6 @@ func (client BaseClient) AutoSuggestSender(req *http.Request) (*http.Response, e
 func (client BaseClient) AutoSuggestResponder(resp *http.Response) (result Suggestions, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

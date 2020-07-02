@@ -102,7 +102,6 @@ func (client SettingsClient) ListSender(req *http.Request) (*http.Response, erro
 func (client SettingsClient) ListResponder(resp *http.Response) (result ListAppVersionSettingObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -184,7 +183,6 @@ func (client SettingsClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client SettingsClient) UpdateResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -21,10 +21,12 @@ package azuredataapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/azuredata/mgmt/2019-07-24-preview/azuredata/azuredataapi"
 
+type DataControllersClientAPI = original.DataControllersClientAPI
 type HybridDataManagersClientAPI = original.HybridDataManagersClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PostgresInstancesClientAPI = original.PostgresInstancesClientAPI
 type SQLInstancesClientAPI = original.SQLInstancesClientAPI
+type SQLManagedInstancesClientAPI = original.SQLManagedInstancesClientAPI
 type SQLServerInstancesClientAPI = original.SQLServerInstancesClientAPI
 type SQLServerRegistrationsClientAPI = original.SQLServerRegistrationsClientAPI
 type SQLServersClientAPI = original.SQLServersClientAPI

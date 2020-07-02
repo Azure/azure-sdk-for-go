@@ -112,7 +112,6 @@ func (client Client) RecognizeSender(req *http.Request) (*http.Response, error) 
 func (client Client) RecognizeResponder(resp *http.Response) (result AnalysisResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

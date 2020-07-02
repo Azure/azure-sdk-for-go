@@ -113,7 +113,6 @@ func (client MeshServiceReplicaClient) GetSender(req *http.Request) (*http.Respo
 func (client MeshServiceReplicaClient) GetResponder(resp *http.Response) (result ServiceReplicaDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -189,7 +188,6 @@ func (client MeshServiceReplicaClient) ListSender(req *http.Request) (*http.Resp
 func (client MeshServiceReplicaClient) ListResponder(resp *http.Response) (result PagedServiceReplicaDescriptionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

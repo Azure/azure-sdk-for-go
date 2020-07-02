@@ -121,7 +121,6 @@ func (client EmailTemplateClient) CreateOrUpdateSender(req *http.Request) (*http
 func (client EmailTemplateClient) CreateOrUpdateResponder(resp *http.Response) (result EmailTemplateContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -203,7 +202,6 @@ func (client EmailTemplateClient) DeleteSender(req *http.Request) (*http.Respons
 func (client EmailTemplateClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -281,7 +279,6 @@ func (client EmailTemplateClient) GetSender(req *http.Request) (*http.Response, 
 func (client EmailTemplateClient) GetResponder(resp *http.Response) (result EmailTemplateContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -380,7 +377,6 @@ func (client EmailTemplateClient) ListSender(req *http.Request) (*http.Response,
 func (client EmailTemplateClient) ListResponder(resp *http.Response) (result EmailTemplateCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -499,7 +495,6 @@ func (client EmailTemplateClient) UpdateSender(req *http.Request) (*http.Respons
 func (client EmailTemplateClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

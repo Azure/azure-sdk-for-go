@@ -124,7 +124,6 @@ func (client SchemaClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client SchemaClient) GetResponder(resp *http.Response) (result SearchGetSchemaResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

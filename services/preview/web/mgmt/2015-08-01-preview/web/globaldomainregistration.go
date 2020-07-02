@@ -109,7 +109,6 @@ func (client GlobalDomainRegistrationClient) CheckDomainAvailabilitySender(req *
 func (client GlobalDomainRegistrationClient) CheckDomainAvailabilityResponder(resp *http.Response) (result DomainAvailablilityCheckResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -181,7 +180,6 @@ func (client GlobalDomainRegistrationClient) GetAllDomainsSender(req *http.Reque
 func (client GlobalDomainRegistrationClient) GetAllDomainsResponder(resp *http.Response) (result DomainCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -289,7 +287,6 @@ func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestSen
 func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestResponder(resp *http.Response) (result DomainControlCenterSsoRequest, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -365,7 +362,6 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendationsSender(req
 func (client GlobalDomainRegistrationClient) ListDomainRecommendationsResponder(resp *http.Response) (result NameIdentifierCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -477,7 +473,6 @@ func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationSe
 func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

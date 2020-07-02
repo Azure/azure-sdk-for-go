@@ -138,7 +138,6 @@ func (client BackupScheduleGroupsClient) CreateOrUpdateSender(req *http.Request)
 func (client BackupScheduleGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result BackupScheduleGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -225,7 +224,6 @@ func (client BackupScheduleGroupsClient) DeleteSender(req *http.Request) (future
 func (client BackupScheduleGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -311,7 +309,6 @@ func (client BackupScheduleGroupsClient) GetSender(req *http.Request) (*http.Res
 func (client BackupScheduleGroupsClient) GetResponder(resp *http.Response) (result BackupScheduleGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -396,7 +393,6 @@ func (client BackupScheduleGroupsClient) ListByDeviceSender(req *http.Request) (
 func (client BackupScheduleGroupsClient) ListByDeviceResponder(resp *http.Response) (result BackupScheduleGroupList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

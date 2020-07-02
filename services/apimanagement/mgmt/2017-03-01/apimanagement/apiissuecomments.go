@@ -153,7 +153,6 @@ func (client APIIssueCommentsClient) ListByServiceSender(req *http.Request) (*ht
 func (client APIIssueCommentsClient) ListByServiceResponder(resp *http.Response) (result IssueCommentCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

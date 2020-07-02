@@ -125,7 +125,6 @@ func (client OriginGroupsClient) CreateSender(req *http.Request) (future OriginG
 func (client OriginGroupsClient) CreateResponder(resp *http.Response) (result OriginGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -213,7 +212,6 @@ func (client OriginGroupsClient) DeleteSender(req *http.Request) (future OriginG
 func (client OriginGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -300,7 +298,6 @@ func (client OriginGroupsClient) GetSender(req *http.Request) (*http.Response, e
 func (client OriginGroupsClient) GetResponder(resp *http.Response) (result OriginGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -387,7 +384,6 @@ func (client OriginGroupsClient) ListByEndpointSender(req *http.Request) (*http.
 func (client OriginGroupsClient) ListByEndpointResponder(resp *http.Response) (result OriginGroupListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -515,7 +511,6 @@ func (client OriginGroupsClient) UpdateSender(req *http.Request) (future OriginG
 func (client OriginGroupsClient) UpdateResponder(resp *http.Response) (result OriginGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

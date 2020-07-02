@@ -124,7 +124,6 @@ func (client StartMenuItemsClient) ListSender(req *http.Request) (*http.Response
 func (client StartMenuItemsClient) ListResponder(resp *http.Response) (result StartMenuItemList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

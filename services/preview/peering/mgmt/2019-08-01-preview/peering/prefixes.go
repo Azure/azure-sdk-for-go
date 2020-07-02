@@ -110,7 +110,6 @@ func (client PrefixesClient) ListByPeeringServiceSender(req *http.Request) (*htt
 func (client PrefixesClient) ListByPeeringServiceResponder(resp *http.Response) (result ServicePrefixListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

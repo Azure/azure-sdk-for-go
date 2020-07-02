@@ -122,7 +122,6 @@ func (client MachineExtensionsClient) CreateOrUpdateSender(req *http.Request) (f
 func (client MachineExtensionsClient) CreateOrUpdateResponder(resp *http.Response) (result MachineExtension, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -206,7 +205,6 @@ func (client MachineExtensionsClient) DeleteSender(req *http.Request) (future Ma
 func (client MachineExtensionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -289,7 +287,6 @@ func (client MachineExtensionsClient) GetSender(req *http.Request) (*http.Respon
 func (client MachineExtensionsClient) GetResponder(resp *http.Response) (result MachineExtension, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -376,7 +373,6 @@ func (client MachineExtensionsClient) ListSender(req *http.Request) (*http.Respo
 func (client MachineExtensionsClient) ListResponder(resp *http.Response) (result MachineExtensionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -500,7 +496,6 @@ func (client MachineExtensionsClient) UpdateSender(req *http.Request) (future Ma
 func (client MachineExtensionsClient) UpdateResponder(resp *http.Response) (result MachineExtension, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

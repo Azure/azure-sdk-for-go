@@ -121,7 +121,6 @@ func (client DataStoreTypesClient) GetSender(req *http.Request) (*http.Response,
 func (client DataStoreTypesClient) GetResponder(resp *http.Response) (result DataStoreType, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -207,7 +206,6 @@ func (client DataStoreTypesClient) ListByDataManagerSender(req *http.Request) (*
 func (client DataStoreTypesClient) ListByDataManagerResponder(resp *http.Response) (result DataStoreTypeList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

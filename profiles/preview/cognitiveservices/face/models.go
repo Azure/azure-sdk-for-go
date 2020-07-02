@@ -129,6 +129,7 @@ type RecognitionModel = original.RecognitionModel
 const (
 	Recognition01 RecognitionModel = original.Recognition01
 	Recognition02 RecognitionModel = original.Recognition02
+	Recognition03 RecognitionModel = original.Recognition03
 )
 
 type SnapshotApplyMode = original.SnapshotApplyMode

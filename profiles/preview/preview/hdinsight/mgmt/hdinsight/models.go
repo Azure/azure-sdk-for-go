@@ -87,6 +87,20 @@ const (
 	Windows OSType = original.Windows
 )
 
+type OutboundOnlyPublicNetworkAccessType = original.OutboundOnlyPublicNetworkAccessType
+
+const (
+	PublicLoadBalancer OutboundOnlyPublicNetworkAccessType = original.PublicLoadBalancer
+	UDR                OutboundOnlyPublicNetworkAccessType = original.UDR
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	InboundAndOutbound PublicNetworkAccess = original.InboundAndOutbound
+	OutboundOnly       PublicNetworkAccess = original.OutboundOnly
+)
+
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
@@ -173,6 +187,7 @@ type LinuxOperatingSystemProfile = original.LinuxOperatingSystemProfile
 type ListHostInfo = original.ListHostInfo
 type LocalizedName = original.LocalizedName
 type LocationsClient = original.LocationsClient
+type NetworkSettings = original.NetworkSettings
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -330,6 +345,12 @@ func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorit
 }
 func PossibleOSTypeValues() []OSType {
 	return original.PossibleOSTypeValues()
+}
+func PossibleOutboundOnlyPublicNetworkAccessTypeValues() []OutboundOnlyPublicNetworkAccessType {
+	return original.PossibleOutboundOnlyPublicNetworkAccessTypeValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()

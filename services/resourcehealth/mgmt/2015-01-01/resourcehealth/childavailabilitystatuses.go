@@ -118,7 +118,6 @@ func (client ChildAvailabilityStatusesClient) GetByResourceSender(req *http.Requ
 func (client ChildAvailabilityStatusesClient) GetByResourceResponder(resp *http.Response) (result AvailabilityStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -204,7 +203,6 @@ func (client ChildAvailabilityStatusesClient) ListSender(req *http.Request) (*ht
 func (client ChildAvailabilityStatusesClient) ListResponder(resp *http.Response) (result AvailabilityStatusListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

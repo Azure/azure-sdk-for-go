@@ -112,7 +112,6 @@ func (client ForecastsClient) ListSender(req *http.Request) (*http.Response, err
 func (client ForecastsClient) ListResponder(resp *http.Response) (result ForecastsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

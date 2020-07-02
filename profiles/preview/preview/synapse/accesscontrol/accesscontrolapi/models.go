@@ -21,4 +21,4 @@ package accesscontrolapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2020-02-01-preview/accesscontrol/accesscontrolapi"
 
-type ClientAPI = original.ClientAPI
+type BaseClientAPI = original.BaseClientAPI

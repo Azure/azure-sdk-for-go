@@ -109,7 +109,6 @@ func (client PrivateCloudsClient) GetSender(req *http.Request) (*http.Response, 
 func (client PrivateCloudsClient) GetResponder(resp *http.Response) (result PrivateCloud, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -184,7 +183,6 @@ func (client PrivateCloudsClient) ListSender(req *http.Request) (*http.Response,
 func (client PrivateCloudsClient) ListResponder(resp *http.Response) (result PrivateCloudList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

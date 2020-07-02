@@ -113,7 +113,6 @@ func (client VirtualMachineClient) ApplyArtifactsSender(req *http.Request) (futu
 func (client VirtualMachineClient) ApplyArtifactsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -192,7 +191,6 @@ func (client VirtualMachineClient) CreateOrUpdateResourceSender(req *http.Reques
 func (client VirtualMachineClient) CreateOrUpdateResourceResponder(resp *http.Response) (result LabVirtualMachine, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -270,7 +268,6 @@ func (client VirtualMachineClient) DeleteResourceSender(req *http.Request) (futu
 func (client VirtualMachineClient) DeleteResourceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -347,7 +344,6 @@ func (client VirtualMachineClient) GetResourceSender(req *http.Request) (*http.R
 func (client VirtualMachineClient) GetResourceResponder(resp *http.Response) (result LabVirtualMachine, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -434,7 +430,6 @@ func (client VirtualMachineClient) ListSender(req *http.Request) (*http.Response
 func (client VirtualMachineClient) ListResponder(resp *http.Response) (result ResponseWithContinuationLabVirtualMachine, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -551,7 +546,6 @@ func (client VirtualMachineClient) PatchResourceSender(req *http.Request) (*http
 func (client VirtualMachineClient) PatchResourceResponder(resp *http.Response) (result LabVirtualMachine, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -629,7 +623,6 @@ func (client VirtualMachineClient) StartSender(req *http.Request) (future Virtua
 func (client VirtualMachineClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -706,7 +699,6 @@ func (client VirtualMachineClient) StopSender(req *http.Request) (future Virtual
 func (client VirtualMachineClient) StopResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

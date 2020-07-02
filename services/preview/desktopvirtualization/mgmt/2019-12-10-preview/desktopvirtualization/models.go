@@ -124,6 +124,23 @@ func PossiblePersonalDesktopAssignmentTypeValues() []PersonalDesktopAssignmentTy
 	return []PersonalDesktopAssignmentType{Automatic, Direct}
 }
 
+// PreferredAppGroupType enumerates the values for preferred app group type.
+type PreferredAppGroupType string
+
+const (
+	// PreferredAppGroupTypeDesktop ...
+	PreferredAppGroupTypeDesktop PreferredAppGroupType = "Desktop"
+	// PreferredAppGroupTypeNone ...
+	PreferredAppGroupTypeNone PreferredAppGroupType = "None"
+	// PreferredAppGroupTypeRailApplications ...
+	PreferredAppGroupTypeRailApplications PreferredAppGroupType = "RailApplications"
+)
+
+// PossiblePreferredAppGroupTypeValues returns an array of possible values for the PreferredAppGroupType const type.
+func PossiblePreferredAppGroupTypeValues() []PreferredAppGroupType {
+	return []PreferredAppGroupType{PreferredAppGroupTypeDesktop, PreferredAppGroupTypeNone, PreferredAppGroupTypeRailApplications}
+}
+
 // RegistrationTokenOperation enumerates the values for registration token operation.
 type RegistrationTokenOperation string
 
@@ -531,7 +548,7 @@ func NewApplicationGroupListPage(getNextPage func(context.Context, ApplicationGr
 // ApplicationGroupPatch applicationGroup properties that can be patched.
 type ApplicationGroupPatch struct {
 	// Tags - tags to be updated
-	Tags interface{} `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// ApplicationGroupPatchProperties - ApplicationGroup properties that can be patched.
 	*ApplicationGroupPatchProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -565,7 +582,7 @@ func (agp *ApplicationGroupPatch) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "tags":
 			if v != nil {
-				var tags interface{}
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err
@@ -785,7 +802,7 @@ func NewApplicationListPage(getNextPage func(context.Context, ApplicationList) (
 // ApplicationPatch application properties that can be patched.
 type ApplicationPatch struct {
 	// Tags - tags to be updated
-	Tags interface{} `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// ApplicationPatchProperties - Detailed properties for Application
 	*ApplicationPatchProperties `json:"properties,omitempty"`
 }
@@ -813,7 +830,7 @@ func (ap *ApplicationPatch) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "tags":
 			if v != nil {
-				var tags interface{}
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err
@@ -984,7 +1001,7 @@ type DesktopList struct {
 // DesktopPatch desktop properties that can be patched.
 type DesktopPatch struct {
 	// Tags - tags to be updated
-	Tags interface{} `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// DesktopPatchProperties - Detailed properties for Desktop
 	*DesktopPatchProperties `json:"properties,omitempty"`
 }
@@ -1012,7 +1029,7 @@ func (dp *DesktopPatch) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "tags":
 			if v != nil {
-				var tags interface{}
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err
@@ -1304,7 +1321,7 @@ func NewHostPoolListPage(getNextPage func(context.Context, HostPoolList) (HostPo
 // HostPoolPatch hostPool properties that can be patched.
 type HostPoolPatch struct {
 	// Tags - tags to be updated
-	Tags interface{} `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// HostPoolPatchProperties - HostPool properties that can be patched.
 	*HostPoolPatchProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1338,7 +1355,7 @@ func (hpp *HostPoolPatch) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "tags":
 			if v != nil {
-				var tags interface{}
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err
@@ -1409,6 +1426,8 @@ type HostPoolPatchProperties struct {
 	RegistrationInfo *RegistrationInfoPatch `json:"registrationInfo,omitempty"`
 	// SsoContext - Path to keyvault containing ssoContext secret.
 	SsoContext *string `json:"ssoContext,omitempty"`
+	// PreferredAppGroupType - The type of preferred application group type, default to Desktop Application Group. Possible values include: 'PreferredAppGroupTypeNone', 'PreferredAppGroupTypeDesktop', 'PreferredAppGroupTypeRailApplications'
+	PreferredAppGroupType PreferredAppGroupType `json:"preferredAppGroupType,omitempty"`
 }
 
 // HostPoolProperties properties of HostPool.
@@ -1439,6 +1458,8 @@ type HostPoolProperties struct {
 	ApplicationGroupReferences *[]string `json:"applicationGroupReferences,omitempty"`
 	// SsoContext - Path to keyvault containing ssoContext secret.
 	SsoContext *string `json:"ssoContext,omitempty"`
+	// PreferredAppGroupType - The type of preferred application group type, default to Desktop Application Group. Possible values include: 'PreferredAppGroupTypeNone', 'PreferredAppGroupTypeDesktop', 'PreferredAppGroupTypeRailApplications'
+	PreferredAppGroupType PreferredAppGroupType `json:"preferredAppGroupType,omitempty"`
 }
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
@@ -1824,6 +1845,10 @@ type SessionHostProperties struct {
 	AgentVersion *string `json:"agentVersion,omitempty"`
 	// AllowNewSession - Allow a new session.
 	AllowNewSession *bool `json:"allowNewSession,omitempty"`
+	// VirtualMachineID - READ-ONLY; Virtual Machine Id of SessionHost's underlying virtual machine.
+	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+	// ResourceID - READ-ONLY; Resource Id of SessionHost's underlying virtual machine.
+	ResourceID *string `json:"resourceId,omitempty"`
 	// AssignedUser - User assigned to SessionHost.
 	AssignedUser *string `json:"assignedUser,omitempty"`
 	// Status - Status for a SessionHost. Possible values include: 'StatusAvailable', 'StatusUnavailable', 'StatusShutdown', 'StatusDisconnected', 'StatusUpgrading', 'StatusUpgradeFailed'
@@ -2585,7 +2610,7 @@ func NewWorkspaceListPage(getNextPage func(context.Context, WorkspaceList) (Work
 // WorkspacePatch workspace properties that can be patched.
 type WorkspacePatch struct {
 	// Tags - tags to be updated
-	Tags interface{} `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// WorkspacePatchProperties - Detailed properties for Workspace
 	*WorkspacePatchProperties `json:"properties,omitempty"`
 }
@@ -2613,7 +2638,7 @@ func (wp *WorkspacePatch) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "tags":
 			if v != nil {
-				var tags interface{}
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err

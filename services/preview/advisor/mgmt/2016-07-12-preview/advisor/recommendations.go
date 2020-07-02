@@ -106,7 +106,6 @@ func (client RecommendationsClient) GenerateSender(req *http.Request) (*http.Res
 func (client RecommendationsClient) GenerateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -181,7 +180,6 @@ func (client RecommendationsClient) GetSender(req *http.Request) (*http.Response
 func (client RecommendationsClient) GetResponder(resp *http.Response) (result ResourceRecommendationBase, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -258,7 +256,6 @@ func (client RecommendationsClient) GetGenerateRecommendationsStatusSender(req *
 func (client RecommendationsClient) GetGenerateRecommendationsStatusResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -343,7 +340,6 @@ func (client RecommendationsClient) ListSender(req *http.Request) (*http.Respons
 func (client RecommendationsClient) ListResponder(resp *http.Response) (result ResourceRecommendationBaseListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

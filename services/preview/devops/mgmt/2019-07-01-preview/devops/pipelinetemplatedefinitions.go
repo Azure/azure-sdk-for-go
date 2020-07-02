@@ -102,7 +102,6 @@ func (client PipelineTemplateDefinitionsClient) ListSender(req *http.Request) (*
 func (client PipelineTemplateDefinitionsClient) ListResponder(resp *http.Response) (result PipelineTemplateDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

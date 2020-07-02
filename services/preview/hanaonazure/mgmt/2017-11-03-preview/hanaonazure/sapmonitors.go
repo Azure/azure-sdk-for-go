@@ -112,7 +112,6 @@ func (client SapMonitorsClient) CreateSender(req *http.Request) (future SapMonit
 func (client SapMonitorsClient) CreateResponder(resp *http.Response) (result SapMonitor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -188,7 +187,6 @@ func (client SapMonitorsClient) DeleteSender(req *http.Request) (future SapMonit
 func (client SapMonitorsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -263,7 +261,6 @@ func (client SapMonitorsClient) GetSender(req *http.Request) (*http.Response, er
 func (client SapMonitorsClient) GetResponder(resp *http.Response) (result SapMonitor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -336,7 +333,6 @@ func (client SapMonitorsClient) ListSender(req *http.Request) (*http.Response, e
 func (client SapMonitorsClient) ListResponder(resp *http.Response) (result SapMonitorListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -452,7 +448,6 @@ func (client SapMonitorsClient) UpdateSender(req *http.Request) (*http.Response,
 func (client SapMonitorsClient) UpdateResponder(resp *http.Response) (result SapMonitor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

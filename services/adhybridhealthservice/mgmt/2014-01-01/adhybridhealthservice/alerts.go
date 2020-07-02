@@ -124,7 +124,6 @@ func (client AlertsClient) ListAddsAlertsSender(req *http.Request) (*http.Respon
 func (client AlertsClient) ListAddsAlertsResponder(resp *http.Response) (result Alerts, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

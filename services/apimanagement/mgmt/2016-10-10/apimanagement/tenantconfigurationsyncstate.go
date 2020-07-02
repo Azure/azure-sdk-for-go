@@ -119,7 +119,6 @@ func (client TenantConfigurationSyncStateClient) GetSender(req *http.Request) (*
 func (client TenantConfigurationSyncStateClient) GetResponder(resp *http.Response) (result TenantConfigurationSyncStateContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

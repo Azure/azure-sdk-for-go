@@ -122,7 +122,6 @@ func (client Client) AppendSender(req *http.Request) (*http.Response, error) {
 func (client Client) AppendResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -206,7 +205,6 @@ func (client Client) CheckAccessSender(req *http.Request) (*http.Response, error
 func (client Client) CheckAccessResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -296,7 +294,6 @@ func (client Client) ConcatSender(req *http.Request) (*http.Response, error) {
 func (client Client) ConcatResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -390,7 +387,6 @@ func (client Client) ConcurrentAppendSender(req *http.Request) (*http.Response, 
 func (client Client) ConcurrentAppendResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -482,7 +478,6 @@ func (client Client) CreateSender(req *http.Request) (*http.Response, error) {
 func (client Client) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
@@ -565,7 +560,6 @@ func (client Client) DeleteSender(req *http.Request) (*http.Response, error) {
 func (client Client) DeleteResponder(resp *http.Response) (result FileOperationResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -648,7 +642,6 @@ func (client Client) FlushSender(req *http.Request) (*http.Response, error) {
 func (client Client) FlushResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -728,7 +721,6 @@ func (client Client) GetACLStatusSender(req *http.Request) (*http.Response, erro
 func (client Client) GetACLStatusResponder(resp *http.Response) (result ACLStatusResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -809,7 +801,6 @@ func (client Client) GetContentSummarySender(req *http.Request) (*http.Response,
 func (client Client) GetContentSummaryResponder(resp *http.Response) (result ContentSummaryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -890,7 +881,6 @@ func (client Client) GetFileStatusSender(req *http.Request) (*http.Response, err
 func (client Client) GetFileStatusResponder(resp *http.Response) (result FileStatusResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -986,7 +976,6 @@ func (client Client) ListFileStatusSender(req *http.Request) (*http.Response, er
 func (client Client) ListFileStatusResponder(resp *http.Response) (result FileStatusesResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1066,7 +1055,6 @@ func (client Client) MkdirsSender(req *http.Request) (*http.Response, error) {
 func (client Client) MkdirsResponder(resp *http.Response) (result FileOperationResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1150,7 +1138,6 @@ func (client Client) ModifyACLEntriesSender(req *http.Request) (*http.Response, 
 func (client Client) ModifyACLEntriesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1244,7 +1231,6 @@ func (client Client) MsConcatSender(req *http.Request) (*http.Response, error) {
 func (client Client) MsConcatResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1331,7 +1317,6 @@ func (client Client) OpenResponder(resp *http.Response) (result ReadCloser, err 
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -1410,7 +1395,6 @@ func (client Client) RemoveACLSender(req *http.Request) (*http.Response, error) 
 func (client Client) RemoveACLResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1492,7 +1476,6 @@ func (client Client) RemoveACLEntriesSender(req *http.Request) (*http.Response, 
 func (client Client) RemoveACLEntriesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1572,7 +1555,6 @@ func (client Client) RemoveDefaultACLSender(req *http.Request) (*http.Response, 
 func (client Client) RemoveDefaultACLResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1653,7 +1635,6 @@ func (client Client) RenameSender(req *http.Request) (*http.Response, error) {
 func (client Client) RenameResponder(resp *http.Response) (result FileOperationResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1737,7 +1718,6 @@ func (client Client) SetACLSender(req *http.Request) (*http.Response, error) {
 func (client Client) SetACLResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1828,7 +1808,6 @@ func (client Client) SetFileExpirySender(req *http.Request) (*http.Response, err
 func (client Client) SetFileExpiryResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1918,7 +1897,6 @@ func (client Client) SetOwnerSender(req *http.Request) (*http.Response, error) {
 func (client Client) SetOwnerResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -2003,7 +1981,6 @@ func (client Client) SetPermissionSender(req *http.Request) (*http.Response, err
 func (client Client) SetPermissionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

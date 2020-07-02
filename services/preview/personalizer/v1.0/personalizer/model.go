@@ -97,7 +97,6 @@ func (client ModelClient) GetResponder(resp *http.Response) (result ReadCloser, 
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -160,7 +159,6 @@ func (client ModelClient) GetPropertiesSender(req *http.Request) (*http.Response
 func (client ModelClient) GetPropertiesResponder(resp *http.Response) (result ModelProperties, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -225,7 +223,6 @@ func (client ModelClient) ResetSender(req *http.Request) (*http.Response, error)
 func (client ModelClient) ResetResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

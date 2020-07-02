@@ -109,7 +109,6 @@ func (client RoleAssignmentsClient) AddByBillingAccountNameSender(req *http.Requ
 func (client RoleAssignmentsClient) AddByBillingAccountNameResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -187,7 +186,6 @@ func (client RoleAssignmentsClient) AddByBillingProfileNameSender(req *http.Requ
 func (client RoleAssignmentsClient) AddByBillingProfileNameResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -265,7 +263,6 @@ func (client RoleAssignmentsClient) AddByInvoiceSectionNameSender(req *http.Requ
 func (client RoleAssignmentsClient) AddByInvoiceSectionNameResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -340,7 +337,6 @@ func (client RoleAssignmentsClient) DeleteByBillingAccountNameSender(req *http.R
 func (client RoleAssignmentsClient) DeleteByBillingAccountNameResponder(resp *http.Response) (result RoleAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -417,7 +413,6 @@ func (client RoleAssignmentsClient) DeleteByBillingProfileNameSender(req *http.R
 func (client RoleAssignmentsClient) DeleteByBillingProfileNameResponder(resp *http.Response) (result RoleAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -494,7 +489,6 @@ func (client RoleAssignmentsClient) DeleteByInvoiceSectionNameSender(req *http.R
 func (client RoleAssignmentsClient) DeleteByInvoiceSectionNameResponder(resp *http.Response) (result RoleAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -569,7 +563,6 @@ func (client RoleAssignmentsClient) GetByBillingAccountSender(req *http.Request)
 func (client RoleAssignmentsClient) GetByBillingAccountResponder(resp *http.Response) (result RoleAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -646,7 +639,6 @@ func (client RoleAssignmentsClient) GetByBillingProfileNameSender(req *http.Requ
 func (client RoleAssignmentsClient) GetByBillingProfileNameResponder(resp *http.Response) (result RoleAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -723,7 +715,6 @@ func (client RoleAssignmentsClient) GetByInvoiceSectionNameSender(req *http.Requ
 func (client RoleAssignmentsClient) GetByInvoiceSectionNameResponder(resp *http.Response) (result RoleAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -796,7 +787,6 @@ func (client RoleAssignmentsClient) ListByBillingAccountNameSender(req *http.Req
 func (client RoleAssignmentsClient) ListByBillingAccountNameResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -871,7 +861,6 @@ func (client RoleAssignmentsClient) ListByBillingProfileNameSender(req *http.Req
 func (client RoleAssignmentsClient) ListByBillingProfileNameResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -946,7 +935,6 @@ func (client RoleAssignmentsClient) ListByInvoiceSectionNameSender(req *http.Req
 func (client RoleAssignmentsClient) ListByInvoiceSectionNameResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

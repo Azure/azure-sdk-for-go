@@ -59,12 +59,6 @@ const (
 	PaaS ComputeRole = original.PaaS
 )
 
-type Location = original.Location
-
-const (
-	Global Location = original.Global
-)
-
 type OperatingSystem = original.OperatingSystem
 
 const (
@@ -202,9 +196,6 @@ func PossibleCompatibilityIssueValues() []CompatibilityIssue {
 }
 func PossibleComputeRoleValues() []ComputeRole {
 	return original.PossibleComputeRoleValues()
-}
-func PossibleLocationValues() []Location {
-	return original.PossibleLocationValues()
 }
 func PossibleOperatingSystemValues() []OperatingSystem {
 	return original.PossibleOperatingSystemValues()

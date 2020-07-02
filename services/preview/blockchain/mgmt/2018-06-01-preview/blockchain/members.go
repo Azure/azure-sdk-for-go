@@ -116,7 +116,6 @@ func (client MembersClient) CreateSender(req *http.Request) (future MembersCreat
 func (client MembersClient) CreateResponder(resp *http.Response) (result Member, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -193,7 +192,6 @@ func (client MembersClient) DeleteSender(req *http.Request) (future MembersDelet
 func (client MembersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -269,7 +267,6 @@ func (client MembersClient) GetSender(req *http.Request) (*http.Response, error)
 func (client MembersClient) GetResponder(resp *http.Response) (result Member, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -345,7 +342,6 @@ func (client MembersClient) ListSender(req *http.Request) (*http.Response, error
 func (client MembersClient) ListResponder(resp *http.Response) (result MemberCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -454,7 +450,6 @@ func (client MembersClient) ListAllSender(req *http.Request) (*http.Response, er
 func (client MembersClient) ListAllResponder(resp *http.Response) (result MemberCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -568,7 +563,6 @@ func (client MembersClient) ListAPIKeysSender(req *http.Request) (*http.Response
 func (client MembersClient) ListAPIKeysResponder(resp *http.Response) (result APIKeyCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -646,7 +640,6 @@ func (client MembersClient) ListConsortiumMembersSender(req *http.Request) (*htt
 func (client MembersClient) ListConsortiumMembersResponder(resp *http.Response) (result ConsortiumMemberCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -766,7 +759,6 @@ func (client MembersClient) ListRegenerateAPIKeysSender(req *http.Request) (*htt
 func (client MembersClient) ListRegenerateAPIKeysResponder(resp *http.Response) (result APIKeyCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -849,7 +841,6 @@ func (client MembersClient) UpdateSender(req *http.Request) (*http.Response, err
 func (client MembersClient) UpdateResponder(resp *http.Response) (result Member, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

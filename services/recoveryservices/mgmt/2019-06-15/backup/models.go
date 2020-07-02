@@ -322,15 +322,25 @@ const (
 	HealthStatusActionRequired HealthStatus = "ActionRequired"
 	// HealthStatusActionSuggested ...
 	HealthStatusActionSuggested HealthStatus = "ActionSuggested"
+	// HealthStatusHealthy ...
+	HealthStatusHealthy HealthStatus = "Healthy"
 	// HealthStatusInvalid ...
 	HealthStatusInvalid HealthStatus = "Invalid"
 	// HealthStatusPassed ...
 	HealthStatusPassed HealthStatus = "Passed"
+	// HealthStatusPersistentDegraded ...
+	HealthStatusPersistentDegraded HealthStatus = "PersistentDegraded"
+	// HealthStatusPersistentUnhealthy ...
+	HealthStatusPersistentUnhealthy HealthStatus = "PersistentUnhealthy"
+	// HealthStatusTransientDegraded ...
+	HealthStatusTransientDegraded HealthStatus = "TransientDegraded"
+	// HealthStatusTransientUnhealthy ...
+	HealthStatusTransientUnhealthy HealthStatus = "TransientUnhealthy"
 )
 
 // PossibleHealthStatusValues returns an array of possible values for the HealthStatus const type.
 func PossibleHealthStatusValues() []HealthStatus {
-	return []HealthStatus{HealthStatusActionRequired, HealthStatusActionSuggested, HealthStatusInvalid, HealthStatusPassed}
+	return []HealthStatus{HealthStatusActionRequired, HealthStatusActionSuggested, HealthStatusHealthy, HealthStatusInvalid, HealthStatusPassed, HealthStatusPersistentDegraded, HealthStatusPersistentUnhealthy, HealthStatusTransientDegraded, HealthStatusTransientUnhealthy}
 }
 
 // HTTPStatusCode enumerates the values for http status code.
@@ -2165,8 +2175,10 @@ type AzureFileshareProtectedItem struct {
 	ProtectionStatus *string `json:"protectionStatus,omitempty"`
 	// ProtectionState - Backup state of this backup item. Possible values include: 'ProtectionStateInvalid', 'ProtectionStateIRPending', 'ProtectionStateProtected', 'ProtectionStateProtectionError', 'ProtectionStateProtectionStopped', 'ProtectionStateProtectionPaused'
 	ProtectionState ProtectionState `json:"protectionState,omitempty"`
-	// HealthStatus - backups running status for this backup item. Possible values include: 'HealthStatusPassed', 'HealthStatusActionRequired', 'HealthStatusActionSuggested', 'HealthStatusInvalid'
+	// HealthStatus - Health status of protected item. Possible values include: 'HealthStatusPassed', 'HealthStatusActionRequired', 'HealthStatusActionSuggested', 'HealthStatusHealthy', 'HealthStatusTransientDegraded', 'HealthStatusPersistentDegraded', 'HealthStatusTransientUnhealthy', 'HealthStatusPersistentUnhealthy', 'HealthStatusInvalid'
 	HealthStatus HealthStatus `json:"healthStatus,omitempty"`
+	// HealthDetails - Health details on this backup item.
+	HealthDetails *[]HealthDetails `json:"healthDetails,omitempty"`
 	// LastBackupStatus - Last backup operation status. Possible values: Healthy, Unhealthy.
 	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
 	// LastBackupTime - Timestamp of the last backup operation on this backup item.
@@ -2218,6 +2230,9 @@ func (afpi AzureFileshareProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if afpi.HealthStatus != "" {
 		objectMap["healthStatus"] = afpi.HealthStatus
+	}
+	if afpi.HealthDetails != nil {
+		objectMap["healthDetails"] = afpi.HealthDetails
 	}
 	if afpi.LastBackupStatus != nil {
 		objectMap["lastBackupStatus"] = afpi.LastBackupStatus
@@ -3028,7 +3043,7 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	ProtectionStatus *string `json:"protectionStatus,omitempty"`
 	// ProtectionState - Backup state of this backup item. Possible values include: 'ProtectionStateInvalid', 'ProtectionStateIRPending', 'ProtectionStateProtected', 'ProtectionStateProtectionError', 'ProtectionStateProtectionStopped', 'ProtectionStateProtectionPaused'
 	ProtectionState ProtectionState `json:"protectionState,omitempty"`
-	// HealthStatus - Health status of protected item. Possible values include: 'HealthStatusPassed', 'HealthStatusActionRequired', 'HealthStatusActionSuggested', 'HealthStatusInvalid'
+	// HealthStatus - Health status of protected item. Possible values include: 'HealthStatusPassed', 'HealthStatusActionRequired', 'HealthStatusActionSuggested', 'HealthStatusHealthy', 'HealthStatusTransientDegraded', 'HealthStatusPersistentDegraded', 'HealthStatusTransientUnhealthy', 'HealthStatusPersistentUnhealthy', 'HealthStatusInvalid'
 	HealthStatus HealthStatus `json:"healthStatus,omitempty"`
 	// HealthDetails - Health details on this backup item.
 	HealthDetails *[]AzureIaaSVMHealthDetails `json:"healthDetails,omitempty"`
@@ -3498,7 +3513,7 @@ type AzureIaaSComputeVMProtectedItem struct {
 	ProtectionStatus *string `json:"protectionStatus,omitempty"`
 	// ProtectionState - Backup state of this backup item. Possible values include: 'ProtectionStateInvalid', 'ProtectionStateIRPending', 'ProtectionStateProtected', 'ProtectionStateProtectionError', 'ProtectionStateProtectionStopped', 'ProtectionStateProtectionPaused'
 	ProtectionState ProtectionState `json:"protectionState,omitempty"`
-	// HealthStatus - Health status of protected item. Possible values include: 'HealthStatusPassed', 'HealthStatusActionRequired', 'HealthStatusActionSuggested', 'HealthStatusInvalid'
+	// HealthStatus - Health status of protected item. Possible values include: 'HealthStatusPassed', 'HealthStatusActionRequired', 'HealthStatusActionSuggested', 'HealthStatusHealthy', 'HealthStatusTransientDegraded', 'HealthStatusPersistentDegraded', 'HealthStatusTransientUnhealthy', 'HealthStatusPersistentUnhealthy', 'HealthStatusInvalid'
 	HealthStatus HealthStatus `json:"healthStatus,omitempty"`
 	// HealthDetails - Health details on this backup item.
 	HealthDetails *[]AzureIaaSVMHealthDetails `json:"healthDetails,omitempty"`
@@ -3916,7 +3931,7 @@ type AzureIaaSVMProtectedItem struct {
 	ProtectionStatus *string `json:"protectionStatus,omitempty"`
 	// ProtectionState - Backup state of this backup item. Possible values include: 'ProtectionStateInvalid', 'ProtectionStateIRPending', 'ProtectionStateProtected', 'ProtectionStateProtectionError', 'ProtectionStateProtectionStopped', 'ProtectionStateProtectionPaused'
 	ProtectionState ProtectionState `json:"protectionState,omitempty"`
-	// HealthStatus - Health status of protected item. Possible values include: 'HealthStatusPassed', 'HealthStatusActionRequired', 'HealthStatusActionSuggested', 'HealthStatusInvalid'
+	// HealthStatus - Health status of protected item. Possible values include: 'HealthStatusPassed', 'HealthStatusActionRequired', 'HealthStatusActionSuggested', 'HealthStatusHealthy', 'HealthStatusTransientDegraded', 'HealthStatusPersistentDegraded', 'HealthStatusTransientUnhealthy', 'HealthStatusPersistentUnhealthy', 'HealthStatusInvalid'
 	HealthStatus HealthStatus `json:"healthStatus,omitempty"`
 	// HealthDetails - Health details on this backup item.
 	HealthDetails *[]AzureIaaSVMHealthDetails `json:"healthDetails,omitempty"`
@@ -6145,6 +6160,10 @@ type AzureVMWorkloadProtectedItem struct {
 	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
 	// ProtectedItemHealthStatus - Health status of the backup item, evaluated based on last heartbeat received. Possible values include: 'ProtectedItemHealthStatusInvalid', 'ProtectedItemHealthStatusHealthy', 'ProtectedItemHealthStatusUnhealthy', 'ProtectedItemHealthStatusNotReachable', 'ProtectedItemHealthStatusIRPending'
 	ProtectedItemHealthStatus ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
+	// HealthStatus - Health status of protected item. Possible values include: 'HealthStatusPassed', 'HealthStatusActionRequired', 'HealthStatusActionSuggested', 'HealthStatusHealthy', 'HealthStatusTransientDegraded', 'HealthStatusPersistentDegraded', 'HealthStatusTransientUnhealthy', 'HealthStatusPersistentUnhealthy', 'HealthStatusInvalid'
+	HealthStatus HealthStatus `json:"healthStatus,omitempty"`
+	// HealthDetails - Health details on this backup item.
+	HealthDetails *[]HealthDetails `json:"healthDetails,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
 	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
@@ -6258,6 +6277,12 @@ func (avwpi AzureVMWorkloadProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if avwpi.ProtectedItemHealthStatus != "" {
 		objectMap["protectedItemHealthStatus"] = avwpi.ProtectedItemHealthStatus
+	}
+	if avwpi.HealthStatus != "" {
+		objectMap["healthStatus"] = avwpi.HealthStatus
+	}
+	if avwpi.HealthDetails != nil {
+		objectMap["healthDetails"] = avwpi.HealthDetails
 	}
 	if avwpi.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = avwpi.ExtendedInfo
@@ -6504,6 +6529,10 @@ type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
 	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
 	// ProtectedItemHealthStatus - Health status of the backup item, evaluated based on last heartbeat received. Possible values include: 'ProtectedItemHealthStatusInvalid', 'ProtectedItemHealthStatusHealthy', 'ProtectedItemHealthStatusUnhealthy', 'ProtectedItemHealthStatusNotReachable', 'ProtectedItemHealthStatusIRPending'
 	ProtectedItemHealthStatus ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
+	// HealthStatus - Health status of protected item. Possible values include: 'HealthStatusPassed', 'HealthStatusActionRequired', 'HealthStatusActionSuggested', 'HealthStatusHealthy', 'HealthStatusTransientDegraded', 'HealthStatusPersistentDegraded', 'HealthStatusTransientUnhealthy', 'HealthStatusPersistentUnhealthy', 'HealthStatusInvalid'
+	HealthStatus HealthStatus `json:"healthStatus,omitempty"`
+	// HealthDetails - Health details on this backup item.
+	HealthDetails *[]HealthDetails `json:"healthDetails,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
 	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
@@ -6572,6 +6601,12 @@ func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) MarshalJSON() ([]byte
 	}
 	if avwsadpi.ProtectedItemHealthStatus != "" {
 		objectMap["protectedItemHealthStatus"] = avwsadpi.ProtectedItemHealthStatus
+	}
+	if avwsadpi.HealthStatus != "" {
+		objectMap["healthStatus"] = avwsadpi.HealthStatus
+	}
+	if avwsadpi.HealthDetails != nil {
+		objectMap["healthDetails"] = avwsadpi.HealthDetails
 	}
 	if avwsadpi.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = avwsadpi.ExtendedInfo
@@ -7256,6 +7291,10 @@ type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
 	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
 	// ProtectedItemHealthStatus - Health status of the backup item, evaluated based on last heartbeat received. Possible values include: 'ProtectedItemHealthStatusInvalid', 'ProtectedItemHealthStatusHealthy', 'ProtectedItemHealthStatusUnhealthy', 'ProtectedItemHealthStatusNotReachable', 'ProtectedItemHealthStatusIRPending'
 	ProtectedItemHealthStatus ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
+	// HealthStatus - Health status of protected item. Possible values include: 'HealthStatusPassed', 'HealthStatusActionRequired', 'HealthStatusActionSuggested', 'HealthStatusHealthy', 'HealthStatusTransientDegraded', 'HealthStatusPersistentDegraded', 'HealthStatusTransientUnhealthy', 'HealthStatusPersistentUnhealthy', 'HealthStatusInvalid'
+	HealthStatus HealthStatus `json:"healthStatus,omitempty"`
+	// HealthDetails - Health details on this backup item.
+	HealthDetails *[]HealthDetails `json:"healthDetails,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
 	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
@@ -7324,6 +7363,12 @@ func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) MarshalJSON() ([]byt
 	}
 	if avwshdpi.ProtectedItemHealthStatus != "" {
 		objectMap["protectedItemHealthStatus"] = avwshdpi.ProtectedItemHealthStatus
+	}
+	if avwshdpi.HealthStatus != "" {
+		objectMap["healthStatus"] = avwshdpi.HealthStatus
+	}
+	if avwshdpi.HealthDetails != nil {
+		objectMap["healthDetails"] = avwshdpi.HealthDetails
 	}
 	if avwshdpi.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = avwshdpi.ExtendedInfo
@@ -8161,6 +8206,10 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
 	// ProtectedItemHealthStatus - Health status of the backup item, evaluated based on last heartbeat received. Possible values include: 'ProtectedItemHealthStatusInvalid', 'ProtectedItemHealthStatusHealthy', 'ProtectedItemHealthStatusUnhealthy', 'ProtectedItemHealthStatusNotReachable', 'ProtectedItemHealthStatusIRPending'
 	ProtectedItemHealthStatus ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
+	// HealthStatus - Health status of protected item. Possible values include: 'HealthStatusPassed', 'HealthStatusActionRequired', 'HealthStatusActionSuggested', 'HealthStatusHealthy', 'HealthStatusTransientDegraded', 'HealthStatusPersistentDegraded', 'HealthStatusTransientUnhealthy', 'HealthStatusPersistentUnhealthy', 'HealthStatusInvalid'
+	HealthStatus HealthStatus `json:"healthStatus,omitempty"`
+	// HealthDetails - Health details on this backup item.
+	HealthDetails *[]HealthDetails `json:"healthDetails,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
 	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
@@ -8229,6 +8278,12 @@ func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) MarshalJSON() ([]byte, er
 	}
 	if avwsdpi.ProtectedItemHealthStatus != "" {
 		objectMap["protectedItemHealthStatus"] = avwsdpi.ProtectedItemHealthStatus
+	}
+	if avwsdpi.HealthStatus != "" {
+		objectMap["healthStatus"] = avwsdpi.HealthStatus
+	}
+	if avwsdpi.HealthDetails != nil {
+		objectMap["healthDetails"] = avwsdpi.HealthDetails
 	}
 	if avwsdpi.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = avwsdpi.ExtendedInfo
@@ -13192,6 +13247,18 @@ func (grp GenericRecoveryPoint) AsBasicRecoveryPoint() (BasicRecoveryPoint, bool
 type GetProtectedItemQueryObject struct {
 	// Expand - Specifies if the additional information should be provided for this item.
 	Expand *string `json:"expand,omitempty"`
+}
+
+// HealthDetails health Details for backup items.
+type HealthDetails struct {
+	// Code - READ-ONLY; Health Code
+	Code *int32 `json:"code,omitempty"`
+	// Title - READ-ONLY; Health Title
+	Title *string `json:"title,omitempty"`
+	// Message - READ-ONLY; Health Message
+	Message *string `json:"message,omitempty"`
+	// Recommendations - READ-ONLY; Health Recommended Actions
+	Recommendations *[]string `json:"recommendations,omitempty"`
 }
 
 // IaasVMBackupRequest iaaS VM workload-specific backup request.

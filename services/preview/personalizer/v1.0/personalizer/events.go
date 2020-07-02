@@ -109,7 +109,6 @@ func (client EventsClient) ActivateSender(req *http.Request) (*http.Response, er
 func (client EventsClient) ActivateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -190,7 +189,6 @@ func (client EventsClient) RewardSender(req *http.Request) (*http.Response, erro
 func (client EventsClient) RewardResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

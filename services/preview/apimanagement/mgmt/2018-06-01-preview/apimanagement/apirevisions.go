@@ -146,7 +146,6 @@ func (client APIRevisionsClient) ListSender(req *http.Request) (*http.Response, 
 func (client APIRevisionsClient) ListResponder(resp *http.Response) (result APIRevisionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

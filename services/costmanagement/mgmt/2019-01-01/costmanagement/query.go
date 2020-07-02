@@ -150,7 +150,6 @@ func (client QueryClient) UsageByScopeSender(req *http.Request) (*http.Response,
 func (client QueryClient) UsageByScopeResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

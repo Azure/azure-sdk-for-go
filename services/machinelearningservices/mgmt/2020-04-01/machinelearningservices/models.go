@@ -293,7 +293,7 @@ const (
 	// SystemAssigned ...
 	SystemAssigned ResourceIdentityType = "SystemAssigned"
 	// SystemAssignedUserAssigned ...
-	SystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
+	SystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned,UserAssigned"
 	// UserAssigned ...
 	UserAssigned ResourceIdentityType = "UserAssigned"
 )
@@ -2065,6 +2065,7 @@ type ListWorkspaceKeysResult struct {
 	AppInsightsInstrumentationKey *string `json:"appInsightsInstrumentationKey,omitempty"`
 	// ContainerRegistryCredentials - READ-ONLY
 	ContainerRegistryCredentials *RegistryListCredentialsResult `json:"containerRegistryCredentials,omitempty"`
+	NotebookAccessKeys           *NotebookListCredentialsResult `json:"notebookAccessKeys,omitempty"`
 }
 
 // ListWorkspaceQuotas the List WorkspaceQuotasByVMFamily operation response.
@@ -2308,6 +2309,57 @@ type NodeStateCounts struct {
 	LeavingNodeCount *int32 `json:"leavingNodeCount,omitempty"`
 	// PreemptedNodeCount - READ-ONLY; Number of compute nodes which are in preempted state.
 	PreemptedNodeCount *int32 `json:"preemptedNodeCount,omitempty"`
+}
+
+// NotebookListCredentialsResult ...
+type NotebookListCredentialsResult struct {
+	PrimaryAccessKey   *string `json:"primaryAccessKey,omitempty"`
+	SecondaryAccessKey *string `json:"secondaryAccessKey,omitempty"`
+}
+
+// NotebookPreparationError ...
+type NotebookPreparationError struct {
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+	StatusCode   *int32  `json:"statusCode,omitempty"`
+}
+
+// NotebookResourceInfo ...
+type NotebookResourceInfo struct {
+	autorest.Response `json:"-"`
+	Fqdn              *string `json:"fqdn,omitempty"`
+	// ResourceID - the data plane resourceId that used to initialize notebook component
+	ResourceID *string `json:"resourceId,omitempty"`
+	// NotebookPreparationError - The error that occurs when preparing notebook.
+	NotebookPreparationError *NotebookPreparationError `json:"notebookPreparationError,omitempty"`
+}
+
+// NotebooksPrepareFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type NotebooksPrepareFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *NotebooksPrepareFuture) Result(client NotebooksClient) (nri NotebookResourceInfo, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "machinelearningservices.NotebooksPrepareFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("machinelearningservices.NotebooksPrepareFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if nri.Response.Response, err = future.GetResult(sender); err == nil && nri.Response.Response.StatusCode != http.StatusNoContent {
+		nri, err = client.PrepareResponder(nri.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "machinelearningservices.NotebooksPrepareFuture", "Result", nri.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // Operation azure Machine Learning workspace REST API operation
@@ -3737,6 +3789,8 @@ type WorkspaceProperties struct {
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// SharedPrivateLinkResources - The list of shared private link resources in this workspace.
 	SharedPrivateLinkResources *[]SharedPrivateLinkResource `json:"sharedPrivateLinkResources,omitempty"`
+	// NotebookInfo - READ-ONLY; The notebook info of Azure ML workspace.
+	NotebookInfo *NotebookResourceInfo `json:"notebookInfo,omitempty"`
 }
 
 // WorkspacePropertiesUpdateParameters the parameters for updating the properties of a machine learning
@@ -3774,6 +3828,29 @@ func (future *WorkspacesCreateOrUpdateFuture) Result(client WorkspacesClient) (w
 			err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesCreateOrUpdateFuture", "Result", w.Response.Response, "Failure responding to request")
 		}
 	}
+	return
+}
+
+// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type WorkspacesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *WorkspacesDeleteFuture) Result(client WorkspacesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("machinelearningservices.WorkspacesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
 	return
 }
 

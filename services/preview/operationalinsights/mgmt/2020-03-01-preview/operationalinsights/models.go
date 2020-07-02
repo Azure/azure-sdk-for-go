@@ -73,17 +73,17 @@ func PossibleClusterSkuNameEnumValues() []ClusterSkuNameEnum {
 type DataIngestionStatus string
 
 const (
-	// ApproachingQuota ...
+	// ApproachingQuota 80% of daily cap quota reached.
 	ApproachingQuota DataIngestionStatus = "ApproachingQuota"
-	// ForceOff ...
+	// ForceOff Ingestion stopped following service setting change.
 	ForceOff DataIngestionStatus = "ForceOff"
-	// ForceOn ...
+	// ForceOn Ingestion started following service setting change.
 	ForceOn DataIngestionStatus = "ForceOn"
-	// OverQuota ...
+	// OverQuota Reached daily cap quota, ingestion stopped.
 	OverQuota DataIngestionStatus = "OverQuota"
-	// RespectQuota ...
+	// RespectQuota Ingestion enabled following daily cap quota reset, or subscription enablement.
 	RespectQuota DataIngestionStatus = "RespectQuota"
-	// SubscriptionSuspended ...
+	// SubscriptionSuspended Ingestion stopped following suspended subscription.
 	SubscriptionSuspended DataIngestionStatus = "SubscriptionSuspended"
 )
 
@@ -1043,42 +1043,13 @@ func (dep *DataExportProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DataExportsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type DataExportsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DataExportsCreateOrUpdateFuture) Result(client DataExportsClient) (de DataExport, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("operationalinsights.DataExportsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if de.Response.Response, err = future.GetResult(sender); err == nil && de.Response.Response.StatusCode != http.StatusNoContent {
-		de, err = client.CreateOrUpdateResponder(de.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsCreateOrUpdateFuture", "Result", de.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // DataSource datasources under OMS Workspace.
 type DataSource struct {
 	autorest.Response `json:"-"`
 	// Properties - The data source properties in raw json format, each kind of data source have it's own schema.
 	Properties interface{} `json:"properties,omitempty"`
-	// ETag - The ETag of the data source.
-	ETag *string `json:"eTag,omitempty"`
+	// Etag - The ETag of the data source.
+	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'WindowsEvent', 'WindowsPerformanceCounter', 'IISLogs', 'LinuxSyslog', 'LinuxSyslogCollection', 'LinuxPerformanceObject', 'LinuxPerformanceCollection', 'CustomLog', 'CustomLogCollection', 'AzureAuditLog', 'AzureActivityLog', 'GenericDataSource', 'ChangeTrackingCustomPath', 'ChangeTrackingPath', 'ChangeTrackingServices', 'ChangeTrackingDataTypeConfiguration', 'ChangeTrackingDefaultRegistry', 'ChangeTrackingRegistry', 'ChangeTrackingLinuxPath', 'LinuxChangeTrackingPath', 'ChangeTrackingContentLocation', 'WindowsTelemetry', 'Office365', 'SecurityWindowsBaselineConfiguration', 'SecurityCenterSecurityWindowsBaselineConfiguration', 'SecurityEventCollectionConfiguration', 'SecurityInsightsSecurityEventCollectionConfiguration', 'ImportComputerGroup', 'NetworkMonitoring', 'Itsm', 'DNSAnalytics', 'ApplicationInsights', 'SQLDataClassification'
 	Kind DataSourceKind `json:"kind,omitempty"`
 	// Tags - Resource tags.
@@ -1097,8 +1068,8 @@ func (ds DataSource) MarshalJSON() ([]byte, error) {
 	if ds.Properties != nil {
 		objectMap["properties"] = ds.Properties
 	}
-	if ds.ETag != nil {
-		objectMap["eTag"] = ds.ETag
+	if ds.Etag != nil {
+		objectMap["etag"] = ds.Etag
 	}
 	if ds.Kind != "" {
 		objectMap["kind"] = ds.Kind
@@ -1933,8 +1904,8 @@ type Resource struct {
 // SavedSearch value object for saved search results.
 type SavedSearch struct {
 	autorest.Response `json:"-"`
-	// ETag - The ETag of the saved search.
-	ETag *string `json:"eTag,omitempty"`
+	// Etag - The ETag of the saved search.
+	Etag *string `json:"etag,omitempty"`
 	// SavedSearchProperties - The properties of the saved search.
 	*SavedSearchProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1948,8 +1919,8 @@ type SavedSearch struct {
 // MarshalJSON is the custom marshaler for SavedSearch.
 func (ss SavedSearch) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ss.ETag != nil {
-		objectMap["eTag"] = ss.ETag
+	if ss.Etag != nil {
+		objectMap["etag"] = ss.Etag
 	}
 	if ss.SavedSearchProperties != nil {
 		objectMap["properties"] = ss.SavedSearchProperties
@@ -1966,14 +1937,14 @@ func (ss *SavedSearch) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "eTag":
+		case "etag":
 			if v != nil {
-				var eTag string
-				err = json.Unmarshal(*v, &eTag)
+				var etag string
+				err = json.Unmarshal(*v, &etag)
 				if err != nil {
 					return err
 				}
-				ss.ETag = &eTag
+				ss.Etag = &etag
 			}
 		case "properties":
 			if v != nil {

@@ -120,7 +120,6 @@ func (client ProtectedItemsClient) CreateOrUpdateSender(req *http.Request) (*htt
 func (client ProtectedItemsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -202,7 +201,6 @@ func (client ProtectedItemsClient) DeleteSender(req *http.Request) (*http.Respon
 func (client ProtectedItemsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -289,7 +287,6 @@ func (client ProtectedItemsClient) GetSender(req *http.Request) (*http.Response,
 func (client ProtectedItemsClient) GetResponder(resp *http.Response) (result ProtectedItemResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -377,7 +374,6 @@ func (client ProtectedItemsClient) ListSender(req *http.Request) (*http.Response
 func (client ProtectedItemsClient) ListResponder(resp *http.Response) (result ProtectedItemResourceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

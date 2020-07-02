@@ -136,7 +136,6 @@ func (client APIIssuCommentClient) HeadSender(req *http.Request) (*http.Response
 func (client APIIssuCommentClient) HeadResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

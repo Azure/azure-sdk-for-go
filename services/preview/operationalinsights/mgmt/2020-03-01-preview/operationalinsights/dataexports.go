@@ -48,13 +48,13 @@ func NewDataExportsClientWithBaseURI(baseURI string, subscriptionID string) Data
 // workspaceName - the name of the workspace.
 // dataExportName - the data export rule name.
 // parameters - the parameters required to create or update a data export.
-func (client DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters DataExport) (result DataExportsCreateOrUpdateFuture, err error) {
+func (client DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters DataExport) (result DataExport, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataExportsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -88,10 +88,16 @@ func (client DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 		return
 	}
 
-	result, err = client.CreateOrUpdateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -123,14 +129,8 @@ func (client DataExportsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataExportsClient) CreateOrUpdateSender(req *http.Request) (future DataExportsCreateOrUpdateFuture, err error) {
-	var resp *http.Response
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
+func (client DataExportsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -138,7 +138,6 @@ func (client DataExportsClient) CreateOrUpdateSender(req *http.Request) (future 
 func (client DataExportsClient) CreateOrUpdateResponder(resp *http.Response) (result DataExport, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -230,7 +229,6 @@ func (client DataExportsClient) DeleteSender(req *http.Request) (*http.Response,
 func (client DataExportsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
@@ -321,8 +319,7 @@ func (client DataExportsClient) GetSender(req *http.Request) (*http.Response, er
 func (client DataExportsClient) GetResponder(resp *http.Response) (result DataExport, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -411,7 +408,6 @@ func (client DataExportsClient) ListByWorkspaceSender(req *http.Request) (*http.
 func (client DataExportsClient) ListByWorkspaceResponder(resp *http.Response) (result DataExportListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

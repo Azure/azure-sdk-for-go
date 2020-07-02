@@ -29,12 +29,19 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type AssignmentDeleteBehavior = original.AssignmentDeleteBehavior
+
+const (
+	All  AssignmentDeleteBehavior = original.All
+	None AssignmentDeleteBehavior = original.None
+)
+
 type AssignmentLockMode = original.AssignmentLockMode
 
 const (
-	AllResourcesDoNotDelete AssignmentLockMode = original.AllResourcesDoNotDelete
-	AllResourcesReadOnly    AssignmentLockMode = original.AllResourcesReadOnly
-	None                    AssignmentLockMode = original.None
+	AssignmentLockModeAllResourcesDoNotDelete AssignmentLockMode = original.AssignmentLockModeAllResourcesDoNotDelete
+	AssignmentLockModeAllResourcesReadOnly    AssignmentLockMode = original.AssignmentLockModeAllResourcesReadOnly
+	AssignmentLockModeNone                    AssignmentLockMode = original.AssignmentLockModeNone
 )
 
 type AssignmentProvisioningState = original.AssignmentProvisioningState
@@ -225,6 +232,9 @@ func NewPublishedBlueprintsClientWithBaseURI(baseURI string) PublishedBlueprints
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func PossibleAssignmentDeleteBehaviorValues() []AssignmentDeleteBehavior {
+	return original.PossibleAssignmentDeleteBehaviorValues()
 }
 func PossibleAssignmentLockModeValues() []AssignmentLockMode {
 	return original.PossibleAssignmentLockModeValues()

@@ -111,7 +111,6 @@ func (client LocationsClient) GetSender(req *http.Request) (*http.Response, erro
 func (client LocationsClient) GetResponder(resp *http.Response) (result Location, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -183,7 +182,6 @@ func (client LocationsClient) ListSender(req *http.Request) (*http.Response, err
 func (client LocationsClient) ListResponder(resp *http.Response) (result LocationsResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

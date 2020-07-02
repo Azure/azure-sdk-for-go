@@ -136,7 +136,6 @@ func (client PercentileSourceTargetClient) ListMetricsSender(req *http.Request) 
 func (client PercentileSourceTargetClient) ListMetricsResponder(resp *http.Response) (result PercentileMetricListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

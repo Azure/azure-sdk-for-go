@@ -107,7 +107,6 @@ func (client AppsClient) AddSender(req *http.Request) (*http.Response, error) {
 func (client AppsClient) AddResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -176,7 +175,6 @@ func (client AppsClient) AddCustomPrebuiltDomainSender(req *http.Request) (*http
 func (client AppsClient) AddCustomPrebuiltDomainResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -256,7 +254,6 @@ func (client AppsClient) DeleteSender(req *http.Request) (*http.Response, error)
 func (client AppsClient) DeleteResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -328,7 +325,6 @@ func (client AppsClient) DownloadQueryLogsResponder(resp *http.Response) (result
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -397,7 +393,6 @@ func (client AppsClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client AppsClient) GetResponder(resp *http.Response) (result ApplicationInfoResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -468,7 +463,6 @@ func (client AppsClient) GetPublishSettingsSender(req *http.Request) (*http.Resp
 func (client AppsClient) GetPublishSettingsResponder(resp *http.Response) (result PublishSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -539,7 +533,6 @@ func (client AppsClient) GetSettingsSender(req *http.Request) (*http.Response, e
 func (client AppsClient) GetSettingsResponder(resp *http.Response) (result ApplicationSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -616,7 +609,6 @@ func (client AppsClient) ImportSender(req *http.Request) (*http.Response, error)
 func (client AppsClient) ImportResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -709,7 +701,6 @@ func (client AppsClient) ListSender(req *http.Request) (*http.Response, error) {
 func (client AppsClient) ListResponder(resp *http.Response) (result ListApplicationInfoResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -774,7 +765,6 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsSender(req *http.Requ
 func (client AppsClient) ListAvailableCustomPrebuiltDomainsResponder(resp *http.Response) (result ListPrebuiltDomain, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -845,7 +835,6 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCultureSender(req 
 func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCultureResponder(resp *http.Response) (result ListPrebuiltDomain, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -910,7 +899,6 @@ func (client AppsClient) ListCortanaEndpointsSender(req *http.Request) (*http.Re
 func (client AppsClient) ListCortanaEndpointsResponder(resp *http.Response) (result PersonalAssistantsResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -975,7 +963,6 @@ func (client AppsClient) ListDomainsSender(req *http.Request) (*http.Response, e
 func (client AppsClient) ListDomainsResponder(resp *http.Response) (result ListString, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1046,7 +1033,6 @@ func (client AppsClient) ListEndpointsSender(req *http.Request) (*http.Response,
 func (client AppsClient) ListEndpointsResponder(resp *http.Response) (result SetString, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1112,7 +1098,6 @@ func (client AppsClient) ListSupportedCulturesSender(req *http.Request) (*http.R
 func (client AppsClient) ListSupportedCulturesResponder(resp *http.Response) (result ListAvailableCulture, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1177,7 +1162,6 @@ func (client AppsClient) ListUsageScenariosSender(req *http.Request) (*http.Resp
 func (client AppsClient) ListUsageScenariosResponder(resp *http.Response) (result ListString, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1252,7 +1236,6 @@ func (client AppsClient) PackagePublishedApplicationAsGzipResponder(resp *http.R
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -1324,7 +1307,6 @@ func (client AppsClient) PackageTrainedApplicationAsGzipResponder(resp *http.Res
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -1397,7 +1379,6 @@ func (client AppsClient) PublishSender(req *http.Request) (*http.Response, error
 func (client AppsClient) PublishResponder(resp *http.Response) (result ProductionOrStagingEndpointInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusMultiStatus),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1471,7 +1452,6 @@ func (client AppsClient) UpdateSender(req *http.Request) (*http.Response, error)
 func (client AppsClient) UpdateResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1545,7 +1525,6 @@ func (client AppsClient) UpdatePublishSettingsSender(req *http.Request) (*http.R
 func (client AppsClient) UpdatePublishSettingsResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1619,7 +1598,6 @@ func (client AppsClient) UpdateSettingsSender(req *http.Request) (*http.Response
 func (client AppsClient) UpdateSettingsResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -202,6 +202,8 @@ func (c *aadIdentityClient) createRefreshTokenRequest(tenantID, clientID, client
 }
 
 func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.Request, error) {
+	u := *c.options.AuthorityHost
+	u.Path = path.Join(u.Path, tenantID, tokenEndpoint)
 	data := url.Values{}
 	data.Set(qpGrantType, "client_credentials")
 	data.Set(qpClientID, clientID)
@@ -209,18 +211,20 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clien
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := azcore.NewRequest(http.MethodPost, *c.options.AuthorityHost)
-	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-	err := msg.SetBody(body)
+	req := azcore.NewRequest(http.MethodPost, u)
+	req.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
+	err := req.SetBody(body)
 	if err != nil {
 		return nil, err
 	}
 
-	return msg, nil
+	return req, nil
 }
 
 func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, clientID string, clientCertificate string, scopes []string) (*azcore.Request, error) {
-	clientAssertion, err := createClientAssertionJWT(clientID, c.options.AuthorityHost.String(), clientCertificate)
+	u := *c.options.AuthorityHost
+	u.Path = path.Join(u.Path, tenantID, tokenEndpoint)
+	clientAssertion, err := createClientAssertionJWT(clientID, u.String(), clientCertificate)
 	if err != nil {
 		return nil, err
 	}
@@ -233,14 +237,13 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, 
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := azcore.NewRequest(http.MethodPost, *c.options.AuthorityHost)
-	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-
-	err = msg.SetBody(body)
+	req := azcore.NewRequest(http.MethodPost, u)
+	req.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
+	err = req.SetBody(body)
 	if err != nil {
 		return nil, err
 	}
-	return msg, nil
+	return req, nil
 }
 
 // authenticateUsernamePassword creates a client username and password authentication request and returns an Access Token or
@@ -270,6 +273,8 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 }
 
 func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, clientID string, username string, password string, scopes []string) (*azcore.Request, error) {
+	u := *c.options.AuthorityHost
+	u.Path = path.Join(u.Path, tenantID, tokenEndpoint)
 	data := url.Values{}
 	data.Set(qpResponseType, "token")
 	data.Set(qpGrantType, "password")
@@ -279,13 +284,13 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, c
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	msg := azcore.NewRequest(http.MethodPost, *c.options.AuthorityHost)
-	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-	err := msg.SetBody(body)
+	req := azcore.NewRequest(http.MethodPost, u)
+	req.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
+	err := req.SetBody(body)
 	if err != nil {
 		return nil, err
 	}
-	return msg, nil
+	return req, nil
 }
 
 func createDeviceCodeResult(res *azcore.Response) (*deviceCodeResult, error) {

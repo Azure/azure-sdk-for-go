@@ -222,6 +222,26 @@ func TestDeviceCodeCredential_GetTokenExpiredToken(t *testing.T) {
 	}
 }
 
+func TestDeviceCodeCredential_GetTokenWithRefreshToken(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srvURL := srv.URL()
+	handler := func(string) {}
+	cred, err := NewDeviceCodeCredential(tenantID, clientID, handler, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+	cred.refreshToken = "refresh_token"
+	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
+	if err != nil {
+		t.Fatalf("Expected an empty error but received: %s", err.Error())
+	}
+	if tk.Token != "new_token" {
+		t.Fatalf("Received an unexpected value in azcore.AccessToken.Token")
+	}
+}
+
 func TestBearerPolicy_DeviceCodeCredential(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()

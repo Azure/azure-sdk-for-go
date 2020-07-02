@@ -160,7 +160,6 @@ func (client ReportConfigClient) CreateOrUpdateSender(req *http.Request) (*http.
 func (client ReportConfigClient) CreateOrUpdateResponder(resp *http.Response) (result ReportConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -288,7 +287,6 @@ func (client ReportConfigClient) CreateOrUpdateByResourceGroupNameSender(req *ht
 func (client ReportConfigClient) CreateOrUpdateByResourceGroupNameResponder(resp *http.Response) (result ReportConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -362,7 +360,6 @@ func (client ReportConfigClient) DeleteSender(req *http.Request) (*http.Response
 func (client ReportConfigClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -437,7 +434,6 @@ func (client ReportConfigClient) DeleteByResourceGroupNameSender(req *http.Reque
 func (client ReportConfigClient) DeleteByResourceGroupNameResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -510,7 +506,6 @@ func (client ReportConfigClient) GetSender(req *http.Request) (*http.Response, e
 func (client ReportConfigClient) GetResponder(resp *http.Response) (result ReportConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -586,7 +581,6 @@ func (client ReportConfigClient) GetByResourceGroupNameSender(req *http.Request)
 func (client ReportConfigClient) GetByResourceGroupNameResponder(resp *http.Response) (result ReportConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -657,7 +651,6 @@ func (client ReportConfigClient) ListSender(req *http.Request) (*http.Response, 
 func (client ReportConfigClient) ListResponder(resp *http.Response) (result ReportConfigListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -731,7 +724,6 @@ func (client ReportConfigClient) ListByResourceGroupNameSender(req *http.Request
 func (client ReportConfigClient) ListByResourceGroupNameResponder(resp *http.Response) (result ReportConfigListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

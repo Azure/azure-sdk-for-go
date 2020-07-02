@@ -143,8 +143,7 @@ func (client UserSubscriptionsClient) ListByUsersPreparer(ctx context.Context, r
 // ListByUsersSender sends the ListByUsers request. The method will close the
 // http.Response Body if it receives an error.
 func (client UserSubscriptionsClient) ListByUsersSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByUsersResponder handles the response to the ListByUsers request. The method always
@@ -152,7 +151,6 @@ func (client UserSubscriptionsClient) ListByUsersSender(req *http.Request) (*htt
 func (client UserSubscriptionsClient) ListByUsersResponder(resp *http.Response) (result SubscriptionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -124,7 +124,6 @@ func (client AssignmentsClient) CreateSender(req *http.Request) (*http.Response,
 func (client AssignmentsClient) CreateResponder(resp *http.Response) (result Assignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -216,7 +215,6 @@ func (client AssignmentsClient) CreateByIDSender(req *http.Request) (*http.Respo
 func (client AssignmentsClient) CreateByIDResponder(resp *http.Response) (result Assignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -291,7 +289,6 @@ func (client AssignmentsClient) DeleteSender(req *http.Request) (*http.Response,
 func (client AssignmentsClient) DeleteResponder(resp *http.Response) (result Assignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -368,7 +365,6 @@ func (client AssignmentsClient) DeleteByIDSender(req *http.Request) (*http.Respo
 func (client AssignmentsClient) DeleteByIDResponder(resp *http.Response) (result Assignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -443,7 +439,6 @@ func (client AssignmentsClient) GetSender(req *http.Request) (*http.Response, er
 func (client AssignmentsClient) GetResponder(resp *http.Response) (result Assignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -520,7 +515,6 @@ func (client AssignmentsClient) GetByIDSender(req *http.Request) (*http.Response
 func (client AssignmentsClient) GetByIDResponder(resp *http.Response) (result Assignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -597,7 +591,6 @@ func (client AssignmentsClient) ListSender(req *http.Request) (*http.Response, e
 func (client AssignmentsClient) ListResponder(resp *http.Response) (result AssignmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -729,7 +722,6 @@ func (client AssignmentsClient) ListForResourceSender(req *http.Request) (*http.
 func (client AssignmentsClient) ListForResourceResponder(resp *http.Response) (result AssignmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -853,7 +845,6 @@ func (client AssignmentsClient) ListForResourceGroupSender(req *http.Request) (*
 func (client AssignmentsClient) ListForResourceGroupResponder(resp *http.Response) (result AssignmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

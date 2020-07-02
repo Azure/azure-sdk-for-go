@@ -17,10 +17,14 @@ import (
 
 // PrivateLinkServicesOperations contains the methods for the PrivateLinkServices group.
 type PrivateLinkServicesOperations interface {
-	// CheckPrivateLinkServiceVisibility - Checks whether the subscription is visible to private link service.
-	CheckPrivateLinkServiceVisibility(ctx context.Context, location string, parameters CheckPrivateLinkServiceVisibilityRequest) (*PrivateLinkServiceVisibilityResponse, error)
-	// CheckPrivateLinkServiceVisibilityByResourceGroup - Checks whether the subscription is visible to private link service in the specified resource group.
-	CheckPrivateLinkServiceVisibilityByResourceGroup(ctx context.Context, location string, resourceGroupName string, parameters CheckPrivateLinkServiceVisibilityRequest) (*PrivateLinkServiceVisibilityResponse, error)
+	// BeginCheckPrivateLinkServiceVisibility - Checks whether the subscription is visible to private link service.
+	BeginCheckPrivateLinkServiceVisibility(ctx context.Context, location string, parameters CheckPrivateLinkServiceVisibilityRequest) (*PrivateLinkServiceVisibilityPollerResponse, error)
+	// ResumeCheckPrivateLinkServiceVisibility - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
+	ResumeCheckPrivateLinkServiceVisibility(token string) (PrivateLinkServiceVisibilityPoller, error)
+	// BeginCheckPrivateLinkServiceVisibilityByResourceGroup - Checks whether the subscription is visible to private link service in the specified resource group.
+	BeginCheckPrivateLinkServiceVisibilityByResourceGroup(ctx context.Context, location string, resourceGroupName string, parameters CheckPrivateLinkServiceVisibilityRequest) (*PrivateLinkServiceVisibilityPollerResponse, error)
+	// ResumeCheckPrivateLinkServiceVisibilityByResourceGroup - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
+	ResumeCheckPrivateLinkServiceVisibilityByResourceGroup(token string) (PrivateLinkServiceVisibilityPoller, error)
 	// BeginCreateOrUpdate - Creates or updates an private link service in the specified resource group.
 	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PrivateLinkService) (*PrivateLinkServicePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
@@ -58,11 +62,12 @@ type privateLinkServicesOperations struct {
 }
 
 // CheckPrivateLinkServiceVisibility - Checks whether the subscription is visible to private link service.
-func (client *privateLinkServicesOperations) CheckPrivateLinkServiceVisibility(ctx context.Context, location string, parameters CheckPrivateLinkServiceVisibilityRequest) (*PrivateLinkServiceVisibilityResponse, error) {
+func (client *privateLinkServicesOperations) BeginCheckPrivateLinkServiceVisibility(ctx context.Context, location string, parameters CheckPrivateLinkServiceVisibilityRequest) (*PrivateLinkServiceVisibilityPollerResponse, error) {
 	req, err := client.checkPrivateLinkServiceVisibilityCreateRequest(location, parameters)
 	if err != nil {
 		return nil, err
 	}
+	// send the first request to initialize the poller
 	resp, err := client.p.Do(ctx, req)
 	if err != nil {
 		return nil, err
@@ -71,7 +76,30 @@ func (client *privateLinkServicesOperations) CheckPrivateLinkServiceVisibility(c
 	if err != nil {
 		return nil, err
 	}
+	pt, err := createPollingTracker("privateLinkServicesOperations.CheckPrivateLinkServiceVisibility", "location", resp, client.checkPrivateLinkServiceVisibilityHandleError)
+	if err != nil {
+		return nil, err
+	}
+	poller := &privateLinkServiceVisibilityPoller{
+		pt:       pt,
+		pipeline: client.p,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*PrivateLinkServiceVisibilityResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
 	return result, nil
+}
+
+func (client *privateLinkServicesOperations) ResumeCheckPrivateLinkServiceVisibility(token string) (PrivateLinkServiceVisibilityPoller, error) {
+	pt, err := resumePollingTracker("privateLinkServicesOperations.CheckPrivateLinkServiceVisibility", token, client.checkPrivateLinkServiceVisibilityHandleError)
+	if err != nil {
+		return nil, err
+	}
+	return &privateLinkServiceVisibilityPoller{
+		pipeline: client.p,
+		pt:       pt,
+	}, nil
 }
 
 // checkPrivateLinkServiceVisibilityCreateRequest creates the CheckPrivateLinkServiceVisibility request.
@@ -91,12 +119,11 @@ func (client *privateLinkServicesOperations) checkPrivateLinkServiceVisibilityCr
 }
 
 // checkPrivateLinkServiceVisibilityHandleResponse handles the CheckPrivateLinkServiceVisibility response.
-func (client *privateLinkServicesOperations) checkPrivateLinkServiceVisibilityHandleResponse(resp *azcore.Response) (*PrivateLinkServiceVisibilityResponse, error) {
-	if !resp.HasStatusCode(http.StatusOK) {
+func (client *privateLinkServicesOperations) checkPrivateLinkServiceVisibilityHandleResponse(resp *azcore.Response) (*PrivateLinkServiceVisibilityPollerResponse, error) {
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.checkPrivateLinkServiceVisibilityHandleError(resp)
 	}
-	result := PrivateLinkServiceVisibilityResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PrivateLinkServiceVisibility)
+	return &PrivateLinkServiceVisibilityPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // checkPrivateLinkServiceVisibilityHandleError handles the CheckPrivateLinkServiceVisibility error response.
@@ -109,11 +136,12 @@ func (client *privateLinkServicesOperations) checkPrivateLinkServiceVisibilityHa
 }
 
 // CheckPrivateLinkServiceVisibilityByResourceGroup - Checks whether the subscription is visible to private link service in the specified resource group.
-func (client *privateLinkServicesOperations) CheckPrivateLinkServiceVisibilityByResourceGroup(ctx context.Context, location string, resourceGroupName string, parameters CheckPrivateLinkServiceVisibilityRequest) (*PrivateLinkServiceVisibilityResponse, error) {
+func (client *privateLinkServicesOperations) BeginCheckPrivateLinkServiceVisibilityByResourceGroup(ctx context.Context, location string, resourceGroupName string, parameters CheckPrivateLinkServiceVisibilityRequest) (*PrivateLinkServiceVisibilityPollerResponse, error) {
 	req, err := client.checkPrivateLinkServiceVisibilityByResourceGroupCreateRequest(location, resourceGroupName, parameters)
 	if err != nil {
 		return nil, err
 	}
+	// send the first request to initialize the poller
 	resp, err := client.p.Do(ctx, req)
 	if err != nil {
 		return nil, err
@@ -122,7 +150,30 @@ func (client *privateLinkServicesOperations) CheckPrivateLinkServiceVisibilityBy
 	if err != nil {
 		return nil, err
 	}
+	pt, err := createPollingTracker("privateLinkServicesOperations.CheckPrivateLinkServiceVisibilityByResourceGroup", "location", resp, client.checkPrivateLinkServiceVisibilityByResourceGroupHandleError)
+	if err != nil {
+		return nil, err
+	}
+	poller := &privateLinkServiceVisibilityPoller{
+		pt:       pt,
+		pipeline: client.p,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*PrivateLinkServiceVisibilityResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
 	return result, nil
+}
+
+func (client *privateLinkServicesOperations) ResumeCheckPrivateLinkServiceVisibilityByResourceGroup(token string) (PrivateLinkServiceVisibilityPoller, error) {
+	pt, err := resumePollingTracker("privateLinkServicesOperations.CheckPrivateLinkServiceVisibilityByResourceGroup", token, client.checkPrivateLinkServiceVisibilityByResourceGroupHandleError)
+	if err != nil {
+		return nil, err
+	}
+	return &privateLinkServiceVisibilityPoller{
+		pipeline: client.p,
+		pt:       pt,
+	}, nil
 }
 
 // checkPrivateLinkServiceVisibilityByResourceGroupCreateRequest creates the CheckPrivateLinkServiceVisibilityByResourceGroup request.
@@ -143,12 +194,11 @@ func (client *privateLinkServicesOperations) checkPrivateLinkServiceVisibilityBy
 }
 
 // checkPrivateLinkServiceVisibilityByResourceGroupHandleResponse handles the CheckPrivateLinkServiceVisibilityByResourceGroup response.
-func (client *privateLinkServicesOperations) checkPrivateLinkServiceVisibilityByResourceGroupHandleResponse(resp *azcore.Response) (*PrivateLinkServiceVisibilityResponse, error) {
-	if !resp.HasStatusCode(http.StatusOK) {
+func (client *privateLinkServicesOperations) checkPrivateLinkServiceVisibilityByResourceGroupHandleResponse(resp *azcore.Response) (*PrivateLinkServiceVisibilityPollerResponse, error) {
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.checkPrivateLinkServiceVisibilityByResourceGroupHandleError(resp)
 	}
-	result := PrivateLinkServiceVisibilityResponse{RawResponse: resp.Response}
-	return &result, resp.UnmarshalAsJSON(&result.PrivateLinkServiceVisibility)
+	return &PrivateLinkServiceVisibilityPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // checkPrivateLinkServiceVisibilityByResourceGroupHandleError handles the CheckPrivateLinkServiceVisibilityByResourceGroup error response.

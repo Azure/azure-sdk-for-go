@@ -30,11 +30,15 @@ type NetworkManagementClientOperations interface {
 	// ResumeGeneratevirtualwanvpnserverconfigurationvpnprofile - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeGeneratevirtualwanvpnserverconfigurationvpnprofile(token string) (VpnProfileResponsePoller, error)
 	// BeginGetActiveSessions - Returns the list of currently active sessions on the Bastion.
-	BeginGetActiveSessions(resourceGroupName string, bastionHostName string) (*BastionActiveSessionListResultResponse, error)
+	BeginGetActiveSessions(ctx context.Context, resourceGroupName string, bastionHostName string) (*BastionActiveSessionListResultPagerPollerResponse, error)
+	// ResumeGetActiveSessions - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
+	ResumeGetActiveSessions(token string) (BastionActiveSessionListResultPagerPoller, error)
 	// GetBastionShareableLink - Return the Bastion Shareable Links for all the VMs specified in the request.
 	GetBastionShareableLink(resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest) (BastionShareableLinkListResultPager, error)
 	// BeginPutBastionShareableLink - Creates a Bastion Shareable Links for all the VMs specified in the request.
-	BeginPutBastionShareableLink(resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest) (*BastionShareableLinkListResultResponse, error)
+	BeginPutBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest) (*BastionShareableLinkListResultPagerPollerResponse, error)
+	// ResumePutBastionShareableLink - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
+	ResumePutBastionShareableLink(token string) (BastionShareableLinkListResultPagerPoller, error)
 	// SupportedSecurityProviders - Gives the supported security providers for the virtual wan.
 	SupportedSecurityProviders(ctx context.Context, resourceGroupName string, virtualWanName string) (*VirtualWanSecurityProvidersResponse, error)
 }
@@ -306,8 +310,45 @@ func (client *networkManagementClientOperations) generatevirtualwanvpnserverconf
 }
 
 // GetActiveSessions - Returns the list of currently active sessions on the Bastion.
-func (client *networkManagementClientOperations) BeginGetActiveSessions(resourceGroupName string, bastionHostName string) (*BastionActiveSessionListResultResponse, error) {
-	return nil, nil
+func (client *networkManagementClientOperations) BeginGetActiveSessions(ctx context.Context, resourceGroupName string, bastionHostName string) (*BastionActiveSessionListResultPagerPollerResponse, error) {
+	req, err := client.getActiveSessionsCreateRequest(resourceGroupName, bastionHostName)
+	if err != nil {
+		return nil, err
+	}
+	// send the first request to initialize the poller
+	resp, err := client.p.Do(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	result, err := client.getActiveSessionsHandleResponse(resp)
+	if err != nil {
+		return nil, err
+	}
+	pt, err := createPollingTracker("networkManagementClientOperations.GetActiveSessions", "location", resp, client.getActiveSessionsHandleError)
+	if err != nil {
+		return nil, err
+	}
+	poller := &bastionActiveSessionListResultPagerPoller{
+		pt:          pt,
+		respHandler: client.bastionActiveSessionListResultPagerHandleResponse,
+		pipeline:    client.p,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BastionActiveSessionListResultPager, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
+}
+
+func (client *networkManagementClientOperations) ResumeGetActiveSessions(token string) (BastionActiveSessionListResultPagerPoller, error) {
+	pt, err := resumePollingTracker("networkManagementClientOperations.GetActiveSessions", token, client.getActiveSessionsHandleError)
+	if err != nil {
+		return nil, err
+	}
+	return &bastionActiveSessionListResultPagerPoller{
+		pipeline: client.p,
+		pt:       pt,
+	}, nil
 }
 
 // getActiveSessionsCreateRequest creates the GetActiveSessions request.
@@ -328,8 +369,16 @@ func (client *networkManagementClientOperations) getActiveSessionsCreateRequest(
 }
 
 // getActiveSessionsHandleResponse handles the GetActiveSessions response.
-func (client *networkManagementClientOperations) getActiveSessionsHandleResponse(resp *azcore.Response) (*BastionActiveSessionListResultResponse, error) {
+func (client *networkManagementClientOperations) getActiveSessionsHandleResponse(resp *azcore.Response) (*BastionActiveSessionListResultPagerPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.getActiveSessionsHandleError(resp)
+	}
+	return &BastionActiveSessionListResultPagerPollerResponse{RawResponse: resp.Response}, nil
+}
+
+// getActiveSessionsHandleResponse handles the GetActiveSessions response.
+func (client *networkManagementClientOperations) bastionActiveSessionListResultPagerHandleResponse(resp *azcore.Response) (*BastionActiveSessionListResultResponse, error) {
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusOK) {
 		return nil, client.getActiveSessionsHandleError(resp)
 	}
 	result := BastionActiveSessionListResultResponse{RawResponse: resp.Response}
@@ -404,8 +453,45 @@ func (client *networkManagementClientOperations) getBastionShareableLinkHandleEr
 }
 
 // PutBastionShareableLink - Creates a Bastion Shareable Links for all the VMs specified in the request.
-func (client *networkManagementClientOperations) BeginPutBastionShareableLink(resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest) (*BastionShareableLinkListResultResponse, error) {
-	return nil, nil
+func (client *networkManagementClientOperations) BeginPutBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest) (*BastionShareableLinkListResultPagerPollerResponse, error) {
+	req, err := client.putBastionShareableLinkCreateRequest(resourceGroupName, bastionHostName, bslRequest)
+	if err != nil {
+		return nil, err
+	}
+	// send the first request to initialize the poller
+	resp, err := client.p.Do(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	result, err := client.putBastionShareableLinkHandleResponse(resp)
+	if err != nil {
+		return nil, err
+	}
+	pt, err := createPollingTracker("networkManagementClientOperations.PutBastionShareableLink", "location", resp, client.putBastionShareableLinkHandleError)
+	if err != nil {
+		return nil, err
+	}
+	poller := &bastionShareableLinkListResultPagerPoller{
+		pt:          pt,
+		respHandler: client.bastionShareableLinkListResultPagerHandleResponse,
+		pipeline:    client.p,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BastionShareableLinkListResultPager, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
+}
+
+func (client *networkManagementClientOperations) ResumePutBastionShareableLink(token string) (BastionShareableLinkListResultPagerPoller, error) {
+	pt, err := resumePollingTracker("networkManagementClientOperations.PutBastionShareableLink", token, client.putBastionShareableLinkHandleError)
+	if err != nil {
+		return nil, err
+	}
+	return &bastionShareableLinkListResultPagerPoller{
+		pipeline: client.p,
+		pt:       pt,
+	}, nil
 }
 
 // putBastionShareableLinkCreateRequest creates the PutBastionShareableLink request.
@@ -426,8 +512,16 @@ func (client *networkManagementClientOperations) putBastionShareableLinkCreateRe
 }
 
 // putBastionShareableLinkHandleResponse handles the PutBastionShareableLink response.
-func (client *networkManagementClientOperations) putBastionShareableLinkHandleResponse(resp *azcore.Response) (*BastionShareableLinkListResultResponse, error) {
+func (client *networkManagementClientOperations) putBastionShareableLinkHandleResponse(resp *azcore.Response) (*BastionShareableLinkListResultPagerPollerResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.putBastionShareableLinkHandleError(resp)
+	}
+	return &BastionShareableLinkListResultPagerPollerResponse{RawResponse: resp.Response}, nil
+}
+
+// putBastionShareableLinkHandleResponse handles the PutBastionShareableLink response.
+func (client *networkManagementClientOperations) bastionShareableLinkListResultPagerHandleResponse(resp *azcore.Response) (*BastionShareableLinkListResultResponse, error) {
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusOK) {
 		return nil, client.putBastionShareableLinkHandleError(resp)
 	}
 	result := BastionShareableLinkListResultResponse{RawResponse: resp.Response}

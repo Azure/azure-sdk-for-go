@@ -23,8 +23,10 @@ type Action struct {
 	OdataType *string `json:"odata.type,omitempty"`
 }
 
+// GetAction implements the ActionClassification interface for type Action.
 func (a *Action) GetAction() *Action { return a }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type Action.
 func (a *Action) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -274,6 +276,7 @@ type AlertRule struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type AlertRule.
 func (a *AlertRule) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -372,6 +375,7 @@ type AlertingAction struct {
 	Trigger *TriggerCondition `json:"trigger,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AlertingAction.
 func (a AlertingAction) MarshalJSON() ([]byte, error) {
 	objectMap := a.Action.marshalInternal("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction")
 	if a.AznsAction != nil {
@@ -389,6 +393,7 @@ func (a AlertingAction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type AlertingAction.
 func (a *AlertingAction) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -857,6 +862,7 @@ type DynamicMetricCriteria struct {
 	Operator *DynamicThresholdOperator `json:"operator,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type DynamicMetricCriteria.
 func (d DynamicMetricCriteria) MarshalJSON() ([]byte, error) {
 	objectMap := d.MultiMetricCriteria.marshalInternal(CriterionTypeDynamicThresholdCriterion)
 	if d.AlertSensitivity != nil {
@@ -874,6 +880,7 @@ func (d DynamicMetricCriteria) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type DynamicMetricCriteria.
 func (d *DynamicMetricCriteria) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -969,6 +976,7 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// Error implements the error interface for type ErrorResponse.
 func (e ErrorResponse) Error() string {
 	msg := ""
 	if e.Code != nil {
@@ -1085,6 +1093,7 @@ type EventData struct {
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type EventData.
 func (e EventData) MarshalJSON() ([]byte, error) {
 	type alias EventData
 	aux := &struct {
@@ -1099,6 +1108,7 @@ func (e EventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type EventData.
 func (e *EventData) UnmarshalJSON(data []byte) error {
 	type alias EventData
 	aux := &struct {
@@ -1167,6 +1177,7 @@ type Incident struct {
 	RuleName *string `json:"ruleName,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type Incident.
 func (i Incident) MarshalJSON() ([]byte, error) {
 	type alias Incident
 	aux := &struct {
@@ -1181,6 +1192,7 @@ func (i Incident) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type Incident.
 func (i *Incident) UnmarshalJSON(data []byte) error {
 	type alias Incident
 	aux := &struct {
@@ -1260,6 +1272,7 @@ type LocationThresholdRuleCondition struct {
 	WindowSize *time.Duration `json:"windowSize,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type LocationThresholdRuleCondition.
 func (l LocationThresholdRuleCondition) MarshalJSON() ([]byte, error) {
 	objectMap := l.RuleCondition.marshalInternal("Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition")
 	if l.FailedLocationCount != nil {
@@ -1271,6 +1284,7 @@ func (l LocationThresholdRuleCondition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type LocationThresholdRuleCondition.
 func (l *LocationThresholdRuleCondition) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -1395,6 +1409,7 @@ type LogSearchRule struct {
 	Source *Source `json:"source,omitempty"`
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type LogSearchRule.
 func (l *LogSearchRule) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -1508,6 +1523,7 @@ type LogToMetricAction struct {
 	Criteria *[]Criteria `json:"criteria,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type LogToMetricAction.
 func (l LogToMetricAction) MarshalJSON() ([]byte, error) {
 	objectMap := l.Action.marshalInternal("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.LogToMetricAction")
 	if l.Criteria != nil {
@@ -1516,6 +1532,7 @@ func (l LogToMetricAction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type LogToMetricAction.
 func (l *LogToMetricAction) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -1572,6 +1589,7 @@ type ManagementEventRuleCondition struct {
 	Aggregation *ManagementEventAggregationCondition `json:"aggregation,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ManagementEventRuleCondition.
 func (m ManagementEventRuleCondition) MarshalJSON() ([]byte, error) {
 	objectMap := m.RuleCondition.marshalInternal("Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition")
 	if m.Aggregation != nil {
@@ -1580,6 +1598,7 @@ func (m ManagementEventRuleCondition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ManagementEventRuleCondition.
 func (m *ManagementEventRuleCondition) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -1650,8 +1669,10 @@ type MetricAlertCriteria struct {
 	OdataType *Odatatype `json:"odata.type,omitempty"`
 }
 
+// GetMetricAlertCriteria implements the MetricAlertCriteriaClassification interface for type MetricAlertCriteria.
 func (m *MetricAlertCriteria) GetMetricAlertCriteria() *MetricAlertCriteria { return m }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type MetricAlertCriteria.
 func (m *MetricAlertCriteria) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -1689,6 +1710,7 @@ type MetricAlertMultipleResourceMultipleMetricCriteria struct {
 	AllOf *[]MultiMetricCriteriaClassification `json:"allOf,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type MetricAlertMultipleResourceMultipleMetricCriteria.
 func (m MetricAlertMultipleResourceMultipleMetricCriteria) MarshalJSON() ([]byte, error) {
 	objectMap := m.MetricAlertCriteria.marshalInternal(OdatatypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria)
 	if m.AllOf != nil {
@@ -1697,6 +1719,7 @@ func (m MetricAlertMultipleResourceMultipleMetricCriteria) MarshalJSON() ([]byte
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type MetricAlertMultipleResourceMultipleMetricCriteria.
 func (m *MetricAlertMultipleResourceMultipleMetricCriteria) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -1756,6 +1779,7 @@ type MetricAlertProperties struct {
 	WindowSize *time.Duration `json:"windowSize,omitempty"`
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type MetricAlertProperties.
 func (m *MetricAlertProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -1870,6 +1894,7 @@ type MetricAlertSingleResourceMultipleMetricCriteria struct {
 	AllOf *[]MetricCriteria `json:"allOf,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type MetricAlertSingleResourceMultipleMetricCriteria.
 func (m MetricAlertSingleResourceMultipleMetricCriteria) MarshalJSON() ([]byte, error) {
 	objectMap := m.MetricAlertCriteria.marshalInternal(OdatatypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria)
 	if m.AllOf != nil {
@@ -1878,6 +1903,7 @@ func (m MetricAlertSingleResourceMultipleMetricCriteria) MarshalJSON() ([]byte, 
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type MetricAlertSingleResourceMultipleMetricCriteria.
 func (m *MetricAlertSingleResourceMultipleMetricCriteria) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -1940,6 +1966,7 @@ type MetricAlertStatusProperties struct {
 	Timestamp *time.Time `json:"timestamp,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type MetricAlertStatusProperties.
 func (m MetricAlertStatusProperties) MarshalJSON() ([]byte, error) {
 	type alias MetricAlertStatusProperties
 	aux := &struct {
@@ -1952,6 +1979,7 @@ func (m MetricAlertStatusProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type MetricAlertStatusProperties.
 func (m *MetricAlertStatusProperties) UnmarshalJSON(data []byte) error {
 	type alias MetricAlertStatusProperties
 	aux := &struct {
@@ -2033,6 +2061,7 @@ type MetricCriteria struct {
 	Threshold *float64 `json:"threshold,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type MetricCriteria.
 func (m MetricCriteria) MarshalJSON() ([]byte, error) {
 	objectMap := m.MultiMetricCriteria.marshalInternal(CriterionTypeStaticThresholdCriterion)
 	if m.Operator != nil {
@@ -2044,6 +2073,7 @@ func (m MetricCriteria) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type MetricCriteria.
 func (m *MetricCriteria) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -2252,6 +2282,7 @@ type MetricValue struct {
 	Total *float64 `json:"total,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type MetricValue.
 func (m MetricValue) MarshalJSON() ([]byte, error) {
 	type alias MetricValue
 	aux := &struct {
@@ -2264,6 +2295,7 @@ func (m MetricValue) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type MetricValue.
 func (m *MetricValue) UnmarshalJSON(data []byte) error {
 	type alias MetricValue
 	aux := &struct {
@@ -2339,8 +2371,10 @@ type MultiMetricCriteria struct {
 	TimeAggregation *AggregationType `json:"timeAggregation,omitempty"`
 }
 
+// GetMultiMetricCriteria implements the MultiMetricCriteriaClassification interface for type MultiMetricCriteria.
 func (m *MultiMetricCriteria) GetMultiMetricCriteria() *MultiMetricCriteria { return m }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type MultiMetricCriteria.
 func (m *MultiMetricCriteria) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -2576,6 +2610,7 @@ type ResponseWithError struct {
 	InnerError *Error `json:"error,omitempty"`
 }
 
+// Error implements the error interface for type ResponseWithError.
 func (e ResponseWithError) Error() string {
 	msg := ""
 	if e.InnerError != nil {
@@ -2607,8 +2642,10 @@ type RuleAction struct {
 	OdataType *string `json:"odata.type,omitempty"`
 }
 
+// GetRuleAction implements the RuleActionClassification interface for type RuleAction.
 func (r *RuleAction) GetRuleAction() *RuleAction { return r }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type RuleAction.
 func (r *RuleAction) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -2652,8 +2689,10 @@ type RuleCondition struct {
 	OdataType *string `json:"odata.type,omitempty"`
 }
 
+// GetRuleCondition implements the RuleConditionClassification interface for type RuleCondition.
 func (r *RuleCondition) GetRuleCondition() *RuleCondition { return r }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type RuleCondition.
 func (r *RuleCondition) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -2702,8 +2741,10 @@ type RuleDataSource struct {
 	ResourceURI *string `json:"resourceUri,omitempty"`
 }
 
+// GetRuleDataSource implements the RuleDataSourceClassification interface for type RuleDataSource.
 func (r *RuleDataSource) GetRuleDataSource() *RuleDataSource { return r }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type RuleDataSource.
 func (r *RuleDataSource) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -2749,6 +2790,7 @@ type RuleEmailAction struct {
 	SendToServiceOwners *bool `json:"sendToServiceOwners,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type RuleEmailAction.
 func (r RuleEmailAction) MarshalJSON() ([]byte, error) {
 	objectMap := r.RuleAction.marshalInternal("Microsoft.Azure.Management.Insights.Models.RuleEmailAction")
 	if r.CustomEmails != nil {
@@ -2760,6 +2802,7 @@ func (r RuleEmailAction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type RuleEmailAction.
 func (r *RuleEmailAction) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -2821,6 +2864,7 @@ type RuleManagementEventDataSource struct {
 	SubStatus *string `json:"subStatus,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type RuleManagementEventDataSource.
 func (r RuleManagementEventDataSource) MarshalJSON() ([]byte, error) {
 	objectMap := r.RuleDataSource.marshalInternal("Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource")
 	if r.Claims != nil {
@@ -2853,6 +2897,7 @@ func (r RuleManagementEventDataSource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type RuleManagementEventDataSource.
 func (r *RuleManagementEventDataSource) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -2912,6 +2957,7 @@ type RuleMetricDataSource struct {
 	MetricName *string `json:"metricName,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type RuleMetricDataSource.
 func (r RuleMetricDataSource) MarshalJSON() ([]byte, error) {
 	objectMap := r.RuleDataSource.marshalInternal("Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource")
 	if r.MetricName != nil {
@@ -2920,6 +2966,7 @@ func (r RuleMetricDataSource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type RuleMetricDataSource.
 func (r *RuleMetricDataSource) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -2951,6 +2998,7 @@ type RuleWebhookAction struct {
 	ServiceURI *string `json:"serviceUri,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type RuleWebhookAction.
 func (r RuleWebhookAction) MarshalJSON() ([]byte, error) {
 	objectMap := r.RuleAction.marshalInternal("Microsoft.Azure.Management.Insights.Models.RuleWebhookAction")
 	if r.Properties != nil {
@@ -2962,6 +3010,7 @@ func (r RuleWebhookAction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type RuleWebhookAction.
 func (r *RuleWebhookAction) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -3157,6 +3206,7 @@ type ThresholdRuleCondition struct {
 	WindowSize *time.Duration `json:"windowSize,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ThresholdRuleCondition.
 func (t ThresholdRuleCondition) MarshalJSON() ([]byte, error) {
 	objectMap := t.RuleCondition.marshalInternal("Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition")
 	if t.Operator != nil {
@@ -3174,6 +3224,7 @@ func (t ThresholdRuleCondition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ThresholdRuleCondition.
 func (t *ThresholdRuleCondition) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -3279,6 +3330,7 @@ type TimeWindow struct {
 	TimeZone *string `json:"timeZone,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type TimeWindow.
 func (t TimeWindow) MarshalJSON() ([]byte, error) {
 	type alias TimeWindow
 	aux := &struct {
@@ -3293,6 +3345,7 @@ func (t TimeWindow) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type TimeWindow.
 func (t *TimeWindow) UnmarshalJSON(data []byte) error {
 	type alias TimeWindow
 	aux := &struct {
@@ -3413,6 +3466,7 @@ type WebtestLocationAvailabilityCriteria struct {
 	WebTestID *string `json:"webTestId,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type WebtestLocationAvailabilityCriteria.
 func (w WebtestLocationAvailabilityCriteria) MarshalJSON() ([]byte, error) {
 	objectMap := w.MetricAlertCriteria.marshalInternal(OdatatypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria)
 	if w.ComponentID != nil {
@@ -3427,6 +3481,7 @@ func (w WebtestLocationAvailabilityCriteria) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type WebtestLocationAvailabilityCriteria.
 func (w *WebtestLocationAvailabilityCriteria) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {

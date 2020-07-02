@@ -228,6 +228,7 @@ type ConsumerGroupProperties struct {
 	UserMetadata *string `json:"userMetadata,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ConsumerGroupProperties.
 func (c ConsumerGroupProperties) MarshalJSON() ([]byte, error) {
 	type alias ConsumerGroupProperties
 	aux := &struct {
@@ -242,6 +243,7 @@ func (c ConsumerGroupProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ConsumerGroupProperties.
 func (c *ConsumerGroupProperties) UnmarshalJSON(data []byte) error {
 	type alias ConsumerGroupProperties
 	aux := &struct {
@@ -367,6 +369,7 @@ type EhNamespaceProperties struct {
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type EhNamespaceProperties.
 func (e EhNamespaceProperties) MarshalJSON() ([]byte, error) {
 	type alias EhNamespaceProperties
 	aux := &struct {
@@ -381,6 +384,7 @@ func (e EhNamespaceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type EhNamespaceProperties.
 func (e *EhNamespaceProperties) UnmarshalJSON(data []byte) error {
 	type alias EhNamespaceProperties
 	aux := &struct {
@@ -417,6 +421,7 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// Error implements the error interface for type ErrorResponse.
 func (e ErrorResponse) Error() string {
 	msg := ""
 	if e.Code != nil {
@@ -489,6 +494,7 @@ type EventhubProperties struct {
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type EventhubProperties.
 func (e EventhubProperties) MarshalJSON() ([]byte, error) {
 	type alias EventhubProperties
 	aux := &struct {
@@ -503,6 +509,7 @@ func (e EventhubProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type EventhubProperties.
 func (e *EventhubProperties) UnmarshalJSON(data []byte) error {
 	type alias EventhubProperties
 	aux := &struct {
@@ -561,6 +568,7 @@ type MessagingPlanProperties struct {
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type MessagingPlanProperties.
 func (m MessagingPlanProperties) MarshalJSON() ([]byte, error) {
 	type alias MessagingPlanProperties
 	aux := &struct {
@@ -573,6 +581,7 @@ func (m MessagingPlanProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type MessagingPlanProperties.
 func (m *MessagingPlanProperties) UnmarshalJSON(data []byte) error {
 	type alias MessagingPlanProperties
 	aux := &struct {

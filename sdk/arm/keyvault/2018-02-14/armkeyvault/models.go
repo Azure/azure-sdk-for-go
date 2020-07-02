@@ -58,6 +58,7 @@ type CloudError struct {
 	InnerError *CloudErrorBody `json:"error,omitempty"`
 }
 
+// Error implements the error interface for type CloudError.
 func (e CloudError) Error() string {
 	msg := ""
 	if e.InnerError != nil {
@@ -129,6 +130,7 @@ type DeletedVaultProperties struct {
 	VaultID *string `json:"vaultId,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type DeletedVaultProperties.
 func (d DeletedVaultProperties) MarshalJSON() ([]byte, error) {
 	type alias DeletedVaultProperties
 	aux := &struct {
@@ -143,6 +145,7 @@ func (d DeletedVaultProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type DeletedVaultProperties.
 func (d *DeletedVaultProperties) UnmarshalJSON(data []byte) error {
 	type alias DeletedVaultProperties
 	aux := &struct {

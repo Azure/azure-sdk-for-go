@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/arm/network/2020-03-01/armnetwork v0.0.0-00010101000000-000000000000
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.8.0
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.8.2
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.0.0-00010101000000-000000000000
 	github.com/Azure/azure-sdk-for-go/sdk/to v0.1.0
 )

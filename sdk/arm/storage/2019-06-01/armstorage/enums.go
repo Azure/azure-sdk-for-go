@@ -481,6 +481,27 @@ func (c LeaseStatus) ToPtr() *LeaseStatus {
 	return &c
 }
 
+// MinimumTlsVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property.
+type MinimumTlsVersion string
+
+const (
+	MinimumTlsVersionTLS10 MinimumTlsVersion = "TLS1_0"
+	MinimumTlsVersionTLS11 MinimumTlsVersion = "TLS1_1"
+	MinimumTlsVersionTLS12 MinimumTlsVersion = "TLS1_2"
+)
+
+func PossibleMinimumTlsVersionValues() []MinimumTlsVersion {
+	return []MinimumTlsVersion{
+		MinimumTlsVersionTLS10,
+		MinimumTlsVersionTLS11,
+		MinimumTlsVersionTLS12,
+	}
+}
+
+func (c MinimumTlsVersion) ToPtr() *MinimumTlsVersion {
+	return &c
+}
+
 // Permissions - The signed permissions for the account SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p).
 type Permissions string
 

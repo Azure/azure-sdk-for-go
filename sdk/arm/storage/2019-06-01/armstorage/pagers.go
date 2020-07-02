@@ -208,6 +208,138 @@ func (p *listContainerItemsPager) PageResponse() *ListContainerItemsResponse {
 	return p.current
 }
 
+// ListQueueResourcePager provides iteration over ListQueueResource pages.
+type ListQueueResourcePager interface {
+	// NextPage returns true if the pager advanced to the next page.
+	// Returns false if there are no more pages or an error occurred.
+	NextPage(context.Context) bool
+
+	// Page returns the current ListQueueResourceResponse.
+	PageResponse() *ListQueueResourceResponse
+
+	// Err returns the last error encountered while paging.
+	Err() error
+}
+
+type listQueueResourceHandleResponse func(*azcore.Response) (*ListQueueResourceResponse, error)
+
+type listQueueResourceAdvancePage func(*ListQueueResourceResponse) (*azcore.Request, error)
+
+type listQueueResourcePager struct {
+	// the pipeline for making the request
+	pipeline azcore.Pipeline
+	// contains the pending request
+	request *azcore.Request
+	// callback for handling the HTTP response
+	responder listQueueResourceHandleResponse
+	// callback for advancing to the next page
+	advancer listQueueResourceAdvancePage
+	// contains the current response
+	current *ListQueueResourceResponse
+	// any error encountered
+	err error
+}
+
+func (p *listQueueResourcePager) Err() error {
+	return p.err
+}
+
+func (p *listQueueResourcePager) NextPage(ctx context.Context) bool {
+	if p.current != nil {
+		if p.current.ListQueueResource.NextLink == nil || len(*p.current.ListQueueResource.NextLink) == 0 {
+			return false
+		}
+		req, err := p.advancer(p.current)
+		if err != nil {
+			p.err = err
+			return false
+		}
+		p.request = req
+	}
+	resp, err := p.pipeline.Do(ctx, p.request)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	result, err := p.responder(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *listQueueResourcePager) PageResponse() *ListQueueResourceResponse {
+	return p.current
+}
+
+// ListTableResourcePager provides iteration over ListTableResource pages.
+type ListTableResourcePager interface {
+	// NextPage returns true if the pager advanced to the next page.
+	// Returns false if there are no more pages or an error occurred.
+	NextPage(context.Context) bool
+
+	// Page returns the current ListTableResourceResponse.
+	PageResponse() *ListTableResourceResponse
+
+	// Err returns the last error encountered while paging.
+	Err() error
+}
+
+type listTableResourceHandleResponse func(*azcore.Response) (*ListTableResourceResponse, error)
+
+type listTableResourceAdvancePage func(*ListTableResourceResponse) (*azcore.Request, error)
+
+type listTableResourcePager struct {
+	// the pipeline for making the request
+	pipeline azcore.Pipeline
+	// contains the pending request
+	request *azcore.Request
+	// callback for handling the HTTP response
+	responder listTableResourceHandleResponse
+	// callback for advancing to the next page
+	advancer listTableResourceAdvancePage
+	// contains the current response
+	current *ListTableResourceResponse
+	// any error encountered
+	err error
+}
+
+func (p *listTableResourcePager) Err() error {
+	return p.err
+}
+
+func (p *listTableResourcePager) NextPage(ctx context.Context) bool {
+	if p.current != nil {
+		if p.current.ListTableResource.NextLink == nil || len(*p.current.ListTableResource.NextLink) == 0 {
+			return false
+		}
+		req, err := p.advancer(p.current)
+		if err != nil {
+			p.err = err
+			return false
+		}
+		p.request = req
+	}
+	resp, err := p.pipeline.Do(ctx, p.request)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	result, err := p.responder(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *listTableResourcePager) PageResponse() *ListTableResourceResponse {
+	return p.current
+}
+
 // StorageAccountListResultPager provides iteration over StorageAccountListResult pages.
 type StorageAccountListResultPager interface {
 	// NextPage returns true if the pager advanced to the next page.

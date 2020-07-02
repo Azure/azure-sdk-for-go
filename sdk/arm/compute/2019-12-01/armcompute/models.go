@@ -212,7 +212,7 @@ type AvailabilitySetUpdate struct {
 // AvailabilitySetsListBySubscriptionOptions contains the optional parameters for the AvailabilitySets.ListBySubscription
 // method.
 type AvailabilitySetsListBySubscriptionOptions struct {
-	// The expand expression to apply to the operation.
+	// The expand expression to apply to the operation. Allowed values are 'instanceView'.
 	Expand *string
 }
 
@@ -259,6 +259,7 @@ type CloudError struct {
 	InnerError *APIError `json:"error,omitempty"`
 }
 
+// Error implements the error interface for type CloudError.
 func (e CloudError) Error() string {
 	msg := ""
 	if e.InnerError != nil {
@@ -759,6 +760,7 @@ type DedicatedHostProperties struct {
 	VirtualMachines *[]SubResourceReadOnly `json:"virtualMachines,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type DedicatedHostProperties.
 func (d DedicatedHostProperties) MarshalJSON() ([]byte, error) {
 	type alias DedicatedHostProperties
 	aux := &struct {
@@ -771,6 +773,7 @@ func (d DedicatedHostProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type DedicatedHostProperties.
 func (d *DedicatedHostProperties) UnmarshalJSON(data []byte) error {
 	type alias DedicatedHostProperties
 	aux := &struct {
@@ -1044,6 +1047,7 @@ type DiskProperties struct {
 	UniqueID *string `json:"uniqueId,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type DiskProperties.
 func (d DiskProperties) MarshalJSON() ([]byte, error) {
 	type alias DiskProperties
 	aux := &struct {
@@ -1056,6 +1060,7 @@ func (d DiskProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type DiskProperties.
 func (d *DiskProperties) UnmarshalJSON(data []byte) error {
 	type alias DiskProperties
 	aux := &struct {
@@ -1277,6 +1282,7 @@ type GalleryApplicationProperties struct {
 	SupportedOSType *OperatingSystemTypes `json:"supportedOSType,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type GalleryApplicationProperties.
 func (g GalleryApplicationProperties) MarshalJSON() ([]byte, error) {
 	type alias GalleryApplicationProperties
 	aux := &struct {
@@ -1289,6 +1295,7 @@ func (g GalleryApplicationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type GalleryApplicationProperties.
 func (g *GalleryApplicationProperties) UnmarshalJSON(data []byte) error {
 	type alias GalleryApplicationProperties
 	aux := &struct {
@@ -1424,6 +1431,7 @@ type GalleryArtifactPublishingProfileBase struct {
 	TargetRegions *[]TargetRegion `json:"targetRegions,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type GalleryArtifactPublishingProfileBase.
 func (g GalleryArtifactPublishingProfileBase) MarshalJSON() ([]byte, error) {
 	type alias GalleryArtifactPublishingProfileBase
 	aux := &struct {
@@ -1438,6 +1446,7 @@ func (g GalleryArtifactPublishingProfileBase) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type GalleryArtifactPublishingProfileBase.
 func (g *GalleryArtifactPublishingProfileBase) UnmarshalJSON(data []byte) error {
 	type alias GalleryArtifactPublishingProfileBase
 	aux := &struct {
@@ -1587,6 +1596,7 @@ type GalleryImageProperties struct {
 	ReleaseNoteURI *string `json:"releaseNoteUri,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type GalleryImageProperties.
 func (g GalleryImageProperties) MarshalJSON() ([]byte, error) {
 	type alias GalleryImageProperties
 	aux := &struct {
@@ -1599,6 +1609,7 @@ func (g GalleryImageProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type GalleryImageProperties.
 func (g *GalleryImageProperties) UnmarshalJSON(data []byte) error {
 	type alias GalleryImageProperties
 	aux := &struct {
@@ -2022,6 +2033,7 @@ type InstanceViewStatus struct {
 	Time *time.Time `json:"time,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type InstanceViewStatus.
 func (i InstanceViewStatus) MarshalJSON() ([]byte, error) {
 	type alias InstanceViewStatus
 	aux := &struct {
@@ -2034,6 +2046,7 @@ func (i InstanceViewStatus) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type InstanceViewStatus.
 func (i *InstanceViewStatus) UnmarshalJSON(data []byte) error {
 	type alias InstanceViewStatus
 	aux := &struct {
@@ -2141,6 +2154,7 @@ type LogAnalyticsInputBase struct {
 	ToTime *time.Time `json:"toTime,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type LogAnalyticsInputBase.
 func (l LogAnalyticsInputBase) MarshalJSON() ([]byte, error) {
 	type alias LogAnalyticsInputBase
 	aux := &struct {
@@ -2155,6 +2169,7 @@ func (l LogAnalyticsInputBase) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type LogAnalyticsInputBase.
 func (l *LogAnalyticsInputBase) UnmarshalJSON(data []byte) error {
 	type alias LogAnalyticsInputBase
 	aux := &struct {
@@ -2230,6 +2245,7 @@ type MaintenanceRedeployStatus struct {
 	PreMaintenanceWindowStartTime *time.Time `json:"preMaintenanceWindowStartTime,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type MaintenanceRedeployStatus.
 func (m MaintenanceRedeployStatus) MarshalJSON() ([]byte, error) {
 	type alias MaintenanceRedeployStatus
 	aux := &struct {
@@ -2248,6 +2264,7 @@ func (m MaintenanceRedeployStatus) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type MaintenanceRedeployStatus.
 func (m *MaintenanceRedeployStatus) UnmarshalJSON(data []byte) error {
 	type alias MaintenanceRedeployStatus
 	aux := &struct {
@@ -2737,7 +2754,7 @@ type ResourceSkuZoneDetails struct {
 
 // ResourceSkusListOptions contains the optional parameters for the ResourceSkus.List method.
 type ResourceSkusListOptions struct {
-	// The filter to apply on the operation.
+	// The filter to apply on the operation. Only **location** filter is supported currently.
 	Filter *string
 }
 
@@ -2824,6 +2841,7 @@ type RollingUpgradeRunningStatus struct {
 	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type RollingUpgradeRunningStatus.
 func (r RollingUpgradeRunningStatus) MarshalJSON() ([]byte, error) {
 	type alias RollingUpgradeRunningStatus
 	aux := &struct {
@@ -2838,6 +2856,7 @@ func (r RollingUpgradeRunningStatus) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type RollingUpgradeRunningStatus.
 func (r *RollingUpgradeRunningStatus) UnmarshalJSON(data []byte) error {
 	type alias RollingUpgradeRunningStatus
 	aux := &struct {
@@ -3214,6 +3233,7 @@ type SnapshotProperties struct {
 	UniqueID *string `json:"uniqueId,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type SnapshotProperties.
 func (s SnapshotProperties) MarshalJSON() ([]byte, error) {
 	type alias SnapshotProperties
 	aux := &struct {
@@ -3226,6 +3246,7 @@ func (s SnapshotProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type SnapshotProperties.
 func (s *SnapshotProperties) UnmarshalJSON(data []byte) error {
 	type alias SnapshotProperties
 	aux := &struct {
@@ -3422,6 +3443,7 @@ type UpgradeOperationHistoryStatus struct {
 	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type UpgradeOperationHistoryStatus.
 func (u UpgradeOperationHistoryStatus) MarshalJSON() ([]byte, error) {
 	type alias UpgradeOperationHistoryStatus
 	aux := &struct {
@@ -3436,6 +3458,7 @@ func (u UpgradeOperationHistoryStatus) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type UpgradeOperationHistoryStatus.
 func (u *UpgradeOperationHistoryStatus) UnmarshalJSON(data []byte) error {
 	type alias UpgradeOperationHistoryStatus
 	aux := &struct {
@@ -4017,8 +4040,8 @@ type VirtualMachineProperties struct {
 	DiagnosticsProfile *DiagnosticsProfile `json:"diagnosticsProfile,omitempty"`
 
 	// Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. <br><br>For Azure Spot virtual
-	// machines, the only supported value is 'Deallocate' and the minimum api-version is 2019-03-01. <br><br>For Azure Spot scale
-	// sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
+	// machines, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2019-03-01. <br><br>For Azure Spot
+	// scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
 	EvictionPolicy *VirtualMachineEvictionPolicyTypes `json:"evictionPolicy,omitempty"`
 
 	// Specifies the hardware settings for the virtual machine.
@@ -4295,11 +4318,11 @@ type VirtualMachineScaleSetIPConfigurationProperties struct {
 	ApplicationSecurityGroups *[]SubResource `json:"applicationSecurityGroups,omitempty"`
 
 	// Specifies an array of references to backend address pools of load balancers. A scale set can reference backend address
-	// pools of one public and one internal load balancer. Multiple scale sets cannot use the same load balancer.
+	// pools of one public and one internal load balancer. Multiple scale sets cannot use the same basic sku load balancer.
 	LoadBalancerBackendAddressPools *[]SubResource `json:"loadBalancerBackendAddressPools,omitempty"`
 
 	// Specifies an array of references to inbound Nat pools of the load balancers. A scale set can reference inbound nat pools
-	// of one public and one internal load balancer. Multiple scale sets cannot use the same load balancer
+	// of one public and one internal load balancer. Multiple scale sets cannot use the same basic sku load balancer.
 	LoadBalancerInboundNatPools *[]SubResource `json:"loadBalancerInboundNatPools,omitempty"`
 
 	// Specifies the primary network interface in case the virtual machine has more than 1 network interface.
@@ -5115,8 +5138,8 @@ type VirtualMachineScaleSetVMProfile struct {
 	DiagnosticsProfile *DiagnosticsProfile `json:"diagnosticsProfile,omitempty"`
 
 	// Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. <br><br>For Azure Spot virtual
-	// machines, the only supported value is 'Deallocate' and the minimum api-version is 2019-03-01. <br><br>For Azure Spot scale
-	// sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
+	// machines, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2019-03-01. <br><br>For Azure Spot
+	// scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
 	EvictionPolicy *VirtualMachineEvictionPolicyTypes `json:"evictionPolicy,omitempty"`
 
 	// Specifies a collection of settings for extensions installed on virtual machines in the scale set.
@@ -5230,11 +5253,12 @@ type VirtualMachineScaleSetVMResponse struct {
 
 // VirtualMachineScaleSetVMSListOptions contains the optional parameters for the VirtualMachineScaleSetVMS.List method.
 type VirtualMachineScaleSetVMSListOptions struct {
-	// The expand expression to apply to the operation.
+	// The expand expression to apply to the operation. Allowed values are 'instanceView'.
 	Expand *string
-	// The filter to apply to the operation.
+	// The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code, 'PowerState') eq true',
+	// 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq false'.
 	Filter *string
-	// The list parameters.
+	// The list parameters. Allowed values are 'instanceView', 'instanceView/statuses'.
 	SelectParameter *string
 }
 

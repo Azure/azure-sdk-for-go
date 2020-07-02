@@ -1,4 +1,4 @@
-github.com/Azure/azure-sdk-for-go/sdk/azcore v0.8.0 h1:ogZVkNX3wS6ekWS3hD9sQCghWIGfw8CQ9JKv0rQQlVw=
-github.com/Azure/azure-sdk-for-go/sdk/azcore v0.8.0/go.mod h1:UKq2za3CMGx75vfPM9tPSuTBNODR4hX1qAeb+GRoDkc=
-github.com/Azure/azure-sdk-for-go/sdk/internal v0.1.0 h1:sgOdyT1ZAW3nErwCuvlGrkeP03pTtbRBW5MGCXWGZws=
-github.com/Azure/azure-sdk-for-go/sdk/internal v0.1.0/go.mod h1:Q+TCQnSr+clUU0JU+xrHZ3slYCxw17AOFdvWFpQXjAY=
+github.com/Azure/azure-sdk-for-go/sdk/azcore v0.8.2 h1:A+8ZU8LjOUX3Ky0mAhY4ct7dWSHjBfa/srPU+M3eLEU=
+github.com/Azure/azure-sdk-for-go/sdk/azcore v0.8.2/go.mod h1:pjLfCjJh+VPLwZylRHc9ZDwRMqHLvfUGH52c/hmBvLs=
+github.com/Azure/azure-sdk-for-go/sdk/internal v0.1.1 h1:S87cbjhPwbSqbygGH69JpB6txa/y1ce2ewaWBQa8Cws=
+github.com/Azure/azure-sdk-for-go/sdk/internal v0.1.1/go.mod h1:Q+TCQnSr+clUU0JU+xrHZ3slYCxw17AOFdvWFpQXjAY=

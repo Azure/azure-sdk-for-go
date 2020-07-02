@@ -700,6 +700,8 @@ type bastionActiveSessionListResultPager struct {
 	current *BastionActiveSessionListResultResponse
 	// any error encountered
 	err error
+	// previous response from the endpoint
+	resp *azcore.Response
 }
 
 func (p *bastionActiveSessionListResultPager) Err() error {
@@ -718,7 +720,13 @@ func (p *bastionActiveSessionListResultPager) NextPage(ctx context.Context) bool
 		}
 		p.request = req
 	}
-	resp, err := p.pipeline.Do(ctx, p.request)
+	resp := p.resp
+	var err error
+	if resp == nil {
+		resp, err = p.pipeline.Do(ctx, p.request)
+	} else {
+		p.resp = nil
+	}
 	if err != nil {
 		p.err = err
 		return false
@@ -898,6 +906,8 @@ type bastionShareableLinkListResultPager struct {
 	current *BastionShareableLinkListResultResponse
 	// any error encountered
 	err error
+	// previous response from the endpoint
+	resp *azcore.Response
 }
 
 func (p *bastionShareableLinkListResultPager) Err() error {
@@ -916,7 +926,13 @@ func (p *bastionShareableLinkListResultPager) NextPage(ctx context.Context) bool
 		}
 		p.request = req
 	}
-	resp, err := p.pipeline.Do(ctx, p.request)
+	resp := p.resp
+	var err error
+	if resp == nil {
+		resp, err = p.pipeline.Do(ctx, p.request)
+	} else {
+		p.resp = nil
+	}
 	if err != nil {
 		p.err = err
 		return false

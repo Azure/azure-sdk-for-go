@@ -157,7 +157,6 @@ func (client BaseClient) QueryBillingAccountSender(req *http.Request) (*http.Res
 func (client BaseClient) QueryBillingAccountResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -267,7 +266,6 @@ func (client BaseClient) QueryResourceGroupSender(req *http.Request) (*http.Resp
 func (client BaseClient) QueryResourceGroupResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -375,7 +373,6 @@ func (client BaseClient) QuerySubscriptionSender(req *http.Request) (*http.Respo
 func (client BaseClient) QuerySubscriptionResponder(resp *http.Response) (result QueryResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

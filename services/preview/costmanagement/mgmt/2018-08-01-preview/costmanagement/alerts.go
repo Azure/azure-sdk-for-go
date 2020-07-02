@@ -109,7 +109,6 @@ func (client AlertsClient) GetAlertByManagementGroupsSender(req *http.Request) (
 func (client AlertsClient) GetAlertByManagementGroupsResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -186,7 +185,6 @@ func (client AlertsClient) GetByAccountSender(req *http.Request) (*http.Response
 func (client AlertsClient) GetByAccountResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -263,7 +261,6 @@ func (client AlertsClient) GetByDepartmentSender(req *http.Request) (*http.Respo
 func (client AlertsClient) GetByDepartmentResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -338,7 +335,6 @@ func (client AlertsClient) GetByEnrollmentSender(req *http.Request) (*http.Respo
 func (client AlertsClient) GetByEnrollmentResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -414,7 +410,6 @@ func (client AlertsClient) GetByResourceGroupNameSender(req *http.Request) (*htt
 func (client AlertsClient) GetByResourceGroupNameResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -488,7 +483,6 @@ func (client AlertsClient) GetBySubscriptionSender(req *http.Request) (*http.Res
 func (client AlertsClient) GetBySubscriptionResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -586,7 +580,6 @@ func (client AlertsClient) ListSender(req *http.Request) (*http.Response, error)
 func (client AlertsClient) ListResponder(resp *http.Response) (result AlertListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -724,7 +717,6 @@ func (client AlertsClient) ListByAccountSender(req *http.Request) (*http.Respons
 func (client AlertsClient) ListByAccountResponder(resp *http.Response) (result AlertListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -862,7 +854,6 @@ func (client AlertsClient) ListByDepartmentSender(req *http.Request) (*http.Resp
 func (client AlertsClient) ListByDepartmentResponder(resp *http.Response) (result AlertListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -998,7 +989,6 @@ func (client AlertsClient) ListByEnrollmentSender(req *http.Request) (*http.Resp
 func (client AlertsClient) ListByEnrollmentResponder(resp *http.Response) (result AlertListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1134,7 +1124,6 @@ func (client AlertsClient) ListByManagementGroupsSender(req *http.Request) (*htt
 func (client AlertsClient) ListByManagementGroupsResponder(resp *http.Response) (result AlertListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1271,7 +1260,6 @@ func (client AlertsClient) ListByResourceGroupNameSender(req *http.Request) (*ht
 func (client AlertsClient) ListByResourceGroupNameResponder(resp *http.Response) (result AlertListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1389,7 +1377,6 @@ func (client AlertsClient) UpdateBillingAccountAlertStatusSender(req *http.Reque
 func (client AlertsClient) UpdateBillingAccountAlertStatusResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1472,7 +1459,6 @@ func (client AlertsClient) UpdateDepartmentsAlertStatusSender(req *http.Request)
 func (client AlertsClient) UpdateDepartmentsAlertStatusResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1555,7 +1541,6 @@ func (client AlertsClient) UpdateEnrollmentAccountAlertStatusSender(req *http.Re
 func (client AlertsClient) UpdateEnrollmentAccountAlertStatusResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1636,7 +1621,6 @@ func (client AlertsClient) UpdateManagementGroupAlertStatusSender(req *http.Requ
 func (client AlertsClient) UpdateManagementGroupAlertStatusResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1718,7 +1702,6 @@ func (client AlertsClient) UpdateResourceGroupNameAlertStatusSender(req *http.Re
 func (client AlertsClient) UpdateResourceGroupNameAlertStatusResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1798,7 +1781,6 @@ func (client AlertsClient) UpdateSubscriptionAlertStatusSender(req *http.Request
 func (client AlertsClient) UpdateSubscriptionAlertStatusResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

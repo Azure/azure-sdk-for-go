@@ -34,6 +34,7 @@ type APIKey struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type APIKey.
 func (a APIKey) MarshalJSON() ([]byte, error) {
 	type alias APIKey
 	aux := &struct {
@@ -46,6 +47,7 @@ func (a APIKey) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type APIKey.
 func (a *APIKey) UnmarshalJSON(data []byte) error {
 	type alias APIKey
 	aux := &struct {
@@ -155,6 +157,7 @@ type ConfigurationStoreProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ConfigurationStoreProperties.
 func (c ConfigurationStoreProperties) MarshalJSON() ([]byte, error) {
 	type alias ConfigurationStoreProperties
 	aux := &struct {
@@ -167,6 +170,7 @@ func (c ConfigurationStoreProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ConfigurationStoreProperties.
 func (c *ConfigurationStoreProperties) UnmarshalJSON(data []byte) error {
 	type alias ConfigurationStoreProperties
 	aux := &struct {
@@ -241,6 +245,7 @@ type Error struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// Error implements the error interface for type Error.
 func (e Error) Error() string {
 	msg := ""
 	if e.Code != nil {
@@ -298,6 +303,7 @@ type KeyValue struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type KeyValue.
 func (k KeyValue) MarshalJSON() ([]byte, error) {
 	type alias KeyValue
 	aux := &struct {
@@ -310,6 +316,7 @@ func (k KeyValue) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type KeyValue.
 func (k *KeyValue) UnmarshalJSON(data []byte) error {
 	type alias KeyValue
 	aux := &struct {

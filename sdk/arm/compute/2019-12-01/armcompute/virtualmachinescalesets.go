@@ -127,6 +127,9 @@ func (client *virtualMachineScaleSetsOperations) convertToSinglePlacementGroupCr
 	if err != nil {
 		return nil, err
 	}
+	query := u.Query()
+	query.Set("api-version", "2019-12-01")
+	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodPost, *u)
 	return req, req.MarshalAsJSON(parameters)
 }

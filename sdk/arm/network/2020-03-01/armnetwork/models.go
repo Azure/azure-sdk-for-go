@@ -1214,6 +1214,7 @@ type ApplicationRuleCondition struct {
 	TargetFqdns *[]string `json:"targetFqdns,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ApplicationRuleCondition.
 func (a ApplicationRuleCondition) MarshalJSON() ([]byte, error) {
 	objectMap := a.FirewallPolicyRuleCondition.marshalInternal(FirewallPolicyRuleConditionTypeApplicationRuleCondition)
 	if a.DestinationAddresses != nil {
@@ -1237,6 +1238,7 @@ func (a ApplicationRuleCondition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ApplicationRuleCondition.
 func (a *ApplicationRuleCondition) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -2010,6 +2012,7 @@ type AzureReachabilityReportLatencyInfo struct {
 	TimeStamp *time.Time `json:"timeStamp,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AzureReachabilityReportLatencyInfo.
 func (a AzureReachabilityReportLatencyInfo) MarshalJSON() ([]byte, error) {
 	type alias AzureReachabilityReportLatencyInfo
 	aux := &struct {
@@ -2022,6 +2025,7 @@ func (a AzureReachabilityReportLatencyInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureReachabilityReportLatencyInfo.
 func (a *AzureReachabilityReportLatencyInfo) UnmarshalJSON(data []byte) error {
 	type alias AzureReachabilityReportLatencyInfo
 	aux := &struct {
@@ -2067,6 +2071,7 @@ type AzureReachabilityReportParameters struct {
 	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AzureReachabilityReportParameters.
 func (a AzureReachabilityReportParameters) MarshalJSON() ([]byte, error) {
 	type alias AzureReachabilityReportParameters
 	aux := &struct {
@@ -2081,6 +2086,7 @@ func (a AzureReachabilityReportParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureReachabilityReportParameters.
 func (a *AzureReachabilityReportParameters) UnmarshalJSON(data []byte) error {
 	type alias AzureReachabilityReportParameters
 	aux := &struct {
@@ -2207,6 +2213,19 @@ type BastionActiveSessionListResult struct {
 
 	// List of active sessions on the bastion.
 	Value *[]BastionActiveSession `json:"value,omitempty"`
+}
+
+// BastionActiveSessionListResultPagerPollerResponse is the response envelope for operations that asynchronously return a
+// BastionActiveSessionListResultPager type.
+type BastionActiveSessionListResultPagerPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (BastionActiveSessionListResultPager, error)
+
+	// Poller contains an initialized poller.
+	Poller BastionActiveSessionListResultPagerPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
 }
 
 // BastionActiveSessionListResultResponse is the response envelope for operations that return a BastionActiveSessionListResult
@@ -2371,6 +2390,19 @@ type BastionShareableLinkListResult struct {
 	Value *[]BastionShareableLink `json:"value,omitempty"`
 }
 
+// BastionShareableLinkListResultPagerPollerResponse is the response envelope for operations that asynchronously return a
+// BastionShareableLinkListResultPager type.
+type BastionShareableLinkListResultPagerPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (BastionShareableLinkListResultPager, error)
+
+	// Poller contains an initialized poller.
+	Poller BastionShareableLinkListResultPagerPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // BastionShareableLinkListResultResponse is the response envelope for operations that return a BastionShareableLinkListResult
 // type.
 type BastionShareableLinkListResultResponse struct {
@@ -2519,6 +2551,7 @@ type CloudError struct {
 	InnerError *CloudErrorBody `json:"error,omitempty"`
 }
 
+// Error implements the error interface for type CloudError.
 func (e CloudError) Error() string {
 	msg := ""
 	if e.InnerError != nil {
@@ -2776,6 +2809,7 @@ type ConnectionMonitorResultProperties struct {
 	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ConnectionMonitorResultProperties.
 func (c ConnectionMonitorResultProperties) MarshalJSON() ([]byte, error) {
 	type alias ConnectionMonitorResultProperties
 	aux := &struct {
@@ -2788,6 +2822,7 @@ func (c ConnectionMonitorResultProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ConnectionMonitorResultProperties.
 func (c *ConnectionMonitorResultProperties) UnmarshalJSON(data []byte) error {
 	type alias ConnectionMonitorResultProperties
 	aux := &struct {
@@ -2981,6 +3016,7 @@ type ConnectionStateSnapshot struct {
 	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ConnectionStateSnapshot.
 func (c ConnectionStateSnapshot) MarshalJSON() ([]byte, error) {
 	type alias ConnectionStateSnapshot
 	aux := &struct {
@@ -2995,6 +3031,7 @@ func (c ConnectionStateSnapshot) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ConnectionStateSnapshot.
 func (c *ConnectionStateSnapshot) UnmarshalJSON(data []byte) error {
 	type alias ConnectionStateSnapshot
 	aux := &struct {
@@ -3632,6 +3669,7 @@ type Error struct {
 	Target *string `json:"target,omitempty"`
 }
 
+// Error implements the error interface for type Error.
 func (e Error) Error() string {
 	msg := ""
 	if e.Code != nil {
@@ -3673,6 +3711,7 @@ type ErrorResponse struct {
 	InnerError *ErrorDetails `json:"error,omitempty"`
 }
 
+// Error implements the error interface for type ErrorResponse.
 func (e ErrorResponse) Error() string {
 	msg := ""
 	if e.InnerError != nil {
@@ -4952,6 +4991,7 @@ type FirewallPolicyFilterRule struct {
 	RuleConditions *[]FirewallPolicyRuleConditionClassification `json:"ruleConditions,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type FirewallPolicyFilterRule.
 func (f FirewallPolicyFilterRule) MarshalJSON() ([]byte, error) {
 	objectMap := f.FirewallPolicyRule.marshalInternal(FirewallPolicyRuleTypeFirewallPolicyFilterRule)
 	if f.Action != nil {
@@ -4963,6 +5003,7 @@ func (f FirewallPolicyFilterRule) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type FirewallPolicyFilterRule.
 func (f *FirewallPolicyFilterRule) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -5027,6 +5068,7 @@ type FirewallPolicyNatRule struct {
 	TranslatedPort *string `json:"translatedPort,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type FirewallPolicyNatRule.
 func (f FirewallPolicyNatRule) MarshalJSON() ([]byte, error) {
 	objectMap := f.FirewallPolicyRule.marshalInternal(FirewallPolicyRuleTypeFirewallPolicyNatRule)
 	if f.Action != nil {
@@ -5044,6 +5086,7 @@ func (f FirewallPolicyNatRule) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type FirewallPolicyNatRule.
 func (f *FirewallPolicyNatRule) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -5144,8 +5187,10 @@ type FirewallPolicyRule struct {
 	RuleType *FirewallPolicyRuleType `json:"ruleType,omitempty"`
 }
 
+// GetFirewallPolicyRule implements the FirewallPolicyRuleClassification interface for type FirewallPolicyRule.
 func (f *FirewallPolicyRule) GetFirewallPolicyRule() *FirewallPolicyRule { return f }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type FirewallPolicyRule.
 func (f *FirewallPolicyRule) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -5204,10 +5249,12 @@ type FirewallPolicyRuleCondition struct {
 	RuleConditionType *FirewallPolicyRuleConditionType `json:"ruleConditionType,omitempty"`
 }
 
+// GetFirewallPolicyRuleCondition implements the FirewallPolicyRuleConditionClassification interface for type FirewallPolicyRuleCondition.
 func (f *FirewallPolicyRuleCondition) GetFirewallPolicyRuleCondition() *FirewallPolicyRuleCondition {
 	return f
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type FirewallPolicyRuleCondition.
 func (f *FirewallPolicyRuleCondition) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -5318,6 +5365,7 @@ type FirewallPolicyRuleGroupProperties struct {
 	Rules *[]FirewallPolicyRuleClassification `json:"rules,omitempty"`
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type FirewallPolicyRuleGroupProperties.
 func (f *FirewallPolicyRuleGroupProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -6967,6 +7015,7 @@ type NatRuleCondition struct {
 	SourceIPGroups *[]string `json:"sourceIpGroups,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type NatRuleCondition.
 func (n NatRuleCondition) MarshalJSON() ([]byte, error) {
 	objectMap := n.FirewallPolicyRuleCondition.marshalInternal(FirewallPolicyRuleConditionTypeNatRuleCondition)
 	if n.DestinationAddresses != nil {
@@ -6987,6 +7036,7 @@ func (n NatRuleCondition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type NatRuleCondition.
 func (n *NatRuleCondition) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -7518,6 +7568,7 @@ type NetworkRuleCondition struct {
 	SourceIPGroups *[]string `json:"sourceIpGroups,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type NetworkRuleCondition.
 func (n NetworkRuleCondition) MarshalJSON() ([]byte, error) {
 	objectMap := n.FirewallPolicyRuleCondition.marshalInternal(FirewallPolicyRuleConditionTypeNetworkRuleCondition)
 	if n.DestinationAddresses != nil {
@@ -7541,6 +7592,7 @@ func (n NetworkRuleCondition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type NetworkRuleCondition.
 func (n *NetworkRuleCondition) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]*json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -8205,6 +8257,7 @@ type PacketCaptureQueryStatusResult struct {
 	StopReason *string `json:"stopReason,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type PacketCaptureQueryStatusResult.
 func (p PacketCaptureQueryStatusResult) MarshalJSON() ([]byte, error) {
 	type alias PacketCaptureQueryStatusResult
 	aux := &struct {
@@ -8217,6 +8270,7 @@ func (p PacketCaptureQueryStatusResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type PacketCaptureQueryStatusResult.
 func (p *PacketCaptureQueryStatusResult) UnmarshalJSON(data []byte) error {
 	type alias PacketCaptureQueryStatusResult
 	aux := &struct {
@@ -8841,6 +8895,19 @@ type PrivateLinkServiceResponse struct {
 type PrivateLinkServiceVisibility struct {
 	// Private Link Service Visibility (True/False).
 	Visible *bool `json:"visible,omitempty"`
+}
+
+// PrivateLinkServiceVisibilityPollerResponse is the response envelope for operations that asynchronously return a PrivateLinkServiceVisibility
+// type.
+type PrivateLinkServiceVisibilityPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (*PrivateLinkServiceVisibilityResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller PrivateLinkServiceVisibilityPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
 }
 
 // PrivateLinkServiceVisibilityResponse is the response envelope for operations that return a PrivateLinkServiceVisibility
@@ -10260,6 +10327,7 @@ type Topology struct {
 	Resources *[]TopologyResource `json:"resources,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type Topology.
 func (t Topology) MarshalJSON() ([]byte, error) {
 	type alias Topology
 	aux := &struct {
@@ -10274,6 +10342,7 @@ func (t Topology) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type Topology.
 func (t *Topology) UnmarshalJSON(data []byte) error {
 	type alias Topology
 	aux := &struct {
@@ -10438,6 +10507,7 @@ type TroubleshootingResult struct {
 	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type TroubleshootingResult.
 func (t TroubleshootingResult) MarshalJSON() ([]byte, error) {
 	type alias TroubleshootingResult
 	aux := &struct {
@@ -10452,6 +10522,7 @@ func (t TroubleshootingResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type TroubleshootingResult.
 func (t *TroubleshootingResult) UnmarshalJSON(data []byte) error {
 	type alias TroubleshootingResult
 	aux := &struct {

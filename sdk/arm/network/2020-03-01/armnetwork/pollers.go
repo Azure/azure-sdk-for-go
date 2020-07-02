@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
@@ -827,45 +828,40 @@ func (p *azureReachabilityReportPoller) handleResponse(resp *azcore.Response) (*
 	return &result, resp.UnmarshalAsJSON(&result.AzureReachabilityReport)
 }
 
-// BastionActiveSessionListResultPoller provides polling facilities until the operation completes
-type BastionActiveSessionListResultPoller interface {
+// BastionActiveSessionListResultPagerPoller provides polling facilities until the operation completes
+type BastionActiveSessionListResultPagerPoller interface {
 	Done() bool
 	Poll(ctx context.Context) (*http.Response, error)
-	FinalResponse(ctx context.Context) (*BastionActiveSessionListResultResponse, error)
+	FinalResponse(ctx context.Context) (BastionActiveSessionListResultPager, error)
 	ResumeToken() (string, error)
 }
 
-type bastionActiveSessionListResultPoller struct {
+type bastionActiveSessionListResultPagerPoller struct {
 	// the client for making the request
-	pipeline azcore.Pipeline
-	pt       pollingTracker
+	pipeline    azcore.Pipeline
+	respHandler bastionActiveSessionListResultHandleResponse
+	pt          pollingTracker
 }
 
 // Done returns true if there was an error or polling has reached a terminal state
-func (p *bastionActiveSessionListResultPoller) Done() bool {
+func (p *bastionActiveSessionListResultPagerPoller) Done() bool {
 	return p.pt.hasTerminated()
 }
 
 // Poll will send poll the service endpoint and return an http.Response or error received from the service
-func (p *bastionActiveSessionListResultPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *bastionActiveSessionListResultPagerPoller) Poll(ctx context.Context) (*http.Response, error) {
 	if lroPollDone(ctx, p.pipeline, p.pt) {
 		return p.pt.latestResponse().Response, p.pt.pollingError()
 	}
 	return nil, p.pt.pollingError()
 }
 
-func (p *bastionActiveSessionListResultPoller) FinalResponse(ctx context.Context) (*BastionActiveSessionListResultResponse, error) {
+func (p *bastionActiveSessionListResultPagerPoller) FinalResponse(ctx context.Context) (BastionActiveSessionListResultPager, error) {
 	if !p.Done() {
 		return nil, errors.New("cannot return a final response from a poller in a non-terminal state")
 	}
 	if p.pt.pollerMethodVerb() == http.MethodPut || p.pt.pollerMethodVerb() == http.MethodPatch {
-		res, err := p.handleResponse(p.pt.latestResponse())
-		if err != nil {
-			return nil, err
-		}
-		if res != nil && (*res.BastionActiveSessionListResult != BastionActiveSessionListResult{}) {
-			return res, nil
-		}
+		return p.handleResponse(p.pt.latestResponse())
 	}
 	// checking if there was a FinalStateVia configuration to re-route the final GET
 	// request to the value specified in the FinalStateVia property on the poller
@@ -901,9 +897,9 @@ func (p *bastionActiveSessionListResultPoller) FinalResponse(ctx context.Context
 	return p.handleResponse(resp)
 }
 
-// ResumeToken generates the string token that can be used with the ResumeBastionActiveSessionListResultPoller method
+// ResumeToken generates the string token that can be used with the ResumeBastionActiveSessionListResultPagerPoller method
 // on the client to create a new poller from the data held in the current poller type
-func (p *bastionActiveSessionListResultPoller) ResumeToken() (string, error) {
+func (p *bastionActiveSessionListResultPagerPoller) ResumeToken() (string, error) {
 	if p.pt.hasTerminated() {
 		return "", errors.New("cannot create a ResumeToken from a poller in a terminal state")
 	}
@@ -914,7 +910,7 @@ func (p *bastionActiveSessionListResultPoller) ResumeToken() (string, error) {
 	return string(js), nil
 }
 
-func (p *bastionActiveSessionListResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*BastionActiveSessionListResultResponse, error) {
+func (p *bastionActiveSessionListResultPagerPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (BastionActiveSessionListResultPager, error) {
 	for {
 		resp, err := p.Poll(ctx)
 		if err != nil {
@@ -932,15 +928,22 @@ func (p *bastionActiveSessionListResultPoller) pollUntilDone(ctx context.Context
 	return p.FinalResponse(ctx)
 }
 
-func (p *bastionActiveSessionListResultPoller) handleResponse(resp *azcore.Response) (*BastionActiveSessionListResultResponse, error) {
-	result := BastionActiveSessionListResultResponse{RawResponse: resp.Response}
-	if resp.HasStatusCode(http.StatusNoContent) {
-		return &result, nil
-	}
-	if !resp.HasStatusCode(pollingCodes[:]...) {
-		return nil, p.pt.handleError(resp)
-	}
-	return &result, resp.UnmarshalAsJSON(&result.BastionActiveSessionListResult)
+func (p *bastionActiveSessionListResultPagerPoller) handleResponse(resp *azcore.Response) (BastionActiveSessionListResultPager, error) {
+	return &bastionActiveSessionListResultPager{
+		pipeline:  p.pipeline,
+		resp:      resp,
+		responder: p.respHandler,
+		advancer: func(resp *BastionActiveSessionListResultResponse) (*azcore.Request, error) {
+			u, err := url.Parse(*resp.BastionActiveSessionListResult.NextLink)
+			if err != nil {
+				return nil, fmt.Errorf("invalid NextLink: %w", err)
+			}
+			if u.Scheme == "" {
+				return nil, fmt.Errorf("no scheme detected in NextLink %s", *resp.BastionActiveSessionListResult.NextLink)
+			}
+			return azcore.NewRequest(http.MethodGet, *u), nil
+		},
+	}, nil
 }
 
 // BastionHostPoller provides polling facilities until the operation completes
@@ -1059,45 +1062,40 @@ func (p *bastionHostPoller) handleResponse(resp *azcore.Response) (*BastionHostR
 	return &result, resp.UnmarshalAsJSON(&result.BastionHost)
 }
 
-// BastionShareableLinkListResultPoller provides polling facilities until the operation completes
-type BastionShareableLinkListResultPoller interface {
+// BastionShareableLinkListResultPagerPoller provides polling facilities until the operation completes
+type BastionShareableLinkListResultPagerPoller interface {
 	Done() bool
 	Poll(ctx context.Context) (*http.Response, error)
-	FinalResponse(ctx context.Context) (*BastionShareableLinkListResultResponse, error)
+	FinalResponse(ctx context.Context) (BastionShareableLinkListResultPager, error)
 	ResumeToken() (string, error)
 }
 
-type bastionShareableLinkListResultPoller struct {
+type bastionShareableLinkListResultPagerPoller struct {
 	// the client for making the request
-	pipeline azcore.Pipeline
-	pt       pollingTracker
+	pipeline    azcore.Pipeline
+	respHandler bastionShareableLinkListResultHandleResponse
+	pt          pollingTracker
 }
 
 // Done returns true if there was an error or polling has reached a terminal state
-func (p *bastionShareableLinkListResultPoller) Done() bool {
+func (p *bastionShareableLinkListResultPagerPoller) Done() bool {
 	return p.pt.hasTerminated()
 }
 
 // Poll will send poll the service endpoint and return an http.Response or error received from the service
-func (p *bastionShareableLinkListResultPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *bastionShareableLinkListResultPagerPoller) Poll(ctx context.Context) (*http.Response, error) {
 	if lroPollDone(ctx, p.pipeline, p.pt) {
 		return p.pt.latestResponse().Response, p.pt.pollingError()
 	}
 	return nil, p.pt.pollingError()
 }
 
-func (p *bastionShareableLinkListResultPoller) FinalResponse(ctx context.Context) (*BastionShareableLinkListResultResponse, error) {
+func (p *bastionShareableLinkListResultPagerPoller) FinalResponse(ctx context.Context) (BastionShareableLinkListResultPager, error) {
 	if !p.Done() {
 		return nil, errors.New("cannot return a final response from a poller in a non-terminal state")
 	}
 	if p.pt.pollerMethodVerb() == http.MethodPut || p.pt.pollerMethodVerb() == http.MethodPatch {
-		res, err := p.handleResponse(p.pt.latestResponse())
-		if err != nil {
-			return nil, err
-		}
-		if res != nil && (*res.BastionShareableLinkListResult != BastionShareableLinkListResult{}) {
-			return res, nil
-		}
+		return p.handleResponse(p.pt.latestResponse())
 	}
 	// checking if there was a FinalStateVia configuration to re-route the final GET
 	// request to the value specified in the FinalStateVia property on the poller
@@ -1133,9 +1131,9 @@ func (p *bastionShareableLinkListResultPoller) FinalResponse(ctx context.Context
 	return p.handleResponse(resp)
 }
 
-// ResumeToken generates the string token that can be used with the ResumeBastionShareableLinkListResultPoller method
+// ResumeToken generates the string token that can be used with the ResumeBastionShareableLinkListResultPagerPoller method
 // on the client to create a new poller from the data held in the current poller type
-func (p *bastionShareableLinkListResultPoller) ResumeToken() (string, error) {
+func (p *bastionShareableLinkListResultPagerPoller) ResumeToken() (string, error) {
 	if p.pt.hasTerminated() {
 		return "", errors.New("cannot create a ResumeToken from a poller in a terminal state")
 	}
@@ -1146,7 +1144,7 @@ func (p *bastionShareableLinkListResultPoller) ResumeToken() (string, error) {
 	return string(js), nil
 }
 
-func (p *bastionShareableLinkListResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*BastionShareableLinkListResultResponse, error) {
+func (p *bastionShareableLinkListResultPagerPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (BastionShareableLinkListResultPager, error) {
 	for {
 		resp, err := p.Poll(ctx)
 		if err != nil {
@@ -1164,15 +1162,22 @@ func (p *bastionShareableLinkListResultPoller) pollUntilDone(ctx context.Context
 	return p.FinalResponse(ctx)
 }
 
-func (p *bastionShareableLinkListResultPoller) handleResponse(resp *azcore.Response) (*BastionShareableLinkListResultResponse, error) {
-	result := BastionShareableLinkListResultResponse{RawResponse: resp.Response}
-	if resp.HasStatusCode(http.StatusNoContent) {
-		return &result, nil
-	}
-	if !resp.HasStatusCode(pollingCodes[:]...) {
-		return nil, p.pt.handleError(resp)
-	}
-	return &result, resp.UnmarshalAsJSON(&result.BastionShareableLinkListResult)
+func (p *bastionShareableLinkListResultPagerPoller) handleResponse(resp *azcore.Response) (BastionShareableLinkListResultPager, error) {
+	return &bastionShareableLinkListResultPager{
+		pipeline:  p.pipeline,
+		resp:      resp,
+		responder: p.respHandler,
+		advancer: func(resp *BastionShareableLinkListResultResponse) (*azcore.Request, error) {
+			u, err := url.Parse(*resp.BastionShareableLinkListResult.NextLink)
+			if err != nil {
+				return nil, fmt.Errorf("invalid NextLink: %w", err)
+			}
+			if u.Scheme == "" {
+				return nil, fmt.Errorf("no scheme detected in NextLink %s", *resp.BastionShareableLinkListResult.NextLink)
+			}
+			return azcore.NewRequest(http.MethodGet, *u), nil
+		},
+	}, nil
 }
 
 // BgpPeerStatusListResultPoller provides polling facilities until the operation completes
@@ -6687,6 +6692,122 @@ func (p *privateLinkServicePoller) handleResponse(resp *azcore.Response) (*Priva
 		return nil, p.pt.handleError(resp)
 	}
 	return &result, resp.UnmarshalAsJSON(&result.PrivateLinkService)
+}
+
+// PrivateLinkServiceVisibilityPoller provides polling facilities until the operation completes
+type PrivateLinkServiceVisibilityPoller interface {
+	Done() bool
+	Poll(ctx context.Context) (*http.Response, error)
+	FinalResponse(ctx context.Context) (*PrivateLinkServiceVisibilityResponse, error)
+	ResumeToken() (string, error)
+}
+
+type privateLinkServiceVisibilityPoller struct {
+	// the client for making the request
+	pipeline azcore.Pipeline
+	pt       pollingTracker
+}
+
+// Done returns true if there was an error or polling has reached a terminal state
+func (p *privateLinkServiceVisibilityPoller) Done() bool {
+	return p.pt.hasTerminated()
+}
+
+// Poll will send poll the service endpoint and return an http.Response or error received from the service
+func (p *privateLinkServiceVisibilityPoller) Poll(ctx context.Context) (*http.Response, error) {
+	if lroPollDone(ctx, p.pipeline, p.pt) {
+		return p.pt.latestResponse().Response, p.pt.pollingError()
+	}
+	return nil, p.pt.pollingError()
+}
+
+func (p *privateLinkServiceVisibilityPoller) FinalResponse(ctx context.Context) (*PrivateLinkServiceVisibilityResponse, error) {
+	if !p.Done() {
+		return nil, errors.New("cannot return a final response from a poller in a non-terminal state")
+	}
+	if p.pt.pollerMethodVerb() == http.MethodPut || p.pt.pollerMethodVerb() == http.MethodPatch {
+		res, err := p.handleResponse(p.pt.latestResponse())
+		if err != nil {
+			return nil, err
+		}
+		if res != nil && (*res.PrivateLinkServiceVisibility != PrivateLinkServiceVisibility{}) {
+			return res, nil
+		}
+	}
+	// checking if there was a FinalStateVia configuration to re-route the final GET
+	// request to the value specified in the FinalStateVia property on the poller
+	err := p.pt.setFinalState()
+	if err != nil {
+		return nil, err
+	}
+	if p.pt.finalGetURL() == "" {
+		// we can end up in this situation if the async operation returns a 200
+		// with no polling URLs.  in that case return the response which should
+		// contain the JSON payload (only do this for successful terminal cases).
+		if lr := p.pt.latestResponse(); lr != nil && p.pt.hasSucceeded() {
+			result, err := p.handleResponse(lr)
+			if err != nil {
+				return nil, err
+			}
+			return result, nil
+		}
+		return nil, errors.New("missing URL for retrieving result")
+	}
+	u, err := url.Parse(p.pt.finalGetURL())
+	if err != nil {
+		return nil, err
+	}
+	req := azcore.NewRequest(http.MethodGet, *u)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := p.pipeline.Do(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return p.handleResponse(resp)
+}
+
+// ResumeToken generates the string token that can be used with the ResumePrivateLinkServiceVisibilityPoller method
+// on the client to create a new poller from the data held in the current poller type
+func (p *privateLinkServiceVisibilityPoller) ResumeToken() (string, error) {
+	if p.pt.hasTerminated() {
+		return "", errors.New("cannot create a ResumeToken from a poller in a terminal state")
+	}
+	js, err := json.Marshal(p.pt)
+	if err != nil {
+		return "", err
+	}
+	return string(js), nil
+}
+
+func (p *privateLinkServiceVisibilityPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*PrivateLinkServiceVisibilityResponse, error) {
+	for {
+		resp, err := p.Poll(ctx)
+		if err != nil {
+			return nil, err
+		}
+		if p.Done() {
+			break
+		}
+		if delay := azcore.RetryAfter(resp); delay > 0 {
+			time.Sleep(delay)
+		} else {
+			time.Sleep(frequency)
+		}
+	}
+	return p.FinalResponse(ctx)
+}
+
+func (p *privateLinkServiceVisibilityPoller) handleResponse(resp *azcore.Response) (*PrivateLinkServiceVisibilityResponse, error) {
+	result := PrivateLinkServiceVisibilityResponse{RawResponse: resp.Response}
+	if resp.HasStatusCode(http.StatusNoContent) {
+		return &result, nil
+	}
+	if !resp.HasStatusCode(pollingCodes[:]...) {
+		return nil, p.pt.handleError(resp)
+	}
+	return &result, resp.UnmarshalAsJSON(&result.PrivateLinkServiceVisibility)
 }
 
 // PublicIPAddressPoller provides polling facilities until the operation completes

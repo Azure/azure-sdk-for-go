@@ -43,6 +43,7 @@ type AccountSasParameters struct {
 	SharedAccessStartTime *time.Time `json:"signedStart,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AccountSasParameters.
 func (a AccountSasParameters) MarshalJSON() ([]byte, error) {
 	type alias AccountSasParameters
 	aux := &struct {
@@ -57,6 +58,7 @@ func (a AccountSasParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type AccountSasParameters.
 func (a *AccountSasParameters) UnmarshalJSON(data []byte) error {
 	type alias AccountSasParameters
 	aux := &struct {
@@ -175,6 +177,7 @@ type BlobRestoreParameters struct {
 	TimeToRestore *time.Time `json:"timeToRestore,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type BlobRestoreParameters.
 func (b BlobRestoreParameters) MarshalJSON() ([]byte, error) {
 	type alias BlobRestoreParameters
 	aux := &struct {
@@ -187,6 +190,7 @@ func (b BlobRestoreParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type BlobRestoreParameters.
 func (b *BlobRestoreParameters) UnmarshalJSON(data []byte) error {
 	type alias BlobRestoreParameters
 	aux := &struct {
@@ -345,6 +349,7 @@ type CloudError struct {
 	InnerError *CloudErrorBody `json:"error,omitempty"`
 }
 
+// Error implements the error interface for type CloudError.
 func (e CloudError) Error() string {
 	msg := ""
 	if e.InnerError != nil {
@@ -375,6 +380,12 @@ type CloudErrorBody struct {
 type ContainerProperties struct {
 	// Default the container to use specified encryption scope for all writes.
 	DefaultEncryptionScope *string `json:"defaultEncryptionScope,omitempty"`
+
+	// Indicates whether the blob container was deleted.
+	Deleted *bool `json:"deleted,omitempty"`
+
+	// Blob container deletion time.
+	DeletedTime *time.Time `json:"deletedTime,omitempty"`
 
 	// Block override of encryption scope from the container default.
 	DenyEncryptionScopeOverride *bool `json:"denyEncryptionScopeOverride,omitempty"`
@@ -411,24 +422,35 @@ type ContainerProperties struct {
 
 	// Specifies whether data in the container may be accessed publicly and the level of access.
 	PublicAccess *PublicAccess `json:"publicAccess,omitempty"`
+
+	// Remaining retention days for soft deleted blob container.
+	RemainingRetentionDays *int32 `json:"remainingRetentionDays,omitempty"`
+
+	// The version of the deleted blob container.
+	Version *string `json:"version,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ContainerProperties.
 func (c ContainerProperties) MarshalJSON() ([]byte, error) {
 	type alias ContainerProperties
 	aux := &struct {
 		*alias
+		DeletedTime      *timeRFC3339 `json:"deletedTime"`
 		LastModifiedTime *timeRFC3339 `json:"lastModifiedTime"`
 	}{
 		alias:            (*alias)(&c),
+		DeletedTime:      (*timeRFC3339)(c.DeletedTime),
 		LastModifiedTime: (*timeRFC3339)(c.LastModifiedTime),
 	}
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ContainerProperties.
 func (c *ContainerProperties) UnmarshalJSON(data []byte) error {
 	type alias ContainerProperties
 	aux := &struct {
 		*alias
+		DeletedTime      *timeRFC3339 `json:"deletedTime"`
 		LastModifiedTime *timeRFC3339 `json:"lastModifiedTime"`
 	}{
 		alias: (*alias)(c),
@@ -436,6 +458,7 @@ func (c *ContainerProperties) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, aux); err != nil {
 		return err
 	}
+	c.DeletedTime = (*time.Time)(aux.DeletedTime)
 	c.LastModifiedTime = (*time.Time)(aux.LastModifiedTime)
 	return nil
 }
@@ -521,6 +544,10 @@ type Encryption struct {
 	// Properties provided by key vault.
 	KeyVaultProperties *KeyVaultProperties `json:"keyvaultproperties,omitempty"`
 
+	// A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for
+	// data at rest.
+	RequireInfrastructureEncryption *bool `json:"requireInfrastructureEncryption,omitempty"`
+
 	// List of services which support encryption.
 	Services *EncryptionServices `json:"services,omitempty"`
 }
@@ -578,6 +605,7 @@ type EncryptionScopeProperties struct {
 	State *EncryptionScopeState `json:"state,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type EncryptionScopeProperties.
 func (e EncryptionScopeProperties) MarshalJSON() ([]byte, error) {
 	type alias EncryptionScopeProperties
 	aux := &struct {
@@ -592,6 +620,7 @@ func (e EncryptionScopeProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type EncryptionScopeProperties.
 func (e *EncryptionScopeProperties) UnmarshalJSON(data []byte) error {
 	type alias EncryptionScopeProperties
 	aux := &struct {
@@ -632,6 +661,7 @@ type EncryptionService struct {
 	LastEnabledTime *time.Time `json:"lastEnabledTime,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type EncryptionService.
 func (e EncryptionService) MarshalJSON() ([]byte, error) {
 	type alias EncryptionService
 	aux := &struct {
@@ -644,6 +674,7 @@ func (e EncryptionService) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type EncryptionService.
 func (e *EncryptionService) UnmarshalJSON(data []byte) error {
 	type alias EncryptionService
 	aux := &struct {
@@ -710,6 +741,7 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// Error implements the error interface for type ErrorResponse.
 func (e ErrorResponse) Error() string {
 	msg := ""
 	if e.Code != nil {
@@ -838,12 +870,13 @@ type FileShareProperties struct {
 
 	// The approximate size of the data stored on the share. Note that this value may not include all recently created or recently
 	// resized files.
-	ShareUsageBytes *int32 `json:"shareUsageBytes,omitempty"`
+	ShareUsageBytes *int64 `json:"shareUsageBytes,omitempty"`
 
 	// The version of the share.
 	Version *string `json:"version,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type FileShareProperties.
 func (f FileShareProperties) MarshalJSON() ([]byte, error) {
 	type alias FileShareProperties
 	aux := &struct {
@@ -860,6 +893,7 @@ func (f FileShareProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type FileShareProperties.
 func (f *FileShareProperties) UnmarshalJSON(data []byte) error {
 	type alias FileShareProperties
 	aux := &struct {
@@ -914,6 +948,7 @@ type GeoReplicationStats struct {
 	Status *GeoReplicationStatus `json:"status,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type GeoReplicationStats.
 func (g GeoReplicationStats) MarshalJSON() ([]byte, error) {
 	type alias GeoReplicationStats
 	aux := &struct {
@@ -926,6 +961,7 @@ func (g GeoReplicationStats) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type GeoReplicationStats.
 func (g *GeoReplicationStats) UnmarshalJSON(data []byte) error {
 	type alias GeoReplicationStats
 	aux := &struct {
@@ -1037,6 +1073,7 @@ type KeyVaultProperties struct {
 	LastKeyRotationTimestamp *time.Time `json:"lastKeyRotationTimestamp,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type KeyVaultProperties.
 func (k KeyVaultProperties) MarshalJSON() ([]byte, error) {
 	type alias KeyVaultProperties
 	aux := &struct {
@@ -1049,6 +1086,7 @@ func (k KeyVaultProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type KeyVaultProperties.
 func (k *KeyVaultProperties) UnmarshalJSON(data []byte) error {
 	type alias KeyVaultProperties
 	aux := &struct {
@@ -1174,6 +1212,48 @@ type ListContainerItemsResponse struct {
 	RawResponse *http.Response
 }
 
+type ListQueue struct {
+	Resource
+	// List Queue resource properties.
+	QueueProperties *ListQueueProperties `json:"properties,omitempty"`
+}
+
+type ListQueueProperties struct {
+	// A name-value pair that represents queue metadata.
+	Metadata *map[string]string `json:"metadata,omitempty"`
+}
+
+// Response schema. Contains list of queues returned
+type ListQueueResource struct {
+	// Request URL that can be used to list next page of queues
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of queues returned.
+	Value *[]ListQueue `json:"value,omitempty"`
+}
+
+// ListQueueResourceResponse is the response envelope for operations that return a ListQueueResource type.
+type ListQueueResourceResponse struct {
+	// Response schema. Contains list of queues returned
+	ListQueueResource *ListQueueResource
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+type ListQueueServices struct {
+	// List of queue services returned.
+	Value *[]QueueServiceProperties `json:"value,omitempty"`
+}
+
+// ListQueueServicesResponse is the response envelope for operations that return a ListQueueServices type.
+type ListQueueServicesResponse struct {
+	ListQueueServices *ListQueueServices
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // The List service SAS credentials operation response.
 type ListServiceSasResponse struct {
 	// List service SAS credentials of specific resource.
@@ -1184,6 +1264,37 @@ type ListServiceSasResponse struct {
 type ListServiceSasResponseResponse struct {
 	// The List service SAS credentials operation response.
 	ListServiceSasResponse *ListServiceSasResponse
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// Response schema. Contains list of tables returned
+type ListTableResource struct {
+	// Request URL that can be used to query next page of tables
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of tables returned.
+	Value *[]Table `json:"value,omitempty"`
+}
+
+// ListTableResourceResponse is the response envelope for operations that return a ListTableResource type.
+type ListTableResourceResponse struct {
+	// Response schema. Contains list of tables returned
+	ListTableResource *ListTableResource
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+type ListTableServices struct {
+	// List of table services returned.
+	Value *[]TableServiceProperties `json:"value,omitempty"`
+}
+
+// ListTableServicesResponse is the response envelope for operations that return a ListTableServices type.
+type ListTableServicesResponse struct {
+	ListTableServices *ListTableServices
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1248,6 +1359,7 @@ type ManagementPolicyProperties struct {
 	Policy *ManagementPolicySchema `json:"policy,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ManagementPolicyProperties.
 func (m ManagementPolicyProperties) MarshalJSON() ([]byte, error) {
 	type alias ManagementPolicyProperties
 	aux := &struct {
@@ -1260,6 +1372,7 @@ func (m ManagementPolicyProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ManagementPolicyProperties.
 func (m *ManagementPolicyProperties) UnmarshalJSON(data []byte) error {
 	type alias ManagementPolicyProperties
 	aux := &struct {
@@ -1409,6 +1522,7 @@ type ObjectReplicationPolicyProperties struct {
 	SourceAccount *string `json:"sourceAccount,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ObjectReplicationPolicyProperties.
 func (o ObjectReplicationPolicyProperties) MarshalJSON() ([]byte, error) {
 	type alias ObjectReplicationPolicyProperties
 	aux := &struct {
@@ -1421,6 +1535,7 @@ func (o ObjectReplicationPolicyProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ObjectReplicationPolicyProperties.
 func (o *ObjectReplicationPolicyProperties) UnmarshalJSON(data []byte) error {
 	type alias ObjectReplicationPolicyProperties
 	aux := &struct {
@@ -1526,6 +1641,22 @@ type PrivateEndpointConnection struct {
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 }
 
+// List of private endpoint connection associated with the specified storage account
+type PrivateEndpointConnectionListResult struct {
+	// Array of private endpoint connections
+	Value *[]PrivateEndpointConnection `json:"value,omitempty"`
+}
+
+// PrivateEndpointConnectionListResultResponse is the response envelope for operations that return a PrivateEndpointConnectionListResult
+// type.
+type PrivateEndpointConnectionListResultResponse struct {
+	// List of private endpoint connection associated with the specified storage account
+	PrivateEndpointConnectionListResult *PrivateEndpointConnectionListResult
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// The resource of private end point.
@@ -1594,6 +1725,46 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
 }
 
+// QueueListOptions contains the optional parameters for the Queue.List method.
+type QueueListOptions struct {
+	// Optional, When specified, only the queues with a name starting with the given filter will be listed.
+	Filter *string
+	// Optional, a maximum number of queues that should be included in a list queue response
+	Maxpagesize *string
+}
+
+type QueueProperties struct {
+	// Integer indicating an approximate number of messages in the queue. This number is not lower than the actual number of messages
+	// in the queue, but could be higher.
+	ApproximateMessageCount *int32 `json:"approximateMessageCount,omitempty"`
+
+	// A name-value pair that represents queue metadata.
+	Metadata *map[string]string `json:"metadata,omitempty"`
+}
+
+// The properties of a storage account’s Queue service.
+type QueueServiceProperties struct {
+	Resource
+	// The properties of a storage account’s Queue service.
+	QueueServiceProperties *QueueServicePropertiesAutoGenerated `json:"properties,omitempty"`
+}
+
+// The properties of a storage account’s Queue service.
+type QueueServicePropertiesAutoGenerated struct {
+	// Specifies CORS rules for the Queue service. You can include up to five CorsRule elements in the request. If no CorsRule
+	// elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the Queue service.
+	Cors *CorsRules `json:"cors,omitempty"`
+}
+
+// QueueServicePropertiesResponse is the response envelope for operations that return a QueueServiceProperties type.
+type QueueServicePropertiesResponse struct {
+	// The properties of a storage account’s Queue service.
+	QueueServiceProperties *QueueServiceProperties
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 type Resource struct {
 	// Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -1617,6 +1788,7 @@ type RestorePolicyProperties struct {
 	LastEnabledTime *time.Time `json:"lastEnabledTime,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type RestorePolicyProperties.
 func (r RestorePolicyProperties) MarshalJSON() ([]byte, error) {
 	type alias RestorePolicyProperties
 	aux := &struct {
@@ -1629,6 +1801,7 @@ func (r RestorePolicyProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type RestorePolicyProperties.
 func (r *RestorePolicyProperties) UnmarshalJSON(data []byte) error {
 	type alias RestorePolicyProperties
 	aux := &struct {
@@ -1732,6 +1905,7 @@ type ServiceSasParameters struct {
 	SharedAccessStartTime *time.Time `json:"signedStart,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ServiceSasParameters.
 func (s ServiceSasParameters) MarshalJSON() ([]byte, error) {
 	type alias ServiceSasParameters
 	aux := &struct {
@@ -1746,6 +1920,7 @@ func (s ServiceSasParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceSasParameters.
 func (s *ServiceSasParameters) UnmarshalJSON(data []byte) error {
 	type alias ServiceSasParameters
 	aux := &struct {
@@ -1964,6 +2139,10 @@ type StorageAccountProperties struct {
 	// Required for storage accounts where kind = BlobStorage. The access tier used for billing.
 	AccessTier *AccessTier `json:"accessTier,omitempty"`
 
+	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for
+	// this property.
+	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
+
 	// Provides the identity based authentication settings for Azure Files.
 	AzureFilesIDentityBasedAuthentication *AzureFilesIDentityBasedAuthentication `json:"azureFilesIdentityBasedAuthentication,omitempty"`
 
@@ -1998,6 +2177,9 @@ type StorageAccountProperties struct {
 	// is retained. This element is not returned if there has never been a failover instance. Only available if the accountType
 	// is Standard_GRS or Standard_RAGRS.
 	LastGeoFailoverTime *time.Time `json:"lastGeoFailoverTime,omitempty"`
+
+	// Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property.
+	MinimumTLSVersion *MinimumTlsVersion `json:"minimumTlsVersion,omitempty"`
 
 	// Network rule set
 	NetworkRuleSet *NetworkRuleSet `json:"networkAcls,omitempty"`
@@ -2034,6 +2216,7 @@ type StorageAccountProperties struct {
 	StatusOfSecondary *AccountStatus `json:"statusOfSecondary,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type StorageAccountProperties.
 func (s StorageAccountProperties) MarshalJSON() ([]byte, error) {
 	type alias StorageAccountProperties
 	aux := &struct {
@@ -2048,6 +2231,7 @@ func (s StorageAccountProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type StorageAccountProperties.
 func (s *StorageAccountProperties) UnmarshalJSON(data []byte) error {
 	type alias StorageAccountProperties
 	aux := &struct {
@@ -2070,6 +2254,10 @@ type StorageAccountPropertiesCreateParameters struct {
 	// Required for storage accounts where kind = BlobStorage. The access tier used for billing.
 	AccessTier *AccessTier `json:"accessTier,omitempty"`
 
+	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for
+	// this property.
+	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
+
 	// Provides the identity based authentication settings for Azure Files.
 	AzureFilesIDentityBasedAuthentication *AzureFilesIDentityBasedAuthentication `json:"azureFilesIdentityBasedAuthentication,omitempty"`
 
@@ -2089,6 +2277,9 @@ type StorageAccountPropertiesCreateParameters struct {
 	// Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled.
 	LargeFileSharesState *LargeFileSharesState `json:"largeFileSharesState,omitempty"`
 
+	// Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property.
+	MinimumTLSVersion *MinimumTlsVersion `json:"minimumTlsVersion,omitempty"`
+
 	// Network rule set
 	NetworkRuleSet *NetworkRuleSet `json:"networkAcls,omitempty"`
 
@@ -2100,6 +2291,10 @@ type StorageAccountPropertiesCreateParameters struct {
 type StorageAccountPropertiesUpdateParameters struct {
 	// Required for storage accounts where kind = BlobStorage. The access tier used for billing.
 	AccessTier *AccessTier `json:"accessTier,omitempty"`
+
+	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for
+	// this property.
+	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
 
 	// Provides the identity based authentication settings for Azure Files.
 	AzureFilesIDentityBasedAuthentication *AzureFilesIDentityBasedAuthentication `json:"azureFilesIdentityBasedAuthentication,omitempty"`
@@ -2116,6 +2311,9 @@ type StorageAccountPropertiesUpdateParameters struct {
 
 	// Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled.
 	LargeFileSharesState *LargeFileSharesState `json:"largeFileSharesState,omitempty"`
+
+	// Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property.
+	MinimumTLSVersion *MinimumTlsVersion `json:"minimumTlsVersion,omitempty"`
 
 	// Network rule set
 	NetworkRuleSet *NetworkRuleSet `json:"networkAcls,omitempty"`
@@ -2167,6 +2365,19 @@ type StorageAccountsGetPropertiesOptions struct {
 	Expand *StorageAccountExpand
 }
 
+type StorageQueue struct {
+	Resource
+	// Queue resource properties.
+	QueueProperties *QueueProperties `json:"properties,omitempty"`
+}
+
+// StorageQueueResponse is the response envelope for operations that return a StorageQueue type.
+type StorageQueueResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse  *http.Response
+	StorageQueue *StorageQueue
+}
+
 // The response from the List Storage SKUs operation.
 type StorageSkuListResult struct {
 	// Get the list result of storage SKUs and their properties.
@@ -2180,6 +2391,50 @@ type StorageSkuListResultResponse struct {
 
 	// The response from the List Storage SKUs operation.
 	StorageSkuListResult *StorageSkuListResult
+}
+
+// Properties of the table, including Id, resource name, resource type.
+type Table struct {
+	Resource
+	// Table resource properties.
+	TableProperties *TableProperties `json:"properties,omitempty"`
+}
+
+type TableProperties struct {
+	// Table name under the specified account
+	TableName *string `json:"tableName,omitempty"`
+}
+
+// TableResponse is the response envelope for operations that return a Table type.
+type TableResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// Properties of the table, including Id, resource name, resource type.
+	Table *Table
+}
+
+// The properties of a storage account’s Table service.
+type TableServiceProperties struct {
+	Resource
+	// The properties of a storage account’s Table service.
+	TableServiceProperties *TableServicePropertiesAutoGenerated `json:"properties,omitempty"`
+}
+
+// The properties of a storage account’s Table service.
+type TableServicePropertiesAutoGenerated struct {
+	// Specifies CORS rules for the Table service. You can include up to five CorsRule elements in the request. If no CorsRule
+	// elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the Table service.
+	Cors *CorsRules `json:"cors,omitempty"`
+}
+
+// TableServicePropertiesResponse is the response envelope for operations that return a TableServiceProperties type.
+type TableServicePropertiesResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// The properties of a storage account’s Table service.
+	TableServiceProperties *TableServiceProperties
 }
 
 // Blob index tag based filtering for blob objects
@@ -2213,6 +2468,7 @@ type TagProperty struct {
 	Upn *string `json:"upn,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type TagProperty.
 func (t TagProperty) MarshalJSON() ([]byte, error) {
 	type alias TagProperty
 	aux := &struct {
@@ -2225,6 +2481,7 @@ func (t TagProperty) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type TagProperty.
 func (t *TagProperty) UnmarshalJSON(data []byte) error {
 	type alias TagProperty
 	aux := &struct {
@@ -2271,6 +2528,7 @@ type UpdateHistoryProperty struct {
 	Upn *string `json:"upn,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type UpdateHistoryProperty.
 func (u UpdateHistoryProperty) MarshalJSON() ([]byte, error) {
 	type alias UpdateHistoryProperty
 	aux := &struct {
@@ -2283,6 +2541,7 @@ func (u UpdateHistoryProperty) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateHistoryProperty.
 func (u *UpdateHistoryProperty) UnmarshalJSON(data []byte) error {
 	type alias UpdateHistoryProperty
 	aux := &struct {

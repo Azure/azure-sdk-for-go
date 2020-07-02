@@ -49,6 +49,7 @@ type CloudError struct {
 	InnerError *ErrorResponse `json:"error,omitempty"`
 }
 
+// Error implements the error interface for type CloudError.
 func (e CloudError) Error() string {
 	msg := ""
 	if e.InnerError != nil {
@@ -222,6 +223,7 @@ type DeploymentOperationProperties struct {
 	Timestamp *time.Time `json:"timestamp,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type DeploymentOperationProperties.
 func (d DeploymentOperationProperties) MarshalJSON() ([]byte, error) {
 	type alias DeploymentOperationProperties
 	aux := &struct {
@@ -234,6 +236,7 @@ func (d DeploymentOperationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type DeploymentOperationProperties.
 func (d *DeploymentOperationProperties) UnmarshalJSON(data []byte) error {
 	type alias DeploymentOperationProperties
 	aux := &struct {
@@ -374,6 +377,7 @@ type DeploymentPropertiesExtended struct {
 	Timestamp *time.Time `json:"timestamp,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type DeploymentPropertiesExtended.
 func (d DeploymentPropertiesExtended) MarshalJSON() ([]byte, error) {
 	type alias DeploymentPropertiesExtended
 	aux := &struct {
@@ -386,6 +390,7 @@ func (d DeploymentPropertiesExtended) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type DeploymentPropertiesExtended.
 func (d *DeploymentPropertiesExtended) UnmarshalJSON(data []byte) error {
 	type alias DeploymentPropertiesExtended
 	aux := &struct {
@@ -517,6 +522,7 @@ type GenericResourceExpanded struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type GenericResourceExpanded.
 func (g GenericResourceExpanded) MarshalJSON() ([]byte, error) {
 	type alias GenericResourceExpanded
 	aux := &struct {
@@ -531,6 +537,7 @@ func (g GenericResourceExpanded) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type GenericResourceExpanded.
 func (g *GenericResourceExpanded) UnmarshalJSON(data []byte) error {
 	type alias GenericResourceExpanded
 	aux := &struct {

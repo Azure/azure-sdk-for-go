@@ -7,7 +7,10 @@ package armstorage
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -19,6 +22,8 @@ type PrivateEndpointConnectionsOperations interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (*http.Response, error)
 	// Get - Gets the specified private endpoint connection associated with the storage account.
 	Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (*PrivateEndpointConnectionResponse, error)
+	// List - List all the private endpoint connections associated with the storage account.
+	List(ctx context.Context, resourceGroupName string, accountName string) (*PrivateEndpointConnectionListResultResponse, error)
 	// Put - Update the state of specified private endpoint connection associated with the storage account.
 	Put(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties PrivateEndpointConnection) (*PrivateEndpointConnectionResponse, error)
 }
@@ -132,6 +137,61 @@ func (client *privateEndpointConnectionsOperations) getHandleError(resp *azcore.
 		return err
 	}
 	return err
+}
+
+// List - List all the private endpoint connections associated with the storage account.
+func (client *privateEndpointConnectionsOperations) List(ctx context.Context, resourceGroupName string, accountName string) (*PrivateEndpointConnectionListResultResponse, error) {
+	req, err := client.listCreateRequest(resourceGroupName, accountName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.p.Do(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	result, err := client.listHandleResponse(resp)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// listCreateRequest creates the List request.
+func (client *privateEndpointConnectionsOperations) listCreateRequest(resourceGroupName string, accountName string) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/privateEndpointConnections"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	u, err := client.u.Parse(urlPath)
+	if err != nil {
+		return nil, err
+	}
+	query := u.Query()
+	query.Set("api-version", "2019-06-01")
+	u.RawQuery = query.Encode()
+	req := azcore.NewRequest(http.MethodGet, *u)
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *privateEndpointConnectionsOperations) listHandleResponse(resp *azcore.Response) (*PrivateEndpointConnectionListResultResponse, error) {
+	if !resp.HasStatusCode(http.StatusOK) {
+		return nil, client.listHandleError(resp)
+	}
+	result := PrivateEndpointConnectionListResultResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.PrivateEndpointConnectionListResult)
+}
+
+// listHandleError handles the List error response.
+func (client *privateEndpointConnectionsOperations) listHandleError(resp *azcore.Response) error {
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return errors.New(resp.Status)
+	}
+	return errors.New(string(body))
 }
 
 // Put - Update the state of specified private endpoint connection associated with the storage account.

@@ -158,3 +158,23 @@ func (client *Client) FileServicesOperations(subscriptionID string) FileServices
 func (client *Client) FileSharesOperations(subscriptionID string) FileSharesOperations {
 	return &fileSharesOperations{Client: client, subscriptionID: subscriptionID}
 }
+
+// QueueServicesOperations returns the QueueServicesOperations associated with this client.
+func (client *Client) QueueServicesOperations(subscriptionID string) QueueServicesOperations {
+	return &queueServicesOperations{Client: client, subscriptionID: subscriptionID}
+}
+
+// QueueOperations returns the QueueOperations associated with this client.
+func (client *Client) QueueOperations(subscriptionID string) QueueOperations {
+	return &queueOperations{Client: client, subscriptionID: subscriptionID}
+}
+
+// TableServicesOperations returns the TableServicesOperations associated with this client.
+func (client *Client) TableServicesOperations(subscriptionID string) TableServicesOperations {
+	return &tableServicesOperations{Client: client, subscriptionID: subscriptionID}
+}
+
+// TableOperations returns the TableOperations associated with this client.
+func (client *Client) TableOperations(subscriptionID string) TableOperations {
+	return &tableOperations{Client: client, subscriptionID: subscriptionID}
+}

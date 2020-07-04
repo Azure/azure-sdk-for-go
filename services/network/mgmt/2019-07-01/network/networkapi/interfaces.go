@@ -602,8 +602,8 @@ var _ AvailablePrivateEndpointTypesClientAPI = (*network.AvailablePrivateEndpoin
 
 // PrivateLinkServicesClientAPI contains the set of methods on the PrivateLinkServicesClient type.
 type PrivateLinkServicesClientAPI interface {
-	CheckPrivateLinkServiceVisibility(ctx context.Context, location string, parameters network.CheckPrivateLinkServiceVisibilityRequest) (result network.PrivateLinkServiceVisibility, err error)
-	CheckPrivateLinkServiceVisibilityByResourceGroup(ctx context.Context, location string, resourceGroupName string, parameters network.CheckPrivateLinkServiceVisibilityRequest) (result network.PrivateLinkServiceVisibility, err error)
+	CheckPrivateLinkServiceVisibility(ctx context.Context, location string, parameters network.CheckPrivateLinkServiceVisibilityRequest) (result network.PrivateLinkServicesCheckPrivateLinkServiceVisibilityFuture, err error)
+	CheckPrivateLinkServiceVisibilityByResourceGroup(ctx context.Context, location string, resourceGroupName string, parameters network.CheckPrivateLinkServiceVisibilityRequest) (result network.PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourceGroupFuture, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters network.PrivateLinkService) (result network.PrivateLinkServicesCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string) (result network.PrivateLinkServicesDeleteFuture, err error)
 	DeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string) (result network.PrivateLinkServicesDeletePrivateEndpointConnectionFuture, err error)

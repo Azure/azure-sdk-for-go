@@ -122,7 +122,6 @@ func (client DatabaseAdvisorsClient) CreateOrUpdateSender(req *http.Request) (*h
 func (client DatabaseAdvisorsClient) CreateOrUpdateResponder(resp *http.Response) (result Advisor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -203,7 +202,6 @@ func (client DatabaseAdvisorsClient) GetSender(req *http.Request) (*http.Respons
 func (client DatabaseAdvisorsClient) GetResponder(resp *http.Response) (result Advisor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -282,7 +280,6 @@ func (client DatabaseAdvisorsClient) ListByDatabaseSender(req *http.Request) (*h
 func (client DatabaseAdvisorsClient) ListByDatabaseResponder(resp *http.Response) (result AdvisorListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

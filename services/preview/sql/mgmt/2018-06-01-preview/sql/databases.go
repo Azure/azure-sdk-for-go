@@ -118,7 +118,6 @@ func (client DatabasesClient) FailoverSender(req *http.Request) (future Database
 func (client DatabasesClient) FailoverResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

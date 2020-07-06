@@ -121,7 +121,6 @@ func (client StorageAccountsClient) CreateOrUpdateSender(req *http.Request) (fut
 func (client StorageAccountsClient) CreateOrUpdateResponder(resp *http.Response) (result StorageAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -199,7 +198,6 @@ func (client StorageAccountsClient) DeleteSender(req *http.Request) (future Stor
 func (client StorageAccountsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -276,7 +274,6 @@ func (client StorageAccountsClient) GetSender(req *http.Request) (*http.Response
 func (client StorageAccountsClient) GetResponder(resp *http.Response) (result StorageAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -353,7 +350,6 @@ func (client StorageAccountsClient) ListByDataBoxEdgeDeviceSender(req *http.Requ
 func (client StorageAccountsClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response) (result StorageAccountList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

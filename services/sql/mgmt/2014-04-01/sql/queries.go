@@ -114,7 +114,6 @@ func (client QueriesClient) ListByDatabaseSender(req *http.Request) (*http.Respo
 func (client QueriesClient) ListByDatabaseResponder(resp *http.Response) (result TopQueriesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

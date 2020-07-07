@@ -116,7 +116,6 @@ func (client QueryTextsClient) ListByQuerySender(req *http.Request) (*http.Respo
 func (client QueryTextsClient) ListByQueryResponder(resp *http.Response) (result QueryTextListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

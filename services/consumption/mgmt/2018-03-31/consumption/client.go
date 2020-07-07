@@ -121,7 +121,6 @@ func (client BaseClient) GetBalancesByBillingAccountSender(req *http.Request) (*
 func (client BaseClient) GetBalancesByBillingAccountResponder(resp *http.Response) (result Balance, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

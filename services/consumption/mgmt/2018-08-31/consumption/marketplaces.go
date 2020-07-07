@@ -134,7 +134,6 @@ func (client MarketplacesClient) ListSender(req *http.Request) (*http.Response, 
 func (client MarketplacesClient) ListResponder(resp *http.Response) (result MarketplacesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -271,7 +270,6 @@ func (client MarketplacesClient) ListByBillingAccountSender(req *http.Request) (
 func (client MarketplacesClient) ListByBillingAccountResponder(resp *http.Response) (result MarketplacesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -409,7 +407,6 @@ func (client MarketplacesClient) ListByBillingPeriodSender(req *http.Request) (*
 func (client MarketplacesClient) ListByBillingPeriodResponder(resp *http.Response) (result MarketplacesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -546,7 +543,6 @@ func (client MarketplacesClient) ListByDepartmentSender(req *http.Request) (*htt
 func (client MarketplacesClient) ListByDepartmentResponder(resp *http.Response) (result MarketplacesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -683,7 +679,6 @@ func (client MarketplacesClient) ListByEnrollmentAccountSender(req *http.Request
 func (client MarketplacesClient) ListByEnrollmentAccountResponder(resp *http.Response) (result MarketplacesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -822,7 +817,6 @@ func (client MarketplacesClient) ListForBillingPeriodByBillingAccountSender(req 
 func (client MarketplacesClient) ListForBillingPeriodByBillingAccountResponder(resp *http.Response) (result MarketplacesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -961,7 +955,6 @@ func (client MarketplacesClient) ListForBillingPeriodByDepartmentSender(req *htt
 func (client MarketplacesClient) ListForBillingPeriodByDepartmentResponder(resp *http.Response) (result MarketplacesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1100,7 +1093,6 @@ func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountSender(r
 func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountResponder(resp *http.Response) (result MarketplacesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

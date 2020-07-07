@@ -111,7 +111,6 @@ func (client InvoicesClient) GetSender(req *http.Request) (*http.Response, error
 func (client InvoicesClient) GetResponder(resp *http.Response) (result Invoice, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -183,7 +182,6 @@ func (client InvoicesClient) GetLatestSender(req *http.Request) (*http.Response,
 func (client InvoicesClient) GetLatestResponder(resp *http.Response) (result Invoice, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -288,7 +286,6 @@ func (client InvoicesClient) ListSender(req *http.Request) (*http.Response, erro
 func (client InvoicesClient) ListResponder(resp *http.Response) (result InvoicesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

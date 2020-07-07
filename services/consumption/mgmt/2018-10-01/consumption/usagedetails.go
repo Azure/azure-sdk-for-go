@@ -144,7 +144,6 @@ func (client UsageDetailsClient) ListSender(req *http.Request) (*http.Response, 
 func (client UsageDetailsClient) ListResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -291,7 +290,6 @@ func (client UsageDetailsClient) ListByBillingAccountSender(req *http.Request) (
 func (client UsageDetailsClient) ListByBillingAccountResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -440,7 +438,6 @@ func (client UsageDetailsClient) ListByBillingPeriodSender(req *http.Request) (*
 func (client UsageDetailsClient) ListByBillingPeriodResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -587,7 +584,6 @@ func (client UsageDetailsClient) ListByDepartmentSender(req *http.Request) (*htt
 func (client UsageDetailsClient) ListByDepartmentResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -734,7 +730,6 @@ func (client UsageDetailsClient) ListByEnrollmentAccountSender(req *http.Request
 func (client UsageDetailsClient) ListByEnrollmentAccountResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -881,7 +876,6 @@ func (client UsageDetailsClient) ListByManagementGroupSender(req *http.Request) 
 func (client UsageDetailsClient) ListByManagementGroupResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1031,7 +1025,6 @@ func (client UsageDetailsClient) ListForBillingPeriodByBillingAccountSender(req 
 func (client UsageDetailsClient) ListForBillingPeriodByBillingAccountResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1181,7 +1174,6 @@ func (client UsageDetailsClient) ListForBillingPeriodByDepartmentSender(req *htt
 func (client UsageDetailsClient) ListForBillingPeriodByDepartmentResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1331,7 +1323,6 @@ func (client UsageDetailsClient) ListForBillingPeriodByEnrollmentAccountSender(r
 func (client UsageDetailsClient) ListForBillingPeriodByEnrollmentAccountResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1481,7 +1472,6 @@ func (client UsageDetailsClient) ListForBillingPeriodByManagementGroupSender(req
 func (client UsageDetailsClient) ListForBillingPeriodByManagementGroupResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -116,7 +116,6 @@ func (client ReservationsSummariesClient) ListByReservationOrderSender(req *http
 func (client ReservationsSummariesClient) ListByReservationOrderResponder(resp *http.Response) (result ReservationSummariesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -236,7 +235,6 @@ func (client ReservationsSummariesClient) ListByReservationOrderAndReservationSe
 func (client ReservationsSummariesClient) ListByReservationOrderAndReservationResponder(resp *http.Response) (result ReservationSummariesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

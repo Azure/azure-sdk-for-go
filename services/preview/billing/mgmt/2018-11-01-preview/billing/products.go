@@ -110,7 +110,6 @@ func (client ProductsClient) GetSender(req *http.Request) (*http.Response, error
 func (client ProductsClient) GetResponder(resp *http.Response) (result ProductSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -190,7 +189,6 @@ func (client ProductsClient) ListByBillingAccountNameSender(req *http.Request) (
 func (client ProductsClient) ListByBillingAccountNameResponder(resp *http.Response) (result ProductsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -309,7 +307,6 @@ func (client ProductsClient) ListByInvoiceSectionNameSender(req *http.Request) (
 func (client ProductsClient) ListByInvoiceSectionNameResponder(resp *http.Response) (result ProductsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -426,7 +423,6 @@ func (client ProductsClient) TransferSender(req *http.Request) (*http.Response, 
 func (client ProductsClient) TransferResponder(resp *http.Response) (result ProductSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -504,7 +500,6 @@ func (client ProductsClient) UpdateAutoRenewByBillingAccountNameSender(req *http
 func (client ProductsClient) UpdateAutoRenewByBillingAccountNameResponder(resp *http.Response) (result UpdateAutoRenewOperationSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -584,7 +579,6 @@ func (client ProductsClient) UpdateAutoRenewByInvoiceSectionNameSender(req *http
 func (client ProductsClient) UpdateAutoRenewByInvoiceSectionNameResponder(resp *http.Response) (result UpdateAutoRenewOperationSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -658,7 +652,6 @@ func (client ProductsClient) ValidateTransferSender(req *http.Request) (*http.Re
 func (client ProductsClient) ValidateTransferResponder(resp *http.Response) (result ValidateProductTransferEligibilityResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -1,5 +1,8 @@
 # Change Log
 
+## `v0.10.3`
+- Implements DefaultRuleDescription to allow setting a default rule for a subscription.
+
 ## `v0.10.2`
 - add support for sending and receiving custom annotations
 - added some missing AMQP span attributes

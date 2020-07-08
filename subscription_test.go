@@ -239,6 +239,7 @@ func (suite *serviceBusSuite) TestSubscriptionManagement() {
 		"TestSubscriptionWithCorrelationFilterRule":            testSubscriptionWithCorrelationFilterRule,
 		"TestSubscriptionWithDeleteRule":                       testSubscriptionWithDeleteRule,
 		"TestSubscriptionWithActionRule":                       testSubscriptionWithActionRule,
+		"TestSubscriptionWithDefaultRuleDescription":           testSubscriptionWithDefaultRuleDescription,
 	}
 
 	suite.testSubscriptionManager(tests)
@@ -368,6 +369,16 @@ func testSubscriptionWithActionRule(ctx context.Context, t *testing.T, sm *Subsc
 
 	rule := rules[1]
 	assert.Equal(t, action.Expression, rule.Action.SQLExpression)
+}
+
+func testSubscriptionWithDefaultRuleDescription(ctx context.Context, t *testing.T, sm *SubscriptionManager, _, name string) {
+	s := buildSubscription(ctx, t, sm, name, SubscriptionWithDefaultRuleDescription(FalseFilter{}, "falseRule"))
+	rules, err := sm.ListRules(ctx, s.Name)
+	require.NoError(t, err)
+	require.Len(t, rules, 1)
+	rule := rules[0]
+	assert.Equal(t, rule.Filter.Type, "FalseFilter")
+	assert.Equal(t, *rule.Filter.SQLExpression, "1!=1")
 }
 
 func buildSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, name string, opts ...SubscriptionManagementOption) *SubscriptionEntity {

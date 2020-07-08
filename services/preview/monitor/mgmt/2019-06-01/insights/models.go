@@ -197,6 +197,40 @@ func PossibleDataStatusValues() []DataStatus {
 	return []DataStatus{NotPresent, Present}
 }
 
+// DynamicThresholdOperator enumerates the values for dynamic threshold operator.
+type DynamicThresholdOperator string
+
+const (
+	// DynamicThresholdOperatorGreaterOrLessThan ...
+	DynamicThresholdOperatorGreaterOrLessThan DynamicThresholdOperator = "GreaterOrLessThan"
+	// DynamicThresholdOperatorGreaterThan ...
+	DynamicThresholdOperatorGreaterThan DynamicThresholdOperator = "GreaterThan"
+	// DynamicThresholdOperatorLessThan ...
+	DynamicThresholdOperatorLessThan DynamicThresholdOperator = "LessThan"
+)
+
+// PossibleDynamicThresholdOperatorValues returns an array of possible values for the DynamicThresholdOperator const type.
+func PossibleDynamicThresholdOperatorValues() []DynamicThresholdOperator {
+	return []DynamicThresholdOperator{DynamicThresholdOperatorGreaterOrLessThan, DynamicThresholdOperatorGreaterThan, DynamicThresholdOperatorLessThan}
+}
+
+// DynamicThresholdSensitivity enumerates the values for dynamic threshold sensitivity.
+type DynamicThresholdSensitivity string
+
+const (
+	// DynamicThresholdSensitivityHigh ...
+	DynamicThresholdSensitivityHigh DynamicThresholdSensitivity = "High"
+	// DynamicThresholdSensitivityLow ...
+	DynamicThresholdSensitivityLow DynamicThresholdSensitivity = "Low"
+	// DynamicThresholdSensitivityMedium ...
+	DynamicThresholdSensitivityMedium DynamicThresholdSensitivity = "Medium"
+)
+
+// PossibleDynamicThresholdSensitivityValues returns an array of possible values for the DynamicThresholdSensitivity const type.
+func PossibleDynamicThresholdSensitivityValues() []DynamicThresholdSensitivity {
+	return []DynamicThresholdSensitivity{DynamicThresholdSensitivityHigh, DynamicThresholdSensitivityLow, DynamicThresholdSensitivityMedium}
+}
+
 // Enabled enumerates the values for enabled.
 type Enabled string
 
@@ -311,11 +345,13 @@ const (
 	OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria OdataTypeBasicMetricAlertCriteria = "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
 	// OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria ...
 	OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria OdataTypeBasicMetricAlertCriteria = "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+	// OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria ...
+	OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria OdataTypeBasicMetricAlertCriteria = "Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria"
 )
 
 // PossibleOdataTypeBasicMetricAlertCriteriaValues returns an array of possible values for the OdataTypeBasicMetricAlertCriteria const type.
 func PossibleOdataTypeBasicMetricAlertCriteriaValues() []OdataTypeBasicMetricAlertCriteria {
-	return []OdataTypeBasicMetricAlertCriteria{OdataTypeMetricAlertCriteria, OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria, OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria}
+	return []OdataTypeBasicMetricAlertCriteria{OdataTypeMetricAlertCriteria, OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria, OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria, OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria}
 }
 
 // OdataTypeBasicRuleAction enumerates the values for odata type basic rule action.
@@ -369,6 +405,29 @@ const (
 // PossibleOnboardingStatusValues returns an array of possible values for the OnboardingStatus const type.
 func PossibleOnboardingStatusValues() []OnboardingStatus {
 	return []OnboardingStatus{NotOnboarded, Onboarded, Unknown}
+}
+
+// Operator enumerates the values for operator.
+type Operator string
+
+const (
+	// OperatorEquals ...
+	OperatorEquals Operator = "Equals"
+	// OperatorGreaterThan ...
+	OperatorGreaterThan Operator = "GreaterThan"
+	// OperatorGreaterThanOrEqual ...
+	OperatorGreaterThanOrEqual Operator = "GreaterThanOrEqual"
+	// OperatorLessThan ...
+	OperatorLessThan Operator = "LessThan"
+	// OperatorLessThanOrEqual ...
+	OperatorLessThanOrEqual Operator = "LessThanOrEqual"
+	// OperatorNotEquals ...
+	OperatorNotEquals Operator = "NotEquals"
+)
+
+// PossibleOperatorValues returns an array of possible values for the Operator const type.
+func PossibleOperatorValues() []Operator {
+	return []Operator{OperatorEquals, OperatorGreaterThan, OperatorGreaterThanOrEqual, OperatorLessThan, OperatorLessThanOrEqual, OperatorNotEquals}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -477,6 +536,21 @@ const (
 // PossibleScaleDirectionValues returns an array of possible values for the ScaleDirection const type.
 func PossibleScaleDirectionValues() []ScaleDirection {
 	return []ScaleDirection{ScaleDirectionDecrease, ScaleDirectionIncrease, ScaleDirectionNone}
+}
+
+// ScaleRuleMetricDimensionOperationType enumerates the values for scale rule metric dimension operation type.
+type ScaleRuleMetricDimensionOperationType string
+
+const (
+	// ScaleRuleMetricDimensionOperationTypeEquals ...
+	ScaleRuleMetricDimensionOperationTypeEquals ScaleRuleMetricDimensionOperationType = "Equals"
+	// ScaleRuleMetricDimensionOperationTypeNotEquals ...
+	ScaleRuleMetricDimensionOperationTypeNotEquals ScaleRuleMetricDimensionOperationType = "NotEquals"
+)
+
+// PossibleScaleRuleMetricDimensionOperationTypeValues returns an array of possible values for the ScaleRuleMetricDimensionOperationType const type.
+func PossibleScaleRuleMetricDimensionOperationTypeValues() []ScaleRuleMetricDimensionOperationType {
+	return []ScaleRuleMetricDimensionOperationType{ScaleRuleMetricDimensionOperationTypeEquals, ScaleRuleMetricDimensionOperationTypeNotEquals}
 }
 
 // ScaleType enumerates the values for scale type.
@@ -2139,10 +2213,10 @@ type Dimension struct {
 
 // DynamicMetricCriteria criterion for dynamic threshold.
 type DynamicMetricCriteria struct {
-	// Operator - The operator used to compare the metric value against the threshold.
-	Operator interface{} `json:"operator,omitempty"`
-	// AlertSensitivity - The extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric series pattern.
-	AlertSensitivity interface{} `json:"alertSensitivity,omitempty"`
+	// Operator - The operator used to compare the metric value against the threshold. Possible values include: 'DynamicThresholdOperatorGreaterThan', 'DynamicThresholdOperatorLessThan', 'DynamicThresholdOperatorGreaterOrLessThan'
+	Operator DynamicThresholdOperator `json:"operator,omitempty"`
+	// AlertSensitivity - The extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric series pattern. Possible values include: 'DynamicThresholdSensitivityLow', 'DynamicThresholdSensitivityMedium', 'DynamicThresholdSensitivityHigh'
+	AlertSensitivity DynamicThresholdSensitivity `json:"alertSensitivity,omitempty"`
 	// FailingPeriods - The minimum number of violations required within the selected lookback time window required to raise an alert.
 	FailingPeriods *DynamicThresholdFailingPeriods `json:"failingPeriods,omitempty"`
 	// IgnoreDataBefore - Use this option to set the date from which to start learning the metric historical data and calculate the dynamic thresholds (in ISO8601 format)
@@ -2167,10 +2241,10 @@ type DynamicMetricCriteria struct {
 func (dmc DynamicMetricCriteria) MarshalJSON() ([]byte, error) {
 	dmc.CriterionType = CriterionTypeDynamicThresholdCriterion
 	objectMap := make(map[string]interface{})
-	if dmc.Operator != nil {
+	if dmc.Operator != "" {
 		objectMap["operator"] = dmc.Operator
 	}
-	if dmc.AlertSensitivity != nil {
+	if dmc.AlertSensitivity != "" {
 		objectMap["alertSensitivity"] = dmc.AlertSensitivity
 	}
 	if dmc.FailingPeriods != nil {
@@ -2234,7 +2308,7 @@ func (dmc *DynamicMetricCriteria) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "operator":
 			if v != nil {
-				var operator interface{}
+				var operator DynamicThresholdOperator
 				err = json.Unmarshal(*v, &operator)
 				if err != nil {
 					return err
@@ -2243,7 +2317,7 @@ func (dmc *DynamicMetricCriteria) UnmarshalJSON(body []byte) error {
 			}
 		case "alertSensitivity":
 			if v != nil {
-				var alertSensitivity interface{}
+				var alertSensitivity DynamicThresholdSensitivity
 				err = json.Unmarshal(*v, &alertSensitivity)
 				if err != nil {
 					return err
@@ -3422,6 +3496,7 @@ func (maa MetricAlertAction) MarshalJSON() ([]byte, error) {
 // BasicMetricAlertCriteria the rule criteria that defines the conditions of the alert rule.
 type BasicMetricAlertCriteria interface {
 	AsMetricAlertSingleResourceMultipleMetricCriteria() (*MetricAlertSingleResourceMultipleMetricCriteria, bool)
+	AsWebtestLocationAvailabilityCriteria() (*WebtestLocationAvailabilityCriteria, bool)
 	AsMetricAlertMultipleResourceMultipleMetricCriteria() (*MetricAlertMultipleResourceMultipleMetricCriteria, bool)
 	AsMetricAlertCriteria() (*MetricAlertCriteria, bool)
 }
@@ -3430,7 +3505,7 @@ type BasicMetricAlertCriteria interface {
 type MetricAlertCriteria struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// OdataType - Possible values include: 'OdataTypeMetricAlertCriteria', 'OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria', 'OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria'
+	// OdataType - Possible values include: 'OdataTypeMetricAlertCriteria', 'OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria', 'OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria', 'OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria'
 	OdataType OdataTypeBasicMetricAlertCriteria `json:"odata.type,omitempty"`
 }
 
@@ -3446,6 +3521,10 @@ func unmarshalBasicMetricAlertCriteria(body []byte) (BasicMetricAlertCriteria, e
 		var masrmmc MetricAlertSingleResourceMultipleMetricCriteria
 		err := json.Unmarshal(body, &masrmmc)
 		return masrmmc, err
+	case string(OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria):
+		var wlac WebtestLocationAvailabilityCriteria
+		err := json.Unmarshal(body, &wlac)
+		return wlac, err
 	case string(OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria):
 		var mamrmmc MetricAlertMultipleResourceMultipleMetricCriteria
 		err := json.Unmarshal(body, &mamrmmc)
@@ -3490,6 +3569,11 @@ func (mac MetricAlertCriteria) MarshalJSON() ([]byte, error) {
 
 // AsMetricAlertSingleResourceMultipleMetricCriteria is the BasicMetricAlertCriteria implementation for MetricAlertCriteria.
 func (mac MetricAlertCriteria) AsMetricAlertSingleResourceMultipleMetricCriteria() (*MetricAlertSingleResourceMultipleMetricCriteria, bool) {
+	return nil, false
+}
+
+// AsWebtestLocationAvailabilityCriteria is the BasicMetricAlertCriteria implementation for MetricAlertCriteria.
+func (mac MetricAlertCriteria) AsWebtestLocationAvailabilityCriteria() (*WebtestLocationAvailabilityCriteria, bool) {
 	return nil, false
 }
 
@@ -3551,7 +3635,7 @@ type MetricAlertMultipleResourceMultipleMetricCriteria struct {
 	AllOf *[]BasicMultiMetricCriteria `json:"allOf,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// OdataType - Possible values include: 'OdataTypeMetricAlertCriteria', 'OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria', 'OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria'
+	// OdataType - Possible values include: 'OdataTypeMetricAlertCriteria', 'OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria', 'OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria', 'OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria'
 	OdataType OdataTypeBasicMetricAlertCriteria `json:"odata.type,omitempty"`
 }
 
@@ -3573,6 +3657,11 @@ func (mamrmmc MetricAlertMultipleResourceMultipleMetricCriteria) MarshalJSON() (
 
 // AsMetricAlertSingleResourceMultipleMetricCriteria is the BasicMetricAlertCriteria implementation for MetricAlertMultipleResourceMultipleMetricCriteria.
 func (mamrmmc MetricAlertMultipleResourceMultipleMetricCriteria) AsMetricAlertSingleResourceMultipleMetricCriteria() (*MetricAlertSingleResourceMultipleMetricCriteria, bool) {
+	return nil, false
+}
+
+// AsWebtestLocationAvailabilityCriteria is the BasicMetricAlertCriteria implementation for MetricAlertMultipleResourceMultipleMetricCriteria.
+func (mamrmmc MetricAlertMultipleResourceMultipleMetricCriteria) AsWebtestLocationAvailabilityCriteria() (*WebtestLocationAvailabilityCriteria, bool) {
 	return nil, false
 }
 
@@ -3655,7 +3744,7 @@ type MetricAlertProperties struct {
 	TargetResourceRegion *string `json:"targetResourceRegion,omitempty"`
 	// Criteria - defines the specific alert criteria information.
 	Criteria BasicMetricAlertCriteria `json:"criteria,omitempty"`
-	// AutoMitigate - the flag that indicates whether the alert should be auto resolved or not.
+	// AutoMitigate - the flag that indicates whether the alert should be auto resolved or not. The default is true.
 	AutoMitigate *bool `json:"autoMitigate,omitempty"`
 	// Actions - the array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved.
 	Actions *[]MetricAlertAction `json:"actions,omitempty"`
@@ -3953,7 +4042,7 @@ type MetricAlertSingleResourceMultipleMetricCriteria struct {
 	AllOf *[]MetricCriteria `json:"allOf,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// OdataType - Possible values include: 'OdataTypeMetricAlertCriteria', 'OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria', 'OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria'
+	// OdataType - Possible values include: 'OdataTypeMetricAlertCriteria', 'OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria', 'OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria', 'OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria'
 	OdataType OdataTypeBasicMetricAlertCriteria `json:"odata.type,omitempty"`
 }
 
@@ -3976,6 +4065,11 @@ func (masrmmc MetricAlertSingleResourceMultipleMetricCriteria) MarshalJSON() ([]
 // AsMetricAlertSingleResourceMultipleMetricCriteria is the BasicMetricAlertCriteria implementation for MetricAlertSingleResourceMultipleMetricCriteria.
 func (masrmmc MetricAlertSingleResourceMultipleMetricCriteria) AsMetricAlertSingleResourceMultipleMetricCriteria() (*MetricAlertSingleResourceMultipleMetricCriteria, bool) {
 	return &masrmmc, true
+}
+
+// AsWebtestLocationAvailabilityCriteria is the BasicMetricAlertCriteria implementation for MetricAlertSingleResourceMultipleMetricCriteria.
+func (masrmmc MetricAlertSingleResourceMultipleMetricCriteria) AsWebtestLocationAvailabilityCriteria() (*WebtestLocationAvailabilityCriteria, bool) {
+	return nil, false
 }
 
 // AsMetricAlertMultipleResourceMultipleMetricCriteria is the BasicMetricAlertCriteria implementation for MetricAlertSingleResourceMultipleMetricCriteria.
@@ -4112,8 +4206,8 @@ type MetricBaselinesResponse struct {
 
 // MetricCriteria criterion to filter metrics.
 type MetricCriteria struct {
-	// Operator - the criteria operator.
-	Operator interface{} `json:"operator,omitempty"`
+	// Operator - the criteria operator. Possible values include: 'OperatorEquals', 'OperatorNotEquals', 'OperatorGreaterThan', 'OperatorGreaterThanOrEqual', 'OperatorLessThan', 'OperatorLessThanOrEqual'
+	Operator Operator `json:"operator,omitempty"`
 	// Threshold - the criteria threshold value that activates the alert.
 	Threshold *float64 `json:"threshold,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
@@ -4136,7 +4230,7 @@ type MetricCriteria struct {
 func (mc MetricCriteria) MarshalJSON() ([]byte, error) {
 	mc.CriterionType = CriterionTypeStaticThresholdCriterion
 	objectMap := make(map[string]interface{})
-	if mc.Operator != nil {
+	if mc.Operator != "" {
 		objectMap["operator"] = mc.Operator
 	}
 	if mc.Threshold != nil {
@@ -4197,7 +4291,7 @@ func (mc *MetricCriteria) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "operator":
 			if v != nil {
-				var operator interface{}
+				var operator Operator
 				err = json.Unmarshal(*v, &operator)
 				if err != nil {
 					return err
@@ -4375,6 +4469,8 @@ type MetricSingleDimension struct {
 type MetricTrigger struct {
 	// MetricName - the name of the metric that defines what the rule monitors.
 	MetricName *string `json:"metricName,omitempty"`
+	// MetricNamespace - the namespace of the metric that defines what the rule monitors.
+	MetricNamespace *string `json:"metricNamespace,omitempty"`
 	// MetricResourceURI - the resource identifier of the resource the rule monitors.
 	MetricResourceURI *string `json:"metricResourceUri,omitempty"`
 	// TimeGrain - the granularity of metrics the rule monitors. Must be one of the predefined values returned from metric definitions for the metric. Must be between 12 hours and 1 minute.
@@ -4389,6 +4485,8 @@ type MetricTrigger struct {
 	Operator ComparisonOperationType `json:"operator,omitempty"`
 	// Threshold - the threshold of the metric that triggers the scale action.
 	Threshold *float64 `json:"threshold,omitempty"`
+	// Dimensions - List of dimension conditions. For example: [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment","Operator":"Equals","Values":["default"]}].
+	Dimensions *[]ScaleRuleMetricDimension `json:"dimensions,omitempty"`
 }
 
 // MetricValue represents a metric value.
@@ -5296,6 +5394,16 @@ type ScaleRule struct {
 	ScaleAction *ScaleAction `json:"scaleAction,omitempty"`
 }
 
+// ScaleRuleMetricDimension specifies an auto scale rule metric dimension.
+type ScaleRuleMetricDimension struct {
+	// DimensionName - Name of the dimension.
+	DimensionName *string `json:"DimensionName,omitempty"`
+	// Operator - the dimension operator. Only 'Equals' and 'NotEquals' are supported. 'Equals' being equal to any of the values. 'NotEquals' being not equal to all of the values. Possible values include: 'ScaleRuleMetricDimensionOperationTypeEquals', 'ScaleRuleMetricDimensionOperationTypeNotEquals'
+	Operator ScaleRuleMetricDimensionOperationType `json:"Operator,omitempty"`
+	// Values - list of dimension values. For example: ["App1","App2"].
+	Values *[]string `json:"Values,omitempty"`
+}
+
 // Schedule defines how often to run the search and the time interval.
 type Schedule struct {
 	// FrequencyInMinutes - frequency (in minutes) at which rule condition should be evaluated.
@@ -5746,6 +5854,130 @@ type WebhookReceiver struct {
 	IdentifierURI *string `json:"identifierUri,omitempty"`
 	// TenantID - Indicates the tenant id for aad auth.
 	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// WebtestLocationAvailabilityCriteria specifies the metric alert rule criteria for a web test resource.
+type WebtestLocationAvailabilityCriteria struct {
+	// WebTestID - The Application Insights web test Id.
+	WebTestID *string `json:"webTestId,omitempty"`
+	// ComponentID - The Application Insights resource Id.
+	ComponentID *string `json:"componentId,omitempty"`
+	// FailedLocationCount - The number of failed locations.
+	FailedLocationCount *float64 `json:"failedLocationCount,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// OdataType - Possible values include: 'OdataTypeMetricAlertCriteria', 'OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria', 'OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria', 'OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria'
+	OdataType OdataTypeBasicMetricAlertCriteria `json:"odata.type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WebtestLocationAvailabilityCriteria.
+func (wlac WebtestLocationAvailabilityCriteria) MarshalJSON() ([]byte, error) {
+	wlac.OdataType = OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria
+	objectMap := make(map[string]interface{})
+	if wlac.WebTestID != nil {
+		objectMap["webTestId"] = wlac.WebTestID
+	}
+	if wlac.ComponentID != nil {
+		objectMap["componentId"] = wlac.ComponentID
+	}
+	if wlac.FailedLocationCount != nil {
+		objectMap["failedLocationCount"] = wlac.FailedLocationCount
+	}
+	if wlac.OdataType != "" {
+		objectMap["odata.type"] = wlac.OdataType
+	}
+	for k, v := range wlac.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMetricAlertSingleResourceMultipleMetricCriteria is the BasicMetricAlertCriteria implementation for WebtestLocationAvailabilityCriteria.
+func (wlac WebtestLocationAvailabilityCriteria) AsMetricAlertSingleResourceMultipleMetricCriteria() (*MetricAlertSingleResourceMultipleMetricCriteria, bool) {
+	return nil, false
+}
+
+// AsWebtestLocationAvailabilityCriteria is the BasicMetricAlertCriteria implementation for WebtestLocationAvailabilityCriteria.
+func (wlac WebtestLocationAvailabilityCriteria) AsWebtestLocationAvailabilityCriteria() (*WebtestLocationAvailabilityCriteria, bool) {
+	return &wlac, true
+}
+
+// AsMetricAlertMultipleResourceMultipleMetricCriteria is the BasicMetricAlertCriteria implementation for WebtestLocationAvailabilityCriteria.
+func (wlac WebtestLocationAvailabilityCriteria) AsMetricAlertMultipleResourceMultipleMetricCriteria() (*MetricAlertMultipleResourceMultipleMetricCriteria, bool) {
+	return nil, false
+}
+
+// AsMetricAlertCriteria is the BasicMetricAlertCriteria implementation for WebtestLocationAvailabilityCriteria.
+func (wlac WebtestLocationAvailabilityCriteria) AsMetricAlertCriteria() (*MetricAlertCriteria, bool) {
+	return nil, false
+}
+
+// AsBasicMetricAlertCriteria is the BasicMetricAlertCriteria implementation for WebtestLocationAvailabilityCriteria.
+func (wlac WebtestLocationAvailabilityCriteria) AsBasicMetricAlertCriteria() (BasicMetricAlertCriteria, bool) {
+	return &wlac, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for WebtestLocationAvailabilityCriteria struct.
+func (wlac *WebtestLocationAvailabilityCriteria) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "webTestId":
+			if v != nil {
+				var webTestID string
+				err = json.Unmarshal(*v, &webTestID)
+				if err != nil {
+					return err
+				}
+				wlac.WebTestID = &webTestID
+			}
+		case "componentId":
+			if v != nil {
+				var componentID string
+				err = json.Unmarshal(*v, &componentID)
+				if err != nil {
+					return err
+				}
+				wlac.ComponentID = &componentID
+			}
+		case "failedLocationCount":
+			if v != nil {
+				var failedLocationCount float64
+				err = json.Unmarshal(*v, &failedLocationCount)
+				if err != nil {
+					return err
+				}
+				wlac.FailedLocationCount = &failedLocationCount
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if wlac.AdditionalProperties == nil {
+					wlac.AdditionalProperties = make(map[string]interface{})
+				}
+				wlac.AdditionalProperties[k] = additionalProperties
+			}
+		case "odata.type":
+			if v != nil {
+				var odataType OdataTypeBasicMetricAlertCriteria
+				err = json.Unmarshal(*v, &odataType)
+				if err != nil {
+					return err
+				}
+				wlac.OdataType = odataType
+			}
+		}
+	}
+
+	return nil
 }
 
 // WorkspaceInfo information about a Log Analytics Workspace.

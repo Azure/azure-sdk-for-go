@@ -279,6 +279,21 @@ func PossibleScaleDirectionValues() []ScaleDirection {
 	return []ScaleDirection{ScaleDirectionDecrease, ScaleDirectionIncrease, ScaleDirectionNone}
 }
 
+// ScaleRuleMetricDimensionOperationType enumerates the values for scale rule metric dimension operation type.
+type ScaleRuleMetricDimensionOperationType string
+
+const (
+	// ScaleRuleMetricDimensionOperationTypeEquals ...
+	ScaleRuleMetricDimensionOperationTypeEquals ScaleRuleMetricDimensionOperationType = "Equals"
+	// ScaleRuleMetricDimensionOperationTypeNotEquals ...
+	ScaleRuleMetricDimensionOperationTypeNotEquals ScaleRuleMetricDimensionOperationType = "NotEquals"
+)
+
+// PossibleScaleRuleMetricDimensionOperationTypeValues returns an array of possible values for the ScaleRuleMetricDimensionOperationType const type.
+func PossibleScaleRuleMetricDimensionOperationTypeValues() []ScaleRuleMetricDimensionOperationType {
+	return []ScaleRuleMetricDimensionOperationType{ScaleRuleMetricDimensionOperationTypeEquals, ScaleRuleMetricDimensionOperationTypeNotEquals}
+}
+
 // ScaleType enumerates the values for scale type.
 type ScaleType string
 
@@ -2516,6 +2531,8 @@ type MetricSettings struct {
 type MetricTrigger struct {
 	// MetricName - the name of the metric that defines what the rule monitors.
 	MetricName *string `json:"metricName,omitempty"`
+	// MetricNamespace - the namespace of the metric that defines what the rule monitors.
+	MetricNamespace *string `json:"metricNamespace,omitempty"`
 	// MetricResourceURI - the resource identifier of the resource the rule monitors.
 	MetricResourceURI *string `json:"metricResourceUri,omitempty"`
 	// TimeGrain - the granularity of metrics the rule monitors. Must be one of the predefined values returned from metric definitions for the metric. Must be between 12 hours and 1 minute.
@@ -2530,6 +2547,8 @@ type MetricTrigger struct {
 	Operator ComparisonOperationType `json:"operator,omitempty"`
 	// Threshold - the threshold of the metric that triggers the scale action.
 	Threshold *float64 `json:"threshold,omitempty"`
+	// Dimensions - List of dimension conditions. For example: [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment","Operator":"Equals","Values":["default"]}].
+	Dimensions *[]ScaleRuleMetricDimension `json:"dimensions,omitempty"`
 }
 
 // MetricValue represents a metric value.
@@ -3220,6 +3239,16 @@ type ScaleRule struct {
 	MetricTrigger *MetricTrigger `json:"metricTrigger,omitempty"`
 	// ScaleAction - the parameters for the scaling action.
 	ScaleAction *ScaleAction `json:"scaleAction,omitempty"`
+}
+
+// ScaleRuleMetricDimension specifies an auto scale rule metric dimension.
+type ScaleRuleMetricDimension struct {
+	// DimensionName - Name of the dimension.
+	DimensionName *string `json:"DimensionName,omitempty"`
+	// Operator - the dimension operator. Only 'Equals' and 'NotEquals' are supported. 'Equals' being equal to any of the values. 'NotEquals' being not equal to all of the values. Possible values include: 'ScaleRuleMetricDimensionOperationTypeEquals', 'ScaleRuleMetricDimensionOperationTypeNotEquals'
+	Operator ScaleRuleMetricDimensionOperationType `json:"Operator,omitempty"`
+	// Values - list of dimension values. For example: ["App1","App2"].
+	Values *[]string `json:"Values,omitempty"`
 }
 
 // SenderAuthorization the authorization used by the user who has performed the operation that led to this

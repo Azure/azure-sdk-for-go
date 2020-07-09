@@ -1,2 +1,2 @@
-github.com/Azure/azure-sdk-for-go/sdk/internal v0.1.1 h1:S87cbjhPwbSqbygGH69JpB6txa/y1ce2ewaWBQa8Cws=
-github.com/Azure/azure-sdk-for-go/sdk/internal v0.1.1/go.mod h1:Q+TCQnSr+clUU0JU+xrHZ3slYCxw17AOFdvWFpQXjAY=
+github.com/Azure/azure-sdk-for-go/sdk/internal v0.2.0 h1:cLpVMIkXC/umSP9DMz9I6FttDWJAsmvhpaB6MlkagGY=
+github.com/Azure/azure-sdk-for-go/sdk/internal v0.2.0/go.mod h1:Q+TCQnSr+clUU0JU+xrHZ3slYCxw17AOFdvWFpQXjAY=

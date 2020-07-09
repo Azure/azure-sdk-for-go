@@ -9,7 +9,7 @@ import (
 	"errors"
 	"net/http"
 
-	azruntime "github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
+	sdkruntime "github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 )
 
 var (
@@ -32,4 +32,4 @@ type HTTPResponse interface {
 }
 
 // ensure our internal ResponseError type implements HTTPResponse
-var _ HTTPResponse = (*azruntime.ResponseError)(nil)
+var _ HTTPResponse = (*sdkruntime.ResponseError)(nil)

@@ -34,7 +34,7 @@ type frameError struct {
 
 // Error implements the error interface for type frameError.
 func (f *frameError) Error() string {
-	return fmt.Sprintf("%s: \n%s\n", f.inner.Error(), f.info)
+	return fmt.Sprintf("%s:\n%s\n", f.inner.Error(), f.info)
 }
 
 // Unwrap returns the inner error.

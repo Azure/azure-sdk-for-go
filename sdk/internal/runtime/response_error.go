@@ -8,8 +8,9 @@ package runtime
 import "net/http"
 
 // NewResponseError wraps the specified error with an error that provides access to an HTTP response.
-// If an HTTP request fails, wrap the response and any associated error in this error type so that
+// If an HTTP request fails, wrap the response and the associated error in this error type so that
 // callers can access the underlying *http.Response as required.
+// You MUST supply an inner error.
 func NewResponseError(inner error, resp *http.Response) error {
 	return &ResponseError{inner: inner, resp: resp}
 }

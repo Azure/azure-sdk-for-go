@@ -524,7 +524,7 @@ type ComputeResource struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Identity - READ-ONLY; The identity of the resource.
+	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -538,6 +538,9 @@ type ComputeResource struct {
 func (cr ComputeResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = cr.Properties
+	if cr.Identity != nil {
+		objectMap["identity"] = cr.Identity
+	}
 	if cr.Location != nil {
 		objectMap["location"] = cr.Location
 	}
@@ -1207,7 +1210,7 @@ type Resource struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Identity - READ-ONLY; The identity of the resource.
+	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -1220,6 +1223,9 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if r.Identity != nil {
+		objectMap["identity"] = r.Identity
+	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -1421,7 +1427,7 @@ type Workspace struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Identity - READ-ONLY; The identity of the resource.
+	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -1436,6 +1442,9 @@ func (w Workspace) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if w.WorkspaceProperties != nil {
 		objectMap["properties"] = w.WorkspaceProperties
+	}
+	if w.Identity != nil {
+		objectMap["identity"] = w.Identity
 	}
 	if w.Location != nil {
 		objectMap["location"] = w.Location
@@ -1703,6 +1712,29 @@ type WorkspacePropertiesUpdateParameters struct {
 	Description *string `json:"description,omitempty"`
 	// FriendlyName - The friendly name for this workspace.
 	FriendlyName *string `json:"friendlyName,omitempty"`
+}
+
+// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type WorkspacesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *WorkspacesDeleteFuture) Result(client WorkspacesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspacesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("machinelearningservices.WorkspacesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // WorkspaceUpdateParameters the parameters for updating a machine learning workspace.

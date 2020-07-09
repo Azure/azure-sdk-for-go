@@ -32,7 +32,7 @@ func (e *ResponseError) Unwrap() error {
 	return e.inner
 }
 
-// Response returns the HTTP response associated with this error.
-func (e *ResponseError) Response() *http.Response {
+// RawResponse returns the HTTP response associated with this error.
+func (e *ResponseError) RawResponse() *http.Response {
 	return e.resp
 }

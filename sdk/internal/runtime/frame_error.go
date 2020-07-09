@@ -15,7 +15,7 @@ import (
 // You MUST supply an inner error.
 // DO NOT ARBITRARILY CALL THIS TO WRAP ERRORS!  There MUST be only ONE error of this type in the chain.
 func NewFrameError(inner error, stackTrace bool, skipFrames, totalFrames int) error {
-	fe := frameError{inner: inner, info: "stack trace unavailable"}
+	fe := FrameError{inner: inner, info: "stack trace unavailable"}
 	if stackTrace {
 		// the skipFrames+3 is to skip runtime.Callers(), StackTrace and ourselves
 		fe.info = StackTrace(skipFrames+3, totalFrames)
@@ -27,18 +27,19 @@ func NewFrameError(inner error, stackTrace bool, skipFrames, totalFrames int) er
 	return &fe
 }
 
-// contains stack frame info
-type frameError struct {
+// FrameError associates an error with stack frame information.
+// Exported for testing purposes, use NewFrameError().
+type FrameError struct {
 	inner error
 	info  string
 }
 
-// Error implements the error interface for type frameError.
-func (f *frameError) Error() string {
+// Error implements the error interface for type FrameError.
+func (f *FrameError) Error() string {
 	return fmt.Sprintf("%s:\n%s\n", f.inner.Error(), f.info)
 }
 
 // Unwrap returns the inner error.
-func (f *frameError) Unwrap() error {
+func (f *FrameError) Unwrap() error {
 	return f.inner
 }

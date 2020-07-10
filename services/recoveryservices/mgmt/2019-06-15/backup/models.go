@@ -1259,6 +1259,29 @@ func PossibleRecoveryTypeValues() []RecoveryType {
 	return []RecoveryType{RecoveryTypeAlternateLocation, RecoveryTypeInvalid, RecoveryTypeOffline, RecoveryTypeOriginalLocation, RecoveryTypeRestoreDisks}
 }
 
+// ResourceHealthStatus enumerates the values for resource health status.
+type ResourceHealthStatus string
+
+const (
+	// ResourceHealthStatusHealthy ...
+	ResourceHealthStatusHealthy ResourceHealthStatus = "Healthy"
+	// ResourceHealthStatusInvalid ...
+	ResourceHealthStatusInvalid ResourceHealthStatus = "Invalid"
+	// ResourceHealthStatusPersistentDegraded ...
+	ResourceHealthStatusPersistentDegraded ResourceHealthStatus = "PersistentDegraded"
+	// ResourceHealthStatusPersistentUnhealthy ...
+	ResourceHealthStatusPersistentUnhealthy ResourceHealthStatus = "PersistentUnhealthy"
+	// ResourceHealthStatusTransientDegraded ...
+	ResourceHealthStatusTransientDegraded ResourceHealthStatus = "TransientDegraded"
+	// ResourceHealthStatusTransientUnhealthy ...
+	ResourceHealthStatusTransientUnhealthy ResourceHealthStatus = "TransientUnhealthy"
+)
+
+// PossibleResourceHealthStatusValues returns an array of possible values for the ResourceHealthStatus const type.
+func PossibleResourceHealthStatusValues() []ResourceHealthStatus {
+	return []ResourceHealthStatus{ResourceHealthStatusHealthy, ResourceHealthStatusInvalid, ResourceHealthStatusPersistentDegraded, ResourceHealthStatusPersistentUnhealthy, ResourceHealthStatusTransientDegraded, ResourceHealthStatusTransientUnhealthy}
+}
+
 // RestorePointQueryType enumerates the values for restore point query type.
 type RestorePointQueryType string
 
@@ -2165,12 +2188,12 @@ type AzureFileshareProtectedItem struct {
 	ProtectionStatus *string `json:"protectionStatus,omitempty"`
 	// ProtectionState - Backup state of this backup item. Possible values include: 'ProtectionStateInvalid', 'ProtectionStateIRPending', 'ProtectionStateProtected', 'ProtectionStateProtectionError', 'ProtectionStateProtectionStopped', 'ProtectionStateProtectionPaused'
 	ProtectionState ProtectionState `json:"protectionState,omitempty"`
-	// HealthStatus - backups running status for this backup item. Possible values include: 'HealthStatusPassed', 'HealthStatusActionRequired', 'HealthStatusActionSuggested', 'HealthStatusInvalid'
-	HealthStatus HealthStatus `json:"healthStatus,omitempty"`
 	// LastBackupStatus - Last backup operation status. Possible values: Healthy, Unhealthy.
 	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
 	// LastBackupTime - Timestamp of the last backup operation on this backup item.
 	LastBackupTime *date.Time `json:"lastBackupTime,omitempty"`
+	// KpisHealths - Health details of different KPIs
+	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths"`
 	// ExtendedInfo - Additional information with this backup item.
 	ExtendedInfo *AzureFileshareProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
 	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
@@ -2216,14 +2239,14 @@ func (afpi AzureFileshareProtectedItem) MarshalJSON() ([]byte, error) {
 	if afpi.ProtectionState != "" {
 		objectMap["protectionState"] = afpi.ProtectionState
 	}
-	if afpi.HealthStatus != "" {
-		objectMap["healthStatus"] = afpi.HealthStatus
-	}
 	if afpi.LastBackupStatus != nil {
 		objectMap["lastBackupStatus"] = afpi.LastBackupStatus
 	}
 	if afpi.LastBackupTime != nil {
 		objectMap["lastBackupTime"] = afpi.LastBackupTime
+	}
+	if afpi.KpisHealths != nil {
+		objectMap["kpisHealths"] = afpi.KpisHealths
 	}
 	if afpi.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = afpi.ExtendedInfo
@@ -3032,6 +3055,8 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	HealthStatus HealthStatus `json:"healthStatus,omitempty"`
 	// HealthDetails - Health details on this backup item.
 	HealthDetails *[]AzureIaaSVMHealthDetails `json:"healthDetails,omitempty"`
+	// KpisHealths - Health details of different KPIs
+	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths"`
 	// LastBackupStatus - Last backup operation status.
 	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
 	// LastBackupTime - Timestamp of the last backup operation on this backup item.
@@ -3092,6 +3117,9 @@ func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) MarshalJSON() ([]byte, er
 	}
 	if aisccvpi.HealthDetails != nil {
 		objectMap["healthDetails"] = aisccvpi.HealthDetails
+	}
+	if aisccvpi.KpisHealths != nil {
+		objectMap["kpisHealths"] = aisccvpi.KpisHealths
 	}
 	if aisccvpi.LastBackupStatus != nil {
 		objectMap["lastBackupStatus"] = aisccvpi.LastBackupStatus
@@ -3502,6 +3530,8 @@ type AzureIaaSComputeVMProtectedItem struct {
 	HealthStatus HealthStatus `json:"healthStatus,omitempty"`
 	// HealthDetails - Health details on this backup item.
 	HealthDetails *[]AzureIaaSVMHealthDetails `json:"healthDetails,omitempty"`
+	// KpisHealths - Health details of different KPIs
+	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths"`
 	// LastBackupStatus - Last backup operation status.
 	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
 	// LastBackupTime - Timestamp of the last backup operation on this backup item.
@@ -3562,6 +3592,9 @@ func (aiscvpi AzureIaaSComputeVMProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if aiscvpi.HealthDetails != nil {
 		objectMap["healthDetails"] = aiscvpi.HealthDetails
+	}
+	if aiscvpi.KpisHealths != nil {
+		objectMap["kpisHealths"] = aiscvpi.KpisHealths
 	}
 	if aiscvpi.LastBackupStatus != nil {
 		objectMap["lastBackupStatus"] = aiscvpi.LastBackupStatus
@@ -3920,6 +3953,8 @@ type AzureIaaSVMProtectedItem struct {
 	HealthStatus HealthStatus `json:"healthStatus,omitempty"`
 	// HealthDetails - Health details on this backup item.
 	HealthDetails *[]AzureIaaSVMHealthDetails `json:"healthDetails,omitempty"`
+	// KpisHealths - Health details of different KPIs
+	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths"`
 	// LastBackupStatus - Last backup operation status.
 	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
 	// LastBackupTime - Timestamp of the last backup operation on this backup item.
@@ -4021,6 +4056,9 @@ func (aispi AzureIaaSVMProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if aispi.HealthDetails != nil {
 		objectMap["healthDetails"] = aispi.HealthDetails
+	}
+	if aispi.KpisHealths != nil {
+		objectMap["kpisHealths"] = aispi.KpisHealths
 	}
 	if aispi.LastBackupStatus != nil {
 		objectMap["lastBackupStatus"] = aispi.LastBackupStatus
@@ -6147,6 +6185,8 @@ type AzureVMWorkloadProtectedItem struct {
 	ProtectedItemHealthStatus ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	// KpisHealths - Health details of different KPIs
+	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths"`
 	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase', 'DataSourceTypeSAPAseDatabase'
@@ -6261,6 +6301,9 @@ func (avwpi AzureVMWorkloadProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if avwpi.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = avwpi.ExtendedInfo
+	}
+	if avwpi.KpisHealths != nil {
+		objectMap["kpisHealths"] = avwpi.KpisHealths
 	}
 	if avwpi.BackupManagementType != "" {
 		objectMap["backupManagementType"] = avwpi.BackupManagementType
@@ -6506,6 +6549,8 @@ type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
 	ProtectedItemHealthStatus ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	// KpisHealths - Health details of different KPIs
+	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths"`
 	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase', 'DataSourceTypeSAPAseDatabase'
@@ -6575,6 +6620,9 @@ func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) MarshalJSON() ([]byte
 	}
 	if avwsadpi.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = avwsadpi.ExtendedInfo
+	}
+	if avwsadpi.KpisHealths != nil {
+		objectMap["kpisHealths"] = avwsadpi.KpisHealths
 	}
 	if avwsadpi.BackupManagementType != "" {
 		objectMap["backupManagementType"] = avwsadpi.BackupManagementType
@@ -7258,6 +7306,8 @@ type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
 	ProtectedItemHealthStatus ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	// KpisHealths - Health details of different KPIs
+	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths"`
 	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase', 'DataSourceTypeSAPAseDatabase'
@@ -7327,6 +7377,9 @@ func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) MarshalJSON() ([]byt
 	}
 	if avwshdpi.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = avwshdpi.ExtendedInfo
+	}
+	if avwshdpi.KpisHealths != nil {
+		objectMap["kpisHealths"] = avwshdpi.KpisHealths
 	}
 	if avwshdpi.BackupManagementType != "" {
 		objectMap["backupManagementType"] = avwshdpi.BackupManagementType
@@ -8163,6 +8216,8 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	ProtectedItemHealthStatus ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	// KpisHealths - Health details of different KPIs
+	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths"`
 	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase', 'DataSourceTypeSAPAseDatabase'
@@ -8232,6 +8287,9 @@ func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) MarshalJSON() ([]byte, er
 	}
 	if avwsdpi.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = avwsdpi.ExtendedInfo
+	}
+	if avwsdpi.KpisHealths != nil {
+		objectMap["kpisHealths"] = avwsdpi.KpisHealths
 	}
 	if avwsdpi.BackupManagementType != "" {
 		objectMap["backupManagementType"] = avwsdpi.BackupManagementType
@@ -12481,6 +12539,14 @@ type EngineExtendedInfo struct {
 	AzureProtectedInstances *int32 `json:"azureProtectedInstances,omitempty"`
 }
 
+// ErrorAdditionalInfo the resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// Type - READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty"`
+	// Info - READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty"`
+}
+
 // ErrorDetail error Detail class which encapsulates Code, Message and Recommendations.
 type ErrorDetail struct {
 	// Code - READ-ONLY; Error code.
@@ -12489,6 +12555,20 @@ type ErrorDetail struct {
 	Message *string `json:"message,omitempty"`
 	// Recommendations - READ-ONLY; List of recommendation strings.
 	Recommendations *[]string `json:"recommendations,omitempty"`
+}
+
+// ErrorResponse the resource management error response.
+type ErrorResponse struct {
+	// Code - READ-ONLY; The error code.
+	Code *string `json:"code,omitempty"`
+	// Message - READ-ONLY; The error message.
+	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The error target.
+	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]ErrorResponse `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
 // ExportJobsOperationResultInfo this class is used to send blob details after exporting jobs.
@@ -14597,6 +14677,14 @@ type KeyAndSecretDetails struct {
 	BekDetails *BEKDetails `json:"bekDetails,omitempty"`
 	// EncryptionMechanism - Encryption mechanism: None/ SinglePass/ DoublePass
 	EncryptionMechanism *string `json:"encryptionMechanism,omitempty"`
+}
+
+// KPIResourceHealthDetails KPI Resource Health Details
+type KPIResourceHealthDetails struct {
+	// ResourceHealthStatus - Resource Health Status. Possible values include: 'ResourceHealthStatusHealthy', 'ResourceHealthStatusTransientDegraded', 'ResourceHealthStatusPersistentDegraded', 'ResourceHealthStatusTransientUnhealthy', 'ResourceHealthStatusPersistentUnhealthy', 'ResourceHealthStatusInvalid'
+	ResourceHealthStatus ResourceHealthStatus `json:"resourceHealthStatus,omitempty"`
+	// ResourceHealthDetails - Resource Health Status
+	ResourceHealthDetails *[]ResourceHealthDetails `json:"resourceHealthDetails,omitempty"`
 }
 
 // LogSchedulePolicy log policy schedule.
@@ -18995,6 +19083,18 @@ func (rcr ResourceConfigResource) MarshalJSON() ([]byte, error) {
 		objectMap["eTag"] = rcr.ETag
 	}
 	return json.Marshal(objectMap)
+}
+
+// ResourceHealthDetails health Details for backup items.
+type ResourceHealthDetails struct {
+	// Code - READ-ONLY; Health Code
+	Code *int32 `json:"code,omitempty"`
+	// Title - READ-ONLY; Health Title
+	Title *string `json:"title,omitempty"`
+	// Message - READ-ONLY; Health Message
+	Message *string `json:"message,omitempty"`
+	// Recommendations - READ-ONLY; Health Recommended Actions
+	Recommendations *[]string `json:"recommendations,omitempty"`
 }
 
 // ResourceList base for all lists of resources.

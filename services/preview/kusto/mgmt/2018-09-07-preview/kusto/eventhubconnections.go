@@ -129,7 +129,6 @@ func (client EventHubConnectionsClient) CreateOrUpdateSender(req *http.Request) 
 func (client EventHubConnectionsClient) CreateOrUpdateResponder(resp *http.Response) (result EventHubConnection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -209,7 +208,6 @@ func (client EventHubConnectionsClient) DeleteSender(req *http.Request) (future 
 func (client EventHubConnectionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -298,7 +296,6 @@ func (client EventHubConnectionsClient) EventhubConnectionValidationSender(req *
 func (client EventHubConnectionsClient) EventhubConnectionValidationResponder(resp *http.Response) (result EventHubConnectionValidationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -378,7 +375,6 @@ func (client EventHubConnectionsClient) GetSender(req *http.Request) (*http.Resp
 func (client EventHubConnectionsClient) GetResponder(resp *http.Response) (result EventHubConnection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -456,7 +452,6 @@ func (client EventHubConnectionsClient) ListByDatabaseSender(req *http.Request) 
 func (client EventHubConnectionsClient) ListByDatabaseResponder(resp *http.Response) (result EventHubConnectionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -539,7 +534,6 @@ func (client EventHubConnectionsClient) UpdateSender(req *http.Request) (future 
 func (client EventHubConnectionsClient) UpdateResponder(resp *http.Response) (result EventHubConnection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

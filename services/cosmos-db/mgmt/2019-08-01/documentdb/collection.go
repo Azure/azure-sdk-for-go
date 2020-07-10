@@ -32,14 +32,14 @@ type CollectionClient struct {
 }
 
 // NewCollectionClient creates an instance of the CollectionClient client.
-func NewCollectionClient(subscriptionID string) CollectionClient {
-	return NewCollectionClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewCollectionClient(subscriptionID string, subscriptionID1 string) CollectionClient {
+	return NewCollectionClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewCollectionClientWithBaseURI creates an instance of the CollectionClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewCollectionClientWithBaseURI(baseURI string, subscriptionID string) CollectionClient {
-	return CollectionClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewCollectionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionClient {
+	return CollectionClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // ListMetricDefinitions retrieves metric definitions for the given collection.
@@ -126,7 +126,6 @@ func (client CollectionClient) ListMetricDefinitionsSender(req *http.Request) (*
 func (client CollectionClient) ListMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -222,7 +221,6 @@ func (client CollectionClient) ListMetricsSender(req *http.Request) (*http.Respo
 func (client CollectionClient) ListMetricsResponder(resp *http.Response) (result MetricListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -319,7 +317,6 @@ func (client CollectionClient) ListUsagesSender(req *http.Request) (*http.Respon
 func (client CollectionClient) ListUsagesResponder(resp *http.Response) (result UsagesResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -32,14 +32,14 @@ type DatabaseClient struct {
 }
 
 // NewDatabaseClient creates an instance of the DatabaseClient client.
-func NewDatabaseClient(subscriptionID string) DatabaseClient {
-	return NewDatabaseClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewDatabaseClient(subscriptionID string, subscriptionID1 string) DatabaseClient {
+	return NewDatabaseClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewDatabaseClientWithBaseURI creates an instance of the DatabaseClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string) DatabaseClient {
-	return DatabaseClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) DatabaseClient {
+	return DatabaseClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // ListMetricDefinitions retrieves metric definitions for the given database.
@@ -124,7 +124,6 @@ func (client DatabaseClient) ListMetricDefinitionsSender(req *http.Request) (*ht
 func (client DatabaseClient) ListMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -218,7 +217,6 @@ func (client DatabaseClient) ListMetricsSender(req *http.Request) (*http.Respons
 func (client DatabaseClient) ListMetricsResponder(resp *http.Response) (result MetricListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -313,7 +311,6 @@ func (client DatabaseClient) ListUsagesSender(req *http.Request) (*http.Response
 func (client DatabaseClient) ListUsagesResponder(resp *http.Response) (result UsagesResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

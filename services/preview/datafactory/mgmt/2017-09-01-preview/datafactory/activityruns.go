@@ -149,7 +149,6 @@ func (client ActivityRunsClient) ListByPipelineRunSender(req *http.Request) (*ht
 func (client ActivityRunsClient) ListByPipelineRunResponder(resp *http.Response) (result ActivityRunsListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

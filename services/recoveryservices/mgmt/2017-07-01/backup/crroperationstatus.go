@@ -109,7 +109,6 @@ func (client CrrOperationStatusClient) GetSender(req *http.Request) (*http.Respo
 func (client CrrOperationStatusClient) GetResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

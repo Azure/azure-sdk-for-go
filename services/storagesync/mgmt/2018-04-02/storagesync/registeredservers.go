@@ -126,7 +126,6 @@ func (client RegisteredServersClient) CreateSender(req *http.Request) (future Re
 func (client RegisteredServersClient) CreateResponder(resp *http.Response) (result RegisteredServer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -214,7 +213,6 @@ func (client RegisteredServersClient) DeleteSender(req *http.Request) (future Re
 func (client RegisteredServersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -301,7 +299,6 @@ func (client RegisteredServersClient) GetSender(req *http.Request) (*http.Respon
 func (client RegisteredServersClient) GetResponder(resp *http.Response) (result RegisteredServer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -387,7 +384,6 @@ func (client RegisteredServersClient) ListByStorageSyncServiceSender(req *http.R
 func (client RegisteredServersClient) ListByStorageSyncServiceResponder(resp *http.Response) (result RegisteredServerArray, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

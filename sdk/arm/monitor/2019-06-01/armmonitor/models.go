@@ -32,12 +32,12 @@ func (a *Action) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "odata.type":
-			if v != nil {
-				err = json.Unmarshal(*v, &a.OdataType)
+			if val != nil {
+				err = json.Unmarshal(*val, &a.OdataType)
 			}
 		}
 		if err != nil {
@@ -282,34 +282,34 @@ func (a *AlertRule) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "actions":
-			if v != nil {
-				a.Actions, err = unmarshalRuleActionClassificationArray(*v)
+			if val != nil {
+				a.Actions, err = unmarshalRuleActionClassificationArray(*val)
 			}
 		case "condition":
-			if v != nil {
-				a.Condition, err = unmarshalRuleConditionClassification(*v)
+			if val != nil {
+				a.Condition, err = unmarshalRuleConditionClassification(*val)
 			}
 		case "description":
-			if v != nil {
-				err = json.Unmarshal(*v, &a.Description)
+			if val != nil {
+				err = json.Unmarshal(*val, &a.Description)
 			}
 		case "isEnabled":
-			if v != nil {
-				err = json.Unmarshal(*v, &a.IsEnabled)
+			if val != nil {
+				err = json.Unmarshal(*val, &a.IsEnabled)
 			}
 		case "lastUpdatedTime":
-			if v != nil {
+			if val != nil {
 				var aux timeRFC3339
-				err = json.Unmarshal(*v, &aux)
+				err = json.Unmarshal(*val, &aux)
 				a.LastUpdatedTime = (*time.Time)(&aux)
 			}
 		case "name":
-			if v != nil {
-				err = json.Unmarshal(*v, &a.Name)
+			if val != nil {
+				err = json.Unmarshal(*val, &a.Name)
 			}
 		}
 		if err != nil {
@@ -399,24 +399,24 @@ func (a *AlertingAction) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "aznsAction":
-			if v != nil {
-				err = json.Unmarshal(*v, &a.AznsAction)
+			if val != nil {
+				err = json.Unmarshal(*val, &a.AznsAction)
 			}
 		case "severity":
-			if v != nil {
-				err = json.Unmarshal(*v, &a.Severity)
+			if val != nil {
+				err = json.Unmarshal(*val, &a.Severity)
 			}
 		case "throttlingInMin":
-			if v != nil {
-				err = json.Unmarshal(*v, &a.ThrottlingInMin)
+			if val != nil {
+				err = json.Unmarshal(*val, &a.ThrottlingInMin)
 			}
 		case "trigger":
-			if v != nil {
-				err = json.Unmarshal(*v, &a.Trigger)
+			if val != nil {
+				err = json.Unmarshal(*val, &a.Trigger)
 			}
 		}
 		if err != nil {
@@ -886,26 +886,26 @@ func (d *DynamicMetricCriteria) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "alertSensitivity":
-			if v != nil {
-				err = json.Unmarshal(*v, &d.AlertSensitivity)
+			if val != nil {
+				err = json.Unmarshal(*val, &d.AlertSensitivity)
 			}
 		case "failingPeriods":
-			if v != nil {
-				err = json.Unmarshal(*v, &d.FailingPeriods)
+			if val != nil {
+				err = json.Unmarshal(*val, &d.FailingPeriods)
 			}
 		case "ignoreDataBefore":
-			if v != nil {
+			if val != nil {
 				var aux timeRFC3339
-				err = json.Unmarshal(*v, &aux)
+				err = json.Unmarshal(*val, &aux)
 				d.IgnoreDataBefore = (*time.Time)(&aux)
 			}
 		case "operator":
-			if v != nil {
-				err = json.Unmarshal(*v, &d.Operator)
+			if val != nil {
+				err = json.Unmarshal(*val, &d.Operator)
 			}
 		}
 		if err != nil {
@@ -1290,16 +1290,16 @@ func (l *LocationThresholdRuleCondition) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "failedLocationCount":
-			if v != nil {
-				err = json.Unmarshal(*v, &l.FailedLocationCount)
+			if val != nil {
+				err = json.Unmarshal(*val, &l.FailedLocationCount)
 			}
 		case "windowSize":
-			if v != nil {
-				err = json.Unmarshal(*v, &l.WindowSize)
+			if val != nil {
+				err = json.Unmarshal(*val, &l.WindowSize)
 			}
 		}
 		if err != nil {
@@ -1415,38 +1415,38 @@ func (l *LogSearchRule) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "action":
-			if v != nil {
-				l.Action, err = unmarshalActionClassification(*v)
+			if val != nil {
+				l.Action, err = unmarshalActionClassification(*val)
 			}
 		case "description":
-			if v != nil {
-				err = json.Unmarshal(*v, &l.Description)
+			if val != nil {
+				err = json.Unmarshal(*val, &l.Description)
 			}
 		case "enabled":
-			if v != nil {
-				err = json.Unmarshal(*v, &l.Enabled)
+			if val != nil {
+				err = json.Unmarshal(*val, &l.Enabled)
 			}
 		case "lastUpdatedTime":
-			if v != nil {
+			if val != nil {
 				var aux timeRFC3339
-				err = json.Unmarshal(*v, &aux)
+				err = json.Unmarshal(*val, &aux)
 				l.LastUpdatedTime = (*time.Time)(&aux)
 			}
 		case "provisioningState":
-			if v != nil {
-				err = json.Unmarshal(*v, &l.ProvisioningState)
+			if val != nil {
+				err = json.Unmarshal(*val, &l.ProvisioningState)
 			}
 		case "schedule":
-			if v != nil {
-				err = json.Unmarshal(*v, &l.Schedule)
+			if val != nil {
+				err = json.Unmarshal(*val, &l.Schedule)
 			}
 		case "source":
-			if v != nil {
-				err = json.Unmarshal(*v, &l.Source)
+			if val != nil {
+				err = json.Unmarshal(*val, &l.Source)
 			}
 		}
 		if err != nil {
@@ -1538,12 +1538,12 @@ func (l *LogToMetricAction) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "criteria":
-			if v != nil {
-				err = json.Unmarshal(*v, &l.Criteria)
+			if val != nil {
+				err = json.Unmarshal(*val, &l.Criteria)
 			}
 		}
 		if err != nil {
@@ -1604,12 +1604,12 @@ func (m *ManagementEventRuleCondition) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "aggregation":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.Aggregation)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.Aggregation)
 			}
 		}
 		if err != nil {
@@ -1678,12 +1678,12 @@ func (m *MetricAlertCriteria) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "odata.type":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.OdataType)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.OdataType)
 			}
 		}
 		if err != nil {
@@ -1725,12 +1725,12 @@ func (m *MetricAlertMultipleResourceMultipleMetricCriteria) UnmarshalJSON(data [
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "allOf":
-			if v != nil {
-				m.AllOf, err = unmarshalMultiMetricCriteriaClassificationArray(*v)
+			if val != nil {
+				m.AllOf, err = unmarshalMultiMetricCriteriaClassificationArray(*val)
 			}
 		}
 		if err != nil {
@@ -1785,58 +1785,58 @@ func (m *MetricAlertProperties) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "actions":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.Actions)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.Actions)
 			}
 		case "autoMitigate":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.AutoMitigate)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.AutoMitigate)
 			}
 		case "criteria":
-			if v != nil {
-				m.Criteria, err = unmarshalMetricAlertCriteriaClassification(*v)
+			if val != nil {
+				m.Criteria, err = unmarshalMetricAlertCriteriaClassification(*val)
 			}
 		case "description":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.Description)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.Description)
 			}
 		case "enabled":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.Enabled)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.Enabled)
 			}
 		case "evaluationFrequency":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.EvaluationFrequency)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.EvaluationFrequency)
 			}
 		case "lastUpdatedTime":
-			if v != nil {
+			if val != nil {
 				var aux timeRFC3339
-				err = json.Unmarshal(*v, &aux)
+				err = json.Unmarshal(*val, &aux)
 				m.LastUpdatedTime = (*time.Time)(&aux)
 			}
 		case "scopes":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.Scopes)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.Scopes)
 			}
 		case "severity":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.Severity)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.Severity)
 			}
 		case "targetResourceRegion":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.TargetResourceRegion)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.TargetResourceRegion)
 			}
 		case "targetResourceType":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.TargetResourceType)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.TargetResourceType)
 			}
 		case "windowSize":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.WindowSize)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.WindowSize)
 			}
 		}
 		if err != nil {
@@ -1909,12 +1909,12 @@ func (m *MetricAlertSingleResourceMultipleMetricCriteria) UnmarshalJSON(data []b
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "allOf":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.AllOf)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.AllOf)
 			}
 		}
 		if err != nil {
@@ -2079,16 +2079,16 @@ func (m *MetricCriteria) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "operator":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.Operator)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.Operator)
 			}
 		case "threshold":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.Threshold)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.Threshold)
 			}
 		}
 		if err != nil {
@@ -2380,32 +2380,32 @@ func (m *MultiMetricCriteria) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "criterionType":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.CriterionType)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.CriterionType)
 			}
 		case "dimensions":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.Dimensions)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.Dimensions)
 			}
 		case "metricName":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.MetricName)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.MetricName)
 			}
 		case "metricNamespace":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.MetricNamespace)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.MetricNamespace)
 			}
 		case "name":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.Name)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.Name)
 			}
 		case "timeAggregation":
-			if v != nil {
-				err = json.Unmarshal(*v, &m.TimeAggregation)
+			if val != nil {
+				err = json.Unmarshal(*val, &m.TimeAggregation)
 			}
 		}
 		if err != nil {
@@ -2651,12 +2651,12 @@ func (r *RuleAction) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "odata.type":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.OdataType)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.OdataType)
 			}
 		}
 		if err != nil {
@@ -2698,16 +2698,16 @@ func (r *RuleCondition) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "dataSource":
-			if v != nil {
-				r.DataSource, err = unmarshalRuleDataSourceClassification(*v)
+			if val != nil {
+				r.DataSource, err = unmarshalRuleDataSourceClassification(*val)
 			}
 		case "odata.type":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.OdataType)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.OdataType)
 			}
 		}
 		if err != nil {
@@ -2750,16 +2750,16 @@ func (r *RuleDataSource) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "odata.type":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.OdataType)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.OdataType)
 			}
 		case "resourceUri":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.ResourceURI)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.ResourceURI)
 			}
 		}
 		if err != nil {
@@ -2808,16 +2808,16 @@ func (r *RuleEmailAction) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "customEmails":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.CustomEmails)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.CustomEmails)
 			}
 		case "sendToServiceOwners":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.SendToServiceOwners)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.SendToServiceOwners)
 			}
 		}
 		if err != nil {
@@ -2903,44 +2903,44 @@ func (r *RuleManagementEventDataSource) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "claims":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.Claims)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.Claims)
 			}
 		case "eventName":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.EventName)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.EventName)
 			}
 		case "eventSource":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.EventSource)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.EventSource)
 			}
 		case "level":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.Level)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.Level)
 			}
 		case "operationName":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.OperationName)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.OperationName)
 			}
 		case "resourceGroupName":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.ResourceGroupName)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.ResourceGroupName)
 			}
 		case "resourceProviderName":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.ResourceProviderName)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.ResourceProviderName)
 			}
 		case "status":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.Status)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.Status)
 			}
 		case "subStatus":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.SubStatus)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.SubStatus)
 			}
 		}
 		if err != nil {
@@ -2972,12 +2972,12 @@ func (r *RuleMetricDataSource) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "metricName":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.MetricName)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.MetricName)
 			}
 		}
 		if err != nil {
@@ -3016,16 +3016,16 @@ func (r *RuleWebhookAction) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "properties":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.Properties)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.Properties)
 			}
 		case "serviceUri":
-			if v != nil {
-				err = json.Unmarshal(*v, &r.ServiceURI)
+			if val != nil {
+				err = json.Unmarshal(*val, &r.ServiceURI)
 			}
 		}
 		if err != nil {
@@ -3230,24 +3230,24 @@ func (t *ThresholdRuleCondition) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "operator":
-			if v != nil {
-				err = json.Unmarshal(*v, &t.Operator)
+			if val != nil {
+				err = json.Unmarshal(*val, &t.Operator)
 			}
 		case "threshold":
-			if v != nil {
-				err = json.Unmarshal(*v, &t.Threshold)
+			if val != nil {
+				err = json.Unmarshal(*val, &t.Threshold)
 			}
 		case "timeAggregation":
-			if v != nil {
-				err = json.Unmarshal(*v, &t.TimeAggregation)
+			if val != nil {
+				err = json.Unmarshal(*val, &t.TimeAggregation)
 			}
 		case "windowSize":
-			if v != nil {
-				err = json.Unmarshal(*v, &t.WindowSize)
+			if val != nil {
+				err = json.Unmarshal(*val, &t.WindowSize)
 			}
 		}
 		if err != nil {
@@ -3487,20 +3487,20 @@ func (w *WebtestLocationAvailabilityCriteria) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "componentId":
-			if v != nil {
-				err = json.Unmarshal(*v, &w.ComponentID)
+			if val != nil {
+				err = json.Unmarshal(*val, &w.ComponentID)
 			}
 		case "failedLocationCount":
-			if v != nil {
-				err = json.Unmarshal(*v, &w.FailedLocationCount)
+			if val != nil {
+				err = json.Unmarshal(*val, &w.FailedLocationCount)
 			}
 		case "webTestId":
-			if v != nil {
-				err = json.Unmarshal(*v, &w.WebTestID)
+			if val != nil {
+				err = json.Unmarshal(*val, &w.WebTestID)
 			}
 		}
 		if err != nil {

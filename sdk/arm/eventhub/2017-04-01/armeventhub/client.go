@@ -7,6 +7,7 @@ package armeventhub
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/url"
 	"strings"
@@ -28,6 +29,10 @@ type ClientOptions struct {
 	// ApplicationID is an application-specific identification string used in telemetry.
 	// It has a maximum length of 24 characters and must not contain any spaces.
 	ApplicationID string
+	// DisableRPRegistration controls if an unregistered resource provider should
+	// automatically be registered. See https://aka.ms/rps-not-found for more information.
+	// The default value is false, meaning registration will be attempted.
+	DisableRPRegistration bool
 }
 
 // DefaultClientOptions creates a ClientOptions type initialized with default values.
@@ -73,12 +78,22 @@ func NewClient(endpoint string, cred azcore.Credential, options *ClientOptions) 
 		o := DefaultClientOptions()
 		options = &o
 	}
-	p := azcore.NewPipeline(options.HTTPClient,
+	policies := []azcore.Policy{
 		azcore.NewTelemetryPolicy(options.telemetryOptions()),
 		azcore.NewUniqueRequestIDPolicy(),
+	}
+	if !options.DisableRPRegistration {
+		rpOpts := armcore.DefaultRegistrationOptions()
+		rpOpts.HTTPClient = options.HTTPClient
+		rpOpts.LogOptions = options.LogOptions
+		rpOpts.Retry = options.Retry
+		policies = append(policies, armcore.NewRPRegistrationPolicy(cred, &rpOpts))
+	}
+	policies = append(policies,
 		azcore.NewRetryPolicy(&options.Retry),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(options.LogOptions))
+	p := azcore.NewPipeline(options.HTTPClient, policies...)
 	return NewClientWithPipeline(endpoint, p)
 }
 

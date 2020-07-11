@@ -103,6 +103,14 @@ func (p *blobRestoreStatusPoller) ResumeToken() (string, error) {
 }
 
 func (p *blobRestoreStatusPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*BlobRestoreStatusResponse, error) {
+	// initial check for a retry-after header existing on the initial response
+	if retryAfter := azcore.RetryAfter(p.pt.latestResponse().Response); retryAfter > 0 {
+		err := delay(ctx, retryAfter)
+		if err != nil {
+			return nil, err
+		}
+	}
+	// begin polling the endpoint until a terminal state is reached
 	for {
 		resp, err := p.Poll(ctx)
 		if err != nil {
@@ -111,10 +119,13 @@ func (p *blobRestoreStatusPoller) pollUntilDone(ctx context.Context, frequency t
 		if p.Done() {
 			break
 		}
-		if delay := azcore.RetryAfter(resp); delay > 0 {
-			time.Sleep(delay)
-		} else {
-			time.Sleep(frequency)
+		d := frequency
+		if retryAfter := azcore.RetryAfter(resp); retryAfter > 0 {
+			d = retryAfter
+		}
+		err = delay(ctx, d)
+		if err != nil {
+			return nil, err
 		}
 	}
 	return p.FinalResponse(ctx)
@@ -176,6 +187,14 @@ func (p *httpPoller) ResumeToken() (string, error) {
 }
 
 func (p *httpPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	// initial check for a retry-after header existing on the initial response
+	if retryAfter := azcore.RetryAfter(p.pt.latestResponse().Response); retryAfter > 0 {
+		err := delay(ctx, retryAfter)
+		if err != nil {
+			return nil, err
+		}
+	}
+	// begin polling the endpoint until a terminal state is reached
 	for {
 		resp, err := p.Poll(ctx)
 		if err != nil {
@@ -184,10 +203,13 @@ func (p *httpPoller) pollUntilDone(ctx context.Context, frequency time.Duration)
 		if p.Done() {
 			break
 		}
-		if delay := azcore.RetryAfter(resp); delay > 0 {
-			time.Sleep(delay)
-		} else {
-			time.Sleep(frequency)
+		d := frequency
+		if retryAfter := azcore.RetryAfter(resp); retryAfter > 0 {
+			d = retryAfter
+		}
+		err = delay(ctx, d)
+		if err != nil {
+			return nil, err
 		}
 	}
 	return p.FinalResponse(), nil
@@ -281,6 +303,14 @@ func (p *storageAccountPoller) ResumeToken() (string, error) {
 }
 
 func (p *storageAccountPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*StorageAccountResponse, error) {
+	// initial check for a retry-after header existing on the initial response
+	if retryAfter := azcore.RetryAfter(p.pt.latestResponse().Response); retryAfter > 0 {
+		err := delay(ctx, retryAfter)
+		if err != nil {
+			return nil, err
+		}
+	}
+	// begin polling the endpoint until a terminal state is reached
 	for {
 		resp, err := p.Poll(ctx)
 		if err != nil {
@@ -289,10 +319,13 @@ func (p *storageAccountPoller) pollUntilDone(ctx context.Context, frequency time
 		if p.Done() {
 			break
 		}
-		if delay := azcore.RetryAfter(resp); delay > 0 {
-			time.Sleep(delay)
-		} else {
-			time.Sleep(frequency)
+		d := frequency
+		if retryAfter := azcore.RetryAfter(resp); retryAfter > 0 {
+			d = retryAfter
+		}
+		err = delay(ctx, d)
+		if err != nil {
+			return nil, err
 		}
 	}
 	return p.FinalResponse(ctx)
@@ -307,4 +340,13 @@ func (p *storageAccountPoller) handleResponse(resp *azcore.Response) (*StorageAc
 		return nil, p.pt.handleError(resp)
 	}
 	return &result, resp.UnmarshalAsJSON(&result.StorageAccount)
+}
+
+func delay(ctx context.Context, delay time.Duration) error {
+	select {
+	case <-time.After(delay):
+		return nil
+	case <-ctx.Done():
+		return ctx.Err()
+	}
 }

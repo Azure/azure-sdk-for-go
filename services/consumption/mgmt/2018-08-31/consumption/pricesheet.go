@@ -132,7 +132,6 @@ func (client PriceSheetClient) GetSender(req *http.Request) (*http.Response, err
 func (client PriceSheetClient) GetResponder(resp *http.Response) (result PriceSheetResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -231,7 +230,6 @@ func (client PriceSheetClient) GetByBillingPeriodSender(req *http.Request) (*htt
 func (client PriceSheetClient) GetByBillingPeriodResponder(resp *http.Response) (result PriceSheetResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

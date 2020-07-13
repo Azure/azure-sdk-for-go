@@ -120,7 +120,6 @@ func (client ChargesClient) ListByScopeSender(req *http.Request) (*http.Response
 func (client ChargesClient) ListByScopeResponder(resp *http.Response) (result ChargeSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

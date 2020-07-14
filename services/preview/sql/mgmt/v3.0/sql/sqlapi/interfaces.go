@@ -147,6 +147,7 @@ type ReplicationLinksClientAPI interface {
 	FailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string) (result sql.ReplicationLinksFailoverAllowDataLossFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string) (result sql.ReplicationLink, err error)
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.ReplicationLinkListResult, err error)
+	Unlink(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters sql.UnlinkParameters) (result sql.ReplicationLinksUnlinkFuture, err error)
 }
 
 var _ ReplicationLinksClientAPI = (*sql.ReplicationLinksClient)(nil)
@@ -286,42 +287,6 @@ type SyncAgentsClientAPI interface {
 
 var _ SyncAgentsClientAPI = (*sql.SyncAgentsClient)(nil)
 
-// SyncGroupsClientAPI contains the set of methods on the SyncGroupsClient type.
-type SyncGroupsClientAPI interface {
-	CancelSync(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result autorest.Response, err error)
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters sql.SyncGroup) (result sql.SyncGroupsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncGroupsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncGroup, err error)
-	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.SyncGroupListResultPage, err error)
-	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.SyncGroupListResultIterator, err error)
-	ListHubSchemas(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncFullSchemaPropertiesListResultPage, err error)
-	ListHubSchemasComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncFullSchemaPropertiesListResultIterator, err error)
-	ListLogs(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParameter string, continuationToken string) (result sql.SyncGroupLogListResultPage, err error)
-	ListLogsComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParameter string, continuationToken string) (result sql.SyncGroupLogListResultIterator, err error)
-	ListSyncDatabaseIds(ctx context.Context, locationName string) (result sql.SyncDatabaseIDListResultPage, err error)
-	ListSyncDatabaseIdsComplete(ctx context.Context, locationName string) (result sql.SyncDatabaseIDListResultIterator, err error)
-	RefreshHubSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncGroupsRefreshHubSchemaFuture, err error)
-	TriggerSync(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result autorest.Response, err error)
-	Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters sql.SyncGroup) (result sql.SyncGroupsUpdateFuture, err error)
-}
-
-var _ SyncGroupsClientAPI = (*sql.SyncGroupsClient)(nil)
-
-// SyncMembersClientAPI contains the set of methods on the SyncMembersClient type.
-type SyncMembersClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters sql.SyncMember) (result sql.SyncMembersCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncMembersDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncMember, err error)
-	ListBySyncGroup(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncMemberListResultPage, err error)
-	ListBySyncGroupComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncMemberListResultIterator, err error)
-	ListMemberSchemas(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncFullSchemaPropertiesListResultPage, err error)
-	ListMemberSchemasComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncFullSchemaPropertiesListResultIterator, err error)
-	RefreshMemberSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncMembersRefreshMemberSchemaFuture, err error)
-	Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters sql.SyncMember) (result sql.SyncMembersUpdateFuture, err error)
-}
-
-var _ SyncMembersClientAPI = (*sql.SyncMembersClient)(nil)
-
 // SubscriptionUsagesClientAPI contains the set of methods on the SubscriptionUsagesClient type.
 type SubscriptionUsagesClientAPI interface {
 	Get(ctx context.Context, locationName string, usageName string) (result sql.SubscriptionUsage, err error)
@@ -359,6 +324,8 @@ var _ VirtualNetworkRulesClientAPI = (*sql.VirtualNetworkRulesClient)(nil)
 type ExtendedDatabaseBlobAuditingPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.ExtendedDatabaseBlobAuditingPolicy) (result sql.ExtendedDatabaseBlobAuditingPolicy, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.ExtendedDatabaseBlobAuditingPolicy, err error)
+	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.ExtendedDatabaseBlobAuditingPolicyListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.ExtendedDatabaseBlobAuditingPolicyListResultIterator, err error)
 }
 
 var _ ExtendedDatabaseBlobAuditingPoliciesClientAPI = (*sql.ExtendedDatabaseBlobAuditingPoliciesClient)(nil)
@@ -367,6 +334,8 @@ var _ ExtendedDatabaseBlobAuditingPoliciesClientAPI = (*sql.ExtendedDatabaseBlob
 type ExtendedServerBlobAuditingPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ExtendedServerBlobAuditingPolicy) (result sql.ExtendedServerBlobAuditingPoliciesCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ExtendedServerBlobAuditingPolicy, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ExtendedServerBlobAuditingPolicyListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ExtendedServerBlobAuditingPolicyListResultIterator, err error)
 }
 
 var _ ExtendedServerBlobAuditingPoliciesClientAPI = (*sql.ExtendedServerBlobAuditingPoliciesClient)(nil)
@@ -853,6 +822,7 @@ var _ UsagesClientAPI = (*sql.UsagesClient)(nil)
 type ManagedInstancesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstance) (result sql.ManagedInstancesCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstancesDeleteFuture, err error)
+	Failover(ctx context.Context, resourceGroupName string, managedInstanceName string, replicaType sql.ReplicaType) (result sql.ManagedInstancesFailoverFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstance, err error)
 	List(ctx context.Context) (result sql.ManagedInstanceListResultPage, err error)
 	ListComplete(ctx context.Context) (result sql.ManagedInstanceListResultIterator, err error)
@@ -961,6 +931,71 @@ type WorkloadClassifiersClientAPI interface {
 
 var _ WorkloadClassifiersClientAPI = (*sql.WorkloadClassifiersClient)(nil)
 
+// ServerAzureADAdministratorsClientAPI contains the set of methods on the ServerAzureADAdministratorsClient type.
+type ServerAzureADAdministratorsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerAzureADAdministrator) (result sql.ServerAzureADAdministratorsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministratorsDeleteFuture, err error)
+	DisableAzureADOnlyAuthentication(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministratorsDisableAzureADOnlyAuthenticationFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministrator, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.AdministratorListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.AdministratorListResultIterator, err error)
+}
+
+var _ ServerAzureADAdministratorsClientAPI = (*sql.ServerAzureADAdministratorsClient)(nil)
+
+// ManagedInstanceOperationsClientAPI contains the set of methods on the ManagedInstanceOperationsClient type.
+type ManagedInstanceOperationsClientAPI interface {
+	Cancel(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID uuid.UUID) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID uuid.UUID) (result sql.ManagedInstanceOperation, err error)
+	ListByManagedInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceOperationListResultPage, err error)
+	ListByManagedInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceOperationListResultIterator, err error)
+}
+
+var _ ManagedInstanceOperationsClientAPI = (*sql.ManagedInstanceOperationsClient)(nil)
+
+// SyncGroupsClientAPI contains the set of methods on the SyncGroupsClient type.
+type SyncGroupsClientAPI interface {
+	CancelSync(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result autorest.Response, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters sql.SyncGroup) (result sql.SyncGroupsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncGroupsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncGroup, err error)
+	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.SyncGroupListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.SyncGroupListResultIterator, err error)
+	ListHubSchemas(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncFullSchemaPropertiesListResultPage, err error)
+	ListHubSchemasComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncFullSchemaPropertiesListResultIterator, err error)
+	ListLogs(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParameter string, continuationToken string) (result sql.SyncGroupLogListResultPage, err error)
+	ListLogsComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParameter string, continuationToken string) (result sql.SyncGroupLogListResultIterator, err error)
+	ListSyncDatabaseIds(ctx context.Context, locationName string) (result sql.SyncDatabaseIDListResultPage, err error)
+	ListSyncDatabaseIdsComplete(ctx context.Context, locationName string) (result sql.SyncDatabaseIDListResultIterator, err error)
+	RefreshHubSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncGroupsRefreshHubSchemaFuture, err error)
+	TriggerSync(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result autorest.Response, err error)
+	Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters sql.SyncGroup) (result sql.SyncGroupsUpdateFuture, err error)
+}
+
+var _ SyncGroupsClientAPI = (*sql.SyncGroupsClient)(nil)
+
+// SyncMembersClientAPI contains the set of methods on the SyncMembersClient type.
+type SyncMembersClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters sql.SyncMember) (result sql.SyncMembersCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncMembersDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncMember, err error)
+	ListBySyncGroup(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncMemberListResultPage, err error)
+	ListBySyncGroupComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result sql.SyncMemberListResultIterator, err error)
+	ListMemberSchemas(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncFullSchemaPropertiesListResultPage, err error)
+	ListMemberSchemasComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncFullSchemaPropertiesListResultIterator, err error)
+	RefreshMemberSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string) (result sql.SyncMembersRefreshMemberSchemaFuture, err error)
+	Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters sql.SyncMember) (result sql.SyncMembersUpdateFuture, err error)
+}
+
+var _ SyncMembersClientAPI = (*sql.SyncMembersClient)(nil)
+
+// ManagedDatabaseRestoreDetailsClientAPI contains the set of methods on the ManagedDatabaseRestoreDetailsClient type.
+type ManagedDatabaseRestoreDetailsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabaseRestoreDetailsResult, err error)
+}
+
+var _ ManagedDatabaseRestoreDetailsClientAPI = (*sql.ManagedDatabaseRestoreDetailsClient)(nil)
+
 // ManagedDatabasesClientAPI contains the set of methods on the ManagedDatabasesClient type.
 type ManagedDatabasesClientAPI interface {
 	CompleteRestore(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.CompleteDatabaseRestoreDefinition) (result sql.ManagedDatabasesCompleteRestoreFuture, err error)
@@ -975,15 +1010,3 @@ type ManagedDatabasesClientAPI interface {
 }
 
 var _ ManagedDatabasesClientAPI = (*sql.ManagedDatabasesClient)(nil)
-
-// ServerAzureADAdministratorsClientAPI contains the set of methods on the ServerAzureADAdministratorsClient type.
-type ServerAzureADAdministratorsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerAzureADAdministrator) (result sql.ServerAzureADAdministratorsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministratorsDeleteFuture, err error)
-	DisableAzureADOnlyAuthentication(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministratorsDisableAzureADOnlyAuthenticationFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministrator, err error)
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.AdministratorListResultPage, err error)
-	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.AdministratorListResultIterator, err error)
-}
-
-var _ ServerAzureADAdministratorsClientAPI = (*sql.ServerAzureADAdministratorsClient)(nil)

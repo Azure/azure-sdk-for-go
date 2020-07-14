@@ -276,6 +276,29 @@ func PossibleSensitivityLabelSourceValues() []SensitivityLabelSource {
 	return []SensitivityLabelSource{Current, Recommended}
 }
 
+// Status enumerates the values for status.
+type Status string
+
+const (
+	// StatusCanceled ...
+	StatusCanceled Status = "Canceled"
+	// StatusCompleted ...
+	StatusCompleted Status = "Completed"
+	// StatusFailed ...
+	StatusFailed Status = "Failed"
+	// StatusInProgress ...
+	StatusInProgress Status = "InProgress"
+	// StatusNotStarted ...
+	StatusNotStarted Status = "NotStarted"
+	// StatusSlowedDown ...
+	StatusSlowedDown Status = "SlowedDown"
+)
+
+// PossibleStatusValues returns an array of possible values for the Status const type.
+func PossibleStatusValues() []Status {
+	return []Status{StatusCanceled, StatusCompleted, StatusFailed, StatusInProgress, StatusNotStarted, StatusSlowedDown}
+}
+
 // AdministratorListResult a list of active directory administrators.
 type AdministratorListResult struct {
 	autorest.Response `json:"-"`
@@ -2433,6 +2456,7 @@ func NewManagedInstanceLongTermRetentionPolicyListResultPage(getNextPage func(co
 
 // ManagedInstanceOperation a managed instance operation.
 type ManagedInstanceOperation struct {
+	autorest.Response `json:"-"`
 	// ManagedInstanceOperationProperties - Resource properties.
 	*ManagedInstanceOperationProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource ID.
@@ -2650,6 +2674,14 @@ func NewManagedInstanceOperationListResultPage(getNextPage func(context.Context,
 	return ManagedInstanceOperationListResultPage{fn: getNextPage}
 }
 
+// ManagedInstanceOperationParametersPair the parameters of a managed instance operation.
+type ManagedInstanceOperationParametersPair struct {
+	// CurrentParameters - READ-ONLY; The current parameters.
+	CurrentParameters *UpsertManagedServerOperationParameters `json:"currentParameters,omitempty"`
+	// RequestedParameters - READ-ONLY; The requested parameters.
+	RequestedParameters *UpsertManagedServerOperationParameters `json:"requestedParameters,omitempty"`
+}
+
 // ManagedInstanceOperationProperties the properties of a managed instance operation.
 type ManagedInstanceOperationProperties struct {
 	// ManagedInstanceName - READ-ONLY; The name of the managed instance the operation is being performed on.
@@ -2678,6 +2710,20 @@ type ManagedInstanceOperationProperties struct {
 	Description *string `json:"description,omitempty"`
 	// IsCancellable - READ-ONLY; Whether the operation can be cancelled.
 	IsCancellable *bool `json:"isCancellable,omitempty"`
+	// OperationParameters - READ-ONLY; The operation parameters.
+	OperationParameters *ManagedInstanceOperationParametersPair `json:"operationParameters,omitempty"`
+	// OperationSteps - READ-ONLY; The operation steps.
+	OperationSteps *ManagedInstanceOperationSteps `json:"operationSteps,omitempty"`
+}
+
+// ManagedInstanceOperationSteps the steps of a managed instance operation.
+type ManagedInstanceOperationSteps struct {
+	// TotalSteps - READ-ONLY; The total number of operation steps.
+	TotalSteps *string `json:"totalSteps,omitempty"`
+	// CurrentStep - READ-ONLY; The number of current operation steps.
+	CurrentStep *int32 `json:"currentStep,omitempty"`
+	// StepsList - READ-ONLY; The operation steps list.
+	StepsList *[]UpsertManagedServerOperationStep `json:"stepsList,omitempty"`
 }
 
 // ManagedInstanceProperties the properties of a managed instance.
@@ -2727,6 +2773,10 @@ type ManagedInstanceProperties struct {
 	TimezoneID *string `json:"timezoneId,omitempty"`
 	// InstancePoolID - The Id of the instance pool this managed server belongs to.
 	InstancePoolID *string `json:"instancePoolId,omitempty"`
+	// MaintenanceConfigurationID - Specifies maintenance configuration id to apply to this managed instance.
+	MaintenanceConfigurationID *string `json:"maintenanceConfigurationId,omitempty"`
+	// MinimalTLSVersion - Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
+	MinimalTLSVersion *string `json:"minimalTlsVersion,omitempty"`
 }
 
 // ManagedInstancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -4098,6 +4148,22 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = tr.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// UpsertManagedServerOperationParameters ...
+type UpsertManagedServerOperationParameters struct {
+	Family          *string `json:"family,omitempty"`
+	Tier            *string `json:"tier,omitempty"`
+	VCores          *int32  `json:"vCores,omitempty"`
+	StorageSizeInGB *int32  `json:"storageSizeInGB,omitempty"`
+}
+
+// UpsertManagedServerOperationStep ...
+type UpsertManagedServerOperationStep struct {
+	Order *int32  `json:"order,omitempty"`
+	Name  *string `json:"name,omitempty"`
+	// Status - Possible values include: 'StatusNotStarted', 'StatusInProgress', 'StatusSlowedDown', 'StatusCompleted', 'StatusFailed', 'StatusCanceled'
+	Status Status `json:"status,omitempty"`
 }
 
 // Usage ARM usage.

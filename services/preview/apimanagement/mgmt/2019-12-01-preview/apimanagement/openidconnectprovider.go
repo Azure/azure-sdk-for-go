@@ -131,8 +131,7 @@ func (client OpenIDConnectProviderClient) CreateOrUpdatePreparer(ctx context.Con
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -140,7 +139,6 @@ func (client OpenIDConnectProviderClient) CreateOrUpdateSender(req *http.Request
 func (client OpenIDConnectProviderClient) CreateOrUpdateResponder(resp *http.Response) (result OpenidConnectProviderContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -224,8 +222,7 @@ func (client OpenIDConnectProviderClient) DeletePreparer(ctx context.Context, re
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -233,7 +230,6 @@ func (client OpenIDConnectProviderClient) DeleteSender(req *http.Request) (*http
 func (client OpenIDConnectProviderClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -313,8 +309,7 @@ func (client OpenIDConnectProviderClient) GetPreparer(ctx context.Context, resou
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -322,7 +317,6 @@ func (client OpenIDConnectProviderClient) GetSender(req *http.Request) (*http.Re
 func (client OpenIDConnectProviderClient) GetResponder(resp *http.Response) (result OpenidConnectProviderContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -403,8 +397,7 @@ func (client OpenIDConnectProviderClient) GetEntityTagPreparer(ctx context.Conte
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
@@ -412,7 +405,6 @@ func (client OpenIDConnectProviderClient) GetEntityTagSender(req *http.Request) 
 func (client OpenIDConnectProviderClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -509,8 +501,7 @@ func (client OpenIDConnectProviderClient) ListByServicePreparer(ctx context.Cont
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByServiceResponder handles the response to the ListByService request. The method always
@@ -518,7 +509,6 @@ func (client OpenIDConnectProviderClient) ListByServiceSender(req *http.Request)
 func (client OpenIDConnectProviderClient) ListByServiceResponder(resp *http.Response) (result OpenIDConnectProviderCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -636,8 +626,7 @@ func (client OpenIDConnectProviderClient) ListSecretsPreparer(ctx context.Contex
 // ListSecretsSender sends the ListSecrets request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) ListSecretsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSecretsResponder handles the response to the ListSecrets request. The method always
@@ -645,7 +634,6 @@ func (client OpenIDConnectProviderClient) ListSecretsSender(req *http.Request) (
 func (client OpenIDConnectProviderClient) ListSecretsResponder(resp *http.Response) (result ClientSecretContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -732,8 +720,7 @@ func (client OpenIDConnectProviderClient) UpdatePreparer(ctx context.Context, re
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
@@ -741,7 +728,6 @@ func (client OpenIDConnectProviderClient) UpdateSender(req *http.Request) (*http
 func (client OpenIDConnectProviderClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

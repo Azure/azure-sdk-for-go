@@ -111,8 +111,7 @@ func (client ServiceSkusClient) ListAvailableServiceSkusPreparer(ctx context.Con
 // ListAvailableServiceSkusSender sends the ListAvailableServiceSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceSkusClient) ListAvailableServiceSkusSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAvailableServiceSkusResponder handles the response to the ListAvailableServiceSkus request. The method always
@@ -120,7 +119,6 @@ func (client ServiceSkusClient) ListAvailableServiceSkusSender(req *http.Request
 func (client ServiceSkusClient) ListAvailableServiceSkusResponder(resp *http.Response) (result ResourceSkuResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

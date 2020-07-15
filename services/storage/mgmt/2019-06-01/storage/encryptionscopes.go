@@ -133,7 +133,6 @@ func (client EncryptionScopesClient) GetSender(req *http.Request) (*http.Respons
 func (client EncryptionScopesClient) GetResponder(resp *http.Response) (result EncryptionScope, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -225,7 +224,6 @@ func (client EncryptionScopesClient) ListSender(req *http.Request) (*http.Respon
 func (client EncryptionScopesClient) ListResponder(resp *http.Response) (result EncryptionScopeListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -364,7 +362,6 @@ func (client EncryptionScopesClient) PatchSender(req *http.Request) (*http.Respo
 func (client EncryptionScopesClient) PatchResponder(resp *http.Response) (result EncryptionScope, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -467,7 +464,6 @@ func (client EncryptionScopesClient) PutSender(req *http.Request) (*http.Respons
 func (client EncryptionScopesClient) PutResponder(resp *http.Response) (result EncryptionScope, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

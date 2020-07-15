@@ -131,8 +131,7 @@ func (client APIOperationsPolicyClient) CreateOrUpdatePreparer(ctx context.Conte
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIOperationsPolicyClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -140,7 +139,6 @@ func (client APIOperationsPolicyClient) CreateOrUpdateSender(req *http.Request) 
 func (client APIOperationsPolicyClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -231,8 +229,7 @@ func (client APIOperationsPolicyClient) DeletePreparer(ctx context.Context, reso
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIOperationsPolicyClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -240,7 +237,6 @@ func (client APIOperationsPolicyClient) DeleteSender(req *http.Request) (*http.R
 func (client APIOperationsPolicyClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -328,8 +324,7 @@ func (client APIOperationsPolicyClient) GetPreparer(ctx context.Context, resourc
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIOperationsPolicyClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -338,7 +333,6 @@ func (client APIOperationsPolicyClient) GetResponder(resp *http.Response) (resul
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return

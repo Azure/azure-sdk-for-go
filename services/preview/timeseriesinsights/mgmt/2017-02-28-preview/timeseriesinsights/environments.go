@@ -130,7 +130,6 @@ func (client EnvironmentsClient) CreateOrUpdateSender(req *http.Request) (future
 func (client EnvironmentsClient) CreateOrUpdateResponder(resp *http.Response) (result EnvironmentResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -207,7 +206,6 @@ func (client EnvironmentsClient) DeleteSender(req *http.Request) (*http.Response
 func (client EnvironmentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -283,7 +281,6 @@ func (client EnvironmentsClient) GetSender(req *http.Request) (*http.Response, e
 func (client EnvironmentsClient) GetResponder(resp *http.Response) (result EnvironmentResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -358,7 +355,6 @@ func (client EnvironmentsClient) ListByResourceGroupSender(req *http.Request) (*
 func (client EnvironmentsClient) ListByResourceGroupResponder(resp *http.Response) (result EnvironmentListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -429,7 +425,6 @@ func (client EnvironmentsClient) ListBySubscriptionSender(req *http.Request) (*h
 func (client EnvironmentsClient) ListBySubscriptionResponder(resp *http.Response) (result EnvironmentListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -509,7 +504,6 @@ func (client EnvironmentsClient) UpdateSender(req *http.Request) (future Environ
 func (client EnvironmentsClient) UpdateResponder(resp *http.Response) (result EnvironmentResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

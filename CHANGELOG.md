@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## `v44.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| avs | 2020-03-20 |
+| kusto | 2020-06-14 |
+| storagesync | 2020-03-01 |
+
 ## `v44.0.0`
 
 ### New Packages

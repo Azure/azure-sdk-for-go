@@ -22,7 +22,7 @@ package kusto
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2020-02-15/kusto"
+	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2020-06-14/kusto"
 )
 
 const (
@@ -70,6 +70,13 @@ const (
 	Standard AzureSkuTier = original.Standard
 )
 
+type BlobStorageEventType = original.BlobStorageEventType
+
+const (
+	MicrosoftStorageBlobCreated BlobStorageEventType = original.MicrosoftStorageBlobCreated
+	MicrosoftStorageBlobRenamed BlobStorageEventType = original.MicrosoftStorageBlobRenamed
+)
+
 type ClusterPrincipalRole = original.ClusterPrincipalRole
 
 const (
@@ -114,6 +121,7 @@ const (
 type EventGridDataFormat = original.EventGridDataFormat
 
 const (
+	APACHEAVRO EventGridDataFormat = original.APACHEAVRO
 	AVRO       EventGridDataFormat = original.AVRO
 	CSV        EventGridDataFormat = original.CSV
 	JSON       EventGridDataFormat = original.JSON
@@ -128,11 +136,13 @@ const (
 	TSV        EventGridDataFormat = original.TSV
 	TSVE       EventGridDataFormat = original.TSVE
 	TXT        EventGridDataFormat = original.TXT
+	W3CLOGFILE EventGridDataFormat = original.W3CLOGFILE
 )
 
 type EventHubDataFormat = original.EventHubDataFormat
 
 const (
+	EventHubDataFormatAPACHEAVRO EventHubDataFormat = original.EventHubDataFormatAPACHEAVRO
 	EventHubDataFormatAVRO       EventHubDataFormat = original.EventHubDataFormatAVRO
 	EventHubDataFormatCSV        EventHubDataFormat = original.EventHubDataFormatCSV
 	EventHubDataFormatJSON       EventHubDataFormat = original.EventHubDataFormatJSON
@@ -147,6 +157,7 @@ const (
 	EventHubDataFormatTSV        EventHubDataFormat = original.EventHubDataFormatTSV
 	EventHubDataFormatTSVE       EventHubDataFormat = original.EventHubDataFormatTSVE
 	EventHubDataFormatTXT        EventHubDataFormat = original.EventHubDataFormatTXT
+	EventHubDataFormatW3CLOGFILE EventHubDataFormat = original.EventHubDataFormatW3CLOGFILE
 )
 
 type IdentityType = original.IdentityType
@@ -159,6 +170,7 @@ const (
 type IotHubDataFormat = original.IotHubDataFormat
 
 const (
+	IotHubDataFormatAPACHEAVRO IotHubDataFormat = original.IotHubDataFormatAPACHEAVRO
 	IotHubDataFormatAVRO       IotHubDataFormat = original.IotHubDataFormatAVRO
 	IotHubDataFormatCSV        IotHubDataFormat = original.IotHubDataFormatCSV
 	IotHubDataFormatJSON       IotHubDataFormat = original.IotHubDataFormatJSON
@@ -173,6 +185,7 @@ const (
 	IotHubDataFormatTSV        IotHubDataFormat = original.IotHubDataFormatTSV
 	IotHubDataFormatTSVE       IotHubDataFormat = original.IotHubDataFormatTSVE
 	IotHubDataFormatTXT        IotHubDataFormat = original.IotHubDataFormatTXT
+	IotHubDataFormatW3CLOGFILE IotHubDataFormat = original.IotHubDataFormatW3CLOGFILE
 )
 
 type Kind = original.Kind
@@ -302,6 +315,7 @@ type DataConnectionValidationListResult = original.DataConnectionValidationListR
 type DataConnectionValidationResult = original.DataConnectionValidationResult
 type DataConnectionsClient = original.DataConnectionsClient
 type DataConnectionsCreateOrUpdateFuture = original.DataConnectionsCreateOrUpdateFuture
+type DataConnectionsDataConnectionValidationMethodFuture = original.DataConnectionsDataConnectionValidationMethodFuture
 type DataConnectionsDeleteFuture = original.DataConnectionsDeleteFuture
 type DataConnectionsUpdateFuture = original.DataConnectionsUpdateFuture
 type Database = original.Database
@@ -419,6 +433,9 @@ func PossibleAzureSkuNameValues() []AzureSkuName {
 }
 func PossibleAzureSkuTierValues() []AzureSkuTier {
 	return original.PossibleAzureSkuTierValues()
+}
+func PossibleBlobStorageEventTypeValues() []BlobStorageEventType {
+	return original.PossibleBlobStorageEventTypeValues()
 }
 func PossibleClusterPrincipalRoleValues() []ClusterPrincipalRole {
 	return original.PossibleClusterPrincipalRoleValues()

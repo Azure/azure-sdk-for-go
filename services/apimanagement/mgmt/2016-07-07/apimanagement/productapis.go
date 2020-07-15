@@ -122,8 +122,7 @@ func (client ProductApisClient) AddPreparer(ctx context.Context, resourceGroupNa
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductApisClient) AddSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // AddResponder handles the response to the Add request. The method always
@@ -131,7 +130,6 @@ func (client ProductApisClient) AddSender(req *http.Request) (*http.Response, er
 func (client ProductApisClient) AddResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -237,8 +235,7 @@ func (client ProductApisClient) ListByProductPreparer(ctx context.Context, resou
 // ListByProductSender sends the ListByProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductApisClient) ListByProductSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByProductResponder handles the response to the ListByProduct request. The method always
@@ -246,7 +243,6 @@ func (client ProductApisClient) ListByProductSender(req *http.Request) (*http.Re
 func (client ProductApisClient) ListByProductResponder(resp *http.Response) (result APICollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -371,8 +367,7 @@ func (client ProductApisClient) RemovePreparer(ctx context.Context, resourceGrou
 // RemoveSender sends the Remove request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductApisClient) RemoveSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RemoveResponder handles the response to the Remove request. The method always
@@ -380,7 +375,6 @@ func (client ProductApisClient) RemoveSender(req *http.Request) (*http.Response,
 func (client ProductApisClient) RemoveResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

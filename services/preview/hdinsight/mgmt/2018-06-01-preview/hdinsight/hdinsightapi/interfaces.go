@@ -37,6 +37,7 @@ type ClustersClientAPI interface {
 	Resize(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterResizeParameters) (result hdinsight.ClustersResizeFuture, err error)
 	RotateDiskEncryptionKey(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterDiskEncryptionParameters) (result hdinsight.ClustersRotateDiskEncryptionKeyFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterPatchParameters) (result hdinsight.Cluster, err error)
+	UpdateAutoScaleConfiguration(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.AutoscaleConfigurationUpdateParameter) (result hdinsight.ClustersUpdateAutoScaleConfigurationFuture, err error)
 	UpdateGatewaySettings(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.UpdateGatewaySettingsParameters) (result hdinsight.ClustersUpdateGatewaySettingsFuture, err error)
 }
 
@@ -109,3 +110,11 @@ type OperationsClientAPI interface {
 }
 
 var _ OperationsClientAPI = (*hdinsight.OperationsClient)(nil)
+
+// VirtualMachinesClientAPI contains the set of methods on the VirtualMachinesClient type.
+type VirtualMachinesClientAPI interface {
+	ListHosts(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ListHostInfo, err error)
+	RestartHosts(ctx context.Context, resourceGroupName string, clusterName string, hosts []string) (result hdinsight.VirtualMachinesRestartHostsFuture, err error)
+}
+
+var _ VirtualMachinesClientAPI = (*hdinsight.VirtualMachinesClient)(nil)

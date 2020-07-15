@@ -22,7 +22,7 @@ package storagesync
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2019-10-01/storagesync"
+	original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2020-03-01/storagesync"
 )
 
 const (
@@ -36,52 +36,33 @@ const (
 	Recursive ChangeDetectionMode = original.Recursive
 )
 
-type CloudTiering = original.CloudTiering
+type FeatureStatus = original.FeatureStatus
 
 const (
-	Off CloudTiering = original.Off
-	On  CloudTiering = original.On
+	Off FeatureStatus = original.Off
+	On  FeatureStatus = original.On
 )
 
-type CloudTiering1 = original.CloudTiering1
+type IncomingTrafficPolicy = original.IncomingTrafficPolicy
 
 const (
-	CloudTiering1Off CloudTiering1 = original.CloudTiering1Off
-	CloudTiering1On  CloudTiering1 = original.CloudTiering1On
+	AllowAllTraffic          IncomingTrafficPolicy = original.AllowAllTraffic
+	AllowVirtualNetworksOnly IncomingTrafficPolicy = original.AllowVirtualNetworksOnly
 )
 
-type CloudTiering2 = original.CloudTiering2
+type InitialDownloadPolicy = original.InitialDownloadPolicy
 
 const (
-	CloudTiering2Off CloudTiering2 = original.CloudTiering2Off
-	CloudTiering2On  CloudTiering2 = original.CloudTiering2On
+	AvoidTieredFiles           InitialDownloadPolicy = original.AvoidTieredFiles
+	NamespaceOnly              InitialDownloadPolicy = original.NamespaceOnly
+	NamespaceThenModifiedFiles InitialDownloadPolicy = original.NamespaceThenModifiedFiles
 )
 
-type CombinedHealth = original.CombinedHealth
+type LocalCacheMode = original.LocalCacheMode
 
 const (
-	CombinedHealthError                                    CombinedHealth = original.CombinedHealthError
-	CombinedHealthHealthy                                  CombinedHealth = original.CombinedHealthHealthy
-	CombinedHealthNoActivity                               CombinedHealth = original.CombinedHealthNoActivity
-	CombinedHealthSyncBlockedForChangeDetectionPostRestore CombinedHealth = original.CombinedHealthSyncBlockedForChangeDetectionPostRestore
-	CombinedHealthSyncBlockedForRestore                    CombinedHealth = original.CombinedHealthSyncBlockedForRestore
-)
-
-type DownloadHealth = original.DownloadHealth
-
-const (
-	DownloadHealthError                                    DownloadHealth = original.DownloadHealthError
-	DownloadHealthHealthy                                  DownloadHealth = original.DownloadHealthHealthy
-	DownloadHealthNoActivity                               DownloadHealth = original.DownloadHealthNoActivity
-	DownloadHealthSyncBlockedForChangeDetectionPostRestore DownloadHealth = original.DownloadHealthSyncBlockedForChangeDetectionPostRestore
-	DownloadHealthSyncBlockedForRestore                    DownloadHealth = original.DownloadHealthSyncBlockedForRestore
-)
-
-type Health = original.Health
-
-const (
-	HealthError   Health = original.HealthError
-	HealthHealthy Health = original.HealthHealthy
+	DownloadNewAndModifiedFiles LocalCacheMode = original.DownloadNewAndModifiedFiles
+	UpdateLocallyCachedFiles    LocalCacheMode = original.UpdateLocallyCachedFiles
 )
 
 type NameAvailabilityReason = original.NameAvailabilityReason
@@ -91,42 +72,39 @@ const (
 	Invalid       NameAvailabilityReason = original.Invalid
 )
 
-type OfflineDataTransfer = original.OfflineDataTransfer
+type OperationDirection = original.OperationDirection
 
 const (
-	OfflineDataTransferOff OfflineDataTransfer = original.OfflineDataTransferOff
-	OfflineDataTransferOn  OfflineDataTransfer = original.OfflineDataTransferOn
+	Cancel OperationDirection = original.Cancel
+	Do     OperationDirection = original.Do
+	Undo   OperationDirection = original.Undo
 )
 
-type OfflineDataTransfer1 = original.OfflineDataTransfer1
+type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
 
 const (
-	OfflineDataTransfer1Off OfflineDataTransfer1 = original.OfflineDataTransfer1Off
-	OfflineDataTransfer1On  OfflineDataTransfer1 = original.OfflineDataTransfer1On
+	Creating  PrivateEndpointConnectionProvisioningState = original.Creating
+	Deleting  PrivateEndpointConnectionProvisioningState = original.Deleting
+	Failed    PrivateEndpointConnectionProvisioningState = original.Failed
+	Succeeded PrivateEndpointConnectionProvisioningState = original.Succeeded
 )
 
-type OfflineDataTransfer2 = original.OfflineDataTransfer2
+type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
 
 const (
-	OfflineDataTransfer2Off OfflineDataTransfer2 = original.OfflineDataTransfer2Off
-	OfflineDataTransfer2On  OfflineDataTransfer2 = original.OfflineDataTransfer2On
+	Approved PrivateEndpointServiceConnectionStatus = original.Approved
+	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
+	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
 )
 
-type OfflineDataTransferStatus = original.OfflineDataTransferStatus
+type ProgressType = original.ProgressType
 
 const (
-	Complete   OfflineDataTransferStatus = original.Complete
-	InProgress OfflineDataTransferStatus = original.InProgress
-	NotRunning OfflineDataTransferStatus = original.NotRunning
-	Stopping   OfflineDataTransferStatus = original.Stopping
-)
-
-type Operation = original.Operation
-
-const (
-	Cancel Operation = original.Cancel
-	Do     Operation = original.Do
-	Undo   Operation = original.Undo
+	Download   ProgressType = original.Download
+	Initialize ProgressType = original.Initialize
+	None       ProgressType = original.None
+	Recall     ProgressType = original.Recall
+	Upload     ProgressType = original.Upload
 )
 
 type Reason = original.Reason
@@ -139,32 +117,48 @@ const (
 	Warned       Reason = original.Warned
 )
 
-type Status = original.Status
+type ServerEndpointCloudTieringHealthState = original.ServerEndpointCloudTieringHealthState
 
 const (
-	Aborted   Status = original.Aborted
-	Active    Status = original.Active
-	Expired   Status = original.Expired
-	Failed    Status = original.Failed
-	Succeeded Status = original.Succeeded
+	ServerEndpointCloudTieringHealthStateError   ServerEndpointCloudTieringHealthState = original.ServerEndpointCloudTieringHealthStateError
+	ServerEndpointCloudTieringHealthStateHealthy ServerEndpointCloudTieringHealthState = original.ServerEndpointCloudTieringHealthStateHealthy
 )
 
-type SyncActivity = original.SyncActivity
+type ServerEndpointOfflineDataTransferState = original.ServerEndpointOfflineDataTransferState
 
 const (
-	Download          SyncActivity = original.Download
-	Upload            SyncActivity = original.Upload
-	UploadAndDownload SyncActivity = original.UploadAndDownload
+	Complete   ServerEndpointOfflineDataTransferState = original.Complete
+	InProgress ServerEndpointOfflineDataTransferState = original.InProgress
+	NotRunning ServerEndpointOfflineDataTransferState = original.NotRunning
+	Stopping   ServerEndpointOfflineDataTransferState = original.Stopping
 )
 
-type UploadHealth = original.UploadHealth
+type ServerEndpointSyncActivityState = original.ServerEndpointSyncActivityState
 
 const (
-	UploadHealthError                                    UploadHealth = original.UploadHealthError
-	UploadHealthHealthy                                  UploadHealth = original.UploadHealthHealthy
-	UploadHealthNoActivity                               UploadHealth = original.UploadHealthNoActivity
-	UploadHealthSyncBlockedForChangeDetectionPostRestore UploadHealth = original.UploadHealthSyncBlockedForChangeDetectionPostRestore
-	UploadHealthSyncBlockedForRestore                    UploadHealth = original.UploadHealthSyncBlockedForRestore
+	ServerEndpointSyncActivityStateDownload          ServerEndpointSyncActivityState = original.ServerEndpointSyncActivityStateDownload
+	ServerEndpointSyncActivityStateUpload            ServerEndpointSyncActivityState = original.ServerEndpointSyncActivityStateUpload
+	ServerEndpointSyncActivityStateUploadAndDownload ServerEndpointSyncActivityState = original.ServerEndpointSyncActivityStateUploadAndDownload
+)
+
+type ServerEndpointSyncHealthState = original.ServerEndpointSyncHealthState
+
+const (
+	ServerEndpointSyncHealthStateError                                    ServerEndpointSyncHealthState = original.ServerEndpointSyncHealthStateError
+	ServerEndpointSyncHealthStateHealthy                                  ServerEndpointSyncHealthState = original.ServerEndpointSyncHealthStateHealthy
+	ServerEndpointSyncHealthStateNoActivity                               ServerEndpointSyncHealthState = original.ServerEndpointSyncHealthStateNoActivity
+	ServerEndpointSyncHealthStateSyncBlockedForChangeDetectionPostRestore ServerEndpointSyncHealthState = original.ServerEndpointSyncHealthStateSyncBlockedForChangeDetectionPostRestore
+	ServerEndpointSyncHealthStateSyncBlockedForRestore                    ServerEndpointSyncHealthState = original.ServerEndpointSyncHealthStateSyncBlockedForRestore
+)
+
+type WorkflowStatus = original.WorkflowStatus
+
+const (
+	WorkflowStatusAborted   WorkflowStatus = original.WorkflowStatusAborted
+	WorkflowStatusActive    WorkflowStatus = original.WorkflowStatusActive
+	WorkflowStatusExpired   WorkflowStatus = original.WorkflowStatusExpired
+	WorkflowStatusFailed    WorkflowStatus = original.WorkflowStatusFailed
+	WorkflowStatusSucceeded WorkflowStatus = original.WorkflowStatusSucceeded
 )
 
 type APIError = original.APIError
@@ -207,6 +201,18 @@ type PostBackupResponse = original.PostBackupResponse
 type PostBackupResponseProperties = original.PostBackupResponseProperties
 type PostRestoreRequest = original.PostRestoreRequest
 type PreRestoreRequest = original.PreRestoreRequest
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsCreateFuture = original.PrivateEndpointConnectionsCreateFuture
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProxyResource = original.ProxyResource
 type RecallActionParameters = original.RecallActionParameters
 type RegisteredServer = original.RegisteredServer
@@ -230,6 +236,8 @@ type ServerEndpointFilesNotSyncingError = original.ServerEndpointFilesNotSyncing
 type ServerEndpointProperties = original.ServerEndpointProperties
 type ServerEndpointRecallError = original.ServerEndpointRecallError
 type ServerEndpointRecallStatus = original.ServerEndpointRecallStatus
+type ServerEndpointSyncActivityStatus = original.ServerEndpointSyncActivityStatus
+type ServerEndpointSyncSessionStatus = original.ServerEndpointSyncSessionStatus
 type ServerEndpointSyncStatus = original.ServerEndpointSyncStatus
 type ServerEndpointUpdateParameters = original.ServerEndpointUpdateParameters
 type ServerEndpointUpdateProperties = original.ServerEndpointUpdateProperties
@@ -241,17 +249,20 @@ type ServerEndpointsUpdateFuture = original.ServerEndpointsUpdateFuture
 type Service = original.Service
 type ServiceArray = original.ServiceArray
 type ServiceCreateParameters = original.ServiceCreateParameters
+type ServiceCreateParametersProperties = original.ServiceCreateParametersProperties
 type ServiceProperties = original.ServiceProperties
 type ServiceUpdateParameters = original.ServiceUpdateParameters
+type ServiceUpdateProperties = original.ServiceUpdateProperties
 type ServicesClient = original.ServicesClient
+type ServicesCreateFuture = original.ServicesCreateFuture
+type ServicesDeleteFuture = original.ServicesDeleteFuture
+type ServicesUpdateFuture = original.ServicesUpdateFuture
 type SubscriptionState = original.SubscriptionState
-type SyncActivityStatus = original.SyncActivityStatus
 type SyncGroup = original.SyncGroup
 type SyncGroupArray = original.SyncGroupArray
 type SyncGroupCreateParameters = original.SyncGroupCreateParameters
 type SyncGroupProperties = original.SyncGroupProperties
 type SyncGroupsClient = original.SyncGroupsClient
-type SyncSessionStatus = original.SyncSessionStatus
 type TrackedResource = original.TrackedResource
 type TriggerChangeDetectionParameters = original.TriggerChangeDetectionParameters
 type TriggerRolloverRequest = original.TriggerRolloverRequest
@@ -286,6 +297,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRegisteredServersClient(subscriptionID string) RegisteredServersClient {
 	return original.NewRegisteredServersClient(subscriptionID)
@@ -323,53 +346,50 @@ func NewWorkflowsClientWithBaseURI(baseURI string, subscriptionID string) Workfl
 func PossibleChangeDetectionModeValues() []ChangeDetectionMode {
 	return original.PossibleChangeDetectionModeValues()
 }
-func PossibleCloudTiering1Values() []CloudTiering1 {
-	return original.PossibleCloudTiering1Values()
+func PossibleFeatureStatusValues() []FeatureStatus {
+	return original.PossibleFeatureStatusValues()
 }
-func PossibleCloudTiering2Values() []CloudTiering2 {
-	return original.PossibleCloudTiering2Values()
+func PossibleIncomingTrafficPolicyValues() []IncomingTrafficPolicy {
+	return original.PossibleIncomingTrafficPolicyValues()
 }
-func PossibleCloudTieringValues() []CloudTiering {
-	return original.PossibleCloudTieringValues()
+func PossibleInitialDownloadPolicyValues() []InitialDownloadPolicy {
+	return original.PossibleInitialDownloadPolicyValues()
 }
-func PossibleCombinedHealthValues() []CombinedHealth {
-	return original.PossibleCombinedHealthValues()
-}
-func PossibleDownloadHealthValues() []DownloadHealth {
-	return original.PossibleDownloadHealthValues()
-}
-func PossibleHealthValues() []Health {
-	return original.PossibleHealthValues()
+func PossibleLocalCacheModeValues() []LocalCacheMode {
+	return original.PossibleLocalCacheModeValues()
 }
 func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 	return original.PossibleNameAvailabilityReasonValues()
 }
-func PossibleOfflineDataTransfer1Values() []OfflineDataTransfer1 {
-	return original.PossibleOfflineDataTransfer1Values()
+func PossibleOperationDirectionValues() []OperationDirection {
+	return original.PossibleOperationDirectionValues()
 }
-func PossibleOfflineDataTransfer2Values() []OfflineDataTransfer2 {
-	return original.PossibleOfflineDataTransfer2Values()
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
 }
-func PossibleOfflineDataTransferStatusValues() []OfflineDataTransferStatus {
-	return original.PossibleOfflineDataTransferStatusValues()
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
 }
-func PossibleOfflineDataTransferValues() []OfflineDataTransfer {
-	return original.PossibleOfflineDataTransferValues()
-}
-func PossibleOperationValues() []Operation {
-	return original.PossibleOperationValues()
+func PossibleProgressTypeValues() []ProgressType {
+	return original.PossibleProgressTypeValues()
 }
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()
 }
-func PossibleStatusValues() []Status {
-	return original.PossibleStatusValues()
+func PossibleServerEndpointCloudTieringHealthStateValues() []ServerEndpointCloudTieringHealthState {
+	return original.PossibleServerEndpointCloudTieringHealthStateValues()
 }
-func PossibleSyncActivityValues() []SyncActivity {
-	return original.PossibleSyncActivityValues()
+func PossibleServerEndpointOfflineDataTransferStateValues() []ServerEndpointOfflineDataTransferState {
+	return original.PossibleServerEndpointOfflineDataTransferStateValues()
 }
-func PossibleUploadHealthValues() []UploadHealth {
-	return original.PossibleUploadHealthValues()
+func PossibleServerEndpointSyncActivityStateValues() []ServerEndpointSyncActivityState {
+	return original.PossibleServerEndpointSyncActivityStateValues()
+}
+func PossibleServerEndpointSyncHealthStateValues() []ServerEndpointSyncHealthState {
+	return original.PossibleServerEndpointSyncHealthStateValues()
+}
+func PossibleWorkflowStatusValues() []WorkflowStatus {
+	return original.PossibleWorkflowStatusValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

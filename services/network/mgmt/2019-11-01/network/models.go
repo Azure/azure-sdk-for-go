@@ -3668,8 +3668,8 @@ type ApplicationGatewayHTTPListenerPropertiesFormat struct {
 	CustomErrorConfigurations *[]ApplicationGatewayCustomError `json:"customErrorConfigurations,omitempty"`
 	// FirewallPolicy - Reference to the FirewallPolicy resource.
 	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
-	// Hostnames - List of Host names for HTTP Listener that allows special wildcard characters as well.
-	Hostnames *[]string `json:"hostnames,omitempty"`
+	// HostNames - List of Host names for HTTP Listener that allows special wildcard characters as well.
+	HostNames *[]string `json:"hostNames,omitempty"`
 }
 
 // ApplicationGatewayIPConfiguration IP configuration of an application gateway. Currently 1 public and 1
@@ -24868,6 +24868,64 @@ type PrivateLinkServicePropertiesAutoApproval struct {
 type PrivateLinkServicePropertiesVisibility struct {
 	// Subscriptions - The list of subscriptions.
 	Subscriptions *[]string `json:"subscriptions,omitempty"`
+}
+
+// PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourceGroupFuture an abstraction for monitoring
+// and retrieving the results of a long-running operation.
+type PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourceGroupFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourceGroupFuture) Result(client PrivateLinkServicesClient) (plsv PrivateLinkServiceVisibility, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourceGroupFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourceGroupFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if plsv.Response.Response, err = future.GetResult(sender); err == nil && plsv.Response.Response.StatusCode != http.StatusNoContent {
+		plsv, err = client.CheckPrivateLinkServiceVisibilityByResourceGroupResponder(plsv.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourceGroupFuture", "Result", plsv.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// PrivateLinkServicesCheckPrivateLinkServiceVisibilityFuture an abstraction for monitoring and retrieving
+// the results of a long-running operation.
+type PrivateLinkServicesCheckPrivateLinkServiceVisibilityFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *PrivateLinkServicesCheckPrivateLinkServiceVisibilityFuture) Result(client PrivateLinkServicesClient) (plsv PrivateLinkServiceVisibility, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesCheckPrivateLinkServiceVisibilityFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.PrivateLinkServicesCheckPrivateLinkServiceVisibilityFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if plsv.Response.Response, err = future.GetResult(sender); err == nil && plsv.Response.Response.StatusCode != http.StatusNoContent {
+		plsv, err = client.CheckPrivateLinkServiceVisibilityResponder(plsv.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesCheckPrivateLinkServiceVisibilityFuture", "Result", plsv.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // PrivateLinkServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a

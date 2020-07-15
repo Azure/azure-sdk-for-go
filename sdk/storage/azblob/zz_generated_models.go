@@ -8,10 +8,11 @@ package azblob
 import (
 	"encoding/xml"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // An Access policy

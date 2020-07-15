@@ -8,11 +8,12 @@ package azblob
 import (
 	"context"
 	"encoding/base64"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // PageBlobOperations contains the methods for the PageBlob group.

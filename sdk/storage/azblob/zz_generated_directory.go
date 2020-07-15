@@ -7,10 +7,11 @@ package azblob
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // DirectoryOperations contains the methods for the Directory group.

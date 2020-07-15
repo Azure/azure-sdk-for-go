@@ -10,6 +10,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/shared"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
@@ -31,7 +33,7 @@ func getCredential() azcore.Credential {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	if accountName != "" && accountKey != "" {
-		keyCred, err := NewSharedKeyCredential(accountName, accountKey)
+		keyCred, err := shared.NewSharedKeyCredential(accountName, accountKey)
 		if err != nil {
 			panic(err)
 		}
@@ -51,7 +53,12 @@ func getCredential() azcore.Credential {
 func getEndpoint() string {
 	storageEndpoint := os.Getenv("AZURE_STORAGE_ENDPOINT")
 	if storageEndpoint == "" {
-		panic("missing environment variable AZURE_STORAGE_ENDPOINT")
+		accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+		if accountName == "" {
+			panic("missing environment variable AZURE_STORAGE_ACCOUNT_NAME and AZURE_STORAGE_ENDPOINT")
+		}
+
+		return fmt.Sprintf("https://%s.blob.core.windows.net", accountName)
 	}
 	return storageEndpoint
 }

@@ -63,6 +63,21 @@ func PossibleErrorCodeTypeValues() []ErrorCodeType {
 	return []ErrorCodeType{BadArgument, EndpointKeysError, ExtractionFailure, Forbidden, KbNotFound, NotFound, OperationNotFound, QnaRuntimeError, QuotaExceeded, ServiceError, SKULimitExceeded, Unauthorized, Unspecified, ValidationFailure}
 }
 
+// StrictFiltersCompoundOperationType enumerates the values for strict filters compound operation type.
+type StrictFiltersCompoundOperationType string
+
+const (
+	// AND ...
+	AND StrictFiltersCompoundOperationType = "AND"
+	// OR ...
+	OR StrictFiltersCompoundOperationType = "OR"
+)
+
+// PossibleStrictFiltersCompoundOperationTypeValues returns an array of possible values for the StrictFiltersCompoundOperationType const type.
+func PossibleStrictFiltersCompoundOperationTypeValues() []StrictFiltersCompoundOperationType {
+	return []StrictFiltersCompoundOperationType{AND, OR}
+}
+
 // ContextDTO context associated with Qna.
 type ContextDTO struct {
 	// IsContextOnly - To mark if a prompt is relevant only with a previous question or not.
@@ -260,6 +275,8 @@ type QueryDTO struct {
 	RankerType *string `json:"rankerType,omitempty"`
 	// StrictFilters - Find only answers that contain these metadata.
 	StrictFilters *[]MetadataDTO `json:"strictFilters,omitempty"`
+	// StrictFiltersCompoundOperationType - Optional field. Set to OR for using OR as Operation for Strict Filters. Possible values include: 'AND', 'OR'
+	StrictFiltersCompoundOperationType StrictFiltersCompoundOperationType `json:"strictFiltersCompoundOperationType,omitempty"`
 }
 
 // QueryDTOContext context object with previous QnA's information.

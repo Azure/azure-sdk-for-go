@@ -92,7 +92,6 @@ func (client EndpointKeysClient) GetKeysSender(req *http.Request) (*http.Respons
 func (client EndpointKeysClient) GetKeysResponder(resp *http.Response) (result EndpointKeysDTO, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -163,7 +162,6 @@ func (client EndpointKeysClient) RefreshKeysSender(req *http.Request) (*http.Res
 func (client EndpointKeysClient) RefreshKeysResponder(resp *http.Response) (result EndpointKeysDTO, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

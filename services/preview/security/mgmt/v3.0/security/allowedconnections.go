@@ -100,7 +100,7 @@ func (client AllowedConnectionsClient) GetPreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -124,7 +124,6 @@ func (client AllowedConnectionsClient) GetSender(req *http.Request) (*http.Respo
 func (client AllowedConnectionsClient) GetResponder(resp *http.Response) (result AllowedConnectionsResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -178,7 +177,7 @@ func (client AllowedConnectionsClient) ListPreparer(ctx context.Context) (*http.
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -202,7 +201,6 @@ func (client AllowedConnectionsClient) ListSender(req *http.Request) (*http.Resp
 func (client AllowedConnectionsClient) ListResponder(resp *http.Response) (result AllowedConnectionsList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -294,7 +292,7 @@ func (client AllowedConnectionsClient) ListByHomeRegionPreparer(ctx context.Cont
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -318,7 +316,6 @@ func (client AllowedConnectionsClient) ListByHomeRegionSender(req *http.Request)
 func (client AllowedConnectionsClient) ListByHomeRegionResponder(resp *http.Response) (result AllowedConnectionsList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

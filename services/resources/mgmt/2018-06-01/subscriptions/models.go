@@ -28,6 +28,21 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/subscriptions"
 
+// ResourceNameStatus enumerates the values for resource name status.
+type ResourceNameStatus string
+
+const (
+	// Allowed ...
+	Allowed ResourceNameStatus = "Allowed"
+	// Reserved ...
+	Reserved ResourceNameStatus = "Reserved"
+)
+
+// PossibleResourceNameStatusValues returns an array of possible values for the ResourceNameStatus const type.
+func PossibleResourceNameStatusValues() []ResourceNameStatus {
+	return []ResourceNameStatus{Allowed, Reserved}
+}
+
 // SpendingLimit enumerates the values for spending limit.
 type SpendingLimit string
 
@@ -64,6 +79,32 @@ const (
 // PossibleStateValues returns an array of possible values for the State const type.
 func PossibleStateValues() []State {
 	return []State{Deleted, Disabled, Enabled, PastDue, Warned}
+}
+
+// CheckResourceNameResult resource Name valid if not a reserved word, does not contain a reserved word and
+// does not start with a reserved word
+type CheckResourceNameResult struct {
+	autorest.Response `json:"-"`
+	// Name - Name of Resource
+	Name *string `json:"name,omitempty"`
+	// Type - Type of Resource
+	Type *string `json:"type,omitempty"`
+	// Status - Is the resource name Allowed or Reserved. Possible values include: 'Allowed', 'Reserved'
+	Status ResourceNameStatus `json:"status,omitempty"`
+}
+
+// ErrorDefinition error description and code explaining why resource name is invalid.
+type ErrorDefinition struct {
+	// Message - Description of the error.
+	Message *string `json:"message,omitempty"`
+	// Code - Code of the error.
+	Code *string `json:"code,omitempty"`
+}
+
+// ErrorResponse error response.
+type ErrorResponse struct {
+	// Error - The error details.
+	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
 // ListResult subscription list operation response.
@@ -410,6 +451,14 @@ type Policies struct {
 	QuotaID *string `json:"quotaId,omitempty"`
 	// SpendingLimit - READ-ONLY; The subscription spending limit. Possible values include: 'On', 'Off', 'CurrentPeriodOff'
 	SpendingLimit SpendingLimit `json:"spendingLimit,omitempty"`
+}
+
+// ResourceName name and Type of the Resource
+type ResourceName struct {
+	// Name - Name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the resource
+	Type *string `json:"type,omitempty"`
 }
 
 // Subscription subscription information.

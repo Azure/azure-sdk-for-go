@@ -118,7 +118,6 @@ func (client IoTSecuritySolutionsClient) ListSender(req *http.Request) (*http.Re
 func (client IoTSecuritySolutionsClient) ListResponder(resp *http.Response) (result IoTSecuritySolutionsList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -119,7 +119,6 @@ func (client ResourceHealthMetadataClient) GetBySiteSender(req *http.Request) (*
 func (client ResourceHealthMetadataClient) GetBySiteResponder(resp *http.Response) (result ResourceHealthMetadata, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -205,7 +204,6 @@ func (client ResourceHealthMetadataClient) GetBySiteSlotSender(req *http.Request
 func (client ResourceHealthMetadataClient) GetBySiteSlotResponder(resp *http.Response) (result ResourceHealthMetadata, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -277,7 +275,6 @@ func (client ResourceHealthMetadataClient) ListSender(req *http.Request) (*http.
 func (client ResourceHealthMetadataClient) ListResponder(resp *http.Response) (result ResourceHealthMetadataCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -397,7 +394,6 @@ func (client ResourceHealthMetadataClient) ListByResourceGroupSender(req *http.R
 func (client ResourceHealthMetadataClient) ListByResourceGroupResponder(resp *http.Response) (result ResourceHealthMetadataCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -519,7 +515,6 @@ func (client ResourceHealthMetadataClient) ListBySiteSender(req *http.Request) (
 func (client ResourceHealthMetadataClient) ListBySiteResponder(resp *http.Response) (result ResourceHealthMetadataCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -643,7 +638,6 @@ func (client ResourceHealthMetadataClient) ListBySiteSlotSender(req *http.Reques
 func (client ResourceHealthMetadataClient) ListBySiteSlotResponder(resp *http.Response) (result ResourceHealthMetadataCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

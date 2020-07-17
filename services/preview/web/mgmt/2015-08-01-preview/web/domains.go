@@ -112,7 +112,6 @@ func (client DomainsClient) CreateOrUpdateDomainSender(req *http.Request) (*http
 func (client DomainsClient) CreateOrUpdateDomainResponder(resp *http.Response) (result Domain, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -192,7 +191,6 @@ func (client DomainsClient) DeleteDomainSender(req *http.Request) (*http.Respons
 func (client DomainsClient) DeleteDomainResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -268,7 +266,6 @@ func (client DomainsClient) GetDomainSender(req *http.Request) (*http.Response, 
 func (client DomainsClient) GetDomainResponder(resp *http.Response) (result Domain, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -346,7 +343,6 @@ func (client DomainsClient) GetDomainOperationSender(req *http.Request) (*http.R
 func (client DomainsClient) GetDomainOperationResponder(resp *http.Response) (result Domain, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -421,7 +417,6 @@ func (client DomainsClient) GetDomainsSender(req *http.Request) (*http.Response,
 func (client DomainsClient) GetDomainsResponder(resp *http.Response) (result DomainCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -537,7 +532,6 @@ func (client DomainsClient) UpdateDomainSender(req *http.Request) (*http.Respons
 func (client DomainsClient) UpdateDomainResponder(resp *http.Response) (result Domain, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

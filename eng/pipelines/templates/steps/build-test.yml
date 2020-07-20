@@ -16,19 +16,34 @@ steps:
     workingDirectory: '${{parameters.GoWorkspace}}'
 
   - pwsh: |
-      go vet $(go list $(SCOPE))
-    displayName: 'Vet'
-    workingDirectory: '${{parameters.GoWorkspace}}'
-
-  - pwsh: |
-      go build -v $(go list $(SCOPE))
+      foreach ($s in $SCOPE) {
+        pushd $s
+        go build -v $s
+      }
     displayName: 'Build'
     workingDirectory: '${{parameters.GoWorkspace}}'
+    env:
+      GO111MODULE: 'on'
 
   - pwsh: |
-      go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic $(SCOPE) | go-junit-report -set-exit-code > $(Build.SourcesDirectory)/report.xml
+      foreach ($s in $SCOPE) {
+        pushd $s
+        go vet
+      }
+    displayName: 'Vet'
+    workingDirectory: '${{parameters.GoWorkspace}}'
+    env:
+      GO111MODULE: 'on'
+
+  - pwsh: |
+      foreach ($s in $SCOPE) {
+        pushd $s
+        go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > $(Build.SourcesDirectory)/report.xml
+      }
     displayName: 'Run Tests'
     workingDirectory: '${{parameters.GoWorkspace}}'
+    env:
+      GO111MODULE: 'on'
 
   - pwsh: |
       gocov convert ./coverage.txt > ./coverage.json

@@ -13,7 +13,7 @@ steps:
       go get github.com/AlekSi/gocov-xml
       go get github.com/matm/gocov-html
     displayName: "Install Coverage and Junit Dependencies"
-    workingDirectory: '${{parameters.GoWorkspace}}'
+    workingDirectory: '${{parameters.GoWorkspace}}/sdk'
 
   - pwsh: |
       foreach ($s in $SCOPE) {
@@ -21,7 +21,7 @@ steps:
         go build -v $s
       }
     displayName: 'Build'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+    workingDirectory: '${{parameters.GoWorkspace}}/sdk'
     env:
       GO111MODULE: 'on'
 
@@ -31,34 +31,39 @@ steps:
         go vet
       }
     displayName: 'Vet'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+    workingDirectory: '${{parameters.GoWorkspace}}/sdk'
     env:
       GO111MODULE: 'on'
 
   - pwsh: |
       foreach ($s in $SCOPE) {
         pushd $s
-        go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > $(Build.SourcesDirectory)/report.xml
+        go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > report.xml
       }
     displayName: 'Run Tests'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+    workingDirectory: '${{parameters.GoWorkspace}}/sdk'
     env:
       GO111MODULE: 'on'
 
   - pwsh: |
-      gocov convert ./coverage.txt > ./coverage.json
-      
-      # gocov converts rely on standard input
-      Get-Content ./coverage.json | gocov-xml > $(Build.SourcesDirectory)/coverage.xml
-      Get-Content ./coverage.json | gocov-html > $(Build.SourcesDirectory)/coverage.html
+      foreach ($s in $SCOPE) {
+        pushd $s
+        if (Test-Path ./coverage.txt) {
+          gocov convert ./coverage.txt > ./coverage.json
+        
+          # gocov converts rely on standard input
+          Get-Content ./coverage.json | gocov-xml > $(Build.SourcesDirectory)/coverage.xml
+          Get-Content ./coverage.json | gocov-html > $(Build.SourcesDirectory)/coverage.html
+        }
+      }
     displayName: 'Generate Coverage XML'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+    workingDirectory: '${{parameters.GoWorkspace}}/sdk'
 
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
       testRunner: JUnit
-      testResultsFiles: '$(Build.SourcesDirectory)/report.xml'
+      testResultsFiles: '${{parameters.GoWorkspace}}/sdk/**/report.xml'
       testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
 
   - task: PublishCodeCoverageResults@1

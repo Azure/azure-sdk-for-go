@@ -18,6 +18,7 @@ steps:
   - pwsh: |
       foreach ($s in $SCOPE) {
         pushd $s
+        Write-Host "##vso[command]Executing go build -v $s"
         go build -v $s
       }
     displayName: 'Build'
@@ -28,6 +29,7 @@ steps:
   - pwsh: |
       foreach ($s in $SCOPE) {
         pushd $s
+        Write-Host "##vso[command]Executing go vet $s"
         go vet
       }
     displayName: 'Vet'
@@ -38,6 +40,7 @@ steps:
   - pwsh: |
       foreach ($s in $SCOPE) {
         pushd $s
+        Write-Host "##vso[command]Executing go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > report.xml"
         go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > report.xml
       }
     displayName: 'Run Tests'

@@ -20,7 +20,7 @@ steps:
 
       foreach ($s in $SCOPE) {
         pushd $s
-        Write-Host "##vso[command]Executing go build -v $s"
+        Write-Host "##[command]Executing go build -v $s"
         go build -v $s
       }
     displayName: 'Build'
@@ -32,7 +32,7 @@ steps:
       $SCOPE = $env:SCOPE -split ","
       foreach ($s in $SCOPE) {
         pushd $s
-        Write-Host "##vso[command]Executing go vet $s"
+        Write-Host "##[command]Executing go vet $s"
         go vet
       }
     displayName: 'Vet'
@@ -44,7 +44,7 @@ steps:
       $SCOPE = $env:SCOPE -split ","
       foreach ($s in $SCOPE) {
         pushd $s
-        Write-Host "##vso[command]Executing go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > report.xml"
+        Write-Host "##[command]Executing go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > report.xml"
         go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > report.xml
       }
     displayName: 'Run Tests'

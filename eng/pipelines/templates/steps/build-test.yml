@@ -18,7 +18,7 @@ steps:
   - pwsh: |
       $SCOPE = $env:SCOPE -split ","
 
-      foreach ($s in SCOPE) {
+      foreach ($s in $SCOPE) {
         pushd $s
         Write-Host "##vso[command]Executing go build -v $s"
         go build -v $s

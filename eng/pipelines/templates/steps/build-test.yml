@@ -16,7 +16,9 @@ steps:
     workingDirectory: '${{parameters.GoWorkspace}}sdk'
 
   - pwsh: |
-      foreach ($s in $SCOPE) {
+      $SCOPE = $env:SCOPE -split ","
+
+      foreach ($s in SCOPE) {
         pushd $s
         Write-Host "##vso[command]Executing go build -v $s"
         go build -v $s
@@ -27,6 +29,7 @@ steps:
       GO111MODULE: 'on'
 
   - pwsh: |
+      $SCOPE = $env:SCOPE -split ","
       foreach ($s in $SCOPE) {
         pushd $s
         Write-Host "##vso[command]Executing go vet $s"
@@ -38,6 +41,7 @@ steps:
       GO111MODULE: 'on'
 
   - pwsh: |
+      $SCOPE = $env:SCOPE -split ","
       foreach ($s in $SCOPE) {
         pushd $s
         Write-Host "##vso[command]Executing go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > report.xml"
@@ -49,6 +53,7 @@ steps:
       GO111MODULE: 'on'
 
   - pwsh: |
+      $SCOPE = $env:SCOPE -split ","
       foreach ($s in $SCOPE) {
         pushd $s
         if (Test-Path ./coverage.txt) {

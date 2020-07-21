@@ -13,7 +13,7 @@ steps:
       go get github.com/AlekSi/gocov-xml
       go get github.com/matm/gocov-html
     displayName: "Install Coverage and Junit Dependencies"
-    workingDirectory: '${{parameters.GoWorkspace}}/sdk'
+    workingDirectory: '${{parameters.GoWorkspace}}sdk'
 
   - pwsh: |
       foreach ($s in $SCOPE) {
@@ -21,7 +21,7 @@ steps:
         go build -v $s
       }
     displayName: 'Build'
-    workingDirectory: '${{parameters.GoWorkspace}}/sdk'
+    workingDirectory: '${{parameters.GoWorkspace}}sdk'
     env:
       GO111MODULE: 'on'
 
@@ -31,7 +31,7 @@ steps:
         go vet
       }
     displayName: 'Vet'
-    workingDirectory: '${{parameters.GoWorkspace}}/sdk'
+    workingDirectory: '${{parameters.GoWorkspace}}sdk'
     env:
       GO111MODULE: 'on'
 
@@ -41,7 +41,7 @@ steps:
         go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > report.xml
       }
     displayName: 'Run Tests'
-    workingDirectory: '${{parameters.GoWorkspace}}/sdk'
+    workingDirectory: '${{parameters.GoWorkspace}}sdk'
     env:
       GO111MODULE: 'on'
 
@@ -57,13 +57,13 @@ steps:
         }
       }
     displayName: 'Generate Coverage XML'
-    workingDirectory: '${{parameters.GoWorkspace}}/sdk'
+    workingDirectory: '${{parameters.GoWorkspace}}sdk'
 
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
       testRunner: JUnit
-      testResultsFiles: '${{parameters.GoWorkspace}}/sdk/**/report.xml'
+      testResultsFiles: '${{parameters.GoWorkspace}}sdk/**/report.xml'
       testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
 
   - task: PublishCodeCoverageResults@1

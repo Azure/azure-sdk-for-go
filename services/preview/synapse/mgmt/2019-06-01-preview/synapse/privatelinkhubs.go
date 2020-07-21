@@ -26,202 +26,30 @@ import (
 	"net/http"
 )
 
-// WorkspacesClient is the azure Synapse Analytics Management Client
-type WorkspacesClient struct {
+// PrivateLinkHubsClient is the azure Synapse Analytics Management Client
+type PrivateLinkHubsClient struct {
 	BaseClient
 }
 
-// NewWorkspacesClient creates an instance of the WorkspacesClient client.
-func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
-	return NewWorkspacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewPrivateLinkHubsClient creates an instance of the PrivateLinkHubsClient client.
+func NewPrivateLinkHubsClient(subscriptionID string) PrivateLinkHubsClient {
+	return NewPrivateLinkHubsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWorkspacesClientWithBaseURI creates an instance of the WorkspacesClient client using a custom endpoint.  Use this
-// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
-	return WorkspacesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewPrivateLinkHubsClientWithBaseURI creates an instance of the PrivateLinkHubsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewPrivateLinkHubsClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkHubsClient {
+	return PrivateLinkHubsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates a workspace
+// CreateOrUpdate creates or updates a privateLinkHub
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
-// workspaceInfo - workspace create or update request properties
-func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, workspaceInfo Workspace) (result WorkspacesCreateOrUpdateFuture, err error) {
+// privateLinkHubName - the name of the privateLinkHub
+// privateLinkHubInfo - privateLinkHub create or update request properties
+func (client PrivateLinkHubsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateLinkHubInfo PrivateLinkHub) (result PrivateLinkHub, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.CreateOrUpdate")
-		defer func() {
-			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.WorkspacesClient", "CreateOrUpdate", err.Error())
-	}
-
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, workspaceInfo)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "CreateOrUpdate", nil, "Failure preparing request")
-		return
-	}
-
-	result, err = client.CreateOrUpdateSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
-		return
-	}
-
-	return
-}
-
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client WorkspacesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, workspaceInfo Workspace) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":     autorest.Encode("path", workspaceName),
-	}
-
-	const APIVersion = "2019-06-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}", pathParameters),
-		autorest.WithJSON(workspaceInfo),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkspacesClient) CreateOrUpdateSender(req *http.Request) (future WorkspacesCreateOrUpdateFuture, err error) {
-	var resp *http.Response
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
-
-// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
-// closes the http.Response Body.
-func (client WorkspacesClient) CreateOrUpdateResponder(resp *http.Response) (result Workspace, err error) {
-	err = autorest.Respond(
-		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// Delete deletes a workspace
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
-func (client WorkspacesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string) (result WorkspacesDeleteFuture, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.Delete")
-		defer func() {
-			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.WorkspacesClient", "Delete", err.Error())
-	}
-
-	req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "Delete", nil, "Failure preparing request")
-		return
-	}
-
-	result, err = client.DeleteSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "Delete", result.Response(), "Failure sending request")
-		return
-	}
-
-	return
-}
-
-// DeletePreparer prepares the Delete request.
-func (client WorkspacesClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":     autorest.Encode("path", workspaceName),
-	}
-
-	const APIVersion = "2019-06-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkspacesClient) DeleteSender(req *http.Request) (future WorkspacesDeleteFuture, err error) {
-	var resp *http.Response
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
-
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client WorkspacesClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
-	err = autorest.Respond(
-		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// Get gets a workspace
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
-func (client WorkspacesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string) (result Workspace, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkHubsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -237,36 +65,207 @@ func (client WorkspacesClient) Get(ctx context.Context, resourceGroupName string
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.WorkspacesClient", "Get", err.Error())
+		return result, validation.NewError("synapse.PrivateLinkHubsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, privateLinkHubName, privateLinkHubInfo)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateOrUpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "CreateOrUpdate", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client PrivateLinkHubsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateLinkHubInfo PrivateLinkHub) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"privateLinkHubName": autorest.Encode("path", privateLinkHubName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}", pathParameters),
+		autorest.WithJSON(privateLinkHubInfo),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client PrivateLinkHubsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client PrivateLinkHubsClient) CreateOrUpdateResponder(resp *http.Response) (result PrivateLinkHub, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Delete deletes a privateLinkHub
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateLinkHubName - the name of the privateLinkHub
+func (client PrivateLinkHubsClient) Delete(ctx context.Context, resourceGroupName string, privateLinkHubName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkHubsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("synapse.PrivateLinkHubsClient", "Delete", err.Error())
+	}
+
+	req, err := client.DeletePreparer(ctx, resourceGroupName, privateLinkHubName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "Delete", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "Delete", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "Delete", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client PrivateLinkHubsClient) DeletePreparer(ctx context.Context, resourceGroupName string, privateLinkHubName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"privateLinkHubName": autorest.Encode("path", privateLinkHubName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client PrivateLinkHubsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client PrivateLinkHubsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Get gets a privateLinkHub
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateLinkHubName - the name of the privateLinkHub
+func (client PrivateLinkHubsClient) Get(ctx context.Context, resourceGroupName string, privateLinkHubName string) (result PrivateLinkHub, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkHubsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("synapse.PrivateLinkHubsClient", "Get", err.Error())
+	}
+
+	req, err := client.GetPreparer(ctx, resourceGroupName, privateLinkHubName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client WorkspacesClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+func (client PrivateLinkHubsClient) GetPreparer(ctx context.Context, resourceGroupName string, privateLinkHubName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":     autorest.Encode("path", workspaceName),
+		"privateLinkHubName": autorest.Encode("path", privateLinkHubName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-06-01-preview"
@@ -277,20 +276,20 @@ func (client WorkspacesClient) GetPreparer(ctx context.Context, resourceGroupNam
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkspacesClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client PrivateLinkHubsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkspacesClient) GetResponder(resp *http.Response) (result Workspace, err error) {
+func (client PrivateLinkHubsClient) GetResponder(resp *http.Response) (result PrivateLinkHub, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -300,14 +299,14 @@ func (client WorkspacesClient) GetResponder(resp *http.Response) (result Workspa
 	return
 }
 
-// List returns a list of workspaces in a subscription
-func (client WorkspacesClient) List(ctx context.Context) (result WorkspaceInfoListResultPage, err error) {
+// List returns a list of privateLinkHubs in a subscription
+func (client PrivateLinkHubsClient) List(ctx context.Context) (result PrivateLinkHubInfoListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkHubsClient.List")
 		defer func() {
 			sc := -1
-			if result.wilr.Response.Response != nil {
-				sc = result.wilr.Response.Response.StatusCode
+			if result.plhilr.Response.Response != nil {
+				sc = result.plhilr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -315,33 +314,33 @@ func (client WorkspacesClient) List(ctx context.Context) (result WorkspaceInfoLi
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.WorkspacesClient", "List", err.Error())
+		return result, validation.NewError("synapse.PrivateLinkHubsClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.wilr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "List", resp, "Failure sending request")
+		result.plhilr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.wilr, err = client.ListResponder(resp)
+	result.plhilr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client WorkspacesClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client PrivateLinkHubsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -354,20 +353,20 @@ func (client WorkspacesClient) ListPreparer(ctx context.Context) (*http.Request,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/workspaces", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/privateLinkHubs", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkspacesClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client PrivateLinkHubsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client WorkspacesClient) ListResponder(resp *http.Response) (result WorkspaceInfoListResult, err error) {
+func (client PrivateLinkHubsClient) ListResponder(resp *http.Response) (result PrivateLinkHubInfoListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -378,10 +377,10 @@ func (client WorkspacesClient) ListResponder(resp *http.Response) (result Worksp
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client WorkspacesClient) listNextResults(ctx context.Context, lastResults WorkspaceInfoListResult) (result WorkspaceInfoListResult, err error) {
-	req, err := lastResults.workspaceInfoListResultPreparer(ctx)
+func (client PrivateLinkHubsClient) listNextResults(ctx context.Context, lastResults PrivateLinkHubInfoListResult) (result PrivateLinkHubInfoListResult, err error) {
+	req, err := lastResults.privateLinkHubInfoListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -389,19 +388,19 @@ func (client WorkspacesClient) listNextResults(ctx context.Context, lastResults 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client WorkspacesClient) ListComplete(ctx context.Context) (result WorkspaceInfoListResultIterator, err error) {
+func (client PrivateLinkHubsClient) ListComplete(ctx context.Context) (result PrivateLinkHubInfoListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkHubsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -414,16 +413,16 @@ func (client WorkspacesClient) ListComplete(ctx context.Context) (result Workspa
 	return
 }
 
-// ListByResourceGroup returns a list of workspaces in a resource group
+// ListByResourceGroup returns a list of privateLinkHubs in a resource group
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-func (client WorkspacesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result WorkspaceInfoListResultPage, err error) {
+func (client PrivateLinkHubsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result PrivateLinkHubInfoListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.ListByResourceGroup")
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkHubsClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
-			if result.wilr.Response.Response != nil {
-				sc = result.wilr.Response.Response.StatusCode
+			if result.plhilr.Response.Response != nil {
+				sc = result.plhilr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -435,33 +434,33 @@ func (client WorkspacesClient) ListByResourceGroup(ctx context.Context, resource
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.WorkspacesClient", "ListByResourceGroup", err.Error())
+		return result, validation.NewError("synapse.PrivateLinkHubsClient", "ListByResourceGroup", err.Error())
 	}
 
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
-		result.wilr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "ListByResourceGroup", resp, "Failure sending request")
+		result.plhilr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
-	result.wilr, err = client.ListByResourceGroupResponder(resp)
+	result.plhilr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client WorkspacesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client PrivateLinkHubsClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -475,20 +474,20 @@ func (client WorkspacesClient) ListByResourceGroupPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHub", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkspacesClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
+func (client PrivateLinkHubsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client WorkspacesClient) ListByResourceGroupResponder(resp *http.Response) (result WorkspaceInfoListResult, err error) {
+func (client PrivateLinkHubsClient) ListByResourceGroupResponder(resp *http.Response) (result PrivateLinkHubInfoListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -499,10 +498,10 @@ func (client WorkspacesClient) ListByResourceGroupResponder(resp *http.Response)
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client WorkspacesClient) listByResourceGroupNextResults(ctx context.Context, lastResults WorkspaceInfoListResult) (result WorkspaceInfoListResult, err error) {
-	req, err := lastResults.workspaceInfoListResultPreparer(ctx)
+func (client PrivateLinkHubsClient) listByResourceGroupNextResults(ctx context.Context, lastResults PrivateLinkHubInfoListResult) (result PrivateLinkHubInfoListResult, err error) {
+	req, err := lastResults.privateLinkHubInfoListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -510,19 +509,19 @@ func (client WorkspacesClient) listByResourceGroupNextResults(ctx context.Contex
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client WorkspacesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result WorkspaceInfoListResultIterator, err error) {
+func (client PrivateLinkHubsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result PrivateLinkHubInfoListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.ListByResourceGroup")
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkHubsClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -535,18 +534,18 @@ func (client WorkspacesClient) ListByResourceGroupComplete(ctx context.Context, 
 	return
 }
 
-// Update updates a workspace
+// Update updates a privateLinkHub
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
-// workspacePatchInfo - workspace patch request properties
-func (client WorkspacesClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, workspacePatchInfo WorkspacePatchInfo) (result WorkspacesUpdateFuture, err error) {
+// privateLinkHubName - the name of the privateLinkHub
+// privateLinkHubPatchInfo - privateLinkHub patch request properties
+func (client PrivateLinkHubsClient) Update(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateLinkHubPatchInfo PrivateLinkHubPatchInfo) (result PrivateLinkHub, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkHubsClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -558,30 +557,36 @@ func (client WorkspacesClient) Update(ctx context.Context, resourceGroupName str
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.WorkspacesClient", "Update", err.Error())
+		return result, validation.NewError("synapse.PrivateLinkHubsClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, workspaceName, workspacePatchInfo)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, privateLinkHubName, privateLinkHubPatchInfo)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.UpdateSender(req)
+	resp, err := client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspacesClient", "Update", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "Update", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // UpdatePreparer prepares the Update request.
-func (client WorkspacesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, workspacePatchInfo WorkspacePatchInfo) (*http.Request, error) {
+func (client PrivateLinkHubsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateLinkHubPatchInfo PrivateLinkHubPatchInfo) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":     autorest.Encode("path", workspaceName),
+		"privateLinkHubName": autorest.Encode("path", privateLinkHubName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-06-01-preview"
@@ -593,27 +598,21 @@ func (client WorkspacesClient) UpdatePreparer(ctx context.Context, resourceGroup
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}", pathParameters),
-		autorest.WithJSON(workspacePatchInfo),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}", pathParameters),
+		autorest.WithJSON(privateLinkHubPatchInfo),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkspacesClient) UpdateSender(req *http.Request) (future WorkspacesUpdateFuture, err error) {
-	var resp *http.Response
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
+func (client PrivateLinkHubsClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client WorkspacesClient) UpdateResponder(resp *http.Response) (result Workspace, err error) {
+func (client PrivateLinkHubsClient) UpdateResponder(resp *http.Response) (result PrivateLinkHub, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),

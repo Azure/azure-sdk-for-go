@@ -26,31 +26,32 @@ import (
 	"net/http"
 )
 
-// SQLPoolConnectionPoliciesClient is the azure Synapse Analytics Management Client
-type SQLPoolConnectionPoliciesClient struct {
+// IntegrationRuntimeConnectionInfosClient is the azure Synapse Analytics Management Client
+type IntegrationRuntimeConnectionInfosClient struct {
 	BaseClient
 }
 
-// NewSQLPoolConnectionPoliciesClient creates an instance of the SQLPoolConnectionPoliciesClient client.
-func NewSQLPoolConnectionPoliciesClient(subscriptionID string) SQLPoolConnectionPoliciesClient {
-	return NewSQLPoolConnectionPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewIntegrationRuntimeConnectionInfosClient creates an instance of the IntegrationRuntimeConnectionInfosClient
+// client.
+func NewIntegrationRuntimeConnectionInfosClient(subscriptionID string) IntegrationRuntimeConnectionInfosClient {
+	return NewIntegrationRuntimeConnectionInfosClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSQLPoolConnectionPoliciesClientWithBaseURI creates an instance of the SQLPoolConnectionPoliciesClient client
-// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
-// clouds, Azure stack).
-func NewSQLPoolConnectionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolConnectionPoliciesClient {
-	return SQLPoolConnectionPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewIntegrationRuntimeConnectionInfosClientWithBaseURI creates an instance of the
+// IntegrationRuntimeConnectionInfosClient client using a custom endpoint.  Use this when interacting with an Azure
+// cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewIntegrationRuntimeConnectionInfosClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeConnectionInfosClient {
+	return IntegrationRuntimeConnectionInfosClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get get a Sql pool's connection policy, which is used with table auditing.
+// Get get connection info for an integration runtime
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace
-// SQLPoolName - SQL pool name
-func (client SQLPoolConnectionPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result SQLPoolConnectionPolicy, err error) {
+// integrationRuntimeName - integration runtime name
+func (client IntegrationRuntimeConnectionInfosClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result IntegrationRuntimeConnectionInfo, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolConnectionPoliciesClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationRuntimeConnectionInfosClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -66,38 +67,37 @@ func (client SQLPoolConnectionPoliciesClient) Get(ctx context.Context, resourceG
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.SQLPoolConnectionPoliciesClient", "Get", err.Error())
+		return result, validation.NewError("synapse.IntegrationRuntimeConnectionInfosClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, integrationRuntimeName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolConnectionPoliciesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeConnectionInfosClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolConnectionPoliciesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeConnectionInfosClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolConnectionPoliciesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeConnectionInfosClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client SQLPoolConnectionPoliciesClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
+func (client IntegrationRuntimeConnectionInfosClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"connectionPolicyName": autorest.Encode("path", "default"),
-		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
-		"sqlPoolName":          autorest.Encode("path", SQLPoolName),
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":        autorest.Encode("path", workspaceName),
+		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":          autorest.Encode("path", workspaceName),
 	}
 
 	const APIVersion = "2019-06-01-preview"
@@ -106,22 +106,22 @@ func (client SQLPoolConnectionPoliciesClient) GetPreparer(ctx context.Context, r
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
+		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/connectionPolicies/{connectionPolicyName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/getConnectionInfo", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client SQLPoolConnectionPoliciesClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client IntegrationRuntimeConnectionInfosClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client SQLPoolConnectionPoliciesClient) GetResponder(resp *http.Response) (result SQLPoolConnectionPolicy, err error) {
+func (client IntegrationRuntimeConnectionInfosClient) GetResponder(resp *http.Response) (result IntegrationRuntimeConnectionInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

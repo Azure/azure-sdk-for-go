@@ -108,7 +108,6 @@ func (client PoliciesClient) GetByBillingProfileNameSender(req *http.Request) (*
 func (client PoliciesClient) GetByBillingProfileNameResponder(resp *http.Response) (result Policy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -186,7 +185,6 @@ func (client PoliciesClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client PoliciesClient) UpdateResponder(resp *http.Response) (result Policy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

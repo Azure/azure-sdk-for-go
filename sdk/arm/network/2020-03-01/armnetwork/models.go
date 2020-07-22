@@ -1244,32 +1244,32 @@ func (a *ApplicationRuleCondition) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "destinationAddresses":
-			if v != nil {
-				err = json.Unmarshal(*v, &a.DestinationAddresses)
+			if val != nil {
+				err = json.Unmarshal(*val, &a.DestinationAddresses)
 			}
 		case "fqdnTags":
-			if v != nil {
-				err = json.Unmarshal(*v, &a.FqdnTags)
+			if val != nil {
+				err = json.Unmarshal(*val, &a.FqdnTags)
 			}
 		case "protocols":
-			if v != nil {
-				err = json.Unmarshal(*v, &a.Protocols)
+			if val != nil {
+				err = json.Unmarshal(*val, &a.Protocols)
 			}
 		case "sourceAddresses":
-			if v != nil {
-				err = json.Unmarshal(*v, &a.SourceAddresses)
+			if val != nil {
+				err = json.Unmarshal(*val, &a.SourceAddresses)
 			}
 		case "sourceIpGroups":
-			if v != nil {
-				err = json.Unmarshal(*v, &a.SourceIPGroups)
+			if val != nil {
+				err = json.Unmarshal(*val, &a.SourceIPGroups)
 			}
 		case "targetFqdns":
-			if v != nil {
-				err = json.Unmarshal(*v, &a.TargetFqdns)
+			if val != nil {
+				err = json.Unmarshal(*val, &a.TargetFqdns)
 			}
 		}
 		if err != nil {
@@ -5009,16 +5009,16 @@ func (f *FirewallPolicyFilterRule) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "action":
-			if v != nil {
-				err = json.Unmarshal(*v, &f.Action)
+			if val != nil {
+				err = json.Unmarshal(*val, &f.Action)
 			}
 		case "ruleConditions":
-			if v != nil {
-				f.RuleConditions, err = unmarshalFirewallPolicyRuleConditionClassificationArray(*v)
+			if val != nil {
+				f.RuleConditions, err = unmarshalFirewallPolicyRuleConditionClassificationArray(*val)
 			}
 		}
 		if err != nil {
@@ -5092,24 +5092,24 @@ func (f *FirewallPolicyNatRule) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "action":
-			if v != nil {
-				err = json.Unmarshal(*v, &f.Action)
+			if val != nil {
+				err = json.Unmarshal(*val, &f.Action)
 			}
 		case "ruleCondition":
-			if v != nil {
-				f.RuleCondition, err = unmarshalFirewallPolicyRuleConditionClassification(*v)
+			if val != nil {
+				f.RuleCondition, err = unmarshalFirewallPolicyRuleConditionClassification(*val)
 			}
 		case "translatedAddress":
-			if v != nil {
-				err = json.Unmarshal(*v, &f.TranslatedAddress)
+			if val != nil {
+				err = json.Unmarshal(*val, &f.TranslatedAddress)
 			}
 		case "translatedPort":
-			if v != nil {
-				err = json.Unmarshal(*v, &f.TranslatedPort)
+			if val != nil {
+				err = json.Unmarshal(*val, &f.TranslatedPort)
 			}
 		}
 		if err != nil {
@@ -5196,20 +5196,20 @@ func (f *FirewallPolicyRule) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "name":
-			if v != nil {
-				err = json.Unmarshal(*v, &f.Name)
+			if val != nil {
+				err = json.Unmarshal(*val, &f.Name)
 			}
 		case "priority":
-			if v != nil {
-				err = json.Unmarshal(*v, &f.Priority)
+			if val != nil {
+				err = json.Unmarshal(*val, &f.Priority)
 			}
 		case "ruleType":
-			if v != nil {
-				err = json.Unmarshal(*v, &f.RuleType)
+			if val != nil {
+				err = json.Unmarshal(*val, &f.RuleType)
 			}
 		}
 		if err != nil {
@@ -5260,20 +5260,20 @@ func (f *FirewallPolicyRuleCondition) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "description":
-			if v != nil {
-				err = json.Unmarshal(*v, &f.Description)
+			if val != nil {
+				err = json.Unmarshal(*val, &f.Description)
 			}
 		case "name":
-			if v != nil {
-				err = json.Unmarshal(*v, &f.Name)
+			if val != nil {
+				err = json.Unmarshal(*val, &f.Name)
 			}
 		case "ruleConditionType":
-			if v != nil {
-				err = json.Unmarshal(*v, &f.RuleConditionType)
+			if val != nil {
+				err = json.Unmarshal(*val, &f.RuleConditionType)
 			}
 		}
 		if err != nil {
@@ -5371,20 +5371,20 @@ func (f *FirewallPolicyRuleGroupProperties) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "priority":
-			if v != nil {
-				err = json.Unmarshal(*v, &f.Priority)
+			if val != nil {
+				err = json.Unmarshal(*val, &f.Priority)
 			}
 		case "provisioningState":
-			if v != nil {
-				err = json.Unmarshal(*v, &f.ProvisioningState)
+			if val != nil {
+				err = json.Unmarshal(*val, &f.ProvisioningState)
 			}
 		case "rules":
-			if v != nil {
-				f.Rules, err = unmarshalFirewallPolicyRuleClassificationArray(*v)
+			if val != nil {
+				f.Rules, err = unmarshalFirewallPolicyRuleClassificationArray(*val)
 			}
 		}
 		if err != nil {
@@ -7042,28 +7042,28 @@ func (n *NatRuleCondition) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "destinationAddresses":
-			if v != nil {
-				err = json.Unmarshal(*v, &n.DestinationAddresses)
+			if val != nil {
+				err = json.Unmarshal(*val, &n.DestinationAddresses)
 			}
 		case "destinationPorts":
-			if v != nil {
-				err = json.Unmarshal(*v, &n.DestinationPorts)
+			if val != nil {
+				err = json.Unmarshal(*val, &n.DestinationPorts)
 			}
 		case "ipProtocols":
-			if v != nil {
-				err = json.Unmarshal(*v, &n.IPProtocols)
+			if val != nil {
+				err = json.Unmarshal(*val, &n.IPProtocols)
 			}
 		case "sourceAddresses":
-			if v != nil {
-				err = json.Unmarshal(*v, &n.SourceAddresses)
+			if val != nil {
+				err = json.Unmarshal(*val, &n.SourceAddresses)
 			}
 		case "sourceIpGroups":
-			if v != nil {
-				err = json.Unmarshal(*v, &n.SourceIPGroups)
+			if val != nil {
+				err = json.Unmarshal(*val, &n.SourceIPGroups)
 			}
 		}
 		if err != nil {
@@ -7598,32 +7598,32 @@ func (n *NetworkRuleCondition) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	for k, v := range rawMsg {
+	for key, val := range rawMsg {
 		var err error
-		switch k {
+		switch key {
 		case "destinationAddresses":
-			if v != nil {
-				err = json.Unmarshal(*v, &n.DestinationAddresses)
+			if val != nil {
+				err = json.Unmarshal(*val, &n.DestinationAddresses)
 			}
 		case "destinationIpGroups":
-			if v != nil {
-				err = json.Unmarshal(*v, &n.DestinationIPGroups)
+			if val != nil {
+				err = json.Unmarshal(*val, &n.DestinationIPGroups)
 			}
 		case "destinationPorts":
-			if v != nil {
-				err = json.Unmarshal(*v, &n.DestinationPorts)
+			if val != nil {
+				err = json.Unmarshal(*val, &n.DestinationPorts)
 			}
 		case "ipProtocols":
-			if v != nil {
-				err = json.Unmarshal(*v, &n.IPProtocols)
+			if val != nil {
+				err = json.Unmarshal(*val, &n.IPProtocols)
 			}
 		case "sourceAddresses":
-			if v != nil {
-				err = json.Unmarshal(*v, &n.SourceAddresses)
+			if val != nil {
+				err = json.Unmarshal(*val, &n.SourceAddresses)
 			}
 		case "sourceIpGroups":
-			if v != nil {
-				err = json.Unmarshal(*v, &n.SourceIPGroups)
+			if val != nil {
+				err = json.Unmarshal(*val, &n.SourceIPGroups)
 			}
 		}
 		if err != nil {

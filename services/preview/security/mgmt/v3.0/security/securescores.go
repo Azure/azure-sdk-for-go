@@ -26,26 +26,30 @@ import (
 	"net/http"
 )
 
-// LocationsClient is the API spec for Microsoft.Security (Azure Security Center) resource provider
-type LocationsClient struct {
+// SecureScoresClient is the API spec for Microsoft.Security (Azure Security Center) resource provider
+type SecureScoresClient struct {
 	BaseClient
 }
 
-// NewLocationsClient creates an instance of the LocationsClient client.
-func NewLocationsClient(subscriptionID string, ascLocation string) LocationsClient {
-	return NewLocationsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+// NewSecureScoresClient creates an instance of the SecureScoresClient client.
+func NewSecureScoresClient(subscriptionID string, ascLocation string) SecureScoresClient {
+	return NewSecureScoresClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
-// NewLocationsClientWithBaseURI creates an instance of the LocationsClient client using a custom endpoint.  Use this
-// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) LocationsClient {
-	return LocationsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+// NewSecureScoresClientWithBaseURI creates an instance of the SecureScoresClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewSecureScoresClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SecureScoresClient {
+	return SecureScoresClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
-// Get details of a specific location
-func (client LocationsClient) Get(ctx context.Context) (result AscLocation, err error) {
+// Get get secure score for a specific Security Center initiative within your current scope. For the ASC Default
+// initiative, use 'ascScore'.
+// Parameters:
+// secureScoreName - the initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
+// request below.
+func (client SecureScoresClient) Get(ctx context.Context, secureScoreName string) (result SecureScoreItem, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/LocationsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecureScoresClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -57,38 +61,38 @@ func (client LocationsClient) Get(ctx context.Context) (result AscLocation, err 
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.LocationsClient", "Get", err.Error())
+		return result, validation.NewError("security.SecureScoresClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx)
+	req, err := client.GetPreparer(ctx, secureScoreName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.LocationsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.SecureScoresClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.LocationsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.SecureScoresClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.LocationsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.SecureScoresClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client LocationsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
+func (client SecureScoresClient) GetPreparer(ctx context.Context, secureScoreName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"ascLocation":    autorest.Encode("path", client.AscLocation),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"secureScoreName": autorest.Encode("path", secureScoreName),
+		"subscriptionId":  autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -96,20 +100,20 @@ func (client LocationsClient) GetPreparer(ctx context.Context) (*http.Request, e
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores/{secureScoreName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client LocationsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client SecureScoresClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client LocationsClient) GetResponder(resp *http.Response) (result AscLocation, err error) {
+func (client SecureScoresClient) GetResponder(resp *http.Response) (result SecureScoreItem, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -119,16 +123,14 @@ func (client LocationsClient) GetResponder(resp *http.Response) (result AscLocat
 	return
 }
 
-// List the location of the responsible ASC of the specific subscription (home region). For each subscription there is
-// only one responsible location. The location in the response should be used to read or write other resources in ASC
-// according to their ID.
-func (client LocationsClient) List(ctx context.Context) (result AscLocationListPage, err error) {
+// List list secure scores for all your Security Center initiatives within your current scope.
+func (client SecureScoresClient) List(ctx context.Context) (result SecureScoresListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/LocationsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecureScoresClient.List")
 		defer func() {
 			sc := -1
-			if result.all.Response.Response != nil {
-				sc = result.all.Response.Response.StatusCode
+			if result.ssl.Response.Response != nil {
+				sc = result.ssl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -136,38 +138,38 @@ func (client LocationsClient) List(ctx context.Context) (result AscLocationListP
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.LocationsClient", "List", err.Error())
+		return result, validation.NewError("security.SecureScoresClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.LocationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.SecureScoresClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.all.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.LocationsClient", "List", resp, "Failure sending request")
+		result.ssl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "security.SecureScoresClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.all, err = client.ListResponder(resp)
+	result.ssl, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.LocationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.SecureScoresClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client LocationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client SecureScoresClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -175,20 +177,20 @@ func (client LocationsClient) ListPreparer(ctx context.Context) (*http.Request, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client LocationsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client SecureScoresClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client LocationsClient) ListResponder(resp *http.Response) (result AscLocationList, err error) {
+func (client SecureScoresClient) ListResponder(resp *http.Response) (result SecureScoresList, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -199,10 +201,10 @@ func (client LocationsClient) ListResponder(resp *http.Response) (result AscLoca
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client LocationsClient) listNextResults(ctx context.Context, lastResults AscLocationList) (result AscLocationList, err error) {
-	req, err := lastResults.ascLocationListPreparer(ctx)
+func (client SecureScoresClient) listNextResults(ctx context.Context, lastResults SecureScoresList) (result SecureScoresList, err error) {
+	req, err := lastResults.secureScoresListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "security.LocationsClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "security.SecureScoresClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -210,19 +212,19 @@ func (client LocationsClient) listNextResults(ctx context.Context, lastResults A
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "security.LocationsClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "security.SecureScoresClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.LocationsClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "security.SecureScoresClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client LocationsClient) ListComplete(ctx context.Context) (result AscLocationListIterator, err error) {
+func (client SecureScoresClient) ListComplete(ctx context.Context) (result SecureScoresListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/LocationsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecureScoresClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

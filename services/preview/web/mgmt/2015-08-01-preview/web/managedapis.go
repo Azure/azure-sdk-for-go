@@ -113,7 +113,6 @@ func (client ManagedApisClient) GetSender(req *http.Request) (*http.Response, er
 func (client ManagedApisClient) GetResponder(resp *http.Response) (result APIEntity, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -188,7 +187,6 @@ func (client ManagedApisClient) ListSender(req *http.Request) (*http.Response, e
 func (client ManagedApisClient) ListResponder(resp *http.Response) (result ApisCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

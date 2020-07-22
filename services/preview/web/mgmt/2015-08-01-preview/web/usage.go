@@ -113,7 +113,6 @@ func (client UsageClient) GetUsageSender(req *http.Request) (*http.Response, err
 func (client UsageClient) GetUsageResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

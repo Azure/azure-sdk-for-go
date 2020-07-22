@@ -113,7 +113,6 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentSender(r
 func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentResponder(resp *http.Response) (result HostingEnvironment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -192,7 +191,6 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req *h
 func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(resp *http.Response) (result WorkerPool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -273,7 +271,6 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *http
 func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *http.Response) (result WorkerPool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -353,7 +350,6 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentSender(req *http
 func (client HostingEnvironmentsClient) DeleteHostingEnvironmentResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -429,7 +425,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentSender(req *http.Re
 func (client HostingEnvironmentsClient) GetHostingEnvironmentResponder(resp *http.Response) (result HostingEnvironment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -506,7 +501,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesSender(re
 func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesResponder(resp *http.Response) (result StampCapacityCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -619,7 +613,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsSender(r
 func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsResponder(resp *http.Response) (result ListHostingEnvironmentDiagnostics, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -697,7 +690,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemSend
 func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemResponder(resp *http.Response) (result HostingEnvironmentDiagnostics, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -773,7 +765,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsSe
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsResponder(resp *http.Response) (result MetricDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -860,7 +851,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsSender(req *
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -975,7 +965,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefi
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1111,7 +1100,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsSen
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1225,7 +1213,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesSend
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesResponder(resp *http.Response) (result UsageCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1340,7 +1327,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationSender(req
 func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1416,7 +1402,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsSender(re
 func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1491,7 +1476,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentsSender(req *http.R
 func (client HostingEnvironmentsClient) GetHostingEnvironmentsResponder(resp *http.Response) (result HostingEnvironmentCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1605,7 +1589,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsSender(r
 func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1723,7 +1706,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesSender(req *ht
 func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesResponder(resp *http.Response) (result SiteCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1843,7 +1825,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesSender(req *h
 func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesResponder(resp *http.Response) (result CsmUsageQuotaCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1956,7 +1937,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsSender(req *htt
 func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsResponder(resp *http.Response) (result AddressResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2033,7 +2013,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansSend
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansResponder(resp *http.Response) (result ServerFarmCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2150,7 +2129,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefi
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2276,7 +2254,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsSen
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2392,7 +2369,6 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesSend
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesResponder(resp *http.Response) (result UsageCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2505,7 +2481,6 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolSender(req *http.Request
 func (client HostingEnvironmentsClient) GetMultiRolePoolResponder(resp *http.Response) (result WorkerPool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2583,7 +2558,6 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinition
 func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitionsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2665,7 +2639,6 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsSender(re
 func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2742,7 +2715,6 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolsSender(req *http.Reques
 func (client HostingEnvironmentsClient) GetMultiRolePoolsResponder(resp *http.Response) (result WorkerPoolCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2856,7 +2828,6 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolSkusSender(req *http.Req
 func (client HostingEnvironmentsClient) GetMultiRolePoolSkusResponder(resp *http.Response) (result SkuInfoCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2971,7 +2942,6 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSender(req *http.Request) (
 func (client HostingEnvironmentsClient) GetWorkerPoolResponder(resp *http.Response) (result WorkerPool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3051,7 +3021,6 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsSe
 func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3141,7 +3110,6 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsSender(req *
 func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3218,7 +3186,6 @@ func (client HostingEnvironmentsClient) GetWorkerPoolsSender(req *http.Request) 
 func (client HostingEnvironmentsClient) GetWorkerPoolsResponder(resp *http.Response) (result WorkerPoolCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3334,7 +3301,6 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSkusSender(req *http.Reques
 func (client HostingEnvironmentsClient) GetWorkerPoolSkusResponder(resp *http.Response) (result SkuInfoCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3447,7 +3413,6 @@ func (client HostingEnvironmentsClient) RebootHostingEnvironmentSender(req *http
 func (client HostingEnvironmentsClient) RebootHostingEnvironmentResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3529,7 +3494,6 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentResponder(resp *
 func (client HostingEnvironmentsClient) resumeHostingEnvironmentResponder(resp *http.Response) (result SiteCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3646,7 +3610,6 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironmentResponder(resp 
 func (client HostingEnvironmentsClient) suspendHostingEnvironmentResponder(resp *http.Response) (result SiteCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

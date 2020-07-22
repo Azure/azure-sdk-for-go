@@ -54,7 +54,11 @@ steps:
 
   - pwsh: |
       $coverageFiles = [Collections.Generic.List[String]]@()
-      Get-Childitem -recurse -path $(SCOPE) -filter coverage.txt | foreach-object { $coverageFiles.Add($_.FullName) }
+      Get-Childitem -recurse -path $(SCOPE) -filter coverage.txt | foreach-object {
+        $covFile = $_.FullName
+        Write-Host "Adding $covFile to the list of code coverage files"
+        $coverageFiles.Add($covFile)
+      }
       gocovmerge $coverageFiles > mergedCoverage.txt
       gocov convert ./mergedCoverage.txt > ./coverage.json
       # gocov converts rely on standard input

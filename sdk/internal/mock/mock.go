@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"sync"
 	"time"
 )
 
@@ -29,6 +30,9 @@ type Server struct {
 	// static is the static response, if this is not nil it's always returned.
 	static *mockResponse
 
+	// respLock synchronizes access to resp
+	respLock *sync.RWMutex
+
 	// resp is the queue of responses.  each response is taken from the front.
 	resp []mockResponse
 
@@ -39,7 +43,7 @@ type Server struct {
 // NewServer creates a new Server object.
 // The returned close func must be called when the server is no longer needed.
 func NewServer() (*Server, func()) {
-	s := Server{}
+	s := Server{respLock: &sync.RWMutex{}}
 	s.srv = httptest.NewServer(http.HandlerFunc(s.serveHTTP))
 	return &s, func() { s.srv.Close() }
 }
@@ -54,32 +58,33 @@ func NewTLSServer() (*Server, func()) {
 
 // returns true if the next response is an error response
 func (s *Server) isErrorResp() bool {
-	if s.static == nil && len(s.resp) == 0 {
-		panic("no more responses")
-	}
 	// always favor static response
-	if s.static != nil && s.static.err != nil {
-		return true
+	if s.static != nil {
+		return s.static.err != nil
 	}
-	if len(s.resp) == 0 {
-		return false
+	s.respLock.RLock()
+	defer s.respLock.RUnlock()
+	if len(s.resp) > 0 {
+		return s.resp[0].err != nil
 	}
-	return s.resp[0].err != nil
+	panic("no more responses")
 }
 
 // returns the static response or the next response in the queue
 func (s *Server) getResponse() mockResponse {
-	if s.static == nil && len(s.resp) == 0 {
-		panic("no more responses")
-	}
 	// always favor static response
 	if s.static != nil {
 		return *s.static
 	}
-	// pop off first response and return it
-	resp := s.resp[0]
-	s.resp = s.resp[1:]
-	return resp
+	if len(s.resp) > 0 {
+		// pop off first response and return it
+		s.respLock.Lock()
+		defer s.respLock.Unlock()
+		resp := s.resp[0]
+		s.resp = s.resp[1:]
+		return resp
+	}
+	panic("no more responses")
 }
 
 // URL returns the endpoint of the test server in URL format.
@@ -147,7 +152,7 @@ func (s *Server) SetError(err error) {
 // AppendResponse appends the response to the end of the response queue.
 // If no options are provided the default response is an http.StatusOK.
 func (s *Server) AppendResponse(opts ...ResponseOption) {
-	mr := mockResponse{code: http.StatusOK}
+	mr := mockResponse{code: http.StatusOK, headers: http.Header{}}
 	for _, o := range opts {
 		o.apply(&mr)
 	}

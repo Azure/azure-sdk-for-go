@@ -4,7 +4,7 @@ Param(
 
 $testDirs = [Collections.Generic.List[String]]@()
 
-# find each module directory under $path
+# find each directory under $serviceDir that contains Go test files
 Get-Childitem -recurse -path $serviceDir -filter *_test.go | foreach-object {
   $cdir = $_.Directory
   if (!$testDirs.Contains($cdir)) {

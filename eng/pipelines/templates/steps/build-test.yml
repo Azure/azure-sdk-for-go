@@ -12,58 +12,54 @@ steps:
       go get github.com/axw/gocov/gocov
       go get github.com/AlekSi/gocov-xml
       go get github.com/matm/gocov-html
+      go get -u github.com/wadey/gocovmerge
     displayName: "Install Coverage and Junit Dependencies"
-    workingDirectory: '${{parameters.GoWorkspace}}sdk'
+    workingDirectory: '${{parameters.GoWorkspace}}'
 
   - pwsh: |
-      $SCOPE = $env:SCOPE -split ","
-
-      foreach ($s in $SCOPE) {
-        pushd $s
-        Write-Host "##[command]Executing go build -v $s"
-        go build -v $s
+      $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
+      foreach ($md in $modDirs) {
+        pushd $md
+        Write-Host "##[command]Executing go build -v $md"
+        go build -v
       }
     displayName: 'Build'
-    workingDirectory: '${{parameters.GoWorkspace}}sdk'
+    workingDirectory: '${{parameters.GoWorkspace}}'
     env:
       GO111MODULE: 'on'
 
   - pwsh: |
-      $SCOPE = $env:SCOPE -split ","
-      foreach ($s in $SCOPE) {
-        pushd $s
-        Write-Host "##[command]Executing go vet $s"
+      $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
+      foreach ($md in $modDirs) {
+        pushd $md
+        Write-Host "##[command]Executing go vet $md"
         go vet
       }
     displayName: 'Vet'
-    workingDirectory: '${{parameters.GoWorkspace}}sdk'
+    workingDirectory: '${{parameters.GoWorkspace}}'
     env:
       GO111MODULE: 'on'
 
   - pwsh: |
-      $SCOPE = $env:SCOPE -split ","
-      foreach ($s in $SCOPE) {
-        pushd $s
-        Write-Host "##[command]Executing go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic $s | go-junit-report -set-exit-code > report.xml"
+      $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
+      foreach ($td in $testDirs) {
+        pushd $td
+        Write-Host "##[command]Executing go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic $td | go-junit-report -set-exit-code > report.xml"
         go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > report.xml
       }
     displayName: 'Run Tests'
-    workingDirectory: '${{parameters.GoWorkspace}}sdk'
+    workingDirectory: '${{parameters.GoWorkspace}}'
     env:
       GO111MODULE: 'on'
 
   - pwsh: |
-      $SCOPE = $env:SCOPE -split ","
-      foreach ($s in $SCOPE) {
-        pushd $s
-        if (Test-Path ./coverage.txt) {
-          gocov convert ./coverage.txt > ./coverage.json
-        
-          # gocov converts rely on standard input
-          Get-Content ./coverage.json | gocov-xml > $(Build.SourcesDirectory)/coverage.xml
-          Get-Content ./coverage.json | gocov-html > $(Build.SourcesDirectory)/coverage.html
-        }
-      }
+      $coverageFiles = [Collections.Generic.List[String]]@()
+      Get-Childitem -recurse -path $(SCOPE) -filter coverage.txt | foreach-object { $coverageFiles.Add($_.FullName) }
+      gocovmerge $coverageFiles > mergedCoverage.txt
+      gocov convert ./mergedCoverage.txt > ./coverage.json
+      # gocov converts rely on standard input
+      Get-Content ./coverage.json | gocov-xml > ./coverage.xml
+      Get-Content ./coverage.json | gocov-html > ./coverage.html
     displayName: 'Generate Coverage XML'
     workingDirectory: '${{parameters.GoWorkspace}}sdk'
 
@@ -78,5 +74,5 @@ steps:
     condition: succeededOrFailed()
     inputs:
       codeCoverageTool: Cobertura
-      summaryFileLocation: '$(Build.SourcesDirectory)/coverage.xml'
-      additionalCodeCoverageFiles: '$(Build.SourcesDirectory)/coverage.html'
+      summaryFileLocation: '${{parameters.GoWorkspace}}sdk/coverage.xml'
+      additionalCodeCoverageFiles: '${{parameters.GoWorkspace}}sdk/coverage.html'

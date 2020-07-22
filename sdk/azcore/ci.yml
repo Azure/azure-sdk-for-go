@@ -1,0 +1,14 @@
+trigger:
+  paths:
+    include:
+    - sdk/azcore/
+
+pr:
+  paths:
+    include:
+    - sdk/azcore/
+    
+stages:
+- template: ../eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: 'azcore'

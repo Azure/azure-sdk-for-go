@@ -1,0 +1,14 @@
+trigger:
+  paths:
+    include:
+    - sdk/to/
+
+pr:
+  paths:
+    include:
+    - sdk/to/
+    
+stages:
+- template: ../eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: 'to'

@@ -1,5 +1,5 @@
 parameters:
-  ServiceDirectory: 'sdk/...' #defaults to building all track 2 go packages
+  ServiceDirectory: ''
 
 stages:
   - stage: Build

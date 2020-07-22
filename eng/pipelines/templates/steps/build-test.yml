@@ -20,8 +20,8 @@ steps:
       $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
       foreach ($md in $modDirs) {
         pushd $md
-        Write-Host "##[command]Executing go build -v $md"
-        go build -v
+        Write-Host "##[command]Executing go build -v ./... in $md"
+        go build -v ./...
       }
     displayName: 'Build'
     workingDirectory: '${{parameters.GoWorkspace}}'
@@ -32,8 +32,8 @@ steps:
       $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
       foreach ($md in $modDirs) {
         pushd $md
-        Write-Host "##[command]Executing go vet $md"
-        go vet
+        Write-Host "##[command]Executing go vet ./... in $md"
+        go vet ./...
       }
     displayName: 'Vet'
     workingDirectory: '${{parameters.GoWorkspace}}'

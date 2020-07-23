@@ -128,8 +128,8 @@ func TestRetryAfter(t *testing.T) {
 		t.Fatal("expected retry-after value from date")
 	}
 	// d will not be exactly 600 seconds but it will be close
-	if d/time.Second != 599 {
-		t.Fatalf("expected ~600 seconds, got %d", d/time.Second)
+	if s := d / time.Second; s < 598 || s > 602 {
+		t.Fatalf("expected ~600 seconds, got %d", s)
 	}
 }
 

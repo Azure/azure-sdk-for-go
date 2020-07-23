@@ -234,6 +234,40 @@ func TestComplexResponse(t *testing.T) {
 	}
 }
 
+func TestComplexResponseTLS(t *testing.T) {
+	srv, close := NewTLSServer()
+	defer close()
+	const body = "this is the response body"
+	srv.AppendResponse(
+		WithStatusCode(http.StatusOK),
+		WithBody([]byte(body)),
+		WithHeader("some", "value"),
+		WithSlowResponse(2*time.Second),
+	)
+	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp, err := srv.Do(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code %d", resp.StatusCode)
+	}
+	if h := resp.Header.Get("some"); h != "value" {
+		t.Fatalf("unexpected header value %s", h)
+	}
+	r, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp.Body.Close()
+	if string(r) != body {
+		t.Fatalf("unexpected response body %s", string(r))
+	}
+}
+
 func TestBodyReadError(t *testing.T) {
 	srv, close := NewServer()
 	defer close()

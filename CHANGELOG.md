@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v44.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| azurestackhci | 2020-03-01-preview |
+| managedvirtualnetwork | 2019-06-01-preview |
+| monitoring | 2019-11-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| hdinsight | 2018-06-01-preview |
+
 ## `v44.1.0`
 
 ### New Packages

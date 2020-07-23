@@ -136,7 +136,6 @@ func (client IntegrationRuntimeNodesClient) DeleteSender(req *http.Request) (*ht
 func (client IntegrationRuntimeNodesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -235,7 +234,6 @@ func (client IntegrationRuntimeNodesClient) GetIPAddressSender(req *http.Request
 func (client IntegrationRuntimeNodesClient) GetIPAddressResponder(resp *http.Response) (result IntegrationRuntimeNodeIPAddress, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -338,7 +336,6 @@ func (client IntegrationRuntimeNodesClient) UpdateSender(req *http.Request) (*ht
 func (client IntegrationRuntimeNodesClient) UpdateResponder(resp *http.Response) (result SelfHostedIntegrationRuntimeNode, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

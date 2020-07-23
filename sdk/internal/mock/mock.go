@@ -40,20 +40,24 @@ type Server struct {
 	count int
 }
 
+func newServer() *Server {
+	return &Server{respLock: &sync.RWMutex{}}
+}
+
 // NewServer creates a new Server object.
 // The returned close func must be called when the server is no longer needed.
 func NewServer() (*Server, func()) {
-	s := Server{respLock: &sync.RWMutex{}}
+	s := newServer()
 	s.srv = httptest.NewServer(http.HandlerFunc(s.serveHTTP))
-	return &s, func() { s.srv.Close() }
+	return s, func() { s.srv.Close() }
 }
 
 // NewTLSServer creates a new Server object.
 // The returned close func must be called when the server is no longer needed.
 func NewTLSServer() (*Server, func()) {
-	s := Server{}
+	s := newServer()
 	s.srv = httptest.NewTLSServer(http.HandlerFunc(s.serveHTTP))
-	return &s, func() { s.srv.Close() }
+	return s, func() { s.srv.Close() }
 }
 
 // returns true if the next response is an error response

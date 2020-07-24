@@ -127,7 +127,6 @@ func (client FirewallRuleClient) CreateOrUpdateSender(req *http.Request) (*http.
 func (client FirewallRuleClient) CreateOrUpdateResponder(resp *http.Response) (result FirewallRule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -205,7 +204,6 @@ func (client FirewallRuleClient) DeleteSender(req *http.Request) (*http.Response
 func (client FirewallRuleClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -282,7 +280,6 @@ func (client FirewallRuleClient) GetSender(req *http.Request) (*http.Response, e
 func (client FirewallRuleClient) GetResponder(resp *http.Response) (result FirewallRule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

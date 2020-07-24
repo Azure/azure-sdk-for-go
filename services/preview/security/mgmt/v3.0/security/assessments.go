@@ -104,7 +104,7 @@ func (client AssessmentsClient) CreateOrUpdate(ctx context.Context, resourceID s
 func (client AssessmentsClient) CreateOrUpdatePreparer(ctx context.Context, resourceID string, assessmentName string, assessment Assessment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"assessmentName": autorest.Encode("path", assessmentName),
-		"resourceId":     autorest.Encode("path", resourceID),
+		"resourceId":     resourceID,
 	}
 
 	const APIVersion = "2020-01-01"
@@ -133,7 +133,6 @@ func (client AssessmentsClient) CreateOrUpdateSender(req *http.Request) (*http.R
 func (client AssessmentsClient) CreateOrUpdateResponder(resp *http.Response) (result Assessment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -182,7 +181,7 @@ func (client AssessmentsClient) Delete(ctx context.Context, resourceID string, a
 func (client AssessmentsClient) DeletePreparer(ctx context.Context, resourceID string, assessmentName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"assessmentName": autorest.Encode("path", assessmentName),
-		"resourceId":     autorest.Encode("path", resourceID),
+		"resourceId":     resourceID,
 	}
 
 	const APIVersion = "2020-01-01"
@@ -209,7 +208,6 @@ func (client AssessmentsClient) DeleteSender(req *http.Request) (*http.Response,
 func (client AssessmentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -257,7 +255,7 @@ func (client AssessmentsClient) Get(ctx context.Context, resourceID string, asse
 func (client AssessmentsClient) GetPreparer(ctx context.Context, resourceID string, assessmentName string, expand ExpandEnum) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"assessmentName": autorest.Encode("path", assessmentName),
-		"resourceId":     autorest.Encode("path", resourceID),
+		"resourceId":     resourceID,
 	}
 
 	const APIVersion = "2020-01-01"
@@ -287,7 +285,6 @@ func (client AssessmentsClient) GetSender(req *http.Request) (*http.Response, er
 func (client AssessmentsClient) GetResponder(resp *http.Response) (result Assessment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -335,7 +332,7 @@ func (client AssessmentsClient) List(ctx context.Context, scope string) (result 
 // ListPreparer prepares the List request.
 func (client AssessmentsClient) ListPreparer(ctx context.Context, scope string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"scope": autorest.Encode("path", scope),
+		"scope": scope,
 	}
 
 	const APIVersion = "2020-01-01"
@@ -362,7 +359,6 @@ func (client AssessmentsClient) ListSender(req *http.Request) (*http.Response, e
 func (client AssessmentsClient) ListResponder(resp *http.Response) (result AssessmentList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -102,7 +102,7 @@ func (client JitNetworkAccessPoliciesClient) CreateOrUpdatePreparer(ctx context.
 		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -132,7 +132,6 @@ func (client JitNetworkAccessPoliciesClient) CreateOrUpdateSender(req *http.Requ
 func (client JitNetworkAccessPoliciesClient) CreateOrUpdateResponder(resp *http.Response) (result JitNetworkAccessPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -196,7 +195,7 @@ func (client JitNetworkAccessPoliciesClient) DeletePreparer(ctx context.Context,
 		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -220,7 +219,6 @@ func (client JitNetworkAccessPoliciesClient) DeleteSender(req *http.Request) (*h
 func (client JitNetworkAccessPoliciesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -283,7 +281,7 @@ func (client JitNetworkAccessPoliciesClient) GetPreparer(ctx context.Context, re
 		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -307,7 +305,6 @@ func (client JitNetworkAccessPoliciesClient) GetSender(req *http.Request) (*http
 func (client JitNetworkAccessPoliciesClient) GetResponder(resp *http.Response) (result JitNetworkAccessPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -374,7 +371,7 @@ func (client JitNetworkAccessPoliciesClient) InitiatePreparer(ctx context.Contex
 		"subscriptionId":                     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -400,7 +397,6 @@ func (client JitNetworkAccessPoliciesClient) InitiateSender(req *http.Request) (
 func (client JitNetworkAccessPoliciesClient) InitiateResponder(resp *http.Response) (result JitNetworkAccessRequest, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -454,7 +450,7 @@ func (client JitNetworkAccessPoliciesClient) ListPreparer(ctx context.Context) (
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -478,7 +474,6 @@ func (client JitNetworkAccessPoliciesClient) ListSender(req *http.Request) (*htt
 func (client JitNetworkAccessPoliciesClient) ListResponder(resp *http.Response) (result JitNetworkAccessPoliciesList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -570,7 +565,7 @@ func (client JitNetworkAccessPoliciesClient) ListByRegionPreparer(ctx context.Co
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -594,7 +589,6 @@ func (client JitNetworkAccessPoliciesClient) ListByRegionSender(req *http.Reques
 func (client JitNetworkAccessPoliciesClient) ListByRegionResponder(resp *http.Response) (result JitNetworkAccessPoliciesList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -694,7 +688,7 @@ func (client JitNetworkAccessPoliciesClient) ListByResourceGroupPreparer(ctx con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -718,7 +712,6 @@ func (client JitNetworkAccessPoliciesClient) ListByResourceGroupSender(req *http
 func (client JitNetworkAccessPoliciesClient) ListByResourceGroupResponder(resp *http.Response) (result JitNetworkAccessPoliciesList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -819,7 +812,7 @@ func (client JitNetworkAccessPoliciesClient) ListByResourceGroupAndRegionPrepare
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -843,7 +836,6 @@ func (client JitNetworkAccessPoliciesClient) ListByResourceGroupAndRegionSender(
 func (client JitNetworkAccessPoliciesClient) ListByResourceGroupAndRegionResponder(resp *http.Response) (result JitNetworkAccessPoliciesList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

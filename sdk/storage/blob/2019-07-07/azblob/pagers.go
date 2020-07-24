@@ -28,8 +28,8 @@ type listBlobsFlatSegmentResponseHandleResponse func(*azcore.Response) (*ListBlo
 type listBlobsFlatSegmentResponseAdvancePage func(*ListBlobsFlatSegmentResponseResponse) (*azcore.Request, error)
 
 type listBlobsFlatSegmentResponsePager struct {
-	// the client for making the request
-	client *containerOperations
+	// the pipeline for making the request
+	pipeline azcore.Pipeline
 	// contains the pending request
 	request *azcore.Request
 	// callback for handling the HTTP response
@@ -58,7 +58,7 @@ func (p *listBlobsFlatSegmentResponsePager) NextPage(ctx context.Context) bool {
 		}
 		p.request = req
 	}
-	resp, err := p.client.p.Do(ctx, p.request)
+	resp, err := p.pipeline.Do(ctx, p.request)
 	if err != nil {
 		p.err = err
 		return false
@@ -94,8 +94,8 @@ type listBlobsHierarchySegmentResponseHandleResponse func(*azcore.Response) (*Li
 type listBlobsHierarchySegmentResponseAdvancePage func(*ListBlobsHierarchySegmentResponseResponse) (*azcore.Request, error)
 
 type listBlobsHierarchySegmentResponsePager struct {
-	// the client for making the request
-	client *containerOperations
+	// the pipeline for making the request
+	pipeline azcore.Pipeline
 	// contains the pending request
 	request *azcore.Request
 	// callback for handling the HTTP response
@@ -124,7 +124,7 @@ func (p *listBlobsHierarchySegmentResponsePager) NextPage(ctx context.Context) b
 		}
 		p.request = req
 	}
-	resp, err := p.client.p.Do(ctx, p.request)
+	resp, err := p.pipeline.Do(ctx, p.request)
 	if err != nil {
 		p.err = err
 		return false
@@ -160,8 +160,8 @@ type listContainersSegmentResponseHandleResponse func(*azcore.Response) (*ListCo
 type listContainersSegmentResponseAdvancePage func(*ListContainersSegmentResponseResponse) (*azcore.Request, error)
 
 type listContainersSegmentResponsePager struct {
-	// the client for making the request
-	client *serviceOperations
+	// the pipeline for making the request
+	pipeline azcore.Pipeline
 	// contains the pending request
 	request *azcore.Request
 	// callback for handling the HTTP response
@@ -190,7 +190,7 @@ func (p *listContainersSegmentResponsePager) NextPage(ctx context.Context) bool 
 		}
 		p.request = req
 	}
-	resp, err := p.client.p.Do(ctx, p.request)
+	resp, err := p.pipeline.Do(ctx, p.request)
 	if err != nil {
 		p.err = err
 		return false

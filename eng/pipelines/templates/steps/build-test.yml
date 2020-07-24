@@ -86,4 +86,3 @@ steps:
       codeCoverageTool: Cobertura
       summaryFileLocation: '${{parameters.GoWorkspace}}sdk/coverage.xml'
       additionalCodeCoverageFiles: '${{parameters.GoWorkspace}}sdk/coverage.html'
-      failIfCoverageEmpty: true

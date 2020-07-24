@@ -129,7 +129,6 @@ func (client IoTSecuritySolutionsAnalyticsAggregatedAlertsClient) ListSender(req
 func (client IoTSecuritySolutionsAnalyticsAggregatedAlertsClient) ListResponder(resp *http.Response) (result IoTSecurityAggregatedAlertList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

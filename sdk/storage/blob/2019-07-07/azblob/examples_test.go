@@ -76,12 +76,12 @@ func pathJoin(elem ...string) string {
 
 func ExampleContainerOperations_Create() {
 	endpoint := pathJoin(getEndpoint(), containerName)
-	client, err := NewClient(endpoint, getCredential(), nil)
+	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
 	containerClient := client.ContainerOperations()
-	c, err := containerClient.Create(context.Background(), nil)
+	c, err := containerClient.Create(context.Background(), nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -90,7 +90,7 @@ func ExampleContainerOperations_Create() {
 }
 
 func ExampleServiceOperations_ListContainersSegment() {
-	client, err := NewClient(getEndpoint(), getCredential(), nil)
+	client, err := newClient(getEndpoint(), getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -112,14 +112,14 @@ func ExampleServiceOperations_ListContainersSegment() {
 
 func ExampleBlockBlobOperations_Upload() {
 	endpoint := pathJoin(getEndpoint(), containerName, blockBlobName)
-	client, err := NewClient(endpoint, getCredential(), nil)
+	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
 	const blockSize = 80
 	blobClient := client.BlockBlobOperations()
 	body := azcore.NopCloser(bytes.NewReader(generateBlobContent(blockSize)))
-	b, err := blobClient.Upload(context.Background(), blockSize, body, nil)
+	b, err := blobClient.Upload(context.Background(), blockSize, body, nil, nil, nil, nil, nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -129,12 +129,12 @@ func ExampleBlockBlobOperations_Upload() {
 
 func ExampleBlobOperations_Download() {
 	endpoint := pathJoin(getEndpoint(), containerName, blockBlobName)
-	client, err := NewClient(endpoint, getCredential(), nil)
+	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
 	blobClient := client.BlobOperations(nil)
-	b, err := blobClient.Download(context.Background(), nil)
+	b, err := blobClient.Download(context.Background(), nil, nil, nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -147,12 +147,12 @@ func ExampleBlobOperations_Download() {
 
 func ExampleAppendBlobOperations_Create() {
 	endpoint := pathJoin(getEndpoint(), containerName, appendBlobName)
-	client, err := NewClient(endpoint, getCredential(), nil)
+	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
 	blobClient := client.AppendBlobOperations()
-	a, err := blobClient.Create(context.Background(), 0, nil)
+	a, err := blobClient.Create(context.Background(), 0, nil, nil, nil, nil, nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -162,14 +162,14 @@ func ExampleAppendBlobOperations_Create() {
 
 func ExampleAppendBlobOperations_AppendBlock() {
 	endpoint := pathJoin(getEndpoint(), containerName, appendBlobName)
-	client, err := NewClient(endpoint, getCredential(), nil)
+	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
 	blobClient := client.AppendBlobOperations()
 	const blockSize = 80
 	body := azcore.NopCloser(bytes.NewReader(generateBlobContent(int(blockSize))))
-	a, err := blobClient.AppendBlock(context.Background(), int64(blockSize), body, nil)
+	a, err := blobClient.AppendBlock(context.Background(), int64(blockSize), body, nil, nil, nil, nil, nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -179,7 +179,7 @@ func ExampleAppendBlobOperations_AppendBlock() {
 
 func ExampleContainerOperations_ListBlobFlatSegment() {
 	endpoint := pathJoin(getEndpoint(), containerName)
-	client, err := NewClient(endpoint, getCredential(), nil)
+	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -208,24 +208,24 @@ func ExampleContainerOperations_ListBlobFlatSegment() {
 
 func ExampleBlobOperations_Delete() {
 	endpoint := pathJoin(getEndpoint(), containerName, blockBlobName)
-	client, err := NewClient(endpoint, getCredential(), nil)
+	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
 	blobClient := client.BlobOperations(nil)
-	d, err := blobClient.Delete(context.Background(), nil)
+	d, err := blobClient.Delete(context.Background(), nil, nil, nil)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(d.RawResponse.StatusCode)
 
 	endpoint = pathJoin(getEndpoint(), containerName, appendBlobName)
-	client, err = NewClient(endpoint, getCredential(), nil)
+	client, err = newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
 	blobClient = client.BlobOperations(nil)
-	d, err = blobClient.Delete(context.Background(), nil)
+	d, err = blobClient.Delete(context.Background(), nil, nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -237,12 +237,12 @@ func ExampleBlobOperations_Delete() {
 
 func ExampleContainerOperations_Delete() {
 	endpoint := pathJoin(getEndpoint(), containerName)
-	client, err := NewClient(endpoint, getCredential(), nil)
+	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
 	}
 	blobClient := client.ContainerOperations()
-	d, err := blobClient.Delete(context.Background(), nil)
+	d, err := blobClient.Delete(context.Background(), nil, nil, nil)
 	if err != nil {
 		panic(err)
 	}

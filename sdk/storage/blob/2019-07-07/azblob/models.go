@@ -8,7 +8,6 @@ package azblob
 import (
 	"encoding/xml"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"time"
@@ -26,6 +25,7 @@ type AccessPolicy struct {
 	Start *time.Time `xml:"Start"`
 }
 
+// MarshalXML implements the xml.Marshaller interface for type AccessPolicy.
 func (a AccessPolicy) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	type alias AccessPolicy
 	aux := &struct {
@@ -40,6 +40,7 @@ func (a AccessPolicy) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeElement(aux, start)
 }
 
+// UnmarshalXML implements the xml.Unmarshaller interface for type AccessPolicy.
 func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	type alias AccessPolicy
 	aux := &struct {
@@ -59,33 +60,6 @@ func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 
 // AppendBlobAppendBlockFromURLOptions contains the optional parameters for the AppendBlob.AppendBlockFromURL method.
 type AppendBlobAppendBlockFromURLOptions struct {
-	// Optional conditional header, used only for the Append Block operation. A number indicating the byte offset to compare.
-	// Append Block will succeed only if the append position is equal to this number. If it is not, the request will fail with
-	// the AppendPositionConditionNotMet error (HTTP status code 412 - Precondition Failed).
-	AppendPosition *int64
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
-	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
-	// see Encryption at Rest for Azure Storage Services.
-	EncryptionScope *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
-	// Optional conditional header. The max length in bytes permitted for the append blob. If the Append Block operation would
-	// cause the blob to exceed that limit or if the blob size is already greater than the value specified in this header, the
-	// request will fail with MaxBlobSizeConditionNotMet error (HTTP status code 412 - Precondition Failed).
-	MaxSize *int64
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -93,14 +67,6 @@ type AppendBlobAppendBlockFromURLOptions struct {
 	SourceContentMd5 *[]byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
 	SourceContentcrc64 *[]byte
-	// Specify an ETag value to operate only on blobs with a matching value.
-	SourceIfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	SourceIfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	SourceIfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	SourceIfUnmodifiedSince *time.Time
 	// Bytes of source data in the specified range.
 	SourceRange *string
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
@@ -154,33 +120,6 @@ type AppendBlobAppendBlockFromURLResponse struct {
 
 // AppendBlobAppendBlockOptions contains the optional parameters for the AppendBlob.AppendBlock method.
 type AppendBlobAppendBlockOptions struct {
-	// Optional conditional header, used only for the Append Block operation. A number indicating the byte offset to compare.
-	// Append Block will succeed only if the append position is equal to this number. If it is not, the request will fail with
-	// the AppendPositionConditionNotMet error (HTTP status code 412 - Precondition Failed).
-	AppendPosition *int64
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
-	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
-	// see Encryption at Rest for Azure Storage Services.
-	EncryptionScope *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
-	// Optional conditional header. The max length in bytes permitted for the append blob. If the Append Block operation would
-	// cause the blob to exceed that limit or if the blob size is already greater than the value specified in this header, the
-	// request will fail with MaxBlobSizeConditionNotMet error (HTTP status code 412 - Precondition Failed).
-	MaxSize *int64
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -240,46 +179,12 @@ type AppendBlobAppendBlockResponse struct {
 
 // AppendBlobCreateOptions contains the optional parameters for the AppendBlob.Create method.
 type AppendBlobCreateOptions struct {
-	// Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
-	BlobCacheControl *string
-	// Optional. Sets the blob's Content-Disposition header.
-	BlobContentDisposition *string
-	// Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read
-	// request.
-	BlobContentEncoding *string
-	// Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with a read
-	// request.
-	BlobContentLanguage *string
-	// Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the individual blocks
-	// were validated when each was uploaded.
-	BlobContentMd5 *[]byte
-	// Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
-	BlobContentType *string
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
-	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
-	// see Encryption at Rest for Azure Storage Services.
-	EncryptionScope *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata *string
+	Metadata *map[string]string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -324,10 +229,20 @@ type AppendBlobCreateResponse struct {
 	Version *string
 }
 
+// AppendPositionAccessConditions contains a group of parameters for the AppendBlob.AppendBlock method.
+type AppendPositionAccessConditions struct {
+	// Optional conditional header, used only for the Append Block operation. A number indicating the byte offset to compare.
+	// Append Block will succeed only if the append position is equal to this number. If it is not, the request will fail with
+	// the AppendPositionConditionNotMet error (HTTP status code 412 - Precondition Failed).
+	AppendPosition *int64
+	// Optional conditional header. The max length in bytes permitted for the append blob. If the Append Block operation would
+	// cause the blob to exceed that limit or if the blob size is already greater than the value specified in this header, the
+	// request will fail with MaxBlobSizeConditionNotMet error (HTTP status code 412 - Precondition Failed).
+	MaxSize *int64
+}
+
 // BlobAbortCopyFromURLOptions contains the optional parameters for the Blob.AbortCopyFromURL method.
 type BlobAbortCopyFromURLOptions struct {
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -359,14 +274,6 @@ type BlobAcquireLeaseOptions struct {
 	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
 	// can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
 	Duration *int32
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
 	// Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is
 	// not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
 	ProposedLeaseId *string
@@ -413,14 +320,6 @@ type BlobBreakLeaseOptions struct {
 	// the break period. If this header does not appear with a break operation, a fixed-duration lease breaks after the remaining
 	// lease period elapses, and an infinite lease breaks immediately.
 	BreakPeriod *int32
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -458,14 +357,6 @@ type BlobBreakLeaseResponse struct {
 
 // BlobChangeLeaseOptions contains the optional parameters for the Blob.ChangeLease method.
 type BlobChangeLeaseOptions struct {
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -503,35 +394,17 @@ type BlobChangeLeaseResponse struct {
 
 // BlobCopyFromURLOptions contains the optional parameters for the Blob.CopyFromURL method.
 type BlobCopyFromURLOptions struct {
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata *string
+	Metadata *map[string]string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMd5 *[]byte
-	// Specify an ETag value to operate only on blobs with a matching value.
-	SourceIfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	SourceIfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	SourceIfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	SourceIfUnmodifiedSince *time.Time
 	// Optional. Indicates the tier to be set on the blob.
 	Tier *AccessTier
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
@@ -577,31 +450,12 @@ type BlobCopyFromURLResponse struct {
 
 // BlobCreateSnapshotOptions contains the optional parameters for the Blob.CreateSnapshot method.
 type BlobCreateSnapshotOptions struct {
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
-	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
-	// see Encryption at Rest for Azure Storage Services.
-	EncryptionScope *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata *string
+	Metadata *map[string]string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -645,16 +499,6 @@ type BlobDeleteOptions struct {
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
 	DeleteSnapshots *DeleteSnapshotsOptionType
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -687,21 +531,6 @@ type BlobDeleteResponse struct {
 
 // BlobDownloadOptions contains the optional parameters for the Blob.Download method.
 type BlobDownloadOptions struct {
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// When set to true and specified together with the Range, the service returns the CRC64 hash for the range, as long as the
 	// range is less than or equal to 4 MB in size.
 	RangeGetContentCrc64 *bool
@@ -833,16 +662,6 @@ type BlobFlatListSegment struct {
 
 // BlobGetAccessControlOptions contains the optional parameters for the Blob.GetAccessControl method.
 type BlobGetAccessControlOptions struct {
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -915,21 +734,6 @@ type BlobGetAccountInfoResponse struct {
 
 // BlobGetPropertiesOptions contains the optional parameters for the Blob.GetProperties method.
 type BlobGetPropertiesOptions struct {
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -1064,6 +868,25 @@ type BlobHierarchyListSegment struct {
 	BlobPrefixes *[]BlobPrefix `xml:"BlobPrefix"`
 }
 
+// BlobHttpHeaders contains a group of parameters for the Blob.SetHTTPHeaders method.
+type BlobHttpHeaders struct {
+	// Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
+	BlobCacheControl *string
+	// Optional. Sets the blob's Content-Disposition header.
+	BlobContentDisposition *string
+	// Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read
+	// request.
+	BlobContentEncoding *string
+	// Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with a read
+	// request.
+	BlobContentLanguage *string
+	// Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the individual blocks
+	// were validated when each was uploaded.
+	BlobContentMd5 *[]byte
+	// Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
+	BlobContentType *string
+}
+
 // An Azure Storage blob
 type BlobItem struct {
 	Deleted  *bool         `xml:"Deleted"`
@@ -1076,7 +899,9 @@ type BlobItem struct {
 }
 
 type BlobMetadata struct {
-	Encrypted *string `xml:"Encrypted,attr"`
+	// Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties *map[string]string
+	Encrypted            *string `xml:"Encrypted,attr"`
 }
 
 type BlobPrefix struct {
@@ -1123,6 +948,7 @@ type BlobProperties struct {
 	ServerEncrypted        *bool              `xml:"ServerEncrypted"`
 }
 
+// MarshalXML implements the xml.Marshaller interface for type BlobProperties.
 func (b BlobProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	type alias BlobProperties
 	aux := &struct {
@@ -1143,6 +969,7 @@ func (b BlobProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) error
 	return e.EncodeElement(aux, start)
 }
 
+// UnmarshalXML implements the xml.Unmarshaller interface for type BlobProperties.
 func (b *BlobProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	type alias BlobProperties
 	aux := &struct {
@@ -1168,14 +995,6 @@ func (b *BlobProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElement) er
 
 // BlobReleaseLeaseOptions contains the optional parameters for the Blob.ReleaseLease method.
 type BlobReleaseLeaseOptions struct {
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -1210,29 +1029,9 @@ type BlobReleaseLeaseResponse struct {
 
 // BlobRenameOptions contains the optional parameters for the Blob.Rename method.
 type BlobRenameOptions struct {
-	// Cache control for given resource
-	CacheControl *string
-	// Content disposition for given resource
-	ContentDisposition *string
-	// Content encoding for given resource
-	ContentEncoding *string
-	// Content language for given resource
-	ContentLanguage *string
-	// Content type for given resource
-	ContentType *string
 	// Optional. User-defined properties to be stored with the file or directory, in the format of a comma-separated list of name
 	// and value pairs "n1=v1, n2=v2, ...", where each value is base64 encoded.
 	DirectoryProperties *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file
 	// owner, the file owning group, and others. Each class may be granted read, write, or execute permission. The sticky bit
 	// is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
@@ -1245,15 +1044,7 @@ type BlobRenameOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	SourceIfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	SourceIfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	SourceIfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	SourceIfUnmodifiedSince *time.Time
-	// A lease ID for the source path. If specified, the source path must have an active lease and the leaase ID must match.
+	// A lease ID for the source path. If specified, the source path must have an active lease and the lease ID must match.
 	SourceLeaseId *string
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
@@ -1289,14 +1080,6 @@ type BlobRenameResponse struct {
 
 // BlobRenewLeaseOptions contains the optional parameters for the Blob.RenewLease method.
 type BlobRenewLeaseOptions struct {
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -1336,16 +1119,6 @@ type BlobRenewLeaseResponse struct {
 type BlobSetAccessControlOptions struct {
 	// Optional. The owning group of the blob or directory.
 	Group *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional. The owner of the blob or directory.
 	Owner *string
 	// Sets POSIX access control rights on files and directories. The value is a comma-separated list of access control entries.
@@ -1387,31 +1160,6 @@ type BlobSetAccessControlResponse struct {
 
 // BlobSetHTTPHeadersOptions contains the optional parameters for the Blob.SetHTTPHeaders method.
 type BlobSetHTTPHeadersOptions struct {
-	// Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
-	BlobCacheControl *string
-	// Optional. Sets the blob's Content-Disposition header.
-	BlobContentDisposition *string
-	// Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read
-	// request.
-	BlobContentEncoding *string
-	// Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with a read
-	// request.
-	BlobContentLanguage *string
-	// Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the individual blocks
-	// were validated when each was uploaded.
-	BlobContentMd5 *[]byte
-	// Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
-	BlobContentType *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -1449,31 +1197,12 @@ type BlobSetHTTPHeadersResponse struct {
 
 // BlobSetMetadataOptions contains the optional parameters for the Blob.SetMetadata method.
 type BlobSetMetadataOptions struct {
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
-	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
-	// see Encryption at Rest for Azure Storage Services.
-	EncryptionScope *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata *string
+	Metadata *map[string]string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -1517,8 +1246,6 @@ type BlobSetMetadataResponse struct {
 
 // BlobSetTierOptions contains the optional parameters for the Blob.SetTier method.
 type BlobSetTierOptions struct {
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional: Indicates the priority with which to rehydrate an archived blob.
 	RehydratePriority *RehydratePriority
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
@@ -1546,35 +1273,17 @@ type BlobSetTierResponse struct {
 
 // BlobStartCopyFromURLOptions contains the optional parameters for the Blob.StartCopyFromURL method.
 type BlobStartCopyFromURLOptions struct {
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata *string
+	Metadata *map[string]string
 	// Optional: Indicates the priority with which to rehydrate an archived blob.
 	RehydratePriority *RehydratePriority
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	SourceIfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	SourceIfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	SourceIfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	SourceIfUnmodifiedSince *time.Time
 	// Optional. Indicates the tier to be set on the blob.
 	Tier *AccessTier
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
@@ -1651,46 +1360,12 @@ type Block struct {
 
 // BlockBlobCommitBlockListOptions contains the optional parameters for the BlockBlob.CommitBlockList method.
 type BlockBlobCommitBlockListOptions struct {
-	// Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
-	BlobCacheControl *string
-	// Optional. Sets the blob's Content-Disposition header.
-	BlobContentDisposition *string
-	// Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read
-	// request.
-	BlobContentEncoding *string
-	// Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with a read
-	// request.
-	BlobContentLanguage *string
-	// Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the individual blocks
-	// were validated when each was uploaded.
-	BlobContentMd5 *[]byte
-	// Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
-	BlobContentType *string
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
-	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
-	// see Encryption at Rest for Azure Storage Services.
-	EncryptionScope *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata *string
+	Metadata *map[string]string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -1746,8 +1421,6 @@ type BlockBlobCommitBlockListResponse struct {
 
 // BlockBlobGetBlockListOptions contains the optional parameters for the BlockBlob.GetBlockList method.
 type BlockBlobGetBlockListOptions struct {
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -1762,17 +1435,6 @@ type BlockBlobGetBlockListOptions struct {
 
 // BlockBlobStageBlockFromURLOptions contains the optional parameters for the BlockBlob.StageBlockFromURL method.
 type BlockBlobStageBlockFromURLOptions struct {
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
-	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
-	// see Encryption at Rest for Azure Storage Services.
-	EncryptionScope *string
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -1780,14 +1442,6 @@ type BlockBlobStageBlockFromURLOptions struct {
 	SourceContentMd5 *[]byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
 	SourceContentcrc64 *[]byte
-	// Specify an ETag value to operate only on blobs with a matching value.
-	SourceIfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	SourceIfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	SourceIfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	SourceIfUnmodifiedSince *time.Time
 	// Bytes of source data in the specified range.
 	SourceRange *string
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
@@ -1830,17 +1484,6 @@ type BlockBlobStageBlockFromURLResponse struct {
 
 // BlockBlobStageBlockOptions contains the optional parameters for the BlockBlob.StageBlock method.
 type BlockBlobStageBlockOptions struct {
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
-	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
-	// see Encryption at Rest for Azure Storage Services.
-	EncryptionScope *string
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -1888,46 +1531,12 @@ type BlockBlobStageBlockResponse struct {
 
 // BlockBlobUploadOptions contains the optional parameters for the BlockBlob.Upload method.
 type BlockBlobUploadOptions struct {
-	// Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
-	BlobCacheControl *string
-	// Optional. Sets the blob's Content-Disposition header.
-	BlobContentDisposition *string
-	// Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read
-	// request.
-	BlobContentEncoding *string
-	// Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with a read
-	// request.
-	BlobContentLanguage *string
-	// Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the individual blocks
-	// were validated when each was uploaded.
-	BlobContentMd5 *[]byte
-	// Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
-	BlobContentType *string
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
-	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
-	// see Encryption at Rest for Azure Storage Services.
-	EncryptionScope *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata *string
+	Metadata *map[string]string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -2018,6 +1627,7 @@ type BlockLookupList struct {
 	Uncommitted *[]string `xml:"Uncommitted"`
 }
 
+// MarshalXML implements the xml.Marshaller interface for type BlockLookupList.
 func (b BlockLookupList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	start.Name.Local = "BlockList"
 	type alias BlockLookupList
@@ -2039,10 +1649,6 @@ type ContainerAcquireLeaseOptions struct {
 	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
 	// can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
 	Duration *int32
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
 	// Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is
 	// not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
 	ProposedLeaseId *string
@@ -2089,10 +1695,6 @@ type ContainerBreakLeaseOptions struct {
 	// the break period. If this header does not appear with a break operation, a fixed-duration lease breaks after the remaining
 	// lease period elapses, and an infinite lease breaks immediately.
 	BreakPeriod *int32
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -2130,10 +1732,6 @@ type ContainerBreakLeaseResponse struct {
 
 // ContainerChangeLeaseOptions contains the optional parameters for the Container.ChangeLease method.
 type ContainerChangeLeaseOptions struct {
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -2169,22 +1767,26 @@ type ContainerChangeLeaseResponse struct {
 	Version *string
 }
 
+// ContainerCpkScopeInfo contains a group of parameters for the Container.Create method.
+type ContainerCpkScopeInfo struct {
+	// Optional. Version 2019-07-07 and later. Specifies the default encryption scope to set on the container and use for all
+	// future writes.
+	DefaultEncryptionScope *string
+	// Optional. Version 2019-07-07 and newer. If true, prevents any request from specifying a different encryption scope than
+	// the scope set on the container.
+	PreventEncryptionScopeOverride *bool
+}
+
 // ContainerCreateOptions contains the optional parameters for the Container.Create method.
 type ContainerCreateOptions struct {
 	// Specifies whether data in the container may be accessed publicly and the level of access
 	Access *PublicAccessType
-	// Optional. Version 2019-07-07 and later. Specifies the default encryption scope to set on the container and use for all
-	// future writes.
-	DefaultEncryptionScope *string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata *string
-	// Optional. Version 2019-07-07 and newer. If true, prevents any request from specifying a different encryption scope than
-	// the scope set on the container.
-	PreventEncryptionScopeOverride *bool
+	Metadata *map[string]string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -2219,12 +1821,6 @@ type ContainerCreateResponse struct {
 
 // ContainerDeleteOptions contains the optional parameters for the Container.Delete method.
 type ContainerDeleteOptions struct {
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -2253,8 +1849,6 @@ type ContainerDeleteResponse struct {
 
 // ContainerGetAccessPolicyOptions contains the optional parameters for the Container.GetAccessPolicy method.
 type ContainerGetAccessPolicyOptions struct {
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -2289,8 +1883,6 @@ type ContainerGetAccountInfoResponse struct {
 
 // ContainerGetPropertiesOptions contains the optional parameters for the Container.GetProperties method.
 type ContainerGetPropertiesOptions struct {
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -2353,8 +1945,8 @@ type ContainerGetPropertiesResponse struct {
 // An Azure Storage container
 type ContainerItem struct {
 	// Dictionary of <string>
-	Metadata *map[string]*string `xml:"String"`
-	Name     *string             `xml:"Name"`
+	Metadata *map[string]string `xml:"string"`
+	Name     *string            `xml:"Name"`
 
 	// Properties of a container
 	Properties *ContainerProperties `xml:"Properties"`
@@ -2422,6 +2014,7 @@ type ContainerProperties struct {
 	PublicAccess                   *PublicAccessType  `xml:"PublicAccess"`
 }
 
+// MarshalXML implements the xml.Marshaller interface for type ContainerProperties.
 func (c ContainerProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	type alias ContainerProperties
 	aux := &struct {
@@ -2434,6 +2027,7 @@ func (c ContainerProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) 
 	return e.EncodeElement(aux, start)
 }
 
+// UnmarshalXML implements the xml.Unmarshaller interface for type ContainerProperties.
 func (c *ContainerProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	type alias ContainerProperties
 	aux := &struct {
@@ -2451,10 +2045,6 @@ func (c *ContainerProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElemen
 
 // ContainerReleaseLeaseOptions contains the optional parameters for the Container.ReleaseLease method.
 type ContainerReleaseLeaseOptions struct {
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -2489,10 +2079,6 @@ type ContainerReleaseLeaseResponse struct {
 
 // ContainerRenewLeaseOptions contains the optional parameters for the Container.RenewLease method.
 type ContainerRenewLeaseOptions struct {
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -2534,12 +2120,6 @@ type ContainerSetAccessPolicyOptions struct {
 	Access *PublicAccessType
 	// the acls for the container
 	ContainerAcl *[]SignedIDentifier
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -2574,16 +2154,12 @@ type ContainerSetAccessPolicyResponse struct {
 
 // ContainerSetMetadataOptions contains the optional parameters for the Container.SetMetadata method.
 type ContainerSetMetadataOptions struct {
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata *string
+	Metadata *map[string]string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -2639,19 +2215,32 @@ type CorsRule struct {
 	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
 }
 
+// CpkInfo contains a group of parameters for the Blob.Download method.
+type CpkInfo struct {
+	// The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be provided
+	// if the x-ms-encryption-key header is provided.
+	EncryptionAlgorithm *string
+	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
+	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
+	EncryptionKey *string
+	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
+	EncryptionKeySha256 *string
+}
+
+// CpkScopeInfo contains a group of parameters for the Blob.SetMetadata method.
+type CpkScopeInfo struct {
+	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
+	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
+	// see Encryption at Rest for Azure Storage Services.
+	EncryptionScope *string
+}
+
 type DataLakeStorageError struct {
 	// The service error response object.
 	DataLakeStorageErrorDetails *DataLakeStorageErrorDetails `xml:"error"`
 }
 
-func newDataLakeStorageError(resp *azcore.Response) error {
-	err := DataLakeStorageError{}
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
-	}
-	return err
-}
-
+// Error implements the error interface for type DataLakeStorageError.
 func (e DataLakeStorageError) Error() string {
 	msg := ""
 	if e.DataLakeStorageErrorDetails != nil {
@@ -2674,29 +2263,9 @@ type DataLakeStorageErrorDetails struct {
 
 // DirectoryCreateOptions contains the optional parameters for the Directory.Create method.
 type DirectoryCreateOptions struct {
-	// Cache control for given resource
-	CacheControl *string
-	// Content disposition for given resource
-	ContentDisposition *string
-	// Content encoding for given resource
-	ContentEncoding *string
-	// Content language for given resource
-	ContentLanguage *string
-	// Content type for given resource
-	ContentType *string
 	// Optional. User-defined properties to be stored with the file or directory, in the format of a comma-separated list of name
 	// and value pairs "n1=v1, n2=v2, ...", where each value is base64 encoded.
 	DirectoryProperties *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file
 	// owner, the file owning group, and others. Each class may be granted read, write, or execute permission. The sticky bit
 	// is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
@@ -2743,16 +2312,6 @@ type DirectoryCreateResponse struct {
 
 // DirectoryDeleteOptions contains the optional parameters for the Directory.Delete method.
 type DirectoryDeleteOptions struct {
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// When renaming a directory, the number of paths that are renamed with each invocation is limited. If the number of paths
 	// to be renamed exceeds this limit, a continuation token is returned in this response header. When a continuation token is
 	// returned in the response, it must be specified in a subsequent invocation of the rename operation to continue renaming
@@ -2789,16 +2348,6 @@ type DirectoryDeleteResponse struct {
 
 // DirectoryGetAccessControlOptions contains the optional parameters for the Directory.GetAccessControl method.
 type DirectoryGetAccessControlOptions struct {
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -2845,8 +2394,8 @@ type DirectoryGetAccessControlResponse struct {
 	Version *string
 }
 
-// DirectoryRenameOptions contains the optional parameters for the Directory.Rename method.
-type DirectoryRenameOptions struct {
+// DirectoryHttpHeaders contains a group of parameters for the Directory.Create method.
+type DirectoryHttpHeaders struct {
 	// Cache control for given resource
 	CacheControl *string
 	// Content disposition for given resource
@@ -2857,19 +2406,13 @@ type DirectoryRenameOptions struct {
 	ContentLanguage *string
 	// Content type for given resource
 	ContentType *string
+}
+
+// DirectoryRenameOptions contains the optional parameters for the Directory.Rename method.
+type DirectoryRenameOptions struct {
 	// Optional. User-defined properties to be stored with the file or directory, in the format of a comma-separated list of name
 	// and value pairs "n1=v1, n2=v2, ...", where each value is base64 encoded.
 	DirectoryProperties *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// When renaming a directory, the number of paths that are renamed with each invocation is limited. If the number of paths
 	// to be renamed exceeds this limit, a continuation token is returned in this response header. When a continuation token is
 	// returned in the response, it must be specified in a subsequent invocation of the rename operation to continue renaming
@@ -2887,15 +2430,7 @@ type DirectoryRenameOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	SourceIfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	SourceIfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	SourceIfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	SourceIfUnmodifiedSince *time.Time
-	// A lease ID for the source path. If specified, the source path must have an active lease and the leaase ID must match.
+	// A lease ID for the source path. If specified, the source path must have an active lease and the lease ID must match.
 	SourceLeaseId *string
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
@@ -2936,16 +2471,6 @@ type DirectoryRenameResponse struct {
 type DirectorySetAccessControlOptions struct {
 	// Optional. The owning group of the blob or directory.
 	Group *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional. The owner of the blob or directory.
 	Owner *string
 	// Sets POSIX access control rights on files and directories. The value is a comma-separated list of access control entries.
@@ -2995,6 +2520,7 @@ type GeoReplication struct {
 	Status *GeoReplicationStatusType `xml:"Status"`
 }
 
+// MarshalXML implements the xml.Marshaller interface for type GeoReplication.
 func (g GeoReplication) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	type alias GeoReplication
 	aux := &struct {
@@ -3007,6 +2533,7 @@ func (g GeoReplication) MarshalXML(e *xml.Encoder, start xml.StartElement) error
 	return e.EncodeElement(aux, start)
 }
 
+// UnmarshalXML implements the xml.Unmarshaller interface for type GeoReplication.
 func (g *GeoReplication) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	type alias GeoReplication
 	aux := &struct {
@@ -3029,6 +2556,12 @@ type KeyInfo struct {
 
 	// The date-time the key is active in ISO 8601 UTC time
 	Start *string `xml:"Start"`
+}
+
+// LeaseAccessConditions contains a group of parameters for the Container.GetProperties method.
+type LeaseAccessConditions struct {
+	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+	LeaseId *string
 }
 
 // An enumeration of blobs
@@ -3166,33 +2699,20 @@ type Metrics struct {
 	Version *string `xml:"Version"`
 }
 
-// PageBlobClearPagesOptions contains the optional parameters for the PageBlob.ClearPages method.
-type PageBlobClearPagesOptions struct {
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
-	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
-	// see Encryption at Rest for Azure Storage Services.
-	EncryptionScope *string
+// ModifiedAccessConditions contains a group of parameters for the Container.Delete method.
+type ModifiedAccessConditions struct {
 	// Specify an ETag value to operate only on blobs with a matching value.
 	IfMatch *string
 	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
 	IfModifiedSince *time.Time
 	// Specify an ETag value to operate only on blobs without a matching value.
 	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has the specified sequence number.
-	IfSequenceNumberEqualTo *int64
-	// Specify this header value to operate only on a blob if it has a sequence number less than the specified.
-	IfSequenceNumberLessThan *int64
-	// Specify this header value to operate only on a blob if it has a sequence number less than or equal to the specified.
-	IfSequenceNumberLessThanOrEqualTo *int64
 	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
 	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
+}
+
+// PageBlobClearPagesOptions contains the optional parameters for the PageBlob.ClearPages method.
+type PageBlobClearPagesOptions struct {
 	// Return only the bytes of the blob in the specified range.
 	RangeParameter *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
@@ -3238,14 +2758,6 @@ type PageBlobClearPagesResponse struct {
 
 // PageBlobCopyIncrementalOptions contains the optional parameters for the PageBlob.CopyIncremental method.
 type PageBlobCopyIncrementalOptions struct {
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -3286,49 +2798,15 @@ type PageBlobCopyIncrementalResponse struct {
 
 // PageBlobCreateOptions contains the optional parameters for the PageBlob.Create method.
 type PageBlobCreateOptions struct {
-	// Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
-	BlobCacheControl *string
-	// Optional. Sets the blob's Content-Disposition header.
-	BlobContentDisposition *string
-	// Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read
-	// request.
-	BlobContentEncoding *string
-	// Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with a read
-	// request.
-	BlobContentLanguage *string
-	// Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the individual blocks
-	// were validated when each was uploaded.
-	BlobContentMd5 *[]byte
-	// Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
-	BlobContentType *string
 	// Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of
 	// the sequence number must be between 0 and 2^63 - 1.
 	BlobSequenceNumber *int64
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
-	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
-	// see Encryption at Rest for Azure Storage Services.
-	EncryptionScope *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata *string
+	Metadata *map[string]string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -3377,16 +2855,6 @@ type PageBlobCreateResponse struct {
 
 // PageBlobGetPageRangesDiffOptions contains the optional parameters for the PageBlob.GetPageRangesDiff method.
 type PageBlobGetPageRangesDiffOptions struct {
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Optional. This header is only supported in service versions 2019-04-19 and after and specifies the URL of a previous snapshot
 	// of the target blob. The response will only contain pages that were changed between the target blob and its previous snapshot.
 	PrevSnapshotUrl *url.URL
@@ -3411,16 +2879,6 @@ type PageBlobGetPageRangesDiffOptions struct {
 
 // PageBlobGetPageRangesOptions contains the optional parameters for the PageBlob.GetPageRanges method.
 type PageBlobGetPageRangesOptions struct {
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Return only the bytes of the blob in the specified range.
 	RangeParameter *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
@@ -3437,25 +2895,6 @@ type PageBlobGetPageRangesOptions struct {
 
 // PageBlobResizeOptions contains the optional parameters for the PageBlob.Resize method.
 type PageBlobResizeOptions struct {
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
-	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
-	// see Encryption at Rest for Azure Storage Services.
-	EncryptionScope *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -3496,16 +2935,6 @@ type PageBlobUpdateSequenceNumberOptions struct {
 	// Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of
 	// the sequence number must be between 0 and 2^63 - 1.
 	BlobSequenceNumber *int64
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -3543,31 +2972,6 @@ type PageBlobUpdateSequenceNumberResponse struct {
 
 // PageBlobUploadPagesFromURLOptions contains the optional parameters for the PageBlob.UploadPagesFromURL method.
 type PageBlobUploadPagesFromURLOptions struct {
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
-	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
-	// see Encryption at Rest for Azure Storage Services.
-	EncryptionScope *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has the specified sequence number.
-	IfSequenceNumberEqualTo *int64
-	// Specify this header value to operate only on a blob if it has a sequence number less than the specified.
-	IfSequenceNumberLessThan *int64
-	// Specify this header value to operate only on a blob if it has a sequence number less than or equal to the specified.
-	IfSequenceNumberLessThanOrEqualTo *int64
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestId *string
@@ -3575,14 +2979,6 @@ type PageBlobUploadPagesFromURLOptions struct {
 	SourceContentMd5 *[]byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
 	SourceContentcrc64 *[]byte
-	// Specify an ETag value to operate only on blobs with a matching value.
-	SourceIfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	SourceIfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	SourceIfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	SourceIfUnmodifiedSince *time.Time
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
 	Timeout *int32
@@ -3629,31 +3025,6 @@ type PageBlobUploadPagesFromURLResponse struct {
 
 // PageBlobUploadPagesOptions contains the optional parameters for the PageBlob.UploadPages method.
 type PageBlobUploadPagesOptions struct {
-	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
-	// is performed with the root account encryption key. For more information, see Encryption at Rest for Azure Storage Services.
-	EncryptionKey *string
-	// The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
-	EncryptionKeySha256 *string
-	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
-	// in the request. If not specified, encryption is performed with the default account encryption scope. For more information,
-	// see Encryption at Rest for Azure Storage Services.
-	EncryptionScope *string
-	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
-	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-	IfModifiedSince *time.Time
-	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
-	// Specify this header value to operate only on a blob if it has the specified sequence number.
-	IfSequenceNumberEqualTo *int64
-	// Specify this header value to operate only on a blob if it has a sequence number less than the specified.
-	IfSequenceNumberLessThan *int64
-	// Specify this header value to operate only on a blob if it has a sequence number less than or equal to the specified.
-	IfSequenceNumberLessThanOrEqualTo *int64
-	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
-	IfUnmodifiedSince *time.Time
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseId *string
 	// Return only the bytes of the blob in the specified range.
 	RangeParameter *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
@@ -3759,6 +3130,16 @@ type RetentionPolicy struct {
 
 	// Indicates whether a retention policy is enabled for the storage service
 	Enabled *bool `xml:"Enabled"`
+}
+
+// SequenceNumberAccessConditions contains a group of parameters for the PageBlob.UploadPages method.
+type SequenceNumberAccessConditions struct {
+	// Specify this header value to operate only on a blob if it has the specified sequence number.
+	IfSequenceNumberEqualTo *int64
+	// Specify this header value to operate only on a blob if it has a sequence number less than the specified.
+	IfSequenceNumberLessThan *int64
+	// Specify this header value to operate only on a blob if it has a sequence number less than or equal to the specified.
+	IfSequenceNumberLessThanOrEqualTo *int64
 }
 
 // ServiceGetAccountInfoResponse contains the response from method Service.GetAccountInfo.
@@ -3926,6 +3307,18 @@ type SignedIDentifierArrayResponse struct {
 	Version *string `xml:"Version"`
 }
 
+// SourceModifiedAccessConditions contains a group of parameters for the Directory.Rename method.
+type SourceModifiedAccessConditions struct {
+	// Specify an ETag value to operate only on blobs with a matching value.
+	SourceIfMatch *string
+	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
+	SourceIfModifiedSince *time.Time
+	// Specify an ETag value to operate only on blobs without a matching value.
+	SourceIfNoneMatch *string
+	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
+	SourceIfUnmodifiedSince *time.Time
+}
+
 // The properties that enable an account to host a static website
 type StaticWebsite struct {
 	// Indicates whether this account is hosting a static website
@@ -3942,14 +3335,7 @@ type StorageError struct {
 	Message *string `xml:"Message"`
 }
 
-func newStorageError(resp *azcore.Response) error {
-	err := StorageError{}
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
-	}
-	return err
-}
-
+// Error implements the error interface for type StorageError.
 func (e StorageError) Error() string {
 	msg := ""
 	if e.Message != nil {
@@ -4055,6 +3441,7 @@ type UserDelegationKey struct {
 	Value *string `xml:"Value"`
 }
 
+// MarshalXML implements the xml.Marshaller interface for type UserDelegationKey.
 func (u UserDelegationKey) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	type alias UserDelegationKey
 	aux := &struct {
@@ -4069,6 +3456,7 @@ func (u UserDelegationKey) MarshalXML(e *xml.Encoder, start xml.StartElement) er
 	return e.EncodeElement(aux, start)
 }
 
+// UnmarshalXML implements the xml.Unmarshaller interface for type UserDelegationKey.
 func (u *UserDelegationKey) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	type alias UserDelegationKey
 	aux := &struct {

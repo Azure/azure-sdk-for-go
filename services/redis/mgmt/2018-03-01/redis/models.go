@@ -1837,7 +1837,7 @@ type ScheduleEntries struct {
 	ScheduleEntries *[]ScheduleEntry `json:"scheduleEntries,omitempty"`
 }
 
-// ScheduleEntry patch schedule entry for a Premium Redis Cache.
+// ScheduleEntry patch schedule entry for a Redis Cache.
 type ScheduleEntry struct {
 	// DayOfWeek - Day of the week when a cache can be patched. Possible values include: 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Everyday', 'Weekend'
 	DayOfWeek DayOfWeek `json:"dayOfWeek,omitempty"`

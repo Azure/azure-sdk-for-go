@@ -60,13 +60,15 @@ func (bb BlockBlobClient) WithPipeline(pipeline azcore.Pipeline) (BlockBlobClien
 // This method panics if the stream is not at position 0.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
-func (bb BlockBlobClient) Upload(ctx context.Context, body azcore.ReadSeekCloser, options *BlockBlobUploadOptions) (*BlockBlobUploadResponse, error) {
+func (bb BlockBlobClient) Upload(ctx context.Context, body azcore.ReadSeekCloser, options *UploadBlockBlobOptions) (*BlockBlobUploadResponse, error) {
 	count, err := validateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
 		return nil, err
 	}
 
-	return bb.client.BlockBlobOperations().Upload(ctx, count, body, options)
+	basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions := options.pointers()
+
+	return bb.client.BlockBlobOperations().Upload(ctx, count, body, basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
 }
 
 //

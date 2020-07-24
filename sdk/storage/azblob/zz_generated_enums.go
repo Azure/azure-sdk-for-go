@@ -25,7 +25,22 @@ const (
 )
 
 func PossibleAccessTierValues() []AccessTier {
-	return []AccessTier{AccessTierArchive, AccessTierCool, AccessTierHot, AccessTierP10, AccessTierP15, AccessTierP20, AccessTierP30, AccessTierP4, AccessTierP40, AccessTierP50, AccessTierP6, AccessTierP60, AccessTierP70, AccessTierP80}
+	return []AccessTier{
+		AccessTierArchive,
+		AccessTierCool,
+		AccessTierHot,
+		AccessTierP10,
+		AccessTierP15,
+		AccessTierP20,
+		AccessTierP30,
+		AccessTierP4,
+		AccessTierP40,
+		AccessTierP50,
+		AccessTierP6,
+		AccessTierP60,
+		AccessTierP70,
+		AccessTierP80,
+	}
 }
 
 func (c AccessTier) ToPtr() *AccessTier {
@@ -35,13 +50,21 @@ func (c AccessTier) ToPtr() *AccessTier {
 type AccountKind string
 
 const (
-	AccountKindStorage     AccountKind = "Storage"
-	AccountKindBlobStorage AccountKind = "BlobStorage"
-	AccountKindStorageV2   AccountKind = "StorageV2"
+	AccountKindStorage          AccountKind = "Storage"
+	AccountKindBlobStorage      AccountKind = "BlobStorage"
+	AccountKindStorageV2        AccountKind = "StorageV2"
+	AccountKindFileStorage      AccountKind = "FileStorage"
+	AccountKindBlockBlobStorage AccountKind = "BlockBlobStorage"
 )
 
 func PossibleAccountKindValues() []AccountKind {
-	return []AccountKind{AccountKindStorage, AccountKindBlobStorage, AccountKindStorageV2}
+	return []AccountKind{
+		AccountKindStorage,
+		AccountKindBlobStorage,
+		AccountKindStorageV2,
+		AccountKindFileStorage,
+		AccountKindBlockBlobStorage,
+	}
 }
 
 func (c AccountKind) ToPtr() *AccountKind {
@@ -56,10 +79,35 @@ const (
 )
 
 func PossibleArchiveStatusValues() []ArchiveStatus {
-	return []ArchiveStatus{ArchiveStatusRehydratePendingToCool, ArchiveStatusRehydratePendingToHot}
+	return []ArchiveStatus{
+		ArchiveStatusRehydratePendingToCool,
+		ArchiveStatusRehydratePendingToHot,
+	}
 }
 
 func (c ArchiveStatus) ToPtr() *ArchiveStatus {
+	return &c
+}
+
+type BlobExpiryOptions string
+
+const (
+	BlobExpiryOptionsAbsolute           BlobExpiryOptions = "Absolute"
+	BlobExpiryOptionsNeverExpire        BlobExpiryOptions = "NeverExpire"
+	BlobExpiryOptionsRelativeToCreation BlobExpiryOptions = "RelativeToCreation"
+	BlobExpiryOptionsRelativeToNow      BlobExpiryOptions = "RelativeToNow"
+)
+
+func PossibleBlobExpiryOptionsValues() []BlobExpiryOptions {
+	return []BlobExpiryOptions{
+		BlobExpiryOptionsAbsolute,
+		BlobExpiryOptionsNeverExpire,
+		BlobExpiryOptionsRelativeToCreation,
+		BlobExpiryOptionsRelativeToNow,
+	}
+}
+
+func (c BlobExpiryOptions) ToPtr() *BlobExpiryOptions {
 	return &c
 }
 
@@ -72,7 +120,11 @@ const (
 )
 
 func PossibleBlobTypeValues() []BlobType {
-	return []BlobType{BlobTypeBlockBlob, BlobTypePageBlob, BlobTypeAppendBlob}
+	return []BlobType{
+		BlobTypeBlockBlob,
+		BlobTypePageBlob,
+		BlobTypeAppendBlob,
+	}
 }
 
 func (c BlobType) ToPtr() *BlobType {
@@ -88,7 +140,11 @@ const (
 )
 
 func PossibleBlockListTypeValues() []BlockListType {
-	return []BlockListType{BlockListTypeCommitted, BlockListTypeUncommitted, BlockListTypeAll}
+	return []BlockListType{
+		BlockListTypeCommitted,
+		BlockListTypeUncommitted,
+		BlockListTypeAll,
+	}
 }
 
 func (c BlockListType) ToPtr() *BlockListType {
@@ -105,7 +161,12 @@ const (
 )
 
 func PossibleCopyStatusTypeValues() []CopyStatusType {
-	return []CopyStatusType{CopyStatusTypePending, CopyStatusTypeSuccess, CopyStatusTypeAborted, CopyStatusTypeFailed}
+	return []CopyStatusType{
+		CopyStatusTypePending,
+		CopyStatusTypeSuccess,
+		CopyStatusTypeAborted,
+		CopyStatusTypeFailed,
+	}
 }
 
 func (c CopyStatusType) ToPtr() *CopyStatusType {
@@ -120,7 +181,10 @@ const (
 )
 
 func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
-	return []DeleteSnapshotsOptionType{DeleteSnapshotsOptionTypeInclude, DeleteSnapshotsOptionTypeOnly}
+	return []DeleteSnapshotsOptionType{
+		DeleteSnapshotsOptionTypeInclude,
+		DeleteSnapshotsOptionTypeOnly,
+	}
 }
 
 func (c DeleteSnapshotsOptionType) ToPtr() *DeleteSnapshotsOptionType {
@@ -137,7 +201,11 @@ const (
 )
 
 func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatusType {
-	return []GeoReplicationStatusType{GeoReplicationStatusTypeBootstrap, GeoReplicationStatusTypeLive, GeoReplicationStatusTypeUnavailable}
+	return []GeoReplicationStatusType{
+		GeoReplicationStatusTypeBootstrap,
+		GeoReplicationStatusTypeLive,
+		GeoReplicationStatusTypeUnavailable,
+	}
 }
 
 func (c GeoReplicationStatusType) ToPtr() *GeoReplicationStatusType {
@@ -152,7 +220,10 @@ const (
 )
 
 func PossibleLeaseDurationTypeValues() []LeaseDurationType {
-	return []LeaseDurationType{LeaseDurationTypeInfinite, LeaseDurationTypeFixed}
+	return []LeaseDurationType{
+		LeaseDurationTypeInfinite,
+		LeaseDurationTypeFixed,
+	}
 }
 
 func (c LeaseDurationType) ToPtr() *LeaseDurationType {
@@ -170,7 +241,13 @@ const (
 )
 
 func PossibleLeaseStateTypeValues() []LeaseStateType {
-	return []LeaseStateType{LeaseStateTypeAvailable, LeaseStateTypeLeased, LeaseStateTypeExpired, LeaseStateTypeBreaking, LeaseStateTypeBroken}
+	return []LeaseStateType{
+		LeaseStateTypeAvailable,
+		LeaseStateTypeLeased,
+		LeaseStateTypeExpired,
+		LeaseStateTypeBreaking,
+		LeaseStateTypeBroken,
+	}
 }
 
 func (c LeaseStateType) ToPtr() *LeaseStateType {
@@ -185,7 +262,10 @@ const (
 )
 
 func PossibleLeaseStatusTypeValues() []LeaseStatusType {
-	return []LeaseStatusType{LeaseStatusTypeLocked, LeaseStatusTypeUnlocked}
+	return []LeaseStatusType{
+		LeaseStatusTypeLocked,
+		LeaseStatusTypeUnlocked,
+	}
 }
 
 func (c LeaseStatusType) ToPtr() *LeaseStatusType {
@@ -200,13 +280,41 @@ const (
 	ListBlobsIncludeItemMetadata         ListBlobsIncludeItem = "metadata"
 	ListBlobsIncludeItemSnapshots        ListBlobsIncludeItem = "snapshots"
 	ListBlobsIncludeItemUncommittedblobs ListBlobsIncludeItem = "uncommittedblobs"
+	ListBlobsIncludeItemVersions         ListBlobsIncludeItem = "versions"
+	ListBlobsIncludeItemTags             ListBlobsIncludeItem = "tags"
 )
 
 func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
-	return []ListBlobsIncludeItem{ListBlobsIncludeItemCopy, ListBlobsIncludeItemDeleted, ListBlobsIncludeItemMetadata, ListBlobsIncludeItemSnapshots, ListBlobsIncludeItemUncommittedblobs}
+	return []ListBlobsIncludeItem{
+		ListBlobsIncludeItemCopy,
+		ListBlobsIncludeItemDeleted,
+		ListBlobsIncludeItemMetadata,
+		ListBlobsIncludeItemSnapshots,
+		ListBlobsIncludeItemUncommittedblobs,
+		ListBlobsIncludeItemVersions,
+		ListBlobsIncludeItemTags,
+	}
 }
 
 func (c ListBlobsIncludeItem) ToPtr() *ListBlobsIncludeItem {
+	return &c
+}
+
+type ListContainersIncludeType string
+
+const (
+	ListContainersIncludeTypeMetadata ListContainersIncludeType = "metadata"
+	ListContainersIncludeTypeDeleted  ListContainersIncludeType = "deleted"
+)
+
+func PossibleListContainersIncludeTypeValues() []ListContainersIncludeType {
+	return []ListContainersIncludeType{
+		ListContainersIncludeTypeMetadata,
+		ListContainersIncludeTypeDeleted,
+	}
+}
+
+func (c ListContainersIncludeType) ToPtr() *ListContainersIncludeType {
 	return &c
 }
 
@@ -218,7 +326,10 @@ const (
 )
 
 func PossiblePathRenameModeValues() []PathRenameMode {
-	return []PathRenameMode{PathRenameModeLegacy, PathRenameModePosix}
+	return []PathRenameMode{
+		PathRenameModeLegacy,
+		PathRenameModePosix,
+	}
 }
 
 func (c PathRenameMode) ToPtr() *PathRenameMode {
@@ -242,7 +353,19 @@ const (
 )
 
 func PossiblePremiumPageBlobAccessTierValues() []PremiumPageBlobAccessTier {
-	return []PremiumPageBlobAccessTier{PremiumPageBlobAccessTierP10, PremiumPageBlobAccessTierP15, PremiumPageBlobAccessTierP20, PremiumPageBlobAccessTierP30, PremiumPageBlobAccessTierP4, PremiumPageBlobAccessTierP40, PremiumPageBlobAccessTierP50, PremiumPageBlobAccessTierP6, PremiumPageBlobAccessTierP60, PremiumPageBlobAccessTierP70, PremiumPageBlobAccessTierP80}
+	return []PremiumPageBlobAccessTier{
+		PremiumPageBlobAccessTierP10,
+		PremiumPageBlobAccessTierP15,
+		PremiumPageBlobAccessTierP20,
+		PremiumPageBlobAccessTierP30,
+		PremiumPageBlobAccessTierP4,
+		PremiumPageBlobAccessTierP40,
+		PremiumPageBlobAccessTierP50,
+		PremiumPageBlobAccessTierP6,
+		PremiumPageBlobAccessTierP60,
+		PremiumPageBlobAccessTierP70,
+		PremiumPageBlobAccessTierP80,
+	}
 }
 
 func (c PremiumPageBlobAccessTier) ToPtr() *PremiumPageBlobAccessTier {
@@ -257,13 +380,36 @@ const (
 )
 
 func PossiblePublicAccessTypeValues() []PublicAccessType {
-	return []PublicAccessType{PublicAccessTypeBlob, PublicAccessTypeContainer}
+	return []PublicAccessType{
+		PublicAccessTypeBlob,
+		PublicAccessTypeContainer,
+	}
 }
 
 func (c PublicAccessType) ToPtr() *PublicAccessType {
 	return &c
 }
 
+// QueryFormatType - The quick query format type.
+type QueryFormatType string
+
+const (
+	QueryFormatTypeDelimited QueryFormatType = "delimited"
+	QueryFormatTypeJSON      QueryFormatType = "json"
+)
+
+func PossibleQueryFormatTypeValues() []QueryFormatType {
+	return []QueryFormatType{
+		QueryFormatTypeDelimited,
+		QueryFormatTypeJSON,
+	}
+}
+
+func (c QueryFormatType) ToPtr() *QueryFormatType {
+	return &c
+}
+
+// RehydratePriority - If an object is in rehydrate pending state then this header is returned with priority of rehydrate. Valid values are High and Standard.
 type RehydratePriority string
 
 const (
@@ -272,7 +418,10 @@ const (
 )
 
 func PossibleRehydratePriorityValues() []RehydratePriority {
-	return []RehydratePriority{RehydratePriorityHigh, RehydratePriorityStandard}
+	return []RehydratePriority{
+		RehydratePriorityHigh,
+		RehydratePriorityStandard,
+	}
 }
 
 func (c RehydratePriority) ToPtr() *RehydratePriority {
@@ -288,7 +437,11 @@ const (
 )
 
 func PossibleSequenceNumberActionTypeValues() []SequenceNumberActionType {
-	return []SequenceNumberActionType{SequenceNumberActionTypeMax, SequenceNumberActionTypeUpdate, SequenceNumberActionTypeIncrement}
+	return []SequenceNumberActionType{
+		SequenceNumberActionTypeMax,
+		SequenceNumberActionTypeUpdate,
+		SequenceNumberActionTypeIncrement,
+	}
 }
 
 func (c SequenceNumberActionType) ToPtr() *SequenceNumberActionType {
@@ -306,7 +459,13 @@ const (
 )
 
 func PossibleSkuNameValues() []SkuName {
-	return []SkuName{SkuNameStandardLrs, SkuNameStandardGrs, SkuNameStandardRagrs, SkuNameStandardZrs, SkuNamePremiumLrs}
+	return []SkuName{
+		SkuNameStandardLrs,
+		SkuNameStandardGrs,
+		SkuNameStandardRagrs,
+		SkuNameStandardZrs,
+		SkuNamePremiumLrs,
+	}
 }
 
 func (c SkuName) ToPtr() *SkuName {
@@ -431,7 +590,119 @@ const (
 )
 
 func PossibleStorageErrorCodeValues() []StorageErrorCode {
-	return []StorageErrorCode{StorageErrorCodeAccountAlreadyExists, StorageErrorCodeAccountBeingCreated, StorageErrorCodeAccountIsDisabled, StorageErrorCodeAppendPositionConditionNotMet, StorageErrorCodeAuthenticationFailed, StorageErrorCodeAuthorizationFailure, StorageErrorCodeAuthorizationPermissionMismatch, StorageErrorCodeAuthorizationProtocolMismatch, StorageErrorCodeAuthorizationResourceTypeMismatch, StorageErrorCodeAuthorizationServiceMismatch, StorageErrorCodeAuthorizationSourceIPMismatch, StorageErrorCodeBlobAlreadyExists, StorageErrorCodeBlobArchived, StorageErrorCodeBlobBeingRehydrated, StorageErrorCodeBlobNotArchived, StorageErrorCodeBlobNotFound, StorageErrorCodeBlobOverwritten, StorageErrorCodeBlobTierInadequateForContentLength, StorageErrorCodeBlockCountExceedsLimit, StorageErrorCodeBlockListTooLong, StorageErrorCodeCannotChangeToLowerTier, StorageErrorCodeCannotVerifyCopySource, StorageErrorCodeConditionHeadersNotSupported, StorageErrorCodeConditionNotMet, StorageErrorCodeContainerAlreadyExists, StorageErrorCodeContainerBeingDeleted, StorageErrorCodeContainerDisabled, StorageErrorCodeContainerNotFound, StorageErrorCodeContentLengthLargerThanTierLimit, StorageErrorCodeCopyAcrossAccountsNotSupported, StorageErrorCodeCopyIDMismatch, StorageErrorCodeEmptyMetadataKey, StorageErrorCodeFeatureVersionMismatch, StorageErrorCodeIncrementalCopyBlobMismatch, StorageErrorCodeIncrementalCopyOfEralierVersionSnapshotNotAllowed, StorageErrorCodeIncrementalCopySourceMustBeSnapshot, StorageErrorCodeInfiniteLeaseDurationRequired, StorageErrorCodeInsufficientAccountPermissions, StorageErrorCodeInternalError, StorageErrorCodeInvalidAuthenticationInfo, StorageErrorCodeInvalidBlobOrBlock, StorageErrorCodeInvalidBlobTier, StorageErrorCodeInvalidBlobType, StorageErrorCodeInvalidBlockID, StorageErrorCodeInvalidBlockList, StorageErrorCodeInvalidHTTPVerb, StorageErrorCodeInvalidHeaderValue, StorageErrorCodeInvalidInput, StorageErrorCodeInvalidMd5, StorageErrorCodeInvalidMetadata, StorageErrorCodeInvalidOperation, StorageErrorCodeInvalidPageRange, StorageErrorCodeInvalidQueryParameterValue, StorageErrorCodeInvalidRange, StorageErrorCodeInvalidResourceName, StorageErrorCodeInvalidSourceBlobType, StorageErrorCodeInvalidSourceBlobURL, StorageErrorCodeInvalidURI, StorageErrorCodeInvalidVersionForPageBlobOperation, StorageErrorCodeInvalidXMLDocument, StorageErrorCodeInvalidXMLNodeValue, StorageErrorCodeLeaseAlreadyBroken, StorageErrorCodeLeaseAlreadyPresent, StorageErrorCodeLeaseIDMismatchWithBlobOperation, StorageErrorCodeLeaseIDMismatchWithContainerOperation, StorageErrorCodeLeaseIDMismatchWithLeaseOperation, StorageErrorCodeLeaseIDMissing, StorageErrorCodeLeaseIsBreakingAndCannotBeAcquired, StorageErrorCodeLeaseIsBreakingAndCannotBeChanged, StorageErrorCodeLeaseIsBrokenAndCannotBeRenewed, StorageErrorCodeLeaseLost, StorageErrorCodeLeaseNotPresentWithBlobOperation, StorageErrorCodeLeaseNotPresentWithContainerOperation, StorageErrorCodeLeaseNotPresentWithLeaseOperation, StorageErrorCodeMaxBlobSizeConditionNotMet, StorageErrorCodeMd5Mismatch, StorageErrorCodeMetadataTooLarge, StorageErrorCodeMissingContentLengthHeader, StorageErrorCodeMissingRequiredHeader, StorageErrorCodeMissingRequiredQueryParameter, StorageErrorCodeMissingRequiredXMLNode, StorageErrorCodeMultipleConditionHeadersNotSupported, StorageErrorCodeNoAuthenticationInformation, StorageErrorCodeNoPendingCopyOperation, StorageErrorCodeOperationNotAllowedOnIncrementalCopyBlob, StorageErrorCodeOperationTimedOut, StorageErrorCodeOutOfRangeInput, StorageErrorCodeOutOfRangeQueryParameterValue, StorageErrorCodePendingCopyOperation, StorageErrorCodePreviousSnapshotCannotBeNewer, StorageErrorCodePreviousSnapshotNotFound, StorageErrorCodePreviousSnapshotOperationNotSupported, StorageErrorCodeRequestBodyTooLarge, StorageErrorCodeRequestURLFailedToParse, StorageErrorCodeResourceAlreadyExists, StorageErrorCodeResourceNotFound, StorageErrorCodeResourceTypeMismatch, StorageErrorCodeSequenceNumberConditionNotMet, StorageErrorCodeSequenceNumberIncrementTooLarge, StorageErrorCodeServerBusy, StorageErrorCodeSnaphotOperationRateExceeded, StorageErrorCodeSnapshotCountExceeded, StorageErrorCodeSnapshotsPresent, StorageErrorCodeSourceConditionNotMet, StorageErrorCodeSystemInUse, StorageErrorCodeTargetConditionNotMet, StorageErrorCodeUnauthorizedBlobOverwrite, StorageErrorCodeUnsupportedHTTPVerb, StorageErrorCodeUnsupportedHeader, StorageErrorCodeUnsupportedQueryParameter, StorageErrorCodeUnsupportedXMLNode}
+	return []StorageErrorCode{
+		StorageErrorCodeAccountAlreadyExists,
+		StorageErrorCodeAccountBeingCreated,
+		StorageErrorCodeAccountIsDisabled,
+		StorageErrorCodeAppendPositionConditionNotMet,
+		StorageErrorCodeAuthenticationFailed,
+		StorageErrorCodeAuthorizationFailure,
+		StorageErrorCodeAuthorizationPermissionMismatch,
+		StorageErrorCodeAuthorizationProtocolMismatch,
+		StorageErrorCodeAuthorizationResourceTypeMismatch,
+		StorageErrorCodeAuthorizationServiceMismatch,
+		StorageErrorCodeAuthorizationSourceIPMismatch,
+		StorageErrorCodeBlobAlreadyExists,
+		StorageErrorCodeBlobArchived,
+		StorageErrorCodeBlobBeingRehydrated,
+		StorageErrorCodeBlobNotArchived,
+		StorageErrorCodeBlobNotFound,
+		StorageErrorCodeBlobOverwritten,
+		StorageErrorCodeBlobTierInadequateForContentLength,
+		StorageErrorCodeBlockCountExceedsLimit,
+		StorageErrorCodeBlockListTooLong,
+		StorageErrorCodeCannotChangeToLowerTier,
+		StorageErrorCodeCannotVerifyCopySource,
+		StorageErrorCodeConditionHeadersNotSupported,
+		StorageErrorCodeConditionNotMet,
+		StorageErrorCodeContainerAlreadyExists,
+		StorageErrorCodeContainerBeingDeleted,
+		StorageErrorCodeContainerDisabled,
+		StorageErrorCodeContainerNotFound,
+		StorageErrorCodeContentLengthLargerThanTierLimit,
+		StorageErrorCodeCopyAcrossAccountsNotSupported,
+		StorageErrorCodeCopyIDMismatch,
+		StorageErrorCodeEmptyMetadataKey,
+		StorageErrorCodeFeatureVersionMismatch,
+		StorageErrorCodeIncrementalCopyBlobMismatch,
+		StorageErrorCodeIncrementalCopyOfEralierVersionSnapshotNotAllowed,
+		StorageErrorCodeIncrementalCopySourceMustBeSnapshot,
+		StorageErrorCodeInfiniteLeaseDurationRequired,
+		StorageErrorCodeInsufficientAccountPermissions,
+		StorageErrorCodeInternalError,
+		StorageErrorCodeInvalidAuthenticationInfo,
+		StorageErrorCodeInvalidBlobOrBlock,
+		StorageErrorCodeInvalidBlobTier,
+		StorageErrorCodeInvalidBlobType,
+		StorageErrorCodeInvalidBlockID,
+		StorageErrorCodeInvalidBlockList,
+		StorageErrorCodeInvalidHTTPVerb,
+		StorageErrorCodeInvalidHeaderValue,
+		StorageErrorCodeInvalidInput,
+		StorageErrorCodeInvalidMd5,
+		StorageErrorCodeInvalidMetadata,
+		StorageErrorCodeInvalidOperation,
+		StorageErrorCodeInvalidPageRange,
+		StorageErrorCodeInvalidQueryParameterValue,
+		StorageErrorCodeInvalidRange,
+		StorageErrorCodeInvalidResourceName,
+		StorageErrorCodeInvalidSourceBlobType,
+		StorageErrorCodeInvalidSourceBlobURL,
+		StorageErrorCodeInvalidURI,
+		StorageErrorCodeInvalidVersionForPageBlobOperation,
+		StorageErrorCodeInvalidXMLDocument,
+		StorageErrorCodeInvalidXMLNodeValue,
+		StorageErrorCodeLeaseAlreadyBroken,
+		StorageErrorCodeLeaseAlreadyPresent,
+		StorageErrorCodeLeaseIDMismatchWithBlobOperation,
+		StorageErrorCodeLeaseIDMismatchWithContainerOperation,
+		StorageErrorCodeLeaseIDMismatchWithLeaseOperation,
+		StorageErrorCodeLeaseIDMissing,
+		StorageErrorCodeLeaseIsBreakingAndCannotBeAcquired,
+		StorageErrorCodeLeaseIsBreakingAndCannotBeChanged,
+		StorageErrorCodeLeaseIsBrokenAndCannotBeRenewed,
+		StorageErrorCodeLeaseLost,
+		StorageErrorCodeLeaseNotPresentWithBlobOperation,
+		StorageErrorCodeLeaseNotPresentWithContainerOperation,
+		StorageErrorCodeLeaseNotPresentWithLeaseOperation,
+		StorageErrorCodeMaxBlobSizeConditionNotMet,
+		StorageErrorCodeMd5Mismatch,
+		StorageErrorCodeMetadataTooLarge,
+		StorageErrorCodeMissingContentLengthHeader,
+		StorageErrorCodeMissingRequiredHeader,
+		StorageErrorCodeMissingRequiredQueryParameter,
+		StorageErrorCodeMissingRequiredXMLNode,
+		StorageErrorCodeMultipleConditionHeadersNotSupported,
+		StorageErrorCodeNoAuthenticationInformation,
+		StorageErrorCodeNoPendingCopyOperation,
+		StorageErrorCodeOperationNotAllowedOnIncrementalCopyBlob,
+		StorageErrorCodeOperationTimedOut,
+		StorageErrorCodeOutOfRangeInput,
+		StorageErrorCodeOutOfRangeQueryParameterValue,
+		StorageErrorCodePendingCopyOperation,
+		StorageErrorCodePreviousSnapshotCannotBeNewer,
+		StorageErrorCodePreviousSnapshotNotFound,
+		StorageErrorCodePreviousSnapshotOperationNotSupported,
+		StorageErrorCodeRequestBodyTooLarge,
+		StorageErrorCodeRequestURLFailedToParse,
+		StorageErrorCodeResourceAlreadyExists,
+		StorageErrorCodeResourceNotFound,
+		StorageErrorCodeResourceTypeMismatch,
+		StorageErrorCodeSequenceNumberConditionNotMet,
+		StorageErrorCodeSequenceNumberIncrementTooLarge,
+		StorageErrorCodeServerBusy,
+		StorageErrorCodeSnaphotOperationRateExceeded,
+		StorageErrorCodeSnapshotCountExceeded,
+		StorageErrorCodeSnapshotsPresent,
+		StorageErrorCodeSourceConditionNotMet,
+		StorageErrorCodeSystemInUse,
+		StorageErrorCodeTargetConditionNotMet,
+		StorageErrorCodeUnauthorizedBlobOverwrite,
+		StorageErrorCodeUnsupportedHTTPVerb,
+		StorageErrorCodeUnsupportedHeader,
+		StorageErrorCodeUnsupportedQueryParameter,
+		StorageErrorCodeUnsupportedXMLNode,
+	}
 }
 
 func (c StorageErrorCode) ToPtr() *StorageErrorCode {

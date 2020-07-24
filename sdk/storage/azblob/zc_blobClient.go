@@ -100,8 +100,9 @@ func (b BlobClient) GetAccountInfo(ctx context.Context) (*BlobGetAccountInfoResp
 // DeleteBlob marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.
 // Note that deleting a blob also deletes all its snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
-func (b BlobClient) Delete(ctx context.Context, options *BlobDeleteOptions) (*BlobDeleteResponse, error) {
-	return b.client.BlobOperations(nil).Delete(ctx, options)
+func (b BlobClient) Delete(ctx context.Context, options *DeleteBlobOptions) (*BlobDeleteResponse, error) {
+	basics, leaseInfo, accessConditions := options.pointers()
+	return b.client.BlobOperations(nil).Delete(ctx, basics, leaseInfo, accessConditions)
 }
 
 //// Undelete restores the contents and metadata of a soft-deleted blob and any associated soft-deleted snapshots.

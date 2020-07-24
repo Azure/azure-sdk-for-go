@@ -102,14 +102,16 @@ func (c ContainerClient) GetAccountInfo(ctx context.Context) (*ContainerGetAccou
 
 // Create creates a new container within a storage account. If a container with the same name already exists, the operation fails.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/create-container.
-func (c ContainerClient) Create(ctx context.Context, options *ContainerCreateOptions) (*ContainerCreateResponse, error) {
-	return c.client.ContainerOperations().Create(ctx, options)
+func (c ContainerClient) Create(ctx context.Context, options *CreateContainerOptions) (*ContainerCreateResponse, error) {
+	basics, cpkInfo := options.pointers()
+	return c.client.ContainerOperations().Create(ctx, basics, cpkInfo)
 }
 
 // Delete marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-container.
-func (c ContainerClient) Delete(ctx context.Context, options *ContainerDeleteOptions) (*ContainerDeleteResponse, error) {
-	return c.client.ContainerOperations().Delete(ctx, options)
+func (c ContainerClient) Delete(ctx context.Context, options *DeleteContainerOptions) (*ContainerDeleteResponse, error) {
+	basics, leaseInfo, accessConditions := options.pointers()
+	return c.client.ContainerOperations().Delete(ctx, basics, leaseInfo, accessConditions)
 }
 
 //

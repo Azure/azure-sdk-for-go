@@ -88,7 +88,7 @@ func ExampleContainerOperations_Create() {
 		panic(err)
 	}
 	containerClient := client.ContainerOperations()
-	c, err := containerClient.Create(context.Background(), nil)
+	c, err := containerClient.Create(context.Background(), nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -126,7 +126,7 @@ func ExampleBlockBlobOperations_Upload() {
 	const blockSize = 80
 	blobClient := client.BlockBlobOperations()
 	body := azcore.NopCloser(bytes.NewReader(generateBlobContent(blockSize)))
-	b, err := blobClient.Upload(context.Background(), blockSize, body, nil)
+	b, err := blobClient.Upload(context.Background(), blockSize, body, nil, nil, nil, nil, nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -141,7 +141,7 @@ func ExampleBlobOperations_Download() {
 		panic(err)
 	}
 	blobClient := client.BlobOperations(nil)
-	b, err := blobClient.Download(context.Background(), nil)
+	b, err := blobClient.Download(context.Background(), nil, nil, nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -159,7 +159,7 @@ func ExampleAppendBlobOperations_Create() {
 		panic(err)
 	}
 	blobClient := client.AppendBlobOperations()
-	a, err := blobClient.Create(context.Background(), 0, nil)
+	a, err := blobClient.Create(context.Background(), 0, nil, nil, nil, nil, nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -176,7 +176,7 @@ func ExampleAppendBlobOperations_AppendBlock() {
 	blobClient := client.AppendBlobOperations()
 	const blockSize = 80
 	body := azcore.NopCloser(bytes.NewReader(generateBlobContent(int(blockSize))))
-	a, err := blobClient.AppendBlock(context.Background(), int64(blockSize), body, nil)
+	a, err := blobClient.AppendBlock(context.Background(), int64(blockSize), body, nil, nil, nil, nil, nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -220,7 +220,7 @@ func ExampleBlobOperations_Delete() {
 		panic(err)
 	}
 	blobClient := client.BlobOperations(nil)
-	d, err := blobClient.Delete(context.Background(), nil)
+	d, err := blobClient.Delete(context.Background(), nil, nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -232,7 +232,7 @@ func ExampleBlobOperations_Delete() {
 		panic(err)
 	}
 	blobClient = client.BlobOperations(nil)
-	d, err = blobClient.Delete(context.Background(), nil)
+	d, err = blobClient.Delete(context.Background(), nil, nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -249,7 +249,7 @@ func ExampleContainerOperations_Delete() {
 		panic(err)
 	}
 	blobClient := client.ContainerOperations()
-	d, err := blobClient.Delete(context.Background(), nil)
+	d, err := blobClient.Delete(context.Background(), nil, nil, nil)
 	if err != nil {
 		panic(err)
 	}

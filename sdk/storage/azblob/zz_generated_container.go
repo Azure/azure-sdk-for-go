@@ -21,33 +21,35 @@ import (
 // ContainerOperations contains the methods for the Container group.
 type ContainerOperations interface {
 	// AcquireLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-	AcquireLease(ctx context.Context, options *ContainerAcquireLeaseOptions) (*ContainerAcquireLeaseResponse, error)
+	AcquireLease(ctx context.Context, containerAcquireLeaseOptions *ContainerAcquireLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerAcquireLeaseResponse, error)
 	// BreakLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-	BreakLease(ctx context.Context, options *ContainerBreakLeaseOptions) (*ContainerBreakLeaseResponse, error)
+	BreakLease(ctx context.Context, containerBreakLeaseOptions *ContainerBreakLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerBreakLeaseResponse, error)
 	// ChangeLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-	ChangeLease(ctx context.Context, leaseId string, proposedLeaseId string, options *ContainerChangeLeaseOptions) (*ContainerChangeLeaseResponse, error)
+	ChangeLease(ctx context.Context, leaseId string, proposedLeaseId string, containerChangeLeaseOptions *ContainerChangeLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerChangeLeaseResponse, error)
 	// Create - creates a new container under the specified account. If the container with the same name already exists, the operation fails
-	Create(ctx context.Context, options *ContainerCreateOptions) (*ContainerCreateResponse, error)
+	Create(ctx context.Context, containerCreateOptions *ContainerCreateOptions, containerCpkScopeInfo *ContainerCpkScopeInfo) (*ContainerCreateResponse, error)
 	// Delete - operation marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection
-	Delete(ctx context.Context, options *ContainerDeleteOptions) (*ContainerDeleteResponse, error)
+	Delete(ctx context.Context, containerDeleteOptions *ContainerDeleteOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerDeleteResponse, error)
 	// GetAccessPolicy - gets the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
-	GetAccessPolicy(ctx context.Context, options *ContainerGetAccessPolicyOptions) (*SignedIDentifierArrayResponse, error)
+	GetAccessPolicy(ctx context.Context, containerGetAccessPolicyOptions *ContainerGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*SignedIDentifierArrayResponse, error)
 	// GetAccountInfo - Returns the sku name and account kind
 	GetAccountInfo(ctx context.Context) (*ContainerGetAccountInfoResponse, error)
 	// GetProperties - returns all user-defined metadata and system properties for the specified container. The data returned does not include the container's list of blobs
-	GetProperties(ctx context.Context, options *ContainerGetPropertiesOptions) (*ContainerGetPropertiesResponse, error)
+	GetProperties(ctx context.Context, containerGetPropertiesOptions *ContainerGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*ContainerGetPropertiesResponse, error)
 	// ListBlobFlatSegment - [Update] The List Blobs operation returns a list of the blobs under the specified container
-	ListBlobFlatSegment(options *ContainerListBlobFlatSegmentOptions) (ListBlobsFlatSegmentResponsePager, error)
+	ListBlobFlatSegment(containerListBlobFlatSegmentOptions *ContainerListBlobFlatSegmentOptions) (ListBlobsFlatSegmentResponsePager, error)
 	// ListBlobHierarchySegment - [Update] The List Blobs operation returns a list of the blobs under the specified container
-	ListBlobHierarchySegment(delimiter string, options *ContainerListBlobHierarchySegmentOptions) (ListBlobsHierarchySegmentResponsePager, error)
+	ListBlobHierarchySegment(delimiter string, containerListBlobHierarchySegmentOptions *ContainerListBlobHierarchySegmentOptions) (ListBlobsHierarchySegmentResponsePager, error)
 	// ReleaseLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-	ReleaseLease(ctx context.Context, leaseId string, options *ContainerReleaseLeaseOptions) (*ContainerReleaseLeaseResponse, error)
+	ReleaseLease(ctx context.Context, leaseId string, containerReleaseLeaseOptions *ContainerReleaseLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerReleaseLeaseResponse, error)
 	// RenewLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-	RenewLease(ctx context.Context, leaseId string, options *ContainerRenewLeaseOptions) (*ContainerRenewLeaseResponse, error)
+	RenewLease(ctx context.Context, leaseId string, containerRenewLeaseOptions *ContainerRenewLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerRenewLeaseResponse, error)
+	// Restore - Restores a previously-deleted container.
+	Restore(ctx context.Context, containerRestoreOptions *ContainerRestoreOptions) (*ContainerRestoreResponse, error)
 	// SetAccessPolicy - sets the permissions for the specified container. The permissions indicate whether blobs in a container may be accessed publicly.
-	SetAccessPolicy(ctx context.Context, options *ContainerSetAccessPolicyOptions) (*ContainerSetAccessPolicyResponse, error)
+	SetAccessPolicy(ctx context.Context, containerSetAccessPolicyOptions *ContainerSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerSetAccessPolicyResponse, error)
 	// SetMetadata - operation sets one or more user-defined name-value pairs for the specified container.
-	SetMetadata(ctx context.Context, options *ContainerSetMetadataOptions) (*ContainerSetMetadataResponse, error)
+	SetMetadata(ctx context.Context, containerSetMetadataOptions *ContainerSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerSetMetadataResponse, error)
 }
 
 // containerOperations implements the ContainerOperations interface.
@@ -56,8 +58,8 @@ type containerOperations struct {
 }
 
 // AcquireLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-func (client *containerOperations) AcquireLease(ctx context.Context, options *ContainerAcquireLeaseOptions) (*ContainerAcquireLeaseResponse, error) {
-	req, err := client.acquireLeaseCreateRequest(options)
+func (client *containerOperations) AcquireLease(ctx context.Context, containerAcquireLeaseOptions *ContainerAcquireLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerAcquireLeaseResponse, error) {
+	req, err := client.acquireLeaseCreateRequest(containerAcquireLeaseOptions, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
@@ -73,32 +75,32 @@ func (client *containerOperations) AcquireLease(ctx context.Context, options *Co
 }
 
 // acquireLeaseCreateRequest creates the AcquireLease request.
-func (client *containerOperations) acquireLeaseCreateRequest(options *ContainerAcquireLeaseOptions) (*azcore.Request, error) {
+func (client *containerOperations) acquireLeaseCreateRequest(containerAcquireLeaseOptions *ContainerAcquireLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("comp", "lease")
 	query.Set("restype", "container")
-	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if containerAcquireLeaseOptions != nil && containerAcquireLeaseOptions.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*containerAcquireLeaseOptions.Timeout), 10))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodPut, *u)
 	req.Header.Set("x-ms-lease-action", "acquire")
-	if options != nil && options.Duration != nil {
-		req.Header.Set("x-ms-lease-duration", strconv.FormatInt(int64(*options.Duration), 10))
+	if containerAcquireLeaseOptions != nil && containerAcquireLeaseOptions.Duration != nil {
+		req.Header.Set("x-ms-lease-duration", strconv.FormatInt(int64(*containerAcquireLeaseOptions.Duration), 10))
 	}
-	if options != nil && options.ProposedLeaseId != nil {
-		req.Header.Set("x-ms-proposed-lease-id", *options.ProposedLeaseId)
+	if containerAcquireLeaseOptions != nil && containerAcquireLeaseOptions.ProposedLeaseId != nil {
+		req.Header.Set("x-ms-proposed-lease-id", *containerAcquireLeaseOptions.ProposedLeaseId)
 	}
-	if options != nil && options.IfModifiedSince != nil {
-		req.Header.Set("If-Modified-Since", options.IfModifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
+		req.Header.Set("If-Modified-Since", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123))
 	}
-	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Header.Set("If-Unmodified-Since", options.IfUnmodifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
+		req.Header.Set("If-Unmodified-Since", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2019-07-07")
-	if options != nil && options.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestId)
+	req.Header.Set("x-ms-version", "2019-12-12")
+	if containerAcquireLeaseOptions != nil && containerAcquireLeaseOptions.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *containerAcquireLeaseOptions.RequestId)
 	}
 	return req, nil
 }
@@ -106,7 +108,7 @@ func (client *containerOperations) acquireLeaseCreateRequest(options *ContainerA
 // acquireLeaseHandleResponse handles the AcquireLease response.
 func (client *containerOperations) acquireLeaseHandleResponse(resp *azcore.Response) (*ContainerAcquireLeaseResponse, error) {
 	if !resp.HasStatusCode(http.StatusCreated) {
-		return nil, newStorageError(resp)
+		return nil, client.acquireLeaseHandleError(resp)
 	}
 	result := ContainerAcquireLeaseResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
@@ -141,9 +143,18 @@ func (client *containerOperations) acquireLeaseHandleResponse(resp *azcore.Respo
 	return &result, nil
 }
 
+// acquireLeaseHandleError handles the AcquireLease error response.
+func (client *containerOperations) acquireLeaseHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
+}
+
 // BreakLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-func (client *containerOperations) BreakLease(ctx context.Context, options *ContainerBreakLeaseOptions) (*ContainerBreakLeaseResponse, error) {
-	req, err := client.breakLeaseCreateRequest(options)
+func (client *containerOperations) BreakLease(ctx context.Context, containerBreakLeaseOptions *ContainerBreakLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerBreakLeaseResponse, error) {
+	req, err := client.breakLeaseCreateRequest(containerBreakLeaseOptions, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
@@ -159,29 +170,29 @@ func (client *containerOperations) BreakLease(ctx context.Context, options *Cont
 }
 
 // breakLeaseCreateRequest creates the BreakLease request.
-func (client *containerOperations) breakLeaseCreateRequest(options *ContainerBreakLeaseOptions) (*azcore.Request, error) {
+func (client *containerOperations) breakLeaseCreateRequest(containerBreakLeaseOptions *ContainerBreakLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("comp", "lease")
 	query.Set("restype", "container")
-	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if containerBreakLeaseOptions != nil && containerBreakLeaseOptions.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*containerBreakLeaseOptions.Timeout), 10))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodPut, *u)
 	req.Header.Set("x-ms-lease-action", "break")
-	if options != nil && options.BreakPeriod != nil {
-		req.Header.Set("x-ms-lease-break-period", strconv.FormatInt(int64(*options.BreakPeriod), 10))
+	if containerBreakLeaseOptions != nil && containerBreakLeaseOptions.BreakPeriod != nil {
+		req.Header.Set("x-ms-lease-break-period", strconv.FormatInt(int64(*containerBreakLeaseOptions.BreakPeriod), 10))
 	}
-	if options != nil && options.IfModifiedSince != nil {
-		req.Header.Set("If-Modified-Since", options.IfModifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
+		req.Header.Set("If-Modified-Since", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123))
 	}
-	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Header.Set("If-Unmodified-Since", options.IfUnmodifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
+		req.Header.Set("If-Unmodified-Since", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2019-07-07")
-	if options != nil && options.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestId)
+	req.Header.Set("x-ms-version", "2019-12-12")
+	if containerBreakLeaseOptions != nil && containerBreakLeaseOptions.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *containerBreakLeaseOptions.RequestId)
 	}
 	return req, nil
 }
@@ -189,7 +200,7 @@ func (client *containerOperations) breakLeaseCreateRequest(options *ContainerBre
 // breakLeaseHandleResponse handles the BreakLease response.
 func (client *containerOperations) breakLeaseHandleResponse(resp *azcore.Response) (*ContainerBreakLeaseResponse, error) {
 	if !resp.HasStatusCode(http.StatusAccepted) {
-		return nil, newStorageError(resp)
+		return nil, client.breakLeaseHandleError(resp)
 	}
 	result := ContainerBreakLeaseResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
@@ -229,9 +240,18 @@ func (client *containerOperations) breakLeaseHandleResponse(resp *azcore.Respons
 	return &result, nil
 }
 
+// breakLeaseHandleError handles the BreakLease error response.
+func (client *containerOperations) breakLeaseHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
+}
+
 // ChangeLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-func (client *containerOperations) ChangeLease(ctx context.Context, leaseId string, proposedLeaseId string, options *ContainerChangeLeaseOptions) (*ContainerChangeLeaseResponse, error) {
-	req, err := client.changeLeaseCreateRequest(leaseId, proposedLeaseId, options)
+func (client *containerOperations) ChangeLease(ctx context.Context, leaseId string, proposedLeaseId string, containerChangeLeaseOptions *ContainerChangeLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerChangeLeaseResponse, error) {
+	req, err := client.changeLeaseCreateRequest(leaseId, proposedLeaseId, containerChangeLeaseOptions, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
@@ -247,28 +267,28 @@ func (client *containerOperations) ChangeLease(ctx context.Context, leaseId stri
 }
 
 // changeLeaseCreateRequest creates the ChangeLease request.
-func (client *containerOperations) changeLeaseCreateRequest(leaseId string, proposedLeaseId string, options *ContainerChangeLeaseOptions) (*azcore.Request, error) {
+func (client *containerOperations) changeLeaseCreateRequest(leaseId string, proposedLeaseId string, containerChangeLeaseOptions *ContainerChangeLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("comp", "lease")
 	query.Set("restype", "container")
-	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if containerChangeLeaseOptions != nil && containerChangeLeaseOptions.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*containerChangeLeaseOptions.Timeout), 10))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodPut, *u)
 	req.Header.Set("x-ms-lease-action", "change")
 	req.Header.Set("x-ms-lease-id", leaseId)
 	req.Header.Set("x-ms-proposed-lease-id", proposedLeaseId)
-	if options != nil && options.IfModifiedSince != nil {
-		req.Header.Set("If-Modified-Since", options.IfModifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
+		req.Header.Set("If-Modified-Since", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123))
 	}
-	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Header.Set("If-Unmodified-Since", options.IfUnmodifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
+		req.Header.Set("If-Unmodified-Since", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2019-07-07")
-	if options != nil && options.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestId)
+	req.Header.Set("x-ms-version", "2019-12-12")
+	if containerChangeLeaseOptions != nil && containerChangeLeaseOptions.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *containerChangeLeaseOptions.RequestId)
 	}
 	return req, nil
 }
@@ -276,7 +296,7 @@ func (client *containerOperations) changeLeaseCreateRequest(leaseId string, prop
 // changeLeaseHandleResponse handles the ChangeLease response.
 func (client *containerOperations) changeLeaseHandleResponse(resp *azcore.Response) (*ContainerChangeLeaseResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, newStorageError(resp)
+		return nil, client.changeLeaseHandleError(resp)
 	}
 	result := ContainerChangeLeaseResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
@@ -311,9 +331,18 @@ func (client *containerOperations) changeLeaseHandleResponse(resp *azcore.Respon
 	return &result, nil
 }
 
+// changeLeaseHandleError handles the ChangeLease error response.
+func (client *containerOperations) changeLeaseHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
+}
+
 // Create - creates a new container under the specified account. If the container with the same name already exists, the operation fails
-func (client *containerOperations) Create(ctx context.Context, options *ContainerCreateOptions) (*ContainerCreateResponse, error) {
-	req, err := client.createCreateRequest(options)
+func (client *containerOperations) Create(ctx context.Context, containerCreateOptions *ContainerCreateOptions, containerCpkScopeInfo *ContainerCpkScopeInfo) (*ContainerCreateResponse, error) {
+	req, err := client.createCreateRequest(containerCreateOptions, containerCpkScopeInfo)
 	if err != nil {
 		return nil, err
 	}
@@ -329,30 +358,30 @@ func (client *containerOperations) Create(ctx context.Context, options *Containe
 }
 
 // createCreateRequest creates the Create request.
-func (client *containerOperations) createCreateRequest(options *ContainerCreateOptions) (*azcore.Request, error) {
+func (client *containerOperations) createCreateRequest(containerCreateOptions *ContainerCreateOptions, containerCpkScopeInfo *ContainerCpkScopeInfo) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("restype", "container")
-	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if containerCreateOptions != nil && containerCreateOptions.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*containerCreateOptions.Timeout), 10))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodPut, *u)
-	if options != nil && options.Metadata != nil {
-		req.Header.Set("x-ms-meta", *options.Metadata)
+	if containerCreateOptions != nil && containerCreateOptions.Metadata != nil {
+		req.Header.Set("x-ms-meta", *containerCreateOptions.Metadata)
 	}
-	if options != nil && options.Access != nil {
-		req.Header.Set("x-ms-blob-public-access", string(*options.Access))
+	if containerCreateOptions != nil && containerCreateOptions.Access != nil {
+		req.Header.Set("x-ms-blob-public-access", string(*containerCreateOptions.Access))
 	}
-	req.Header.Set("x-ms-version", "2019-07-07")
-	if options != nil && options.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestId)
+	req.Header.Set("x-ms-version", "2019-12-12")
+	if containerCreateOptions != nil && containerCreateOptions.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *containerCreateOptions.RequestId)
 	}
-	if options != nil && options.DefaultEncryptionScope != nil {
-		req.Header.Set("x-ms-default-encryption-scope", *options.DefaultEncryptionScope)
+	if containerCpkScopeInfo != nil && containerCpkScopeInfo.DefaultEncryptionScope != nil {
+		req.Header.Set("x-ms-default-encryption-scope", *containerCpkScopeInfo.DefaultEncryptionScope)
 	}
-	if options != nil && options.PreventEncryptionScopeOverride != nil {
-		req.Header.Set("x-ms-deny-encryption-scope-override", strconv.FormatBool(*options.PreventEncryptionScopeOverride))
+	if containerCpkScopeInfo != nil && containerCpkScopeInfo.PreventEncryptionScopeOverride != nil {
+		req.Header.Set("x-ms-deny-encryption-scope-override", strconv.FormatBool(*containerCpkScopeInfo.PreventEncryptionScopeOverride))
 	}
 	return req, nil
 }
@@ -360,7 +389,7 @@ func (client *containerOperations) createCreateRequest(options *ContainerCreateO
 // createHandleResponse handles the Create response.
 func (client *containerOperations) createHandleResponse(resp *azcore.Response) (*ContainerCreateResponse, error) {
 	if !resp.HasStatusCode(http.StatusCreated) {
-		return nil, newStorageError(resp)
+		return nil, client.createHandleError(resp)
 	}
 	result := ContainerCreateResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
@@ -392,9 +421,18 @@ func (client *containerOperations) createHandleResponse(resp *azcore.Response) (
 	return &result, nil
 }
 
+// createHandleError handles the Create error response.
+func (client *containerOperations) createHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
+}
+
 // Delete - operation marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection
-func (client *containerOperations) Delete(ctx context.Context, options *ContainerDeleteOptions) (*ContainerDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(options)
+func (client *containerOperations) Delete(ctx context.Context, containerDeleteOptions *ContainerDeleteOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(containerDeleteOptions, leaseAccessConditions, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
@@ -410,27 +448,27 @@ func (client *containerOperations) Delete(ctx context.Context, options *Containe
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *containerOperations) deleteCreateRequest(options *ContainerDeleteOptions) (*azcore.Request, error) {
+func (client *containerOperations) deleteCreateRequest(containerDeleteOptions *ContainerDeleteOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("restype", "container")
-	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if containerDeleteOptions != nil && containerDeleteOptions.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*containerDeleteOptions.Timeout), 10))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodDelete, *u)
-	if options != nil && options.LeaseId != nil {
-		req.Header.Set("x-ms-lease-id", *options.LeaseId)
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseId != nil {
+		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseId)
 	}
-	if options != nil && options.IfModifiedSince != nil {
-		req.Header.Set("If-Modified-Since", options.IfModifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
+		req.Header.Set("If-Modified-Since", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123))
 	}
-	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Header.Set("If-Unmodified-Since", options.IfUnmodifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
+		req.Header.Set("If-Unmodified-Since", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2019-07-07")
-	if options != nil && options.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestId)
+	req.Header.Set("x-ms-version", "2019-12-12")
+	if containerDeleteOptions != nil && containerDeleteOptions.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *containerDeleteOptions.RequestId)
 	}
 	return req, nil
 }
@@ -438,7 +476,7 @@ func (client *containerOperations) deleteCreateRequest(options *ContainerDeleteO
 // deleteHandleResponse handles the Delete response.
 func (client *containerOperations) deleteHandleResponse(resp *azcore.Response) (*ContainerDeleteResponse, error) {
 	if !resp.HasStatusCode(http.StatusAccepted) {
-		return nil, newStorageError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	result := ContainerDeleteResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
@@ -460,9 +498,18 @@ func (client *containerOperations) deleteHandleResponse(resp *azcore.Response) (
 	return &result, nil
 }
 
+// deleteHandleError handles the Delete error response.
+func (client *containerOperations) deleteHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
+}
+
 // GetAccessPolicy - gets the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
-func (client *containerOperations) GetAccessPolicy(ctx context.Context, options *ContainerGetAccessPolicyOptions) (*SignedIDentifierArrayResponse, error) {
-	req, err := client.getAccessPolicyCreateRequest(options)
+func (client *containerOperations) GetAccessPolicy(ctx context.Context, containerGetAccessPolicyOptions *ContainerGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*SignedIDentifierArrayResponse, error) {
+	req, err := client.getAccessPolicyCreateRequest(containerGetAccessPolicyOptions, leaseAccessConditions)
 	if err != nil {
 		return nil, err
 	}
@@ -478,22 +525,22 @@ func (client *containerOperations) GetAccessPolicy(ctx context.Context, options 
 }
 
 // getAccessPolicyCreateRequest creates the GetAccessPolicy request.
-func (client *containerOperations) getAccessPolicyCreateRequest(options *ContainerGetAccessPolicyOptions) (*azcore.Request, error) {
+func (client *containerOperations) getAccessPolicyCreateRequest(containerGetAccessPolicyOptions *ContainerGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("restype", "container")
 	query.Set("comp", "acl")
-	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if containerGetAccessPolicyOptions != nil && containerGetAccessPolicyOptions.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*containerGetAccessPolicyOptions.Timeout), 10))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodGet, *u)
-	if options != nil && options.LeaseId != nil {
-		req.Header.Set("x-ms-lease-id", *options.LeaseId)
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseId != nil {
+		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseId)
 	}
-	req.Header.Set("x-ms-version", "2019-07-07")
-	if options != nil && options.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestId)
+	req.Header.Set("x-ms-version", "2019-12-12")
+	if containerGetAccessPolicyOptions != nil && containerGetAccessPolicyOptions.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *containerGetAccessPolicyOptions.RequestId)
 	}
 	return req, nil
 }
@@ -501,7 +548,7 @@ func (client *containerOperations) getAccessPolicyCreateRequest(options *Contain
 // getAccessPolicyHandleResponse handles the GetAccessPolicy response.
 func (client *containerOperations) getAccessPolicyHandleResponse(resp *azcore.Response) (*SignedIDentifierArrayResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, newStorageError(resp)
+		return nil, client.getAccessPolicyHandleError(resp)
 	}
 	result := SignedIDentifierArrayResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("x-ms-blob-public-access"); val != "" {
@@ -536,6 +583,15 @@ func (client *containerOperations) getAccessPolicyHandleResponse(resp *azcore.Re
 	return &result, resp.UnmarshalAsXML(&result)
 }
 
+// getAccessPolicyHandleError handles the GetAccessPolicy error response.
+func (client *containerOperations) getAccessPolicyHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
+}
+
 // GetAccountInfo - Returns the sku name and account kind
 func (client *containerOperations) GetAccountInfo(ctx context.Context) (*ContainerGetAccountInfoResponse, error) {
 	req, err := client.getAccountInfoCreateRequest()
@@ -561,14 +617,14 @@ func (client *containerOperations) getAccountInfoCreateRequest() (*azcore.Reques
 	query.Set("comp", "properties")
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodGet, *u)
-	req.Header.Set("x-ms-version", "2019-07-07")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	return req, nil
 }
 
 // getAccountInfoHandleResponse handles the GetAccountInfo response.
 func (client *containerOperations) getAccountInfoHandleResponse(resp *azcore.Response) (*ContainerGetAccountInfoResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, newStorageError(resp)
+		return nil, client.getAccountInfoHandleError(resp)
 	}
 	result := ContainerGetAccountInfoResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
@@ -596,9 +652,18 @@ func (client *containerOperations) getAccountInfoHandleResponse(resp *azcore.Res
 	return &result, nil
 }
 
+// getAccountInfoHandleError handles the GetAccountInfo error response.
+func (client *containerOperations) getAccountInfoHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
+}
+
 // GetProperties - returns all user-defined metadata and system properties for the specified container. The data returned does not include the container's list of blobs
-func (client *containerOperations) GetProperties(ctx context.Context, options *ContainerGetPropertiesOptions) (*ContainerGetPropertiesResponse, error) {
-	req, err := client.getPropertiesCreateRequest(options)
+func (client *containerOperations) GetProperties(ctx context.Context, containerGetPropertiesOptions *ContainerGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*ContainerGetPropertiesResponse, error) {
+	req, err := client.getPropertiesCreateRequest(containerGetPropertiesOptions, leaseAccessConditions)
 	if err != nil {
 		return nil, err
 	}
@@ -614,21 +679,21 @@ func (client *containerOperations) GetProperties(ctx context.Context, options *C
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
-func (client *containerOperations) getPropertiesCreateRequest(options *ContainerGetPropertiesOptions) (*azcore.Request, error) {
+func (client *containerOperations) getPropertiesCreateRequest(containerGetPropertiesOptions *ContainerGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("restype", "container")
-	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if containerGetPropertiesOptions != nil && containerGetPropertiesOptions.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*containerGetPropertiesOptions.Timeout), 10))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodGet, *u)
-	if options != nil && options.LeaseId != nil {
-		req.Header.Set("x-ms-lease-id", *options.LeaseId)
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseId != nil {
+		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseId)
 	}
-	req.Header.Set("x-ms-version", "2019-07-07")
-	if options != nil && options.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestId)
+	req.Header.Set("x-ms-version", "2019-12-12")
+	if containerGetPropertiesOptions != nil && containerGetPropertiesOptions.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *containerGetPropertiesOptions.RequestId)
 	}
 	return req, nil
 }
@@ -636,7 +701,7 @@ func (client *containerOperations) getPropertiesCreateRequest(options *Container
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *containerOperations) getPropertiesHandleResponse(resp *azcore.Response) (*ContainerGetPropertiesResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, newStorageError(resp)
+		return nil, client.getPropertiesHandleError(resp)
 	}
 	result := ContainerGetPropertiesResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("x-ms-meta"); val != "" {
@@ -707,14 +772,23 @@ func (client *containerOperations) getPropertiesHandleResponse(resp *azcore.Resp
 	return &result, nil
 }
 
+// getPropertiesHandleError handles the GetProperties error response.
+func (client *containerOperations) getPropertiesHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
+}
+
 // ListBlobFlatSegment - [Update] The List Blobs operation returns a list of the blobs under the specified container
-func (client *containerOperations) ListBlobFlatSegment(options *ContainerListBlobFlatSegmentOptions) (ListBlobsFlatSegmentResponsePager, error) {
-	req, err := client.listBlobFlatSegmentCreateRequest(options)
+func (client *containerOperations) ListBlobFlatSegment(containerListBlobFlatSegmentOptions *ContainerListBlobFlatSegmentOptions) (ListBlobsFlatSegmentResponsePager, error) {
+	req, err := client.listBlobFlatSegmentCreateRequest(containerListBlobFlatSegmentOptions)
 	if err != nil {
 		return nil, err
 	}
 	return &listBlobsFlatSegmentResponsePager{
-		client:    client,
+		pipeline:  client.p,
 		request:   req,
 		responder: client.listBlobFlatSegmentHandleResponse,
 		advancer: func(resp *ListBlobsFlatSegmentResponseResponse) (*azcore.Request, error) {
@@ -731,31 +805,31 @@ func (client *containerOperations) ListBlobFlatSegment(options *ContainerListBlo
 }
 
 // listBlobFlatSegmentCreateRequest creates the ListBlobFlatSegment request.
-func (client *containerOperations) listBlobFlatSegmentCreateRequest(options *ContainerListBlobFlatSegmentOptions) (*azcore.Request, error) {
+func (client *containerOperations) listBlobFlatSegmentCreateRequest(containerListBlobFlatSegmentOptions *ContainerListBlobFlatSegmentOptions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("restype", "container")
 	query.Set("comp", "list")
-	if options != nil && options.Prefix != nil {
-		query.Set("prefix", *options.Prefix)
+	if containerListBlobFlatSegmentOptions != nil && containerListBlobFlatSegmentOptions.Prefix != nil {
+		query.Set("prefix", *containerListBlobFlatSegmentOptions.Prefix)
 	}
-	if options != nil && options.Marker != nil {
-		query.Set("marker", *options.Marker)
+	if containerListBlobFlatSegmentOptions != nil && containerListBlobFlatSegmentOptions.Marker != nil {
+		query.Set("marker", *containerListBlobFlatSegmentOptions.Marker)
 	}
-	if options != nil && options.Maxresults != nil {
-		query.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
+	if containerListBlobFlatSegmentOptions != nil && containerListBlobFlatSegmentOptions.Maxresults != nil {
+		query.Set("maxresults", strconv.FormatInt(int64(*containerListBlobFlatSegmentOptions.Maxresults), 10))
 	}
-	if options != nil && options.Include != nil {
-		query.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(*options.Include), "[]")), ","))
+	if containerListBlobFlatSegmentOptions != nil && containerListBlobFlatSegmentOptions.Include != nil {
+		query.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(*containerListBlobFlatSegmentOptions.Include), "[]")), ","))
 	}
-	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if containerListBlobFlatSegmentOptions != nil && containerListBlobFlatSegmentOptions.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*containerListBlobFlatSegmentOptions.Timeout), 10))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodGet, *u)
-	req.Header.Set("x-ms-version", "2019-07-07")
-	if options != nil && options.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestId)
+	req.Header.Set("x-ms-version", "2019-12-12")
+	if containerListBlobFlatSegmentOptions != nil && containerListBlobFlatSegmentOptions.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *containerListBlobFlatSegmentOptions.RequestId)
 	}
 	return req, nil
 }
@@ -763,7 +837,7 @@ func (client *containerOperations) listBlobFlatSegmentCreateRequest(options *Con
 // listBlobFlatSegmentHandleResponse handles the ListBlobFlatSegment response.
 func (client *containerOperations) listBlobFlatSegmentHandleResponse(resp *azcore.Response) (*ListBlobsFlatSegmentResponseResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, newStorageError(resp)
+		return nil, client.listBlobFlatSegmentHandleError(resp)
 	}
 	result := ListBlobsFlatSegmentResponseResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Content-Type"); val != "" {
@@ -788,14 +862,23 @@ func (client *containerOperations) listBlobFlatSegmentHandleResponse(resp *azcor
 	return &result, resp.UnmarshalAsXML(&result.EnumerationResults)
 }
 
+// listBlobFlatSegmentHandleError handles the ListBlobFlatSegment error response.
+func (client *containerOperations) listBlobFlatSegmentHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
+}
+
 // ListBlobHierarchySegment - [Update] The List Blobs operation returns a list of the blobs under the specified container
-func (client *containerOperations) ListBlobHierarchySegment(delimiter string, options *ContainerListBlobHierarchySegmentOptions) (ListBlobsHierarchySegmentResponsePager, error) {
-	req, err := client.listBlobHierarchySegmentCreateRequest(delimiter, options)
+func (client *containerOperations) ListBlobHierarchySegment(delimiter string, containerListBlobHierarchySegmentOptions *ContainerListBlobHierarchySegmentOptions) (ListBlobsHierarchySegmentResponsePager, error) {
+	req, err := client.listBlobHierarchySegmentCreateRequest(delimiter, containerListBlobHierarchySegmentOptions)
 	if err != nil {
 		return nil, err
 	}
 	return &listBlobsHierarchySegmentResponsePager{
-		client:    client,
+		pipeline:  client.p,
 		request:   req,
 		responder: client.listBlobHierarchySegmentHandleResponse,
 		advancer: func(resp *ListBlobsHierarchySegmentResponseResponse) (*azcore.Request, error) {
@@ -812,32 +895,32 @@ func (client *containerOperations) ListBlobHierarchySegment(delimiter string, op
 }
 
 // listBlobHierarchySegmentCreateRequest creates the ListBlobHierarchySegment request.
-func (client *containerOperations) listBlobHierarchySegmentCreateRequest(delimiter string, options *ContainerListBlobHierarchySegmentOptions) (*azcore.Request, error) {
+func (client *containerOperations) listBlobHierarchySegmentCreateRequest(delimiter string, containerListBlobHierarchySegmentOptions *ContainerListBlobHierarchySegmentOptions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("restype", "container")
 	query.Set("comp", "list")
-	if options != nil && options.Prefix != nil {
-		query.Set("prefix", *options.Prefix)
+	if containerListBlobHierarchySegmentOptions != nil && containerListBlobHierarchySegmentOptions.Prefix != nil {
+		query.Set("prefix", *containerListBlobHierarchySegmentOptions.Prefix)
 	}
 	query.Set("delimiter", delimiter)
-	if options != nil && options.Marker != nil {
-		query.Set("marker", *options.Marker)
+	if containerListBlobHierarchySegmentOptions != nil && containerListBlobHierarchySegmentOptions.Marker != nil {
+		query.Set("marker", *containerListBlobHierarchySegmentOptions.Marker)
 	}
-	if options != nil && options.Maxresults != nil {
-		query.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
+	if containerListBlobHierarchySegmentOptions != nil && containerListBlobHierarchySegmentOptions.Maxresults != nil {
+		query.Set("maxresults", strconv.FormatInt(int64(*containerListBlobHierarchySegmentOptions.Maxresults), 10))
 	}
-	if options != nil && options.Include != nil {
-		query.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(*options.Include), "[]")), ","))
+	if containerListBlobHierarchySegmentOptions != nil && containerListBlobHierarchySegmentOptions.Include != nil {
+		query.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(*containerListBlobHierarchySegmentOptions.Include), "[]")), ","))
 	}
-	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if containerListBlobHierarchySegmentOptions != nil && containerListBlobHierarchySegmentOptions.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*containerListBlobHierarchySegmentOptions.Timeout), 10))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodGet, *u)
-	req.Header.Set("x-ms-version", "2019-07-07")
-	if options != nil && options.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestId)
+	req.Header.Set("x-ms-version", "2019-12-12")
+	if containerListBlobHierarchySegmentOptions != nil && containerListBlobHierarchySegmentOptions.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *containerListBlobHierarchySegmentOptions.RequestId)
 	}
 	return req, nil
 }
@@ -845,7 +928,7 @@ func (client *containerOperations) listBlobHierarchySegmentCreateRequest(delimit
 // listBlobHierarchySegmentHandleResponse handles the ListBlobHierarchySegment response.
 func (client *containerOperations) listBlobHierarchySegmentHandleResponse(resp *azcore.Response) (*ListBlobsHierarchySegmentResponseResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, newStorageError(resp)
+		return nil, client.listBlobHierarchySegmentHandleError(resp)
 	}
 	result := ListBlobsHierarchySegmentResponseResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Content-Type"); val != "" {
@@ -870,9 +953,18 @@ func (client *containerOperations) listBlobHierarchySegmentHandleResponse(resp *
 	return &result, resp.UnmarshalAsXML(&result.EnumerationResults)
 }
 
+// listBlobHierarchySegmentHandleError handles the ListBlobHierarchySegment error response.
+func (client *containerOperations) listBlobHierarchySegmentHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
+}
+
 // ReleaseLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-func (client *containerOperations) ReleaseLease(ctx context.Context, leaseId string, options *ContainerReleaseLeaseOptions) (*ContainerReleaseLeaseResponse, error) {
-	req, err := client.releaseLeaseCreateRequest(leaseId, options)
+func (client *containerOperations) ReleaseLease(ctx context.Context, leaseId string, containerReleaseLeaseOptions *ContainerReleaseLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerReleaseLeaseResponse, error) {
+	req, err := client.releaseLeaseCreateRequest(leaseId, containerReleaseLeaseOptions, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
@@ -888,27 +980,27 @@ func (client *containerOperations) ReleaseLease(ctx context.Context, leaseId str
 }
 
 // releaseLeaseCreateRequest creates the ReleaseLease request.
-func (client *containerOperations) releaseLeaseCreateRequest(leaseId string, options *ContainerReleaseLeaseOptions) (*azcore.Request, error) {
+func (client *containerOperations) releaseLeaseCreateRequest(leaseId string, containerReleaseLeaseOptions *ContainerReleaseLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("comp", "lease")
 	query.Set("restype", "container")
-	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if containerReleaseLeaseOptions != nil && containerReleaseLeaseOptions.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*containerReleaseLeaseOptions.Timeout), 10))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodPut, *u)
 	req.Header.Set("x-ms-lease-action", "release")
 	req.Header.Set("x-ms-lease-id", leaseId)
-	if options != nil && options.IfModifiedSince != nil {
-		req.Header.Set("If-Modified-Since", options.IfModifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
+		req.Header.Set("If-Modified-Since", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123))
 	}
-	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Header.Set("If-Unmodified-Since", options.IfUnmodifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
+		req.Header.Set("If-Unmodified-Since", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2019-07-07")
-	if options != nil && options.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestId)
+	req.Header.Set("x-ms-version", "2019-12-12")
+	if containerReleaseLeaseOptions != nil && containerReleaseLeaseOptions.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *containerReleaseLeaseOptions.RequestId)
 	}
 	return req, nil
 }
@@ -916,7 +1008,7 @@ func (client *containerOperations) releaseLeaseCreateRequest(leaseId string, opt
 // releaseLeaseHandleResponse handles the ReleaseLease response.
 func (client *containerOperations) releaseLeaseHandleResponse(resp *azcore.Response) (*ContainerReleaseLeaseResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, newStorageError(resp)
+		return nil, client.releaseLeaseHandleError(resp)
 	}
 	result := ContainerReleaseLeaseResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
@@ -948,9 +1040,18 @@ func (client *containerOperations) releaseLeaseHandleResponse(resp *azcore.Respo
 	return &result, nil
 }
 
+// releaseLeaseHandleError handles the ReleaseLease error response.
+func (client *containerOperations) releaseLeaseHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
+}
+
 // RenewLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-func (client *containerOperations) RenewLease(ctx context.Context, leaseId string, options *ContainerRenewLeaseOptions) (*ContainerRenewLeaseResponse, error) {
-	req, err := client.renewLeaseCreateRequest(leaseId, options)
+func (client *containerOperations) RenewLease(ctx context.Context, leaseId string, containerRenewLeaseOptions *ContainerRenewLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerRenewLeaseResponse, error) {
+	req, err := client.renewLeaseCreateRequest(leaseId, containerRenewLeaseOptions, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
@@ -966,27 +1067,27 @@ func (client *containerOperations) RenewLease(ctx context.Context, leaseId strin
 }
 
 // renewLeaseCreateRequest creates the RenewLease request.
-func (client *containerOperations) renewLeaseCreateRequest(leaseId string, options *ContainerRenewLeaseOptions) (*azcore.Request, error) {
+func (client *containerOperations) renewLeaseCreateRequest(leaseId string, containerRenewLeaseOptions *ContainerRenewLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("comp", "lease")
 	query.Set("restype", "container")
-	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if containerRenewLeaseOptions != nil && containerRenewLeaseOptions.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*containerRenewLeaseOptions.Timeout), 10))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodPut, *u)
 	req.Header.Set("x-ms-lease-action", "renew")
 	req.Header.Set("x-ms-lease-id", leaseId)
-	if options != nil && options.IfModifiedSince != nil {
-		req.Header.Set("If-Modified-Since", options.IfModifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
+		req.Header.Set("If-Modified-Since", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123))
 	}
-	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Header.Set("If-Unmodified-Since", options.IfUnmodifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
+		req.Header.Set("If-Unmodified-Since", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2019-07-07")
-	if options != nil && options.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestId)
+	req.Header.Set("x-ms-version", "2019-12-12")
+	if containerRenewLeaseOptions != nil && containerRenewLeaseOptions.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *containerRenewLeaseOptions.RequestId)
 	}
 	return req, nil
 }
@@ -994,7 +1095,7 @@ func (client *containerOperations) renewLeaseCreateRequest(leaseId string, optio
 // renewLeaseHandleResponse handles the RenewLease response.
 func (client *containerOperations) renewLeaseHandleResponse(resp *azcore.Response) (*ContainerRenewLeaseResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, newStorageError(resp)
+		return nil, client.renewLeaseHandleError(resp)
 	}
 	result := ContainerRenewLeaseResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
@@ -1029,9 +1130,93 @@ func (client *containerOperations) renewLeaseHandleResponse(resp *azcore.Respons
 	return &result, nil
 }
 
+// renewLeaseHandleError handles the RenewLease error response.
+func (client *containerOperations) renewLeaseHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
+}
+
+// Restore - Restores a previously-deleted container.
+func (client *containerOperations) Restore(ctx context.Context, containerRestoreOptions *ContainerRestoreOptions) (*ContainerRestoreResponse, error) {
+	req, err := client.restoreCreateRequest(containerRestoreOptions)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.p.Do(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	result, err := client.restoreHandleResponse(resp)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// restoreCreateRequest creates the Restore request.
+func (client *containerOperations) restoreCreateRequest(containerRestoreOptions *ContainerRestoreOptions) (*azcore.Request, error) {
+	u := client.u
+	query := u.Query()
+	query.Set("restype", "container")
+	query.Set("comp", "undelete")
+	if containerRestoreOptions != nil && containerRestoreOptions.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*containerRestoreOptions.Timeout), 10))
+	}
+	u.RawQuery = query.Encode()
+	req := azcore.NewRequest(http.MethodPut, *u)
+	req.Header.Set("x-ms-version", "2019-12-12")
+	if containerRestoreOptions != nil && containerRestoreOptions.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *containerRestoreOptions.RequestId)
+	}
+	if containerRestoreOptions != nil && containerRestoreOptions.DeletedContainerName != nil {
+		req.Header.Set("x-ms-deleted-container-name", *containerRestoreOptions.DeletedContainerName)
+	}
+	if containerRestoreOptions != nil && containerRestoreOptions.DeletedContainerVersion != nil {
+		req.Header.Set("x-ms-deleted-container-version", *containerRestoreOptions.DeletedContainerVersion)
+	}
+	return req, nil
+}
+
+// restoreHandleResponse handles the Restore response.
+func (client *containerOperations) restoreHandleResponse(resp *azcore.Response) (*ContainerRestoreResponse, error) {
+	if !resp.HasStatusCode(http.StatusCreated) {
+		return nil, client.restoreHandleError(resp)
+	}
+	result := ContainerRestoreResponse{RawResponse: resp.Response}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestId = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return nil, err
+		}
+		result.Date = &date
+	}
+	return &result, nil
+}
+
+// restoreHandleError handles the Restore error response.
+func (client *containerOperations) restoreHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
+}
+
 // SetAccessPolicy - sets the permissions for the specified container. The permissions indicate whether blobs in a container may be accessed publicly.
-func (client *containerOperations) SetAccessPolicy(ctx context.Context, options *ContainerSetAccessPolicyOptions) (*ContainerSetAccessPolicyResponse, error) {
-	req, err := client.setAccessPolicyCreateRequest(options)
+func (client *containerOperations) SetAccessPolicy(ctx context.Context, containerSetAccessPolicyOptions *ContainerSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerSetAccessPolicyResponse, error) {
+	req, err := client.setAccessPolicyCreateRequest(containerSetAccessPolicyOptions, leaseAccessConditions, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
@@ -1047,43 +1232,46 @@ func (client *containerOperations) SetAccessPolicy(ctx context.Context, options 
 }
 
 // setAccessPolicyCreateRequest creates the SetAccessPolicy request.
-func (client *containerOperations) setAccessPolicyCreateRequest(options *ContainerSetAccessPolicyOptions) (*azcore.Request, error) {
+func (client *containerOperations) setAccessPolicyCreateRequest(containerSetAccessPolicyOptions *ContainerSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("restype", "container")
 	query.Set("comp", "acl")
-	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if containerSetAccessPolicyOptions != nil && containerSetAccessPolicyOptions.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*containerSetAccessPolicyOptions.Timeout), 10))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodPut, *u)
-	if options != nil && options.LeaseId != nil {
-		req.Header.Set("x-ms-lease-id", *options.LeaseId)
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseId != nil {
+		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseId)
 	}
-	if options != nil && options.Access != nil {
-		req.Header.Set("x-ms-blob-public-access", string(*options.Access))
+	if containerSetAccessPolicyOptions != nil && containerSetAccessPolicyOptions.Access != nil {
+		req.Header.Set("x-ms-blob-public-access", string(*containerSetAccessPolicyOptions.Access))
 	}
-	if options != nil && options.IfModifiedSince != nil {
-		req.Header.Set("If-Modified-Since", options.IfModifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
+		req.Header.Set("If-Modified-Since", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123))
 	}
-	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Header.Set("If-Unmodified-Since", options.IfUnmodifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
+		req.Header.Set("If-Unmodified-Since", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2019-07-07")
-	if options != nil && options.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestId)
+	req.Header.Set("x-ms-version", "2019-12-12")
+	if containerSetAccessPolicyOptions != nil && containerSetAccessPolicyOptions.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *containerSetAccessPolicyOptions.RequestId)
 	}
 	type wrapper struct {
 		XMLName      xml.Name            `xml:"SignedIdentifiers"`
 		ContainerAcl *[]SignedIDentifier `xml:"SignedIdentifier"`
 	}
-	return req, req.MarshalAsXML(wrapper{ContainerAcl: options.ContainerAcl})
+	if containerSetAccessPolicyOptions != nil {
+		return req, req.MarshalAsXML(wrapper{ContainerAcl: containerSetAccessPolicyOptions.ContainerAcl})
+	}
+	return req, nil
 }
 
 // setAccessPolicyHandleResponse handles the SetAccessPolicy response.
 func (client *containerOperations) setAccessPolicyHandleResponse(resp *azcore.Response) (*ContainerSetAccessPolicyResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, newStorageError(resp)
+		return nil, client.setAccessPolicyHandleError(resp)
 	}
 	result := ContainerSetAccessPolicyResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
@@ -1115,9 +1303,18 @@ func (client *containerOperations) setAccessPolicyHandleResponse(resp *azcore.Re
 	return &result, nil
 }
 
+// setAccessPolicyHandleError handles the SetAccessPolicy error response.
+func (client *containerOperations) setAccessPolicyHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
+}
+
 // SetMetadata - operation sets one or more user-defined name-value pairs for the specified container.
-func (client *containerOperations) SetMetadata(ctx context.Context, options *ContainerSetMetadataOptions) (*ContainerSetMetadataResponse, error) {
-	req, err := client.setMetadataCreateRequest(options)
+func (client *containerOperations) SetMetadata(ctx context.Context, containerSetMetadataOptions *ContainerSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerSetMetadataResponse, error) {
+	req, err := client.setMetadataCreateRequest(containerSetMetadataOptions, leaseAccessConditions, modifiedAccessConditions)
 	if err != nil {
 		return nil, err
 	}
@@ -1133,28 +1330,28 @@ func (client *containerOperations) SetMetadata(ctx context.Context, options *Con
 }
 
 // setMetadataCreateRequest creates the SetMetadata request.
-func (client *containerOperations) setMetadataCreateRequest(options *ContainerSetMetadataOptions) (*azcore.Request, error) {
+func (client *containerOperations) setMetadataCreateRequest(containerSetMetadataOptions *ContainerSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
 	u := client.u
 	query := u.Query()
 	query.Set("restype", "container")
 	query.Set("comp", "metadata")
-	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if containerSetMetadataOptions != nil && containerSetMetadataOptions.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*containerSetMetadataOptions.Timeout), 10))
 	}
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodPut, *u)
-	if options != nil && options.LeaseId != nil {
-		req.Header.Set("x-ms-lease-id", *options.LeaseId)
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseId != nil {
+		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseId)
 	}
-	if options != nil && options.Metadata != nil {
-		req.Header.Set("x-ms-meta", *options.Metadata)
+	if containerSetMetadataOptions != nil && containerSetMetadataOptions.Metadata != nil {
+		req.Header.Set("x-ms-meta", *containerSetMetadataOptions.Metadata)
 	}
-	if options != nil && options.IfModifiedSince != nil {
-		req.Header.Set("If-Modified-Since", options.IfModifiedSince.Format(time.RFC1123))
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
+		req.Header.Set("If-Modified-Since", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2019-07-07")
-	if options != nil && options.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestId)
+	req.Header.Set("x-ms-version", "2019-12-12")
+	if containerSetMetadataOptions != nil && containerSetMetadataOptions.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *containerSetMetadataOptions.RequestId)
 	}
 	return req, nil
 }
@@ -1162,7 +1359,7 @@ func (client *containerOperations) setMetadataCreateRequest(options *ContainerSe
 // setMetadataHandleResponse handles the SetMetadata response.
 func (client *containerOperations) setMetadataHandleResponse(resp *azcore.Response) (*ContainerSetMetadataResponse, error) {
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, newStorageError(resp)
+		return nil, client.setMetadataHandleError(resp)
 	}
 	result := ContainerSetMetadataResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
@@ -1192,4 +1389,13 @@ func (client *containerOperations) setMetadataHandleResponse(resp *azcore.Respon
 		result.Date = &date
 	}
 	return &result, nil
+}
+
+// setMetadataHandleError handles the SetMetadata error response.
+func (client *containerOperations) setMetadataHandleError(resp *azcore.Response) error {
+	var err StorageError
+	if err := resp.UnmarshalAsXML(&err); err != nil {
+		return err
+	}
+	return err
 }

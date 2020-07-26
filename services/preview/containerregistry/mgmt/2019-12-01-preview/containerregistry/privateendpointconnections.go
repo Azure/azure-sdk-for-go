@@ -100,7 +100,6 @@ func (client PrivateEndpointConnectionsClient) CreateOrUpdatePreparer(ctx contex
 		"api-version": APIVersion,
 	}
 
-	privateEndpointConnection.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -128,7 +127,6 @@ func (client PrivateEndpointConnectionsClient) CreateOrUpdateSender(req *http.Re
 func (client PrivateEndpointConnectionsClient) CreateOrUpdateResponder(resp *http.Response) (result PrivateEndpointConnection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -216,7 +214,6 @@ func (client PrivateEndpointConnectionsClient) DeleteSender(req *http.Request) (
 func (client PrivateEndpointConnectionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -303,7 +300,6 @@ func (client PrivateEndpointConnectionsClient) GetSender(req *http.Request) (*ht
 func (client PrivateEndpointConnectionsClient) GetResponder(resp *http.Response) (result PrivateEndpointConnection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -354,6 +350,9 @@ func (client PrivateEndpointConnectionsClient) List(ctx context.Context, resourc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.PrivateEndpointConnectionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.peclr.hasNextLink() && result.peclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -390,7 +389,6 @@ func (client PrivateEndpointConnectionsClient) ListSender(req *http.Request) (*h
 func (client PrivateEndpointConnectionsClient) ListResponder(resp *http.Response) (result PrivateEndpointConnectionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

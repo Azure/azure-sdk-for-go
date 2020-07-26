@@ -132,7 +132,6 @@ func (client ScopeMapsClient) CreateSender(req *http.Request) (future ScopeMapsC
 func (client ScopeMapsClient) CreateResponder(resp *http.Response) (result ScopeMap, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -224,7 +223,6 @@ func (client ScopeMapsClient) DeleteSender(req *http.Request) (future ScopeMapsD
 func (client ScopeMapsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -315,7 +313,6 @@ func (client ScopeMapsClient) GetSender(req *http.Request) (*http.Response, erro
 func (client ScopeMapsClient) GetResponder(resp *http.Response) (result ScopeMap, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -366,6 +363,9 @@ func (client ScopeMapsClient) List(ctx context.Context, resourceGroupName string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ScopeMapsClient", "List", resp, "Failure responding to request")
 	}
+	if result.smlr.hasNextLink() && result.smlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -402,7 +402,6 @@ func (client ScopeMapsClient) ListSender(req *http.Request) (*http.Response, err
 func (client ScopeMapsClient) ListResponder(resp *http.Response) (result ScopeMapListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -534,7 +533,6 @@ func (client ScopeMapsClient) UpdateSender(req *http.Request) (future ScopeMapsU
 func (client ScopeMapsClient) UpdateResponder(resp *http.Response) (result ScopeMap, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

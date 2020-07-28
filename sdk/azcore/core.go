@@ -70,7 +70,7 @@ func NewPipeline(transport Transport, policies ...Policy) Pipeline {
 		transport = DefaultHTTPClientTransport()
 	}
 	// transport policy must always be the last in the slice
-	policies = append(policies, newBodyDownloadPolicy(), transportPolicy{trans: transport})
+	policies = append(policies, newHTTPHeaderPolicy(), newBodyDownloadPolicy(), transportPolicy{trans: transport})
 	return Pipeline{
 		policies: policies,
 	}

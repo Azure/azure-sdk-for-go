@@ -7,11 +7,14 @@ package azcore
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"reflect"
 	"testing"
+	"unsafe"
 )
 
 type testJSON struct {
@@ -136,5 +139,210 @@ func TestRequestMarshalAsByteArrayStdFormat(t *testing.T) {
 	}
 	if string(b) != `"YSBzdHJpbmcgdGhhdCBnZXRzIGVuY29kZWQgd2l0aCBiYXNlNjR1cmw="` {
 		t.Fatalf("bad body, got %s", string(b))
+	}
+}
+
+func TestCloneWithoutReadOnlyFieldsNoClone(t *testing.T) {
+	nonStruct := "don't clone this"
+	v := cloneWithoutReadOnlyFields(&nonStruct)
+	if reflect.ValueOf(v).Pointer() != uintptr(unsafe.Pointer(&nonStruct)) {
+		t.Fatal()
+	}
+	type noReadOnly struct {
+		ID   int32
+		Name *string
+	}
+	nro := noReadOnly{
+		ID:   123,
+		Name: &nonStruct,
+	}
+	v = cloneWithoutReadOnlyFields(&nro)
+	if reflect.ValueOf(v).Pointer() != uintptr(unsafe.Pointer(&nro)) {
+		t.Fatal("pointers don't match, clone was made")
+	}
+}
+
+func TestCloneWithoutReadOnlyFieldsClone(t *testing.T) {
+	id := int32(123)
+	name := "widget"
+	type withReadOnly struct {
+		ID   *int32  `json:"id" azure:"ro"`
+		Name *string `json:"name"`
+	}
+	nro := withReadOnly{
+		ID:   &id,
+		Name: &name,
+	}
+	v := cloneWithoutReadOnlyFields(&nro)
+	if reflect.ValueOf(v).Pointer() == uintptr(unsafe.Pointer(&nro)) {
+		t.Fatal("pointers match, clone was not made")
+	}
+	b, err := json.Marshal(v)
+	if err != nil {
+		t.Fatal(err)
+	}
+	um := withReadOnly{}
+	err = json.Unmarshal(b, &um)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if um.ID != nil {
+		t.Fatalf("expected nil ID, got %d", *um.ID)
+	}
+}
+
+func TestCloneWithoutReadOnlyFieldsCloneRecursive(t *testing.T) {
+	id := int32(123)
+	name := "widget"
+	something := "something"
+	pie := float32(3.14159)
+	type inner2 struct {
+		Type   *string
+		Unique *float32 `json:"omitempty" azure:"ro"`
+	}
+	type inner1 struct {
+		Thing  *string `json:"omitempty" azure:"ro"`
+		Color  *string `json:"color"`
+		Inner2 *inner2
+	}
+	type withReadOnly struct {
+		ID     *int32  `json:"id" azure:"ro"`
+		Name   *string `json:"name"`
+		Inner1 *inner1
+	}
+	nro := withReadOnly{
+		ID:   &id,
+		Name: &name,
+		Inner1: &inner1{
+			Thing: &something,
+			Color: &something,
+			Inner2: &inner2{
+				Type:   &something,
+				Unique: &pie,
+			},
+		},
+	}
+	v := cloneWithoutReadOnlyFields(&nro)
+	if reflect.ValueOf(v).Pointer() == uintptr(unsafe.Pointer(&nro)) {
+		t.Fatal("pointers match, clone was not made")
+	}
+	b, err := json.Marshal(v)
+	if err != nil {
+		t.Fatal(err)
+	}
+	um := withReadOnly{}
+	err = json.Unmarshal(b, &um)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if um.ID != nil {
+		t.Fatalf("expected nil ID, got %d", *um.ID)
+	}
+	if um.Inner1.Thing != nil {
+		t.Fatalf("expected nil Thing, got %s", *um.Inner1.Thing)
+	}
+	if um.Inner1.Inner2.Unique != nil {
+		t.Fatalf("expected nil Unique, got %f", *um.Inner1.Inner2.Unique)
+	}
+}
+
+func TestCloneWithoutReadOnlyFieldsCloneNested(t *testing.T) {
+	id := int32(123)
+	name := "widget"
+	something := "something"
+	pie := float32(3.14159)
+	type inner2 struct {
+		Type   *string
+		Unique *float32 `json:"omitempty" azure:"ro"`
+	}
+	type inner1 struct {
+		Thing  *string `json:"omitempty"`
+		Color  *string `json:"color"`
+		Inner2 *inner2
+	}
+	type withReadOnly struct {
+		ID     *int32  `json:"id"`
+		Name   *string `json:"name"`
+		Inner1 *inner1
+	}
+	nro := withReadOnly{
+		ID:   &id,
+		Name: &name,
+		Inner1: &inner1{
+			Thing: &something,
+			Color: &something,
+			Inner2: &inner2{
+				Type:   &something,
+				Unique: &pie,
+			},
+		},
+	}
+	v := cloneWithoutReadOnlyFields(&nro)
+	if reflect.ValueOf(v).Pointer() == uintptr(unsafe.Pointer(&nro)) {
+		t.Fatal("pointers match, clone was not made")
+	}
+	b, err := json.Marshal(v)
+	if err != nil {
+		t.Fatal(err)
+	}
+	um := withReadOnly{}
+	err = json.Unmarshal(b, &um)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if um.Inner1.Inner2.Unique != nil {
+		t.Fatalf("expected nil Unique, got %f", *um.Inner1.Inner2.Unique)
+	}
+}
+
+func TestCloneWithoutReadOnlyFieldsEndToEnd(t *testing.T) {
+	u, err := url.Parse("https://contoso.com")
+	if err != nil {
+		panic(err)
+	}
+	req := NewRequest(http.MethodPost, *u)
+	id := int32(123)
+	name := "widget"
+	type withReadOnly struct {
+		ID   *int32  `json:"id" azure:"ro"`
+		Name *string `json:"name"`
+	}
+	nro := withReadOnly{
+		ID:   &id,
+		Name: &name,
+	}
+	err = req.MarshalAsJSON(nro)
+	if err != nil {
+		t.Fatal(err)
+	}
+	b, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	um := withReadOnly{}
+	err = json.Unmarshal(b, &um)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if um.ID != nil {
+		t.Fatalf("expected nil ID, got %d", *um.ID)
+	}
+}
+
+func TestAzureTagIsReadOnly(t *testing.T) {
+	if azureTagIsReadOnly("") {
+		t.Fatal()
+	}
+	if azureTagIsReadOnly("rw") {
+		t.Fatal()
+	}
+	if azureTagIsReadOnly("this,that,the,other") {
+		t.Fatal()
+	}
+	if !azureTagIsReadOnly("ro") {
+		t.Fatal()
+	}
+	if !azureTagIsReadOnly("copy,ro,something") {
+		t.Fatal()
 	}
 }

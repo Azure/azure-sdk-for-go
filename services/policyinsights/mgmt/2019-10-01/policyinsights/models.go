@@ -31,43 +31,264 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/policyinsights/mgmt/2019-10-01/policyinsights"
 
-// PolicyStatesResource enumerates the values for policy states resource.
-type PolicyStatesResource string
-
-const (
-	// Default ...
-	Default PolicyStatesResource = "default"
-	// Latest ...
-	Latest PolicyStatesResource = "latest"
-)
-
-// PossiblePolicyStatesResourceValues returns an array of possible values for the PolicyStatesResource const type.
-func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
-	return []PolicyStatesResource{Default, Latest}
-}
-
-// ResourceDiscoveryMode enumerates the values for resource discovery mode.
-type ResourceDiscoveryMode string
-
-const (
-	// ExistingNonCompliant Remediate resources that are already known to be non-compliant.
-	ExistingNonCompliant ResourceDiscoveryMode = "ExistingNonCompliant"
-	// ReEvaluateCompliance Re-evaluate the compliance state of resources and then remediate the resources
-	// found to be non-compliant.
-	ReEvaluateCompliance ResourceDiscoveryMode = "ReEvaluateCompliance"
-)
-
-// PossibleResourceDiscoveryModeValues returns an array of possible values for the ResourceDiscoveryMode const type.
-func PossibleResourceDiscoveryModeValues() []ResourceDiscoveryMode {
-	return []ResourceDiscoveryMode{ExistingNonCompliant, ReEvaluateCompliance}
-}
-
 // ComplianceDetail the compliance state rollup.
 type ComplianceDetail struct {
 	// ComplianceState - The compliance state.
 	ComplianceState *string `json:"complianceState,omitempty"`
 	// Count - Summarized count value for this compliance state.
 	Count *int32 `json:"count,omitempty"`
+}
+
+// ComponentEventDetails component event details.
+type ComponentEventDetails struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// ID - Component Id.
+	ID *string `json:"id,omitempty"`
+	// Type - Component type.
+	Type *string `json:"type,omitempty"`
+	// Name - Component name.
+	Name *string `json:"name,omitempty"`
+	// Timestamp - Timestamp for component policy event record.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// TenantID - Tenant ID for the policy event record.
+	TenantID *string `json:"tenantId,omitempty"`
+	// PrincipalOid - Principal object ID for the user who initiated the resource component operation that triggered the policy event.
+	PrincipalOid *string `json:"principalOid,omitempty"`
+	// PolicyDefinitionAction - Policy definition action, i.e. effect.
+	PolicyDefinitionAction *string `json:"policyDefinitionAction,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ComponentEventDetails.
+func (ced ComponentEventDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ced.ID != nil {
+		objectMap["id"] = ced.ID
+	}
+	if ced.Type != nil {
+		objectMap["type"] = ced.Type
+	}
+	if ced.Name != nil {
+		objectMap["name"] = ced.Name
+	}
+	if ced.Timestamp != nil {
+		objectMap["timestamp"] = ced.Timestamp
+	}
+	if ced.TenantID != nil {
+		objectMap["tenantId"] = ced.TenantID
+	}
+	if ced.PrincipalOid != nil {
+		objectMap["principalOid"] = ced.PrincipalOid
+	}
+	if ced.PolicyDefinitionAction != nil {
+		objectMap["policyDefinitionAction"] = ced.PolicyDefinitionAction
+	}
+	for k, v := range ced.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ComponentEventDetails struct.
+func (ced *ComponentEventDetails) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if ced.AdditionalProperties == nil {
+					ced.AdditionalProperties = make(map[string]interface{})
+				}
+				ced.AdditionalProperties[k] = additionalProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ced.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ced.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ced.Name = &name
+			}
+		case "timestamp":
+			if v != nil {
+				var timestamp date.Time
+				err = json.Unmarshal(*v, &timestamp)
+				if err != nil {
+					return err
+				}
+				ced.Timestamp = &timestamp
+			}
+		case "tenantId":
+			if v != nil {
+				var tenantID string
+				err = json.Unmarshal(*v, &tenantID)
+				if err != nil {
+					return err
+				}
+				ced.TenantID = &tenantID
+			}
+		case "principalOid":
+			if v != nil {
+				var principalOid string
+				err = json.Unmarshal(*v, &principalOid)
+				if err != nil {
+					return err
+				}
+				ced.PrincipalOid = &principalOid
+			}
+		case "policyDefinitionAction":
+			if v != nil {
+				var policyDefinitionAction string
+				err = json.Unmarshal(*v, &policyDefinitionAction)
+				if err != nil {
+					return err
+				}
+				ced.PolicyDefinitionAction = &policyDefinitionAction
+			}
+		}
+	}
+
+	return nil
+}
+
+// ComponentStateDetails component state details.
+type ComponentStateDetails struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// ID - Component Id.
+	ID *string `json:"id,omitempty"`
+	// Type - Component type.
+	Type *string `json:"type,omitempty"`
+	// Name - Component name.
+	Name *string `json:"name,omitempty"`
+	// Timestamp - Component compliance evaluation timestamp.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// ComplianceState - Component compliance state.
+	ComplianceState *string `json:"complianceState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ComponentStateDetails.
+func (csd ComponentStateDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if csd.ID != nil {
+		objectMap["id"] = csd.ID
+	}
+	if csd.Type != nil {
+		objectMap["type"] = csd.Type
+	}
+	if csd.Name != nil {
+		objectMap["name"] = csd.Name
+	}
+	if csd.Timestamp != nil {
+		objectMap["timestamp"] = csd.Timestamp
+	}
+	if csd.ComplianceState != nil {
+		objectMap["complianceState"] = csd.ComplianceState
+	}
+	for k, v := range csd.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ComponentStateDetails struct.
+func (csd *ComponentStateDetails) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if csd.AdditionalProperties == nil {
+					csd.AdditionalProperties = make(map[string]interface{})
+				}
+				csd.AdditionalProperties[k] = additionalProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				csd.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				csd.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				csd.Name = &name
+			}
+		case "timestamp":
+			if v != nil {
+				var timestamp date.Time
+				err = json.Unmarshal(*v, &timestamp)
+				if err != nil {
+					return err
+				}
+				csd.Timestamp = &timestamp
+			}
+		case "complianceState":
+			if v != nil {
+				var complianceState string
+				err = json.Unmarshal(*v, &complianceState)
+				if err != nil {
+					return err
+				}
+				csd.ComplianceState = &complianceState
+			}
+		}
+	}
+
+	return nil
 }
 
 // ErrorDefinition error definition.
@@ -82,6 +303,12 @@ type ErrorDefinition struct {
 	Details *[]ErrorDefinition `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; Additional scenario specific error details.
 	AdditionalInfo *[]TypedErrorInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDefinition.
+func (ed ErrorDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse error response.
@@ -187,6 +414,12 @@ type PolicyDetails struct {
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PolicyDetails.
+func (pd PolicyDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PolicyEvaluationDetails policy evaluation details.
 type PolicyEvaluationDetails struct {
 	// EvaluatedExpressions - Details of the evaluated expressions.
@@ -253,10 +486,14 @@ type PolicyEvent struct {
 	ManagementGroupIds *string `json:"managementGroupIds,omitempty"`
 	// PolicyDefinitionReferenceID - Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+	// ComplianceState - Compliance state of the resource.
+	ComplianceState *string `json:"complianceState,omitempty"`
 	// TenantID - Tenant ID for the policy event record.
 	TenantID *string `json:"tenantId,omitempty"`
 	// PrincipalOid - Principal object ID for the user who initiated the resource operation that triggered the policy event.
 	PrincipalOid *string `json:"principalOid,omitempty"`
+	// Components - Components events records populated only when URL contains $expand=components clause.
+	Components *[]ComponentEventDetails `json:"components,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PolicyEvent.
@@ -343,11 +580,17 @@ func (peVar PolicyEvent) MarshalJSON() ([]byte, error) {
 	if peVar.PolicyDefinitionReferenceID != nil {
 		objectMap["policyDefinitionReferenceId"] = peVar.PolicyDefinitionReferenceID
 	}
+	if peVar.ComplianceState != nil {
+		objectMap["complianceState"] = peVar.ComplianceState
+	}
 	if peVar.TenantID != nil {
 		objectMap["tenantId"] = peVar.TenantID
 	}
 	if peVar.PrincipalOid != nil {
 		objectMap["principalOid"] = peVar.PrincipalOid
+	}
+	if peVar.Components != nil {
+		objectMap["components"] = peVar.Components
 	}
 	for k, v := range peVar.AdditionalProperties {
 		objectMap[k] = v
@@ -619,6 +862,15 @@ func (peVar *PolicyEvent) UnmarshalJSON(body []byte) error {
 				}
 				peVar.PolicyDefinitionReferenceID = &policyDefinitionReferenceID
 			}
+		case "complianceState":
+			if v != nil {
+				var complianceState string
+				err = json.Unmarshal(*v, &complianceState)
+				if err != nil {
+					return err
+				}
+				peVar.ComplianceState = &complianceState
+			}
 		case "tenantId":
 			if v != nil {
 				var tenantID string
@@ -637,6 +889,15 @@ func (peVar *PolicyEvent) UnmarshalJSON(body []byte) error {
 				}
 				peVar.PrincipalOid = &principalOid
 			}
+		case "components":
+			if v != nil {
+				var components []ComponentEventDetails
+				err = json.Unmarshal(*v, &components)
+				if err != nil {
+					return err
+				}
+				peVar.Components = &components
+			}
 		}
 	}
 
@@ -650,8 +911,157 @@ type PolicyEventsQueryResults struct {
 	OdataContext *string `json:"@odata.context,omitempty"`
 	// OdataCount - OData entity count; represents the number of policy event records returned.
 	OdataCount *int32 `json:"@odata.count,omitempty"`
+	// OdataNextLink - Odata next link; URL to get the next set of results.
+	OdataNextLink *string `json:"@odata.nextLink,omitempty"`
 	// Value - Query results.
 	Value *[]PolicyEvent `json:"value,omitempty"`
+}
+
+// PolicyEventsQueryResultsIterator provides access to a complete listing of PolicyEvent values.
+type PolicyEventsQueryResultsIterator struct {
+	i    int
+	page PolicyEventsQueryResultsPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PolicyEventsQueryResultsIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyEventsQueryResultsIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PolicyEventsQueryResultsIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PolicyEventsQueryResultsIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PolicyEventsQueryResultsIterator) Response() PolicyEventsQueryResults {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PolicyEventsQueryResultsIterator) Value() PolicyEvent {
+	if !iter.page.NotDone() {
+		return PolicyEvent{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PolicyEventsQueryResultsIterator type.
+func NewPolicyEventsQueryResultsIterator(page PolicyEventsQueryResultsPage) PolicyEventsQueryResultsIterator {
+	return PolicyEventsQueryResultsIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (peqr PolicyEventsQueryResults) IsEmpty() bool {
+	return peqr.Value == nil || len(*peqr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (peqr PolicyEventsQueryResults) hasNextLink() bool {
+	return peqr.OdataNextLink != nil && len(*peqr.OdataNextLink) != 0
+}
+
+// policyEventsQueryResultsPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (peqr PolicyEventsQueryResults) policyEventsQueryResultsPreparer(ctx context.Context) (*http.Request, error) {
+	if !peqr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(peqr.OdataNextLink)))
+}
+
+// PolicyEventsQueryResultsPage contains a page of PolicyEvent values.
+type PolicyEventsQueryResultsPage struct {
+	fn   func(context.Context, PolicyEventsQueryResults) (PolicyEventsQueryResults, error)
+	peqr PolicyEventsQueryResults
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PolicyEventsQueryResultsPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyEventsQueryResultsPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.peqr)
+		if err != nil {
+			return err
+		}
+		page.peqr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PolicyEventsQueryResultsPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PolicyEventsQueryResultsPage) NotDone() bool {
+	return !page.peqr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PolicyEventsQueryResultsPage) Response() PolicyEventsQueryResults {
+	return page.peqr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PolicyEventsQueryResultsPage) Values() []PolicyEvent {
+	if page.peqr.IsEmpty() {
+		return nil
+	}
+	return *page.peqr.Value
+}
+
+// Creates a new instance of the PolicyEventsQueryResultsPage type.
+func NewPolicyEventsQueryResultsPage(getNextPage func(context.Context, PolicyEventsQueryResults) (PolicyEventsQueryResults, error)) PolicyEventsQueryResultsPage {
+	return PolicyEventsQueryResultsPage{fn: getNextPage}
 }
 
 // PolicyGroupSummary policy definition group summary.
@@ -744,6 +1154,12 @@ type PolicyMetadataCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PolicyMetadataCollection.
+func (pmc PolicyMetadataCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PolicyMetadataCollectionIterator provides access to a complete listing of SlimPolicyMetadata values.
 type PolicyMetadataCollectionIterator struct {
 	i    int
@@ -812,10 +1228,15 @@ func (pmc PolicyMetadataCollection) IsEmpty() bool {
 	return pmc.Value == nil || len(*pmc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pmc PolicyMetadataCollection) hasNextLink() bool {
+	return pmc.NextLink != nil && len(*pmc.NextLink) != 0
+}
+
 // policyMetadataCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pmc PolicyMetadataCollection) policyMetadataCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if pmc.NextLink == nil || len(to.String(pmc.NextLink)) < 1 {
+	if !pmc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -843,11 +1264,16 @@ func (page *PolicyMetadataCollectionPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pmc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pmc)
+		if err != nil {
+			return err
+		}
+		page.pmc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pmc = next
 	return nil
 }
 
@@ -901,8 +1327,14 @@ type PolicyMetadataProperties struct {
 	Metadata interface{} `json:"metadata,omitempty"`
 }
 
-// PolicyMetadataSlimProperties the properties of the policy metadata, excluding properties containing
-// large strings
+// MarshalJSON is the custom marshaler for PolicyMetadataProperties.
+func (pmp PolicyMetadataProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// PolicyMetadataSlimProperties the properties of the policy metadata, excluding properties containing large
+// strings
 type PolicyMetadataSlimProperties struct {
 	// MetadataID - READ-ONLY; The policy metadata identifier.
 	MetadataID *string `json:"metadataId,omitempty"`
@@ -916,6 +1348,12 @@ type PolicyMetadataSlimProperties struct {
 	AdditionalContentURL *string `json:"additionalContentUrl,omitempty"`
 	// Metadata - READ-ONLY; Additional metadata.
 	Metadata interface{} `json:"metadata,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PolicyMetadataSlimProperties.
+func (pmsp PolicyMetadataSlimProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PolicyState policy state record.
@@ -982,6 +1420,14 @@ type PolicyState struct {
 	PolicyEvaluationDetails *PolicyEvaluationDetails `json:"policyEvaluationDetails,omitempty"`
 	// PolicyDefinitionGroupNames - Policy definition group names.
 	PolicyDefinitionGroupNames *[]string `json:"policyDefinitionGroupNames,omitempty"`
+	// Components - Components state compliance records populated only when URL contains $expand=components clause.
+	Components *[]ComponentStateDetails `json:"components,omitempty"`
+	// PolicyDefinitionVersion - READ-ONLY; Evaluated policy definition version.
+	PolicyDefinitionVersion *string `json:"policyDefinitionVersion,omitempty"`
+	// PolicySetDefinitionVersion - READ-ONLY; Evaluated policy set definition version.
+	PolicySetDefinitionVersion *string `json:"policySetDefinitionVersion,omitempty"`
+	// PolicyAssignmentVersion - READ-ONLY; Evaluated policy assignment version.
+	PolicyAssignmentVersion *string `json:"policyAssignmentVersion,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PolicyState.
@@ -1076,6 +1522,9 @@ func (ps PolicyState) MarshalJSON() ([]byte, error) {
 	}
 	if ps.PolicyDefinitionGroupNames != nil {
 		objectMap["policyDefinitionGroupNames"] = ps.PolicyDefinitionGroupNames
+	}
+	if ps.Components != nil {
+		objectMap["components"] = ps.Components
 	}
 	for k, v := range ps.AdditionalProperties {
 		objectMap[k] = v
@@ -1374,6 +1823,42 @@ func (ps *PolicyState) UnmarshalJSON(body []byte) error {
 				}
 				ps.PolicyDefinitionGroupNames = &policyDefinitionGroupNames
 			}
+		case "components":
+			if v != nil {
+				var components []ComponentStateDetails
+				err = json.Unmarshal(*v, &components)
+				if err != nil {
+					return err
+				}
+				ps.Components = &components
+			}
+		case "policyDefinitionVersion":
+			if v != nil {
+				var policyDefinitionVersion string
+				err = json.Unmarshal(*v, &policyDefinitionVersion)
+				if err != nil {
+					return err
+				}
+				ps.PolicyDefinitionVersion = &policyDefinitionVersion
+			}
+		case "policySetDefinitionVersion":
+			if v != nil {
+				var policySetDefinitionVersion string
+				err = json.Unmarshal(*v, &policySetDefinitionVersion)
+				if err != nil {
+					return err
+				}
+				ps.PolicySetDefinitionVersion = &policySetDefinitionVersion
+			}
+		case "policyAssignmentVersion":
+			if v != nil {
+				var policyAssignmentVersion string
+				err = json.Unmarshal(*v, &policyAssignmentVersion)
+				if err != nil {
+					return err
+				}
+				ps.PolicyAssignmentVersion = &policyAssignmentVersion
+			}
 		}
 	}
 
@@ -1387,12 +1872,161 @@ type PolicyStatesQueryResults struct {
 	OdataContext *string `json:"@odata.context,omitempty"`
 	// OdataCount - OData entity count; represents the number of policy state records returned.
 	OdataCount *int32 `json:"@odata.count,omitempty"`
+	// OdataNextLink - Odata next link; URL to get the next set of results.
+	OdataNextLink *string `json:"@odata.nextLink,omitempty"`
 	// Value - Query results.
 	Value *[]PolicyState `json:"value,omitempty"`
 }
 
-// PolicyStatesTriggerResourceGroupEvaluationFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// PolicyStatesQueryResultsIterator provides access to a complete listing of PolicyState values.
+type PolicyStatesQueryResultsIterator struct {
+	i    int
+	page PolicyStatesQueryResultsPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PolicyStatesQueryResultsIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyStatesQueryResultsIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PolicyStatesQueryResultsIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PolicyStatesQueryResultsIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PolicyStatesQueryResultsIterator) Response() PolicyStatesQueryResults {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PolicyStatesQueryResultsIterator) Value() PolicyState {
+	if !iter.page.NotDone() {
+		return PolicyState{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PolicyStatesQueryResultsIterator type.
+func NewPolicyStatesQueryResultsIterator(page PolicyStatesQueryResultsPage) PolicyStatesQueryResultsIterator {
+	return PolicyStatesQueryResultsIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (psqr PolicyStatesQueryResults) IsEmpty() bool {
+	return psqr.Value == nil || len(*psqr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (psqr PolicyStatesQueryResults) hasNextLink() bool {
+	return psqr.OdataNextLink != nil && len(*psqr.OdataNextLink) != 0
+}
+
+// policyStatesQueryResultsPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (psqr PolicyStatesQueryResults) policyStatesQueryResultsPreparer(ctx context.Context) (*http.Request, error) {
+	if !psqr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(psqr.OdataNextLink)))
+}
+
+// PolicyStatesQueryResultsPage contains a page of PolicyState values.
+type PolicyStatesQueryResultsPage struct {
+	fn   func(context.Context, PolicyStatesQueryResults) (PolicyStatesQueryResults, error)
+	psqr PolicyStatesQueryResults
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PolicyStatesQueryResultsPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyStatesQueryResultsPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.psqr)
+		if err != nil {
+			return err
+		}
+		page.psqr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PolicyStatesQueryResultsPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PolicyStatesQueryResultsPage) NotDone() bool {
+	return !page.psqr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PolicyStatesQueryResultsPage) Response() PolicyStatesQueryResults {
+	return page.psqr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PolicyStatesQueryResultsPage) Values() []PolicyState {
+	if page.psqr.IsEmpty() {
+		return nil
+	}
+	return *page.psqr.Value
+}
+
+// Creates a new instance of the PolicyStatesQueryResultsPage type.
+func NewPolicyStatesQueryResultsPage(getNextPage func(context.Context, PolicyStatesQueryResults) (PolicyStatesQueryResults, error)) PolicyStatesQueryResultsPage {
+	return PolicyStatesQueryResultsPage{fn: getNextPage}
+}
+
+// PolicyStatesTriggerResourceGroupEvaluationFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type PolicyStatesTriggerResourceGroupEvaluationFuture struct {
 	azure.Future
 }
@@ -1414,8 +2048,8 @@ func (future *PolicyStatesTriggerResourceGroupEvaluationFuture) Result(client Po
 	return
 }
 
-// PolicyStatesTriggerSubscriptionEvaluationFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// PolicyStatesTriggerSubscriptionEvaluationFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type PolicyStatesTriggerSubscriptionEvaluationFuture struct {
 	azure.Future
 }
@@ -1451,6 +2085,12 @@ type PolicyTrackedResource struct {
 	LastUpdateUtc *date.Time `json:"lastUpdateUtc,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PolicyTrackedResource.
+func (ptr PolicyTrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PolicyTrackedResourcesQueryResults query results.
 type PolicyTrackedResourcesQueryResults struct {
 	autorest.Response `json:"-"`
@@ -1460,8 +2100,14 @@ type PolicyTrackedResourcesQueryResults struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// PolicyTrackedResourcesQueryResultsIterator provides access to a complete listing of
-// PolicyTrackedResource values.
+// MarshalJSON is the custom marshaler for PolicyTrackedResourcesQueryResults.
+func (ptrqr PolicyTrackedResourcesQueryResults) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// PolicyTrackedResourcesQueryResultsIterator provides access to a complete listing of PolicyTrackedResource
+// values.
 type PolicyTrackedResourcesQueryResultsIterator struct {
 	i    int
 	page PolicyTrackedResourcesQueryResultsPage
@@ -1529,10 +2175,15 @@ func (ptrqr PolicyTrackedResourcesQueryResults) IsEmpty() bool {
 	return ptrqr.Value == nil || len(*ptrqr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ptrqr PolicyTrackedResourcesQueryResults) hasNextLink() bool {
+	return ptrqr.NextLink != nil && len(*ptrqr.NextLink) != 0
+}
+
 // policyTrackedResourcesQueryResultsPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ptrqr PolicyTrackedResourcesQueryResults) policyTrackedResourcesQueryResultsPreparer(ctx context.Context) (*http.Request, error) {
-	if ptrqr.NextLink == nil || len(to.String(ptrqr.NextLink)) < 1 {
+	if !ptrqr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1560,11 +2211,16 @@ func (page *PolicyTrackedResourcesQueryResultsPage) NextWithContext(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ptrqr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ptrqr)
+		if err != nil {
+			return err
+		}
+		page.ptrqr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ptrqr = next
 	return nil
 }
 
@@ -1610,6 +2266,12 @@ type QueryFailureError struct {
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; Description of the error.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryFailureError.
+func (qf QueryFailureError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Remediation the remediation definition.
@@ -1703,6 +2365,12 @@ type RemediationDeployment struct {
 	LastUpdatedOn *date.Time `json:"lastUpdatedOn,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RemediationDeployment.
+func (rd RemediationDeployment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RemediationDeploymentsListResult list of deployments for a remediation.
 type RemediationDeploymentsListResult struct {
 	autorest.Response `json:"-"`
@@ -1710,6 +2378,12 @@ type RemediationDeploymentsListResult struct {
 	Value *[]RemediationDeployment `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RemediationDeploymentsListResult.
+func (rdlr RemediationDeploymentsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RemediationDeploymentsListResultIterator provides access to a complete listing of RemediationDeployment
@@ -1781,10 +2455,15 @@ func (rdlr RemediationDeploymentsListResult) IsEmpty() bool {
 	return rdlr.Value == nil || len(*rdlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rdlr RemediationDeploymentsListResult) hasNextLink() bool {
+	return rdlr.NextLink != nil && len(*rdlr.NextLink) != 0
+}
+
 // remediationDeploymentsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rdlr RemediationDeploymentsListResult) remediationDeploymentsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rdlr.NextLink == nil || len(to.String(rdlr.NextLink)) < 1 {
+	if !rdlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1812,11 +2491,16 @@ func (page *RemediationDeploymentsListResultPage) NextWithContext(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rdlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rdlr)
+		if err != nil {
+			return err
+		}
+		page.rdlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rdlr = next
 	return nil
 }
 
@@ -1850,8 +2534,7 @@ func NewRemediationDeploymentsListResultPage(getNextPage func(context.Context, R
 	return RemediationDeploymentsListResultPage{fn: getNextPage}
 }
 
-// RemediationDeploymentSummary the deployment status summary for all deployments created by the
-// remediation.
+// RemediationDeploymentSummary the deployment status summary for all deployments created by the remediation.
 type RemediationDeploymentSummary struct {
 	// TotalDeployments - READ-ONLY; The number of deployments required by the remediation.
 	TotalDeployments *int32 `json:"totalDeployments,omitempty"`
@@ -1859,6 +2542,12 @@ type RemediationDeploymentSummary struct {
 	SuccessfulDeployments *int32 `json:"successfulDeployments,omitempty"`
 	// FailedDeployments - READ-ONLY; The number of deployments required by the remediation that have failed.
 	FailedDeployments *int32 `json:"failedDeployments,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RemediationDeploymentSummary.
+func (rds RemediationDeploymentSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RemediationFilters the filters that will be applied to determine which resources to remediate.
@@ -1874,6 +2563,12 @@ type RemediationListResult struct {
 	Value *[]Remediation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RemediationListResult.
+func (rlr RemediationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RemediationListResultIterator provides access to a complete listing of Remediation values.
@@ -1944,10 +2639,15 @@ func (rlr RemediationListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rlr RemediationListResult) hasNextLink() bool {
+	return rlr.NextLink != nil && len(*rlr.NextLink) != 0
+}
+
 // remediationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rlr RemediationListResult) remediationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
+	if !rlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1975,11 +2675,16 @@ func (page *RemediationListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rlr)
+		if err != nil {
+			return err
+		}
+		page.rlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rlr = next
 	return nil
 }
 
@@ -2031,6 +2736,24 @@ type RemediationProperties struct {
 	Filters *RemediationFilters `json:"filters,omitempty"`
 	// DeploymentStatus - READ-ONLY; The deployment status summary for all deployments created by the remediation.
 	DeploymentStatus *RemediationDeploymentSummary `json:"deploymentStatus,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RemediationProperties.
+func (rp RemediationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rp.PolicyAssignmentID != nil {
+		objectMap["policyAssignmentId"] = rp.PolicyAssignmentID
+	}
+	if rp.PolicyDefinitionReferenceID != nil {
+		objectMap["policyDefinitionReferenceId"] = rp.PolicyDefinitionReferenceID
+	}
+	if rp.ResourceDiscoveryMode != "" {
+		objectMap["resourceDiscoveryMode"] = rp.ResourceDiscoveryMode
+	}
+	if rp.Filters != nil {
+		objectMap["filters"] = rp.Filters
+	}
+	return json.Marshal(objectMap)
 }
 
 // SlimPolicyMetadata slim version of policy metadata resource definition, excluding properties with large
@@ -2106,12 +2829,6 @@ func (spm *SlimPolicyMetadata) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// String ...
-type String struct {
-	autorest.Response `json:"-"`
-	Value             *string `json:"value,omitempty"`
-}
-
 // SummarizeResults summarize action results.
 type SummarizeResults struct {
 	autorest.Response `json:"-"`
@@ -2151,8 +2868,8 @@ type SummaryResults struct {
 	PolicyGroupDetails *[]ComplianceDetail `json:"policyGroupDetails,omitempty"`
 }
 
-// TrackedResourceModificationDetails the details of the policy triggered deployment that created or
-// modified the tracked resource.
+// TrackedResourceModificationDetails the details of the policy triggered deployment that created or modified
+// the tracked resource.
 type TrackedResourceModificationDetails struct {
 	// PolicyDetails - READ-ONLY; The details of the policy that created or modified the tracked resource.
 	PolicyDetails *PolicyDetails `json:"policyDetails,omitempty"`
@@ -2162,10 +2879,22 @@ type TrackedResourceModificationDetails struct {
 	DeploymentTime *date.Time `json:"deploymentTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TrackedResourceModificationDetails.
+func (trmd TrackedResourceModificationDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // TypedErrorInfo scenario specific error details.
 type TypedErrorInfo struct {
 	// Type - READ-ONLY; The type of included error details.
 	Type *string `json:"type,omitempty"`
 	// Info - READ-ONLY; The scenario specific error details.
 	Info interface{} `json:"info,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TypedErrorInfo.
+func (tei TypedErrorInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

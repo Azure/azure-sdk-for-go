@@ -129,7 +129,6 @@ func (client TokensClient) CreateSender(req *http.Request) (future TokensCreateF
 func (client TokensClient) CreateResponder(resp *http.Response) (result Token, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -221,7 +220,6 @@ func (client TokensClient) DeleteSender(req *http.Request) (future TokensDeleteF
 func (client TokensClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -312,7 +310,6 @@ func (client TokensClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client TokensClient) GetResponder(resp *http.Response) (result Token, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -363,6 +360,9 @@ func (client TokensClient) List(ctx context.Context, resourceGroupName string, r
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.TokensClient", "List", resp, "Failure responding to request")
 	}
+	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -399,7 +399,6 @@ func (client TokensClient) ListSender(req *http.Request) (*http.Response, error)
 func (client TokensClient) ListResponder(resp *http.Response) (result TokenListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -531,7 +530,6 @@ func (client TokensClient) UpdateSender(req *http.Request) (future TokensUpdateF
 func (client TokensClient) UpdateResponder(resp *http.Response) (result Token, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

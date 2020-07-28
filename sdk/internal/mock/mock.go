@@ -123,7 +123,19 @@ func (s *Server) Do(ctx context.Context, req *http.Request) (*http.Response, err
 }
 
 func (s *Server) serveHTTP(w http.ResponseWriter, req *http.Request) {
-	resp := s.getResponse()
+	var resp mockResponse
+	for {
+		// grab next response from the queue
+		resp = s.getResponse()
+		if resp.pred == nil {
+			// no predicate, we're done
+			break
+		} else if resp.pred(req) {
+			// response applies to this request, so remove the next response
+			s.getResponse()
+			break
+		}
+	}
 	if resp.delay > 0 {
 		time.Sleep(resp.delay)
 	}
@@ -174,10 +186,14 @@ func (s *Server) RepeatResponse(n int, opts ...ResponseOption) {
 // SetResponse indicates the same response should always be returned.
 // Any responses set via other methods will be ignored.
 // If no options are provided the default response is an http.StatusOK.
+// NOTE: does not support WithPredicate(), will cause a panic.
 func (s *Server) SetResponse(opts ...ResponseOption) {
-	mr := mockResponse{code: http.StatusOK}
+	mr := mockResponse{code: http.StatusOK, headers: http.Header{}}
 	for _, o := range opts {
 		o.apply(&mr)
+	}
+	if mr.pred != nil {
+		panic("WithPredicate not supported for static responses")
 	}
 	s.static = &mr
 }
@@ -193,6 +209,9 @@ func (fn fnRespOpt) apply(mr *mockResponse) {
 	fn(mr)
 }
 
+// ResponsePredicate is a predicate that's invoked in response to an HTTP request.
+type ResponsePredicate func(*http.Request) bool
+
 type mockResponse struct {
 	code    int
 	body    []byte
@@ -200,6 +219,7 @@ type mockResponse struct {
 	err     error
 	rerr    bool
 	delay   time.Duration
+	pred    ResponsePredicate
 }
 
 func (mr mockResponse) write(w http.ResponseWriter) {
@@ -251,6 +271,17 @@ func WithSlowResponse(d time.Duration) ResponseOption {
 func WithBodyReadError() ResponseOption {
 	return fnRespOpt(func(mr *mockResponse) {
 		mr.rerr = true
+	})
+}
+
+// WithPredicate invokes the specified predicate func on the HTTP request.
+// If the predicate returns true, the response associated with the predicate is
+// returned and the next response is removed from the queue. When false, the
+// associated response is ignored and the next one is returned.
+// NOTE: not supported for static responses, will cause a panic.
+func WithPredicate(p ResponsePredicate) ResponseOption {
+	return fnRespOpt(func(mr *mockResponse) {
+		mr.pred = p
 	})
 }
 

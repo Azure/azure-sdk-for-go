@@ -189,6 +189,9 @@ func TestCloneWithoutReadOnlyFieldsClone(t *testing.T) {
 	if um.ID != nil {
 		t.Fatalf("expected nil ID, got %d", *um.ID)
 	}
+	if um.Name == nil {
+		t.Fatal("unexpected nil Name")
+	}
 }
 
 func TestCloneWithoutReadOnlyFieldsCloneRecursive(t *testing.T) {
@@ -238,11 +241,20 @@ func TestCloneWithoutReadOnlyFieldsCloneRecursive(t *testing.T) {
 	if um.ID != nil {
 		t.Fatalf("expected nil ID, got %d", *um.ID)
 	}
+	if um.Name == nil {
+		t.Fatal("unexpected nil Name")
+	}
 	if um.Inner1.Thing != nil {
 		t.Fatalf("expected nil Thing, got %s", *um.Inner1.Thing)
 	}
+	if um.Inner1.Color == nil {
+		t.Fatal("unexpected nil Color")
+	}
 	if um.Inner1.Inner2.Unique != nil {
 		t.Fatalf("expected nil Unique, got %f", *um.Inner1.Inner2.Unique)
+	}
+	if um.Inner1.Inner2.Type == nil {
+		t.Fatal("unexpected nil Type")
 	}
 }
 
@@ -290,8 +302,23 @@ func TestCloneWithoutReadOnlyFieldsCloneNested(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	if um.ID == nil {
+		t.Fatal("unexpected nil ID")
+	}
+	if um.Name == nil {
+		t.Fatal("unexpected nil Name")
+	}
+	if um.Inner1.Thing == nil {
+		t.Fatal("unexpected nil Thing")
+	}
+	if um.Inner1.Color == nil {
+		t.Fatal("unexpected nil Color")
+	}
 	if um.Inner1.Inner2.Unique != nil {
 		t.Fatalf("expected nil Unique, got %f", *um.Inner1.Inner2.Unique)
+	}
+	if um.Inner1.Inner2.Type == nil {
+		t.Fatal("unexpected nil Type")
 	}
 }
 

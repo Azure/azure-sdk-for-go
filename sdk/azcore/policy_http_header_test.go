@@ -8,6 +8,7 @@ package azcore
 import (
 	"context"
 	"net/http"
+	"net/textproto"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -88,7 +89,9 @@ func TestAddCustomHTTPHeaderMultipleValues(t *testing.T) {
 	const customValue1 = "custom-value1"
 	const customValue2 = "custom-value2"
 	srv.AppendResponse(mock.WithPredicate(func(r *http.Request) bool {
-		vals := r.Header.Values(customHeader)
+		// Values() method is Go 1.14+
+		//vals := r.Header.Values(customHeader)
+		vals := r.Header[textproto.CanonicalMIMEHeaderKey(customHeader)]
 		return vals[0] == customValue1 && vals[1] == customValue2
 	}), mock.WithStatusCode(http.StatusOK))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))

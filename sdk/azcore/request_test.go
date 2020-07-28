@@ -420,6 +420,35 @@ func TestCloneWithoutReadOnlyFieldsCloneEmbedded(t *testing.T) {
 	}
 }
 
+func TestCloneWithoutReadOnlyFieldsCloneByVal(t *testing.T) {
+	id := int32(123)
+	name := "widget"
+	type withReadOnly struct {
+		ID   *int32  `json:"id" azure:"ro"`
+		Name *string `json:"name"`
+	}
+	nro := withReadOnly{
+		ID:   &id,
+		Name: &name,
+	}
+	v := cloneWithoutReadOnlyFields(nro)
+	b, err := json.Marshal(v)
+	if err != nil {
+		t.Fatal(err)
+	}
+	um := withReadOnly{}
+	err = json.Unmarshal(b, &um)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if um.ID != nil {
+		t.Fatalf("expected nil ID, got %d", *um.ID)
+	}
+	if um.Name == nil {
+		t.Fatal("unexpected nil Name")
+	}
+}
+
 func TestAzureTagIsReadOnly(t *testing.T) {
 	if azureTagIsReadOnly("") {
 		t.Fatal()

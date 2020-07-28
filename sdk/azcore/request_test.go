@@ -451,18 +451,18 @@ func TestCloneWithoutReadOnlyFieldsCloneByVal(t *testing.T) {
 
 func TestAzureTagIsReadOnly(t *testing.T) {
 	if azureTagIsReadOnly("") {
-		t.Fatal()
+		t.Fatal("unexpected RO for empty string")
 	}
 	if azureTagIsReadOnly("rw") {
-		t.Fatal()
+		t.Fatal("unexpected RO for rw")
 	}
 	if azureTagIsReadOnly("this,that,the,other") {
-		t.Fatal()
+		t.Fatal("unexpected RO for this,that,the,other")
 	}
 	if !azureTagIsReadOnly("ro") {
-		t.Fatal()
+		t.Fatal("expected RO")
 	}
 	if !azureTagIsReadOnly("copy,ro,something") {
-		t.Fatal()
+		t.Fatal("expected RO")
 	}
 }

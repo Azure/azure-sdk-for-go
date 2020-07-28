@@ -5,7 +5,7 @@ type CreateContainerOptions struct {
 	Access *PublicAccessType
 
 	// Optional. Specifies a user-defined name-value pair associated with the blob.
-	Metadata map[string]string
+	Metadata *map[string]string
 
 	// Optional. Specifies the encryption scope settings to set on the container.
 	cpkScope *ContainerCpkScopeInfo
@@ -18,7 +18,7 @@ func (o *CreateContainerOptions) pointers() (*ContainerCreateOptions, *Container
 
 	basicOptions := ContainerCreateOptions{
 		Access:   o.Access,
-		Metadata: nil, // TODO
+		Metadata: o.Metadata,
 	}
 
 	return &basicOptions, o.cpkScope

@@ -54,7 +54,7 @@ type ContainerOperations interface {
 
 // containerOperations implements the ContainerOperations interface.
 type containerOperations struct {
-	*Client
+	*client
 }
 
 // AcquireLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
@@ -76,7 +76,8 @@ func (client *containerOperations) AcquireLease(ctx context.Context, containerAc
 
 // acquireLeaseCreateRequest creates the AcquireLease request.
 func (client *containerOperations) acquireLeaseCreateRequest(containerAcquireLeaseOptions *ContainerAcquireLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "lease")
 	query.Set("restype", "container")
@@ -171,7 +172,8 @@ func (client *containerOperations) BreakLease(ctx context.Context, containerBrea
 
 // breakLeaseCreateRequest creates the BreakLease request.
 func (client *containerOperations) breakLeaseCreateRequest(containerBreakLeaseOptions *ContainerBreakLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "lease")
 	query.Set("restype", "container")
@@ -268,7 +270,8 @@ func (client *containerOperations) ChangeLease(ctx context.Context, leaseId stri
 
 // changeLeaseCreateRequest creates the ChangeLease request.
 func (client *containerOperations) changeLeaseCreateRequest(leaseId string, proposedLeaseId string, containerChangeLeaseOptions *ContainerChangeLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "lease")
 	query.Set("restype", "container")
@@ -359,7 +362,8 @@ func (client *containerOperations) Create(ctx context.Context, containerCreateOp
 
 // createCreateRequest creates the Create request.
 func (client *containerOperations) createCreateRequest(containerCreateOptions *ContainerCreateOptions, containerCpkScopeInfo *ContainerCpkScopeInfo) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("restype", "container")
 	if containerCreateOptions != nil && containerCreateOptions.Timeout != nil {
@@ -368,7 +372,9 @@ func (client *containerOperations) createCreateRequest(containerCreateOptions *C
 	u.RawQuery = query.Encode()
 	req := azcore.NewRequest(http.MethodPut, *u)
 	if containerCreateOptions != nil && containerCreateOptions.Metadata != nil {
-		req.Header.Set("x-ms-meta", *containerCreateOptions.Metadata)
+		for k, v := range *containerCreateOptions.Metadata {
+			req.Header.Set("x-ms-meta-"+k, v)
+		}
 	}
 	if containerCreateOptions != nil && containerCreateOptions.Access != nil {
 		req.Header.Set("x-ms-blob-public-access", string(*containerCreateOptions.Access))
@@ -449,7 +455,8 @@ func (client *containerOperations) Delete(ctx context.Context, containerDeleteOp
 
 // deleteCreateRequest creates the Delete request.
 func (client *containerOperations) deleteCreateRequest(containerDeleteOptions *ContainerDeleteOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("restype", "container")
 	if containerDeleteOptions != nil && containerDeleteOptions.Timeout != nil {
@@ -526,7 +533,8 @@ func (client *containerOperations) GetAccessPolicy(ctx context.Context, containe
 
 // getAccessPolicyCreateRequest creates the GetAccessPolicy request.
 func (client *containerOperations) getAccessPolicyCreateRequest(containerGetAccessPolicyOptions *ContainerGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("restype", "container")
 	query.Set("comp", "acl")
@@ -611,7 +619,8 @@ func (client *containerOperations) GetAccountInfo(ctx context.Context) (*Contain
 
 // getAccountInfoCreateRequest creates the GetAccountInfo request.
 func (client *containerOperations) getAccountInfoCreateRequest() (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("restype", "account")
 	query.Set("comp", "properties")
@@ -680,7 +689,8 @@ func (client *containerOperations) GetProperties(ctx context.Context, containerG
 
 // getPropertiesCreateRequest creates the GetProperties request.
 func (client *containerOperations) getPropertiesCreateRequest(containerGetPropertiesOptions *ContainerGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("restype", "container")
 	if containerGetPropertiesOptions != nil && containerGetPropertiesOptions.Timeout != nil {
@@ -806,7 +816,8 @@ func (client *containerOperations) ListBlobFlatSegment(containerListBlobFlatSegm
 
 // listBlobFlatSegmentCreateRequest creates the ListBlobFlatSegment request.
 func (client *containerOperations) listBlobFlatSegmentCreateRequest(containerListBlobFlatSegmentOptions *ContainerListBlobFlatSegmentOptions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("restype", "container")
 	query.Set("comp", "list")
@@ -896,7 +907,8 @@ func (client *containerOperations) ListBlobHierarchySegment(delimiter string, co
 
 // listBlobHierarchySegmentCreateRequest creates the ListBlobHierarchySegment request.
 func (client *containerOperations) listBlobHierarchySegmentCreateRequest(delimiter string, containerListBlobHierarchySegmentOptions *ContainerListBlobHierarchySegmentOptions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("restype", "container")
 	query.Set("comp", "list")
@@ -981,7 +993,8 @@ func (client *containerOperations) ReleaseLease(ctx context.Context, leaseId str
 
 // releaseLeaseCreateRequest creates the ReleaseLease request.
 func (client *containerOperations) releaseLeaseCreateRequest(leaseId string, containerReleaseLeaseOptions *ContainerReleaseLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "lease")
 	query.Set("restype", "container")
@@ -1068,7 +1081,8 @@ func (client *containerOperations) RenewLease(ctx context.Context, leaseId strin
 
 // renewLeaseCreateRequest creates the RenewLease request.
 func (client *containerOperations) renewLeaseCreateRequest(leaseId string, containerRenewLeaseOptions *ContainerRenewLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "lease")
 	query.Set("restype", "container")
@@ -1158,7 +1172,8 @@ func (client *containerOperations) Restore(ctx context.Context, containerRestore
 
 // restoreCreateRequest creates the Restore request.
 func (client *containerOperations) restoreCreateRequest(containerRestoreOptions *ContainerRestoreOptions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("restype", "container")
 	query.Set("comp", "undelete")
@@ -1233,7 +1248,8 @@ func (client *containerOperations) SetAccessPolicy(ctx context.Context, containe
 
 // setAccessPolicyCreateRequest creates the SetAccessPolicy request.
 func (client *containerOperations) setAccessPolicyCreateRequest(containerSetAccessPolicyOptions *ContainerSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("restype", "container")
 	query.Set("comp", "acl")
@@ -1331,7 +1347,8 @@ func (client *containerOperations) SetMetadata(ctx context.Context, containerSet
 
 // setMetadataCreateRequest creates the SetMetadata request.
 func (client *containerOperations) setMetadataCreateRequest(containerSetMetadataOptions *ContainerSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("restype", "container")
 	query.Set("comp", "metadata")
@@ -1344,7 +1361,9 @@ func (client *containerOperations) setMetadataCreateRequest(containerSetMetadata
 		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseId)
 	}
 	if containerSetMetadataOptions != nil && containerSetMetadataOptions.Metadata != nil {
-		req.Header.Set("x-ms-meta", *containerSetMetadataOptions.Metadata)
+		for k, v := range *containerSetMetadataOptions.Metadata {
+			req.Header.Set("x-ms-meta-"+k, v)
+		}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Header.Set("If-Modified-Since", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123))

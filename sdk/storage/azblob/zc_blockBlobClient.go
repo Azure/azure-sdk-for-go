@@ -20,12 +20,12 @@ const (
 // BlockBlobClient defines a set of operations applicable to block blobs.
 type BlockBlobClient struct {
 	BlobClient
-	client *Client
+	client *client
 }
 
 // NewBlockBlobClient creates a BlockBlobClient object using the specified URL and request policy pipeline.
-func NewBlockBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (BlockBlobClient, error) {
-	client, err := NewClient(blobURL, cred, options)
+func NewBlockBlobClient(blobURL string, cred azcore.Credential, options *clientOptions) (BlockBlobClient, error) {
+	client, err := newClient(blobURL, cred, options)
 
 	if err != nil {
 		return BlockBlobClient{}, err
@@ -36,7 +36,7 @@ func NewBlockBlobClient(blobURL string, cred azcore.Credential, options *ClientO
 
 // WithPipeline creates a new BlockBlobClient object identical to the source but with the specific request policy pipeline.
 func (bb BlockBlobClient) WithPipeline(pipeline azcore.Pipeline) (BlockBlobClient, error) {
-	client, err := NewClientWithPipeline(bb.client.u.String(), pipeline)
+	client, err := newClientWithPipeline(bb.client.u.String(), pipeline)
 
 	if err != nil {
 		return BlockBlobClient{}, err

@@ -5,7 +5,7 @@ type UploadBlockBlobOptions struct {
 	BlobTagsString *string
 
 	// Optional. Specifies a user-defined name-value pair associated with the blob.
-	Metadata map[string]string
+	Metadata *map[string]string
 
 	// Optional. Indicates the tier to be set on the blob.
 	Tier *AccessTier
@@ -28,9 +28,10 @@ func (o *UploadBlockBlobOptions) pointers() (*BlockBlobUploadOptions, *BlobHttpH
 
 	basics := BlockBlobUploadOptions{
 		BlobTagsString:          o.BlobTagsString,
-		Metadata:                nil, // TODO
+		Metadata:                o.Metadata,
 		Tier:                    o.Tier,
 		TransactionalContentMd5: o.TransactionalContentMd5,
 	}
+
 	return &basics, o.BlobHttpHeaders, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions
 }

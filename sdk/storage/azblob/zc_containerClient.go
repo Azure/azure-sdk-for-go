@@ -9,12 +9,12 @@ import (
 
 // A ContainerClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type ContainerClient struct {
-	client *Client
+	client *client
 }
 
 // NewContainerClient creates a ContainerClient object using the specified URL and request policy pipeline.
-func NewContainerClient(containerURL string, cred azcore.Credential, options *ClientOptions) (ContainerClient, error) {
-	client, err := NewClient(containerURL, cred, options)
+func NewContainerClient(containerURL string, cred azcore.Credential, options *clientOptions) (ContainerClient, error) {
+	client, err := newClient(containerURL, cred, options)
 
 	if err != nil {
 		return ContainerClient{}, err
@@ -36,7 +36,7 @@ func (c ContainerClient) String() string {
 
 // WithPipeline creates a new ContainerClient object identical to the source but with the specified request policy pipeline.
 func (c ContainerClient) WithPipeline(pipeline azcore.Pipeline) (ContainerClient, error) {
-	client, err := NewClientWithPipeline(c.client.u.String(), pipeline)
+	client, err := newClientWithPipeline(c.client.u.String(), pipeline)
 
 	if err != nil {
 		return ContainerClient{}, err
@@ -52,8 +52,7 @@ func (c ContainerClient) WithPipeline(pipeline azcore.Pipeline) (ContainerClient
 // NewBlobClient method.
 func (c ContainerClient) NewBlobURL(blobName string) BlobClient {
 	blobURL := appendToURLPath(*c.client.u, blobName)
-	blobURL.RawQuery = "" // TODO remove as we should not have to do this
-	containerClient, _ := NewClientWithPipeline(blobURL.String(), c.client.p)
+	containerClient, _ := newClientWithPipeline(blobURL.String(), c.client.p)
 	return BlobClient{
 		client: containerClient,
 	}
@@ -77,7 +76,7 @@ func (c ContainerClient) NewBlobURL(blobName string) BlobClient {
 func (c ContainerClient) NewBlockBlobClient(blobName string) BlockBlobClient {
 	blobURL := appendToURLPath(*c.client.u, blobName)
 	blobURL.RawQuery = "" // TODO remove as we should not have to do this
-	blockBlobClient, _ := NewClientWithPipeline(blobURL.String(), c.client.p)
+	blockBlobClient, _ := newClientWithPipeline(blobURL.String(), c.client.p)
 	return BlockBlobClient{
 		BlobClient: BlobClient{
 			client: blockBlobClient,

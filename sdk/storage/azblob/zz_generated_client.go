@@ -10,14 +10,15 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 const scope = "https://storage.azure.com/.default"
-const telemetryInfo = "azsdk-go-test/<version>"
+const telemetryInfo = "azsdk-go-generated/<version>"
 
-// ClientOptions contains configuration settings for the default client's pipeline.
-type ClientOptions struct {
+// clientOptions contains configuration settings for the default client's pipeline.
+type clientOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient azcore.Transport
 	// LogOptions configures the built-in request logging policy behavior.
@@ -29,17 +30,21 @@ type ClientOptions struct {
 	// ApplicationID is an application-specific identification string used in telemetry.
 	// It has a maximum length of 24 characters and must not contain any spaces.
 	ApplicationID string
+	// DisableRPRegistration controls if an unregistered resource provider should
+	// automatically be registered. See https://aka.ms/rps-not-found for more information.
+	// The default value is false, meaning registration will be attempted.
+	DisableRPRegistration bool
 }
 
-// DefaultClientOptions creates a ClientOptions type initialized with default values.
-func DefaultClientOptions() ClientOptions {
-	return ClientOptions{
+// defaultClientOptions creates a clientOptions type initialized with default values.
+func defaultClientOptions() clientOptions {
+	return clientOptions{
 		HTTPClient: azcore.DefaultHTTPClientTransport(),
 		Retry:      azcore.DefaultRetryOptions(),
 	}
 }
 
-func (c *ClientOptions) telemetryOptions() azcore.TelemetryOptions {
+func (c *clientOptions) telemetryOptions() azcore.TelemetryOptions {
 	t := telemetryInfo
 	if c.ApplicationID != "" {
 		a := strings.ReplaceAll(c.ApplicationID, " ", "/")
@@ -54,28 +59,38 @@ func (c *ClientOptions) telemetryOptions() azcore.TelemetryOptions {
 	return azcore.TelemetryOptions{Value: fmt.Sprintf("%s %s", c.Telemetry.Value, t)}
 }
 
-type Client struct {
+type client struct {
 	u *url.URL
 	p azcore.Pipeline
 }
 
-// NewClient creates an instance of the Client type with the specified endpoint.
-func NewClient(endpoint string, cred azcore.Credential, options *ClientOptions) (*Client, error) {
+// newClient creates an instance of the client type with the specified endpoint.
+func newClient(endpoint string, cred azcore.Credential, options *clientOptions) (*client, error) {
 	if options == nil {
-		o := DefaultClientOptions()
+		o := defaultClientOptions()
 		options = &o
 	}
-	p := azcore.NewPipeline(options.HTTPClient,
+	policies := []azcore.Policy{
 		azcore.NewTelemetryPolicy(options.telemetryOptions()),
 		azcore.NewUniqueRequestIDPolicy(),
+	}
+	if !options.DisableRPRegistration {
+		rpOpts := armcore.DefaultRegistrationOptions()
+		rpOpts.HTTPClient = options.HTTPClient
+		rpOpts.LogOptions = options.LogOptions
+		rpOpts.Retry = options.Retry
+		policies = append(policies, armcore.NewRPRegistrationPolicy(cred, &rpOpts))
+	}
+	policies = append(policies,
 		azcore.NewRetryPolicy(&options.Retry),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewRequestLogPolicy(options.LogOptions))
-	return NewClientWithPipeline(endpoint, p)
+	p := azcore.NewPipeline(options.HTTPClient, policies...)
+	return newClientWithPipeline(endpoint, p)
 }
 
-// NewClientWithPipeline creates an instance of the Client type with the specified endpoint and pipeline.
-func NewClientWithPipeline(endpoint string, p azcore.Pipeline) (*Client, error) {
+// newClientWithPipeline creates an instance of the client type with the specified endpoint and pipeline.
+func newClientWithPipeline(endpoint string, p azcore.Pipeline) (*client, error) {
 	u, err := url.Parse(endpoint)
 	if err != nil {
 		return nil, err
@@ -83,40 +98,40 @@ func NewClientWithPipeline(endpoint string, p azcore.Pipeline) (*Client, error) 
 	if u.Scheme == "" {
 		return nil, fmt.Errorf("no scheme detected in endpoint %s", endpoint)
 	}
-	return &Client{u: u, p: p}, nil
+	return &client{u: u, p: p}, nil
 }
 
 // ServiceOperations returns the ServiceOperations associated with this client.
-func (client *Client) ServiceOperations() ServiceOperations {
-	return &serviceOperations{Client: client}
+func (client *client) ServiceOperations() ServiceOperations {
+	return &serviceOperations{client: client}
 }
 
 // ContainerOperations returns the ContainerOperations associated with this client.
-func (client *Client) ContainerOperations() ContainerOperations {
-	return &containerOperations{Client: client}
+func (client *client) ContainerOperations() ContainerOperations {
+	return &containerOperations{client: client}
 }
 
 // DirectoryOperations returns the DirectoryOperations associated with this client.
-func (client *Client) DirectoryOperations(pathRenameMode *PathRenameMode) DirectoryOperations {
-	return &directoryOperations{Client: client, pathRenameMode: pathRenameMode}
+func (client *client) DirectoryOperations(pathRenameMode *PathRenameMode) DirectoryOperations {
+	return &directoryOperations{client: client, pathRenameMode: pathRenameMode}
 }
 
 // BlobOperations returns the BlobOperations associated with this client.
-func (client *Client) BlobOperations(pathRenameMode *PathRenameMode) BlobOperations {
-	return &blobOperations{Client: client, pathRenameMode: pathRenameMode}
+func (client *client) BlobOperations(pathRenameMode *PathRenameMode) BlobOperations {
+	return &blobOperations{client: client, pathRenameMode: pathRenameMode}
 }
 
 // PageBlobOperations returns the PageBlobOperations associated with this client.
-func (client *Client) PageBlobOperations() PageBlobOperations {
-	return &pageBlobOperations{Client: client}
+func (client *client) PageBlobOperations() PageBlobOperations {
+	return &pageBlobOperations{client: client}
 }
 
 // AppendBlobOperations returns the AppendBlobOperations associated with this client.
-func (client *Client) AppendBlobOperations() AppendBlobOperations {
-	return &appendBlobOperations{Client: client}
+func (client *client) AppendBlobOperations() AppendBlobOperations {
+	return &appendBlobOperations{client: client}
 }
 
 // BlockBlobOperations returns the BlockBlobOperations associated with this client.
-func (client *Client) BlockBlobOperations() BlockBlobOperations {
-	return &blockBlobOperations{Client: client}
+func (client *client) BlockBlobOperations() BlockBlobOperations {
+	return &blockBlobOperations{client: client}
 }

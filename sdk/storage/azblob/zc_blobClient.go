@@ -9,12 +9,12 @@ import (
 
 // A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type BlobClient struct {
-	client *Client
+	client *client
 }
 
 // NewBlobClient creates a BlobClient object using the specified URL and request policy pipeline.
-func NewBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (BlobClient, error) {
-	client, err := NewClient(blobURL, cred, options)
+func NewBlobClient(blobURL string, cred azcore.Credential, options *clientOptions) (BlobClient, error) {
+	client, err := newClient(blobURL, cred, options)
 
 	if err != nil {
 		return BlobClient{}, err
@@ -36,7 +36,7 @@ func (b BlobClient) String() string {
 
 // WithPipeline creates a new BlobClient object identical to the source but with the specified request policy pipeline.
 func (b BlobClient) WithPipeline(pipeline azcore.Pipeline) (BlobClient, error) {
-	client, err := NewClientWithPipeline(b.client.u.String(), pipeline)
+	client, err := newClientWithPipeline(b.client.u.String(), pipeline)
 
 	if err != nil {
 		return BlobClient{}, err
@@ -58,11 +58,14 @@ func (b BlobClient) WithPipeline(pipeline azcore.Pipeline) (BlobClient, error) {
 //	return NewAppendBlobURL(b.URL(), b.client.Pipeline())
 //}
 //
-//// ToBlockBlobURL creates a BlockBlobClient using the source's URL and pipeline.
-//func (b BlobClient) ToBlockBlobURL() BlockBlobClient {
-//	return NewBlockBlobClient(b.URL(), b.client.Pipeline())
-//}
-//
+// ToBlockBlobURL creates a BlockBlobClient using the source's URL and pipeline.
+func (b BlobClient) ToBlockBlobURL() BlockBlobClient {
+	blockBlobClient, _ := newClientWithPipeline(b.String(), b.client.p)
+	return BlockBlobClient{
+		client: blockBlobClient,
+	}
+}
+
 //// ToPageBlobURL creates a PageBlobURL using the source's URL and pipeline.
 //func (b BlobClient) ToPageBlobURL() PageBlobURL {
 //	return NewPageBlobURL(b.URL(), b.client.Pipeline())

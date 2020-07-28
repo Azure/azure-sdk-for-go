@@ -30,7 +30,7 @@ type AppendBlobOperations interface {
 
 // appendBlobOperations implements the AppendBlobOperations interface.
 type appendBlobOperations struct {
-	*Client
+	*client
 }
 
 // AppendBlock - The Append Block operation commits a new block of data to the end of an existing append blob. The Append Block operation is permitted only if the blob was created with x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
@@ -52,7 +52,8 @@ func (client *appendBlobOperations) AppendBlock(ctx context.Context, contentLeng
 
 // appendBlockCreateRequest creates the AppendBlock request.
 func (client *appendBlobOperations) appendBlockCreateRequest(contentLength int64, body azcore.ReadSeekCloser, appendBlobAppendBlockOptions *AppendBlobAppendBlockOptions, leaseAccessConditions *LeaseAccessConditions, appendPositionAccessConditions *AppendPositionAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "appendblock")
 	if appendBlobAppendBlockOptions != nil && appendBlobAppendBlockOptions.Timeout != nil {
@@ -208,7 +209,8 @@ func (client *appendBlobOperations) AppendBlockFromURL(ctx context.Context, sour
 
 // appendBlockFromUrlCreateRequest creates the AppendBlockFromURL request.
 func (client *appendBlobOperations) appendBlockFromUrlCreateRequest(sourceUrl url.URL, contentLength int64, appendBlobAppendBlockFromUrlOptions *AppendBlobAppendBlockFromURLOptions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, leaseAccessConditions *LeaseAccessConditions, appendPositionAccessConditions *AppendPositionAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "appendblock")
 	if appendBlobAppendBlockFromUrlOptions != nil && appendBlobAppendBlockFromUrlOptions.Timeout != nil {
@@ -380,7 +382,8 @@ func (client *appendBlobOperations) Create(ctx context.Context, contentLength in
 
 // createCreateRequest creates the Create request.
 func (client *appendBlobOperations) createCreateRequest(contentLength int64, appendBlobCreateOptions *AppendBlobCreateOptions, blobHttpHeaders *BlobHttpHeaders, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	if appendBlobCreateOptions != nil && appendBlobCreateOptions.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*appendBlobCreateOptions.Timeout), 10))
@@ -405,7 +408,9 @@ func (client *appendBlobOperations) createCreateRequest(contentLength int64, app
 		req.Header.Set("x-ms-blob-cache-control", *blobHttpHeaders.BlobCacheControl)
 	}
 	if appendBlobCreateOptions != nil && appendBlobCreateOptions.Metadata != nil {
-		req.Header.Set("x-ms-meta", *appendBlobCreateOptions.Metadata)
+		for k, v := range *appendBlobCreateOptions.Metadata {
+			req.Header.Set("x-ms-meta-"+k, v)
+		}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseId != nil {
 		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseId)
@@ -533,7 +538,8 @@ func (client *appendBlobOperations) Seal(ctx context.Context, appendBlobSealOpti
 
 // sealCreateRequest creates the Seal request.
 func (client *appendBlobOperations) sealCreateRequest(appendBlobSealOptions *AppendBlobSealOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, appendPositionAccessConditions *AppendPositionAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "seal")
 	if appendBlobSealOptions != nil && appendBlobSealOptions.Timeout != nil {

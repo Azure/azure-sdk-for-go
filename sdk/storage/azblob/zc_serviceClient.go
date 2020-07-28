@@ -17,13 +17,13 @@ const (
 
 // A ServiceClient represents a URL to the Azure Storage Blob service allowing you to manipulate blob containers.
 type ServiceClient struct {
-	client *Client
+	client *client
 }
 
 // NewServiceClient creates a ServiceClient object using the specified URL, credential, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
-func NewServiceClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (ServiceClient, error) {
-	client, err := NewClient(serviceURL, cred, options)
+func NewServiceClient(serviceURL string, cred azcore.Credential, options *clientOptions) (ServiceClient, error) {
+	client, err := newClient(serviceURL, cred, options)
 
 	if err != nil {
 		return ServiceClient{}, err
@@ -45,7 +45,7 @@ func (s ServiceClient) String() string {
 
 // WithPipeline creates a new ServiceClient object identical to the source but with the specified request policy pipeline.
 func (s ServiceClient) WithPipeline(pipeline azcore.Pipeline) (ServiceClient, error) {
-	client, err := NewClientWithPipeline(s.client.u.String(), pipeline)
+	client, err := newClientWithPipeline(s.client.u.String(), pipeline)
 
 	if err != nil {
 		return ServiceClient{}, err
@@ -61,8 +61,7 @@ func (s ServiceClient) WithPipeline(pipeline azcore.Pipeline) (ServiceClient, er
 // NewContainerClient method.
 func (s ServiceClient) NewContainerClient(containerName string) ContainerClient {
 	containerURL := appendToURLPath(*s.client.u, containerName)
-	containerURL.RawQuery = "" // TODO remove as we should not have to do this
-	containerClient, _ := NewClientWithPipeline(containerURL.String(), s.client.p)
+	containerClient, _ := newClientWithPipeline(containerURL.String(), s.client.p)
 	return ContainerClient{
 		client: containerClient,
 	}

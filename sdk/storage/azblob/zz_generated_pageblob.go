@@ -40,7 +40,7 @@ type PageBlobOperations interface {
 
 // pageBlobOperations implements the PageBlobOperations interface.
 type pageBlobOperations struct {
-	*Client
+	*client
 }
 
 // ClearPages - The Clear Pages operation clears a set of pages from a page blob
@@ -62,7 +62,8 @@ func (client *pageBlobOperations) ClearPages(ctx context.Context, contentLength 
 
 // clearPagesCreateRequest creates the ClearPages request.
 func (client *pageBlobOperations) clearPagesCreateRequest(contentLength int64, pageBlobClearPagesOptions *PageBlobClearPagesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "page")
 	if pageBlobClearPagesOptions != nil && pageBlobClearPagesOptions.Timeout != nil {
@@ -107,6 +108,9 @@ func (client *pageBlobOperations) clearPagesCreateRequest(contentLength int64, p
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Header.Set("If-None-Match", *modifiedAccessConditions.IfNoneMatch)
+	}
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
+		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
 	req.Header.Set("x-ms-version", "2019-12-12")
 	if pageBlobClearPagesOptions != nil && pageBlobClearPagesOptions.RequestId != nil {
@@ -199,7 +203,8 @@ func (client *pageBlobOperations) CopyIncremental(ctx context.Context, copySourc
 
 // copyIncrementalCreateRequest creates the CopyIncremental request.
 func (client *pageBlobOperations) copyIncrementalCreateRequest(copySource url.URL, pageBlobCopyIncrementalOptions *PageBlobCopyIncrementalOptions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "incrementalcopy")
 	if pageBlobCopyIncrementalOptions != nil && pageBlobCopyIncrementalOptions.Timeout != nil {
@@ -218,6 +223,9 @@ func (client *pageBlobOperations) copyIncrementalCreateRequest(copySource url.UR
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Header.Set("If-None-Match", *modifiedAccessConditions.IfNoneMatch)
+	}
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
+		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
 	req.Header.Set("x-ms-copy-source", copySource.String())
 	req.Header.Set("x-ms-version", "2019-12-12")
@@ -296,7 +304,8 @@ func (client *pageBlobOperations) Create(ctx context.Context, contentLength int6
 
 // createCreateRequest creates the Create request.
 func (client *pageBlobOperations) createCreateRequest(contentLength int64, blobContentLength int64, pageBlobCreateOptions *PageBlobCreateOptions, blobHttpHeaders *BlobHttpHeaders, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	if pageBlobCreateOptions != nil && pageBlobCreateOptions.Timeout != nil {
 		query.Set("timeout", strconv.FormatInt(int64(*pageBlobCreateOptions.Timeout), 10))
@@ -324,7 +333,9 @@ func (client *pageBlobOperations) createCreateRequest(contentLength int64, blobC
 		req.Header.Set("x-ms-blob-cache-control", *blobHttpHeaders.BlobCacheControl)
 	}
 	if pageBlobCreateOptions != nil && pageBlobCreateOptions.Metadata != nil {
-		req.Header.Set("x-ms-meta", *pageBlobCreateOptions.Metadata)
+		for k, v := range *pageBlobCreateOptions.Metadata {
+			req.Header.Set("x-ms-meta-"+k, v)
+		}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseId != nil {
 		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseId)
@@ -456,7 +467,8 @@ func (client *pageBlobOperations) GetPageRanges(ctx context.Context, pageBlobGet
 
 // getPageRangesCreateRequest creates the GetPageRanges request.
 func (client *pageBlobOperations) getPageRangesCreateRequest(pageBlobGetPageRangesOptions *PageBlobGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "pagelist")
 	if pageBlobGetPageRangesOptions != nil && pageBlobGetPageRangesOptions.Snapshot != nil {
@@ -565,7 +577,8 @@ func (client *pageBlobOperations) GetPageRangesDiff(ctx context.Context, pageBlo
 
 // getPageRangesDiffCreateRequest creates the GetPageRangesDiff request.
 func (client *pageBlobOperations) getPageRangesDiffCreateRequest(pageBlobGetPageRangesDiffOptions *PageBlobGetPageRangesDiffOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "pagelist")
 	if pageBlobGetPageRangesDiffOptions != nil && pageBlobGetPageRangesDiffOptions.Snapshot != nil {
@@ -680,7 +693,8 @@ func (client *pageBlobOperations) Resize(ctx context.Context, blobContentLength 
 
 // resizeCreateRequest creates the Resize request.
 func (client *pageBlobOperations) resizeCreateRequest(blobContentLength int64, pageBlobResizeOptions *PageBlobResizeOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "properties")
 	if pageBlobResizeOptions != nil && pageBlobResizeOptions.Timeout != nil {
@@ -711,6 +725,9 @@ func (client *pageBlobOperations) resizeCreateRequest(blobContentLength int64, p
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Header.Set("If-None-Match", *modifiedAccessConditions.IfNoneMatch)
+	}
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
+		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
 	req.Header.Set("x-ms-blob-content-length", strconv.FormatInt(blobContentLength, 10))
 	req.Header.Set("x-ms-version", "2019-12-12")
@@ -790,7 +807,8 @@ func (client *pageBlobOperations) UpdateSequenceNumber(ctx context.Context, sequ
 
 // updateSequenceNumberCreateRequest creates the UpdateSequenceNumber request.
 func (client *pageBlobOperations) updateSequenceNumberCreateRequest(sequenceNumberAction SequenceNumberActionType, pageBlobUpdateSequenceNumberOptions *PageBlobUpdateSequenceNumberOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "properties")
 	if pageBlobUpdateSequenceNumberOptions != nil && pageBlobUpdateSequenceNumberOptions.Timeout != nil {
@@ -812,6 +830,9 @@ func (client *pageBlobOperations) updateSequenceNumberCreateRequest(sequenceNumb
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Header.Set("If-None-Match", *modifiedAccessConditions.IfNoneMatch)
+	}
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
+		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
 	req.Header.Set("x-ms-sequence-number-action", string(sequenceNumberAction))
 	if pageBlobUpdateSequenceNumberOptions != nil && pageBlobUpdateSequenceNumberOptions.BlobSequenceNumber != nil {
@@ -894,7 +915,8 @@ func (client *pageBlobOperations) UploadPages(ctx context.Context, contentLength
 
 // uploadPagesCreateRequest creates the UploadPages request.
 func (client *pageBlobOperations) uploadPagesCreateRequest(contentLength int64, body azcore.ReadSeekCloser, pageBlobUploadPagesOptions *PageBlobUploadPagesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "page")
 	if pageBlobUploadPagesOptions != nil && pageBlobUploadPagesOptions.Timeout != nil {
@@ -1053,7 +1075,8 @@ func (client *pageBlobOperations) UploadPagesFromURL(ctx context.Context, source
 
 // uploadPagesFromUrlCreateRequest creates the UploadPagesFromURL request.
 func (client *pageBlobOperations) uploadPagesFromUrlCreateRequest(sourceUrl url.URL, sourceRange string, contentLength int64, rangeParameter string, pageBlobUploadPagesFromUrlOptions *PageBlobUploadPagesFromURLOptions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, leaseAccessConditions *LeaseAccessConditions, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions) (*azcore.Request, error) {
-	u := client.u
+	copy := *client.u
+	u := &copy
 	query := u.Query()
 	query.Set("comp", "page")
 	if pageBlobUploadPagesFromUrlOptions != nil && pageBlobUploadPagesFromUrlOptions.Timeout != nil {

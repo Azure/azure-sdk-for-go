@@ -9,6 +9,9 @@ resources:
       name: internal/azure-sdk-build-tools
 
 trigger:
+  branches:
+    include:
+    - track2
   paths:
     include:
     - sdk/

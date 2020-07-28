@@ -141,7 +141,6 @@ func (client BuildTasksClient) CreateSender(req *http.Request) (future BuildTask
 func (client BuildTasksClient) CreateResponder(resp *http.Response) (result BuildTask, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -231,7 +230,6 @@ func (client BuildTasksClient) DeleteSender(req *http.Request) (future BuildTask
 func (client BuildTasksClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -320,7 +318,6 @@ func (client BuildTasksClient) GetSender(req *http.Request) (*http.Response, err
 func (client BuildTasksClient) GetResponder(resp *http.Response) (result BuildTask, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -372,6 +369,9 @@ func (client BuildTasksClient) List(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksClient", "List", resp, "Failure responding to request")
 	}
+	if result.btlr.hasNextLink() && result.btlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -414,7 +414,6 @@ func (client BuildTasksClient) ListSender(req *http.Request) (*http.Response, er
 func (client BuildTasksClient) ListResponder(resp *http.Response) (result BuildTaskListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -541,7 +540,6 @@ func (client BuildTasksClient) ListSourceRepositoryPropertiesSender(req *http.Re
 func (client BuildTasksClient) ListSourceRepositoryPropertiesResponder(resp *http.Response) (result SourceRepositoryProperties, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -634,7 +632,6 @@ func (client BuildTasksClient) UpdateSender(req *http.Request) (future BuildTask
 func (client BuildTasksClient) UpdateResponder(resp *http.Response) (result BuildTask, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

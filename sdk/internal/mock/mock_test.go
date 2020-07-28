@@ -290,3 +290,118 @@ func TestBodyReadError(t *testing.T) {
 	}
 	resp.Body.Close()
 }
+
+func TestPredicateSuccess(t *testing.T) {
+	srv, close := NewServer()
+	defer close()
+	const customHeader = "custom-header"
+	const customValue = "custom-value"
+	srv.AppendResponse(WithPredicate(func(r *http.Request) bool {
+		return r.Header.Get(customHeader) == customValue
+	}), WithStatusCode(http.StatusOK))
+	// predicate failure response
+	srv.AppendResponse(WithStatusCode(http.StatusBadRequest))
+	srv.AppendResponse(WithStatusCode(http.StatusNoContent))
+	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.Header.Set(customHeader, customValue)
+	resp, err := srv.Do(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code %d", resp.StatusCode)
+	}
+	resp, err = srv.Do(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusNoContent {
+		t.Fatalf("unexpected status code %d", resp.StatusCode)
+	}
+}
+
+func TestPredicateFail(t *testing.T) {
+	srv, close := NewServer()
+	defer close()
+	const customHeader = "custom-header"
+	const customValue = "custom-value"
+	srv.AppendResponse(WithPredicate(func(r *http.Request) bool {
+		return r.Header.Get(customHeader) == customValue
+	}), WithStatusCode(http.StatusOK))
+	// predicate failure response
+	srv.AppendResponse(WithStatusCode(http.StatusBadRequest))
+	srv.AppendResponse(WithStatusCode(http.StatusNoContent))
+	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp, err := srv.Do(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Fatalf("unexpected status code %d", resp.StatusCode)
+	}
+	resp, err = srv.Do(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusNoContent {
+		t.Fatalf("unexpected status code %d", resp.StatusCode)
+	}
+}
+
+func TestPredicateMultiple(t *testing.T) {
+	srv, close := NewServer()
+	defer close()
+	const customHeader = "custom-header"
+	const customValue = "custom-value"
+	srv.AppendResponse(WithPredicate(func(r *http.Request) bool {
+		return r.Header.Get(customHeader) == customValue
+	}), WithStatusCode(http.StatusOK))
+	// predicate failure response
+	srv.AppendResponse(WithStatusCode(http.StatusBadRequest))
+	srv.AppendResponse(WithStatusCode(http.StatusNoContent))
+	srv.AppendResponse(WithPredicate(func(r *http.Request) bool {
+		return r.Header.Get(customHeader) == customValue
+	}), WithStatusCode(http.StatusAccepted))
+	// predicate failure response
+	srv.AppendResponse(WithStatusCode(http.StatusForbidden))
+	srv.AppendResponse(WithStatusCode(http.StatusOK))
+	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp, err := srv.Do(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Fatalf("unexpected status code %d", resp.StatusCode)
+	}
+	resp, err = srv.Do(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusNoContent {
+		t.Fatalf("unexpected status code %d", resp.StatusCode)
+	}
+	req.Header.Add(customHeader, customValue)
+	resp, err = srv.Do(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusAccepted {
+		t.Fatalf("unexpected status code %d", resp.StatusCode)
+	}
+	resp, err = srv.Do(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code %d", resp.StatusCode)
+	}
+}

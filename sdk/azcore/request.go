@@ -116,6 +116,7 @@ func (req *Request) MarshalAsByteArray(v []byte, format Base64Encoding) error {
 // MarshalAsJSON calls json.Marshal() to get the JSON encoding of v then calls SetBody.
 // If json.Marshal fails a MarshalError is returned.  Any error from SetBody is returned.
 func (req *Request) MarshalAsJSON(v interface{}) error {
+	v = cloneWithoutReadOnlyFields(v)
 	b, err := json.Marshal(v)
 	if err != nil {
 		return fmt.Errorf("error marshalling type %s: %w", reflect.TypeOf(v).Name(), err)
@@ -218,4 +219,78 @@ func (req *Request) copy() *Request {
 			GetBody:       req.GetBody,
 		},
 	}
+}
+
+// returns a clone of the object graph pointed to by v, omitting values of all read-only
+// fields. if there are no read-only fields in the object graph, no clone is created.
+func cloneWithoutReadOnlyFields(v interface{}) interface{} {
+	val := reflect.Indirect(reflect.ValueOf(v))
+	if val.Kind() != reflect.Struct {
+		// not a struct, skip
+		return v
+	}
+	// first walk the graph to find any R/O fields.
+	// if there aren't any, skip cloning the graph.
+	if !recursiveFindReadOnlyField(val) {
+		return v
+	}
+	return recursiveCloneWithoutReadOnlyFields(val)
+}
+
+// returns true if any field in the object graph of val contains the `azure:"ro"` tag value
+func recursiveFindReadOnlyField(val reflect.Value) bool {
+	t := val.Type()
+	// iterate over the fields, looking for the "azure" tag.
+	for i := 0; i < t.NumField(); i++ {
+		field := t.Field(i)
+		aztag := field.Tag.Get("azure")
+		if azureTagIsReadOnly(aztag) {
+			return true
+		} else if reflect.Indirect(val.Field(i)).Kind() == reflect.Struct && recursiveFindReadOnlyField(reflect.Indirect(val.Field(i))) {
+			return true
+		}
+	}
+	return false
+}
+
+// clones the object graph of val.  all non-R/O properties are copied to the clone
+func recursiveCloneWithoutReadOnlyFields(val reflect.Value) interface{} {
+	clone := reflect.New(val.Type())
+	t := val.Type()
+	// iterate over the fields, looking for the "azure" tag.
+	for i := 0; i < t.NumField(); i++ {
+		field := t.Field(i)
+		aztag := field.Tag.Get("azure")
+		if azureTagIsReadOnly(aztag) {
+			// omit from payload
+		} else if reflect.Indirect(val.Field(i)).Kind() == reflect.Struct {
+			// recursive case
+			v := recursiveCloneWithoutReadOnlyFields(reflect.Indirect(val.Field(i)))
+			if t.Field(i).Anonymous {
+				// NOTE: this does not handle the case of embedded fields of unexported struct types.
+				// this should be ok as we don't generate any code like this at present
+				reflect.Indirect(clone).Field(i).Set(reflect.Indirect(reflect.ValueOf(v)))
+			} else {
+				reflect.Indirect(clone).Field(i).Set(reflect.ValueOf(v))
+			}
+		} else {
+			// no azure RO tag, non-recursive case, include in payload
+			reflect.Indirect(clone).Field(i).Set(val.Field(i))
+		}
+	}
+	return clone.Interface()
+}
+
+// returns true if the "azure" tag contains the option "ro"
+func azureTagIsReadOnly(tag string) bool {
+	if tag == "" {
+		return false
+	}
+	parts := strings.Split(tag, ",")
+	for _, part := range parts {
+		if part == "ro" {
+			return true
+		}
+	}
+	return false
 }

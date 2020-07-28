@@ -356,6 +356,70 @@ func TestCloneWithoutReadOnlyFieldsEndToEnd(t *testing.T) {
 	}
 }
 
+func TestCloneWithoutReadOnlyFieldsCloneEmbedded(t *testing.T) {
+	id := int32(123)
+	name := "widget"
+	something := "something"
+	pie := float32(3.14159)
+	type Inner2 struct {
+		Type  *string
+		State *float32 `json:"omitempty" azure:"ro"`
+	}
+	type Inner1 struct {
+		ID   *int32  `json:"id" azure:"ro"`
+		ETag *string `json:"omitempty" azure:"ro"`
+		Inner2
+	}
+	type withReadOnly struct {
+		Name  *string `json:"name"`
+		Color *string `json:"color"`
+		Inner1
+	}
+	nro := withReadOnly{
+		Color: &something,
+		Name:  &name,
+		Inner1: Inner1{
+			ID:   &id,
+			ETag: &something,
+			Inner2: Inner2{
+				Type:  &something,
+				State: &pie,
+			},
+		},
+	}
+	v := cloneWithoutReadOnlyFields(&nro)
+	if reflect.ValueOf(v).Pointer() == uintptr(unsafe.Pointer(&nro)) {
+		t.Fatal("pointers match, clone was not made")
+	}
+	b, err := json.Marshal(v)
+	if err != nil {
+		t.Fatal(err)
+	}
+	um := withReadOnly{}
+	err = json.Unmarshal(b, &um)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if um.Name == nil {
+		t.Fatal("unexpected nil Name")
+	}
+	if um.Color == nil {
+		t.Fatal("unexpected nil Color")
+	}
+	if um.ID != nil {
+		t.Fatalf("expected nil ID, got %d", *um.ID)
+	}
+	if um.ETag != nil {
+		t.Fatalf("expected nil ETag, got %s", *um.ETag)
+	}
+	if um.Type == nil {
+		t.Fatal("unexpected nil Type")
+	}
+	if um.State != nil {
+		t.Fatalf("expected nil State, got %f", *um.State)
+	}
+}
+
 func TestAzureTagIsReadOnly(t *testing.T) {
 	if azureTagIsReadOnly("") {
 		t.Fatal()

@@ -266,7 +266,13 @@ func recursiveCloneWithoutReadOnlyFields(val reflect.Value) interface{} {
 		} else if reflect.Indirect(val.Field(i)).Kind() == reflect.Struct {
 			// recursive case
 			v := recursiveCloneWithoutReadOnlyFields(reflect.Indirect(val.Field(i)))
-			reflect.Indirect(clone).Field(i).Set(reflect.ValueOf(v))
+			if t.Field(i).Anonymous {
+				// NOTE: this does not handle the case of embedded fields of unexported struct types.
+				// this should be ok as we don't generate any code like this at present
+				reflect.Indirect(clone).Field(i).Set(reflect.Indirect(reflect.ValueOf(v)))
+			} else {
+				reflect.Indirect(clone).Field(i).Set(reflect.ValueOf(v))
+			}
 		} else {
 			// no azure RO tag, non-recursive case, include in payload
 			reflect.Indirect(clone).Field(i).Set(val.Field(i))

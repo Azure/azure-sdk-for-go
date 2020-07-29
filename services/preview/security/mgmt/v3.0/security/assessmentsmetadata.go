@@ -126,7 +126,6 @@ func (client AssessmentsMetadataClient) CreateInSubscriptionSender(req *http.Req
 func (client AssessmentsMetadataClient) CreateInSubscriptionResponder(resp *http.Response) (result AssessmentMetadata, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -207,7 +206,6 @@ func (client AssessmentsMetadataClient) DeleteInSubscriptionSender(req *http.Req
 func (client AssessmentsMetadataClient) DeleteInSubscriptionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -279,7 +277,6 @@ func (client AssessmentsMetadataClient) GetSender(req *http.Request) (*http.Resp
 func (client AssessmentsMetadataClient) GetResponder(resp *http.Response) (result AssessmentMetadata, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -359,7 +356,6 @@ func (client AssessmentsMetadataClient) GetInSubscriptionSender(req *http.Reques
 func (client AssessmentsMetadataClient) GetInSubscriptionResponder(resp *http.Response) (result AssessmentMetadata, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -397,6 +393,9 @@ func (client AssessmentsMetadataClient) List(ctx context.Context) (result Assess
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "List", resp, "Failure responding to request")
 	}
+	if result.aml.hasNextLink() && result.aml.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -427,7 +426,6 @@ func (client AssessmentsMetadataClient) ListSender(req *http.Request) (*http.Res
 func (client AssessmentsMetadataClient) ListResponder(resp *http.Response) (result AssessmentMetadataList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -508,6 +506,9 @@ func (client AssessmentsMetadataClient) ListBySubscription(ctx context.Context) 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "ListBySubscription", resp, "Failure responding to request")
 	}
+	if result.aml.hasNextLink() && result.aml.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -542,7 +543,6 @@ func (client AssessmentsMetadataClient) ListBySubscriptionSender(req *http.Reque
 func (client AssessmentsMetadataClient) ListBySubscriptionResponder(resp *http.Response) (result AssessmentMetadataList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

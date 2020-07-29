@@ -99,7 +99,7 @@ func (client DiscoveredSecuritySolutionsClient) GetPreparer(ctx context.Context,
 		"subscriptionId":                 autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -123,7 +123,6 @@ func (client DiscoveredSecuritySolutionsClient) GetSender(req *http.Request) (*h
 func (client DiscoveredSecuritySolutionsClient) GetResponder(resp *http.Response) (result DiscoveredSecuritySolution, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -167,6 +166,9 @@ func (client DiscoveredSecuritySolutionsClient) List(ctx context.Context) (resul
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.DiscoveredSecuritySolutionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.dssl.hasNextLink() && result.dssl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -177,7 +179,7 @@ func (client DiscoveredSecuritySolutionsClient) ListPreparer(ctx context.Context
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -201,7 +203,6 @@ func (client DiscoveredSecuritySolutionsClient) ListSender(req *http.Request) (*
 func (client DiscoveredSecuritySolutionsClient) ListResponder(resp *http.Response) (result DiscoveredSecuritySolutionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -282,6 +283,9 @@ func (client DiscoveredSecuritySolutionsClient) ListByHomeRegion(ctx context.Con
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.DiscoveredSecuritySolutionsClient", "ListByHomeRegion", resp, "Failure responding to request")
 	}
+	if result.dssl.hasNextLink() && result.dssl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -293,7 +297,7 @@ func (client DiscoveredSecuritySolutionsClient) ListByHomeRegionPreparer(ctx con
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -317,7 +321,6 @@ func (client DiscoveredSecuritySolutionsClient) ListByHomeRegionSender(req *http
 func (client DiscoveredSecuritySolutionsClient) ListByHomeRegionResponder(resp *http.Response) (result DiscoveredSecuritySolutionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

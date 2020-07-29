@@ -99,7 +99,7 @@ func (client ExternalSecuritySolutionsClient) GetPreparer(ctx context.Context, r
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -123,7 +123,6 @@ func (client ExternalSecuritySolutionsClient) GetSender(req *http.Request) (*htt
 func (client ExternalSecuritySolutionsClient) GetResponder(resp *http.Response) (result ExternalSecuritySolutionModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -167,6 +166,9 @@ func (client ExternalSecuritySolutionsClient) List(ctx context.Context) (result 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ExternalSecuritySolutionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.essl.hasNextLink() && result.essl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -177,7 +179,7 @@ func (client ExternalSecuritySolutionsClient) ListPreparer(ctx context.Context) 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -201,7 +203,6 @@ func (client ExternalSecuritySolutionsClient) ListSender(req *http.Request) (*ht
 func (client ExternalSecuritySolutionsClient) ListResponder(resp *http.Response) (result ExternalSecuritySolutionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -282,6 +283,9 @@ func (client ExternalSecuritySolutionsClient) ListByHomeRegion(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ExternalSecuritySolutionsClient", "ListByHomeRegion", resp, "Failure responding to request")
 	}
+	if result.essl.hasNextLink() && result.essl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -293,7 +297,7 @@ func (client ExternalSecuritySolutionsClient) ListByHomeRegionPreparer(ctx conte
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-06-01-preview"
+	const APIVersion = "2020-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -317,7 +321,6 @@ func (client ExternalSecuritySolutionsClient) ListByHomeRegionSender(req *http.R
 func (client ExternalSecuritySolutionsClient) ListByHomeRegionResponder(resp *http.Response) (result ExternalSecuritySolutionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

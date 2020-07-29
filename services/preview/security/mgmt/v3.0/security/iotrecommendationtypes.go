@@ -26,31 +26,32 @@ import (
 	"net/http"
 )
 
-// IotSecuritySolutionAnalyticsClient is the API spec for Microsoft.Security (Azure Security Center) resource provider
-type IotSecuritySolutionAnalyticsClient struct {
+// IotRecommendationTypesClient is the API spec for Microsoft.Security (Azure Security Center) resource provider
+type IotRecommendationTypesClient struct {
 	BaseClient
 }
 
-// NewIotSecuritySolutionAnalyticsClient creates an instance of the IotSecuritySolutionAnalyticsClient client.
-func NewIotSecuritySolutionAnalyticsClient(subscriptionID string, ascLocation string) IotSecuritySolutionAnalyticsClient {
-	return NewIotSecuritySolutionAnalyticsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+// NewIotRecommendationTypesClient creates an instance of the IotRecommendationTypesClient client.
+func NewIotRecommendationTypesClient(subscriptionID string, ascLocation string) IotRecommendationTypesClient {
+	return NewIotRecommendationTypesClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
-// NewIotSecuritySolutionAnalyticsClientWithBaseURI creates an instance of the IotSecuritySolutionAnalyticsClient
-// client using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI
-// (sovereign clouds, Azure stack).
-func NewIotSecuritySolutionAnalyticsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecuritySolutionAnalyticsClient {
-	return IotSecuritySolutionAnalyticsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+// NewIotRecommendationTypesClientWithBaseURI creates an instance of the IotRecommendationTypesClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
+func NewIotRecommendationTypesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotRecommendationTypesClient {
+	return IotRecommendationTypesClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
-// Get use this method to get IoT Security Analytics metrics.
+// Get get IoT recommendation type
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // solutionName - the name of the IoT Security solution.
-func (client IotSecuritySolutionAnalyticsClient) Get(ctx context.Context, resourceGroupName string, solutionName string) (result IoTSecuritySolutionAnalyticsModel, err error) {
+// iotRecommendationTypeName - name of the recommendation type
+func (client IotRecommendationTypesClient) Get(ctx context.Context, resourceGroupName string, solutionName string, iotRecommendationTypeName string) (result IotRecommendationType, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionAnalyticsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IotRecommendationTypesClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -66,36 +67,37 @@ func (client IotSecuritySolutionAnalyticsClient) Get(ctx context.Context, resour
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.IotSecuritySolutionAnalyticsClient", "Get", err.Error())
+		return result, validation.NewError("security.IotRecommendationTypesClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, solutionName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, solutionName, iotRecommendationTypeName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionAnalyticsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.IotRecommendationTypesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionAnalyticsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.IotRecommendationTypesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionAnalyticsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.IotRecommendationTypesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client IotSecuritySolutionAnalyticsClient) GetPreparer(ctx context.Context, resourceGroupName string, solutionName string) (*http.Request, error) {
+func (client IotRecommendationTypesClient) GetPreparer(ctx context.Context, resourceGroupName string, solutionName string, iotRecommendationTypeName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"solutionName":      autorest.Encode("path", solutionName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"iotRecommendationTypeName": autorest.Encode("path", iotRecommendationTypeName),
+		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
+		"solutionName":              autorest.Encode("path", solutionName),
+		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-08-01"
@@ -106,20 +108,20 @@ func (client IotSecuritySolutionAnalyticsClient) GetPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/iotRecommendationTypes/{iotRecommendationTypeName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client IotSecuritySolutionAnalyticsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client IotRecommendationTypesClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client IotSecuritySolutionAnalyticsClient) GetResponder(resp *http.Response) (result IoTSecuritySolutionAnalyticsModel, err error) {
+func (client IotRecommendationTypesClient) GetResponder(resp *http.Response) (result IotRecommendationType, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -129,14 +131,14 @@ func (client IotSecuritySolutionAnalyticsClient) GetResponder(resp *http.Respons
 	return
 }
 
-// List use this method to get IoT security Analytics metrics in an array.
+// List list IoT recommendation types
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // solutionName - the name of the IoT Security solution.
-func (client IotSecuritySolutionAnalyticsClient) List(ctx context.Context, resourceGroupName string, solutionName string) (result IoTSecuritySolutionAnalyticsModelList, err error) {
+func (client IotRecommendationTypesClient) List(ctx context.Context, resourceGroupName string, solutionName string) (result IotRecommendationTypeList, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionAnalyticsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IotRecommendationTypesClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -152,32 +154,32 @@ func (client IotSecuritySolutionAnalyticsClient) List(ctx context.Context, resou
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.IotSecuritySolutionAnalyticsClient", "List", err.Error())
+		return result, validation.NewError("security.IotRecommendationTypesClient", "List", err.Error())
 	}
 
 	req, err := client.ListPreparer(ctx, resourceGroupName, solutionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionAnalyticsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.IotRecommendationTypesClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionAnalyticsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.IotRecommendationTypesClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionAnalyticsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.IotRecommendationTypesClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client IotSecuritySolutionAnalyticsClient) ListPreparer(ctx context.Context, resourceGroupName string, solutionName string) (*http.Request, error) {
+func (client IotRecommendationTypesClient) ListPreparer(ctx context.Context, resourceGroupName string, solutionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"solutionName":      autorest.Encode("path", solutionName),
@@ -192,20 +194,20 @@ func (client IotSecuritySolutionAnalyticsClient) ListPreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/iotRecommendationTypes", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client IotSecuritySolutionAnalyticsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client IotRecommendationTypesClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client IotSecuritySolutionAnalyticsClient) ListResponder(resp *http.Response) (result IoTSecuritySolutionAnalyticsModelList, err error) {
+func (client IotRecommendationTypesClient) ListResponder(resp *http.Response) (result IotRecommendationTypeList, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

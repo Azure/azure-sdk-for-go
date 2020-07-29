@@ -78,6 +78,9 @@ func (client MachinesClient) GetAllMachinesInSite(ctx context.Context, subscript
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.MachinesClient", "GetAllMachinesInSite", resp, "Failure responding to request")
 	}
+	if result.vmmc.hasNextLink() && result.vmmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

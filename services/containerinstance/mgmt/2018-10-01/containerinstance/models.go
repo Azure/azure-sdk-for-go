@@ -31,164 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-10-01/containerinstance"
 
-// ContainerGroupIPAddressType enumerates the values for container group ip address type.
-type ContainerGroupIPAddressType string
-
-const (
-	// Private ...
-	Private ContainerGroupIPAddressType = "Private"
-	// Public ...
-	Public ContainerGroupIPAddressType = "Public"
-)
-
-// PossibleContainerGroupIPAddressTypeValues returns an array of possible values for the ContainerGroupIPAddressType const type.
-func PossibleContainerGroupIPAddressTypeValues() []ContainerGroupIPAddressType {
-	return []ContainerGroupIPAddressType{Private, Public}
-}
-
-// ContainerGroupNetworkProtocol enumerates the values for container group network protocol.
-type ContainerGroupNetworkProtocol string
-
-const (
-	// TCP ...
-	TCP ContainerGroupNetworkProtocol = "TCP"
-	// UDP ...
-	UDP ContainerGroupNetworkProtocol = "UDP"
-)
-
-// PossibleContainerGroupNetworkProtocolValues returns an array of possible values for the ContainerGroupNetworkProtocol const type.
-func PossibleContainerGroupNetworkProtocolValues() []ContainerGroupNetworkProtocol {
-	return []ContainerGroupNetworkProtocol{TCP, UDP}
-}
-
-// ContainerGroupRestartPolicy enumerates the values for container group restart policy.
-type ContainerGroupRestartPolicy string
-
-const (
-	// Always ...
-	Always ContainerGroupRestartPolicy = "Always"
-	// Never ...
-	Never ContainerGroupRestartPolicy = "Never"
-	// OnFailure ...
-	OnFailure ContainerGroupRestartPolicy = "OnFailure"
-)
-
-// PossibleContainerGroupRestartPolicyValues returns an array of possible values for the ContainerGroupRestartPolicy const type.
-func PossibleContainerGroupRestartPolicyValues() []ContainerGroupRestartPolicy {
-	return []ContainerGroupRestartPolicy{Always, Never, OnFailure}
-}
-
-// ContainerNetworkProtocol enumerates the values for container network protocol.
-type ContainerNetworkProtocol string
-
-const (
-	// ContainerNetworkProtocolTCP ...
-	ContainerNetworkProtocolTCP ContainerNetworkProtocol = "TCP"
-	// ContainerNetworkProtocolUDP ...
-	ContainerNetworkProtocolUDP ContainerNetworkProtocol = "UDP"
-)
-
-// PossibleContainerNetworkProtocolValues returns an array of possible values for the ContainerNetworkProtocol const type.
-func PossibleContainerNetworkProtocolValues() []ContainerNetworkProtocol {
-	return []ContainerNetworkProtocol{ContainerNetworkProtocolTCP, ContainerNetworkProtocolUDP}
-}
-
-// GpuSku enumerates the values for gpu sku.
-type GpuSku string
-
-const (
-	// K80 ...
-	K80 GpuSku = "K80"
-	// P100 ...
-	P100 GpuSku = "P100"
-	// V100 ...
-	V100 GpuSku = "V100"
-)
-
-// PossibleGpuSkuValues returns an array of possible values for the GpuSku const type.
-func PossibleGpuSkuValues() []GpuSku {
-	return []GpuSku{K80, P100, V100}
-}
-
-// LogAnalyticsLogType enumerates the values for log analytics log type.
-type LogAnalyticsLogType string
-
-const (
-	// ContainerInsights ...
-	ContainerInsights LogAnalyticsLogType = "ContainerInsights"
-	// ContainerInstanceLogs ...
-	ContainerInstanceLogs LogAnalyticsLogType = "ContainerInstanceLogs"
-)
-
-// PossibleLogAnalyticsLogTypeValues returns an array of possible values for the LogAnalyticsLogType const type.
-func PossibleLogAnalyticsLogTypeValues() []LogAnalyticsLogType {
-	return []LogAnalyticsLogType{ContainerInsights, ContainerInstanceLogs}
-}
-
-// OperatingSystemTypes enumerates the values for operating system types.
-type OperatingSystemTypes string
-
-const (
-	// Linux ...
-	Linux OperatingSystemTypes = "Linux"
-	// Windows ...
-	Windows OperatingSystemTypes = "Windows"
-)
-
-// PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
-func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
-	return []OperatingSystemTypes{Linux, Windows}
-}
-
-// OperationsOrigin enumerates the values for operations origin.
-type OperationsOrigin string
-
-const (
-	// System ...
-	System OperationsOrigin = "System"
-	// User ...
-	User OperationsOrigin = "User"
-)
-
-// PossibleOperationsOriginValues returns an array of possible values for the OperationsOrigin const type.
-func PossibleOperationsOriginValues() []OperationsOrigin {
-	return []OperationsOrigin{System, User}
-}
-
-// ResourceIdentityType enumerates the values for resource identity type.
-type ResourceIdentityType string
-
-const (
-	// None ...
-	None ResourceIdentityType = "None"
-	// SystemAssigned ...
-	SystemAssigned ResourceIdentityType = "SystemAssigned"
-	// SystemAssignedUserAssigned ...
-	SystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
-	// UserAssigned ...
-	UserAssigned ResourceIdentityType = "UserAssigned"
-)
-
-// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{None, SystemAssigned, SystemAssignedUserAssigned, UserAssigned}
-}
-
-// Scheme enumerates the values for scheme.
-type Scheme string
-
-const (
-	// HTTP ...
-	HTTP Scheme = "http"
-	// HTTPS ...
-	HTTPS Scheme = "https"
-)
-
-// PossibleSchemeValues returns an array of possible values for the Scheme const type.
-func PossibleSchemeValues() []Scheme {
-	return []Scheme{HTTP, HTTPS}
-}
-
 // AzureFileVolume the properties of the Azure File volume. Azure File shares are mounted as volumes.
 type AzureFileVolume struct {
 	// ShareName - The name of the Azure File share to be mounted as a volume.
@@ -236,6 +78,12 @@ type Capabilities struct {
 	Capabilities *CapabilitiesCapabilities `json:"capabilities,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Capabilities.
+func (c Capabilities) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CapabilitiesCapabilities the supported capabilities.
 type CapabilitiesCapabilities struct {
 	// MaxMemoryInGB - READ-ONLY; The maximum allowed memory request in GB.
@@ -244,6 +92,12 @@ type CapabilitiesCapabilities struct {
 	MaxCPU *float64 `json:"maxCpu,omitempty"`
 	// MaxGpuCount - READ-ONLY; The maximum allowed GPU count.
 	MaxGpuCount *float64 `json:"maxGpuCount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CapabilitiesCapabilities.
+func (c CapabilitiesCapabilities) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CapabilitiesListResult the response containing list of capabilities.
@@ -508,6 +362,12 @@ type ContainerGroupIdentityUserAssignedIdentitiesValue struct {
 	ClientID *string `json:"clientId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ContainerGroupIdentityUserAssignedIdentitiesValue.
+func (cgiAiv ContainerGroupIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ContainerGroupListResult the container group list response that contains the container group properties.
 type ContainerGroupListResult struct {
 	autorest.Response `json:"-"`
@@ -585,10 +445,15 @@ func (cglr ContainerGroupListResult) IsEmpty() bool {
 	return cglr.Value == nil || len(*cglr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cglr ContainerGroupListResult) hasNextLink() bool {
+	return cglr.NextLink != nil && len(*cglr.NextLink) != 0
+}
+
 // containerGroupListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cglr ContainerGroupListResult) containerGroupListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cglr.NextLink == nil || len(to.String(cglr.NextLink)) < 1 {
+	if !cglr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -616,11 +481,16 @@ func (page *ContainerGroupListResultPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cglr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cglr)
+		if err != nil {
+			return err
+		}
+		page.cglr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cglr = next
 	return nil
 }
 
@@ -690,12 +560,51 @@ type ContainerGroupProperties struct {
 	DNSConfig *DNSConfiguration `json:"dnsConfig,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ContainerGroupProperties.
+func (cg ContainerGroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cg.Containers != nil {
+		objectMap["containers"] = cg.Containers
+	}
+	if cg.ImageRegistryCredentials != nil {
+		objectMap["imageRegistryCredentials"] = cg.ImageRegistryCredentials
+	}
+	if cg.RestartPolicy != "" {
+		objectMap["restartPolicy"] = cg.RestartPolicy
+	}
+	if cg.IPAddress != nil {
+		objectMap["ipAddress"] = cg.IPAddress
+	}
+	if cg.OsType != "" {
+		objectMap["osType"] = cg.OsType
+	}
+	if cg.Volumes != nil {
+		objectMap["volumes"] = cg.Volumes
+	}
+	if cg.Diagnostics != nil {
+		objectMap["diagnostics"] = cg.Diagnostics
+	}
+	if cg.NetworkProfile != nil {
+		objectMap["networkProfile"] = cg.NetworkProfile
+	}
+	if cg.DNSConfig != nil {
+		objectMap["dnsConfig"] = cg.DNSConfig
+	}
+	return json.Marshal(objectMap)
+}
+
 // ContainerGroupPropertiesInstanceView the instance view of the container group. Only valid in response.
 type ContainerGroupPropertiesInstanceView struct {
 	// Events - READ-ONLY; The events of this container group.
 	Events *[]Event `json:"events,omitempty"`
 	// State - READ-ONLY; The state of the container group. Only valid in response.
 	State *string `json:"state,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerGroupPropertiesInstanceView.
+func (cgV ContainerGroupPropertiesInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ContainerGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -831,6 +740,36 @@ type ContainerProperties struct {
 	ReadinessProbe *ContainerProbe `json:"readinessProbe,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ContainerProperties.
+func (cp ContainerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.Image != nil {
+		objectMap["image"] = cp.Image
+	}
+	if cp.Command != nil {
+		objectMap["command"] = cp.Command
+	}
+	if cp.Ports != nil {
+		objectMap["ports"] = cp.Ports
+	}
+	if cp.EnvironmentVariables != nil {
+		objectMap["environmentVariables"] = cp.EnvironmentVariables
+	}
+	if cp.Resources != nil {
+		objectMap["resources"] = cp.Resources
+	}
+	if cp.VolumeMounts != nil {
+		objectMap["volumeMounts"] = cp.VolumeMounts
+	}
+	if cp.LivenessProbe != nil {
+		objectMap["livenessProbe"] = cp.LivenessProbe
+	}
+	if cp.ReadinessProbe != nil {
+		objectMap["readinessProbe"] = cp.ReadinessProbe
+	}
+	return json.Marshal(objectMap)
+}
+
 // ContainerPropertiesInstanceView the instance view of the container instance. Only valid in response.
 type ContainerPropertiesInstanceView struct {
 	// RestartCount - READ-ONLY; The number of times that the container instance has been restarted.
@@ -841,6 +780,12 @@ type ContainerPropertiesInstanceView struct {
 	PreviousState *ContainerState `json:"previousState,omitempty"`
 	// Events - READ-ONLY; The events of the container instance.
 	Events *[]Event `json:"events,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerPropertiesInstanceView.
+func (cpV ContainerPropertiesInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ContainerState the container instance state.
@@ -935,6 +880,24 @@ type IPAddress struct {
 	Fqdn *string `json:"fqdn,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IPAddress.
+func (ia IPAddress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ia.Ports != nil {
+		objectMap["ports"] = ia.Ports
+	}
+	if ia.Type != "" {
+		objectMap["type"] = ia.Type
+	}
+	if ia.IP != nil {
+		objectMap["ip"] = ia.IP
+	}
+	if ia.DNSNameLabel != nil {
+		objectMap["dnsNameLabel"] = ia.DNSNameLabel
+	}
+	return json.Marshal(objectMap)
+}
+
 // LogAnalytics container group log analytics information.
 type LogAnalytics struct {
 	// WorkspaceID - The workspace id for log analytics
@@ -996,8 +959,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult the operation list response that contains all operations for Azure Container
-// Instance service.
+// OperationListResult the operation list response that contains all operations for Azure Container Instance
+// service.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of operations.
@@ -1080,11 +1043,23 @@ type Usage struct {
 	Name *UsageName `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Usage.
+func (u Usage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UsageListResult the response containing the usage data
 type UsageListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY
 	Value *[]Usage `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageListResult.
+func (ulr UsageListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UsageName the name object of the resource
@@ -1093,6 +1068,12 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - READ-ONLY; The localized name of the resource
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageName.
+func (u UsageName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Volume the properties of the volume.

@@ -31,301 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2018-01-01/databox"
 
-// AccessProtocol enumerates the values for access protocol.
-type AccessProtocol string
-
-const (
-	// NFS Network File System protocol(NFS).
-	NFS AccessProtocol = "NFS"
-	// SMB Server Message Block protocol(SMB).
-	SMB AccessProtocol = "SMB"
-)
-
-// PossibleAccessProtocolValues returns an array of possible values for the AccessProtocol const type.
-func PossibleAccessProtocolValues() []AccessProtocol {
-	return []AccessProtocol{NFS, SMB}
-}
-
-// AddressType enumerates the values for address type.
-type AddressType string
-
-const (
-	// Commercial Commercial Address.
-	Commercial AddressType = "Commercial"
-	// None Address type not known.
-	None AddressType = "None"
-	// Residential Residential Address.
-	Residential AddressType = "Residential"
-)
-
-// PossibleAddressTypeValues returns an array of possible values for the AddressType const type.
-func PossibleAddressTypeValues() []AddressType {
-	return []AddressType{Commercial, None, Residential}
-}
-
-// AddressValidationStatus enumerates the values for address validation status.
-type AddressValidationStatus string
-
-const (
-	// Ambiguous Address provided is ambiguous, please choose one of the alternate addresses returned.
-	Ambiguous AddressValidationStatus = "Ambiguous"
-	// Invalid Address provided is invalid or not supported.
-	Invalid AddressValidationStatus = "Invalid"
-	// Valid Address provided is valid.
-	Valid AddressValidationStatus = "Valid"
-)
-
-// PossibleAddressValidationStatusValues returns an array of possible values for the AddressValidationStatus const type.
-func PossibleAddressValidationStatusValues() []AddressValidationStatus {
-	return []AddressValidationStatus{Ambiguous, Invalid, Valid}
-}
-
-// CopyLogDetailsType enumerates the values for copy log details type.
-type CopyLogDetailsType string
-
-const (
-	// CopyLogDetailsTypeCopyLogDetails ...
-	CopyLogDetailsTypeCopyLogDetails CopyLogDetailsType = "CopyLogDetails"
-	// CopyLogDetailsTypeDataBox ...
-	CopyLogDetailsTypeDataBox CopyLogDetailsType = "DataBox"
-	// CopyLogDetailsTypeDataBoxDisk ...
-	CopyLogDetailsTypeDataBoxDisk CopyLogDetailsType = "DataBoxDisk"
-	// CopyLogDetailsTypeDataBoxHeavy ...
-	CopyLogDetailsTypeDataBoxHeavy CopyLogDetailsType = "DataBoxHeavy"
-)
-
-// PossibleCopyLogDetailsTypeValues returns an array of possible values for the CopyLogDetailsType const type.
-func PossibleCopyLogDetailsTypeValues() []CopyLogDetailsType {
-	return []CopyLogDetailsType{CopyLogDetailsTypeCopyLogDetails, CopyLogDetailsTypeDataBox, CopyLogDetailsTypeDataBoxDisk, CopyLogDetailsTypeDataBoxHeavy}
-}
-
-// CopyStatus enumerates the values for copy status.
-type CopyStatus string
-
-const (
-	// Completed Data copy completed.
-	Completed CopyStatus = "Completed"
-	// CompletedWithErrors Data copy completed with errors.
-	CompletedWithErrors CopyStatus = "CompletedWithErrors"
-	// Failed Data copy failed. No data was copied.
-	Failed CopyStatus = "Failed"
-	// InProgress Data copy is in progress.
-	InProgress CopyStatus = "InProgress"
-	// NotReturned No copy triggered as device was not returned.
-	NotReturned CopyStatus = "NotReturned"
-	// NotStarted Data copy hasn't started yet.
-	NotStarted CopyStatus = "NotStarted"
-)
-
-// PossibleCopyStatusValues returns an array of possible values for the CopyStatus const type.
-func PossibleCopyStatusValues() []CopyStatus {
-	return []CopyStatus{Completed, CompletedWithErrors, Failed, InProgress, NotReturned, NotStarted}
-}
-
-// DataDestinationType enumerates the values for data destination type.
-type DataDestinationType string
-
-const (
-	// DataDestinationTypeDestinationAccountDetails ...
-	DataDestinationTypeDestinationAccountDetails DataDestinationType = "DestinationAccountDetails"
-	// DataDestinationTypeManagedDisk ...
-	DataDestinationTypeManagedDisk DataDestinationType = "ManagedDisk"
-	// DataDestinationTypeStorageAccount ...
-	DataDestinationTypeStorageAccount DataDestinationType = "StorageAccount"
-)
-
-// PossibleDataDestinationTypeValues returns an array of possible values for the DataDestinationType const type.
-func PossibleDataDestinationTypeValues() []DataDestinationType {
-	return []DataDestinationType{DataDestinationTypeDestinationAccountDetails, DataDestinationTypeManagedDisk, DataDestinationTypeStorageAccount}
-}
-
-// JobDetailsTypeEnum enumerates the values for job details type enum.
-type JobDetailsTypeEnum string
-
-const (
-	// JobDetailsTypeDataBox ...
-	JobDetailsTypeDataBox JobDetailsTypeEnum = "DataBox"
-	// JobDetailsTypeDataBoxDisk ...
-	JobDetailsTypeDataBoxDisk JobDetailsTypeEnum = "DataBoxDisk"
-	// JobDetailsTypeDataBoxHeavy ...
-	JobDetailsTypeDataBoxHeavy JobDetailsTypeEnum = "DataBoxHeavy"
-	// JobDetailsTypeJobDetails ...
-	JobDetailsTypeJobDetails JobDetailsTypeEnum = "JobDetails"
-)
-
-// PossibleJobDetailsTypeEnumValues returns an array of possible values for the JobDetailsTypeEnum const type.
-func PossibleJobDetailsTypeEnumValues() []JobDetailsTypeEnum {
-	return []JobDetailsTypeEnum{JobDetailsTypeDataBox, JobDetailsTypeDataBoxDisk, JobDetailsTypeDataBoxHeavy, JobDetailsTypeJobDetails}
-}
-
-// JobSecretsTypeEnum enumerates the values for job secrets type enum.
-type JobSecretsTypeEnum string
-
-const (
-	// JobSecretsTypeDataBox ...
-	JobSecretsTypeDataBox JobSecretsTypeEnum = "DataBox"
-	// JobSecretsTypeDataBoxDisk ...
-	JobSecretsTypeDataBoxDisk JobSecretsTypeEnum = "DataBoxDisk"
-	// JobSecretsTypeDataBoxHeavy ...
-	JobSecretsTypeDataBoxHeavy JobSecretsTypeEnum = "DataBoxHeavy"
-	// JobSecretsTypeJobSecrets ...
-	JobSecretsTypeJobSecrets JobSecretsTypeEnum = "JobSecrets"
-)
-
-// PossibleJobSecretsTypeEnumValues returns an array of possible values for the JobSecretsTypeEnum const type.
-func PossibleJobSecretsTypeEnumValues() []JobSecretsTypeEnum {
-	return []JobSecretsTypeEnum{JobSecretsTypeDataBox, JobSecretsTypeDataBoxDisk, JobSecretsTypeDataBoxHeavy, JobSecretsTypeJobSecrets}
-}
-
-// NotificationStageName enumerates the values for notification stage name.
-type NotificationStageName string
-
-const (
-	// AtAzureDC Notification at device received at azure datacenter stage.
-	AtAzureDC NotificationStageName = "AtAzureDC"
-	// DataCopy Notification at data copy started stage.
-	DataCopy NotificationStageName = "DataCopy"
-	// Delivered Notification at device delivered stage.
-	Delivered NotificationStageName = "Delivered"
-	// DevicePrepared Notification at device prepared stage.
-	DevicePrepared NotificationStageName = "DevicePrepared"
-	// Dispatched Notification at device dispatched stage.
-	Dispatched NotificationStageName = "Dispatched"
-	// PickedUp Notification at device picked up from user stage.
-	PickedUp NotificationStageName = "PickedUp"
-)
-
-// PossibleNotificationStageNameValues returns an array of possible values for the NotificationStageName const type.
-func PossibleNotificationStageNameValues() []NotificationStageName {
-	return []NotificationStageName{AtAzureDC, DataCopy, Delivered, DevicePrepared, Dispatched, PickedUp}
-}
-
-// ShareDestinationFormatType enumerates the values for share destination format type.
-type ShareDestinationFormatType string
-
-const (
-	// AzureFile Azure storage file format.
-	AzureFile ShareDestinationFormatType = "AzureFile"
-	// BlockBlob Azure storage block blob format.
-	BlockBlob ShareDestinationFormatType = "BlockBlob"
-	// HCS StorSimple data format.
-	HCS ShareDestinationFormatType = "HCS"
-	// ManagedDisk Azure Compute Disk.
-	ManagedDisk ShareDestinationFormatType = "ManagedDisk"
-	// PageBlob Azure storage page blob format.
-	PageBlob ShareDestinationFormatType = "PageBlob"
-	// UnknownType Unknown format.
-	UnknownType ShareDestinationFormatType = "UnknownType"
-)
-
-// PossibleShareDestinationFormatTypeValues returns an array of possible values for the ShareDestinationFormatType const type.
-func PossibleShareDestinationFormatTypeValues() []ShareDestinationFormatType {
-	return []ShareDestinationFormatType{AzureFile, BlockBlob, HCS, ManagedDisk, PageBlob, UnknownType}
-}
-
-// SkuDisabledReason enumerates the values for sku disabled reason.
-type SkuDisabledReason string
-
-const (
-	// SkuDisabledReasonCountry SKU is not available in the requested country.
-	SkuDisabledReasonCountry SkuDisabledReason = "Country"
-	// SkuDisabledReasonFeature Required features are not enabled for the SKU.
-	SkuDisabledReasonFeature SkuDisabledReason = "Feature"
-	// SkuDisabledReasonNone SKU is not disabled.
-	SkuDisabledReasonNone SkuDisabledReason = "None"
-	// SkuDisabledReasonNoSubscriptionInfo Subscription has not registered to Microsoft.DataBox and Service
-	// does not have the subscription notification.
-	SkuDisabledReasonNoSubscriptionInfo SkuDisabledReason = "NoSubscriptionInfo"
-	// SkuDisabledReasonOfferType Subscription does not have required offer types for the SKU.
-	SkuDisabledReasonOfferType SkuDisabledReason = "OfferType"
-	// SkuDisabledReasonRegion SKU is not available to push data to the requested Azure region.
-	SkuDisabledReasonRegion SkuDisabledReason = "Region"
-)
-
-// PossibleSkuDisabledReasonValues returns an array of possible values for the SkuDisabledReason const type.
-func PossibleSkuDisabledReasonValues() []SkuDisabledReason {
-	return []SkuDisabledReason{SkuDisabledReasonCountry, SkuDisabledReasonFeature, SkuDisabledReasonNone, SkuDisabledReasonNoSubscriptionInfo, SkuDisabledReasonOfferType, SkuDisabledReasonRegion}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// DataBox DataBox.
-	DataBox SkuName = "DataBox"
-	// DataBoxDisk DataBoxDisk.
-	DataBoxDisk SkuName = "DataBoxDisk"
-	// DataBoxHeavy DataBoxHeavy.
-	DataBoxHeavy SkuName = "DataBoxHeavy"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{DataBox, DataBoxDisk, DataBoxHeavy}
-}
-
-// StageName enumerates the values for stage name.
-type StageName string
-
-const (
-	// StageNameAborted Order has been aborted.
-	StageNameAborted StageName = "Aborted"
-	// StageNameAtAzureDC Device has been received at azure datacenter from the user.
-	StageNameAtAzureDC StageName = "AtAzureDC"
-	// StageNameCancelled Order has been cancelled.
-	StageNameCancelled StageName = "Cancelled"
-	// StageNameCompleted Order has completed.
-	StageNameCompleted StageName = "Completed"
-	// StageNameCompletedWithErrors Order has completed with errors.
-	StageNameCompletedWithErrors StageName = "CompletedWithErrors"
-	// StageNameDataCopy Data copy from the device at azure datacenter.
-	StageNameDataCopy StageName = "DataCopy"
-	// StageNameDelivered Device has been delivered to the user of the order.
-	StageNameDelivered StageName = "Delivered"
-	// StageNameDeviceOrdered An order has been created.
-	StageNameDeviceOrdered StageName = "DeviceOrdered"
-	// StageNameDevicePrepared A device has been prepared for the order.
-	StageNameDevicePrepared StageName = "DevicePrepared"
-	// StageNameDispatched Device has been dispatched to the user of the order.
-	StageNameDispatched StageName = "Dispatched"
-	// StageNameFailedIssueDetectedAtAzureDC Order has failed due to issue detected at azure datacenter.
-	StageNameFailedIssueDetectedAtAzureDC StageName = "Failed_IssueDetectedAtAzureDC"
-	// StageNameFailedIssueReportedAtCustomer Order has failed due to issue reported by user.
-	StageNameFailedIssueReportedAtCustomer StageName = "Failed_IssueReportedAtCustomer"
-	// StageNamePickedUp Device has been picked up from user and in transit to azure datacenter.
-	StageNamePickedUp StageName = "PickedUp"
-)
-
-// PossibleStageNameValues returns an array of possible values for the StageName const type.
-func PossibleStageNameValues() []StageName {
-	return []StageName{StageNameAborted, StageNameAtAzureDC, StageNameCancelled, StageNameCompleted, StageNameCompletedWithErrors, StageNameDataCopy, StageNameDelivered, StageNameDeviceOrdered, StageNameDevicePrepared, StageNameDispatched, StageNameFailedIssueDetectedAtAzureDC, StageNameFailedIssueReportedAtCustomer, StageNamePickedUp}
-}
-
-// StageStatus enumerates the values for stage status.
-type StageStatus string
-
-const (
-	// StageStatusCancelled Stage has been cancelled.
-	StageStatusCancelled StageStatus = "Cancelled"
-	// StageStatusCancelling Stage is cancelling.
-	StageStatusCancelling StageStatus = "Cancelling"
-	// StageStatusFailed Stage has failed.
-	StageStatusFailed StageStatus = "Failed"
-	// StageStatusInProgress Stage is in progress.
-	StageStatusInProgress StageStatus = "InProgress"
-	// StageStatusNone No status available yet.
-	StageStatusNone StageStatus = "None"
-	// StageStatusSucceeded Stage has succeeded.
-	StageStatusSucceeded StageStatus = "Succeeded"
-	// StageStatusSucceededWithErrors Stage has succeeded with errors.
-	StageStatusSucceededWithErrors StageStatus = "SucceededWithErrors"
-)
-
-// PossibleStageStatusValues returns an array of possible values for the StageStatus const type.
-func PossibleStageStatusValues() []StageStatus {
-	return []StageStatus{StageStatusCancelled, StageStatusCancelling, StageStatusFailed, StageStatusInProgress, StageStatusNone, StageStatusSucceeded, StageStatusSucceededWithErrors}
-}
-
 // AccountCopyLogDetails copy log details for a storage account of a DataBox job
 type AccountCopyLogDetails struct {
 	// AccountName - READ-ONLY; Destination account name.
@@ -381,6 +86,12 @@ type AccountCredentialDetails struct {
 	ShareCredentialDetails *[]ShareCredentialDetails `json:"shareCredentialDetails,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountCredentialDetails.
+func (acd AccountCredentialDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AddressValidationOutput output of the address validation api.
 type AddressValidationOutput struct {
 	autorest.Response `json:"-"`
@@ -426,12 +137,24 @@ type AddressValidationProperties struct {
 	AlternateAddresses *[]ShippingAddress `json:"alternateAddresses,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AddressValidationProperties.
+func (avp AddressValidationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ApplianceNetworkConfiguration the Network Adapter configuration of a DataBox.
 type ApplianceNetworkConfiguration struct {
 	// Name - READ-ONLY; Name of the network.
 	Name *string `json:"name,omitempty"`
 	// MacAddress - READ-ONLY; Mac Address.
 	MacAddress *string `json:"macAddress,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplianceNetworkConfiguration.
+func (anc ApplianceNetworkConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ArmBaseObject base class for all objects under resource.
@@ -442,6 +165,12 @@ type ArmBaseObject struct {
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Type of the object.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ArmBaseObject.
+func (abo ArmBaseObject) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AvailableSkuRequest the filters for showing the available skus.
@@ -463,6 +192,15 @@ type AvailableSkusResult struct {
 	Value *[]SkuInformation `json:"value,omitempty"`
 	// NextLink - Link for the next set of skus.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AvailableSkusResult.
+func (asr AvailableSkusResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if asr.NextLink != nil {
+		objectMap["nextLink"] = asr.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // AvailableSkusResultIterator provides access to a complete listing of SkuInformation values.
@@ -533,10 +271,15 @@ func (asr AvailableSkusResult) IsEmpty() bool {
 	return asr.Value == nil || len(*asr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (asr AvailableSkusResult) hasNextLink() bool {
+	return asr.NextLink != nil && len(*asr.NextLink) != 0
+}
+
 // availableSkusResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (asr AvailableSkusResult) availableSkusResultPreparer(ctx context.Context) (*http.Request, error) {
-	if asr.NextLink == nil || len(to.String(asr.NextLink)) < 1 {
+	if !asr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -564,11 +307,16 @@ func (page *AvailableSkusResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.asr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.asr)
+		if err != nil {
+			return err
+		}
+		page.asr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.asr = next
 	return nil
 }
 
@@ -732,6 +480,12 @@ type CopyProgress struct {
 	FilesProcessed *int64 `json:"filesProcessed,omitempty"`
 	// TotalFilesToProcess - READ-ONLY; Total number of files to be processed by the job.
 	TotalFilesToProcess *int64 `json:"totalFilesToProcess,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CopyProgress.
+func (cp CopyProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BasicDestinationAccountDetails details of the destination of the data
@@ -928,6 +682,12 @@ type DestinationToServiceLocationMap struct {
 	ServiceLocation *string `json:"serviceLocation,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DestinationToServiceLocationMap.
+func (dtslm DestinationToServiceLocationMap) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DiskCopyLogDetails copy Log Details for a disk
 type DiskCopyLogDetails struct {
 	// DiskSerialNumber - READ-ONLY; Disk Serial Number.
@@ -985,6 +745,12 @@ type DiskCopyProgress struct {
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
 	// Status - READ-ONLY; The Status of the copy. Possible values include: 'NotStarted', 'InProgress', 'Completed', 'CompletedWithErrors', 'Failed', 'NotReturned'
 	Status CopyStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DiskCopyProgress.
+func (dcp DiskCopyProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DiskJobDetails dataBox Disk Job Details.
@@ -1302,12 +1068,24 @@ type DiskSecret struct {
 	BitLockerKey *string `json:"bitLockerKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DiskSecret.
+func (ds DiskSecret) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Error top level error for the job.
 type Error struct {
 	// Code - READ-ONLY; Error code that can be used to programmatically identify the error.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; Describes the error in detail and provides debugging information.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HeavyAccountCopyLogDetails copy log details for a storage account for DataBoxHeavy
@@ -1631,6 +1409,12 @@ type HeavySecret struct {
 	EncodedValidationCertPubKey *string `json:"encodedValidationCertPubKey,omitempty"`
 	// AccountCredentialDetails - READ-ONLY; Per account level access credentials.
 	AccountCredentialDetails *[]AccountCredentialDetails `json:"accountCredentialDetails,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HeavySecret.
+func (hs HeavySecret) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BasicJobDetails job details.
@@ -2129,6 +1913,12 @@ type JobErrorDetails struct {
 	ExceptionMessage *string `json:"exceptionMessage,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobErrorDetails.
+func (jed JobErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // JobProperties job Properties
 type JobProperties struct {
 	// IsCancellable - READ-ONLY; Describes whether the job is cancellable or not.
@@ -2147,6 +1937,13 @@ type JobProperties struct {
 	Details BasicJobDetails `json:"details,omitempty"`
 	// CancellationReason - READ-ONLY; Reason for cancellation.
 	CancellationReason *string `json:"cancellationReason,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobProperties.
+func (jp JobProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["details"] = jp.Details
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for JobProperties struct.
@@ -2427,10 +2224,15 @@ func (jrl JobResourceList) IsEmpty() bool {
 	return jrl.Value == nil || len(*jrl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (jrl JobResourceList) hasNextLink() bool {
+	return jrl.NextLink != nil && len(*jrl.NextLink) != 0
+}
+
 // jobResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (jrl JobResourceList) jobResourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if jrl.NextLink == nil || len(to.String(jrl.NextLink)) < 1 {
+	if !jrl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2458,11 +2260,16 @@ func (page *JobResourceListPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.jrl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.jrl)
+		if err != nil {
+			return err
+		}
+		page.jrl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.jrl = next
 	return nil
 }
 
@@ -2755,6 +2562,12 @@ type JobStages struct {
 	ErrorDetails *[]JobErrorDetails `json:"errorDetails,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobStages.
+func (js JobStages) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // JobsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type JobsUpdateFuture struct {
 	azure.Future
@@ -2803,6 +2616,12 @@ type Operation struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplay operation display
 type OperationDisplay struct {
 	// Provider - Provider name.
@@ -2822,6 +2641,15 @@ type OperationList struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - Link for the next set of operations.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationList.
+func (ol OperationList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ol.NextLink != nil {
+		objectMap["nextLink"] = ol.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationListIterator provides access to a complete listing of Operation values.
@@ -2892,10 +2720,15 @@ func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OperationList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // operationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OperationList) operationListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2923,11 +2756,16 @@ func (page *OperationListPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 
@@ -2969,6 +2807,12 @@ type PackageShippingDetails struct {
 	TrackingID *string `json:"trackingId,omitempty"`
 	// TrackingURL - READ-ONLY; Url where shipment can be tracked.
 	TrackingURL *string `json:"trackingUrl,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PackageShippingDetails.
+func (psd PackageShippingDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Preferences preferences related to the order
@@ -3015,6 +2859,12 @@ type Secret struct {
 	AccountCredentialDetails *[]AccountCredentialDetails `json:"accountCredentialDetails,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Secret.
+func (s Secret) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ShareCredentialDetails credential details of the shares in account.
 type ShareCredentialDetails struct {
 	// ShareName - READ-ONLY; Name of the share.
@@ -3027,6 +2877,12 @@ type ShareCredentialDetails struct {
 	Password *string `json:"password,omitempty"`
 	// SupportedAccessProtocols - READ-ONLY; Access protocols supported on the device.
 	SupportedAccessProtocols *[]AccessProtocol `json:"supportedAccessProtocols,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ShareCredentialDetails.
+func (scd ShareCredentialDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ShipmentPickUpRequest shipment pick up request details.
@@ -3046,6 +2902,12 @@ type ShipmentPickUpResponse struct {
 	ConfirmationNumber *string `json:"confirmationNumber,omitempty"`
 	// ReadyByTime - READ-ONLY; Time by which shipment should be ready for pick up, this is in local time of pick up area.
 	ReadyByTime *date.Time `json:"readyByTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ShipmentPickUpResponse.
+func (spur ShipmentPickUpResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ShippingAddress shipping address where customer wishes to receive the device.
@@ -3090,12 +2952,24 @@ type SkuCapacity struct {
 	Maximum *string `json:"maximum,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuCapacity.
+func (sc SkuCapacity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuCost describes metadata for retrieving price info.
 type SkuCost struct {
 	// MeterID - READ-ONLY; Meter id of the Sku.
 	MeterID *string `json:"meterId,omitempty"`
 	// MeterType - READ-ONLY; The type of the meter.
 	MeterType *string `json:"meterType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuCost.
+func (sc SkuCost) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SkuInformation information of the sku.
@@ -3174,12 +3048,24 @@ type SkuProperties struct {
 	RequiredFeature *string `json:"requiredFeature,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuProperties.
+func (sp SkuProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UnencryptedCredentials unencrypted credentials for accessing device.
 type UnencryptedCredentials struct {
 	// JobName - READ-ONLY; Name of the job.
 	JobName *string `json:"jobName,omitempty"`
 	// JobSecrets - READ-ONLY; Secrets related to this job.
 	JobSecrets BasicJobSecrets `json:"jobSecrets,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UnencryptedCredentials.
+func (uc UnencryptedCredentials) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for UnencryptedCredentials struct.

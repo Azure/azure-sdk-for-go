@@ -691,6 +691,9 @@ func (client NamespacesClient) List(ctx context.Context) (result NamespaceListRe
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.NamespacesClient", "List", resp, "Failure responding to request")
 	}
+	if result.nlr.hasNextLink() && result.nlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -812,6 +815,9 @@ func (client NamespacesClient) ListAuthorizationRules(ctx context.Context, resou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.NamespacesClient", "ListAuthorizationRules", resp, "Failure responding to request")
 	}
+	if result.arlr.hasNextLink() && result.arlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -930,6 +936,9 @@ func (client NamespacesClient) ListByResourceGroup(ctx context.Context, resource
 	result.nlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.NamespacesClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.nlr.hasNextLink() && result.nlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -1142,6 +1151,9 @@ func (client NamespacesClient) ListPostAuthorizationRules(ctx context.Context, r
 	result.arlr, err = client.ListPostAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.NamespacesClient", "ListPostAuthorizationRules", resp, "Failure responding to request")
+	}
+	if result.arlr.hasNextLink() && result.arlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

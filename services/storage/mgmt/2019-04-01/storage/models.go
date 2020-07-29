@@ -31,577 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2019-04-01/storage"
 
-// AccessTier enumerates the values for access tier.
-type AccessTier string
-
-const (
-	// Cool ...
-	Cool AccessTier = "Cool"
-	// Hot ...
-	Hot AccessTier = "Hot"
-)
-
-// PossibleAccessTierValues returns an array of possible values for the AccessTier const type.
-func PossibleAccessTierValues() []AccessTier {
-	return []AccessTier{Cool, Hot}
-}
-
-// AccountExpand enumerates the values for account expand.
-type AccountExpand string
-
-const (
-	// AccountExpandGeoReplicationStats ...
-	AccountExpandGeoReplicationStats AccountExpand = "geoReplicationStats"
-)
-
-// PossibleAccountExpandValues returns an array of possible values for the AccountExpand const type.
-func PossibleAccountExpandValues() []AccountExpand {
-	return []AccountExpand{AccountExpandGeoReplicationStats}
-}
-
-// AccountStatus enumerates the values for account status.
-type AccountStatus string
-
-const (
-	// Available ...
-	Available AccountStatus = "available"
-	// Unavailable ...
-	Unavailable AccountStatus = "unavailable"
-)
-
-// PossibleAccountStatusValues returns an array of possible values for the AccountStatus const type.
-func PossibleAccountStatusValues() []AccountStatus {
-	return []AccountStatus{Available, Unavailable}
-}
-
-// Action enumerates the values for action.
-type Action string
-
-const (
-	// Allow ...
-	Allow Action = "Allow"
-)
-
-// PossibleActionValues returns an array of possible values for the Action const type.
-func PossibleActionValues() []Action {
-	return []Action{Allow}
-}
-
-// Action1 enumerates the values for action 1.
-type Action1 string
-
-const (
-	// Acquire ...
-	Acquire Action1 = "Acquire"
-	// Break ...
-	Break Action1 = "Break"
-	// Change ...
-	Change Action1 = "Change"
-	// Release ...
-	Release Action1 = "Release"
-	// Renew ...
-	Renew Action1 = "Renew"
-)
-
-// PossibleAction1Values returns an array of possible values for the Action1 const type.
-func PossibleAction1Values() []Action1 {
-	return []Action1{Acquire, Break, Change, Release, Renew}
-}
-
-// Bypass enumerates the values for bypass.
-type Bypass string
-
-const (
-	// AzureServices ...
-	AzureServices Bypass = "AzureServices"
-	// Logging ...
-	Logging Bypass = "Logging"
-	// Metrics ...
-	Metrics Bypass = "Metrics"
-	// None ...
-	None Bypass = "None"
-)
-
-// PossibleBypassValues returns an array of possible values for the Bypass const type.
-func PossibleBypassValues() []Bypass {
-	return []Bypass{AzureServices, Logging, Metrics, None}
-}
-
-// DefaultAction enumerates the values for default action.
-type DefaultAction string
-
-const (
-	// DefaultActionAllow ...
-	DefaultActionAllow DefaultAction = "Allow"
-	// DefaultActionDeny ...
-	DefaultActionDeny DefaultAction = "Deny"
-)
-
-// PossibleDefaultActionValues returns an array of possible values for the DefaultAction const type.
-func PossibleDefaultActionValues() []DefaultAction {
-	return []DefaultAction{DefaultActionAllow, DefaultActionDeny}
-}
-
-// DirectoryServiceOptions enumerates the values for directory service options.
-type DirectoryServiceOptions string
-
-const (
-	// DirectoryServiceOptionsAADDS ...
-	DirectoryServiceOptionsAADDS DirectoryServiceOptions = "AADDS"
-	// DirectoryServiceOptionsAD ...
-	DirectoryServiceOptionsAD DirectoryServiceOptions = "AD"
-	// DirectoryServiceOptionsNone ...
-	DirectoryServiceOptionsNone DirectoryServiceOptions = "None"
-)
-
-// PossibleDirectoryServiceOptionsValues returns an array of possible values for the DirectoryServiceOptions const type.
-func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
-	return []DirectoryServiceOptions{DirectoryServiceOptionsAADDS, DirectoryServiceOptionsAD, DirectoryServiceOptionsNone}
-}
-
-// GeoReplicationStatus enumerates the values for geo replication status.
-type GeoReplicationStatus string
-
-const (
-	// GeoReplicationStatusBootstrap ...
-	GeoReplicationStatusBootstrap GeoReplicationStatus = "Bootstrap"
-	// GeoReplicationStatusLive ...
-	GeoReplicationStatusLive GeoReplicationStatus = "Live"
-	// GeoReplicationStatusUnavailable ...
-	GeoReplicationStatusUnavailable GeoReplicationStatus = "Unavailable"
-)
-
-// PossibleGeoReplicationStatusValues returns an array of possible values for the GeoReplicationStatus const type.
-func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
-	return []GeoReplicationStatus{GeoReplicationStatusBootstrap, GeoReplicationStatusLive, GeoReplicationStatusUnavailable}
-}
-
-// HTTPProtocol enumerates the values for http protocol.
-type HTTPProtocol string
-
-const (
-	// HTTPS ...
-	HTTPS HTTPProtocol = "https"
-	// Httpshttp ...
-	Httpshttp HTTPProtocol = "https,http"
-)
-
-// PossibleHTTPProtocolValues returns an array of possible values for the HTTPProtocol const type.
-func PossibleHTTPProtocolValues() []HTTPProtocol {
-	return []HTTPProtocol{HTTPS, Httpshttp}
-}
-
-// ImmutabilityPolicyState enumerates the values for immutability policy state.
-type ImmutabilityPolicyState string
-
-const (
-	// Locked ...
-	Locked ImmutabilityPolicyState = "Locked"
-	// Unlocked ...
-	Unlocked ImmutabilityPolicyState = "Unlocked"
-)
-
-// PossibleImmutabilityPolicyStateValues returns an array of possible values for the ImmutabilityPolicyState const type.
-func PossibleImmutabilityPolicyStateValues() []ImmutabilityPolicyState {
-	return []ImmutabilityPolicyState{Locked, Unlocked}
-}
-
-// ImmutabilityPolicyUpdateType enumerates the values for immutability policy update type.
-type ImmutabilityPolicyUpdateType string
-
-const (
-	// Extend ...
-	Extend ImmutabilityPolicyUpdateType = "extend"
-	// Lock ...
-	Lock ImmutabilityPolicyUpdateType = "lock"
-	// Put ...
-	Put ImmutabilityPolicyUpdateType = "put"
-)
-
-// PossibleImmutabilityPolicyUpdateTypeValues returns an array of possible values for the ImmutabilityPolicyUpdateType const type.
-func PossibleImmutabilityPolicyUpdateTypeValues() []ImmutabilityPolicyUpdateType {
-	return []ImmutabilityPolicyUpdateType{Extend, Lock, Put}
-}
-
-// KeyPermission enumerates the values for key permission.
-type KeyPermission string
-
-const (
-	// Full ...
-	Full KeyPermission = "Full"
-	// Read ...
-	Read KeyPermission = "Read"
-)
-
-// PossibleKeyPermissionValues returns an array of possible values for the KeyPermission const type.
-func PossibleKeyPermissionValues() []KeyPermission {
-	return []KeyPermission{Full, Read}
-}
-
-// KeySource enumerates the values for key source.
-type KeySource string
-
-const (
-	// MicrosoftKeyvault ...
-	MicrosoftKeyvault KeySource = "Microsoft.Keyvault"
-	// MicrosoftStorage ...
-	MicrosoftStorage KeySource = "Microsoft.Storage"
-)
-
-// PossibleKeySourceValues returns an array of possible values for the KeySource const type.
-func PossibleKeySourceValues() []KeySource {
-	return []KeySource{MicrosoftKeyvault, MicrosoftStorage}
-}
-
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// BlobStorage ...
-	BlobStorage Kind = "BlobStorage"
-	// BlockBlobStorage ...
-	BlockBlobStorage Kind = "BlockBlobStorage"
-	// FileStorage ...
-	FileStorage Kind = "FileStorage"
-	// Storage ...
-	Storage Kind = "Storage"
-	// StorageV2 ...
-	StorageV2 Kind = "StorageV2"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{BlobStorage, BlockBlobStorage, FileStorage, Storage, StorageV2}
-}
-
-// LargeFileSharesState enumerates the values for large file shares state.
-type LargeFileSharesState string
-
-const (
-	// Disabled ...
-	Disabled LargeFileSharesState = "Disabled"
-	// Enabled ...
-	Enabled LargeFileSharesState = "Enabled"
-)
-
-// PossibleLargeFileSharesStateValues returns an array of possible values for the LargeFileSharesState const type.
-func PossibleLargeFileSharesStateValues() []LargeFileSharesState {
-	return []LargeFileSharesState{Disabled, Enabled}
-}
-
-// LeaseDuration enumerates the values for lease duration.
-type LeaseDuration string
-
-const (
-	// Fixed ...
-	Fixed LeaseDuration = "Fixed"
-	// Infinite ...
-	Infinite LeaseDuration = "Infinite"
-)
-
-// PossibleLeaseDurationValues returns an array of possible values for the LeaseDuration const type.
-func PossibleLeaseDurationValues() []LeaseDuration {
-	return []LeaseDuration{Fixed, Infinite}
-}
-
-// LeaseState enumerates the values for lease state.
-type LeaseState string
-
-const (
-	// LeaseStateAvailable ...
-	LeaseStateAvailable LeaseState = "Available"
-	// LeaseStateBreaking ...
-	LeaseStateBreaking LeaseState = "Breaking"
-	// LeaseStateBroken ...
-	LeaseStateBroken LeaseState = "Broken"
-	// LeaseStateExpired ...
-	LeaseStateExpired LeaseState = "Expired"
-	// LeaseStateLeased ...
-	LeaseStateLeased LeaseState = "Leased"
-)
-
-// PossibleLeaseStateValues returns an array of possible values for the LeaseState const type.
-func PossibleLeaseStateValues() []LeaseState {
-	return []LeaseState{LeaseStateAvailable, LeaseStateBreaking, LeaseStateBroken, LeaseStateExpired, LeaseStateLeased}
-}
-
-// LeaseStatus enumerates the values for lease status.
-type LeaseStatus string
-
-const (
-	// LeaseStatusLocked ...
-	LeaseStatusLocked LeaseStatus = "Locked"
-	// LeaseStatusUnlocked ...
-	LeaseStatusUnlocked LeaseStatus = "Unlocked"
-)
-
-// PossibleLeaseStatusValues returns an array of possible values for the LeaseStatus const type.
-func PossibleLeaseStatusValues() []LeaseStatus {
-	return []LeaseStatus{LeaseStatusLocked, LeaseStatusUnlocked}
-}
-
-// ListKeyExpand enumerates the values for list key expand.
-type ListKeyExpand string
-
-const (
-	// Kerb ...
-	Kerb ListKeyExpand = "kerb"
-)
-
-// PossibleListKeyExpandValues returns an array of possible values for the ListKeyExpand const type.
-func PossibleListKeyExpandValues() []ListKeyExpand {
-	return []ListKeyExpand{Kerb}
-}
-
-// MinimumTLSVersion enumerates the values for minimum tls version.
-type MinimumTLSVersion string
-
-const (
-	// TLS10 ...
-	TLS10 MinimumTLSVersion = "TLS1_0"
-	// TLS11 ...
-	TLS11 MinimumTLSVersion = "TLS1_1"
-	// TLS12 ...
-	TLS12 MinimumTLSVersion = "TLS1_2"
-)
-
-// PossibleMinimumTLSVersionValues returns an array of possible values for the MinimumTLSVersion const type.
-func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
-	return []MinimumTLSVersion{TLS10, TLS11, TLS12}
-}
-
-// Permissions enumerates the values for permissions.
-type Permissions string
-
-const (
-	// A ...
-	A Permissions = "a"
-	// C ...
-	C Permissions = "c"
-	// D ...
-	D Permissions = "d"
-	// L ...
-	L Permissions = "l"
-	// P ...
-	P Permissions = "p"
-	// R ...
-	R Permissions = "r"
-	// U ...
-	U Permissions = "u"
-	// W ...
-	W Permissions = "w"
-)
-
-// PossiblePermissionsValues returns an array of possible values for the Permissions const type.
-func PossiblePermissionsValues() []Permissions {
-	return []Permissions{A, C, D, L, P, R, U, W}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// ResolvingDNS ...
-	ResolvingDNS ProvisioningState = "ResolvingDNS"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Creating, ResolvingDNS, Succeeded}
-}
-
-// PublicAccess enumerates the values for public access.
-type PublicAccess string
-
-const (
-	// PublicAccessBlob ...
-	PublicAccessBlob PublicAccess = "Blob"
-	// PublicAccessContainer ...
-	PublicAccessContainer PublicAccess = "Container"
-	// PublicAccessNone ...
-	PublicAccessNone PublicAccess = "None"
-)
-
-// PossiblePublicAccessValues returns an array of possible values for the PublicAccess const type.
-func PossiblePublicAccessValues() []PublicAccess {
-	return []PublicAccess{PublicAccessBlob, PublicAccessContainer, PublicAccessNone}
-}
-
-// Reason enumerates the values for reason.
-type Reason string
-
-const (
-	// AccountNameInvalid ...
-	AccountNameInvalid Reason = "AccountNameInvalid"
-	// AlreadyExists ...
-	AlreadyExists Reason = "AlreadyExists"
-)
-
-// PossibleReasonValues returns an array of possible values for the Reason const type.
-func PossibleReasonValues() []Reason {
-	return []Reason{AccountNameInvalid, AlreadyExists}
-}
-
-// ReasonCode enumerates the values for reason code.
-type ReasonCode string
-
-const (
-	// NotAvailableForSubscription ...
-	NotAvailableForSubscription ReasonCode = "NotAvailableForSubscription"
-	// QuotaID ...
-	QuotaID ReasonCode = "QuotaId"
-)
-
-// PossibleReasonCodeValues returns an array of possible values for the ReasonCode const type.
-func PossibleReasonCodeValues() []ReasonCode {
-	return []ReasonCode{NotAvailableForSubscription, QuotaID}
-}
-
-// Services enumerates the values for services.
-type Services string
-
-const (
-	// B ...
-	B Services = "b"
-	// F ...
-	F Services = "f"
-	// Q ...
-	Q Services = "q"
-	// T ...
-	T Services = "t"
-)
-
-// PossibleServicesValues returns an array of possible values for the Services const type.
-func PossibleServicesValues() []Services {
-	return []Services{B, F, Q, T}
-}
-
-// SignedResource enumerates the values for signed resource.
-type SignedResource string
-
-const (
-	// SignedResourceB ...
-	SignedResourceB SignedResource = "b"
-	// SignedResourceC ...
-	SignedResourceC SignedResource = "c"
-	// SignedResourceF ...
-	SignedResourceF SignedResource = "f"
-	// SignedResourceS ...
-	SignedResourceS SignedResource = "s"
-)
-
-// PossibleSignedResourceValues returns an array of possible values for the SignedResource const type.
-func PossibleSignedResourceValues() []SignedResource {
-	return []SignedResource{SignedResourceB, SignedResourceC, SignedResourceF, SignedResourceS}
-}
-
-// SignedResourceTypes enumerates the values for signed resource types.
-type SignedResourceTypes string
-
-const (
-	// SignedResourceTypesC ...
-	SignedResourceTypesC SignedResourceTypes = "c"
-	// SignedResourceTypesO ...
-	SignedResourceTypesO SignedResourceTypes = "o"
-	// SignedResourceTypesS ...
-	SignedResourceTypesS SignedResourceTypes = "s"
-)
-
-// PossibleSignedResourceTypesValues returns an array of possible values for the SignedResourceTypes const type.
-func PossibleSignedResourceTypesValues() []SignedResourceTypes {
-	return []SignedResourceTypes{SignedResourceTypesC, SignedResourceTypesO, SignedResourceTypesS}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// PremiumLRS ...
-	PremiumLRS SkuName = "Premium_LRS"
-	// PremiumZRS ...
-	PremiumZRS SkuName = "Premium_ZRS"
-	// StandardGRS ...
-	StandardGRS SkuName = "Standard_GRS"
-	// StandardGZRS ...
-	StandardGZRS SkuName = "Standard_GZRS"
-	// StandardLRS ...
-	StandardLRS SkuName = "Standard_LRS"
-	// StandardRAGRS ...
-	StandardRAGRS SkuName = "Standard_RAGRS"
-	// StandardRAGZRS ...
-	StandardRAGZRS SkuName = "Standard_RAGZRS"
-	// StandardZRS ...
-	StandardZRS SkuName = "Standard_ZRS"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{PremiumLRS, PremiumZRS, StandardGRS, StandardGZRS, StandardLRS, StandardRAGRS, StandardRAGZRS, StandardZRS}
-}
-
-// SkuTier enumerates the values for sku tier.
-type SkuTier string
-
-const (
-	// Premium ...
-	Premium SkuTier = "Premium"
-	// Standard ...
-	Standard SkuTier = "Standard"
-)
-
-// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() []SkuTier {
-	return []SkuTier{Premium, Standard}
-}
-
-// State enumerates the values for state.
-type State string
-
-const (
-	// StateDeprovisioning ...
-	StateDeprovisioning State = "deprovisioning"
-	// StateFailed ...
-	StateFailed State = "failed"
-	// StateNetworkSourceDeleted ...
-	StateNetworkSourceDeleted State = "networkSourceDeleted"
-	// StateProvisioning ...
-	StateProvisioning State = "provisioning"
-	// StateSucceeded ...
-	StateSucceeded State = "succeeded"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{StateDeprovisioning, StateFailed, StateNetworkSourceDeleted, StateProvisioning, StateSucceeded}
-}
-
-// UsageUnit enumerates the values for usage unit.
-type UsageUnit string
-
-const (
-	// Bytes ...
-	Bytes UsageUnit = "Bytes"
-	// BytesPerSecond ...
-	BytesPerSecond UsageUnit = "BytesPerSecond"
-	// Count ...
-	Count UsageUnit = "Count"
-	// CountsPerSecond ...
-	CountsPerSecond UsageUnit = "CountsPerSecond"
-	// Percent ...
-	Percent UsageUnit = "Percent"
-	// Seconds ...
-	Seconds UsageUnit = "Seconds"
-)
-
-// PossibleUsageUnitValues returns an array of possible values for the UsageUnit const type.
-func PossibleUsageUnitValues() []UsageUnit {
-	return []UsageUnit{Bytes, BytesPerSecond, Count, CountsPerSecond, Percent, Seconds}
-}
-
 // Account the storage account.
 type Account struct {
 	autorest.Response `json:"-"`
@@ -739,8 +168,8 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AccountCheckNameAvailabilityParameters the parameters used to check the availability of the storage
-// account name.
+// AccountCheckNameAvailabilityParameters the parameters used to check the availability of the storage account
+// name.
 type AccountCheckNameAvailabilityParameters struct {
 	// Name - The storage account name.
 	Name *string `json:"name,omitempty"`
@@ -867,11 +296,23 @@ type AccountKey struct {
 	Permissions KeyPermission `json:"permissions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountKey.
+func (ak AccountKey) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountListKeysResult the response from the ListKeys operation.
 type AccountListKeysResult struct {
 	autorest.Response `json:"-"`
 	// Keys - READ-ONLY; Gets the list of storage account keys and their properties for the specified storage account.
 	Keys *[]AccountKey `json:"keys,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountListKeysResult.
+func (alkr AccountListKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AccountListResult the response from the List Storage Accounts operation.
@@ -881,6 +322,12 @@ type AccountListResult struct {
 	Value *[]Account `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Request URL that can be used to query next page of storage accounts. Returned when total number of requested storage accounts exceed maximum page size.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountListResult.
+func (alr AccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AccountListResultIterator provides access to a complete listing of Account values.
@@ -951,10 +398,15 @@ func (alr AccountListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (alr AccountListResult) hasNextLink() bool {
+	return alr.NextLink != nil && len(*alr.NextLink) != 0
+}
+
 // accountListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (alr AccountListResult) accountListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
+	if !alr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -982,11 +434,16 @@ func (page *AccountListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.alr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.alr)
+		if err != nil {
+			return err
+		}
+		page.alr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.alr = next
 	return nil
 }
 
@@ -1066,6 +523,30 @@ type AccountProperties struct {
 	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountProperties.
+func (ap AccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.AzureFilesIdentityBasedAuthentication != nil {
+		objectMap["azureFilesIdentityBasedAuthentication"] = ap.AzureFilesIdentityBasedAuthentication
+	}
+	if ap.EnableHTTPSTrafficOnly != nil {
+		objectMap["supportsHttpsTrafficOnly"] = ap.EnableHTTPSTrafficOnly
+	}
+	if ap.IsHnsEnabled != nil {
+		objectMap["isHnsEnabled"] = ap.IsHnsEnabled
+	}
+	if ap.LargeFileSharesState != "" {
+		objectMap["largeFileSharesState"] = ap.LargeFileSharesState
+	}
+	if ap.AllowBlobPublicAccess != nil {
+		objectMap["allowBlobPublicAccess"] = ap.AllowBlobPublicAccess
+	}
+	if ap.MinimumTLSVersion != "" {
+		objectMap["minimumTlsVersion"] = ap.MinimumTLSVersion
+	}
+	return json.Marshal(objectMap)
+}
+
 // AccountPropertiesCreateParameters the parameters used to create the storage account.
 type AccountPropertiesCreateParameters struct {
 	// CustomDomain - User domain assigned to the storage account. Name is the CNAME source. Only one custom domain is supported per storage account at this time. To clear the existing custom domain, use an empty string for the custom domain name property.
@@ -1138,8 +619,7 @@ type AccountSasParameters struct {
 	KeyToSign *string `json:"keyToSign,omitempty"`
 }
 
-// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountsCreateFuture struct {
 	azure.Future
 }
@@ -1167,8 +647,7 @@ func (future *AccountsCreateFuture) Result(client AccountsClient) (a Account, er
 	return
 }
 
-// AccountsFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AccountsFailoverFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountsFailoverFuture struct {
 	azure.Future
 }
@@ -1190,8 +669,7 @@ func (future *AccountsFailoverFuture) Result(client AccountsClient) (ar autorest
 	return
 }
 
-// AccountUpdateParameters the parameters that can be provided when updating the storage account
-// properties.
+// AccountUpdateParameters the parameters that can be provided when updating the storage account properties.
 type AccountUpdateParameters struct {
 	// Sku - Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those SKU names be updated to any other value.
 	Sku *Sku `json:"sku,omitempty"`
@@ -1314,6 +792,12 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AzureFilesIdentityBasedAuthentication settings for Azure Files identity based authentication.
 type AzureFilesIdentityBasedAuthentication struct {
 	// DirectoryServiceOptions - Indicates the directory service used. Possible values include: 'DirectoryServiceOptionsNone', 'DirectoryServiceOptionsAADDS', 'DirectoryServiceOptionsAD'
@@ -1411,6 +895,12 @@ type BlobServiceItems struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of blob services returned.
 	Value *[]BlobServiceProperties `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BlobServiceItems.
+func (bsi BlobServiceItems) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BlobServiceProperties the properties of a storage account’s Blob service.
@@ -1515,6 +1005,12 @@ type CheckNameAvailabilityResult struct {
 	Reason Reason `json:"reason,omitempty"`
 	// Message - READ-ONLY; Gets an error message explaining the Reason value in more detail.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResult.
+func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CloudError an error response from the Storage service.
@@ -1644,6 +1140,15 @@ type EncryptionService struct {
 	LastEnabledTime *date.Time `json:"lastEnabledTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EncryptionService.
+func (es EncryptionService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if es.Enabled != nil {
+		objectMap["enabled"] = es.Enabled
+	}
+	return json.Marshal(objectMap)
+}
+
 // EncryptionServices a list of services that support encryption.
 type EncryptionServices struct {
 	// Blob - The encryption function of the blob storage service.
@@ -1656,8 +1161,19 @@ type EncryptionServices struct {
 	Queue *EncryptionService `json:"queue,omitempty"`
 }
 
-// Endpoints the URIs that are used to perform a retrieval of a public blob, queue, table, web or dfs
-// object.
+// MarshalJSON is the custom marshaler for EncryptionServices.
+func (es EncryptionServices) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if es.Blob != nil {
+		objectMap["blob"] = es.Blob
+	}
+	if es.File != nil {
+		objectMap["file"] = es.File
+	}
+	return json.Marshal(objectMap)
+}
+
+// Endpoints the URIs that are used to perform a retrieval of a public blob, queue, table, web or dfs object.
 type Endpoints struct {
 	// Blob - READ-ONLY; Gets the blob endpoint.
 	Blob *string `json:"blob,omitempty"`
@@ -1673,11 +1189,23 @@ type Endpoints struct {
 	Dfs *string `json:"dfs,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Endpoints.
+func (e Endpoints) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // FileServiceItems ...
 type FileServiceItems struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of file services returned.
 	Value *[]FileServiceProperties `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileServiceItems.
+func (fsi FileServiceItems) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // FileServiceProperties the properties of File services in storage account.
@@ -1926,14 +1454,20 @@ func (fsi *FileShareItem) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// FileShareItems response schema. Contains list of shares returned, and if paging is requested or
-// required, a URL to next page of shares.
+// FileShareItems response schema. Contains list of shares returned, and if paging is requested or required, a
+// URL to next page of shares.
 type FileShareItems struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of file shares returned.
 	Value *[]FileShareItem `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Request URL that can be used to query next page of shares. Returned when total number of requested shares exceed maximum page size.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileShareItems.
+func (fsi FileShareItems) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // FileShareItemsIterator provides access to a complete listing of FileShareItem values.
@@ -2004,10 +1538,15 @@ func (fsi FileShareItems) IsEmpty() bool {
 	return fsi.Value == nil || len(*fsi.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (fsi FileShareItems) hasNextLink() bool {
+	return fsi.NextLink != nil && len(*fsi.NextLink) != 0
+}
+
 // fileShareItemsPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (fsi FileShareItems) fileShareItemsPreparer(ctx context.Context) (*http.Request, error) {
-	if fsi.NextLink == nil || len(to.String(fsi.NextLink)) < 1 {
+	if !fsi.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2035,11 +1574,16 @@ func (page *FileShareItemsPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.fsi)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.fsi)
+		if err != nil {
+			return err
+		}
+		page.fsi = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.fsi = next
 	return nil
 }
 
@@ -2106,6 +1650,12 @@ type GeoReplicationStats struct {
 	CanFailover *bool `json:"canFailover,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GeoReplicationStats.
+func (grs GeoReplicationStats) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Identity identity for the resource.
 type Identity struct {
 	// PrincipalID - READ-ONLY; The principal ID of resource identity.
@@ -2114,6 +1664,15 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The identity type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != nil {
+		objectMap["type"] = i.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // ImmutabilityPolicy the ImmutabilityPolicy property of a blob container, including Id, resource name,
@@ -2270,6 +1829,15 @@ type ImmutabilityPolicyProperty struct {
 	State ImmutabilityPolicyState `json:"state,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImmutabilityPolicyProperty.
+func (ipp ImmutabilityPolicyProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ipp.ImmutabilityPeriodSinceCreationInDays != nil {
+		objectMap["immutabilityPeriodSinceCreationInDays"] = ipp.ImmutabilityPeriodSinceCreationInDays
+	}
+	return json.Marshal(objectMap)
+}
+
 // IPRule IP rule with specific IP or IP range in CIDR format.
 type IPRule struct {
 	// IPAddressOrRange - Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
@@ -2320,6 +1888,15 @@ type LegalHold struct {
 	Tags *[]string `json:"tags,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LegalHold.
+func (lh LegalHold) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lh.Tags != nil {
+		objectMap["tags"] = lh.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // LegalHoldProperties the LegalHold property of a blob container.
 type LegalHoldProperties struct {
 	// HasLegalHold - READ-ONLY; The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared out. There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
@@ -2328,11 +1905,26 @@ type LegalHoldProperties struct {
 	Tags *[]TagProperty `json:"tags,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LegalHoldProperties.
+func (lhp LegalHoldProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lhp.Tags != nil {
+		objectMap["tags"] = lhp.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // ListAccountSasResponse the List SAS credentials operation response.
 type ListAccountSasResponse struct {
 	autorest.Response `json:"-"`
 	// AccountSasToken - READ-ONLY; List SAS credentials of storage account.
 	AccountSasToken *string `json:"accountSasToken,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListAccountSasResponse.
+func (lasr ListAccountSasResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListContainerItem the blob container properties be listed out.
@@ -2418,14 +2010,20 @@ func (lci *ListContainerItem) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ListContainerItems response schema. Contains list of blobs returned, and if paging is requested or
-// required, a URL to next page of containers.
+// ListContainerItems response schema. Contains list of blobs returned, and if paging is requested or required,
+// a URL to next page of containers.
 type ListContainerItems struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of blobs containers returned.
 	Value *[]ListContainerItem `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Request URL that can be used to query next page of containers. Returned when total number of requested containers exceed maximum page size.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListContainerItems.
+func (lci ListContainerItems) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListContainerItemsIterator provides access to a complete listing of ListContainerItem values.
@@ -2496,10 +2094,15 @@ func (lci ListContainerItems) IsEmpty() bool {
 	return lci.Value == nil || len(*lci.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lci ListContainerItems) hasNextLink() bool {
+	return lci.NextLink != nil && len(*lci.NextLink) != 0
+}
+
 // listContainerItemsPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lci ListContainerItems) listContainerItemsPreparer(ctx context.Context) (*http.Request, error) {
-	if lci.NextLink == nil || len(to.String(lci.NextLink)) < 1 {
+	if !lci.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2527,11 +2130,16 @@ func (page *ListContainerItemsPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lci)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lci)
+		if err != nil {
+			return err
+		}
+		page.lci = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lci = next
 	return nil
 }
 
@@ -2570,6 +2178,12 @@ type ListServiceSasResponse struct {
 	autorest.Response `json:"-"`
 	// ServiceSasToken - READ-ONLY; List service SAS credentials of specific resource.
 	ServiceSasToken *string `json:"serviceSasToken,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListServiceSasResponse.
+func (lssr ListServiceSasResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ManagementPolicy the Get Storage Account ManagementPolicies operation response.
@@ -2687,6 +2301,15 @@ type ManagementPolicyProperties struct {
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// Policy - The Storage Account ManagementPolicy, in JSON format. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
 	Policy *ManagementPolicySchema `json:"policy,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagementPolicyProperties.
+func (mpp ManagementPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mpp.Policy != nil {
+		objectMap["policy"] = mpp.Policy
+	}
+	return json.Marshal(objectMap)
 }
 
 // ManagementPolicyRule an object that wraps the Lifecycle rule. Each rule is uniquely defined by name.
@@ -2841,8 +2464,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult result of the request to list Storage operations. It contains a list of operations
-// and a URL link to get the next set of results.
+// OperationListResult result of the request to list Storage operations. It contains a list of operations and a
+// URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Storage operations supported by the Storage resource provider.
@@ -2866,6 +2489,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource ...
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -2876,6 +2505,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Restriction the restriction because of which SKU cannot be used.
 type Restriction struct {
 	// Type - READ-ONLY; The type of restrictions. As of now only possible value for this is location.
@@ -2884,6 +2519,15 @@ type Restriction struct {
 	Values *[]string `json:"values,omitempty"`
 	// ReasonCode - The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". Quota Id is set when the SKU has requiredQuotas parameter as the subscription does not belong to that quota. The "NotAvailableForSubscription" is related to capacity at DC. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
 	ReasonCode ReasonCode `json:"reasonCode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Restriction.
+func (r Restriction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.ReasonCode != "" {
+		objectMap["reasonCode"] = r.ReasonCode
+	}
+	return json.Marshal(objectMap)
 }
 
 // ServiceSasParameters the parameters to list service SAS credentials of a specific resource.
@@ -2950,6 +2594,18 @@ type Sku struct {
 	Restrictions *[]Restriction `json:"restrictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Sku.
+func (s Sku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.Name != "" {
+		objectMap["name"] = s.Name
+	}
+	if s.Restrictions != nil {
+		objectMap["restrictions"] = s.Restrictions
+	}
+	return json.Marshal(objectMap)
+}
+
 // SKUCapability the capability information in the specified SKU, including file encryption, network ACLs,
 // change notification, etc.
 type SKUCapability struct {
@@ -2959,11 +2615,23 @@ type SKUCapability struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SKUCapability.
+func (sc SKUCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuListResult the response from the List Storage SKUs operation.
 type SkuListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Get the list result of storage SKUs and their properties.
 	Value *[]Sku `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuListResult.
+func (slr SkuListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TagProperty a tag of the LegalHold of a blob container.
@@ -2978,6 +2646,12 @@ type TagProperty struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Upn - READ-ONLY; Returns the User Principal Name of the user who added the tag.
 	Upn *string `json:"upn,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TagProperty.
+func (tp TagProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource
@@ -3022,6 +2696,12 @@ type UpdateHistoryProperty struct {
 	Upn *string `json:"upn,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UpdateHistoryProperty.
+func (uhp UpdateHistoryProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Usage describes Storage Resource Usage.
 type Usage struct {
 	// Unit - READ-ONLY; Gets the unit of measurement. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountsPerSecond', 'BytesPerSecond'
@@ -3032,6 +2712,12 @@ type Usage struct {
 	Limit *int32 `json:"limit,omitempty"`
 	// Name - READ-ONLY; Gets the name of the type of usage.
 	Name *UsageName `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Usage.
+func (u Usage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UsageListResult the response from the List Usages operation.
@@ -3047,6 +2733,12 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - READ-ONLY; Gets a localized string describing the resource name.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageName.
+func (un UsageName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualNetworkRule virtual Network rule.

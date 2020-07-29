@@ -30,152 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2018-08-31-preview/workloadmonitor"
 
-// AlertGeneration enumerates the values for alert generation.
-type AlertGeneration string
-
-const (
-	// Disabled ...
-	Disabled AlertGeneration = "Disabled"
-	// Enabled ...
-	Enabled AlertGeneration = "Enabled"
-)
-
-// PossibleAlertGenerationValues returns an array of possible values for the AlertGeneration const type.
-func PossibleAlertGenerationValues() []AlertGeneration {
-	return []AlertGeneration{Disabled, Enabled}
-}
-
-// HealthState enumerates the values for health state.
-type HealthState string
-
-const (
-	// Error ...
-	Error HealthState = "Error"
-	// Success ...
-	Success HealthState = "Success"
-	// Uninitialized ...
-	Uninitialized HealthState = "Uninitialized"
-	// Unknown ...
-	Unknown HealthState = "Unknown"
-	// Warning ...
-	Warning HealthState = "Warning"
-)
-
-// PossibleHealthStateValues returns an array of possible values for the HealthState const type.
-func PossibleHealthStateValues() []HealthState {
-	return []HealthState{Error, Success, Uninitialized, Unknown, Warning}
-}
-
-// HealthStateCategory enumerates the values for health state category.
-type HealthStateCategory string
-
-const (
-	// CustomGroup ...
-	CustomGroup HealthStateCategory = "CustomGroup"
-	// Identity ...
-	Identity HealthStateCategory = "Identity"
-)
-
-// PossibleHealthStateCategoryValues returns an array of possible values for the HealthStateCategory const type.
-func PossibleHealthStateCategoryValues() []HealthStateCategory {
-	return []HealthStateCategory{CustomGroup, Identity}
-}
-
-// MonitorCategory enumerates the values for monitor category.
-type MonitorCategory string
-
-const (
-	// AvailabilityHealth ...
-	AvailabilityHealth MonitorCategory = "AvailabilityHealth"
-	// Configuration ...
-	Configuration MonitorCategory = "Configuration"
-	// EntityHealth ...
-	EntityHealth MonitorCategory = "EntityHealth"
-	// PerformanceHealth ...
-	PerformanceHealth MonitorCategory = "PerformanceHealth"
-	// Security ...
-	Security MonitorCategory = "Security"
-)
-
-// PossibleMonitorCategoryValues returns an array of possible values for the MonitorCategory const type.
-func PossibleMonitorCategoryValues() []MonitorCategory {
-	return []MonitorCategory{AvailabilityHealth, Configuration, EntityHealth, PerformanceHealth, Security}
-}
-
-// MonitorState enumerates the values for monitor state.
-type MonitorState string
-
-const (
-	// MonitorStateDisabled ...
-	MonitorStateDisabled MonitorState = "Disabled"
-	// MonitorStateEnabled ...
-	MonitorStateEnabled MonitorState = "Enabled"
-)
-
-// PossibleMonitorStateValues returns an array of possible values for the MonitorState const type.
-func PossibleMonitorStateValues() []MonitorState {
-	return []MonitorState{MonitorStateDisabled, MonitorStateEnabled}
-}
-
-// MonitorType enumerates the values for monitor type.
-type MonitorType string
-
-const (
-	// Aggregate ...
-	Aggregate MonitorType = "Aggregate"
-	// Dependency ...
-	Dependency MonitorType = "Dependency"
-	// Unit ...
-	Unit MonitorType = "Unit"
-)
-
-// PossibleMonitorTypeValues returns an array of possible values for the MonitorType const type.
-func PossibleMonitorTypeValues() []MonitorType {
-	return []MonitorType{Aggregate, Dependency, Unit}
-}
-
-// Operator enumerates the values for operator.
-type Operator string
-
-const (
-	// Equals ...
-	Equals Operator = "Equals"
-	// GreaterThan ...
-	GreaterThan Operator = "GreaterThan"
-	// GreaterThanOrEqual ...
-	GreaterThanOrEqual Operator = "GreaterThanOrEqual"
-	// LessThan ...
-	LessThan Operator = "LessThan"
-	// LessThanOrEqual ...
-	LessThanOrEqual Operator = "LessThanOrEqual"
-	// NotEquals ...
-	NotEquals Operator = "NotEquals"
-)
-
-// PossibleOperatorValues returns an array of possible values for the Operator const type.
-func PossibleOperatorValues() []Operator {
-	return []Operator{Equals, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, NotEquals}
-}
-
-// WorkloadType enumerates the values for workload type.
-type WorkloadType string
-
-const (
-	// Apache ...
-	Apache WorkloadType = "Apache"
-	// BaseOS ...
-	BaseOS WorkloadType = "BaseOS"
-	// IIS ...
-	IIS WorkloadType = "IIS"
-	// SQL ...
-	SQL WorkloadType = "SQL"
-)
-
-// PossibleWorkloadTypeValues returns an array of possible values for the WorkloadType const type.
-func PossibleWorkloadTypeValues() []WorkloadType {
-	return []WorkloadType{Apache, BaseOS, IIS, SQL}
-}
-
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
@@ -186,6 +40,12 @@ type AzureEntityResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Component model for component.
@@ -322,6 +182,12 @@ type ComponentsCollection struct {
 	Value *[]Component `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ComponentsCollection.
+func (cc ComponentsCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ComponentsCollectionIterator provides access to a complete listing of Component values.
 type ComponentsCollectionIterator struct {
 	i    int
@@ -390,10 +256,15 @@ func (cc ComponentsCollection) IsEmpty() bool {
 	return cc.Value == nil || len(*cc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cc ComponentsCollection) hasNextLink() bool {
+	return cc.NextLink != nil && len(*cc.NextLink) != 0
+}
+
 // componentsCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cc ComponentsCollection) componentsCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if cc.NextLink == nil || len(to.String(cc.NextLink)) < 1 {
+	if !cc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -421,11 +292,16 @@ func (page *ComponentsCollectionPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cc)
+		if err != nil {
+			return err
+		}
+		page.cc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cc = next
 	return nil
 }
 
@@ -485,6 +361,12 @@ type HealthStateChange struct {
 	HealthState HealthState `json:"healthState,omitempty"`
 	// HealthStateChangeTime - READ-ONLY; Time at which this Health state was reached.
 	HealthStateChangeTime *date.Time `json:"healthStateChangeTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HealthStateChange.
+func (hsc HealthStateChange) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Monitor model for Monitor
@@ -576,6 +458,12 @@ type MonitorCriteria struct {
 	Threshold *float64 `json:"threshold,omitempty"`
 	// ComparisonOperator - READ-ONLY; Comparison enum on threshold of this criteria. Possible values include: 'Equals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual', 'NotEquals'
 	ComparisonOperator Operator `json:"comparisonOperator,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MonitorCriteria.
+func (mc MonitorCriteria) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MonitorInstance model for monitor instance.
@@ -718,6 +606,12 @@ type MonitorInstancesCollection struct {
 	Value *[]MonitorInstance `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MonitorInstancesCollection.
+func (mic MonitorInstancesCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MonitorInstancesCollectionIterator provides access to a complete listing of MonitorInstance values.
 type MonitorInstancesCollectionIterator struct {
 	i    int
@@ -786,10 +680,15 @@ func (mic MonitorInstancesCollection) IsEmpty() bool {
 	return mic.Value == nil || len(*mic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mic MonitorInstancesCollection) hasNextLink() bool {
+	return mic.NextLink != nil && len(*mic.NextLink) != 0
+}
+
 // monitorInstancesCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mic MonitorInstancesCollection) monitorInstancesCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if mic.NextLink == nil || len(to.String(mic.NextLink)) < 1 {
+	if !mic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -817,11 +716,16 @@ func (page *MonitorInstancesCollectionPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mic)
+		if err != nil {
+			return err
+		}
+		page.mic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mic = next
 	return nil
 }
 
@@ -897,6 +801,12 @@ type MonitorProperties struct {
 	SignalType *string `json:"signalType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MonitorProperties.
+func (mp MonitorProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MonitorsCollection model for collection of Monitor.
 type MonitorsCollection struct {
 	autorest.Response `json:"-"`
@@ -904,6 +814,12 @@ type MonitorsCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; Collection of Monitor.
 	Value *[]Monitor `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MonitorsCollection.
+func (mc MonitorsCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MonitorsCollectionIterator provides access to a complete listing of Monitor values.
@@ -974,10 +890,15 @@ func (mc MonitorsCollection) IsEmpty() bool {
 	return mc.Value == nil || len(*mc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mc MonitorsCollection) hasNextLink() bool {
+	return mc.NextLink != nil && len(*mc.NextLink) != 0
+}
+
 // monitorsCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mc MonitorsCollection) monitorsCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if mc.NextLink == nil || len(to.String(mc.NextLink)) < 1 {
+	if !mc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1005,11 +926,16 @@ func (page *MonitorsCollectionPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mc)
+		if err != nil {
+			return err
+		}
+		page.mc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mc = next
 	return nil
 }
 
@@ -1130,6 +1056,12 @@ type NotificationSettingProperties struct {
 	ActionGroupResourceIds *[]string `json:"actionGroupResourceIds,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NotificationSettingProperties.
+func (nsp NotificationSettingProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // NotificationSettingsCollection model for collection of notificationSettings.
 type NotificationSettingsCollection struct {
 	autorest.Response `json:"-"`
@@ -1138,8 +1070,16 @@ type NotificationSettingsCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// NotificationSettingsCollectionIterator provides access to a complete listing of NotificationSetting
-// values.
+// MarshalJSON is the custom marshaler for NotificationSettingsCollection.
+func (nsc NotificationSettingsCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nsc.Value != nil {
+		objectMap["value"] = nsc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// NotificationSettingsCollectionIterator provides access to a complete listing of NotificationSetting values.
 type NotificationSettingsCollectionIterator struct {
 	i    int
 	page NotificationSettingsCollectionPage
@@ -1207,10 +1147,15 @@ func (nsc NotificationSettingsCollection) IsEmpty() bool {
 	return nsc.Value == nil || len(*nsc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (nsc NotificationSettingsCollection) hasNextLink() bool {
+	return nsc.NextLink != nil && len(*nsc.NextLink) != 0
+}
+
 // notificationSettingsCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (nsc NotificationSettingsCollection) notificationSettingsCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if nsc.NextLink == nil || len(to.String(nsc.NextLink)) < 1 {
+	if !nsc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1238,11 +1183,16 @@ func (page *NotificationSettingsCollectionPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.nsc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.nsc)
+		if err != nil {
+			return err
+		}
+		page.nsc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.nsc = next
 	return nil
 }
 
@@ -1286,6 +1236,12 @@ type Operation struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult container for a list of operations supported by the resource provider.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
@@ -1293,6 +1249,12 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; List of operations.
 	Value *[]Operation `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -1363,10 +1325,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1394,11 +1361,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -1444,6 +1416,12 @@ type OperationProperties struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationProperties.
+func (op OperationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
 // required location and tags
 type ProxyResource struct {
@@ -1455,6 +1433,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource ...
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1463,6 +1447,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource

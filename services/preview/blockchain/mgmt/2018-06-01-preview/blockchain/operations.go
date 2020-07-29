@@ -71,6 +71,9 @@ func (client OperationsClient) List(ctx context.Context) (result ResourceProvide
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.OperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.rpoc.hasNextLink() && result.rpoc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

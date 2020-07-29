@@ -323,6 +323,9 @@ func (client JobsClient) List(ctx context.Context, resourceGroupName string, job
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "List", resp, "Failure responding to request")
 	}
+	if result.jlr.hasNextLink() && result.jlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -457,6 +460,9 @@ func (client JobsClient) ListJobHistory(ctx context.Context, resourceGroupName s
 	result.jhlr, err = client.ListJobHistoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "ListJobHistory", resp, "Failure responding to request")
+	}
+	if result.jhlr.hasNextLink() && result.jhlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

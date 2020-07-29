@@ -237,6 +237,9 @@ func (client ArtifactClient) List(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ArtifactClient", "List", resp, "Failure responding to request")
 	}
+	if result.rwca.hasNextLink() && result.rwca.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -73,6 +73,9 @@ func (client BillingMetersClient) List(ctx context.Context, billingLocation stri
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BillingMetersClient", "List", resp, "Failure responding to request")
 	}
+	if result.bmc.hasNextLink() && result.bmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

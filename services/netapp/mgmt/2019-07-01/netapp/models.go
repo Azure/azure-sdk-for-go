@@ -29,57 +29,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2019-07-01/netapp"
 
-// CheckNameResourceTypes enumerates the values for check name resource types.
-type CheckNameResourceTypes string
-
-const (
-	// MicrosoftNetAppnetAppAccounts ...
-	MicrosoftNetAppnetAppAccounts CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts"
-	// MicrosoftNetAppnetAppAccountscapacityPools ...
-	MicrosoftNetAppnetAppAccountscapacityPools CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools"
-	// MicrosoftNetAppnetAppAccountscapacityPoolsvolumes ...
-	MicrosoftNetAppnetAppAccountscapacityPoolsvolumes CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
-	// MicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots ...
-	MicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots"
-)
-
-// PossibleCheckNameResourceTypesValues returns an array of possible values for the CheckNameResourceTypes const type.
-func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
-	return []CheckNameResourceTypes{MicrosoftNetAppnetAppAccounts, MicrosoftNetAppnetAppAccountscapacityPools, MicrosoftNetAppnetAppAccountscapacityPoolsvolumes, MicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots}
-}
-
-// InAvailabilityReasonType enumerates the values for in availability reason type.
-type InAvailabilityReasonType string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists InAvailabilityReasonType = "AlreadyExists"
-	// Invalid ...
-	Invalid InAvailabilityReasonType = "Invalid"
-)
-
-// PossibleInAvailabilityReasonTypeValues returns an array of possible values for the InAvailabilityReasonType const type.
-func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
-	return []InAvailabilityReasonType{AlreadyExists, Invalid}
-}
-
-// ServiceLevel enumerates the values for service level.
-type ServiceLevel string
-
-const (
-	// Premium Premium service level
-	Premium ServiceLevel = "Premium"
-	// Standard Standard service level
-	Standard ServiceLevel = "Standard"
-	// Ultra Ultra service level
-	Ultra ServiceLevel = "Ultra"
-)
-
-// PossibleServiceLevelValues returns an array of possible values for the ServiceLevel const type.
-func PossibleServiceLevelValues() []ServiceLevel {
-	return []ServiceLevel{Premium, Standard, Ultra}
-}
-
 // Account netApp account resource
 type Account struct {
 	autorest.Response `json:"-"`
@@ -296,6 +245,15 @@ type AccountProperties struct {
 	ActiveDirectories *[]ActiveDirectory `json:"activeDirectories,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountProperties.
+func (ap AccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.ActiveDirectories != nil {
+		objectMap["activeDirectories"] = ap.ActiveDirectories
+	}
+	return json.Marshal(objectMap)
+}
+
 // AccountsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type AccountsCreateOrUpdateFuture struct {
@@ -325,8 +283,7 @@ func (future *AccountsCreateOrUpdateFuture) Result(client AccountsClient) (a Acc
 	return
 }
 
-// AccountsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AccountsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountsDeleteFuture struct {
 	azure.Future
 }
@@ -744,6 +701,33 @@ type MountTargetProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MountTargetProperties.
+func (mtp MountTargetProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mtp.FileSystemID != nil {
+		objectMap["fileSystemId"] = mtp.FileSystemID
+	}
+	if mtp.Subnet != nil {
+		objectMap["subnet"] = mtp.Subnet
+	}
+	if mtp.StartIP != nil {
+		objectMap["startIp"] = mtp.StartIP
+	}
+	if mtp.EndIP != nil {
+		objectMap["endIp"] = mtp.EndIP
+	}
+	if mtp.Gateway != nil {
+		objectMap["gateway"] = mtp.Gateway
+	}
+	if mtp.Netmask != nil {
+		objectMap["netmask"] = mtp.Netmask
+	}
+	if mtp.SmbServerFqdn != nil {
+		objectMap["smbServerFqdn"] = mtp.SmbServerFqdn
+	}
+	return json.Marshal(objectMap)
+}
+
 // Operation microsoft.NetApp REST API operation definition.
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
@@ -837,8 +821,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult result of the request to list Cloud Volume operations. It contains a list of
-// operations and a URL link to get the next set of results.
+// OperationListResult result of the request to list Cloud Volume operations. It contains a list of operations
+// and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Storage operations supported by the Storage resource provider.
@@ -869,6 +853,18 @@ type PoolProperties struct {
 	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
 	// ProvisioningState - READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PoolProperties.
+func (pp PoolProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pp.Size != nil {
+		objectMap["size"] = pp.Size
+	}
+	if pp.ServiceLevel != "" {
+		objectMap["serviceLevel"] = pp.ServiceLevel
+	}
+	return json.Marshal(objectMap)
 }
 
 // PoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1068,8 +1064,16 @@ type SnapshotProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// SnapshotsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// MarshalJSON is the custom marshaler for SnapshotProperties.
+func (sp SnapshotProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.FileSystemID != nil {
+		objectMap["fileSystemId"] = sp.FileSystemID
+	}
+	return json.Marshal(objectMap)
+}
+
+// SnapshotsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SnapshotsCreateFuture struct {
 	azure.Future
 }
@@ -1097,8 +1101,7 @@ func (future *SnapshotsCreateFuture) Result(client SnapshotsClient) (s Snapshot,
 	return
 }
 
-// SnapshotsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// SnapshotsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SnapshotsDeleteFuture struct {
 	azure.Future
 }
@@ -1377,6 +1380,36 @@ type VolumeProperties struct {
 	MountTargets *[]MountTargetProperties `json:"mountTargets,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VolumeProperties.
+func (vp VolumeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vp.CreationToken != nil {
+		objectMap["creationToken"] = vp.CreationToken
+	}
+	if vp.ServiceLevel != "" {
+		objectMap["serviceLevel"] = vp.ServiceLevel
+	}
+	if vp.UsageThreshold != nil {
+		objectMap["usageThreshold"] = vp.UsageThreshold
+	}
+	if vp.ExportPolicy != nil {
+		objectMap["exportPolicy"] = vp.ExportPolicy
+	}
+	if vp.ProtocolTypes != nil {
+		objectMap["protocolTypes"] = vp.ProtocolTypes
+	}
+	if vp.SnapshotID != nil {
+		objectMap["snapshotId"] = vp.SnapshotID
+	}
+	if vp.SubnetID != nil {
+		objectMap["subnetId"] = vp.SubnetID
+	}
+	if vp.MountTargets != nil {
+		objectMap["mountTargets"] = vp.MountTargets
+	}
+	return json.Marshal(objectMap)
+}
+
 // VolumePropertiesExportPolicy set of export policy rules
 type VolumePropertiesExportPolicy struct {
 	// Rules - Export policy rule
@@ -1412,8 +1445,7 @@ func (future *VolumesCreateOrUpdateFuture) Result(client VolumesClient) (vVar Vo
 	return
 }
 
-// VolumesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// VolumesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type VolumesDeleteFuture struct {
 	azure.Future
 }

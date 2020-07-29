@@ -30,21 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/windowsiot/mgmt/2019-06-01/windowsiot"
 
-// ServiceNameUnavailabilityReason enumerates the values for service name unavailability reason.
-type ServiceNameUnavailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists ServiceNameUnavailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid ServiceNameUnavailabilityReason = "Invalid"
-)
-
-// PossibleServiceNameUnavailabilityReasonValues returns an array of possible values for the ServiceNameUnavailabilityReason const type.
-func PossibleServiceNameUnavailabilityReasonValues() []ServiceNameUnavailabilityReason {
-	return []ServiceNameUnavailabilityReason{AlreadyExists, Invalid}
-}
-
 // DeviceService the description of the Windows IoT Device Service.
 type DeviceService struct {
 	autorest.Response `json:"-"`
@@ -175,8 +160,16 @@ type DeviceServiceDescriptionListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// DeviceServiceDescriptionListResultIterator provides access to a complete listing of DeviceService
-// values.
+// MarshalJSON is the custom marshaler for DeviceServiceDescriptionListResult.
+func (dsdlr DeviceServiceDescriptionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dsdlr.Value != nil {
+		objectMap["value"] = dsdlr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// DeviceServiceDescriptionListResultIterator provides access to a complete listing of DeviceService values.
 type DeviceServiceDescriptionListResultIterator struct {
 	i    int
 	page DeviceServiceDescriptionListResultPage
@@ -244,10 +237,15 @@ func (dsdlr DeviceServiceDescriptionListResult) IsEmpty() bool {
 	return dsdlr.Value == nil || len(*dsdlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dsdlr DeviceServiceDescriptionListResult) hasNextLink() bool {
+	return dsdlr.NextLink != nil && len(*dsdlr.NextLink) != 0
+}
+
 // deviceServiceDescriptionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dsdlr DeviceServiceDescriptionListResult) deviceServiceDescriptionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dsdlr.NextLink == nil || len(to.String(dsdlr.NextLink)) < 1 {
+	if !dsdlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -275,11 +273,16 @@ func (page *DeviceServiceDescriptionListResultPage) NextWithContext(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dsdlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dsdlr)
+		if err != nil {
+			return err
+		}
+		page.dsdlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dsdlr = next
 	return nil
 }
 
@@ -313,8 +316,8 @@ func NewDeviceServiceDescriptionListResultPage(getNextPage func(context.Context,
 	return DeviceServiceDescriptionListResultPage{fn: getNextPage}
 }
 
-// DeviceServiceNameAvailabilityInfo the properties indicating whether a given Windows IoT Device Service
-// name is available.
+// DeviceServiceNameAvailabilityInfo the properties indicating whether a given Windows IoT Device Service name
+// is available.
 type DeviceServiceNameAvailabilityInfo struct {
 	autorest.Response `json:"-"`
 	// NameAvailable - READ-ONLY; The value which indicates whether the provided name is available.
@@ -323,6 +326,15 @@ type DeviceServiceNameAvailabilityInfo struct {
 	Reason ServiceNameUnavailabilityReason `json:"reason,omitempty"`
 	// Message - The detailed reason message.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeviceServiceNameAvailabilityInfo.
+func (dsnai DeviceServiceNameAvailabilityInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dsnai.Message != nil {
+		objectMap["message"] = dsnai.Message
+	}
+	return json.Marshal(objectMap)
 }
 
 // DeviceServiceProperties the properties of a Windows IoT Device Service.
@@ -337,6 +349,24 @@ type DeviceServiceProperties struct {
 	BillingDomainName *string `json:"billingDomainName,omitempty"`
 	// AdminDomainName - Windows IoT Device Service OEM AAD domain
 	AdminDomainName *string `json:"adminDomainName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeviceServiceProperties.
+func (dsp DeviceServiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dsp.Notes != nil {
+		objectMap["notes"] = dsp.Notes
+	}
+	if dsp.Quantity != nil {
+		objectMap["quantity"] = dsp.Quantity
+	}
+	if dsp.BillingDomainName != nil {
+		objectMap["billingDomainName"] = dsp.BillingDomainName
+	}
+	if dsp.AdminDomainName != nil {
+		objectMap["adminDomainName"] = dsp.AdminDomainName
+	}
+	return json.Marshal(objectMap)
 }
 
 // ErrorDetails the details of the error.
@@ -371,14 +401,20 @@ type OperationEntity struct {
 	Display *OperationDisplayInfo `json:"display,omitempty"`
 }
 
-// OperationListResult result of the request to list Windows IoT Device Service operations. It contains a
-// list of operations and a URL link to get the next set of results.
+// OperationListResult result of the request to list Windows IoT Device Service operations. It contains a list
+// of operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of Windows IoT Device Service operations supported by the Microsoft.WindowsIoT resource provider.
 	Value *[]OperationEntity `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of OperationEntity values.
@@ -449,10 +485,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -480,11 +521,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -529,6 +575,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource the core properties of ARM resources
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource Id for the resource
@@ -537,6 +589,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource

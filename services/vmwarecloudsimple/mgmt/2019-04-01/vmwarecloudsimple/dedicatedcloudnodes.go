@@ -343,6 +343,9 @@ func (client DedicatedCloudNodesClient) ListByResourceGroup(ctx context.Context,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.dcnlr.hasNextLink() && result.dcnlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -464,6 +467,9 @@ func (client DedicatedCloudNodesClient) ListBySubscription(ctx context.Context, 
 	result.dcnlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.dcnlr.hasNextLink() && result.dcnlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

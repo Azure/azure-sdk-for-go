@@ -31,27 +31,18 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2017-11-30/consumption"
 
-// Datagrain enumerates the values for datagrain.
-type Datagrain string
-
-const (
-	// DailyGrain Daily grain of data
-	DailyGrain Datagrain = "daily"
-	// MonthlyGrain Monthly grain of data
-	MonthlyGrain Datagrain = "monthly"
-)
-
-// PossibleDatagrainValues returns an array of possible values for the Datagrain const type.
-func PossibleDatagrainValues() []Datagrain {
-	return []Datagrain{DailyGrain, MonthlyGrain}
-}
-
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
 	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse error response indicates that the service is not able to process the incoming request. The
@@ -79,12 +70,27 @@ type MeterDetails struct {
 	PretaxStandardRate *decimal.Decimal `json:"pretaxStandardRate,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MeterDetails.
+func (md MeterDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Operation a Consumption REST API operation.
 type Operation struct {
 	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the object that represents the operation.
@@ -97,6 +103,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult result of listing consumption operations. It contains a list of operations and a URL
 // link to get the next set of results.
 type OperationListResult struct {
@@ -105,6 +117,12 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -175,10 +193,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -206,11 +229,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -333,6 +361,12 @@ type ReservationDetailsListResult struct {
 	Value *[]ReservationDetails `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ReservationDetailsListResult.
+func (rdlr ReservationDetailsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ReservationDetailsProperties the properties of the reservation details.
 type ReservationDetailsProperties struct {
 	// ReservationOrderID - READ-ONLY; The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a single purchase transaction. A reservation order contains reservations. The reservation order specifies the VM size and region for the reservations.
@@ -351,6 +385,12 @@ type ReservationDetailsProperties struct {
 	InstanceID *string `json:"instanceId,omitempty"`
 	// TotalReservedQuantity - READ-ONLY; This is the total count of instances that are reserved for the reservationId.
 	TotalReservedQuantity *decimal.Decimal `json:"totalReservedQuantity,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReservationDetailsProperties.
+func (rdp ReservationDetailsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ReservationSummaries reservation summaries resource.
@@ -442,6 +482,12 @@ type ReservationSummariesListResult struct {
 	Value *[]ReservationSummaries `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ReservationSummariesListResult.
+func (rslr ReservationSummariesListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ReservationSummariesProperties the properties of the reservation summaries.
 type ReservationSummariesProperties struct {
 	// ReservationOrderID - READ-ONLY; The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a single purchase transaction. A reservation order contains reservations. The reservation order specifies the VM size and region for the reservations.
@@ -462,6 +508,12 @@ type ReservationSummariesProperties struct {
 	AvgUtilizationPercentage *decimal.Decimal `json:"avgUtilizationPercentage,omitempty"`
 	// MaxUtilizationPercentage - READ-ONLY; This is the maximum hourly utilization in the usage time (day or month). E.g. if usage record corresponds to 12/10/2017 and on that for hour 4 and 5, utilization was 100%, this field will return 100% for that day.
 	MaxUtilizationPercentage *decimal.Decimal `json:"maxUtilizationPercentage,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReservationSummariesProperties.
+func (rsp ReservationSummariesProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Resource the Resource model definition.
@@ -612,6 +664,12 @@ type UsageDetailProperties struct {
 	AdditionalProperties *string `json:"additionalProperties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UsageDetailProperties.
+func (UDP UsageDetailProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UsageDetailsListResult result of listing usage details. It contains a list of available usage details in
 // reverse chronological order by billing period.
 type UsageDetailsListResult struct {
@@ -620,6 +678,12 @@ type UsageDetailsListResult struct {
 	Value *[]UsageDetail `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageDetailsListResult.
+func (udlr UsageDetailsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UsageDetailsListResultIterator provides access to a complete listing of UsageDetail values.
@@ -690,10 +754,15 @@ func (udlr UsageDetailsListResult) IsEmpty() bool {
 	return udlr.Value == nil || len(*udlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (udlr UsageDetailsListResult) hasNextLink() bool {
+	return udlr.NextLink != nil && len(*udlr.NextLink) != 0
+}
+
 // usageDetailsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (udlr UsageDetailsListResult) usageDetailsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if udlr.NextLink == nil || len(to.String(udlr.NextLink)) < 1 {
+	if !udlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -721,11 +790,16 @@ func (page *UsageDetailsListResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.udlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.udlr)
+		if err != nil {
+			return err
+		}
+		page.udlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.udlr = next
 	return nil
 }
 

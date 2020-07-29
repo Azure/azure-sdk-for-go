@@ -25,8 +25,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2017-03-01/trafficmanager"
 
-// CheckTrafficManagerRelativeDNSNameAvailabilityParameters parameters supplied to check Traffic Manager
-// name operation.
+// CheckTrafficManagerRelativeDNSNameAvailabilityParameters parameters supplied to check Traffic Manager name
+// operation.
 type CheckTrafficManagerRelativeDNSNameAvailabilityParameters struct {
 	// Name - Gets or sets the name of the resource.
 	Name *string `json:"name,omitempty"`
@@ -52,6 +52,12 @@ type DeleteOperationResult struct {
 	autorest.Response `json:"-"`
 	// OperationResult - READ-ONLY; The result of the operation or request.
 	OperationResult *bool `json:"boolean,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeleteOperationResult.
+func (dor DeleteOperationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DNSConfig class containing DNS settings in a Traffic Manager profile.
@@ -268,8 +274,8 @@ func (gh *GeographicHierarchy) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// GeographicHierarchyProperties class representing the properties of the Geographic hierarchy used with
-// the Geographic traffic routing method.
+// GeographicHierarchyProperties class representing the properties of the Geographic hierarchy used with the
+// Geographic traffic routing method.
 type GeographicHierarchyProperties struct {
 	// GeographicHierarchy - The region at the root of the hierarchy from all the regions in the hierarchy can be retrieved.
 	GeographicHierarchy *Region `json:"geographicHierarchy,omitempty"`

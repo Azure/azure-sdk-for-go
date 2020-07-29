@@ -385,6 +385,9 @@ func (client VirtualMachineClient) List(ctx context.Context, resourceGroupName s
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineClient", "List", resp, "Failure responding to request")
 	}
+	if result.rwclvm.hasNextLink() && result.rwclvm.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

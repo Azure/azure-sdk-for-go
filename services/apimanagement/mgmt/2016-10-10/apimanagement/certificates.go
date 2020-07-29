@@ -380,6 +380,9 @@ func (client CertificatesClient) ListByService(ctx context.Context, resourceGrou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.CertificatesClient", "ListByService", resp, "Failure responding to request")
 	}
+	if result.cc.hasNextLink() && result.cc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -93,6 +93,9 @@ func (client MarketplacesByBillingAccountClient) List(ctx context.Context, billi
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByBillingAccountClient", "List", resp, "Failure responding to request")
 	}
+	if result.mlr.hasNextLink() && result.mlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -229,6 +232,9 @@ func (client MarketplacesByBillingAccountClient) ListByBillingPeriod(ctx context
 	result.mlr, err = client.ListByBillingPeriodResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByBillingAccountClient", "ListByBillingPeriod", resp, "Failure responding to request")
+	}
+	if result.mlr.hasNextLink() && result.mlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

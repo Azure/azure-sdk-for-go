@@ -75,6 +75,9 @@ func (client SkusAvailabilityClient) List(ctx context.Context, regionID string, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityClient", "List", resp, "Failure responding to request")
 	}
+	if result.salr.hasNextLink() && result.salr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

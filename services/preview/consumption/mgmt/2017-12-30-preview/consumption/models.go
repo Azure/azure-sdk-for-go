@@ -31,40 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/consumption/mgmt/2017-12-30-preview/consumption"
 
-// OperatorType enumerates the values for operator type.
-type OperatorType string
-
-const (
-	// EqualTo ...
-	EqualTo OperatorType = "EqualTo"
-	// GreaterThan ...
-	GreaterThan OperatorType = "GreaterThan"
-	// GreaterThanOrEqualTo ...
-	GreaterThanOrEqualTo OperatorType = "GreaterThanOrEqualTo"
-)
-
-// PossibleOperatorTypeValues returns an array of possible values for the OperatorType const type.
-func PossibleOperatorTypeValues() []OperatorType {
-	return []OperatorType{EqualTo, GreaterThan, GreaterThanOrEqualTo}
-}
-
-// TimeGrainType enumerates the values for time grain type.
-type TimeGrainType string
-
-const (
-	// Annually ...
-	Annually TimeGrainType = "Annually"
-	// Monthly ...
-	Monthly TimeGrainType = "Monthly"
-	// Quarterly ...
-	Quarterly TimeGrainType = "Quarterly"
-)
-
-// PossibleTimeGrainTypeValues returns an array of possible values for the TimeGrainType const type.
-func PossibleTimeGrainTypeValues() []TimeGrainType {
-	return []TimeGrainType{Annually, Monthly, Quarterly}
-}
-
 // Budget a budget resource.
 type Budget struct {
 	autorest.Response `json:"-"`
@@ -188,12 +154,17 @@ func (bp BudgetProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// BudgetsListResult result of listing budgets. It contains a list of available budgets in the scope
-// provided.
+// BudgetsListResult result of listing budgets. It contains a list of available budgets in the scope provided.
 type BudgetsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of budgets.
 	Value *[]Budget `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BudgetsListResult.
+func (blr BudgetsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BudgetTimePeriod the start and end date for a budget.
@@ -212,12 +183,24 @@ type CurrentSpend struct {
 	Unit *string `json:"unit,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CurrentSpend.
+func (cs CurrentSpend) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
 	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse error response indicates that the service is not able to process the incoming request. The
@@ -249,6 +232,15 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
 	// Provider - READ-ONLY; Service provider: Microsoft.Consumption.
@@ -259,6 +251,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult result of listing consumption operations. It contains a list of operations and a URL
 // link to get the next set of results.
 type OperationListResult struct {
@@ -267,6 +265,12 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -337,10 +341,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -368,11 +377,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -416,4 +430,13 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 	// ETag - eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not.
 	ETag *string `json:"eTag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pr.ETag != nil {
+		objectMap["eTag"] = pr.ETag
+	}
+	return json.Marshal(objectMap)
 }

@@ -31,14 +31,14 @@ type AgreementsClient struct {
 }
 
 // NewAgreementsClient creates an instance of the AgreementsClient client.
-func NewAgreementsClient(subscriptionID string) AgreementsClient {
-	return NewAgreementsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewAgreementsClient(subscriptionID string, subscriptionID1 string) AgreementsClient {
+	return NewAgreementsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewAgreementsClientWithBaseURI creates an instance of the AgreementsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewAgreementsClientWithBaseURI(baseURI string, subscriptionID string) AgreementsClient {
-	return AgreementsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewAgreementsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) AgreementsClient {
+	return AgreementsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // Get gets an agreement by ID.
@@ -151,6 +151,9 @@ func (client AgreementsClient) ListByBillingAccount(ctx context.Context, billing
 	result.alr, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.AgreementsClient", "ListByBillingAccount", resp, "Failure responding to request")
+	}
+	if result.alr.hasNextLink() && result.alr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

@@ -28,53 +28,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-09-01/skus"
 
-// ResourceSkuCapacityScaleType enumerates the values for resource sku capacity scale type.
-type ResourceSkuCapacityScaleType string
-
-const (
-	// Automatic ...
-	Automatic ResourceSkuCapacityScaleType = "Automatic"
-	// Manual ...
-	Manual ResourceSkuCapacityScaleType = "Manual"
-	// None ...
-	None ResourceSkuCapacityScaleType = "None"
-)
-
-// PossibleResourceSkuCapacityScaleTypeValues returns an array of possible values for the ResourceSkuCapacityScaleType const type.
-func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
-	return []ResourceSkuCapacityScaleType{Automatic, Manual, None}
-}
-
-// ResourceSkuRestrictionsReasonCode enumerates the values for resource sku restrictions reason code.
-type ResourceSkuRestrictionsReasonCode string
-
-const (
-	// NotAvailableForSubscription ...
-	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = "NotAvailableForSubscription"
-	// QuotaID ...
-	QuotaID ResourceSkuRestrictionsReasonCode = "QuotaId"
-)
-
-// PossibleResourceSkuRestrictionsReasonCodeValues returns an array of possible values for the ResourceSkuRestrictionsReasonCode const type.
-func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
-	return []ResourceSkuRestrictionsReasonCode{NotAvailableForSubscription, QuotaID}
-}
-
-// ResourceSkuRestrictionsType enumerates the values for resource sku restrictions type.
-type ResourceSkuRestrictionsType string
-
-const (
-	// Location ...
-	Location ResourceSkuRestrictionsType = "Location"
-	// Zone ...
-	Zone ResourceSkuRestrictionsType = "Zone"
-)
-
-// PossibleResourceSkuRestrictionsTypeValues returns an array of possible values for the ResourceSkuRestrictionsType const type.
-func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
-	return []ResourceSkuRestrictionsType{Location, Zone}
-}
-
 // ResourceSku describes an available Compute SKU.
 type ResourceSku struct {
 	// ResourceType - READ-ONLY; The type of resource the SKU applies to.
@@ -105,12 +58,24 @@ type ResourceSku struct {
 	Restrictions *[]ResourceSkuRestrictions `json:"restrictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceSku.
+func (rs ResourceSku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceSkuCapabilities describes The SKU capabilities object.
 type ResourceSkuCapabilities struct {
 	// Name - READ-ONLY; An invariant to describe the feature.
 	Name *string `json:"name,omitempty"`
 	// Value - READ-ONLY; An invariant if the feature is measured by quantity.
 	Value *string `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceSkuCapabilities.
+func (rsc ResourceSkuCapabilities) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceSkuCapacity describes scaling information of a SKU.
@@ -125,6 +90,12 @@ type ResourceSkuCapacity struct {
 	ScaleType ResourceSkuCapacityScaleType `json:"scaleType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceSkuCapacity.
+func (rsc ResourceSkuCapacity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceSkuCosts describes metadata for retrieving price info.
 type ResourceSkuCosts struct {
 	// MeterID - READ-ONLY; Used for querying price from commerce.
@@ -135,6 +106,12 @@ type ResourceSkuCosts struct {
 	ExtendedUnit *string `json:"extendedUnit,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceSkuCosts.
+func (rsc ResourceSkuCosts) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceSkuLocationInfo ...
 type ResourceSkuLocationInfo struct {
 	// Location - READ-ONLY; Location of the SKU
@@ -143,12 +120,24 @@ type ResourceSkuLocationInfo struct {
 	Zones *[]string `json:"zones,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceSkuLocationInfo.
+func (rsli ResourceSkuLocationInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceSkuRestrictionInfo ...
 type ResourceSkuRestrictionInfo struct {
 	// Locations - READ-ONLY; Locations where the SKU is restricted
 	Locations *[]string `json:"locations,omitempty"`
 	// Zones - READ-ONLY; List of availability zones where the SKU is restricted.
 	Zones *[]string `json:"zones,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceSkuRestrictionInfo.
+func (rsri ResourceSkuRestrictionInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceSkuRestrictions describes scaling information of a SKU.
@@ -161,6 +150,12 @@ type ResourceSkuRestrictions struct {
 	RestrictionInfo *ResourceSkuRestrictionInfo `json:"restrictionInfo,omitempty"`
 	// ReasonCode - READ-ONLY; The reason for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
 	ReasonCode ResourceSkuRestrictionsReasonCode `json:"reasonCode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceSkuRestrictions.
+func (rsr ResourceSkuRestrictions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceSkusResult the List Resource Skus operation response.
@@ -240,10 +235,15 @@ func (rsr ResourceSkusResult) IsEmpty() bool {
 	return rsr.Value == nil || len(*rsr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rsr ResourceSkusResult) hasNextLink() bool {
+	return rsr.NextLink != nil && len(*rsr.NextLink) != 0
+}
+
 // resourceSkusResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rsr ResourceSkusResult) resourceSkusResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rsr.NextLink == nil || len(to.String(rsr.NextLink)) < 1 {
+	if !rsr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -271,11 +271,16 @@ func (page *ResourceSkusResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rsr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rsr)
+		if err != nil {
+			return err
+		}
+		page.rsr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rsr = next
 	return nil
 }
 

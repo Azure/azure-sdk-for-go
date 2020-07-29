@@ -97,6 +97,9 @@ func (client UsageDetailsClient) List(ctx context.Context, scope string, expand 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "List", resp, "Failure responding to request")
 	}
+	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

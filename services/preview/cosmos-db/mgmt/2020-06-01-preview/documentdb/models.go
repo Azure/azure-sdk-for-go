@@ -31,433 +31,14 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-06-01-preview/documentdb"
 
-// CompositePathSortOrder enumerates the values for composite path sort order.
-type CompositePathSortOrder string
-
-const (
-	// Ascending ...
-	Ascending CompositePathSortOrder = "Ascending"
-	// Descending ...
-	Descending CompositePathSortOrder = "Descending"
-)
-
-// PossibleCompositePathSortOrderValues returns an array of possible values for the CompositePathSortOrder const type.
-func PossibleCompositePathSortOrderValues() []CompositePathSortOrder {
-	return []CompositePathSortOrder{Ascending, Descending}
-}
-
-// ConflictResolutionMode enumerates the values for conflict resolution mode.
-type ConflictResolutionMode string
-
-const (
-	// Custom ...
-	Custom ConflictResolutionMode = "Custom"
-	// LastWriterWins ...
-	LastWriterWins ConflictResolutionMode = "LastWriterWins"
-)
-
-// PossibleConflictResolutionModeValues returns an array of possible values for the ConflictResolutionMode const type.
-func PossibleConflictResolutionModeValues() []ConflictResolutionMode {
-	return []ConflictResolutionMode{Custom, LastWriterWins}
-}
-
-// ConnectorOffer enumerates the values for connector offer.
-type ConnectorOffer string
-
-const (
-	// Small ...
-	Small ConnectorOffer = "Small"
-)
-
-// PossibleConnectorOfferValues returns an array of possible values for the ConnectorOffer const type.
-func PossibleConnectorOfferValues() []ConnectorOffer {
-	return []ConnectorOffer{Small}
-}
-
-// CreatedByType enumerates the values for created by type.
-type CreatedByType string
-
-const (
-	// Application ...
-	Application CreatedByType = "Application"
-	// Key ...
-	Key CreatedByType = "Key"
-	// ManagedIdentity ...
-	ManagedIdentity CreatedByType = "ManagedIdentity"
-	// User ...
-	User CreatedByType = "User"
-)
-
-// PossibleCreatedByTypeValues returns an array of possible values for the CreatedByType const type.
-func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{Application, Key, ManagedIdentity, User}
-}
-
-// CreateMode enumerates the values for create mode.
-type CreateMode string
-
-const (
-	// Default ...
-	Default CreateMode = "Default"
-	// Restore ...
-	Restore CreateMode = "Restore"
-)
-
-// PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
-func PossibleCreateModeValues() []CreateMode {
-	return []CreateMode{Default, Restore}
-}
-
-// CreateModeBasicDatabaseAccountCreateUpdateProperties enumerates the values for create mode basic database
-// account create update properties.
-type CreateModeBasicDatabaseAccountCreateUpdateProperties string
-
-const (
-	// CreateModeDatabaseAccountCreateUpdateProperties ...
-	CreateModeDatabaseAccountCreateUpdateProperties CreateModeBasicDatabaseAccountCreateUpdateProperties = "DatabaseAccountCreateUpdateProperties"
-	// CreateModeDefault ...
-	CreateModeDefault CreateModeBasicDatabaseAccountCreateUpdateProperties = "Default"
-	// CreateModeRestore ...
-	CreateModeRestore CreateModeBasicDatabaseAccountCreateUpdateProperties = "Restore"
-)
-
-// PossibleCreateModeBasicDatabaseAccountCreateUpdatePropertiesValues returns an array of possible values for the CreateModeBasicDatabaseAccountCreateUpdateProperties const type.
-func PossibleCreateModeBasicDatabaseAccountCreateUpdatePropertiesValues() []CreateModeBasicDatabaseAccountCreateUpdateProperties {
-	return []CreateModeBasicDatabaseAccountCreateUpdateProperties{CreateModeDatabaseAccountCreateUpdateProperties, CreateModeDefault, CreateModeRestore}
-}
-
-// DatabaseAccountKind enumerates the values for database account kind.
-type DatabaseAccountKind string
-
-const (
-	// GlobalDocumentDB ...
-	GlobalDocumentDB DatabaseAccountKind = "GlobalDocumentDB"
-	// MongoDB ...
-	MongoDB DatabaseAccountKind = "MongoDB"
-	// Parse ...
-	Parse DatabaseAccountKind = "Parse"
-)
-
-// PossibleDatabaseAccountKindValues returns an array of possible values for the DatabaseAccountKind const type.
-func PossibleDatabaseAccountKindValues() []DatabaseAccountKind {
-	return []DatabaseAccountKind{GlobalDocumentDB, MongoDB, Parse}
-}
-
-// DatabaseAccountOfferType enumerates the values for database account offer type.
-type DatabaseAccountOfferType string
-
-const (
-	// Standard ...
-	Standard DatabaseAccountOfferType = "Standard"
-)
-
-// PossibleDatabaseAccountOfferTypeValues returns an array of possible values for the DatabaseAccountOfferType const type.
-func PossibleDatabaseAccountOfferTypeValues() []DatabaseAccountOfferType {
-	return []DatabaseAccountOfferType{Standard}
-}
-
-// DataType enumerates the values for data type.
-type DataType string
-
-const (
-	// LineString ...
-	LineString DataType = "LineString"
-	// MultiPolygon ...
-	MultiPolygon DataType = "MultiPolygon"
-	// Number ...
-	Number DataType = "Number"
-	// Point ...
-	Point DataType = "Point"
-	// Polygon ...
-	Polygon DataType = "Polygon"
-	// String ...
-	String DataType = "String"
-)
-
-// PossibleDataTypeValues returns an array of possible values for the DataType const type.
-func PossibleDataTypeValues() []DataType {
-	return []DataType{LineString, MultiPolygon, Number, Point, Polygon, String}
-}
-
-// DefaultConsistencyLevel enumerates the values for default consistency level.
-type DefaultConsistencyLevel string
-
-const (
-	// BoundedStaleness ...
-	BoundedStaleness DefaultConsistencyLevel = "BoundedStaleness"
-	// ConsistentPrefix ...
-	ConsistentPrefix DefaultConsistencyLevel = "ConsistentPrefix"
-	// Eventual ...
-	Eventual DefaultConsistencyLevel = "Eventual"
-	// Session ...
-	Session DefaultConsistencyLevel = "Session"
-	// Strong ...
-	Strong DefaultConsistencyLevel = "Strong"
-)
-
-// PossibleDefaultConsistencyLevelValues returns an array of possible values for the DefaultConsistencyLevel const type.
-func PossibleDefaultConsistencyLevelValues() []DefaultConsistencyLevel {
-	return []DefaultConsistencyLevel{BoundedStaleness, ConsistentPrefix, Eventual, Session, Strong}
-}
-
-// IndexingMode enumerates the values for indexing mode.
-type IndexingMode string
-
-const (
-	// Consistent ...
-	Consistent IndexingMode = "Consistent"
-	// Lazy ...
-	Lazy IndexingMode = "Lazy"
-	// None ...
-	None IndexingMode = "None"
-)
-
-// PossibleIndexingModeValues returns an array of possible values for the IndexingMode const type.
-func PossibleIndexingModeValues() []IndexingMode {
-	return []IndexingMode{Consistent, Lazy, None}
-}
-
-// IndexKind enumerates the values for index kind.
-type IndexKind string
-
-const (
-	// Hash ...
-	Hash IndexKind = "Hash"
-	// Range ...
-	Range IndexKind = "Range"
-	// Spatial ...
-	Spatial IndexKind = "Spatial"
-)
-
-// PossibleIndexKindValues returns an array of possible values for the IndexKind const type.
-func PossibleIndexKindValues() []IndexKind {
-	return []IndexKind{Hash, Range, Spatial}
-}
-
-// KeyKind enumerates the values for key kind.
-type KeyKind string
-
-const (
-	// Primary ...
-	Primary KeyKind = "primary"
-	// PrimaryReadonly ...
-	PrimaryReadonly KeyKind = "primaryReadonly"
-	// Secondary ...
-	Secondary KeyKind = "secondary"
-	// SecondaryReadonly ...
-	SecondaryReadonly KeyKind = "secondaryReadonly"
-)
-
-// PossibleKeyKindValues returns an array of possible values for the KeyKind const type.
-func PossibleKeyKindValues() []KeyKind {
-	return []KeyKind{Primary, PrimaryReadonly, Secondary, SecondaryReadonly}
-}
-
-// PartitionKind enumerates the values for partition kind.
-type PartitionKind string
-
-const (
-	// PartitionKindHash ...
-	PartitionKindHash PartitionKind = "Hash"
-	// PartitionKindRange ...
-	PartitionKindRange PartitionKind = "Range"
-)
-
-// PossiblePartitionKindValues returns an array of possible values for the PartitionKind const type.
-func PossiblePartitionKindValues() []PartitionKind {
-	return []PartitionKind{PartitionKindHash, PartitionKindRange}
-}
-
-// PrimaryAggregationType enumerates the values for primary aggregation type.
-type PrimaryAggregationType string
-
-const (
-	// PrimaryAggregationTypeAverage ...
-	PrimaryAggregationTypeAverage PrimaryAggregationType = "Average"
-	// PrimaryAggregationTypeLast ...
-	PrimaryAggregationTypeLast PrimaryAggregationType = "Last"
-	// PrimaryAggregationTypeMaximum ...
-	PrimaryAggregationTypeMaximum PrimaryAggregationType = "Maximum"
-	// PrimaryAggregationTypeMinimum ...
-	PrimaryAggregationTypeMinimum PrimaryAggregationType = "Minimum"
-	// PrimaryAggregationTypeNone ...
-	PrimaryAggregationTypeNone PrimaryAggregationType = "None"
-	// PrimaryAggregationTypeTotal ...
-	PrimaryAggregationTypeTotal PrimaryAggregationType = "Total"
-)
-
-// PossiblePrimaryAggregationTypeValues returns an array of possible values for the PrimaryAggregationType const type.
-func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
-	return []PrimaryAggregationType{PrimaryAggregationTypeAverage, PrimaryAggregationTypeLast, PrimaryAggregationTypeMaximum, PrimaryAggregationTypeMinimum, PrimaryAggregationTypeNone, PrimaryAggregationTypeTotal}
-}
-
-// PublicNetworkAccess enumerates the values for public network access.
-type PublicNetworkAccess string
-
-const (
-	// Disabled ...
-	Disabled PublicNetworkAccess = "Disabled"
-	// Enabled ...
-	Enabled PublicNetworkAccess = "Enabled"
-)
-
-// PossiblePublicNetworkAccessValues returns an array of possible values for the PublicNetworkAccess const type.
-func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{Disabled, Enabled}
-}
-
-// ResourceIdentityType enumerates the values for resource identity type.
-type ResourceIdentityType string
-
-const (
-	// ResourceIdentityTypeNone ...
-	ResourceIdentityTypeNone ResourceIdentityType = "None"
-	// ResourceIdentityTypeSystemAssigned ...
-	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
-	// ResourceIdentityTypeSystemAssignedUserAssigned ...
-	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
-	// ResourceIdentityTypeUserAssigned ...
-	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
-)
-
-// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{ResourceIdentityTypeNone, ResourceIdentityTypeSystemAssigned, ResourceIdentityTypeSystemAssignedUserAssigned, ResourceIdentityTypeUserAssigned}
-}
-
-// RestoreMode enumerates the values for restore mode.
-type RestoreMode string
-
-const (
-	// PointInTime ...
-	PointInTime RestoreMode = "PointInTime"
-)
-
-// PossibleRestoreModeValues returns an array of possible values for the RestoreMode const type.
-func PossibleRestoreModeValues() []RestoreMode {
-	return []RestoreMode{PointInTime}
-}
-
-// ServerVersion enumerates the values for server version.
-type ServerVersion string
-
-const (
-	// ThreeFullStopSix ...
-	ThreeFullStopSix ServerVersion = "3.6"
-	// ThreeFullStopTwo ...
-	ThreeFullStopTwo ServerVersion = "3.2"
-)
-
-// PossibleServerVersionValues returns an array of possible values for the ServerVersion const type.
-func PossibleServerVersionValues() []ServerVersion {
-	return []ServerVersion{ThreeFullStopSix, ThreeFullStopTwo}
-}
-
-// SpatialType enumerates the values for spatial type.
-type SpatialType string
-
-const (
-	// SpatialTypeLineString ...
-	SpatialTypeLineString SpatialType = "LineString"
-	// SpatialTypeMultiPolygon ...
-	SpatialTypeMultiPolygon SpatialType = "MultiPolygon"
-	// SpatialTypePoint ...
-	SpatialTypePoint SpatialType = "Point"
-	// SpatialTypePolygon ...
-	SpatialTypePolygon SpatialType = "Polygon"
-)
-
-// PossibleSpatialTypeValues returns an array of possible values for the SpatialType const type.
-func PossibleSpatialTypeValues() []SpatialType {
-	return []SpatialType{SpatialTypeLineString, SpatialTypeMultiPolygon, SpatialTypePoint, SpatialTypePolygon}
-}
-
-// TriggerOperation enumerates the values for trigger operation.
-type TriggerOperation string
-
-const (
-	// All ...
-	All TriggerOperation = "All"
-	// Create ...
-	Create TriggerOperation = "Create"
-	// Delete ...
-	Delete TriggerOperation = "Delete"
-	// Replace ...
-	Replace TriggerOperation = "Replace"
-	// Update ...
-	Update TriggerOperation = "Update"
-)
-
-// PossibleTriggerOperationValues returns an array of possible values for the TriggerOperation const type.
-func PossibleTriggerOperationValues() []TriggerOperation {
-	return []TriggerOperation{All, Create, Delete, Replace, Update}
-}
-
-// TriggerType enumerates the values for trigger type.
-type TriggerType string
-
-const (
-	// Post ...
-	Post TriggerType = "Post"
-	// Pre ...
-	Pre TriggerType = "Pre"
-)
-
-// PossibleTriggerTypeValues returns an array of possible values for the TriggerType const type.
-func PossibleTriggerTypeValues() []TriggerType {
-	return []TriggerType{Post, Pre}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeBackupPolicy ...
-	TypeBackupPolicy Type = "BackupPolicy"
-	// TypeContinuous ...
-	TypeContinuous Type = "Continuous"
-	// TypePeriodic ...
-	TypePeriodic Type = "Periodic"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeBackupPolicy, TypeContinuous, TypePeriodic}
-}
-
-// UnitType enumerates the values for unit type.
-type UnitType string
-
-const (
-	// Bytes ...
-	Bytes UnitType = "Bytes"
-	// BytesPerSecond ...
-	BytesPerSecond UnitType = "BytesPerSecond"
-	// Count ...
-	Count UnitType = "Count"
-	// CountPerSecond ...
-	CountPerSecond UnitType = "CountPerSecond"
-	// Milliseconds ...
-	Milliseconds UnitType = "Milliseconds"
-	// Percent ...
-	Percent UnitType = "Percent"
-	// Seconds ...
-	Seconds UnitType = "Seconds"
-)
-
-// PossibleUnitTypeValues returns an array of possible values for the UnitType const type.
-func PossibleUnitTypeValues() []UnitType {
-	return []UnitType{Bytes, BytesPerSecond, Count, CountPerSecond, Milliseconds, Percent, Seconds}
-}
-
 // APIProperties ...
 type APIProperties struct {
 	// ServerVersion - Describes the ServerVersion of an a MongoDB account. Possible values include: 'ThreeFullStopTwo', 'ThreeFullStopSix'
 	ServerVersion ServerVersion `json:"serverVersion,omitempty"`
 }
 
-// ARMProxyResource the resource model definition for a ARM proxy resource. It will have everything other
-// than required location and tags
+// ARMProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
+// required location and tags
 type ARMProxyResource struct {
 	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
@@ -465,6 +46,12 @@ type ARMProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ARMProxyResource.
+func (apr ARMProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ARMResourceProperties the core properties of ARM resources.
@@ -512,6 +99,18 @@ type AutoscaleSettingsResource struct {
 	TargetMaxThroughput *int32 `json:"targetMaxThroughput,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AutoscaleSettingsResource.
+func (asr AutoscaleSettingsResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if asr.MaxThroughput != nil {
+		objectMap["maxThroughput"] = asr.MaxThroughput
+	}
+	if asr.AutoUpgradePolicy != nil {
+		objectMap["autoUpgradePolicy"] = asr.AutoUpgradePolicy
+	}
+	return json.Marshal(objectMap)
+}
+
 // AutoUpgradePolicyResource cosmos DB resource auto-upgrade policy
 type AutoUpgradePolicyResource struct {
 	// ThroughputPolicy - Represents throughput policy which service must adhere to for auto-upgrade
@@ -528,6 +127,12 @@ type AzureEntityResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BasicBackupPolicy the object representing the policy for taking backups on an account.
@@ -732,8 +337,7 @@ func (ckcup *CassandraKeyspaceCreateUpdateParameters) UnmarshalJSON(body []byte)
 	return nil
 }
 
-// CassandraKeyspaceCreateUpdateProperties properties to create and update Azure Cosmos DB Cassandra
-// keyspace.
+// CassandraKeyspaceCreateUpdateProperties properties to create and update Azure Cosmos DB Cassandra keyspace.
 type CassandraKeyspaceCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a Cassandra keyspace
 	Resource *CassandraKeyspaceResource `json:"resource,omitempty"`
@@ -765,6 +369,15 @@ type CassandraKeyspaceGetPropertiesResource struct {
 	Ts interface{} `json:"_ts,omitempty"`
 	// Etag - READ-ONLY; A system generated property representing the resource etag required for optimistic concurrency control.
 	Etag *string `json:"_etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CassandraKeyspaceGetPropertiesResource.
+func (ckgp CassandraKeyspaceGetPropertiesResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ckgp.ID != nil {
+		objectMap["id"] = ckgp.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // CassandraKeyspaceGetResults an Azure Cosmos DB Cassandra keyspace.
@@ -888,6 +501,12 @@ type CassandraKeyspaceListResult struct {
 	Value *[]CassandraKeyspaceGetResults `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CassandraKeyspaceListResult.
+func (cklr CassandraKeyspaceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CassandraKeyspaceResource cosmos DB Cassandra keyspace resource object
 type CassandraKeyspaceResource struct {
 	// ID - Name of the Cosmos DB Cassandra keyspace
@@ -929,8 +548,8 @@ func (future *CassandraResourcesCreateUpdateCassandraKeyspaceFuture) Result(clie
 	return
 }
 
-// CassandraResourcesCreateUpdateCassandraTableFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// CassandraResourcesCreateUpdateCassandraTableFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type CassandraResourcesCreateUpdateCassandraTableFuture struct {
 	azure.Future
 }
@@ -958,8 +577,8 @@ func (future *CassandraResourcesCreateUpdateCassandraTableFuture) Result(client 
 	return
 }
 
-// CassandraResourcesDeleteCassandraKeyspaceFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// CassandraResourcesDeleteCassandraKeyspaceFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type CassandraResourcesDeleteCassandraKeyspaceFuture struct {
 	azure.Future
 }
@@ -981,8 +600,8 @@ func (future *CassandraResourcesDeleteCassandraKeyspaceFuture) Result(client Cas
 	return
 }
 
-// CassandraResourcesDeleteCassandraTableFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// CassandraResourcesDeleteCassandraTableFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type CassandraResourcesDeleteCassandraTableFuture struct {
 	azure.Future
 }
@@ -1004,8 +623,8 @@ func (future *CassandraResourcesDeleteCassandraTableFuture) Result(client Cassan
 	return
 }
 
-// CassandraResourcesUpdateCassandraKeyspaceThroughputFuture an abstraction for monitoring and retrieving
-// the results of a long-running operation.
+// CassandraResourcesUpdateCassandraKeyspaceThroughputFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type CassandraResourcesUpdateCassandraKeyspaceThroughputFuture struct {
 	azure.Future
 }
@@ -1224,6 +843,24 @@ type CassandraTableGetPropertiesResource struct {
 	Etag *string `json:"_etag,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CassandraTableGetPropertiesResource.
+func (ctgp CassandraTableGetPropertiesResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ctgp.ID != nil {
+		objectMap["id"] = ctgp.ID
+	}
+	if ctgp.DefaultTTL != nil {
+		objectMap["defaultTtl"] = ctgp.DefaultTTL
+	}
+	if ctgp.Schema != nil {
+		objectMap["schema"] = ctgp.Schema
+	}
+	if ctgp.AnalyticalStorageTTL != nil {
+		objectMap["analyticalStorageTtl"] = ctgp.AnalyticalStorageTTL
+	}
+	return json.Marshal(objectMap)
+}
+
 // CassandraTableGetResults an Azure Cosmos DB Cassandra table.
 type CassandraTableGetResults struct {
 	autorest.Response `json:"-"`
@@ -1345,6 +982,12 @@ type CassandraTableListResult struct {
 	Value *[]CassandraTableGetResults `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CassandraTableListResult.
+func (ctlr CassandraTableListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CassandraTableResource cosmos DB Cassandra table resource object
 type CassandraTableResource struct {
 	// ID - Name of the Cosmos DB Cassandra table
@@ -1401,8 +1044,8 @@ type ConsistencyPolicy struct {
 	MaxIntervalInSeconds *int32 `json:"maxIntervalInSeconds,omitempty"`
 }
 
-// ContainerPartitionKey the configuration of the partition key to be used for partitioning data into
-// multiple partitions
+// ContainerPartitionKey the configuration of the partition key to be used for partitioning data into multiple
+// partitions
 type ContainerPartitionKey struct {
 	// Paths - List of paths using which data within the container can be partitioned
 	Paths *[]string `json:"paths,omitempty"`
@@ -1448,8 +1091,8 @@ func (cmbp ContinuousModeBackupPolicy) AsBasicBackupPolicy() (BasicBackupPolicy,
 	return &cmbp, true
 }
 
-// CreateUpdateOptions createUpdateOptions are a list of key-value pairs that describe the resource.
-// Supported keys are "If-Match", "If-None-Match", "Session-Token" and "Throughput"
+// CreateUpdateOptions createUpdateOptions are a list of key-value pairs that describe the resource. Supported
+// keys are "If-Match", "If-None-Match", "Session-Token" and "Throughput"
 type CreateUpdateOptions struct {
 	// Throughput - Request Units per second. For example, "throughput": 10000.
 	Throughput *int32 `json:"throughput,omitempty"`
@@ -1465,11 +1108,17 @@ type DatabaseAccountConnectionString struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DatabaseAccountConnectionString.
+func (dacs DatabaseAccountConnectionString) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DatabaseAccountCreateUpdateParameters parameters to create and update Cosmos DB database accounts.
 type DatabaseAccountCreateUpdateParameters struct {
 	// Kind - Indicates the type of database account. This can only be set at database account creation. Possible values include: 'GlobalDocumentDB', 'MongoDB', 'Parse'
-	Kind                                       DatabaseAccountKind `json:"kind,omitempty"`
-	BasicDatabaseAccountCreateUpdateProperties `json:"properties,omitempty"`
+	Kind       DatabaseAccountKind                        `json:"kind,omitempty"`
+	Properties BasicDatabaseAccountCreateUpdateProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; The unique resource identifier of the ARM resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the ARM resource.
@@ -1488,7 +1137,7 @@ func (dacup DatabaseAccountCreateUpdateParameters) MarshalJSON() ([]byte, error)
 	if dacup.Kind != "" {
 		objectMap["kind"] = dacup.Kind
 	}
-	objectMap["properties"] = dacup.BasicDatabaseAccountCreateUpdateProperties
+	objectMap["properties"] = dacup.Properties
 	if dacup.Location != nil {
 		objectMap["location"] = dacup.Location
 	}
@@ -1521,11 +1170,11 @@ func (dacup *DatabaseAccountCreateUpdateParameters) UnmarshalJSON(body []byte) e
 			}
 		case "properties":
 			if v != nil {
-				basicDatabaseAccountCreateUpdateProperties, err := unmarshalBasicDatabaseAccountCreateUpdateProperties(*v)
+				properties, err := unmarshalBasicDatabaseAccountCreateUpdateProperties(*v)
 				if err != nil {
 					return err
 				}
-				dacup.BasicDatabaseAccountCreateUpdateProperties = basicDatabaseAccountCreateUpdateProperties
+				dacup.Properties = properties
 			}
 		case "id":
 			if v != nil {
@@ -2001,6 +1650,67 @@ type DatabaseAccountGetProperties struct {
 	BackupPolicy BasicBackupPolicy `json:"backupPolicy,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DatabaseAccountGetProperties.
+func (dagp DatabaseAccountGetProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dagp.ProvisioningState != nil {
+		objectMap["provisioningState"] = dagp.ProvisioningState
+	}
+	if dagp.IPRules != nil {
+		objectMap["ipRules"] = dagp.IPRules
+	}
+	if dagp.IsVirtualNetworkFilterEnabled != nil {
+		objectMap["isVirtualNetworkFilterEnabled"] = dagp.IsVirtualNetworkFilterEnabled
+	}
+	if dagp.EnableAutomaticFailover != nil {
+		objectMap["enableAutomaticFailover"] = dagp.EnableAutomaticFailover
+	}
+	if dagp.ConsistencyPolicy != nil {
+		objectMap["consistencyPolicy"] = dagp.ConsistencyPolicy
+	}
+	if dagp.Capabilities != nil {
+		objectMap["capabilities"] = dagp.Capabilities
+	}
+	if dagp.VirtualNetworkRules != nil {
+		objectMap["virtualNetworkRules"] = dagp.VirtualNetworkRules
+	}
+	if dagp.EnableMultipleWriteLocations != nil {
+		objectMap["enableMultipleWriteLocations"] = dagp.EnableMultipleWriteLocations
+	}
+	if dagp.EnableCassandraConnector != nil {
+		objectMap["enableCassandraConnector"] = dagp.EnableCassandraConnector
+	}
+	if dagp.ConnectorOffer != "" {
+		objectMap["connectorOffer"] = dagp.ConnectorOffer
+	}
+	if dagp.DisableKeyBasedMetadataWriteAccess != nil {
+		objectMap["disableKeyBasedMetadataWriteAccess"] = dagp.DisableKeyBasedMetadataWriteAccess
+	}
+	if dagp.KeyVaultKeyURI != nil {
+		objectMap["keyVaultKeyUri"] = dagp.KeyVaultKeyURI
+	}
+	if dagp.PublicNetworkAccess != "" {
+		objectMap["publicNetworkAccess"] = dagp.PublicNetworkAccess
+	}
+	if dagp.EnableFreeTier != nil {
+		objectMap["enableFreeTier"] = dagp.EnableFreeTier
+	}
+	if dagp.APIProperties != nil {
+		objectMap["apiProperties"] = dagp.APIProperties
+	}
+	if dagp.EnableAnalyticalStorage != nil {
+		objectMap["enableAnalyticalStorage"] = dagp.EnableAnalyticalStorage
+	}
+	if dagp.CreateMode != "" {
+		objectMap["createMode"] = dagp.CreateMode
+	}
+	if dagp.RestoreParameters != nil {
+		objectMap["restoreParameters"] = dagp.RestoreParameters
+	}
+	objectMap["backupPolicy"] = dagp.BackupPolicy
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for DatabaseAccountGetProperties struct.
 func (dagp *DatabaseAccountGetProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2415,6 +2125,12 @@ type DatabaseAccountListKeysResult struct {
 	SecondaryReadonlyMasterKey *string `json:"secondaryReadonlyMasterKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DatabaseAccountListKeysResult.
+func (dalkr DatabaseAccountListKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DatabaseAccountListReadOnlyKeysResult the read-only access keys for the given database account.
 type DatabaseAccountListReadOnlyKeysResult struct {
 	autorest.Response `json:"-"`
@@ -2422,6 +2138,12 @@ type DatabaseAccountListReadOnlyKeysResult struct {
 	PrimaryReadonlyMasterKey *string `json:"primaryReadonlyMasterKey,omitempty"`
 	// SecondaryReadonlyMasterKey - READ-ONLY; Base 64 encoded value of the secondary read-only key.
 	SecondaryReadonlyMasterKey *string `json:"secondaryReadonlyMasterKey,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatabaseAccountListReadOnlyKeysResult.
+func (dalrokr DatabaseAccountListReadOnlyKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DatabaseAccountRegenerateKeyParameters parameters to regenerate the keys within the database account.
@@ -2482,8 +2204,8 @@ func (future *DatabaseAccountsDeleteFuture) Result(client DatabaseAccountsClient
 	return
 }
 
-// DatabaseAccountsFailoverPriorityChangeFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// DatabaseAccountsFailoverPriorityChangeFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DatabaseAccountsFailoverPriorityChangeFuture struct {
 	azure.Future
 }
@@ -2511,6 +2233,12 @@ type DatabaseAccountsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of database account and their properties.
 	Value *[]DatabaseAccountGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatabaseAccountsListResult.
+func (dalr DatabaseAccountsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DatabaseAccountsOfflineRegionFuture an abstraction for monitoring and retrieving the results of a
@@ -3229,6 +2957,12 @@ type ExtendedResourceProperties struct {
 	Etag *string `json:"_etag,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ExtendedResourceProperties.
+func (erp ExtendedResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // FailoverPolicies the list of new failover policies for the failover priority change.
 type FailoverPolicies struct {
 	// FailoverPolicies - List of failover policies.
@@ -3243,6 +2977,18 @@ type FailoverPolicy struct {
 	LocationName *string `json:"locationName,omitempty"`
 	// FailoverPriority - The failover priority of the region. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
 	FailoverPriority *int32 `json:"failoverPriority,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FailoverPolicy.
+func (fp FailoverPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fp.LocationName != nil {
+		objectMap["locationName"] = fp.LocationName
+	}
+	if fp.FailoverPriority != nil {
+		objectMap["failoverPriority"] = fp.FailoverPriority
+	}
+	return json.Marshal(objectMap)
 }
 
 // GremlinDatabaseCreateUpdateParameters parameters to create and update Cosmos DB Gremlin database.
@@ -3391,6 +3137,15 @@ type GremlinDatabaseGetPropertiesResource struct {
 	Etag *string `json:"_etag,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GremlinDatabaseGetPropertiesResource.
+func (gdgp GremlinDatabaseGetPropertiesResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gdgp.ID != nil {
+		objectMap["id"] = gdgp.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // GremlinDatabaseGetResults an Azure Cosmos DB Gremlin database.
 type GremlinDatabaseGetResults struct {
 	autorest.Response `json:"-"`
@@ -3510,6 +3265,12 @@ type GremlinDatabaseListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of Gremlin databases and their properties.
 	Value *[]GremlinDatabaseGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GremlinDatabaseListResult.
+func (gdlr GremlinDatabaseListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // GremlinDatabaseResource cosmos DB Gremlin database resource object
@@ -3674,6 +3435,30 @@ type GremlinGraphGetPropertiesResource struct {
 	Etag *string `json:"_etag,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GremlinGraphGetPropertiesResource.
+func (gggp GremlinGraphGetPropertiesResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gggp.ID != nil {
+		objectMap["id"] = gggp.ID
+	}
+	if gggp.IndexingPolicy != nil {
+		objectMap["indexingPolicy"] = gggp.IndexingPolicy
+	}
+	if gggp.PartitionKey != nil {
+		objectMap["partitionKey"] = gggp.PartitionKey
+	}
+	if gggp.DefaultTTL != nil {
+		objectMap["defaultTtl"] = gggp.DefaultTTL
+	}
+	if gggp.UniqueKeyPolicy != nil {
+		objectMap["uniqueKeyPolicy"] = gggp.UniqueKeyPolicy
+	}
+	if gggp.ConflictResolutionPolicy != nil {
+		objectMap["conflictResolutionPolicy"] = gggp.ConflictResolutionPolicy
+	}
+	return json.Marshal(objectMap)
+}
+
 // GremlinGraphGetResults an Azure Cosmos DB Gremlin graph.
 type GremlinGraphGetResults struct {
 	autorest.Response `json:"-"`
@@ -3794,6 +3579,12 @@ type GremlinGraphListResult struct {
 	Value *[]GremlinGraphGetResults `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GremlinGraphListResult.
+func (gglr GremlinGraphListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // GremlinGraphResource cosmos DB Gremlin graph resource object
 type GremlinGraphResource struct {
 	// ID - Name of the Cosmos DB Gremlin graph
@@ -3810,8 +3601,8 @@ type GremlinGraphResource struct {
 	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
 }
 
-// GremlinResourcesCreateUpdateGremlinDatabaseFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// GremlinResourcesCreateUpdateGremlinDatabaseFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type GremlinResourcesCreateUpdateGremlinDatabaseFuture struct {
 	azure.Future
 }
@@ -3839,8 +3630,8 @@ func (future *GremlinResourcesCreateUpdateGremlinDatabaseFuture) Result(client G
 	return
 }
 
-// GremlinResourcesCreateUpdateGremlinGraphFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// GremlinResourcesCreateUpdateGremlinGraphFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type GremlinResourcesCreateUpdateGremlinGraphFuture struct {
 	azure.Future
 }
@@ -3868,8 +3659,8 @@ func (future *GremlinResourcesCreateUpdateGremlinGraphFuture) Result(client Grem
 	return
 }
 
-// GremlinResourcesDeleteGremlinDatabaseFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// GremlinResourcesDeleteGremlinDatabaseFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type GremlinResourcesDeleteGremlinDatabaseFuture struct {
 	azure.Future
 }
@@ -3943,8 +3734,8 @@ func (future *GremlinResourcesUpdateGremlinDatabaseThroughputFuture) Result(clie
 	return
 }
 
-// GremlinResourcesUpdateGremlinGraphThroughputFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// GremlinResourcesUpdateGremlinGraphThroughputFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type GremlinResourcesUpdateGremlinGraphThroughputFuture struct {
 	azure.Future
 }
@@ -4027,6 +3818,24 @@ type Location struct {
 	IsZoneRedundant *bool `json:"isZoneRedundant,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Location.
+func (l Location) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if l.LocationName != nil {
+		objectMap["locationName"] = l.LocationName
+	}
+	if l.ProvisioningState != nil {
+		objectMap["provisioningState"] = l.ProvisioningState
+	}
+	if l.FailoverPriority != nil {
+		objectMap["failoverPriority"] = l.FailoverPriority
+	}
+	if l.IsZoneRedundant != nil {
+		objectMap["isZoneRedundant"] = l.IsZoneRedundant
+	}
+	return json.Marshal(objectMap)
+}
+
 // ManagedServiceIdentity identity for the resource.
 type ManagedServiceIdentity struct {
 	// PrincipalID - READ-ONLY; The principal id of the system assigned identity. This property will only be provided for a system assigned identity.
@@ -4035,6 +3844,15 @@ type ManagedServiceIdentity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the service. Possible values include: 'ResourceIdentityTypeSystemAssigned', 'ResourceIdentityTypeUserAssigned', 'ResourceIdentityTypeSystemAssignedUserAssigned', 'ResourceIdentityTypeNone'
 	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedServiceIdentity.
+func (msi ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if msi.Type != "" {
+		objectMap["type"] = msi.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // Metric metric data
@@ -4053,12 +3871,27 @@ type Metric struct {
 	MetricValues *[]MetricValue `json:"metricValues,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Metric.
+func (mVar Metric) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mVar.Unit != "" {
+		objectMap["unit"] = mVar.Unit
+	}
+	return json.Marshal(objectMap)
+}
+
 // MetricAvailability the availability of the metric.
 type MetricAvailability struct {
 	// TimeGrain - READ-ONLY; The time grain to be used to summarize the metric values.
 	TimeGrain *string `json:"timeGrain,omitempty"`
 	// Retention - READ-ONLY; The retention for the metric values.
 	Retention *string `json:"retention,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricAvailability.
+func (ma MetricAvailability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MetricDefinition the definition of a metric.
@@ -4075,11 +3908,26 @@ type MetricDefinition struct {
 	Name *MetricName `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MetricDefinition.
+func (md MetricDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if md.Unit != "" {
+		objectMap["unit"] = md.Unit
+	}
+	return json.Marshal(objectMap)
+}
+
 // MetricDefinitionsListResult the response to a list metric definitions request.
 type MetricDefinitionsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of metric definitions for the account.
 	Value *[]MetricDefinition `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricDefinitionsListResult.
+func (mdlr MetricDefinitionsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MetricListResult the response to a list metrics request.
@@ -4089,12 +3937,24 @@ type MetricListResult struct {
 	Value *[]Metric `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MetricListResult.
+func (mlr MetricListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MetricName a metric name.
 type MetricName struct {
 	// Value - READ-ONLY; The name of the metric.
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - READ-ONLY; The friendly name of the metric.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricName.
+func (mn MetricName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MetricValue represents metrics values.
@@ -4111,6 +3971,12 @@ type MetricValue struct {
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Total - READ-ONLY; The total value of the metric.
 	Total *float64 `json:"total,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricValue.
+func (mv MetricValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MongoDBCollectionCreateUpdateParameters parameters to create and update Cosmos DB MongoDB collection.
@@ -4225,8 +4091,7 @@ func (mdccup *MongoDBCollectionCreateUpdateParameters) UnmarshalJSON(body []byte
 	return nil
 }
 
-// MongoDBCollectionCreateUpdateProperties properties to create and update Azure Cosmos DB MongoDB
-// collection.
+// MongoDBCollectionCreateUpdateProperties properties to create and update Azure Cosmos DB MongoDB collection.
 type MongoDBCollectionCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a MongoDB collection
 	Resource *MongoDBCollectionResource `json:"resource,omitempty"`
@@ -4405,6 +4270,12 @@ type MongoDBCollectionListResult struct {
 	Value *[]MongoDBCollectionGetResults `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MongoDBCollectionListResult.
+func (mdclr MongoDBCollectionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MongoDBCollectionResource cosmos DB MongoDB collection resource object
 type MongoDBCollectionResource struct {
 	// ID - Name of the Cosmos DB MongoDB collection
@@ -4581,6 +4452,15 @@ type MongoDBDatabaseGetPropertiesResource struct {
 	Etag *string `json:"_etag,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MongoDBDatabaseGetPropertiesResource.
+func (mddgp MongoDBDatabaseGetPropertiesResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mddgp.ID != nil {
+		objectMap["id"] = mddgp.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // MongoDBDatabaseGetResults an Azure Cosmos DB MongoDB database.
 type MongoDBDatabaseGetResults struct {
 	autorest.Response `json:"-"`
@@ -4702,14 +4582,20 @@ type MongoDBDatabaseListResult struct {
 	Value *[]MongoDBDatabaseGetResults `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MongoDBDatabaseListResult.
+func (mddlr MongoDBDatabaseListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MongoDBDatabaseResource cosmos DB MongoDB database resource object
 type MongoDBDatabaseResource struct {
 	// ID - Name of the Cosmos DB MongoDB database
 	ID *string `json:"id,omitempty"`
 }
 
-// MongoDBResourcesCreateUpdateMongoDBCollectionFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// MongoDBResourcesCreateUpdateMongoDBCollectionFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type MongoDBResourcesCreateUpdateMongoDBCollectionFuture struct {
 	azure.Future
 }
@@ -4737,8 +4623,8 @@ func (future *MongoDBResourcesCreateUpdateMongoDBCollectionFuture) Result(client
 	return
 }
 
-// MongoDBResourcesCreateUpdateMongoDBDatabaseFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// MongoDBResourcesCreateUpdateMongoDBDatabaseFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type MongoDBResourcesCreateUpdateMongoDBDatabaseFuture struct {
 	azure.Future
 }
@@ -4766,8 +4652,8 @@ func (future *MongoDBResourcesCreateUpdateMongoDBDatabaseFuture) Result(client M
 	return
 }
 
-// MongoDBResourcesDeleteMongoDBCollectionFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// MongoDBResourcesDeleteMongoDBCollectionFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type MongoDBResourcesDeleteMongoDBCollectionFuture struct {
 	azure.Future
 }
@@ -4789,8 +4675,8 @@ func (future *MongoDBResourcesDeleteMongoDBCollectionFuture) Result(client Mongo
 	return
 }
 
-// MongoDBResourcesDeleteMongoDBDatabaseFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// MongoDBResourcesDeleteMongoDBDatabaseFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type MongoDBResourcesDeleteMongoDBDatabaseFuture struct {
 	azure.Future
 }
@@ -4974,6 +4860,12 @@ type NotebookWorkspaceConnectionInfoResult struct {
 	NotebookServerEndpoint *string `json:"notebookServerEndpoint,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NotebookWorkspaceConnectionInfoResult.
+func (nwcir NotebookWorkspaceConnectionInfoResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // NotebookWorkspaceCreateUpdateParameters parameters to create a notebook workspace resource
 type NotebookWorkspaceCreateUpdateParameters struct {
 	// ID - READ-ONLY; The unique resource identifier of the database account.
@@ -4982,6 +4874,12 @@ type NotebookWorkspaceCreateUpdateParameters struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NotebookWorkspaceCreateUpdateParameters.
+func (nwcup NotebookWorkspaceCreateUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // NotebookWorkspaceListResult a list of notebook workspace resources
@@ -4997,6 +4895,12 @@ type NotebookWorkspaceProperties struct {
 	NotebookServerEndpoint *string `json:"notebookServerEndpoint,omitempty"`
 	// Status - READ-ONLY; Status of the notebook workspace. Possible values are: Creating, Online, Deleting, Failed, Updating.
 	Status *string `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NotebookWorkspaceProperties.
+func (nwp NotebookWorkspaceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // NotebookWorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -5028,8 +4932,8 @@ func (future *NotebookWorkspacesCreateOrUpdateFuture) Result(client NotebookWork
 	return
 }
 
-// NotebookWorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// NotebookWorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type NotebookWorkspacesDeleteFuture struct {
 	azure.Future
 }
@@ -5051,8 +4955,8 @@ func (future *NotebookWorkspacesDeleteFuture) Result(client NotebookWorkspacesCl
 	return
 }
 
-// NotebookWorkspacesRegenerateAuthTokenFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// NotebookWorkspacesRegenerateAuthTokenFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type NotebookWorkspacesRegenerateAuthTokenFuture struct {
 	azure.Future
 }
@@ -5195,10 +5099,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5226,11 +5135,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -5292,11 +5206,26 @@ type PartitionMetric struct {
 	MetricValues *[]MetricValue `json:"metricValues,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PartitionMetric.
+func (pm PartitionMetric) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pm.Unit != "" {
+		objectMap["unit"] = pm.Unit
+	}
+	return json.Marshal(objectMap)
+}
+
 // PartitionMetricListResult the response to a list partition metrics request.
 type PartitionMetricListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of partition-level metrics for the account.
 	Value *[]PartitionMetric `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PartitionMetricListResult.
+func (pmlr PartitionMetricListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PartitionUsage the partition level usage data for a usage request.
@@ -5317,11 +5246,26 @@ type PartitionUsage struct {
 	CurrentValue *int64 `json:"currentValue,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PartitionUsage.
+func (pu PartitionUsage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pu.Unit != "" {
+		objectMap["unit"] = pu.Unit
+	}
+	return json.Marshal(objectMap)
+}
+
 // PartitionUsagesResult the response to a list partition level usage request.
 type PartitionUsagesResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of partition-level usages for the database. A usage is a point in time metric
 	Value *[]PartitionUsage `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PartitionUsagesResult.
+func (pur PartitionUsagesResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PercentileMetric percentile Metric data
@@ -5340,11 +5284,26 @@ type PercentileMetric struct {
 	MetricValues *[]PercentileMetricValue `json:"metricValues,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PercentileMetric.
+func (pm PercentileMetric) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pm.Unit != "" {
+		objectMap["unit"] = pm.Unit
+	}
+	return json.Marshal(objectMap)
+}
+
 // PercentileMetricListResult the response to a list percentile metrics request.
 type PercentileMetricListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of percentile metrics for the account.
 	Value *[]PercentileMetric `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PercentileMetricListResult.
+func (pmlr PercentileMetricListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PercentileMetricValue represents percentile metrics values.
@@ -5375,6 +5334,12 @@ type PercentileMetricValue struct {
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Total - READ-ONLY; The total value of the metric.
 	Total *float64 `json:"total,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PercentileMetricValue.
+func (pmv PercentileMetricValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PeriodicModeBackupPolicy the object representing periodic mode backup policy.
@@ -5518,8 +5483,8 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type PrivateEndpointConnectionsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -5666,6 +5631,12 @@ type PrivateLinkResourceProperties struct {
 	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PrivateLinkResourceProperties.
+func (plrp PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PrivateLinkServiceConnectionStateProperty connection State of the Private Endpoint Connection.
 type PrivateLinkServiceConnectionStateProperty struct {
 	// Status - The private link service connection status.
@@ -5674,6 +5645,18 @@ type PrivateLinkServiceConnectionStateProperty struct {
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
 	// Description - The private link service connection description.
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkServiceConnectionStateProperty.
+func (plscsp PrivateLinkServiceConnectionStateProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if plscsp.Status != nil {
+		objectMap["status"] = plscsp.Status
+	}
+	if plscsp.Description != nil {
+		objectMap["description"] = plscsp.Description
+	}
+	return json.Marshal(objectMap)
 }
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
@@ -5685,6 +5668,12 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RegionForOnlineOffline cosmos DB region to online or offline.
@@ -5701,6 +5690,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RestorableDatabaseAccountGetResult a Azure Cosmos DB restorable database account.
@@ -5834,6 +5829,12 @@ type RestorableDatabaseAccountsListResult struct {
 	Value *[]RestorableDatabaseAccountGetResult `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RestorableDatabaseAccountsListResult.
+func (rdalr RestorableDatabaseAccountsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RestoreParameters parameters to indicate the information about the restore.
 type RestoreParameters struct {
 	// RestoreMode - Describes the mode of the restore. Possible values include: 'PointInTime'
@@ -5846,8 +5847,7 @@ type RestoreParameters struct {
 	DatabasesToRestore *[]DatabaseRestoreResource `json:"databasesToRestore,omitempty"`
 }
 
-// RestoreReqeustDatabaseAccountCreateUpdateProperties properties to restore Azure Cosmos DB database
-// account.
+// RestoreReqeustDatabaseAccountCreateUpdateProperties properties to restore Azure Cosmos DB database account.
 type RestoreReqeustDatabaseAccountCreateUpdateProperties struct {
 	// RestoreParameters - Parameters to indicate the information about the restore.
 	RestoreParameters *RestoreParameters `json:"restoreParameters,omitempty"`
@@ -6334,6 +6334,30 @@ type SQLContainerGetPropertiesResource struct {
 	Etag *string `json:"_etag,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SQLContainerGetPropertiesResource.
+func (scgp SQLContainerGetPropertiesResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if scgp.ID != nil {
+		objectMap["id"] = scgp.ID
+	}
+	if scgp.IndexingPolicy != nil {
+		objectMap["indexingPolicy"] = scgp.IndexingPolicy
+	}
+	if scgp.PartitionKey != nil {
+		objectMap["partitionKey"] = scgp.PartitionKey
+	}
+	if scgp.DefaultTTL != nil {
+		objectMap["defaultTtl"] = scgp.DefaultTTL
+	}
+	if scgp.UniqueKeyPolicy != nil {
+		objectMap["uniqueKeyPolicy"] = scgp.UniqueKeyPolicy
+	}
+	if scgp.ConflictResolutionPolicy != nil {
+		objectMap["conflictResolutionPolicy"] = scgp.ConflictResolutionPolicy
+	}
+	return json.Marshal(objectMap)
+}
+
 // SQLContainerGetResults an Azure Cosmos DB container.
 type SQLContainerGetResults struct {
 	autorest.Response `json:"-"`
@@ -6452,6 +6476,12 @@ type SQLContainerListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of containers and their properties.
 	Value *[]SQLContainerGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLContainerListResult.
+func (sclr SQLContainerListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SQLContainerResource cosmos DB SQL container resource object
@@ -6620,6 +6650,21 @@ type SQLDatabaseGetPropertiesResource struct {
 	Users *string `json:"_users,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SQLDatabaseGetPropertiesResource.
+func (sdgp SQLDatabaseGetPropertiesResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sdgp.ID != nil {
+		objectMap["id"] = sdgp.ID
+	}
+	if sdgp.Colls != nil {
+		objectMap["_colls"] = sdgp.Colls
+	}
+	if sdgp.Users != nil {
+		objectMap["_users"] = sdgp.Users
+	}
+	return json.Marshal(objectMap)
+}
+
 // SQLDatabaseGetResults an Azure Cosmos DB SQL database.
 type SQLDatabaseGetResults struct {
 	autorest.Response `json:"-"`
@@ -6740,6 +6785,12 @@ type SQLDatabaseListResult struct {
 	Value *[]SQLDatabaseGetResults `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SQLDatabaseListResult.
+func (sdlr SQLDatabaseListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SQLDatabaseResource cosmos DB SQL database resource object
 type SQLDatabaseResource struct {
 	// ID - Name of the Cosmos DB SQL database
@@ -6804,8 +6855,8 @@ func (future *SQLResourcesCreateUpdateSQLDatabaseFuture) Result(client SQLResour
 	return
 }
 
-// SQLResourcesCreateUpdateSQLStoredProcedureFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// SQLResourcesCreateUpdateSQLStoredProcedureFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type SQLResourcesCreateUpdateSQLStoredProcedureFuture struct {
 	azure.Future
 }
@@ -6983,8 +7034,8 @@ func (future *SQLResourcesDeleteSQLTriggerFuture) Result(client SQLResourcesClie
 	return
 }
 
-// SQLResourcesDeleteSQLUserDefinedFunctionFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// SQLResourcesDeleteSQLUserDefinedFunctionFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type SQLResourcesDeleteSQLUserDefinedFunctionFuture struct {
 	azure.Future
 }
@@ -7006,8 +7057,8 @@ func (future *SQLResourcesDeleteSQLUserDefinedFunctionFuture) Result(client SQLR
 	return
 }
 
-// SQLResourcesUpdateSQLContainerThroughputFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// SQLResourcesUpdateSQLContainerThroughputFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type SQLResourcesUpdateSQLContainerThroughputFuture struct {
 	azure.Future
 }
@@ -7035,8 +7086,8 @@ func (future *SQLResourcesUpdateSQLContainerThroughputFuture) Result(client SQLR
 	return
 }
 
-// SQLResourcesUpdateSQLDatabaseThroughputFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// SQLResourcesUpdateSQLDatabaseThroughputFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type SQLResourcesUpdateSQLDatabaseThroughputFuture struct {
 	azure.Future
 }
@@ -7176,8 +7227,7 @@ func (sspcup *SQLStoredProcedureCreateUpdateParameters) UnmarshalJSON(body []byt
 	return nil
 }
 
-// SQLStoredProcedureCreateUpdateProperties properties to create and update Azure Cosmos DB
-// storedProcedure.
+// SQLStoredProcedureCreateUpdateProperties properties to create and update Azure Cosmos DB storedProcedure.
 type SQLStoredProcedureCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a storedProcedure
 	Resource *SQLStoredProcedureResource `json:"resource,omitempty"`
@@ -7202,6 +7252,18 @@ type SQLStoredProcedureGetPropertiesResource struct {
 	Ts interface{} `json:"_ts,omitempty"`
 	// Etag - READ-ONLY; A system generated property representing the resource etag required for optimistic concurrency control.
 	Etag *string `json:"_etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLStoredProcedureGetPropertiesResource.
+func (sspgp SQLStoredProcedureGetPropertiesResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sspgp.ID != nil {
+		objectMap["id"] = sspgp.ID
+	}
+	if sspgp.Body != nil {
+		objectMap["body"] = sspgp.Body
+	}
+	return json.Marshal(objectMap)
 }
 
 // SQLStoredProcedureGetResults an Azure Cosmos DB storedProcedure.
@@ -7323,6 +7385,12 @@ type SQLStoredProcedureListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of storedProcedures and their properties.
 	Value *[]SQLStoredProcedureGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLStoredProcedureListResult.
+func (ssplr SQLStoredProcedureListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SQLStoredProcedureResource cosmos DB SQL storedProcedure resource object
@@ -7476,6 +7544,24 @@ type SQLTriggerGetPropertiesResource struct {
 	Etag *string `json:"_etag,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SQLTriggerGetPropertiesResource.
+func (stgp SQLTriggerGetPropertiesResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if stgp.ID != nil {
+		objectMap["id"] = stgp.ID
+	}
+	if stgp.Body != nil {
+		objectMap["body"] = stgp.Body
+	}
+	if stgp.TriggerType != "" {
+		objectMap["triggerType"] = stgp.TriggerType
+	}
+	if stgp.TriggerOperation != "" {
+		objectMap["triggerOperation"] = stgp.TriggerOperation
+	}
+	return json.Marshal(objectMap)
+}
+
 // SQLTriggerGetResults an Azure Cosmos DB trigger.
 type SQLTriggerGetResults struct {
 	autorest.Response `json:"-"`
@@ -7596,6 +7682,12 @@ type SQLTriggerListResult struct {
 	Value *[]SQLTriggerGetResults `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SQLTriggerListResult.
+func (stlr SQLTriggerListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SQLTriggerResource cosmos DB SQL trigger resource object
 type SQLTriggerResource struct {
 	// ID - Name of the Cosmos DB SQL trigger
@@ -7608,8 +7700,7 @@ type SQLTriggerResource struct {
 	TriggerOperation TriggerOperation `json:"triggerOperation,omitempty"`
 }
 
-// SQLUserDefinedFunctionCreateUpdateParameters parameters to create and update Cosmos DB
-// userDefinedFunction.
+// SQLUserDefinedFunctionCreateUpdateParameters parameters to create and update Cosmos DB userDefinedFunction.
 type SQLUserDefinedFunctionCreateUpdateParameters struct {
 	// SQLUserDefinedFunctionCreateUpdateProperties - Properties to create and update Azure Cosmos DB userDefinedFunction.
 	*SQLUserDefinedFunctionCreateUpdateProperties `json:"properties,omitempty"`
@@ -7749,6 +7840,18 @@ type SQLUserDefinedFunctionGetPropertiesResource struct {
 	Etag *string `json:"_etag,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SQLUserDefinedFunctionGetPropertiesResource.
+func (sudfgp SQLUserDefinedFunctionGetPropertiesResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sudfgp.ID != nil {
+		objectMap["id"] = sudfgp.ID
+	}
+	if sudfgp.Body != nil {
+		objectMap["body"] = sudfgp.Body
+	}
+	return json.Marshal(objectMap)
+}
+
 // SQLUserDefinedFunctionGetResults an Azure Cosmos DB userDefinedFunction.
 type SQLUserDefinedFunctionGetResults struct {
 	autorest.Response `json:"-"`
@@ -7868,6 +7971,12 @@ type SQLUserDefinedFunctionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of userDefinedFunctions and their properties.
 	Value *[]SQLUserDefinedFunctionGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLUserDefinedFunctionListResult.
+func (sudflr SQLUserDefinedFunctionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SQLUserDefinedFunctionResource cosmos DB SQL userDefinedFunction resource object
@@ -8040,6 +8149,15 @@ type TableGetPropertiesResource struct {
 	Etag *string `json:"_etag,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TableGetPropertiesResource.
+func (tgp TableGetPropertiesResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tgp.ID != nil {
+		objectMap["id"] = tgp.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // TableGetResults an Azure Cosmos DB Table.
 type TableGetResults struct {
 	autorest.Response `json:"-"`
@@ -8160,6 +8278,12 @@ type TableListResult struct {
 	Value *[]TableGetResults `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TableListResult.
+func (tlr TableListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // TableResource cosmos DB table resource object
 type TableResource struct {
 	// ID - Name of the Cosmos DB table
@@ -8195,8 +8319,8 @@ func (future *TableResourcesCreateUpdateTableFuture) Result(client TableResource
 	return
 }
 
-// TableResourcesDeleteTableFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// TableResourcesDeleteTableFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type TableResourcesDeleteTableFuture struct {
 	azure.Future
 }
@@ -8276,6 +8400,18 @@ type ThroughputSettingsGetPropertiesResource struct {
 	Ts interface{} `json:"_ts,omitempty"`
 	// Etag - READ-ONLY; A system generated property representing the resource etag required for optimistic concurrency control.
 	Etag *string `json:"_etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ThroughputSettingsGetPropertiesResource.
+func (tsgp ThroughputSettingsGetPropertiesResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tsgp.Throughput != nil {
+		objectMap["throughput"] = tsgp.Throughput
+	}
+	if tsgp.AutoscaleSettings != nil {
+		objectMap["autoscaleSettings"] = tsgp.AutoscaleSettings
+	}
+	return json.Marshal(objectMap)
 }
 
 // ThroughputSettingsGetResults an Azure Cosmos DB resource throughput.
@@ -8402,6 +8538,18 @@ type ThroughputSettingsResource struct {
 	MinimumThroughput *string `json:"minimumThroughput,omitempty"`
 	// OfferReplacePending - READ-ONLY; The throughput replace is pending
 	OfferReplacePending *string `json:"offerReplacePending,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ThroughputSettingsResource.
+func (tsr ThroughputSettingsResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tsr.Throughput != nil {
+		objectMap["throughput"] = tsr.Throughput
+	}
+	if tsr.AutoscaleSettings != nil {
+		objectMap["autoscaleSettings"] = tsr.AutoscaleSettings
+	}
+	return json.Marshal(objectMap)
 }
 
 // ThroughputSettingsUpdateParameters parameters to update Cosmos DB resource throughput.
@@ -8548,15 +8696,15 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UniqueKey the unique key on that enforces uniqueness constraint on documents in the collection in the
-// Azure Cosmos DB service.
+// UniqueKey the unique key on that enforces uniqueness constraint on documents in the collection in the Azure
+// Cosmos DB service.
 type UniqueKey struct {
 	// Paths - List of paths must be unique for each document in the Azure Cosmos DB service
 	Paths *[]string `json:"paths,omitempty"`
 }
 
-// UniqueKeyPolicy the unique key policy configuration for specifying uniqueness constraints on documents
-// in the collection in the Azure Cosmos DB service.
+// UniqueKeyPolicy the unique key policy configuration for specifying uniqueness constraints on documents in
+// the collection in the Azure Cosmos DB service.
 type UniqueKeyPolicy struct {
 	// UniqueKeys - List of unique keys on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB service.
 	UniqueKeys *[]UniqueKey `json:"uniqueKeys,omitempty"`
@@ -8576,11 +8724,26 @@ type Usage struct {
 	CurrentValue *int64 `json:"currentValue,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Usage.
+func (u Usage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if u.Unit != "" {
+		objectMap["unit"] = u.Unit
+	}
+	return json.Marshal(objectMap)
+}
+
 // UsagesResult the response to a list usage request.
 type UsagesResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of usages for the database. A usage is a point in time metric
 	Value *[]Usage `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsagesResult.
+func (ur UsagesResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualNetworkRule virtual Network ACL Rule object

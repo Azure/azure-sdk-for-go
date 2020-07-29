@@ -180,10 +180,15 @@ func (dl DefinitionList) IsEmpty() bool {
 	return dl.Value == nil || len(*dl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dl DefinitionList) hasNextLink() bool {
+	return dl.NextLink != nil && len(*dl.NextLink) != 0
+}
+
 // definitionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dl DefinitionList) definitionListPreparer(ctx context.Context) (*http.Request, error) {
-	if dl.NextLink == nil || len(to.String(dl.NextLink)) < 1 {
+	if !dl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -211,11 +216,16 @@ func (page *DefinitionListPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dl)
+		if err != nil {
+			return err
+		}
+		page.dl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dl = next
 	return nil
 }
 
@@ -259,6 +269,21 @@ type DefinitionProperties struct {
 	OfferType *string `json:"offerType,omitempty"`
 	// Etag - The etag the subscription definition.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DefinitionProperties.
+func (dp DefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dp.SubscriptionDisplayName != nil {
+		objectMap["subscriptionDisplayName"] = dp.SubscriptionDisplayName
+	}
+	if dp.OfferType != nil {
+		objectMap["offerType"] = dp.OfferType
+	}
+	if dp.Etag != nil {
+		objectMap["etag"] = dp.Etag
+	}
+	return json.Marshal(objectMap)
 }
 
 // DefinitionsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -394,10 +419,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -425,11 +455,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 

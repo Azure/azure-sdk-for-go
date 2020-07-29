@@ -332,6 +332,9 @@ func (client SourceControlConfigurationsClient) List(ctx context.Context, resour
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kubernetesconfiguration.SourceControlConfigurationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.sccl.hasNextLink() && result.sccl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

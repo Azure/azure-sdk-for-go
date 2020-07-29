@@ -370,6 +370,9 @@ func (client ExperimentsClient) ListByWorkspace(ctx context.Context, resourceGro
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ExperimentsClient", "ListByWorkspace", resp, "Failure responding to request")
 	}
+	if result.elr.hasNextLink() && result.elr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

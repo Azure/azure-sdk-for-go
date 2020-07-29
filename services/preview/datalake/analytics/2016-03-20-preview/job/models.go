@@ -31,145 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2016-03-20-preview/job"
 
-// CompileMode enumerates the values for compile mode.
-type CompileMode string
-
-const (
-	// Full ...
-	Full CompileMode = "Full"
-	// Semantic ...
-	Semantic CompileMode = "Semantic"
-	// SingleBox ...
-	SingleBox CompileMode = "SingleBox"
-)
-
-// PossibleCompileModeValues returns an array of possible values for the CompileMode const type.
-func PossibleCompileModeValues() []CompileMode {
-	return []CompileMode{Full, Semantic, SingleBox}
-}
-
-// ResourceType enumerates the values for resource type.
-type ResourceType string
-
-const (
-	// JobManagerResource ...
-	JobManagerResource ResourceType = "JobManagerResource"
-	// JobManagerResourceInUserFolder ...
-	JobManagerResourceInUserFolder ResourceType = "JobManagerResourceInUserFolder"
-	// StatisticsResource ...
-	StatisticsResource ResourceType = "StatisticsResource"
-	// StatisticsResourceInUserFolder ...
-	StatisticsResourceInUserFolder ResourceType = "StatisticsResourceInUserFolder"
-	// VertexResource ...
-	VertexResource ResourceType = "VertexResource"
-	// VertexResourceInUserFolder ...
-	VertexResourceInUserFolder ResourceType = "VertexResourceInUserFolder"
-)
-
-// PossibleResourceTypeValues returns an array of possible values for the ResourceType const type.
-func PossibleResourceTypeValues() []ResourceType {
-	return []ResourceType{JobManagerResource, JobManagerResourceInUserFolder, StatisticsResource, StatisticsResourceInUserFolder, VertexResource, VertexResourceInUserFolder}
-}
-
-// Result enumerates the values for result.
-type Result string
-
-const (
-	// Cancelled ...
-	Cancelled Result = "Cancelled"
-	// Failed ...
-	Failed Result = "Failed"
-	// None ...
-	None Result = "None"
-	// Succeeded ...
-	Succeeded Result = "Succeeded"
-)
-
-// PossibleResultValues returns an array of possible values for the Result const type.
-func PossibleResultValues() []Result {
-	return []Result{Cancelled, Failed, None, Succeeded}
-}
-
-// SeverityTypes enumerates the values for severity types.
-type SeverityTypes string
-
-const (
-	// Error ...
-	Error SeverityTypes = "Error"
-	// Info ...
-	Info SeverityTypes = "Info"
-	// Warning ...
-	Warning SeverityTypes = "Warning"
-)
-
-// PossibleSeverityTypesValues returns an array of possible values for the SeverityTypes const type.
-func PossibleSeverityTypesValues() []SeverityTypes {
-	return []SeverityTypes{Error, Info, Warning}
-}
-
-// State enumerates the values for state.
-type State string
-
-const (
-	// StateAccepted ...
-	StateAccepted State = "Accepted"
-	// StateCompiling ...
-	StateCompiling State = "Compiling"
-	// StateEnded ...
-	StateEnded State = "Ended"
-	// StateNew ...
-	StateNew State = "New"
-	// StatePaused ...
-	StatePaused State = "Paused"
-	// StateQueued ...
-	StateQueued State = "Queued"
-	// StateRunning ...
-	StateRunning State = "Running"
-	// StateScheduling ...
-	StateScheduling State = "Scheduling"
-	// StateStarting ...
-	StateStarting State = "Starting"
-	// StateWaitingForCapacity ...
-	StateWaitingForCapacity State = "WaitingForCapacity"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{StateAccepted, StateCompiling, StateEnded, StateNew, StatePaused, StateQueued, StateRunning, StateScheduling, StateStarting, StateWaitingForCapacity}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeHive ...
-	TypeHive Type = "Hive"
-	// TypeJobProperties ...
-	TypeJobProperties Type = "JobProperties"
-	// TypeUSQL ...
-	TypeUSQL Type = "USql"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeHive, TypeJobProperties, TypeUSQL}
-}
-
-// TypeEnum enumerates the values for type enum.
-type TypeEnum string
-
-const (
-	// Hive ...
-	Hive TypeEnum = "Hive"
-	// USQL ...
-	USQL TypeEnum = "USql"
-)
-
-// PossibleTypeEnumValues returns an array of possible values for the TypeEnum const type.
-func PossibleTypeEnumValues() []TypeEnum {
-	return []TypeEnum{Hive, USQL}
-}
-
 // DataPath a Data Lake Analytics job data path item.
 type DataPath struct {
 	autorest.Response `json:"-"`
@@ -179,6 +40,12 @@ type DataPath struct {
 	Command *string `json:"command,omitempty"`
 	// Paths - READ-ONLY; the list of paths to all of the job data.
 	Paths *[]string `json:"paths,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataPath.
+func (dp DataPath) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Diagnostics ...
@@ -195,6 +62,12 @@ type Diagnostics struct {
 	Severity SeverityTypes `json:"severity,omitempty"`
 	// Start - READ-ONLY; the starting index of the error.
 	Start *int32 `json:"start,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Diagnostics.
+func (d Diagnostics) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorDetails the Data Lake Analytics job error details.
@@ -227,6 +100,12 @@ type ErrorDetails struct {
 	Source *string `json:"source,omitempty"`
 	// StartOffset - READ-ONLY; the start offset in the job where the error was found
 	StartOffset *int32 `json:"startOffset,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HiveJobProperties ...
@@ -292,6 +171,12 @@ type InfoListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Count - READ-ONLY; the total count of results that are available, but might not be returned in the current page.
 	Count *int64 `json:"count,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InfoListResult.
+func (ilr InfoListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // InfoListResultIterator provides access to a complete listing of Information values.
@@ -362,10 +247,15 @@ func (ilr InfoListResult) IsEmpty() bool {
 	return ilr.Value == nil || len(*ilr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ilr InfoListResult) hasNextLink() bool {
+	return ilr.NextLink != nil && len(*ilr.NextLink) != 0
+}
+
 // infoListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ilr InfoListResult) infoListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ilr.NextLink == nil || len(to.String(ilr.NextLink)) < 1 {
+	if !ilr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -393,11 +283,16 @@ func (page *InfoListResultPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ilr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ilr)
+		if err != nil {
+			return err
+		}
+		page.ilr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ilr = next
 	return nil
 }
 
@@ -470,6 +365,37 @@ type Information struct {
 	HierarchyQueueNode *string `json:"hierarchyQueueNode,omitempty"`
 	// Properties - the job specific properties.
 	Properties BasicProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Information.
+func (i Information) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.JobID != nil {
+		objectMap["jobId"] = i.JobID
+	}
+	if i.Name != nil {
+		objectMap["name"] = i.Name
+	}
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	if i.Submitter != nil {
+		objectMap["submitter"] = i.Submitter
+	}
+	if i.DegreeOfParallelism != nil {
+		objectMap["degreeOfParallelism"] = i.DegreeOfParallelism
+	}
+	if i.DegreeOfParallelismPercent != nil {
+		objectMap["degreeOfParallelismPercent"] = i.DegreeOfParallelismPercent
+	}
+	if i.Priority != nil {
+		objectMap["priority"] = i.Priority
+	}
+	if i.LogFilePatterns != nil {
+		objectMap["logFilePatterns"] = i.LogFilePatterns
+	}
+	objectMap["properties"] = i.Properties
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Information struct.
@@ -674,6 +600,12 @@ type InnerError struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for InnerError.
+func (ie InnerError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BasicProperties the common Data Lake Analytics job properties.
 type BasicProperties interface {
 	AsUSQLJobProperties() (*USQLJobProperties, bool)
@@ -790,6 +722,12 @@ type StateAuditRecord struct {
 	Details *string `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StateAuditRecord.
+func (sar StateAuditRecord) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Statistics the Data Lake Analytics job execution statistics.
 type Statistics struct {
 	autorest.Response `json:"-"`
@@ -799,6 +737,12 @@ type Statistics struct {
 	FinalizingTimeUtc *date.Time `json:"finalizingTimeUtc,omitempty"`
 	// Stages - READ-ONLY; the list of stages for the job.
 	Stages *[]StatisticsVertexStage `json:"stages,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Statistics.
+func (s Statistics) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StatisticsVertexStage the Data Lake Analytics job statistics vertex stage information.
@@ -843,6 +787,12 @@ type StatisticsVertexStage struct {
 	TotalProgress *int32 `json:"totalProgress,omitempty"`
 	// TotalSucceededTime - READ-ONLY; the amount of time all successful vertices took in this stage.
 	TotalSucceededTime *string `json:"totalSucceededTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StatisticsVertexStage.
+func (svs StatisticsVertexStage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // USQLJobProperties ...

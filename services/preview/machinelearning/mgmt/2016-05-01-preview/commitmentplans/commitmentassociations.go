@@ -156,6 +156,9 @@ func (client CommitmentAssociationsClient) List(ctx context.Context, resourceGro
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.calr.hasNextLink() && result.calr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

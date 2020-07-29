@@ -297,6 +297,9 @@ func (client PostgresInstancesClient) List(ctx context.Context) (result Postgres
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.PostgresInstancesClient", "List", resp, "Failure responding to request")
 	}
+	if result.pilr.hasNextLink() && result.pilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -406,6 +409,9 @@ func (client PostgresInstancesClient) ListByResourceGroup(ctx context.Context, r
 	result.pilr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.PostgresInstancesClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.pilr.hasNextLink() && result.pilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

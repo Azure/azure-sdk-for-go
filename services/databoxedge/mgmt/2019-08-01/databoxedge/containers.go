@@ -321,6 +321,9 @@ func (client ContainersClient) ListByStorageAccount(ctx context.Context, deviceN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.ContainersClient", "ListByStorageAccount", resp, "Failure responding to request")
 	}
+	if result.cl.hasNextLink() && result.cl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

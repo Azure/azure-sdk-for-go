@@ -32,168 +32,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/mgmt/2016-11-01/account"
 
-// AADObjectType enumerates the values for aad object type.
-type AADObjectType string
-
-const (
-	// Group ...
-	Group AADObjectType = "Group"
-	// ServicePrincipal ...
-	ServicePrincipal AADObjectType = "ServicePrincipal"
-	// User ...
-	User AADObjectType = "User"
-)
-
-// PossibleAADObjectTypeValues returns an array of possible values for the AADObjectType const type.
-func PossibleAADObjectTypeValues() []AADObjectType {
-	return []AADObjectType{Group, ServicePrincipal, User}
-}
-
-// DataLakeAnalyticsAccountState enumerates the values for data lake analytics account state.
-type DataLakeAnalyticsAccountState string
-
-const (
-	// Active ...
-	Active DataLakeAnalyticsAccountState = "Active"
-	// Suspended ...
-	Suspended DataLakeAnalyticsAccountState = "Suspended"
-)
-
-// PossibleDataLakeAnalyticsAccountStateValues returns an array of possible values for the DataLakeAnalyticsAccountState const type.
-func PossibleDataLakeAnalyticsAccountStateValues() []DataLakeAnalyticsAccountState {
-	return []DataLakeAnalyticsAccountState{Active, Suspended}
-}
-
-// DataLakeAnalyticsAccountStatus enumerates the values for data lake analytics account status.
-type DataLakeAnalyticsAccountStatus string
-
-const (
-	// Canceled ...
-	Canceled DataLakeAnalyticsAccountStatus = "Canceled"
-	// Creating ...
-	Creating DataLakeAnalyticsAccountStatus = "Creating"
-	// Deleted ...
-	Deleted DataLakeAnalyticsAccountStatus = "Deleted"
-	// Deleting ...
-	Deleting DataLakeAnalyticsAccountStatus = "Deleting"
-	// Failed ...
-	Failed DataLakeAnalyticsAccountStatus = "Failed"
-	// Patching ...
-	Patching DataLakeAnalyticsAccountStatus = "Patching"
-	// Resuming ...
-	Resuming DataLakeAnalyticsAccountStatus = "Resuming"
-	// Running ...
-	Running DataLakeAnalyticsAccountStatus = "Running"
-	// Succeeded ...
-	Succeeded DataLakeAnalyticsAccountStatus = "Succeeded"
-	// Suspending ...
-	Suspending DataLakeAnalyticsAccountStatus = "Suspending"
-	// Undeleting ...
-	Undeleting DataLakeAnalyticsAccountStatus = "Undeleting"
-)
-
-// PossibleDataLakeAnalyticsAccountStatusValues returns an array of possible values for the DataLakeAnalyticsAccountStatus const type.
-func PossibleDataLakeAnalyticsAccountStatusValues() []DataLakeAnalyticsAccountStatus {
-	return []DataLakeAnalyticsAccountStatus{Canceled, Creating, Deleted, Deleting, Failed, Patching, Resuming, Running, Succeeded, Suspending, Undeleting}
-}
-
-// FirewallAllowAzureIpsState enumerates the values for firewall allow azure ips state.
-type FirewallAllowAzureIpsState string
-
-const (
-	// Disabled ...
-	Disabled FirewallAllowAzureIpsState = "Disabled"
-	// Enabled ...
-	Enabled FirewallAllowAzureIpsState = "Enabled"
-)
-
-// PossibleFirewallAllowAzureIpsStateValues returns an array of possible values for the FirewallAllowAzureIpsState const type.
-func PossibleFirewallAllowAzureIpsStateValues() []FirewallAllowAzureIpsState {
-	return []FirewallAllowAzureIpsState{Disabled, Enabled}
-}
-
-// FirewallState enumerates the values for firewall state.
-type FirewallState string
-
-const (
-	// FirewallStateDisabled ...
-	FirewallStateDisabled FirewallState = "Disabled"
-	// FirewallStateEnabled ...
-	FirewallStateEnabled FirewallState = "Enabled"
-)
-
-// PossibleFirewallStateValues returns an array of possible values for the FirewallState const type.
-func PossibleFirewallStateValues() []FirewallState {
-	return []FirewallState{FirewallStateDisabled, FirewallStateEnabled}
-}
-
-// OperationOrigin enumerates the values for operation origin.
-type OperationOrigin string
-
-const (
-	// OperationOriginSystem ...
-	OperationOriginSystem OperationOrigin = "system"
-	// OperationOriginUser ...
-	OperationOriginUser OperationOrigin = "user"
-	// OperationOriginUsersystem ...
-	OperationOriginUsersystem OperationOrigin = "user,system"
-)
-
-// PossibleOperationOriginValues returns an array of possible values for the OperationOrigin const type.
-func PossibleOperationOriginValues() []OperationOrigin {
-	return []OperationOrigin{OperationOriginSystem, OperationOriginUser, OperationOriginUsersystem}
-}
-
-// SubscriptionState enumerates the values for subscription state.
-type SubscriptionState string
-
-const (
-	// SubscriptionStateDeleted ...
-	SubscriptionStateDeleted SubscriptionState = "Deleted"
-	// SubscriptionStateRegistered ...
-	SubscriptionStateRegistered SubscriptionState = "Registered"
-	// SubscriptionStateSuspended ...
-	SubscriptionStateSuspended SubscriptionState = "Suspended"
-	// SubscriptionStateUnregistered ...
-	SubscriptionStateUnregistered SubscriptionState = "Unregistered"
-	// SubscriptionStateWarned ...
-	SubscriptionStateWarned SubscriptionState = "Warned"
-)
-
-// PossibleSubscriptionStateValues returns an array of possible values for the SubscriptionState const type.
-func PossibleSubscriptionStateValues() []SubscriptionState {
-	return []SubscriptionState{SubscriptionStateDeleted, SubscriptionStateRegistered, SubscriptionStateSuspended, SubscriptionStateUnregistered, SubscriptionStateWarned}
-}
-
-// TierType enumerates the values for tier type.
-type TierType string
-
-const (
-	// Commitment100000AUHours ...
-	Commitment100000AUHours TierType = "Commitment_100000AUHours"
-	// Commitment10000AUHours ...
-	Commitment10000AUHours TierType = "Commitment_10000AUHours"
-	// Commitment1000AUHours ...
-	Commitment1000AUHours TierType = "Commitment_1000AUHours"
-	// Commitment100AUHours ...
-	Commitment100AUHours TierType = "Commitment_100AUHours"
-	// Commitment500000AUHours ...
-	Commitment500000AUHours TierType = "Commitment_500000AUHours"
-	// Commitment50000AUHours ...
-	Commitment50000AUHours TierType = "Commitment_50000AUHours"
-	// Commitment5000AUHours ...
-	Commitment5000AUHours TierType = "Commitment_5000AUHours"
-	// Commitment500AUHours ...
-	Commitment500AUHours TierType = "Commitment_500AUHours"
-	// Consumption ...
-	Consumption TierType = "Consumption"
-)
-
-// PossibleTierTypeValues returns an array of possible values for the TierType const type.
-func PossibleTierTypeValues() []TierType {
-	return []TierType{Commitment100000AUHours, Commitment10000AUHours, Commitment1000AUHours, Commitment100AUHours, Commitment500000AUHours, Commitment50000AUHours, Commitment5000AUHours, Commitment500AUHours, Consumption}
-}
-
 // AccountsCreateFutureType an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type AccountsCreateFutureType struct {
@@ -314,8 +152,8 @@ func (adlsp *AddDataLakeStoreParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AddDataLakeStoreProperties the Data Lake Store account properties to use when adding a new Data Lake
-// Store account.
+// AddDataLakeStoreProperties the Data Lake Store account properties to use when adding a new Data Lake Store
+// account.
 type AddDataLakeStoreProperties struct {
 	// Suffix - The optional suffix for the Data Lake Store account.
 	Suffix *string `json:"suffix,omitempty"`
@@ -423,8 +261,8 @@ type AddStorageAccountProperties struct {
 	Suffix *string `json:"suffix,omitempty"`
 }
 
-// AddStorageAccountWithAccountParameters the parameters used to add a new Azure Storage account while
-// creating a new Data Lake Analytics account.
+// AddStorageAccountWithAccountParameters the parameters used to add a new Azure Storage account while creating
+// a new Data Lake Analytics account.
 type AddStorageAccountWithAccountParameters struct {
 	// Name - The unique name of the Azure Storage account to add.
 	Name *string `json:"name,omitempty"`
@@ -490,6 +328,12 @@ type CapabilityInformation struct {
 	AccountCount *int32 `json:"accountCount,omitempty"`
 	// MigrationState - READ-ONLY; The Boolean value of true or false to indicate the maintenance state.
 	MigrationState *bool `json:"migrationState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CapabilityInformation.
+func (ci CapabilityInformation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CheckNameAvailabilityParameters data Lake Analytics account name availability check parameters.
@@ -579,6 +423,12 @@ type ComputePolicyListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ComputePolicyListResult.
+func (cplr ComputePolicyListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ComputePolicyListResultIterator provides access to a complete listing of ComputePolicy values.
 type ComputePolicyListResultIterator struct {
 	i    int
@@ -647,10 +497,15 @@ func (cplr ComputePolicyListResult) IsEmpty() bool {
 	return cplr.Value == nil || len(*cplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cplr ComputePolicyListResult) hasNextLink() bool {
+	return cplr.NextLink != nil && len(*cplr.NextLink) != 0
+}
+
 // computePolicyListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cplr ComputePolicyListResult) computePolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cplr.NextLink == nil || len(to.String(cplr.NextLink)) < 1 {
+	if !cplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -678,11 +533,16 @@ func (page *ComputePolicyListResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cplr)
+		if err != nil {
+			return err
+		}
+		page.cplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cplr = next
 	return nil
 }
 
@@ -728,8 +588,14 @@ type ComputePolicyProperties struct {
 	MinPriorityPerJob *int32 `json:"minPriorityPerJob,omitempty"`
 }
 
-// CreateComputePolicyWithAccountParameters the parameters used to create a new compute policy while
-// creating a new Data Lake Analytics account.
+// MarshalJSON is the custom marshaler for ComputePolicyProperties.
+func (cpp ComputePolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// CreateComputePolicyWithAccountParameters the parameters used to create a new compute policy while creating a
+// new Data Lake Analytics account.
 type CreateComputePolicyWithAccountParameters struct {
 	// Name - The unique name of the compute policy to create.
 	Name *string `json:"name,omitempty"`
@@ -782,8 +648,7 @@ func (ccpwap *CreateComputePolicyWithAccountParameters) UnmarshalJSON(body []byt
 	return nil
 }
 
-// CreateDataLakeAnalyticsAccountParameters the parameters to use for creating a Data Lake Analytics
-// account.
+// CreateDataLakeAnalyticsAccountParameters the parameters to use for creating a Data Lake Analytics account.
 type CreateDataLakeAnalyticsAccountParameters struct {
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
@@ -880,8 +745,8 @@ type CreateDataLakeAnalyticsAccountProperties struct {
 	QueryStoreRetention *int32 `json:"queryStoreRetention,omitempty"`
 }
 
-// CreateFirewallRuleWithAccountParameters the parameters used to create a new firewall rule while creating
-// a new Data Lake Analytics account.
+// CreateFirewallRuleWithAccountParameters the parameters used to create a new firewall rule while creating a
+// new Data Lake Analytics account.
 type CreateFirewallRuleWithAccountParameters struct {
 	// Name - The unique name of the firewall rule to create.
 	Name *string `json:"name,omitempty"`
@@ -1025,8 +890,7 @@ func (coufrp *CreateOrUpdateFirewallRuleParameters) UnmarshalJSON(body []byte) e
 	return nil
 }
 
-// CreateOrUpdateFirewallRuleProperties the firewall rule properties to use when creating a new firewall
-// rule.
+// CreateOrUpdateFirewallRuleProperties the firewall rule properties to use when creating a new firewall rule.
 type CreateOrUpdateFirewallRuleProperties struct {
 	// StartIPAddress - The start IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same protocol.
 	StartIPAddress *string `json:"startIpAddress,omitempty"`
@@ -1034,8 +898,8 @@ type CreateOrUpdateFirewallRuleProperties struct {
 	EndIPAddress *string `json:"endIpAddress,omitempty"`
 }
 
-// DataLakeAnalyticsAccount a Data Lake Analytics account object, containing all information associated
-// with the named Data Lake Analytics account.
+// DataLakeAnalyticsAccount a Data Lake Analytics account object, containing all information associated with
+// the named Data Lake Analytics account.
 type DataLakeAnalyticsAccount struct {
 	autorest.Response `json:"-"`
 	// DataLakeAnalyticsAccountProperties - READ-ONLY; The properties defined by Data Lake Analytics all properties are specific to each resource provider.
@@ -1127,8 +991,8 @@ func (dlaa *DataLakeAnalyticsAccount) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DataLakeAnalyticsAccountBasic a Data Lake Analytics account object, containing all information
-// associated with the named Data Lake Analytics account.
+// DataLakeAnalyticsAccountBasic a Data Lake Analytics account object, containing all information associated
+// with the named Data Lake Analytics account.
 type DataLakeAnalyticsAccountBasic struct {
 	// DataLakeAnalyticsAccountPropertiesBasic - READ-ONLY; The properties defined by Data Lake Analytics all properties are specific to each resource provider.
 	*DataLakeAnalyticsAccountPropertiesBasic `json:"properties,omitempty"`
@@ -1228,6 +1092,12 @@ type DataLakeAnalyticsAccountListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DataLakeAnalyticsAccountListResult.
+func (dlaalr DataLakeAnalyticsAccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DataLakeAnalyticsAccountListResultIterator provides access to a complete listing of
 // DataLakeAnalyticsAccountBasic values.
 type DataLakeAnalyticsAccountListResultIterator struct {
@@ -1297,10 +1167,15 @@ func (dlaalr DataLakeAnalyticsAccountListResult) IsEmpty() bool {
 	return dlaalr.Value == nil || len(*dlaalr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dlaalr DataLakeAnalyticsAccountListResult) hasNextLink() bool {
+	return dlaalr.NextLink != nil && len(*dlaalr.NextLink) != 0
+}
+
 // dataLakeAnalyticsAccountListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dlaalr DataLakeAnalyticsAccountListResult) dataLakeAnalyticsAccountListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dlaalr.NextLink == nil || len(to.String(dlaalr.NextLink)) < 1 {
+	if !dlaalr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1328,11 +1203,16 @@ func (page *DataLakeAnalyticsAccountListResultPage) NextWithContext(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dlaalr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dlaalr)
+		if err != nil {
+			return err
+		}
+		page.dlaalr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dlaalr = next
 	return nil
 }
 
@@ -1366,8 +1246,8 @@ func NewDataLakeAnalyticsAccountListResultPage(getNextPage func(context.Context,
 	return DataLakeAnalyticsAccountListResultPage{fn: getNextPage}
 }
 
-// DataLakeAnalyticsAccountProperties the account specific properties that are associated with an
-// underlying Data Lake Analytics account. Returned only when retrieving a specific account.
+// DataLakeAnalyticsAccountProperties the account specific properties that are associated with an underlying
+// Data Lake Analytics account. Returned only when retrieving a specific account.
 type DataLakeAnalyticsAccountProperties struct {
 	// DefaultDataLakeStoreAccount - READ-ONLY; The default Data Lake Store account associated with this account.
 	DefaultDataLakeStoreAccount *string `json:"defaultDataLakeStoreAccount,omitempty"`
@@ -1415,8 +1295,14 @@ type DataLakeAnalyticsAccountProperties struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 }
 
-// DataLakeAnalyticsAccountPropertiesBasic the basic account specific properties that are associated with
-// an underlying Data Lake Analytics account.
+// MarshalJSON is the custom marshaler for DataLakeAnalyticsAccountProperties.
+func (dlaap DataLakeAnalyticsAccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// DataLakeAnalyticsAccountPropertiesBasic the basic account specific properties that are associated with an
+// underlying Data Lake Analytics account.
 type DataLakeAnalyticsAccountPropertiesBasic struct {
 	// AccountID - READ-ONLY; The unique identifier associated with this Data Lake Analytics account.
 	AccountID *uuid.UUID `json:"accountId,omitempty"`
@@ -1430,6 +1316,12 @@ type DataLakeAnalyticsAccountPropertiesBasic struct {
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// Endpoint - READ-ONLY; The full CName endpoint for this account.
 	Endpoint *string `json:"endpoint,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataLakeAnalyticsAccountPropertiesBasic.
+func (dlaapb DataLakeAnalyticsAccountPropertiesBasic) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DataLakeStoreAccountInformation data Lake Store account information.
@@ -1511,6 +1403,12 @@ type DataLakeStoreAccountInformationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DataLakeStoreAccountInformationListResult.
+func (dlsailr DataLakeStoreAccountInformationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DataLakeStoreAccountInformationListResultIterator provides access to a complete listing of
 // DataLakeStoreAccountInformation values.
 type DataLakeStoreAccountInformationListResultIterator struct {
@@ -1580,10 +1478,15 @@ func (dlsailr DataLakeStoreAccountInformationListResult) IsEmpty() bool {
 	return dlsailr.Value == nil || len(*dlsailr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dlsailr DataLakeStoreAccountInformationListResult) hasNextLink() bool {
+	return dlsailr.NextLink != nil && len(*dlsailr.NextLink) != 0
+}
+
 // dataLakeStoreAccountInformationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dlsailr DataLakeStoreAccountInformationListResult) dataLakeStoreAccountInformationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dlsailr.NextLink == nil || len(to.String(dlsailr.NextLink)) < 1 {
+	if !dlsailr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1611,11 +1514,16 @@ func (page *DataLakeStoreAccountInformationListResultPage) NextWithContext(ctx c
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dlsailr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dlsailr)
+		if err != nil {
+			return err
+		}
+		page.dlsailr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dlsailr = next
 	return nil
 }
 
@@ -1653,6 +1561,12 @@ func NewDataLakeStoreAccountInformationListResultPage(getNextPage func(context.C
 type DataLakeStoreAccountInformationProperties struct {
 	// Suffix - READ-ONLY; The optional suffix for the Data Lake Store account.
 	Suffix *string `json:"suffix,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataLakeStoreAccountInformationProperties.
+func (dlsaip DataLakeStoreAccountInformationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // FirewallRule data Lake Analytics firewall rule information.
@@ -1734,6 +1648,12 @@ type FirewallRuleListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FirewallRuleListResult.
+func (frlr FirewallRuleListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // FirewallRuleListResultIterator provides access to a complete listing of FirewallRule values.
 type FirewallRuleListResultIterator struct {
 	i    int
@@ -1802,10 +1722,15 @@ func (frlr FirewallRuleListResult) IsEmpty() bool {
 	return frlr.Value == nil || len(*frlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (frlr FirewallRuleListResult) hasNextLink() bool {
+	return frlr.NextLink != nil && len(*frlr.NextLink) != 0
+}
+
 // firewallRuleListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (frlr FirewallRuleListResult) firewallRuleListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if frlr.NextLink == nil || len(to.String(frlr.NextLink)) < 1 {
+	if !frlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1833,11 +1758,16 @@ func (page *FirewallRuleListResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.frlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.frlr)
+		if err != nil {
+			return err
+		}
+		page.frlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.frlr = next
 	return nil
 }
 
@@ -1879,6 +1809,12 @@ type FirewallRuleProperties struct {
 	EndIPAddress *string `json:"endIpAddress,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FirewallRuleProperties.
+func (frp FirewallRuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // NameAvailabilityInformation data Lake Analytics account name availability result information.
 type NameAvailabilityInformation struct {
 	autorest.Response `json:"-"`
@@ -1890,6 +1826,12 @@ type NameAvailabilityInformation struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NameAvailabilityInformation.
+func (nai NameAvailabilityInformation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Operation an available operation for Data Lake Analytics.
 type Operation struct {
 	// Name - READ-ONLY; The name of the operation.
@@ -1898,6 +1840,12 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 	// Origin - READ-ONLY; The intended executor of the operation. Possible values include: 'OperationOriginUser', 'OperationOriginSystem', 'OperationOriginUsersystem'
 	Origin OperationOrigin `json:"origin,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the display information for a particular operation.
@@ -1912,6 +1860,12 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (od OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult the list of available operations for Data Lake Analytics.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
@@ -1919,6 +1873,12 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Resource the resource model definition.
@@ -1947,8 +1907,14 @@ type SasTokenInformation struct {
 	AccessToken *string `json:"accessToken,omitempty"`
 }
 
-// SasTokenInformationListResult the SAS response that contains the storage account, container and
-// associated SAS token for connection use.
+// MarshalJSON is the custom marshaler for SasTokenInformation.
+func (sti SasTokenInformation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// SasTokenInformationListResult the SAS response that contains the storage account, container and associated
+// SAS token for connection use.
 type SasTokenInformationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The results of the list operation.
@@ -1957,8 +1923,13 @@ type SasTokenInformationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// SasTokenInformationListResultIterator provides access to a complete listing of SasTokenInformation
-// values.
+// MarshalJSON is the custom marshaler for SasTokenInformationListResult.
+func (stilr SasTokenInformationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// SasTokenInformationListResultIterator provides access to a complete listing of SasTokenInformation values.
 type SasTokenInformationListResultIterator struct {
 	i    int
 	page SasTokenInformationListResultPage
@@ -2026,10 +1997,15 @@ func (stilr SasTokenInformationListResult) IsEmpty() bool {
 	return stilr.Value == nil || len(*stilr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (stilr SasTokenInformationListResult) hasNextLink() bool {
+	return stilr.NextLink != nil && len(*stilr.NextLink) != 0
+}
+
 // sasTokenInformationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (stilr SasTokenInformationListResult) sasTokenInformationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if stilr.NextLink == nil || len(to.String(stilr.NextLink)) < 1 {
+	if !stilr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2057,11 +2033,16 @@ func (page *SasTokenInformationListResultPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.stilr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.stilr)
+		if err != nil {
+			return err
+		}
+		page.stilr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.stilr = next
 	return nil
 }
 
@@ -2174,6 +2155,12 @@ type StorageAccountInformationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StorageAccountInformationListResult.
+func (sailr StorageAccountInformationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // StorageAccountInformationListResultIterator provides access to a complete listing of
 // StorageAccountInformation values.
 type StorageAccountInformationListResultIterator struct {
@@ -2243,10 +2230,15 @@ func (sailr StorageAccountInformationListResult) IsEmpty() bool {
 	return sailr.Value == nil || len(*sailr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sailr StorageAccountInformationListResult) hasNextLink() bool {
+	return sailr.NextLink != nil && len(*sailr.NextLink) != 0
+}
+
 // storageAccountInformationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sailr StorageAccountInformationListResult) storageAccountInformationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if sailr.NextLink == nil || len(to.String(sailr.NextLink)) < 1 {
+	if !sailr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2274,11 +2266,16 @@ func (page *StorageAccountInformationListResultPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sailr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sailr)
+		if err != nil {
+			return err
+		}
+		page.sailr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sailr = next
 	return nil
 }
 
@@ -2316,6 +2313,12 @@ func NewStorageAccountInformationListResultPage(getNextPage func(context.Context
 type StorageAccountInformationProperties struct {
 	// Suffix - READ-ONLY; The optional suffix for the storage account.
 	Suffix *string `json:"suffix,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StorageAccountInformationProperties.
+func (saip StorageAccountInformationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StorageContainer azure Storage blob container information.
@@ -2388,14 +2391,20 @@ func (sc *StorageContainer) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// StorageContainerListResult the list of blob containers associated with the storage account attached to
-// the Data Lake Analytics account.
+// StorageContainerListResult the list of blob containers associated with the storage account attached to the
+// Data Lake Analytics account.
 type StorageContainerListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The results of the list operation.
 	Value *[]StorageContainer `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StorageContainerListResult.
+func (sclr StorageContainerListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StorageContainerListResultIterator provides access to a complete listing of StorageContainer values.
@@ -2466,10 +2475,15 @@ func (sclr StorageContainerListResult) IsEmpty() bool {
 	return sclr.Value == nil || len(*sclr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sclr StorageContainerListResult) hasNextLink() bool {
+	return sclr.NextLink != nil && len(*sclr.NextLink) != 0
+}
+
 // storageContainerListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sclr StorageContainerListResult) storageContainerListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if sclr.NextLink == nil || len(to.String(sclr.NextLink)) < 1 {
+	if !sclr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2497,11 +2511,16 @@ func (page *StorageContainerListResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sclr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sclr)
+		if err != nil {
+			return err
+		}
+		page.sclr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sclr = next
 	return nil
 }
 
@@ -2541,6 +2560,12 @@ type StorageContainerProperties struct {
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StorageContainerProperties.
+func (scp StorageContainerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SubResource the resource model definition for a nested resource.
 type SubResource struct {
 	// ID - READ-ONLY; The resource identifier.
@@ -2549,6 +2574,12 @@ type SubResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SubResource.
+func (sr SubResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UpdateComputePolicyParameters the parameters used to update a compute policy.
@@ -2739,8 +2770,8 @@ type UpdateDataLakeAnalyticsAccountProperties struct {
 	QueryStoreRetention *int32 `json:"queryStoreRetention,omitempty"`
 }
 
-// UpdateDataLakeStoreProperties the Data Lake Store account properties to use when updating a Data Lake
-// Store account.
+// UpdateDataLakeStoreProperties the Data Lake Store account properties to use when updating a Data Lake Store
+// account.
 type UpdateDataLakeStoreProperties struct {
 	// Suffix - The optional suffix for the Data Lake Store account.
 	Suffix *string `json:"suffix,omitempty"`
@@ -2847,8 +2878,8 @@ type UpdateFirewallRuleProperties struct {
 	EndIPAddress *string `json:"endIpAddress,omitempty"`
 }
 
-// UpdateFirewallRuleWithAccountParameters the parameters used to update a firewall rule while updating a
-// Data Lake Analytics account.
+// UpdateFirewallRuleWithAccountParameters the parameters used to update a firewall rule while updating a Data
+// Lake Analytics account.
 type UpdateFirewallRuleWithAccountParameters struct {
 	// Name - The unique name of the firewall rule to update.
 	Name *string `json:"name,omitempty"`
@@ -2940,8 +2971,8 @@ func (usap *UpdateStorageAccountParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// UpdateStorageAccountProperties the Azure Storage account properties to use when updating an Azure
-// Storage account.
+// UpdateStorageAccountProperties the Azure Storage account properties to use when updating an Azure Storage
+// account.
 type UpdateStorageAccountProperties struct {
 	// AccessKey - The updated access key associated with this Azure Storage account that will be used to connect to it.
 	AccessKey *string `json:"accessKey,omitempty"`

@@ -31,445 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/machinelearningservices/mgmt/2020-02-18-preview/machinelearningservices"
 
-// AllocationState enumerates the values for allocation state.
-type AllocationState string
-
-const (
-	// Resizing ...
-	Resizing AllocationState = "Resizing"
-	// Steady ...
-	Steady AllocationState = "Steady"
-)
-
-// PossibleAllocationStateValues returns an array of possible values for the AllocationState const type.
-func PossibleAllocationStateValues() []AllocationState {
-	return []AllocationState{Resizing, Steady}
-}
-
-// ApplicationSharingPolicy enumerates the values for application sharing policy.
-type ApplicationSharingPolicy string
-
-const (
-	// Personal ...
-	Personal ApplicationSharingPolicy = "Personal"
-	// Shared ...
-	Shared ApplicationSharingPolicy = "Shared"
-)
-
-// PossibleApplicationSharingPolicyValues returns an array of possible values for the ApplicationSharingPolicy const type.
-func PossibleApplicationSharingPolicyValues() []ApplicationSharingPolicy {
-	return []ApplicationSharingPolicy{Personal, Shared}
-}
-
-// ComputeInstanceState enumerates the values for compute instance state.
-type ComputeInstanceState string
-
-const (
-	// CreateFailed ...
-	CreateFailed ComputeInstanceState = "CreateFailed"
-	// Creating ...
-	Creating ComputeInstanceState = "Creating"
-	// Deleting ...
-	Deleting ComputeInstanceState = "Deleting"
-	// JobRunning ...
-	JobRunning ComputeInstanceState = "JobRunning"
-	// RestartFailed ...
-	RestartFailed ComputeInstanceState = "RestartFailed"
-	// Restarting ...
-	Restarting ComputeInstanceState = "Restarting"
-	// Running ...
-	Running ComputeInstanceState = "Running"
-	// SettingUp ...
-	SettingUp ComputeInstanceState = "SettingUp"
-	// StartFailed ...
-	StartFailed ComputeInstanceState = "StartFailed"
-	// Starting ...
-	Starting ComputeInstanceState = "Starting"
-	// StopFailed ...
-	StopFailed ComputeInstanceState = "StopFailed"
-	// Stopped ...
-	Stopped ComputeInstanceState = "Stopped"
-	// Stopping ...
-	Stopping ComputeInstanceState = "Stopping"
-	// Unknown ...
-	Unknown ComputeInstanceState = "Unknown"
-	// Unusable ...
-	Unusable ComputeInstanceState = "Unusable"
-	// UserSettingUp ...
-	UserSettingUp ComputeInstanceState = "UserSettingUp"
-)
-
-// PossibleComputeInstanceStateValues returns an array of possible values for the ComputeInstanceState const type.
-func PossibleComputeInstanceStateValues() []ComputeInstanceState {
-	return []ComputeInstanceState{CreateFailed, Creating, Deleting, JobRunning, RestartFailed, Restarting, Running, SettingUp, StartFailed, Starting, StopFailed, Stopped, Stopping, Unknown, Unusable, UserSettingUp}
-}
-
-// ComputeType enumerates the values for compute type.
-type ComputeType string
-
-const (
-	// ComputeTypeAKS ...
-	ComputeTypeAKS ComputeType = "AKS"
-	// ComputeTypeAmlCompute ...
-	ComputeTypeAmlCompute ComputeType = "AmlCompute"
-	// ComputeTypeComputeInstance ...
-	ComputeTypeComputeInstance ComputeType = "ComputeInstance"
-	// ComputeTypeDatabricks ...
-	ComputeTypeDatabricks ComputeType = "Databricks"
-	// ComputeTypeDataFactory ...
-	ComputeTypeDataFactory ComputeType = "DataFactory"
-	// ComputeTypeDataLakeAnalytics ...
-	ComputeTypeDataLakeAnalytics ComputeType = "DataLakeAnalytics"
-	// ComputeTypeHDInsight ...
-	ComputeTypeHDInsight ComputeType = "HDInsight"
-	// ComputeTypeVirtualMachine ...
-	ComputeTypeVirtualMachine ComputeType = "VirtualMachine"
-)
-
-// PossibleComputeTypeValues returns an array of possible values for the ComputeType const type.
-func PossibleComputeTypeValues() []ComputeType {
-	return []ComputeType{ComputeTypeAKS, ComputeTypeAmlCompute, ComputeTypeComputeInstance, ComputeTypeDatabricks, ComputeTypeDataFactory, ComputeTypeDataLakeAnalytics, ComputeTypeHDInsight, ComputeTypeVirtualMachine}
-}
-
-// ComputeTypeBasicCompute enumerates the values for compute type basic compute.
-type ComputeTypeBasicCompute string
-
-const (
-	// ComputeTypeAKS1 ...
-	ComputeTypeAKS1 ComputeTypeBasicCompute = "AKS"
-	// ComputeTypeAmlCompute1 ...
-	ComputeTypeAmlCompute1 ComputeTypeBasicCompute = "AmlCompute"
-	// ComputeTypeCompute ...
-	ComputeTypeCompute ComputeTypeBasicCompute = "Compute"
-	// ComputeTypeComputeInstance1 ...
-	ComputeTypeComputeInstance1 ComputeTypeBasicCompute = "ComputeInstance"
-	// ComputeTypeDatabricks1 ...
-	ComputeTypeDatabricks1 ComputeTypeBasicCompute = "Databricks"
-	// ComputeTypeDataFactory1 ...
-	ComputeTypeDataFactory1 ComputeTypeBasicCompute = "DataFactory"
-	// ComputeTypeDataLakeAnalytics1 ...
-	ComputeTypeDataLakeAnalytics1 ComputeTypeBasicCompute = "DataLakeAnalytics"
-	// ComputeTypeHDInsight1 ...
-	ComputeTypeHDInsight1 ComputeTypeBasicCompute = "HDInsight"
-	// ComputeTypeVirtualMachine1 ...
-	ComputeTypeVirtualMachine1 ComputeTypeBasicCompute = "VirtualMachine"
-)
-
-// PossibleComputeTypeBasicComputeValues returns an array of possible values for the ComputeTypeBasicCompute const type.
-func PossibleComputeTypeBasicComputeValues() []ComputeTypeBasicCompute {
-	return []ComputeTypeBasicCompute{ComputeTypeAKS1, ComputeTypeAmlCompute1, ComputeTypeCompute, ComputeTypeComputeInstance1, ComputeTypeDatabricks1, ComputeTypeDataFactory1, ComputeTypeDataLakeAnalytics1, ComputeTypeHDInsight1, ComputeTypeVirtualMachine1}
-}
-
-// ComputeTypeBasicComputeNodesInformation enumerates the values for compute type basic compute nodes
-// information.
-type ComputeTypeBasicComputeNodesInformation string
-
-const (
-	// ComputeTypeBasicComputeNodesInformationComputeTypeAmlCompute ...
-	ComputeTypeBasicComputeNodesInformationComputeTypeAmlCompute ComputeTypeBasicComputeNodesInformation = "AmlCompute"
-	// ComputeTypeBasicComputeNodesInformationComputeTypeComputeNodesInformation ...
-	ComputeTypeBasicComputeNodesInformationComputeTypeComputeNodesInformation ComputeTypeBasicComputeNodesInformation = "ComputeNodesInformation"
-)
-
-// PossibleComputeTypeBasicComputeNodesInformationValues returns an array of possible values for the ComputeTypeBasicComputeNodesInformation const type.
-func PossibleComputeTypeBasicComputeNodesInformationValues() []ComputeTypeBasicComputeNodesInformation {
-	return []ComputeTypeBasicComputeNodesInformation{ComputeTypeBasicComputeNodesInformationComputeTypeAmlCompute, ComputeTypeBasicComputeNodesInformationComputeTypeComputeNodesInformation}
-}
-
-// ComputeTypeBasicComputeSecrets enumerates the values for compute type basic compute secrets.
-type ComputeTypeBasicComputeSecrets string
-
-const (
-	// ComputeTypeBasicComputeSecretsComputeTypeAKS ...
-	ComputeTypeBasicComputeSecretsComputeTypeAKS ComputeTypeBasicComputeSecrets = "AKS"
-	// ComputeTypeBasicComputeSecretsComputeTypeComputeSecrets ...
-	ComputeTypeBasicComputeSecretsComputeTypeComputeSecrets ComputeTypeBasicComputeSecrets = "ComputeSecrets"
-	// ComputeTypeBasicComputeSecretsComputeTypeDatabricks ...
-	ComputeTypeBasicComputeSecretsComputeTypeDatabricks ComputeTypeBasicComputeSecrets = "Databricks"
-	// ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine ...
-	ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine ComputeTypeBasicComputeSecrets = "VirtualMachine"
-)
-
-// PossibleComputeTypeBasicComputeSecretsValues returns an array of possible values for the ComputeTypeBasicComputeSecrets const type.
-func PossibleComputeTypeBasicComputeSecretsValues() []ComputeTypeBasicComputeSecrets {
-	return []ComputeTypeBasicComputeSecrets{ComputeTypeBasicComputeSecretsComputeTypeAKS, ComputeTypeBasicComputeSecretsComputeTypeComputeSecrets, ComputeTypeBasicComputeSecretsComputeTypeDatabricks, ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine}
-}
-
-// EncryptionStatus enumerates the values for encryption status.
-type EncryptionStatus string
-
-const (
-	// Disabled ...
-	Disabled EncryptionStatus = "Disabled"
-	// Enabled ...
-	Enabled EncryptionStatus = "Enabled"
-)
-
-// PossibleEncryptionStatusValues returns an array of possible values for the EncryptionStatus const type.
-func PossibleEncryptionStatusValues() []EncryptionStatus {
-	return []EncryptionStatus{Disabled, Enabled}
-}
-
-// NodeState enumerates the values for node state.
-type NodeState string
-
-const (
-	// NodeStateIdle ...
-	NodeStateIdle NodeState = "idle"
-	// NodeStateLeaving ...
-	NodeStateLeaving NodeState = "leaving"
-	// NodeStatePreempted ...
-	NodeStatePreempted NodeState = "preempted"
-	// NodeStatePreparing ...
-	NodeStatePreparing NodeState = "preparing"
-	// NodeStateRunning ...
-	NodeStateRunning NodeState = "running"
-	// NodeStateUnusable ...
-	NodeStateUnusable NodeState = "unusable"
-)
-
-// PossibleNodeStateValues returns an array of possible values for the NodeState const type.
-func PossibleNodeStateValues() []NodeState {
-	return []NodeState{NodeStateIdle, NodeStateLeaving, NodeStatePreempted, NodeStatePreparing, NodeStateRunning, NodeStateUnusable}
-}
-
-// OsType enumerates the values for os type.
-type OsType string
-
-const (
-	// Linux ...
-	Linux OsType = "Linux"
-	// Windows ...
-	Windows OsType = "Windows"
-)
-
-// PossibleOsTypeValues returns an array of possible values for the OsType const type.
-func PossibleOsTypeValues() []OsType {
-	return []OsType{Linux, Windows}
-}
-
-// PrivateEndpointConnectionProvisioningState enumerates the values for private endpoint connection
-// provisioning state.
-type PrivateEndpointConnectionProvisioningState string
-
-const (
-	// PrivateEndpointConnectionProvisioningStateCreating ...
-	PrivateEndpointConnectionProvisioningStateCreating PrivateEndpointConnectionProvisioningState = "Creating"
-	// PrivateEndpointConnectionProvisioningStateDeleting ...
-	PrivateEndpointConnectionProvisioningStateDeleting PrivateEndpointConnectionProvisioningState = "Deleting"
-	// PrivateEndpointConnectionProvisioningStateFailed ...
-	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
-	// PrivateEndpointConnectionProvisioningStateSucceeded ...
-	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
-)
-
-// PossiblePrivateEndpointConnectionProvisioningStateValues returns an array of possible values for the PrivateEndpointConnectionProvisioningState const type.
-func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
-	return []PrivateEndpointConnectionProvisioningState{PrivateEndpointConnectionProvisioningStateCreating, PrivateEndpointConnectionProvisioningStateDeleting, PrivateEndpointConnectionProvisioningStateFailed, PrivateEndpointConnectionProvisioningStateSucceeded}
-}
-
-// PrivateEndpointServiceConnectionStatus enumerates the values for private endpoint service connection status.
-type PrivateEndpointServiceConnectionStatus string
-
-const (
-	// Approved ...
-	Approved PrivateEndpointServiceConnectionStatus = "Approved"
-	// Pending ...
-	Pending PrivateEndpointServiceConnectionStatus = "Pending"
-	// Rejected ...
-	Rejected PrivateEndpointServiceConnectionStatus = "Rejected"
-)
-
-// PossiblePrivateEndpointServiceConnectionStatusValues returns an array of possible values for the PrivateEndpointServiceConnectionStatus const type.
-func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
-	return []PrivateEndpointServiceConnectionStatus{Approved, Pending, Rejected}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// ProvisioningStateCanceled ...
-	ProvisioningStateCanceled ProvisioningState = "Canceled"
-	// ProvisioningStateCreating ...
-	ProvisioningStateCreating ProvisioningState = "Creating"
-	// ProvisioningStateDeleting ...
-	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed ...
-	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateSucceeded ...
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	// ProvisioningStateUnknown ...
-	ProvisioningStateUnknown ProvisioningState = "Unknown"
-	// ProvisioningStateUpdating ...
-	ProvisioningStateUpdating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateCanceled, ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateSucceeded, ProvisioningStateUnknown, ProvisioningStateUpdating}
-}
-
-// QuotaUnit enumerates the values for quota unit.
-type QuotaUnit string
-
-const (
-	// Count ...
-	Count QuotaUnit = "Count"
-)
-
-// PossibleQuotaUnitValues returns an array of possible values for the QuotaUnit const type.
-func PossibleQuotaUnitValues() []QuotaUnit {
-	return []QuotaUnit{Count}
-}
-
-// ReasonCode enumerates the values for reason code.
-type ReasonCode string
-
-const (
-	// NotAvailableForRegion ...
-	NotAvailableForRegion ReasonCode = "NotAvailableForRegion"
-	// NotAvailableForSubscription ...
-	NotAvailableForSubscription ReasonCode = "NotAvailableForSubscription"
-	// NotSpecified ...
-	NotSpecified ReasonCode = "NotSpecified"
-)
-
-// PossibleReasonCodeValues returns an array of possible values for the ReasonCode const type.
-func PossibleReasonCodeValues() []ReasonCode {
-	return []ReasonCode{NotAvailableForRegion, NotAvailableForSubscription, NotSpecified}
-}
-
-// RemoteLoginPortPublicAccess enumerates the values for remote login port public access.
-type RemoteLoginPortPublicAccess string
-
-const (
-	// RemoteLoginPortPublicAccessDisabled ...
-	RemoteLoginPortPublicAccessDisabled RemoteLoginPortPublicAccess = "Disabled"
-	// RemoteLoginPortPublicAccessEnabled ...
-	RemoteLoginPortPublicAccessEnabled RemoteLoginPortPublicAccess = "Enabled"
-	// RemoteLoginPortPublicAccessNotSpecified ...
-	RemoteLoginPortPublicAccessNotSpecified RemoteLoginPortPublicAccess = "NotSpecified"
-)
-
-// PossibleRemoteLoginPortPublicAccessValues returns an array of possible values for the RemoteLoginPortPublicAccess const type.
-func PossibleRemoteLoginPortPublicAccessValues() []RemoteLoginPortPublicAccess {
-	return []RemoteLoginPortPublicAccess{RemoteLoginPortPublicAccessDisabled, RemoteLoginPortPublicAccessEnabled, RemoteLoginPortPublicAccessNotSpecified}
-}
-
-// ResourceIdentityType enumerates the values for resource identity type.
-type ResourceIdentityType string
-
-const (
-	// SystemAssigned ...
-	SystemAssigned ResourceIdentityType = "SystemAssigned"
-)
-
-// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{SystemAssigned}
-}
-
-// SSHPublicAccess enumerates the values for ssh public access.
-type SSHPublicAccess string
-
-const (
-	// SSHPublicAccessDisabled ...
-	SSHPublicAccessDisabled SSHPublicAccess = "Disabled"
-	// SSHPublicAccessEnabled ...
-	SSHPublicAccessEnabled SSHPublicAccess = "Enabled"
-)
-
-// PossibleSSHPublicAccessValues returns an array of possible values for the SSHPublicAccess const type.
-func PossibleSSHPublicAccessValues() []SSHPublicAccess {
-	return []SSHPublicAccess{SSHPublicAccessDisabled, SSHPublicAccessEnabled}
-}
-
-// Status enumerates the values for status.
-type Status string
-
-const (
-	// Failure ...
-	Failure Status = "Failure"
-	// InvalidQuotaBelowClusterMinimum ...
-	InvalidQuotaBelowClusterMinimum Status = "InvalidQuotaBelowClusterMinimum"
-	// InvalidQuotaExceedsSubscriptionLimit ...
-	InvalidQuotaExceedsSubscriptionLimit Status = "InvalidQuotaExceedsSubscriptionLimit"
-	// InvalidVMFamilyName ...
-	InvalidVMFamilyName Status = "InvalidVMFamilyName"
-	// OperationNotEnabledForRegion ...
-	OperationNotEnabledForRegion Status = "OperationNotEnabledForRegion"
-	// OperationNotSupportedForSku ...
-	OperationNotSupportedForSku Status = "OperationNotSupportedForSku"
-	// Success ...
-	Success Status = "Success"
-	// Undefined ...
-	Undefined Status = "Undefined"
-)
-
-// PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{Failure, InvalidQuotaBelowClusterMinimum, InvalidQuotaExceedsSubscriptionLimit, InvalidVMFamilyName, OperationNotEnabledForRegion, OperationNotSupportedForSku, Success, Undefined}
-}
-
-// Status1 enumerates the values for status 1.
-type Status1 string
-
-const (
-	// Status1Disabled ...
-	Status1Disabled Status1 = "Disabled"
-	// Status1Enabled ...
-	Status1Enabled Status1 = "Enabled"
-)
-
-// PossibleStatus1Values returns an array of possible values for the Status1 const type.
-func PossibleStatus1Values() []Status1 {
-	return []Status1{Status1Disabled, Status1Enabled}
-}
-
-// UnderlyingResourceAction enumerates the values for underlying resource action.
-type UnderlyingResourceAction string
-
-const (
-	// Delete ...
-	Delete UnderlyingResourceAction = "Delete"
-	// Detach ...
-	Detach UnderlyingResourceAction = "Detach"
-)
-
-// PossibleUnderlyingResourceActionValues returns an array of possible values for the UnderlyingResourceAction const type.
-func PossibleUnderlyingResourceActionValues() []UnderlyingResourceAction {
-	return []UnderlyingResourceAction{Delete, Detach}
-}
-
-// UsageUnit enumerates the values for usage unit.
-type UsageUnit string
-
-const (
-	// UsageUnitCount ...
-	UsageUnitCount UsageUnit = "Count"
-)
-
-// PossibleUsageUnitValues returns an array of possible values for the UsageUnit const type.
-func PossibleUsageUnitValues() []UsageUnit {
-	return []UsageUnit{UsageUnitCount}
-}
-
-// VMPriority enumerates the values for vm priority.
-type VMPriority string
-
-const (
-	// Dedicated ...
-	Dedicated VMPriority = "Dedicated"
-	// LowPriority ...
-	LowPriority VMPriority = "LowPriority"
-)
-
-// PossibleVMPriorityValues returns an array of possible values for the VMPriority const type.
-func PossibleVMPriorityValues() []VMPriority {
-	return []VMPriority{Dedicated, LowPriority}
-}
-
 // AKS a Machine Learning compute based on AKS.
 type AKS struct {
 	// Properties - AKS properties
@@ -650,6 +211,27 @@ type AKSProperties struct {
 	AksNetworkingConfiguration *AksNetworkingConfiguration `json:"aksNetworkingConfiguration,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AKSProperties.
+func (a AKSProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if a.ClusterFqdn != nil {
+		objectMap["clusterFqdn"] = a.ClusterFqdn
+	}
+	if a.AgentCount != nil {
+		objectMap["agentCount"] = a.AgentCount
+	}
+	if a.AgentVMSize != nil {
+		objectMap["agentVMSize"] = a.AgentVMSize
+	}
+	if a.SslConfiguration != nil {
+		objectMap["sslConfiguration"] = a.SslConfiguration
+	}
+	if a.AksNetworkingConfiguration != nil {
+		objectMap["aksNetworkingConfiguration"] = a.AksNetworkingConfiguration
+	}
+	return json.Marshal(objectMap)
+}
+
 // AmlCompute an Azure Machine Learning compute.
 type AmlCompute struct {
 	// Properties - AML Compute properties
@@ -762,6 +344,12 @@ type AmlComputeNodeInformation struct {
 	RunID *string `json:"runId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AmlComputeNodeInformation.
+func (acni AmlComputeNodeInformation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AmlComputeNodesInformation compute node information related to a AmlCompute.
 type AmlComputeNodesInformation struct {
 	autorest.Response `json:"-"`
@@ -828,6 +416,36 @@ type AmlComputeProperties struct {
 	TargetNodeCount *int32 `json:"targetNodeCount,omitempty"`
 	// NodeStateCounts - READ-ONLY; Counts of various node states on the compute.
 	NodeStateCounts *NodeStateCounts `json:"nodeStateCounts,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AmlComputeProperties.
+func (ac AmlComputeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ac.VMSize != nil {
+		objectMap["vmSize"] = ac.VMSize
+	}
+	if ac.VMPriority != "" {
+		objectMap["vmPriority"] = ac.VMPriority
+	}
+	if ac.OsType != "" {
+		objectMap["osType"] = ac.OsType
+	}
+	if ac.VirtualMachineImage != nil {
+		objectMap["virtualMachineImage"] = ac.VirtualMachineImage
+	}
+	if ac.ScaleSettings != nil {
+		objectMap["scaleSettings"] = ac.ScaleSettings
+	}
+	if ac.UserAccountCredentials != nil {
+		objectMap["userAccountCredentials"] = ac.UserAccountCredentials
+	}
+	if ac.Subnet != nil {
+		objectMap["subnet"] = ac.Subnet
+	}
+	if ac.RemoteLoginPortPublicAccess != "" {
+		objectMap["remoteLoginPortPublicAccess"] = ac.RemoteLoginPortPublicAccess
+	}
+	return json.Marshal(objectMap)
 }
 
 // AmlUserFeature features enabled for a workspace
@@ -1167,6 +785,12 @@ type ComputeInstanceConnectivityEndpoints struct {
 	PrivateIPAddress *string `json:"privateIpAddress,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ComputeInstanceConnectivityEndpoints.
+func (cice ComputeInstanceConnectivityEndpoints) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ComputeInstanceCreatedBy describes information on user who created this ComputeInstance.
 type ComputeInstanceCreatedBy struct {
 	// UserName - READ-ONLY; Name of the user.
@@ -1175,6 +799,12 @@ type ComputeInstanceCreatedBy struct {
 	UserOrgID *string `json:"userOrgId,omitempty"`
 	// UserID - READ-ONLY; Uniquely identifies the user within his/her organization.
 	UserID *string `json:"userId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ComputeInstanceCreatedBy.
+func (cicb ComputeInstanceCreatedBy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ComputeInstanceProperties compute Instance properties
@@ -1199,6 +829,24 @@ type ComputeInstanceProperties struct {
 	State ComputeInstanceState `json:"state,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ComputeInstanceProperties.
+func (ci ComputeInstanceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ci.VMSize != nil {
+		objectMap["vmSize"] = ci.VMSize
+	}
+	if ci.Subnet != nil {
+		objectMap["subnet"] = ci.Subnet
+	}
+	if ci.ApplicationSharingPolicy != "" {
+		objectMap["applicationSharingPolicy"] = ci.ApplicationSharingPolicy
+	}
+	if ci.SSHSettings != nil {
+		objectMap["sshSettings"] = ci.SSHSettings
+	}
+	return json.Marshal(objectMap)
+}
+
 // ComputeInstanceSSHSettings specifies policy and settings for SSH access.
 type ComputeInstanceSSHSettings struct {
 	// SSHPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on this instance. Enabled - Indicates that the public ssh port is open and accessible according to the VNet/subnet policy if applicable. Possible values include: 'SSHPublicAccessEnabled', 'SSHPublicAccessDisabled'
@@ -1209,6 +857,18 @@ type ComputeInstanceSSHSettings struct {
 	SSHPort *int32 `json:"sshPort,omitempty"`
 	// AdminPublicKey - Specifies the SSH rsa public key file as a string. Use "ssh-keygen -t rsa -b 2048" to generate your SSH key pairs.
 	AdminPublicKey *string `json:"adminPublicKey,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ComputeInstanceSSHSettings.
+func (ciss ComputeInstanceSSHSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ciss.SSHPublicAccess != "" {
+		objectMap["sshPublicAccess"] = ciss.SSHPublicAccess
+	}
+	if ciss.AdminPublicKey != nil {
+		objectMap["adminPublicKey"] = ciss.AdminPublicKey
+	}
+	return json.Marshal(objectMap)
 }
 
 // BasicComputeNodesInformation compute nodes information related to a Machine Learning compute. Might differ for every
@@ -1880,6 +1540,12 @@ type Error struct {
 	Error *ErrorResponse `json:"error,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetail error detail information.
 type ErrorDetail struct {
 	// Code - Error code.
@@ -1896,6 +1562,12 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 	// Details - READ-ONLY; An array of error detail objects.
 	Details *[]ErrorDetail `json:"details,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HDInsight a HDInsight compute.
@@ -2013,6 +1685,15 @@ type Identity struct {
 	Type ResourceIdentityType `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // KeyVaultProperties ...
 type KeyVaultProperties struct {
 	// KeyVaultArmID - The ArmId of the keyVault where the customer owned encryption key is present.
@@ -2030,6 +1711,12 @@ type ListAmlUserFeatureResult struct {
 	Value *[]AmlUserFeature `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URI to fetch the next page of AML user features information. Call ListNext() with this to fetch the next page of AML user features information.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListAmlUserFeatureResult.
+func (laufr ListAmlUserFeatureResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListAmlUserFeatureResultIterator provides access to a complete listing of AmlUserFeature values.
@@ -2100,10 +1787,15 @@ func (laufr ListAmlUserFeatureResult) IsEmpty() bool {
 	return laufr.Value == nil || len(*laufr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (laufr ListAmlUserFeatureResult) hasNextLink() bool {
+	return laufr.NextLink != nil && len(*laufr.NextLink) != 0
+}
+
 // listAmlUserFeatureResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (laufr ListAmlUserFeatureResult) listAmlUserFeatureResultPreparer(ctx context.Context) (*http.Request, error) {
-	if laufr.NextLink == nil || len(to.String(laufr.NextLink)) < 1 {
+	if !laufr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2131,11 +1823,16 @@ func (page *ListAmlUserFeatureResultPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.laufr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.laufr)
+		if err != nil {
+			return err
+		}
+		page.laufr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.laufr = next
 	return nil
 }
 
@@ -2176,6 +1873,12 @@ type ListUsagesResult struct {
 	Value *[]Usage `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URI to fetch the next page of AML resource usage information. Call ListNext() with this to fetch the next page of AML resource usage information.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListUsagesResult.
+func (lur ListUsagesResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListUsagesResultIterator provides access to a complete listing of Usage values.
@@ -2246,10 +1949,15 @@ func (lur ListUsagesResult) IsEmpty() bool {
 	return lur.Value == nil || len(*lur.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lur ListUsagesResult) hasNextLink() bool {
+	return lur.NextLink != nil && len(*lur.NextLink) != 0
+}
+
 // listUsagesResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lur ListUsagesResult) listUsagesResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lur.NextLink == nil || len(to.String(lur.NextLink)) < 1 {
+	if !lur.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2277,11 +1985,16 @@ func (page *ListUsagesResultPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lur)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lur)
+		if err != nil {
+			return err
+		}
+		page.lur = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lur = next
 	return nil
 }
 
@@ -2328,6 +2041,12 @@ type ListWorkspaceKeysResult struct {
 	ContainerRegistryCredentials *RegistryListCredentialsResult `json:"containerRegistryCredentials,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ListWorkspaceKeysResult.
+func (lwkr ListWorkspaceKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ListWorkspaceQuotas the List WorkspaceQuotasByVMFamily operation response.
 type ListWorkspaceQuotas struct {
 	autorest.Response `json:"-"`
@@ -2335,6 +2054,12 @@ type ListWorkspaceQuotas struct {
 	Value *[]ResourceQuota `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URI to fetch the next page of workspace quota information by VM Family. Call ListNext() with this to fetch the next page of Workspace Quota information.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListWorkspaceQuotas.
+func (lwq ListWorkspaceQuotas) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListWorkspaceQuotasIterator provides access to a complete listing of ResourceQuota values.
@@ -2405,10 +2130,15 @@ func (lwq ListWorkspaceQuotas) IsEmpty() bool {
 	return lwq.Value == nil || len(*lwq.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lwq ListWorkspaceQuotas) hasNextLink() bool {
+	return lwq.NextLink != nil && len(*lwq.NextLink) != 0
+}
+
 // listWorkspaceQuotasPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lwq ListWorkspaceQuotas) listWorkspaceQuotasPreparer(ctx context.Context) (*http.Request, error) {
-	if lwq.NextLink == nil || len(to.String(lwq.NextLink)) < 1 {
+	if !lwq.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2436,11 +2166,16 @@ func (page *ListWorkspaceQuotasPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lwq)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lwq)
+		if err != nil {
+			return err
+		}
+		page.lwq = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lwq = next
 	return nil
 }
 
@@ -2571,6 +2306,12 @@ type NodeStateCounts struct {
 	PreemptedNodeCount *int32 `json:"preemptedNodeCount,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NodeStateCounts.
+func (nsc NodeStateCounts) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Operation azure Machine Learning workspace REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
@@ -2676,10 +2417,15 @@ func (pcrl PaginatedComputeResourcesList) IsEmpty() bool {
 	return pcrl.Value == nil || len(*pcrl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pcrl PaginatedComputeResourcesList) hasNextLink() bool {
+	return pcrl.NextLink != nil && len(*pcrl.NextLink) != 0
+}
+
 // paginatedComputeResourcesListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pcrl PaginatedComputeResourcesList) paginatedComputeResourcesListPreparer(ctx context.Context) (*http.Request, error) {
-	if pcrl.NextLink == nil || len(to.String(pcrl.NextLink)) < 1 {
+	if !pcrl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2707,11 +2453,16 @@ func (page *PaginatedComputeResourcesListPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pcrl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pcrl)
+		if err != nil {
+			return err
+		}
+		page.pcrl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pcrl = next
 	return nil
 }
 
@@ -2753,10 +2504,22 @@ type Password struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Password.
+func (p Password) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PrivateEndpoint the Private Endpoint resource.
 type PrivateEndpoint struct {
 	// ID - READ-ONLY; The ARM identifier for Private Endpoint
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpoint.
+func (peVar PrivateEndpoint) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PrivateEndpointConnection the Private Endpoint Connection resource.
@@ -3043,6 +2806,15 @@ type PrivateLinkResourceProperties struct {
 	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PrivateLinkResourceProperties.
+func (plrp PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if plrp.RequiredZoneNames != nil {
+		objectMap["requiredZoneNames"] = plrp.RequiredZoneNames
+	}
+	return json.Marshal(objectMap)
+}
+
 // PrivateLinkServiceConnectionState a collection of information about the state of the connection between
 // service consumer and provider.
 type PrivateLinkServiceConnectionState struct {
@@ -3079,6 +2851,15 @@ type RegistryListCredentialsResult struct {
 	// Username - READ-ONLY
 	Username  *string     `json:"username,omitempty"`
 	Passwords *[]Password `json:"passwords,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RegistryListCredentialsResult.
+func (rlcr RegistryListCredentialsResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rlcr.Passwords != nil {
+		objectMap["passwords"] = rlcr.Passwords
+	}
+	return json.Marshal(objectMap)
 }
 
 // Resource azure Resource Manager resource envelope.
@@ -3131,6 +2912,12 @@ type ResourceName struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceName.
+func (rn ResourceName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceQuota the quota assigned to a resource.
 type ResourceQuota struct {
 	// ID - READ-ONLY; Specifies the resource ID.
@@ -3145,6 +2932,12 @@ type ResourceQuota struct {
 	Unit QuotaUnit `json:"unit,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceQuota.
+func (rq ResourceQuota) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceSkuLocationInfo ...
 type ResourceSkuLocationInfo struct {
 	// Location - READ-ONLY; Location of the SKU
@@ -3155,12 +2948,24 @@ type ResourceSkuLocationInfo struct {
 	ZoneDetails *[]ResourceSkuZoneDetails `json:"zoneDetails,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceSkuLocationInfo.
+func (rsli ResourceSkuLocationInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceSkuZoneDetails describes The zonal capabilities of a SKU.
 type ResourceSkuZoneDetails struct {
 	// Name - READ-ONLY; The set of zones that the SKU is available in with the specified capabilities.
 	Name *[]string `json:"name,omitempty"`
 	// Capabilities - READ-ONLY; A list of capabilities that are available for the SKU in the specified list of zones.
 	Capabilities *[]SKUCapability `json:"capabilities,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceSkuZoneDetails.
+func (rszd ResourceSkuZoneDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Restriction the restriction because of which SKU cannot be used.
@@ -3171,6 +2976,15 @@ type Restriction struct {
 	Values *[]string `json:"values,omitempty"`
 	// ReasonCode - The reason for the restriction. Possible values include: 'NotSpecified', 'NotAvailableForRegion', 'NotAvailableForSubscription'
 	ReasonCode ReasonCode `json:"reasonCode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Restriction.
+func (r Restriction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.ReasonCode != "" {
+		objectMap["reasonCode"] = r.ReasonCode
+	}
+	return json.Marshal(objectMap)
 }
 
 // ScaleSettings scale settings for AML Compute
@@ -3283,10 +3097,15 @@ func (slr SkuListResult) IsEmpty() bool {
 	return slr.Value == nil || len(*slr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (slr SkuListResult) hasNextLink() bool {
+	return slr.NextLink != nil && len(*slr.NextLink) != 0
+}
+
 // skuListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (slr SkuListResult) skuListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if slr.NextLink == nil || len(to.String(slr.NextLink)) < 1 {
+	if !slr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3314,11 +3133,16 @@ func (page *SkuListResultPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.slr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.slr)
+		if err != nil {
+			return err
+		}
+		page.slr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.slr = next
 	return nil
 }
 
@@ -3374,6 +3198,12 @@ type SystemService struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SystemService.
+func (ss SystemService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UpdateWorkspaceQuotas the properties for update Quota response.
 type UpdateWorkspaceQuotas struct {
 	// ID - READ-ONLY; Specifies the resource ID.
@@ -3388,6 +3218,18 @@ type UpdateWorkspaceQuotas struct {
 	Status Status `json:"status,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UpdateWorkspaceQuotas.
+func (uwq UpdateWorkspaceQuotas) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if uwq.Limit != nil {
+		objectMap["limit"] = uwq.Limit
+	}
+	if uwq.Status != "" {
+		objectMap["status"] = uwq.Status
+	}
+	return json.Marshal(objectMap)
+}
+
 // UpdateWorkspaceQuotasResult the result of update workspace quota.
 type UpdateWorkspaceQuotasResult struct {
 	autorest.Response `json:"-"`
@@ -3395,6 +3237,12 @@ type UpdateWorkspaceQuotasResult struct {
 	Value *[]UpdateWorkspaceQuotas `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URI to fetch the next page of workspace quota update result. Call ListNext() with this to fetch the next page of Workspace Quota update result.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UpdateWorkspaceQuotasResult.
+func (uwqr UpdateWorkspaceQuotasResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Usage describes AML Resource Usage.
@@ -3413,12 +3261,24 @@ type Usage struct {
 	Name *UsageName `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Usage.
+func (u Usage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UsageName the Usage Names.
 type UsageName struct {
 	// Value - READ-ONLY; The name of the resource.
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - READ-ONLY; The localized name of the resource.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageName.
+func (un UsageName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UserAccountCredentials settings for user account that gets created on each on the nodes of a compute.
@@ -3604,6 +3464,12 @@ type VirtualMachineSize struct {
 	LowPriorityCapable *bool `json:"lowPriorityCapable,omitempty"`
 	// PremiumIO - READ-ONLY; Specifies if the virtual machine size supports premium IO.
 	PremiumIO *bool `json:"premiumIO,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineSize.
+func (vms VirtualMachineSize) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachineSizeListResult the List Virtual Machine size operation response.
@@ -3831,10 +3697,15 @@ func (wlr WorkspaceListResult) IsEmpty() bool {
 	return wlr.Value == nil || len(*wlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wlr WorkspaceListResult) hasNextLink() bool {
+	return wlr.NextLink != nil && len(*wlr.NextLink) != 0
+}
+
 // workspaceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wlr WorkspaceListResult) workspaceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wlr.NextLink == nil || len(to.String(wlr.NextLink)) < 1 {
+	if !wlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3862,11 +3733,16 @@ func (page *WorkspaceListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wlr)
+		if err != nil {
+			return err
+		}
+		page.wlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wlr = next
 	return nil
 }
 
@@ -3930,6 +3806,39 @@ type WorkspaceProperties struct {
 	ServiceProvisionedResourceGroup *string `json:"serviceProvisionedResourceGroup,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for WorkspaceProperties.
+func (wp WorkspaceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wp.Description != nil {
+		objectMap["description"] = wp.Description
+	}
+	if wp.FriendlyName != nil {
+		objectMap["friendlyName"] = wp.FriendlyName
+	}
+	if wp.KeyVault != nil {
+		objectMap["keyVault"] = wp.KeyVault
+	}
+	if wp.ApplicationInsights != nil {
+		objectMap["applicationInsights"] = wp.ApplicationInsights
+	}
+	if wp.ContainerRegistry != nil {
+		objectMap["containerRegistry"] = wp.ContainerRegistry
+	}
+	if wp.StorageAccount != nil {
+		objectMap["storageAccount"] = wp.StorageAccount
+	}
+	if wp.DiscoveryURL != nil {
+		objectMap["discoveryUrl"] = wp.DiscoveryURL
+	}
+	if wp.Encryption != nil {
+		objectMap["encryption"] = wp.Encryption
+	}
+	if wp.HbiWorkspace != nil {
+		objectMap["hbiWorkspace"] = wp.HbiWorkspace
+	}
+	return json.Marshal(objectMap)
+}
+
 // WorkspacePropertiesUpdateParameters the parameters for updating the properties of a machine learning
 // workspace.
 type WorkspacePropertiesUpdateParameters struct {
@@ -3939,8 +3848,8 @@ type WorkspacePropertiesUpdateParameters struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 }
 
-// WorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// WorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type WorkspacesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -3968,8 +3877,7 @@ func (future *WorkspacesCreateOrUpdateFuture) Result(client WorkspacesClient) (w
 	return
 }
 
-// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type WorkspacesDeleteFuture struct {
 	azure.Future
 }
@@ -4007,6 +3915,15 @@ type WorkspaceSku struct {
 	Capabilities *[]SKUCapability `json:"capabilities,omitempty"`
 	// Restrictions - The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
 	Restrictions *[]Restriction `json:"restrictions,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkspaceSku.
+func (ws WorkspaceSku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ws.Restrictions != nil {
+		objectMap["restrictions"] = ws.Restrictions
+	}
+	return json.Marshal(objectMap)
 }
 
 // WorkspaceUpdateParameters the parameters for updating a machine learning workspace.

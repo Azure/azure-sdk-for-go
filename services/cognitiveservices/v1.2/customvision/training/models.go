@@ -26,120 +26,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.2/customvision/training"
 
-// DomainType enumerates the values for domain type.
-type DomainType string
-
-const (
-	// Classification ...
-	Classification DomainType = "Classification"
-	// ObjectDetection ...
-	ObjectDetection DomainType = "ObjectDetection"
-)
-
-// PossibleDomainTypeValues returns an array of possible values for the DomainType const type.
-func PossibleDomainTypeValues() []DomainType {
-	return []DomainType{Classification, ObjectDetection}
-}
-
-// ExportFlavor enumerates the values for export flavor.
-type ExportFlavor string
-
-const (
-	// Linux ...
-	Linux ExportFlavor = "Linux"
-	// Windows ...
-	Windows ExportFlavor = "Windows"
-)
-
-// PossibleExportFlavorValues returns an array of possible values for the ExportFlavor const type.
-func PossibleExportFlavorValues() []ExportFlavor {
-	return []ExportFlavor{Linux, Windows}
-}
-
-// ExportPlatform enumerates the values for export platform.
-type ExportPlatform string
-
-const (
-	// CoreML ...
-	CoreML ExportPlatform = "CoreML"
-	// DockerFile ...
-	DockerFile ExportPlatform = "DockerFile"
-	// ONNX ...
-	ONNX ExportPlatform = "ONNX"
-	// TensorFlow ...
-	TensorFlow ExportPlatform = "TensorFlow"
-)
-
-// PossibleExportPlatformValues returns an array of possible values for the ExportPlatform const type.
-func PossibleExportPlatformValues() []ExportPlatform {
-	return []ExportPlatform{CoreML, DockerFile, ONNX, TensorFlow}
-}
-
-// ExportStatusModel enumerates the values for export status model.
-type ExportStatusModel string
-
-const (
-	// Done ...
-	Done ExportStatusModel = "Done"
-	// Exporting ...
-	Exporting ExportStatusModel = "Exporting"
-	// Failed ...
-	Failed ExportStatusModel = "Failed"
-)
-
-// PossibleExportStatusModelValues returns an array of possible values for the ExportStatusModel const type.
-func PossibleExportStatusModelValues() []ExportStatusModel {
-	return []ExportStatusModel{Done, Exporting, Failed}
-}
-
-// ImageUploadStatus enumerates the values for image upload status.
-type ImageUploadStatus string
-
-const (
-	// ErrorImageFormat ...
-	ErrorImageFormat ImageUploadStatus = "ErrorImageFormat"
-	// ErrorImageSize ...
-	ErrorImageSize ImageUploadStatus = "ErrorImageSize"
-	// ErrorLimitExceed ...
-	ErrorLimitExceed ImageUploadStatus = "ErrorLimitExceed"
-	// ErrorRegionLimitExceed ...
-	ErrorRegionLimitExceed ImageUploadStatus = "ErrorRegionLimitExceed"
-	// ErrorSource ...
-	ErrorSource ImageUploadStatus = "ErrorSource"
-	// ErrorStorage ...
-	ErrorStorage ImageUploadStatus = "ErrorStorage"
-	// ErrorTagLimitExceed ...
-	ErrorTagLimitExceed ImageUploadStatus = "ErrorTagLimitExceed"
-	// ErrorUnknown ...
-	ErrorUnknown ImageUploadStatus = "ErrorUnknown"
-	// OK ...
-	OK ImageUploadStatus = "OK"
-	// OKDuplicate ...
-	OKDuplicate ImageUploadStatus = "OKDuplicate"
-)
-
-// PossibleImageUploadStatusValues returns an array of possible values for the ImageUploadStatus const type.
-func PossibleImageUploadStatusValues() []ImageUploadStatus {
-	return []ImageUploadStatus{ErrorImageFormat, ErrorImageSize, ErrorLimitExceed, ErrorRegionLimitExceed, ErrorSource, ErrorStorage, ErrorTagLimitExceed, ErrorUnknown, OK, OKDuplicate}
-}
-
-// OrderBy enumerates the values for order by.
-type OrderBy string
-
-const (
-	// Newest ...
-	Newest OrderBy = "Newest"
-	// Oldest ...
-	Oldest OrderBy = "Oldest"
-	// Suggested ...
-	Suggested OrderBy = "Suggested"
-)
-
-// PossibleOrderByValues returns an array of possible values for the OrderBy const type.
-func PossibleOrderByValues() []OrderBy {
-	return []OrderBy{Newest, Oldest, Suggested}
-}
-
 // BoundingBox ...
 type BoundingBox struct {
 	Left   *float64 `json:"left,omitempty"`
@@ -163,6 +49,12 @@ type Domain struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Domain.
+func (d Domain) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Export ...
 type Export struct {
 	autorest.Response `json:"-"`
@@ -174,6 +66,12 @@ type Export struct {
 	DownloadURI *string `json:"downloadUri,omitempty"`
 	// Flavor - READ-ONLY; Possible values include: 'Linux', 'Windows'
 	Flavor ExportFlavor `json:"flavor,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Export.
+func (e Export) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Image image model to be sent as JSON
@@ -196,6 +94,12 @@ type Image struct {
 	Regions *[]ImageRegion `json:"regions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Image.
+func (i Image) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageCreateResult ...
 type ImageCreateResult struct {
 	// SourceURL - READ-ONLY
@@ -206,6 +110,12 @@ type ImageCreateResult struct {
 	Image *Image `json:"image,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImageCreateResult.
+func (icr ImageCreateResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageCreateSummary ...
 type ImageCreateSummary struct {
 	autorest.Response `json:"-"`
@@ -213,6 +123,12 @@ type ImageCreateSummary struct {
 	IsBatchSuccessful *bool `json:"isBatchSuccessful,omitempty"`
 	// Images - READ-ONLY
 	Images *[]ImageCreateResult `json:"images,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageCreateSummary.
+func (ics ImageCreateSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ImageFileCreateBatch ...
@@ -264,6 +180,12 @@ type ImagePerformance struct {
 	Regions *[]ImageRegion `json:"regions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImagePerformance.
+func (IP ImagePerformance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImagePrediction ...
 type ImagePrediction struct {
 	autorest.Response `json:"-"`
@@ -279,6 +201,12 @@ type ImagePrediction struct {
 	Predictions *[]Prediction `json:"predictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImagePrediction.
+func (IP ImagePrediction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageRegion ...
 type ImageRegion struct {
 	// RegionID - READ-ONLY
@@ -292,6 +220,27 @@ type ImageRegion struct {
 	Top     *float64   `json:"top,omitempty"`
 	Width   *float64   `json:"width,omitempty"`
 	Height  *float64   `json:"height,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageRegion.
+func (ir ImageRegion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ir.TagID != nil {
+		objectMap["tagId"] = ir.TagID
+	}
+	if ir.Left != nil {
+		objectMap["left"] = ir.Left
+	}
+	if ir.Top != nil {
+		objectMap["top"] = ir.Top
+	}
+	if ir.Width != nil {
+		objectMap["width"] = ir.Width
+	}
+	if ir.Height != nil {
+		objectMap["height"] = ir.Height
+	}
+	return json.Marshal(objectMap)
 }
 
 // ImageRegionCreateBatch batch of image region information to create.
@@ -326,6 +275,27 @@ type ImageRegionCreateResult struct {
 	Height  *float64   `json:"height,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImageRegionCreateResult.
+func (ircr ImageRegionCreateResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ircr.TagID != nil {
+		objectMap["tagId"] = ircr.TagID
+	}
+	if ircr.Left != nil {
+		objectMap["left"] = ircr.Left
+	}
+	if ircr.Top != nil {
+		objectMap["top"] = ircr.Top
+	}
+	if ircr.Width != nil {
+		objectMap["width"] = ircr.Width
+	}
+	if ircr.Height != nil {
+		objectMap["height"] = ircr.Height
+	}
+	return json.Marshal(objectMap)
+}
+
 // ImageRegionCreateSummary ...
 type ImageRegionCreateSummary struct {
 	autorest.Response `json:"-"`
@@ -345,6 +315,12 @@ type ImageRegionProposal struct {
 	Proposals *[]RegionProposal `json:"proposals,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImageRegionProposal.
+func (irp ImageRegionProposal) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageTag ...
 type ImageTag struct {
 	// TagID - READ-ONLY
@@ -353,6 +329,12 @@ type ImageTag struct {
 	TagName *string `json:"tagName,omitempty"`
 	// Created - READ-ONLY
 	Created *date.Time `json:"created,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageTag.
+func (it ImageTag) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ImageTagCreateBatch ...
@@ -423,6 +405,18 @@ type Iteration struct {
 	DomainID *uuid.UUID `json:"domainId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Iteration.
+func (i Iteration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Name != nil {
+		objectMap["name"] = i.Name
+	}
+	if i.IsDefault != nil {
+		objectMap["isDefault"] = i.IsDefault
+	}
+	return json.Marshal(objectMap)
+}
+
 // IterationPerformance represents the detailed performance data for a trained iteration
 type IterationPerformance struct {
 	autorest.Response `json:"-"`
@@ -438,6 +432,12 @@ type IterationPerformance struct {
 	RecallStdDeviation *float64 `json:"recallStdDeviation,omitempty"`
 	// AveragePrecision - READ-ONLY; Gets the average precision when applicable
 	AveragePrecision *float64 `json:"averagePrecision,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IterationPerformance.
+func (IP IterationPerformance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListDomain ...
@@ -494,6 +494,12 @@ type Prediction struct {
 	BoundingBox *BoundingBox `json:"boundingBox,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Prediction.
+func (p Prediction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PredictionQueryResult ...
 type PredictionQueryResult struct {
 	autorest.Response `json:"-"`
@@ -501,6 +507,12 @@ type PredictionQueryResult struct {
 	Token *PredictionQueryToken `json:"token,omitempty"`
 	// Results - READ-ONLY
 	Results *[]StoredImagePrediction `json:"results,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PredictionQueryResult.
+func (pqr PredictionQueryResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PredictionQueryTag ...
@@ -511,6 +523,12 @@ type PredictionQueryTag struct {
 	MinThreshold *float64 `json:"minThreshold,omitempty"`
 	// MaxThreshold - READ-ONLY
 	MaxThreshold *float64 `json:"maxThreshold,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PredictionQueryTag.
+func (pqt PredictionQueryTag) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PredictionQueryToken ...
@@ -546,6 +564,21 @@ type Project struct {
 	ThumbnailURI *string `json:"thumbnailUri,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Project.
+func (p Project) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.Name != nil {
+		objectMap["name"] = p.Name
+	}
+	if p.Description != nil {
+		objectMap["description"] = p.Description
+	}
+	if p.Settings != nil {
+		objectMap["settings"] = p.Settings
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProjectSettings represents settings associated with a project
 type ProjectSettings struct {
 	// DomainID - Gets or sets the id of the Domain to use with this project
@@ -569,6 +602,12 @@ type RegionProposal struct {
 	BoundingBox *BoundingBox `json:"boundingBox,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RegionProposal.
+func (rp RegionProposal) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // StoredImagePrediction result of an image classification request
 type StoredImagePrediction struct {
 	// ImageURI - READ-ONLY
@@ -589,6 +628,12 @@ type StoredImagePrediction struct {
 	Predictions *[]Prediction `json:"predictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StoredImagePrediction.
+func (sip StoredImagePrediction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Tag represents a Tag
 type Tag struct {
 	autorest.Response `json:"-"`
@@ -600,6 +645,18 @@ type Tag struct {
 	Description *string `json:"description,omitempty"`
 	// ImageCount - READ-ONLY; Gets the number of images with this tag
 	ImageCount *int32 `json:"imageCount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Tag.
+func (t Tag) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if t.Name != nil {
+		objectMap["name"] = t.Name
+	}
+	if t.Description != nil {
+		objectMap["description"] = t.Description
+	}
+	return json.Marshal(objectMap)
 }
 
 // TagPerformance represents performance data for a particular tag in a trained iteration
@@ -618,4 +675,10 @@ type TagPerformance struct {
 	RecallStdDeviation *float64 `json:"recallStdDeviation,omitempty"`
 	// AveragePrecision - READ-ONLY; Gets the average precision when applicable
 	AveragePrecision *float64 `json:"averagePrecision,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TagPerformance.
+func (tp TagPerformance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

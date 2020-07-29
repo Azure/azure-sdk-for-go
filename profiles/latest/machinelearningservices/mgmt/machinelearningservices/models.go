@@ -36,6 +36,14 @@ const (
 	Steady   AllocationState = original.Steady
 )
 
+type ClusterPurpose = original.ClusterPurpose
+
+const (
+	DenseProd ClusterPurpose = original.DenseProd
+	DevTest   ClusterPurpose = original.DevTest
+	FastProd  ClusterPurpose = original.FastProd
+)
+
 type ComputeType = original.ComputeType
 
 const (
@@ -173,6 +181,7 @@ const (
 type Status1 = original.Status1
 
 const (
+	Status1Auto     Status1 = original.Status1Auto
 	Status1Disabled Status1 = original.Status1Disabled
 	Status1Enabled  Status1 = original.Status1Enabled
 )
@@ -421,6 +430,9 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 }
 func PossibleAllocationStateValues() []AllocationState {
 	return original.PossibleAllocationStateValues()
+}
+func PossibleClusterPurposeValues() []ClusterPurpose {
+	return original.PossibleClusterPurposeValues()
 }
 func PossibleComputeTypeBasicComputeNodesInformationValues() []ComputeTypeBasicComputeNodesInformation {
 	return original.PossibleComputeTypeBasicComputeNodesInformationValues()

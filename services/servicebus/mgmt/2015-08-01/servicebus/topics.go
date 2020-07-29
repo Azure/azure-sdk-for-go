@@ -649,6 +649,9 @@ func (client TopicsClient) ListAll(ctx context.Context, resourceGroupName string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListAll", resp, "Failure responding to request")
 	}
+	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -775,6 +778,9 @@ func (client TopicsClient) ListAuthorizationRules(ctx context.Context, resourceG
 	result.saarlr, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListAuthorizationRules", resp, "Failure responding to request")
+	}
+	if result.saarlr.hasNextLink() && result.saarlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

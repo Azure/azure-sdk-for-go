@@ -105,6 +105,9 @@ func (client UserSubscriptionsClient) ListByUsers(ctx context.Context, resourceG
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserSubscriptionsClient", "ListByUsers", resp, "Failure responding to request")
 	}
+	if result.sc.hasNextLink() && result.sc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

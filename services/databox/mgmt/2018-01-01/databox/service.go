@@ -83,6 +83,9 @@ func (client ServiceClient) ListAvailableSkus(ctx context.Context, location stri
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "ListAvailableSkus", resp, "Failure responding to request")
 	}
+	if result.asr.hasNextLink() && result.asr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

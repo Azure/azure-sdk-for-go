@@ -394,6 +394,9 @@ func (client DataFlowDebugSessionClient) QueryDataFlowDebugSessionsByWorkspace(c
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DataFlowDebugSessionClient", "QueryDataFlowDebugSessionsByWorkspace", resp, "Failure responding to request")
 	}
+	if result.qdfdsr.hasNextLink() && result.qdfdsr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

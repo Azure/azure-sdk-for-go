@@ -31,14 +31,14 @@ type RoleDefinitionsClient struct {
 }
 
 // NewRoleDefinitionsClient creates an instance of the RoleDefinitionsClient client.
-func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
-	return NewRoleDefinitionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewRoleDefinitionsClient(subscriptionID string, subscriptionID1 string) RoleDefinitionsClient {
+	return NewRoleDefinitionsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewRoleDefinitionsClientWithBaseURI creates an instance of the RoleDefinitionsClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
-	return RoleDefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) RoleDefinitionsClient {
+	return RoleDefinitionsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // GetByBillingAccount gets the definition for a role on a billing account. The operation is supported for billing
@@ -305,6 +305,9 @@ func (client RoleDefinitionsClient) ListByBillingAccount(ctx context.Context, bi
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByBillingAccount", resp, "Failure responding to request")
 	}
+	if result.rdlr.hasNextLink() && result.rdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -416,6 +419,9 @@ func (client RoleDefinitionsClient) ListByBillingProfile(ctx context.Context, bi
 	result.rdlr, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByBillingProfile", resp, "Failure responding to request")
+	}
+	if result.rdlr.hasNextLink() && result.rdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -530,6 +536,9 @@ func (client RoleDefinitionsClient) ListByInvoiceSection(ctx context.Context, bi
 	result.rdlr, err = client.ListByInvoiceSectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByInvoiceSection", resp, "Failure responding to request")
+	}
+	if result.rdlr.hasNextLink() && result.rdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

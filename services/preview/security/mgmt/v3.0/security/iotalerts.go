@@ -179,6 +179,9 @@ func (client IotAlertsClient) List(ctx context.Context, resourceGroupName string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotAlertsClient", "List", resp, "Failure responding to request")
 	}
+	if result.ial.hasNextLink() && result.ial.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -28,131 +28,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/search/mgmt/2015-08-19/search"
 
-// AdminKeyKind enumerates the values for admin key kind.
-type AdminKeyKind string
-
-const (
-	// Primary ...
-	Primary AdminKeyKind = "primary"
-	// Secondary ...
-	Secondary AdminKeyKind = "secondary"
-)
-
-// PossibleAdminKeyKindValues returns an array of possible values for the AdminKeyKind const type.
-func PossibleAdminKeyKindValues() []AdminKeyKind {
-	return []AdminKeyKind{Primary, Secondary}
-}
-
-// HostingMode enumerates the values for hosting mode.
-type HostingMode string
-
-const (
-	// Default ...
-	Default HostingMode = "default"
-	// HighDensity ...
-	HighDensity HostingMode = "highDensity"
-)
-
-// PossibleHostingModeValues returns an array of possible values for the HostingMode const type.
-func PossibleHostingModeValues() []HostingMode {
-	return []HostingMode{Default, HighDensity}
-}
-
-// IdentityType enumerates the values for identity type.
-type IdentityType string
-
-const (
-	// None ...
-	None IdentityType = "None"
-	// SystemAssigned ...
-	SystemAssigned IdentityType = "SystemAssigned"
-)
-
-// PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
-func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{None, SystemAssigned}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Failed ...
-	Failed ProvisioningState = "failed"
-	// Provisioning ...
-	Provisioning ProvisioningState = "provisioning"
-	// Succeeded ...
-	Succeeded ProvisioningState = "succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Failed, Provisioning, Succeeded}
-}
-
-// ServiceStatus enumerates the values for service status.
-type ServiceStatus string
-
-const (
-	// ServiceStatusDegraded ...
-	ServiceStatusDegraded ServiceStatus = "degraded"
-	// ServiceStatusDeleting ...
-	ServiceStatusDeleting ServiceStatus = "deleting"
-	// ServiceStatusDisabled ...
-	ServiceStatusDisabled ServiceStatus = "disabled"
-	// ServiceStatusError ...
-	ServiceStatusError ServiceStatus = "error"
-	// ServiceStatusProvisioning ...
-	ServiceStatusProvisioning ServiceStatus = "provisioning"
-	// ServiceStatusRunning ...
-	ServiceStatusRunning ServiceStatus = "running"
-)
-
-// PossibleServiceStatusValues returns an array of possible values for the ServiceStatus const type.
-func PossibleServiceStatusValues() []ServiceStatus {
-	return []ServiceStatus{ServiceStatusDegraded, ServiceStatusDeleting, ServiceStatusDisabled, ServiceStatusError, ServiceStatusProvisioning, ServiceStatusRunning}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// Basic ...
-	Basic SkuName = "basic"
-	// Free ...
-	Free SkuName = "free"
-	// Standard ...
-	Standard SkuName = "standard"
-	// Standard2 ...
-	Standard2 SkuName = "standard2"
-	// Standard3 ...
-	Standard3 SkuName = "standard3"
-	// StorageOptimizedL1 ...
-	StorageOptimizedL1 SkuName = "storage_optimized_l1"
-	// StorageOptimizedL2 ...
-	StorageOptimizedL2 SkuName = "storage_optimized_l2"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{Basic, Free, Standard, Standard2, Standard3, StorageOptimizedL1, StorageOptimizedL2}
-}
-
-// UnavailableNameReason enumerates the values for unavailable name reason.
-type UnavailableNameReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists UnavailableNameReason = "AlreadyExists"
-	// Invalid ...
-	Invalid UnavailableNameReason = "Invalid"
-)
-
-// PossibleUnavailableNameReasonValues returns an array of possible values for the UnavailableNameReason const type.
-func PossibleUnavailableNameReasonValues() []UnavailableNameReason {
-	return []UnavailableNameReason{AlreadyExists, Invalid}
-}
-
 // AdminKeyResult response containing the primary and secondary admin API keys for a given Azure Cognitive
 // Search service.
 type AdminKeyResult struct {
@@ -161,6 +36,12 @@ type AdminKeyResult struct {
 	PrimaryKey *string `json:"primaryKey,omitempty"`
 	// SecondaryKey - READ-ONLY; The secondary admin API key of the Search service.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AdminKeyResult.
+func (akr AdminKeyResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CheckNameAvailabilityInput input of check name availability API.
@@ -180,6 +61,12 @@ type CheckNameAvailabilityOutput struct {
 	Reason UnavailableNameReason `json:"reason,omitempty"`
 	// Message - READ-ONLY; A message that explains why the name is invalid and provides resource naming requirements. Available only if 'Invalid' is returned in the 'reason' property.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityOutput.
+func (cnao CheckNameAvailabilityOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CloudError contains information about an API error.
@@ -210,11 +97,26 @@ type Identity struct {
 	Type IdentityType `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // ListQueryKeysResult response containing the query API keys for a given Azure Cognitive Search service.
 type ListQueryKeysResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The query keys for the Azure Cognitive Search service.
 	Value *[]QueryKey `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListQueryKeysResult.
+func (lqkr ListQueryKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Operation describes a REST API operation.
@@ -223,6 +125,12 @@ type Operation struct {
 	Name *string `json:"name,omitempty"`
 	// Display - READ-ONLY; The object that describes the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the object that describes the operation.
@@ -237,14 +145,26 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult the result of the request to list REST API operations. It contains a list of
-// operations and a URL  to get the next set of results.
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// OperationListResult the result of the request to list REST API operations. It contains a list of operations
+// and a URL  to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of operations supported by the resource provider.
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URL to get the next set of operation list results, if any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // QueryKey describes an API key for a given Azure Cognitive Search service that has permissions for query
@@ -255,6 +175,12 @@ type QueryKey struct {
 	Name *string `json:"name,omitempty"`
 	// Key - READ-ONLY; The value of the query API key.
 	Key *string `json:"key,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryKey.
+func (qk QueryKey) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Resource base type for all Azure resources.
@@ -424,6 +350,12 @@ type ServiceListResult struct {
 	Value *[]Service `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServiceListResult.
+func (slr ServiceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ServiceProperties properties of the Search service.
 type ServiceProperties struct {
 	// ReplicaCount - The number of replicas in the Search service. If specified, it must be a value between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.
@@ -438,6 +370,21 @@ type ServiceProperties struct {
 	StatusDetails *string `json:"statusDetails,omitempty"`
 	// ProvisioningState - READ-ONLY; The state of the last provisioning operation performed on the Search service. Provisioning is an intermediate state that occurs while service capacity is being established. After capacity is set up, provisioningState changes to either 'succeeded' or 'failed'. Client applications can poll provisioning status (the recommended polling interval is from 30 seconds to one minute) by using the Get Search Service operation to see when an operation is completed. If you are using the free service, this value tends to come back as 'succeeded' directly in the call to Create Search service. This is because the free service uses capacity that is already set up. Possible values include: 'Succeeded', 'Provisioning', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceProperties.
+func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.ReplicaCount != nil {
+		objectMap["replicaCount"] = sp.ReplicaCount
+	}
+	if sp.PartitionCount != nil {
+		objectMap["partitionCount"] = sp.PartitionCount
+	}
+	if sp.HostingMode != "" {
+		objectMap["hostingMode"] = sp.HostingMode
+	}
+	return json.Marshal(objectMap)
 }
 
 // ServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -469,8 +416,7 @@ func (future *ServicesCreateOrUpdateFuture) Result(client ServicesClient) (s Ser
 	return
 }
 
-// Sku defines the SKU of an Azure Cognitive Search Service, which determines price tier and capacity
-// limits.
+// Sku defines the SKU of an Azure Cognitive Search Service, which determines price tier and capacity limits.
 type Sku struct {
 	// Name - The SKU of the Search service. Valid values include: 'free': Shared service. 'basic': Dedicated service with up to 3 replicas. 'standard': Dedicated service with up to 12 partitions and 12 replicas. 'standard2': Similar to standard, but with more capacity per search unit. 'standard3': The largest Standard offering with up to 12 partitions and 12 replicas (or up to 3 partitions with more indexes if you also set the hostingMode property to 'highDensity'). 'storage_optimized_l1': Supports 1TB per partition, up to 12 partitions. 'storage_optimized_l2': Supports 2TB per partition, up to 12 partitions.'. Possible values include: 'Free', 'Basic', 'Standard', 'Standard2', 'Standard3', 'StorageOptimizedL1', 'StorageOptimizedL2'
 	Name SkuName `json:"name,omitempty"`

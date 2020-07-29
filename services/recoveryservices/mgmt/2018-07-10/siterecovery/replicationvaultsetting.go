@@ -233,6 +233,9 @@ func (client ReplicationVaultSettingClient) List(ctx context.Context) (result Va
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationVaultSettingClient", "List", resp, "Failure responding to request")
 	}
+	if result.vsc.hasNextLink() && result.vsc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

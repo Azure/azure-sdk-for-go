@@ -195,6 +195,9 @@ func (client MonitorInstancesClient) ListByResource(ctx context.Context, resourc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.MonitorInstancesClient", "ListByResource", resp, "Failure responding to request")
 	}
+	if result.mic.hasNextLink() && result.mic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -379,6 +379,9 @@ func (client ConsumerGroupsClient) ListAll(ctx context.Context, resourceGroupNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "ListAll", resp, "Failure responding to request")
 	}
+	if result.cglr.hasNextLink() && result.cglr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

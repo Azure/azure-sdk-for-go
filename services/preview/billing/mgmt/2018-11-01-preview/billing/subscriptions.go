@@ -225,6 +225,9 @@ func (client SubscriptionsClient) ListByBillingAccountName(ctx context.Context, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByBillingAccountName", resp, "Failure responding to request")
 	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -335,6 +338,9 @@ func (client SubscriptionsClient) ListByBillingProfileName(ctx context.Context, 
 	result.slr, err = client.ListByBillingProfileNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByBillingProfileName", resp, "Failure responding to request")
+	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -448,6 +454,9 @@ func (client SubscriptionsClient) ListByCustomerName(ctx context.Context, billin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByCustomerName", resp, "Failure responding to request")
 	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -559,6 +568,9 @@ func (client SubscriptionsClient) ListByInvoiceSectionName(ctx context.Context, 
 	result.slr, err = client.ListByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByInvoiceSectionName", resp, "Failure responding to request")
+	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

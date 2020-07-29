@@ -382,6 +382,9 @@ func (client DomainsClient) GetDomains(ctx context.Context, resourceGroupName st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", resp, "Failure responding to request")
 	}
+	if result.dc.hasNextLink() && result.dc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

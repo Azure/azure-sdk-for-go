@@ -883,6 +883,9 @@ func (client Client) List(ctx context.Context, filter string, top *int32, skip *
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "List", resp, "Failure responding to request")
 	}
+	if result.dlaalr.hasNextLink() && result.dlaalr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1036,6 +1039,9 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	result.dlaalr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.dlaalr.hasNextLink() && result.dlaalr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -1193,6 +1199,9 @@ func (client Client) ListDataLakeStoreAccounts(ctx context.Context, resourceGrou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListDataLakeStoreAccounts", resp, "Failure responding to request")
 	}
+	if result.dlaaldlsr.hasNextLink() && result.dlaaldlsr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1337,6 +1346,9 @@ func (client Client) ListSasTokens(ctx context.Context, resourceGroupName string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListSasTokens", resp, "Failure responding to request")
 	}
+	if result.lstr.hasNextLink() && result.lstr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1468,6 +1480,9 @@ func (client Client) ListStorageAccounts(ctx context.Context, resourceGroupName 
 	result.dlaalsar, err = client.ListStorageAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageAccounts", resp, "Failure responding to request")
+	}
+	if result.dlaalsar.hasNextLink() && result.dlaalsar.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -1610,6 +1625,9 @@ func (client Client) ListStorageContainers(ctx context.Context, resourceGroupNam
 	result.lbcr, err = client.ListStorageContainersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageContainers", resp, "Failure responding to request")
+	}
+	if result.lbcr.hasNextLink() && result.lbcr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

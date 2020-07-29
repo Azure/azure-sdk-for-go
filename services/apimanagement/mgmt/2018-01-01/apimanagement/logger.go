@@ -462,6 +462,9 @@ func (client LoggerClient) ListByService(ctx context.Context, resourceGroupName 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "ListByService", resp, "Failure responding to request")
 	}
+	if result.lc.hasNextLink() && result.lc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -180,6 +180,9 @@ func (client MonitorsClient) ListByResource(ctx context.Context, resourceGroupNa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.MonitorsClient", "ListByResource", resp, "Failure responding to request")
 	}
+	if result.mc.hasNextLink() && result.mc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

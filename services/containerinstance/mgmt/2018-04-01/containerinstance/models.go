@@ -31,83 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-04-01/containerinstance"
 
-// ContainerGroupNetworkProtocol enumerates the values for container group network protocol.
-type ContainerGroupNetworkProtocol string
-
-const (
-	// TCP ...
-	TCP ContainerGroupNetworkProtocol = "TCP"
-	// UDP ...
-	UDP ContainerGroupNetworkProtocol = "UDP"
-)
-
-// PossibleContainerGroupNetworkProtocolValues returns an array of possible values for the ContainerGroupNetworkProtocol const type.
-func PossibleContainerGroupNetworkProtocolValues() []ContainerGroupNetworkProtocol {
-	return []ContainerGroupNetworkProtocol{TCP, UDP}
-}
-
-// ContainerGroupRestartPolicy enumerates the values for container group restart policy.
-type ContainerGroupRestartPolicy string
-
-const (
-	// Always ...
-	Always ContainerGroupRestartPolicy = "Always"
-	// Never ...
-	Never ContainerGroupRestartPolicy = "Never"
-	// OnFailure ...
-	OnFailure ContainerGroupRestartPolicy = "OnFailure"
-)
-
-// PossibleContainerGroupRestartPolicyValues returns an array of possible values for the ContainerGroupRestartPolicy const type.
-func PossibleContainerGroupRestartPolicyValues() []ContainerGroupRestartPolicy {
-	return []ContainerGroupRestartPolicy{Always, Never, OnFailure}
-}
-
-// ContainerNetworkProtocol enumerates the values for container network protocol.
-type ContainerNetworkProtocol string
-
-const (
-	// ContainerNetworkProtocolTCP ...
-	ContainerNetworkProtocolTCP ContainerNetworkProtocol = "TCP"
-	// ContainerNetworkProtocolUDP ...
-	ContainerNetworkProtocolUDP ContainerNetworkProtocol = "UDP"
-)
-
-// PossibleContainerNetworkProtocolValues returns an array of possible values for the ContainerNetworkProtocol const type.
-func PossibleContainerNetworkProtocolValues() []ContainerNetworkProtocol {
-	return []ContainerNetworkProtocol{ContainerNetworkProtocolTCP, ContainerNetworkProtocolUDP}
-}
-
-// OperatingSystemTypes enumerates the values for operating system types.
-type OperatingSystemTypes string
-
-const (
-	// Linux ...
-	Linux OperatingSystemTypes = "Linux"
-	// Windows ...
-	Windows OperatingSystemTypes = "Windows"
-)
-
-// PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
-func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
-	return []OperatingSystemTypes{Linux, Windows}
-}
-
-// OperationsOrigin enumerates the values for operations origin.
-type OperationsOrigin string
-
-const (
-	// System ...
-	System OperationsOrigin = "System"
-	// User ...
-	User OperationsOrigin = "User"
-)
-
-// PossibleOperationsOriginValues returns an array of possible values for the OperationsOrigin const type.
-func PossibleOperationsOriginValues() []OperationsOrigin {
-	return []OperationsOrigin{System, User}
-}
-
 // AzureFileVolume the properties of the Azure File volume. Azure File shares are mounted as volumes.
 type AzureFileVolume struct {
 	// ShareName - The name of the Azure File share to be mounted as a volume.
@@ -196,6 +119,12 @@ type ContainerExecResponse struct {
 	WebSocketURI *string `json:"webSocketUri,omitempty"`
 	// Password - READ-ONLY; The password to start the exec command.
 	Password *string `json:"password,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerExecResponse.
+func (cer ContainerExecResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ContainerGroup a container group.
@@ -375,10 +304,15 @@ func (cglr ContainerGroupListResult) IsEmpty() bool {
 	return cglr.Value == nil || len(*cglr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cglr ContainerGroupListResult) hasNextLink() bool {
+	return cglr.NextLink != nil && len(*cglr.NextLink) != 0
+}
+
 // containerGroupListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cglr ContainerGroupListResult) containerGroupListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cglr.NextLink == nil || len(to.String(cglr.NextLink)) < 1 {
+	if !cglr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -406,11 +340,16 @@ func (page *ContainerGroupListResultPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cglr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cglr)
+		if err != nil {
+			return err
+		}
+		page.cglr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cglr = next
 	return nil
 }
 
@@ -468,12 +407,42 @@ type ContainerGroupProperties struct {
 	InstanceView *ContainerGroupPropertiesInstanceView `json:"instanceView,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ContainerGroupProperties.
+func (cg ContainerGroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cg.Containers != nil {
+		objectMap["containers"] = cg.Containers
+	}
+	if cg.ImageRegistryCredentials != nil {
+		objectMap["imageRegistryCredentials"] = cg.ImageRegistryCredentials
+	}
+	if cg.RestartPolicy != "" {
+		objectMap["restartPolicy"] = cg.RestartPolicy
+	}
+	if cg.IPAddress != nil {
+		objectMap["ipAddress"] = cg.IPAddress
+	}
+	if cg.OsType != "" {
+		objectMap["osType"] = cg.OsType
+	}
+	if cg.Volumes != nil {
+		objectMap["volumes"] = cg.Volumes
+	}
+	return json.Marshal(objectMap)
+}
+
 // ContainerGroupPropertiesInstanceView the instance view of the container group. Only valid in response.
 type ContainerGroupPropertiesInstanceView struct {
 	// Events - READ-ONLY; The events of this container group.
 	Events *[]Event `json:"events,omitempty"`
 	// State - READ-ONLY; The state of the container group. Only valid in response.
 	State *string `json:"state,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerGroupPropertiesInstanceView.
+func (cgV ContainerGroupPropertiesInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ContainerGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -531,6 +500,30 @@ type ContainerProperties struct {
 	VolumeMounts *[]VolumeMount `json:"volumeMounts,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ContainerProperties.
+func (cp ContainerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.Image != nil {
+		objectMap["image"] = cp.Image
+	}
+	if cp.Command != nil {
+		objectMap["command"] = cp.Command
+	}
+	if cp.Ports != nil {
+		objectMap["ports"] = cp.Ports
+	}
+	if cp.EnvironmentVariables != nil {
+		objectMap["environmentVariables"] = cp.EnvironmentVariables
+	}
+	if cp.Resources != nil {
+		objectMap["resources"] = cp.Resources
+	}
+	if cp.VolumeMounts != nil {
+		objectMap["volumeMounts"] = cp.VolumeMounts
+	}
+	return json.Marshal(objectMap)
+}
+
 // ContainerPropertiesInstanceView the instance view of the container instance. Only valid in response.
 type ContainerPropertiesInstanceView struct {
 	// RestartCount - READ-ONLY; The number of times that the container instance has been restarted.
@@ -541,6 +534,12 @@ type ContainerPropertiesInstanceView struct {
 	PreviousState *ContainerState `json:"previousState,omitempty"`
 	// Events - READ-ONLY; The events of the container instance.
 	Events *[]Event `json:"events,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerPropertiesInstanceView.
+func (cpV ContainerPropertiesInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ContainerState the container instance state.
@@ -555,6 +554,12 @@ type ContainerState struct {
 	FinishTime *date.Time `json:"finishTime,omitempty"`
 	// DetailStatus - READ-ONLY; The human-readable status of the container instance state.
 	DetailStatus *string `json:"detailStatus,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerState.
+func (cs ContainerState) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // EnvironmentVariable the environment variable to set within the container instance.
@@ -579,6 +584,12 @@ type Event struct {
 	Message *string `json:"message,omitempty"`
 	// Type - READ-ONLY; The event type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Event.
+func (e Event) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // GitRepoVolume represents a volume that is populated with the contents of a git repository
@@ -615,11 +626,35 @@ type IPAddress struct {
 	Fqdn *string `json:"fqdn,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IPAddress.
+func (ia IPAddress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ia.Ports != nil {
+		objectMap["ports"] = ia.Ports
+	}
+	if ia.Type != nil {
+		objectMap["type"] = ia.Type
+	}
+	if ia.IP != nil {
+		objectMap["ip"] = ia.IP
+	}
+	if ia.DNSNameLabel != nil {
+		objectMap["dnsNameLabel"] = ia.DNSNameLabel
+	}
+	return json.Marshal(objectMap)
+}
+
 // Logs the logs.
 type Logs struct {
 	autorest.Response `json:"-"`
 	// Content - READ-ONLY; The content of the log.
 	Content *string `json:"content,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Logs.
+func (l Logs) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Operation an operation for Azure Container Instance service.
@@ -630,6 +665,15 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 	// Origin - READ-ONLY; The intended executor of the operation. Possible values include: 'User', 'System'
 	Origin OperationsOrigin `json:"origin,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the display information of the operation.
@@ -644,8 +688,14 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult the operation list response that contains all operations for Azure Container
-// Instance service.
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// OperationListResult the operation list response that contains all operations for Azure Container Instance
+// service.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of operations.
@@ -724,11 +774,23 @@ type Usage struct {
 	Name *UsageName `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Usage.
+func (u Usage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UsageListResult the response containing the usage data
 type UsageListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY
 	Value *[]Usage `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageListResult.
+func (ulr UsageListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UsageName the name object of the resource
@@ -737,6 +799,12 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - READ-ONLY; The localized name of the resource
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageName.
+func (u UsageName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Volume the properties of the volume.

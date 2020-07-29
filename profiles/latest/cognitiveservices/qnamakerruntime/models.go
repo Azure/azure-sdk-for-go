@@ -40,6 +40,13 @@ const (
 	ValidationFailure ErrorCodeType = original.ValidationFailure
 )
 
+type StrictFiltersCompoundOperationType = original.StrictFiltersCompoundOperationType
+
+const (
+	AND StrictFiltersCompoundOperationType = original.AND
+	OR  StrictFiltersCompoundOperationType = original.OR
+)
+
 type BaseClient = original.BaseClient
 type ContextDTO = original.ContextDTO
 type Error = original.Error
@@ -72,6 +79,9 @@ func NewWithoutDefaults(runtimeEndpoint string) BaseClient {
 }
 func PossibleErrorCodeTypeValues() []ErrorCodeType {
 	return original.PossibleErrorCodeTypeValues()
+}
+func PossibleStrictFiltersCompoundOperationTypeValues() []StrictFiltersCompoundOperationType {
+	return original.PossibleStrictFiltersCompoundOperationTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

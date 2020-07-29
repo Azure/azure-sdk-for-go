@@ -307,6 +307,9 @@ func (client CustomImageClient) List(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CustomImageClient", "List", resp, "Failure responding to request")
 	}
+	if result.rwcci.hasNextLink() && result.rwcci.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

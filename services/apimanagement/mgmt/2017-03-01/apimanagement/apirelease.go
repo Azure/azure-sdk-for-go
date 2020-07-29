@@ -392,6 +392,9 @@ func (client APIReleaseClient) List(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIReleaseClient", "List", resp, "Failure responding to request")
 	}
+	if result.arc.hasNextLink() && result.arc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

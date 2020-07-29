@@ -359,6 +359,9 @@ func (client IotSecuritySolutionClient) ListByResourceGroup(ctx context.Context,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.itssl.hasNextLink() && result.itssl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -478,6 +481,9 @@ func (client IotSecuritySolutionClient) ListBySubscription(ctx context.Context, 
 	result.itssl, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.itssl.hasNextLink() && result.itssl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

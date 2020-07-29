@@ -53,6 +53,26 @@ type ActionsClientAPI interface {
 
 var _ ActionsClientAPI = (*securityinsight.ActionsClient)(nil)
 
+// AlertRuleTemplatesClientAPI contains the set of methods on the AlertRuleTemplatesClient type.
+type AlertRuleTemplatesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, alertRuleTemplateID string) (result securityinsight.AlertRuleTemplateModel, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string) (result securityinsight.AlertRuleTemplatesListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result securityinsight.AlertRuleTemplatesListIterator, err error)
+}
+
+var _ AlertRuleTemplatesClientAPI = (*securityinsight.AlertRuleTemplatesClient)(nil)
+
+// BookmarksClientAPI contains the set of methods on the BookmarksClient type.
+type BookmarksClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, bookmark securityinsight.Bookmark) (result securityinsight.Bookmark, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string) (result securityinsight.Bookmark, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string) (result securityinsight.BookmarkListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result securityinsight.BookmarkListIterator, err error)
+}
+
+var _ BookmarksClientAPI = (*securityinsight.BookmarksClient)(nil)
+
 // DataConnectorsClientAPI contains the set of methods on the DataConnectorsClient type.
 type DataConnectorsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, dataConnector securityinsight.BasicDataConnector) (result securityinsight.DataConnectorModel, err error)
@@ -63,3 +83,24 @@ type DataConnectorsClientAPI interface {
 }
 
 var _ DataConnectorsClientAPI = (*securityinsight.DataConnectorsClient)(nil)
+
+// IncidentsClientAPI contains the set of methods on the IncidentsClient type.
+type IncidentsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, incident securityinsight.Incident) (result securityinsight.Incident, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string) (result securityinsight.Incident, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.IncidentListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.IncidentListIterator, err error)
+}
+
+var _ IncidentsClientAPI = (*securityinsight.IncidentsClient)(nil)
+
+// IncidentCommentsClientAPI contains the set of methods on the IncidentCommentsClient type.
+type IncidentCommentsClientAPI interface {
+	CreateComment(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, incidentCommentID string, incidentComment securityinsight.IncidentComment) (result securityinsight.IncidentComment, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, incidentCommentID string) (result securityinsight.IncidentComment, err error)
+	ListByIncident(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.IncidentCommentListPage, err error)
+	ListByIncidentComplete(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.IncidentCommentListIterator, err error)
+}
+
+var _ IncidentCommentsClientAPI = (*securityinsight.IncidentCommentsClient)(nil)

@@ -312,6 +312,9 @@ func (client HybridUseBenefitClient) List(ctx context.Context, scope string, fil
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "softwareplan.HybridUseBenefitClient", "List", resp, "Failure responding to request")
 	}
+	if result.hublr.hasNextLink() && result.hublr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

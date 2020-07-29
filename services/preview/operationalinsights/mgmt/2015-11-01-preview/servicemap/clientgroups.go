@@ -306,6 +306,9 @@ func (client ClientGroupsClient) ListMembers(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "ListMembers", resp, "Failure responding to request")
 	}
+	if result.cgmc.hasNextLink() && result.cgmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

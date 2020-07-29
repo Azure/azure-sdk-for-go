@@ -311,6 +311,9 @@ func (client RegisteredPrefixesClient) ListByPeering(ctx context.Context, resour
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.RegisteredPrefixesClient", "ListByPeering", resp, "Failure responding to request")
 	}
+	if result.rplr.hasNextLink() && result.rplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -49,6 +49,12 @@ type ImagePrediction struct {
 	Predictions *[]Model `json:"predictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImagePrediction.
+func (IP ImagePrediction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageURL ...
 type ImageURL struct {
 	URL *string `json:"url,omitempty"`
@@ -64,4 +70,10 @@ type Model struct {
 	TagName *string `json:"tagName,omitempty"`
 	// BoundingBox - READ-ONLY
 	BoundingBox *BoundingBox `json:"boundingBox,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Model.
+func (mVar Model) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

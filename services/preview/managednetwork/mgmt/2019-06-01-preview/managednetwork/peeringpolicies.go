@@ -326,6 +326,9 @@ func (client PeeringPoliciesClient) ListByManagedNetwork(ctx context.Context, re
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesClient", "ListByManagedNetwork", resp, "Failure responding to request")
 	}
+	if result.pplr.hasNextLink() && result.pplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

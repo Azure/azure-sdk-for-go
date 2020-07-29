@@ -307,6 +307,9 @@ func (client MachinesClient) ListByWorkspace(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListByWorkspace", resp, "Failure responding to request")
 	}
+	if result.mc.hasNextLink() && result.mc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -457,6 +460,9 @@ func (client MachinesClient) ListConnections(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListConnections", resp, "Failure responding to request")
 	}
+	if result.cc.hasNextLink() && result.cc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -598,6 +604,9 @@ func (client MachinesClient) ListMachineGroupMembership(ctx context.Context, res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListMachineGroupMembership", resp, "Failure responding to request")
 	}
+	if result.mgc.hasNextLink() && result.mgc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -737,6 +746,9 @@ func (client MachinesClient) ListPorts(ctx context.Context, resourceGroupName st
 	result.pc, err = client.ListPortsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListPorts", resp, "Failure responding to request")
+	}
+	if result.pc.hasNextLink() && result.pc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -887,6 +899,9 @@ func (client MachinesClient) ListProcesses(ctx context.Context, resourceGroupNam
 	result.pc, err = client.ListProcessesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListProcesses", resp, "Failure responding to request")
+	}
+	if result.pc.hasNextLink() && result.pc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

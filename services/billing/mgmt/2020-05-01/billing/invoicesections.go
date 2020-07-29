@@ -31,14 +31,14 @@ type InvoiceSectionsClient struct {
 }
 
 // NewInvoiceSectionsClient creates an instance of the InvoiceSectionsClient client.
-func NewInvoiceSectionsClient(subscriptionID string) InvoiceSectionsClient {
-	return NewInvoiceSectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewInvoiceSectionsClient(subscriptionID string, subscriptionID1 string) InvoiceSectionsClient {
+	return NewInvoiceSectionsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewInvoiceSectionsClientWithBaseURI creates an instance of the InvoiceSectionsClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewInvoiceSectionsClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsClient {
-	return InvoiceSectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewInvoiceSectionsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) InvoiceSectionsClient {
+	return InvoiceSectionsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // CreateOrUpdate creates or updates an invoice section. The operation is supported only for billing accounts with
@@ -231,6 +231,9 @@ func (client InvoiceSectionsClient) ListByBillingProfile(ctx context.Context, bi
 	result.islr, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "ListByBillingProfile", resp, "Failure responding to request")
+	}
+	if result.islr.hasNextLink() && result.islr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

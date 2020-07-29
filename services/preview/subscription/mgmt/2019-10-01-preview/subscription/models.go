@@ -30,59 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2019-10-01-preview/subscription"
 
-// OfferType enumerates the values for offer type.
-type OfferType string
-
-const (
-	// MSAZR0017P ...
-	MSAZR0017P OfferType = "MS-AZR-0017P"
-	// MSAZR0148P ...
-	MSAZR0148P OfferType = "MS-AZR-0148P"
-)
-
-// PossibleOfferTypeValues returns an array of possible values for the OfferType const type.
-func PossibleOfferTypeValues() []OfferType {
-	return []OfferType{MSAZR0017P, MSAZR0148P}
-}
-
-// SpendingLimit enumerates the values for spending limit.
-type SpendingLimit string
-
-const (
-	// CurrentPeriodOff ...
-	CurrentPeriodOff SpendingLimit = "CurrentPeriodOff"
-	// Off ...
-	Off SpendingLimit = "Off"
-	// On ...
-	On SpendingLimit = "On"
-)
-
-// PossibleSpendingLimitValues returns an array of possible values for the SpendingLimit const type.
-func PossibleSpendingLimitValues() []SpendingLimit {
-	return []SpendingLimit{CurrentPeriodOff, Off, On}
-}
-
-// State enumerates the values for state.
-type State string
-
-const (
-	// Deleted ...
-	Deleted State = "Deleted"
-	// Disabled ...
-	Disabled State = "Disabled"
-	// Enabled ...
-	Enabled State = "Enabled"
-	// PastDue ...
-	PastDue State = "PastDue"
-	// Warned ...
-	Warned State = "Warned"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{Deleted, Disabled, Enabled, PastDue, Warned}
-}
-
 // AdPrincipal active Directory Principal who’ll get owner access on the new subscription.
 type AdPrincipal struct {
 	// ObjectID - Object id of the Principal
@@ -94,6 +41,12 @@ type CanceledSubscriptionID struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The ID of the canceled subscription
 	Value *string `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CanceledSubscriptionID.
+func (csi CanceledSubscriptionID) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CreateCspSubscriptionFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -154,8 +107,8 @@ func (future *CreateSubscriptionFuture) Result(client Client) (cr CreationResult
 	return
 }
 
-// CreateSubscriptionInEnrollmentAccountFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// CreateSubscriptionInEnrollmentAccountFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type CreateSubscriptionInEnrollmentAccountFuture struct {
 	azure.Future
 }
@@ -230,6 +183,12 @@ type EnabledSubscriptionID struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The ID of the subscriptions that is being enabled
 	Value *string `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EnabledSubscriptionID.
+func (esi EnabledSubscriptionID) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse describes the format of Error response.
@@ -317,10 +276,15 @@ func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -348,11 +312,16 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lr = next
 	return nil
 }
 
@@ -402,6 +371,12 @@ type Location struct {
 	Longitude *string `json:"longitude,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Location.
+func (l Location) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // LocationListResult location list operation response.
 type LocationListResult struct {
 	autorest.Response `json:"-"`
@@ -424,6 +399,18 @@ type Model struct {
 	SubscriptionPolicies *Policies `json:"subscriptionPolicies,omitempty"`
 	// AuthorizationSource - The authorization source of the request. Valid values are one or more combinations of Legacy, RoleBased, Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
 	AuthorizationSource *string `json:"authorizationSource,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Model.
+func (mVar Model) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mVar.SubscriptionPolicies != nil {
+		objectMap["subscriptionPolicies"] = mVar.SubscriptionPolicies
+	}
+	if mVar.AuthorizationSource != nil {
+		objectMap["authorizationSource"] = mVar.AuthorizationSource
+	}
+	return json.Marshal(objectMap)
 }
 
 // ModernCspSubscriptionCreationParameters the parameters required to create a new CSP subscription.
@@ -520,11 +507,23 @@ type Policies struct {
 	SpendingLimit SpendingLimit `json:"spendingLimit,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Policies.
+func (p Policies) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RenamedSubscriptionID the ID of the subscriptions that is being renamed
 type RenamedSubscriptionID struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The ID of the subscriptions that is being renamed
 	Value *string `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RenamedSubscriptionID.
+func (rsi RenamedSubscriptionID) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TenantIDDescription tenant Id information.
@@ -533,6 +532,12 @@ type TenantIDDescription struct {
 	ID *string `json:"id,omitempty"`
 	// TenantID - READ-ONLY; The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
 	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TenantIDDescription.
+func (tid TenantIDDescription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TenantListResult tenant Ids information.
@@ -612,10 +617,15 @@ func (tlr TenantListResult) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tlr TenantListResult) hasNextLink() bool {
+	return tlr.NextLink != nil && len(*tlr.NextLink) != 0
+}
+
 // tenantListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tlr TenantListResult) tenantListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if tlr.NextLink == nil || len(to.String(tlr.NextLink)) < 1 {
+	if !tlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -643,11 +653,16 @@ func (page *TenantListResultPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tlr)
+		if err != nil {
+			return err
+		}
+		page.tlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tlr = next
 	return nil
 }
 

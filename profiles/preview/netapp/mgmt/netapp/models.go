@@ -19,7 +19,7 @@
 
 package netapp
 
-import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2019-11-01/netapp"
+import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-02-01/netapp"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -88,6 +88,7 @@ type AccountProperties = original.AccountProperties
 type AccountsClient = original.AccountsClient
 type AccountsCreateOrUpdateFuture = original.AccountsCreateOrUpdateFuture
 type AccountsDeleteFuture = original.AccountsDeleteFuture
+type AccountsUpdateFuture = original.AccountsUpdateFuture
 type ActiveDirectory = original.ActiveDirectory
 type AuthorizeRequest = original.AuthorizeRequest
 type BaseClient = original.BaseClient
@@ -132,6 +133,7 @@ type VolumeProperties = original.VolumeProperties
 type VolumePropertiesDataProtection = original.VolumePropertiesDataProtection
 type VolumePropertiesExportPolicy = original.VolumePropertiesExportPolicy
 type VolumeRevert = original.VolumeRevert
+type VolumeSnapshotProperties = original.VolumeSnapshotProperties
 type VolumesAuthorizeReplicationFuture = original.VolumesAuthorizeReplicationFuture
 type VolumesBreakReplicationFuture = original.VolumesBreakReplicationFuture
 type VolumesClient = original.VolumesClient

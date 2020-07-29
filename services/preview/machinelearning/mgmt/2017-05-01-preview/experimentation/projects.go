@@ -379,6 +379,9 @@ func (client ProjectsClient) ListByWorkspace(ctx context.Context, accountName st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.ProjectsClient", "ListByWorkspace", resp, "Failure responding to request")
 	}
+	if result.plr.hasNextLink() && result.plr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

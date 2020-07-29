@@ -32,40 +32,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce"
 
-// AggregationGranularity enumerates the values for aggregation granularity.
-type AggregationGranularity string
-
-const (
-	// Daily ...
-	Daily AggregationGranularity = "Daily"
-	// Hourly ...
-	Hourly AggregationGranularity = "Hourly"
-)
-
-// PossibleAggregationGranularityValues returns an array of possible values for the AggregationGranularity const type.
-func PossibleAggregationGranularityValues() []AggregationGranularity {
-	return []AggregationGranularity{Daily, Hourly}
-}
-
-// Name enumerates the values for name.
-type Name string
-
-const (
-	// NameMonetaryCommitment ...
-	NameMonetaryCommitment Name = "Monetary Commitment"
-	// NameMonetaryCredit ...
-	NameMonetaryCredit Name = "Monetary Credit"
-	// NameOfferTermInfo ...
-	NameOfferTermInfo Name = "OfferTermInfo"
-	// NameRecurringCharge ...
-	NameRecurringCharge Name = "Recurring Charge"
-)
-
-// PossibleNameValues returns an array of possible values for the Name const type.
-func PossibleNameValues() []Name {
-	return []Name{NameMonetaryCommitment, NameMonetaryCredit, NameOfferTermInfo, NameRecurringCharge}
-}
-
 // ErrorResponse describes the format of Error response.
 type ErrorResponse struct {
 	// Code - Error code
@@ -351,8 +317,8 @@ func (oti OfferTermInfo) AsBasicOfferTermInfo() (BasicOfferTermInfo, bool) {
 	return &oti, true
 }
 
-// RateCardQueryParameters parameters that are used in the odata $filter query parameter for providing
-// RateCard information.
+// RateCardQueryParameters parameters that are used in the odata $filter query parameter for providing RateCard
+// information.
 type RateCardQueryParameters struct {
 	// OfferDurableID - The Offer ID parameter consists of the 'MS-AZR-' prefix, plus the Offer ID number (e.g., MS-AZR-0026P). See https://azure.microsoft.com/en-us/support/legal/offer-details/ for more information on the list of available Offer IDs, country/region availability, and billing currency.
 	OfferDurableID *string `json:"OfferDurableId,omitempty"`
@@ -647,10 +613,15 @@ func (ualr UsageAggregationListResult) IsEmpty() bool {
 	return ualr.Value == nil || len(*ualr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ualr UsageAggregationListResult) hasNextLink() bool {
+	return ualr.NextLink != nil && len(*ualr.NextLink) != 0
+}
+
 // usageAggregationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ualr UsageAggregationListResult) usageAggregationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ualr.NextLink == nil || len(to.String(ualr.NextLink)) < 1 {
+	if !ualr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -678,11 +649,16 @@ func (page *UsageAggregationListResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ualr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ualr)
+		if err != nil {
+			return err
+		}
+		page.ualr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ualr = next
 	return nil
 }
 

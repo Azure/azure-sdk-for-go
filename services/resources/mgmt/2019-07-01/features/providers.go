@@ -231,6 +231,9 @@ func (client ProvidersClient) List(ctx context.Context, top *int32, expand strin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ProvidersClient", "List", resp, "Failure responding to request")
 	}
+	if result.plr.hasNextLink() && result.plr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -349,6 +352,9 @@ func (client ProvidersClient) ListAtTenantScope(ctx context.Context, top *int32,
 	result.plr, err = client.ListAtTenantScopeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ProvidersClient", "ListAtTenantScope", resp, "Failure responding to request")
+	}
+	if result.plr.hasNextLink() && result.plr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

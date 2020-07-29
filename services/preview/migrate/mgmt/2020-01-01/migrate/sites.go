@@ -227,6 +227,9 @@ func (client SitesClient) GetSiteHealthSummary(ctx context.Context, subscription
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SitesClient", "GetSiteHealthSummary", resp, "Failure responding to request")
 	}
+	if result.shsc.hasNextLink() && result.shsc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

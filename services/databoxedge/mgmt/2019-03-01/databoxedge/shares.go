@@ -319,6 +319,9 @@ func (client SharesClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceNa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.SharesClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
 	}
+	if result.sl.hasNextLink() && result.sl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -31,14 +31,14 @@ type EdgeNodesClient struct {
 }
 
 // NewEdgeNodesClient creates an instance of the EdgeNodesClient client.
-func NewEdgeNodesClient(subscriptionID string, subscriptionID1 string) EdgeNodesClient {
-	return NewEdgeNodesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewEdgeNodesClient(subscriptionID string) EdgeNodesClient {
+	return NewEdgeNodesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewEdgeNodesClientWithBaseURI creates an instance of the EdgeNodesClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) EdgeNodesClient {
-	return EdgeNodesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string) EdgeNodesClient {
+	return EdgeNodesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
@@ -70,6 +70,9 @@ func (client EdgeNodesClient) List(ctx context.Context) (result EdgenodeResultPa
 	result.er, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.EdgeNodesClient", "List", resp, "Failure responding to request")
+	}
+	if result.er.hasNextLink() && result.er.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

@@ -383,6 +383,9 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironments(ctx
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironments", resp, "Failure responding to request")
 	}
+	if result.hec.hasNextLink() && result.hec.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -494,6 +497,9 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServe
 	result.sfc, err = client.GetManagedHostingEnvironmentServerFarmsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentServerFarms", resp, "Failure responding to request")
+	}
+	if result.sfc.hasNextLink() && result.sfc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -608,6 +614,9 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSites
 	result.sc, err = client.GetManagedHostingEnvironmentSitesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentSites", resp, "Failure responding to request")
+	}
+	if result.sc.hasNextLink() && result.sc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -799,6 +808,9 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHo
 	result.sfc, err = client.GetManagedHostingEnvironmentWebHostingPlansResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentWebHostingPlans", resp, "Failure responding to request")
+	}
+	if result.sfc.hasNextLink() && result.sfc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

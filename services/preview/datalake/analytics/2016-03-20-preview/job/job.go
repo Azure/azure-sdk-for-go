@@ -589,6 +589,9 @@ func (client Client) List(ctx context.Context, accountName string, filter string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.Client", "List", resp, "Failure responding to request")
 	}
+	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

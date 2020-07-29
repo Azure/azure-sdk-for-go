@@ -231,3 +231,21 @@ type AgreementsClientAPI interface {
 }
 
 var _ AgreementsClientAPI = (*billing.AgreementsClient)(nil)
+
+// EnrollmentAccountsClientAPI contains the set of methods on the EnrollmentAccountsClient type.
+type EnrollmentAccountsClientAPI interface {
+	Get(ctx context.Context, name string) (result billing.EnrollmentAccountSummary, err error)
+	List(ctx context.Context) (result billing.EnrollmentAccountListResultPage, err error)
+	ListComplete(ctx context.Context) (result billing.EnrollmentAccountListResultIterator, err error)
+}
+
+var _ EnrollmentAccountsClientAPI = (*billing.EnrollmentAccountsClient)(nil)
+
+// PeriodsClientAPI contains the set of methods on the PeriodsClient type.
+type PeriodsClientAPI interface {
+	Get(ctx context.Context, billingPeriodName string) (result billing.Period, err error)
+	List(ctx context.Context, filter string, skiptoken string, top *int32) (result billing.PeriodsListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, skiptoken string, top *int32) (result billing.PeriodsListResultIterator, err error)
+}
+
+var _ PeriodsClientAPI = (*billing.PeriodsClient)(nil)

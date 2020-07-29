@@ -29,35 +29,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2015-05-04-preview/dns"
 
-// RecordType enumerates the values for record type.
-type RecordType string
-
-const (
-	// A ...
-	A RecordType = "A"
-	// AAAA ...
-	AAAA RecordType = "AAAA"
-	// CNAME ...
-	CNAME RecordType = "CNAME"
-	// MX ...
-	MX RecordType = "MX"
-	// NS ...
-	NS RecordType = "NS"
-	// PTR ...
-	PTR RecordType = "PTR"
-	// SOA ...
-	SOA RecordType = "SOA"
-	// SRV ...
-	SRV RecordType = "SRV"
-	// TXT ...
-	TXT RecordType = "TXT"
-)
-
-// PossibleRecordTypeValues returns an array of possible values for the RecordType const type.
-func PossibleRecordTypeValues() []RecordType {
-	return []RecordType{A, AAAA, CNAME, MX, NS, PTR, SOA, SRV, TXT}
-}
-
 // AaaaRecord an AAAA record.
 type AaaaRecord struct {
 	// Ipv6Address - Gets or sets the IPv6 address of this AAAA record in string notation.
@@ -80,6 +51,12 @@ type AzureEntityResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CnameRecord a CNAME record.
@@ -111,6 +88,12 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PtrRecord a PTR record.
@@ -233,10 +216,15 @@ func (rslr RecordSetListResult) IsEmpty() bool {
 	return rslr.Value == nil || len(*rslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rslr RecordSetListResult) hasNextLink() bool {
+	return rslr.NextLink != nil && len(*rslr.NextLink) != 0
+}
+
 // recordSetListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rslr RecordSetListResult) recordSetListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rslr.NextLink == nil || len(to.String(rslr.NextLink)) < 1 {
+	if !rslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -264,11 +252,16 @@ func (page *RecordSetListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rslr)
+		if err != nil {
+			return err
+		}
+		page.rslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rslr = next
 	return nil
 }
 
@@ -334,6 +327,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SoaRecord an SOA record.
@@ -518,10 +517,15 @@ func (zlr ZoneListResult) IsEmpty() bool {
 	return zlr.Value == nil || len(*zlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (zlr ZoneListResult) hasNextLink() bool {
+	return zlr.NextLink != nil && len(*zlr.NextLink) != 0
+}
+
 // zoneListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (zlr ZoneListResult) zoneListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if zlr.NextLink == nil || len(to.String(zlr.NextLink)) < 1 {
+	if !zlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -549,11 +553,16 @@ func (page *ZoneListResultPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.zlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.zlr)
+		if err != nil {
+			return err
+		}
+		page.zlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.zlr = next
 	return nil
 }
 

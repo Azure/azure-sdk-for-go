@@ -536,6 +536,9 @@ func (client PrivateLinkServicesClient) List(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "List", resp, "Failure responding to request")
 	}
+	if result.plslr.hasNextLink() && result.plslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -647,6 +650,9 @@ func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServices(ctx 
 	result.aaplsr, err = client.ListAutoApprovedPrivateLinkServicesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "ListAutoApprovedPrivateLinkServices", resp, "Failure responding to request")
+	}
+	if result.aaplsr.hasNextLink() && result.aaplsr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -761,6 +767,9 @@ func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesByRes
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "ListAutoApprovedPrivateLinkServicesByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.aaplsr.hasNextLink() && result.aaplsr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -870,6 +879,9 @@ func (client PrivateLinkServicesClient) ListBySubscription(ctx context.Context) 
 	result.plslr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.plslr.hasNextLink() && result.plslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

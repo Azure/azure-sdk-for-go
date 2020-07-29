@@ -150,6 +150,9 @@ func (client ClusterVersionsClient) List(ctx context.Context, location string) (
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.ccvlr.hasNextLink() && result.ccvlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -261,6 +264,9 @@ func (client ClusterVersionsClient) ListByEnvironment(ctx context.Context, locat
 	result.ccvlr, err = client.ListByEnvironmentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "ListByEnvironment", resp, "Failure responding to request")
+	}
+	if result.ccvlr.hasNextLink() && result.ccvlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -374,6 +380,9 @@ func (client ClusterVersionsClient) ListByVersion(ctx context.Context, location 
 	result.ccvlr, err = client.ListByVersionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "ListByVersion", resp, "Failure responding to request")
+	}
+	if result.ccvlr.hasNextLink() && result.ccvlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

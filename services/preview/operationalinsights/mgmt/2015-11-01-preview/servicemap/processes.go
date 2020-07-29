@@ -309,6 +309,9 @@ func (client ProcessesClient) ListAcceptingPorts(ctx context.Context, resourceGr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ProcessesClient", "ListAcceptingPorts", resp, "Failure responding to request")
 	}
+	if result.pc.hasNextLink() && result.pc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -453,6 +456,9 @@ func (client ProcessesClient) ListConnections(ctx context.Context, resourceGroup
 	result.cc, err = client.ListConnectionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ProcessesClient", "ListConnections", resp, "Failure responding to request")
+	}
+	if result.cc.hasNextLink() && result.cc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

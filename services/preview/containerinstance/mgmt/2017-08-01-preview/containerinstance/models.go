@@ -30,49 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/containerinstance/mgmt/2017-08-01-preview/containerinstance"
 
-// ContainerGroupNetworkProtocol enumerates the values for container group network protocol.
-type ContainerGroupNetworkProtocol string
-
-const (
-	// TCP ...
-	TCP ContainerGroupNetworkProtocol = "TCP"
-	// UDP ...
-	UDP ContainerGroupNetworkProtocol = "UDP"
-)
-
-// PossibleContainerGroupNetworkProtocolValues returns an array of possible values for the ContainerGroupNetworkProtocol const type.
-func PossibleContainerGroupNetworkProtocolValues() []ContainerGroupNetworkProtocol {
-	return []ContainerGroupNetworkProtocol{TCP, UDP}
-}
-
-// ContainerRestartPolicy enumerates the values for container restart policy.
-type ContainerRestartPolicy string
-
-const (
-	// Always ...
-	Always ContainerRestartPolicy = "always"
-)
-
-// PossibleContainerRestartPolicyValues returns an array of possible values for the ContainerRestartPolicy const type.
-func PossibleContainerRestartPolicyValues() []ContainerRestartPolicy {
-	return []ContainerRestartPolicy{Always}
-}
-
-// OperatingSystemTypes enumerates the values for operating system types.
-type OperatingSystemTypes string
-
-const (
-	// Linux ...
-	Linux OperatingSystemTypes = "Linux"
-	// Windows ...
-	Windows OperatingSystemTypes = "Windows"
-)
-
-// PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
-func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
-	return []OperatingSystemTypes{Linux, Windows}
-}
-
 // AzureFileVolume the properties of the Azure File volume. Azure File shares are mounted as volumes.
 type AzureFileVolume struct {
 	// ShareName - The name of the Azure File share to be mounted as a volume.
@@ -329,10 +286,15 @@ func (cglr ContainerGroupListResult) IsEmpty() bool {
 	return cglr.Value == nil || len(*cglr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cglr ContainerGroupListResult) hasNextLink() bool {
+	return cglr.NextLink != nil && len(*cglr.NextLink) != 0
+}
+
 // containerGroupListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cglr ContainerGroupListResult) containerGroupListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cglr.NextLink == nil || len(to.String(cglr.NextLink)) < 1 {
+	if !cglr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -360,11 +322,16 @@ func (page *ContainerGroupListResultPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cglr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cglr)
+		if err != nil {
+			return err
+		}
+		page.cglr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cglr = next
 	return nil
 }
 
@@ -418,6 +385,30 @@ type ContainerGroupProperties struct {
 	Volumes *[]Volume `json:"volumes,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ContainerGroupProperties.
+func (cg ContainerGroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cg.Containers != nil {
+		objectMap["containers"] = cg.Containers
+	}
+	if cg.ImageRegistryCredentials != nil {
+		objectMap["imageRegistryCredentials"] = cg.ImageRegistryCredentials
+	}
+	if cg.RestartPolicy != "" {
+		objectMap["restartPolicy"] = cg.RestartPolicy
+	}
+	if cg.IPAddress != nil {
+		objectMap["ipAddress"] = cg.IPAddress
+	}
+	if cg.OsType != "" {
+		objectMap["osType"] = cg.OsType
+	}
+	if cg.Volumes != nil {
+		objectMap["volumes"] = cg.Volumes
+	}
+	return json.Marshal(objectMap)
+}
+
 // ContainerPort the port exposed on the container instance.
 type ContainerPort struct {
 	// Port - The port number exposed within the container group.
@@ -440,6 +431,30 @@ type ContainerProperties struct {
 	Resources *ResourceRequirements `json:"resources,omitempty"`
 	// VolumeMounts - The volume mounts available to the container instance.
 	VolumeMounts *[]VolumeMount `json:"volumeMounts,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerProperties.
+func (cp ContainerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.Image != nil {
+		objectMap["image"] = cp.Image
+	}
+	if cp.Command != nil {
+		objectMap["command"] = cp.Command
+	}
+	if cp.Ports != nil {
+		objectMap["ports"] = cp.Ports
+	}
+	if cp.EnvironmentVariables != nil {
+		objectMap["environmentVariables"] = cp.EnvironmentVariables
+	}
+	if cp.Resources != nil {
+		objectMap["resources"] = cp.Resources
+	}
+	if cp.VolumeMounts != nil {
+		objectMap["volumeMounts"] = cp.VolumeMounts
+	}
+	return json.Marshal(objectMap)
 }
 
 // ContainerPropertiesInstanceView the instance view of the container instance. Only valid in response.

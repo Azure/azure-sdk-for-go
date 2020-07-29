@@ -626,6 +626,9 @@ func (client Client) List(ctx context.Context, filter string, top *int32, skip *
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "List", resp, "Failure responding to request")
 	}
+	if result.dlsalr.hasNextLink() && result.dlsalr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -780,6 +783,9 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.dlsalr.hasNextLink() && result.dlsalr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -918,6 +924,9 @@ func (client Client) ListFirewallRules(ctx context.Context, resourceGroupName st
 	result.dlsfrlr, err = client.ListFirewallRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListFirewallRules", resp, "Failure responding to request")
+	}
+	if result.dlsfrlr.hasNextLink() && result.dlsfrlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

@@ -26,118 +26,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/trafficmanager/mgmt/2017-09-01-preview/trafficmanager"
 
-// EndpointMonitorStatus enumerates the values for endpoint monitor status.
-type EndpointMonitorStatus string
-
-const (
-	// CheckingEndpoint ...
-	CheckingEndpoint EndpointMonitorStatus = "CheckingEndpoint"
-	// Degraded ...
-	Degraded EndpointMonitorStatus = "Degraded"
-	// Disabled ...
-	Disabled EndpointMonitorStatus = "Disabled"
-	// Inactive ...
-	Inactive EndpointMonitorStatus = "Inactive"
-	// Online ...
-	Online EndpointMonitorStatus = "Online"
-	// Stopped ...
-	Stopped EndpointMonitorStatus = "Stopped"
-)
-
-// PossibleEndpointMonitorStatusValues returns an array of possible values for the EndpointMonitorStatus const type.
-func PossibleEndpointMonitorStatusValues() []EndpointMonitorStatus {
-	return []EndpointMonitorStatus{CheckingEndpoint, Degraded, Disabled, Inactive, Online, Stopped}
-}
-
-// EndpointStatus enumerates the values for endpoint status.
-type EndpointStatus string
-
-const (
-	// EndpointStatusDisabled ...
-	EndpointStatusDisabled EndpointStatus = "Disabled"
-	// EndpointStatusEnabled ...
-	EndpointStatusEnabled EndpointStatus = "Enabled"
-)
-
-// PossibleEndpointStatusValues returns an array of possible values for the EndpointStatus const type.
-func PossibleEndpointStatusValues() []EndpointStatus {
-	return []EndpointStatus{EndpointStatusDisabled, EndpointStatusEnabled}
-}
-
-// MonitorProtocol enumerates the values for monitor protocol.
-type MonitorProtocol string
-
-const (
-	// HTTP ...
-	HTTP MonitorProtocol = "HTTP"
-	// HTTPS ...
-	HTTPS MonitorProtocol = "HTTPS"
-	// TCP ...
-	TCP MonitorProtocol = "TCP"
-)
-
-// PossibleMonitorProtocolValues returns an array of possible values for the MonitorProtocol const type.
-func PossibleMonitorProtocolValues() []MonitorProtocol {
-	return []MonitorProtocol{HTTP, HTTPS, TCP}
-}
-
-// ProfileMonitorStatus enumerates the values for profile monitor status.
-type ProfileMonitorStatus string
-
-const (
-	// ProfileMonitorStatusCheckingEndpoints ...
-	ProfileMonitorStatusCheckingEndpoints ProfileMonitorStatus = "CheckingEndpoints"
-	// ProfileMonitorStatusDegraded ...
-	ProfileMonitorStatusDegraded ProfileMonitorStatus = "Degraded"
-	// ProfileMonitorStatusDisabled ...
-	ProfileMonitorStatusDisabled ProfileMonitorStatus = "Disabled"
-	// ProfileMonitorStatusInactive ...
-	ProfileMonitorStatusInactive ProfileMonitorStatus = "Inactive"
-	// ProfileMonitorStatusOnline ...
-	ProfileMonitorStatusOnline ProfileMonitorStatus = "Online"
-)
-
-// PossibleProfileMonitorStatusValues returns an array of possible values for the ProfileMonitorStatus const type.
-func PossibleProfileMonitorStatusValues() []ProfileMonitorStatus {
-	return []ProfileMonitorStatus{ProfileMonitorStatusCheckingEndpoints, ProfileMonitorStatusDegraded, ProfileMonitorStatusDisabled, ProfileMonitorStatusInactive, ProfileMonitorStatusOnline}
-}
-
-// ProfileStatus enumerates the values for profile status.
-type ProfileStatus string
-
-const (
-	// ProfileStatusDisabled ...
-	ProfileStatusDisabled ProfileStatus = "Disabled"
-	// ProfileStatusEnabled ...
-	ProfileStatusEnabled ProfileStatus = "Enabled"
-)
-
-// PossibleProfileStatusValues returns an array of possible values for the ProfileStatus const type.
-func PossibleProfileStatusValues() []ProfileStatus {
-	return []ProfileStatus{ProfileStatusDisabled, ProfileStatusEnabled}
-}
-
-// TrafficRoutingMethod enumerates the values for traffic routing method.
-type TrafficRoutingMethod string
-
-const (
-	// Geographic ...
-	Geographic TrafficRoutingMethod = "Geographic"
-	// Performance ...
-	Performance TrafficRoutingMethod = "Performance"
-	// Priority ...
-	Priority TrafficRoutingMethod = "Priority"
-	// Weighted ...
-	Weighted TrafficRoutingMethod = "Weighted"
-)
-
-// PossibleTrafficRoutingMethodValues returns an array of possible values for the TrafficRoutingMethod const type.
-func PossibleTrafficRoutingMethodValues() []TrafficRoutingMethod {
-	return []TrafficRoutingMethod{Geographic, Performance, Priority, Weighted}
-}
-
-// CheckTrafficManagerRelativeDNSNameAvailabilityParameters parameters supplied to check Traffic Manager
-// name operation.
+// CheckTrafficManagerRelativeDNSNameAvailabilityParameters parameters supplied to check Traffic Manager name
+// operation.
 type CheckTrafficManagerRelativeDNSNameAvailabilityParameters struct {
 	// Name - The name of the resource.
 	Name *string `json:"name,omitempty"`
@@ -170,6 +60,12 @@ type DeleteOperationResult struct {
 	OperationResult *bool `json:"boolean,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DeleteOperationResult.
+func (dor DeleteOperationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DNSConfig class containing DNS settings in a Traffic Manager profile.
 type DNSConfig struct {
 	// RelativeName - The relative DNS name provided by this Traffic Manager profile. This value is combined with the DNS domain name used by Azure Traffic Manager to form the fully-qualified domain name (FQDN) of the profile.
@@ -178,6 +74,18 @@ type DNSConfig struct {
 	Fqdn *string `json:"fqdn,omitempty"`
 	// TTL - The DNS Time-To-Live (TTL), in seconds. This informs the local DNS resolvers and DNS clients how long to cache DNS responses provided by this Traffic Manager profile.
 	TTL *int64 `json:"ttl,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DNSConfig.
+func (dc DNSConfig) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dc.RelativeName != nil {
+		objectMap["relativeName"] = dc.RelativeName
+	}
+	if dc.TTL != nil {
+		objectMap["ttl"] = dc.TTL
+	}
+	return json.Marshal(objectMap)
 }
 
 // Endpoint class representing a Traffic Manager endpoint.
@@ -349,8 +257,8 @@ func (gh *GeographicHierarchy) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// GeographicHierarchyProperties class representing the properties of the Geographic hierarchy used with
-// the Geographic traffic routing method.
+// GeographicHierarchyProperties class representing the properties of the Geographic hierarchy used with the
+// Geographic traffic routing method.
 type GeographicHierarchyProperties struct {
 	// GeographicHierarchy - The region at the root of the hierarchy from all the regions in the hierarchy can be retrieved.
 	GeographicHierarchy *Region `json:"geographicHierarchy,omitempty"`
@@ -615,6 +523,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // QueryExperience class representing a Traffic Manager HeatMap query experience properties.
 type QueryExperience struct {
 	// EndpointID - The id of the endpoint from the 'endpoints' array which these queries were routed to.
@@ -644,6 +558,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource
@@ -695,4 +615,13 @@ type UserMetricsKeyModel struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UserMetricsKeyModel.
+func (umkm UserMetricsKeyModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if umkm.Key != nil {
+		objectMap["key"] = umkm.Key
+	}
+	return json.Marshal(objectMap)
 }

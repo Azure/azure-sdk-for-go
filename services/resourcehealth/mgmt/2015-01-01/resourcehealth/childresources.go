@@ -79,6 +79,9 @@ func (client ChildResourcesClient) List(ctx context.Context, resourceURI string,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.ChildResourcesClient", "List", resp, "Failure responding to request")
 	}
+	if result.aslr.hasNextLink() && result.aslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -73,6 +73,9 @@ func (client OperationsClient) List(ctx context.Context, APIVersion string) (res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.OperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.orl.hasNextLink() && result.orl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

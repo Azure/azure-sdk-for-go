@@ -29,157 +29,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2016-01-01/storage"
 
-// AccessTier enumerates the values for access tier.
-type AccessTier string
-
-const (
-	// Cool ...
-	Cool AccessTier = "Cool"
-	// Hot ...
-	Hot AccessTier = "Hot"
-)
-
-// PossibleAccessTierValues returns an array of possible values for the AccessTier const type.
-func PossibleAccessTierValues() []AccessTier {
-	return []AccessTier{Cool, Hot}
-}
-
-// AccountStatus enumerates the values for account status.
-type AccountStatus string
-
-const (
-	// Available ...
-	Available AccountStatus = "Available"
-	// Unavailable ...
-	Unavailable AccountStatus = "Unavailable"
-)
-
-// PossibleAccountStatusValues returns an array of possible values for the AccountStatus const type.
-func PossibleAccountStatusValues() []AccountStatus {
-	return []AccountStatus{Available, Unavailable}
-}
-
-// KeyPermission enumerates the values for key permission.
-type KeyPermission string
-
-const (
-	// FULL ...
-	FULL KeyPermission = "FULL"
-	// READ ...
-	READ KeyPermission = "READ"
-)
-
-// PossibleKeyPermissionValues returns an array of possible values for the KeyPermission const type.
-func PossibleKeyPermissionValues() []KeyPermission {
-	return []KeyPermission{FULL, READ}
-}
-
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// BlobStorage ...
-	BlobStorage Kind = "BlobStorage"
-	// Storage ...
-	Storage Kind = "Storage"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{BlobStorage, Storage}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// ResolvingDNS ...
-	ResolvingDNS ProvisioningState = "ResolvingDNS"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Creating, ResolvingDNS, Succeeded}
-}
-
-// Reason enumerates the values for reason.
-type Reason string
-
-const (
-	// AccountNameInvalid ...
-	AccountNameInvalid Reason = "AccountNameInvalid"
-	// AlreadyExists ...
-	AlreadyExists Reason = "AlreadyExists"
-)
-
-// PossibleReasonValues returns an array of possible values for the Reason const type.
-func PossibleReasonValues() []Reason {
-	return []Reason{AccountNameInvalid, AlreadyExists}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// PremiumLRS ...
-	PremiumLRS SkuName = "Premium_LRS"
-	// StandardGRS ...
-	StandardGRS SkuName = "Standard_GRS"
-	// StandardLRS ...
-	StandardLRS SkuName = "Standard_LRS"
-	// StandardRAGRS ...
-	StandardRAGRS SkuName = "Standard_RAGRS"
-	// StandardZRS ...
-	StandardZRS SkuName = "Standard_ZRS"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{PremiumLRS, StandardGRS, StandardLRS, StandardRAGRS, StandardZRS}
-}
-
-// SkuTier enumerates the values for sku tier.
-type SkuTier string
-
-const (
-	// Premium ...
-	Premium SkuTier = "Premium"
-	// Standard ...
-	Standard SkuTier = "Standard"
-)
-
-// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() []SkuTier {
-	return []SkuTier{Premium, Standard}
-}
-
-// UsageUnit enumerates the values for usage unit.
-type UsageUnit string
-
-const (
-	// Bytes ...
-	Bytes UsageUnit = "Bytes"
-	// BytesPerSecond ...
-	BytesPerSecond UsageUnit = "BytesPerSecond"
-	// Count ...
-	Count UsageUnit = "Count"
-	// CountsPerSecond ...
-	CountsPerSecond UsageUnit = "CountsPerSecond"
-	// Percent ...
-	Percent UsageUnit = "Percent"
-	// Seconds ...
-	Seconds UsageUnit = "Seconds"
-)
-
-// PossibleUsageUnitValues returns an array of possible values for the UsageUnit const type.
-func PossibleUsageUnitValues() []UsageUnit {
-	return []UsageUnit{Bytes, BytesPerSecond, Count, CountsPerSecond, Percent, Seconds}
-}
-
 // Account the storage account.
 type Account struct {
 	autorest.Response `json:"-"`
@@ -412,6 +261,12 @@ type AccountKey struct {
 	Permissions KeyPermission `json:"permissions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountKey.
+func (ak AccountKey) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountListKeysResult the response from the ListKeys operation.
 type AccountListKeysResult struct {
 	autorest.Response `json:"-"`
@@ -419,11 +274,23 @@ type AccountListKeysResult struct {
 	Keys *[]AccountKey `json:"keys,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountListKeysResult.
+func (alkr AccountListKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountListResult the response from the List Storage Accounts operation.
 type AccountListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Gets the list of storage accounts and their properties.
 	Value *[]Account `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountListResult.
+func (alr AccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AccountProperties ...
@@ -454,6 +321,12 @@ type AccountProperties struct {
 	AccessTier AccessTier `json:"accessTier,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountProperties.
+func (ap AccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountPropertiesCreateParameters ...
 type AccountPropertiesCreateParameters struct {
 	// CustomDomain - User domain assigned to the storage account. Name is the CNAME source. Only one custom domain is supported per storage account at this time. To clear the existing custom domain, use an empty string for the custom domain name property.
@@ -479,8 +352,7 @@ type AccountRegenerateKeyParameters struct {
 	KeyName *string `json:"keyName,omitempty"`
 }
 
-// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountsCreateFuture struct {
 	azure.Future
 }
@@ -508,8 +380,7 @@ func (future *AccountsCreateFuture) Result(client AccountsClient) (a Account, er
 	return
 }
 
-// AccountUpdateParameters the parameters that can be provided when updating the storage account
-// properties.
+// AccountUpdateParameters the parameters that can be provided when updating the storage account properties.
 type AccountUpdateParameters struct {
 	// Sku - Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS or Premium_LRS, nor can accounts of those sku names be updated to any other value.
 	Sku *Sku `json:"sku,omitempty"`
@@ -586,6 +457,12 @@ type CheckNameAvailabilityResult struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResult.
+func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CustomDomain the custom domain assigned to this storage account. This can be set via Update.
 type CustomDomain struct {
 	// Name - Gets or sets the custom domain name assigned to the storage account. Name is the CNAME source.
@@ -610,6 +487,15 @@ type EncryptionService struct {
 	LastEnabledTime *date.Time `json:"lastEnabledTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EncryptionService.
+func (es EncryptionService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if es.Enabled != nil {
+		objectMap["enabled"] = es.Enabled
+	}
+	return json.Marshal(objectMap)
+}
+
 // EncryptionServices a list of services that support encryption.
 type EncryptionServices struct {
 	// Blob - The encryption function of the blob storage service.
@@ -626,6 +512,12 @@ type Endpoints struct {
 	Table *string `json:"table,omitempty"`
 	// File - READ-ONLY; Gets the file endpoint.
 	File *string `json:"file,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Endpoints.
+func (e Endpoints) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Resource ...
@@ -662,6 +554,15 @@ type Sku struct {
 	Tier SkuTier `json:"tier,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Sku.
+func (s Sku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.Name != "" {
+		objectMap["name"] = s.Name
+	}
+	return json.Marshal(objectMap)
+}
+
 // Usage describes Storage Resource Usage.
 type Usage struct {
 	// Unit - READ-ONLY; Gets the unit of measurement. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountsPerSecond', 'BytesPerSecond'
@@ -672,6 +573,12 @@ type Usage struct {
 	Limit *int32 `json:"limit,omitempty"`
 	// Name - READ-ONLY; Gets the name of the type of usage.
 	Name *UsageName `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Usage.
+func (u Usage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UsageListResult the response from the List Usages operation.
@@ -687,4 +594,10 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - READ-ONLY; Gets a localized string describing the resource name.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageName.
+func (un UsageName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

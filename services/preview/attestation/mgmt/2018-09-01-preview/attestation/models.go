@@ -25,23 +25,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/attestation/mgmt/2018-09-01-preview/attestation"
 
-// ServiceStatus enumerates the values for service status.
-type ServiceStatus string
-
-const (
-	// Error ...
-	Error ServiceStatus = "Error"
-	// NotReady ...
-	NotReady ServiceStatus = "NotReady"
-	// Ready ...
-	Ready ServiceStatus = "Ready"
-)
-
-// PossibleServiceStatusValues returns an array of possible values for the ServiceStatus const type.
-func PossibleServiceStatusValues() []ServiceStatus {
-	return []ServiceStatus{Error, NotReady, Ready}
-}
-
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
@@ -52,6 +35,12 @@ type AzureEntityResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CloudError an error response from Attestation.
@@ -286,6 +275,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource ...
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -294,6 +289,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServiceCreationParams parameters for creating an attestation service instance
@@ -321,8 +322,7 @@ func (scp ServiceCreationParams) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServiceCreationSpecificParams client supplied parameters used to create a new attestation service
-// instance.
+// ServiceCreationSpecificParams client supplied parameters used to create a new attestation service instance.
 type ServiceCreationSpecificParams struct {
 	// AttestationPolicy - Name of attestation policy.
 	AttestationPolicy *string `json:"attestationPolicy,omitempty"`

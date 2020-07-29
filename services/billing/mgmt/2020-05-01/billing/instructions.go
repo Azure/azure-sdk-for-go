@@ -32,14 +32,14 @@ type InstructionsClient struct {
 }
 
 // NewInstructionsClient creates an instance of the InstructionsClient client.
-func NewInstructionsClient(subscriptionID string) InstructionsClient {
-	return NewInstructionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewInstructionsClient(subscriptionID string, subscriptionID1 string) InstructionsClient {
+	return NewInstructionsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewInstructionsClientWithBaseURI creates an instance of the InstructionsClient client using a custom endpoint.  Use
 // this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewInstructionsClientWithBaseURI(baseURI string, subscriptionID string) InstructionsClient {
-	return InstructionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewInstructionsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) InstructionsClient {
+	return InstructionsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // Get get the instruction by name. These are custom billing instructions and are only applicable for certain
@@ -151,6 +151,9 @@ func (client InstructionsClient) ListByBillingProfile(ctx context.Context, billi
 	result.ilr, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InstructionsClient", "ListByBillingProfile", resp, "Failure responding to request")
+	}
+	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

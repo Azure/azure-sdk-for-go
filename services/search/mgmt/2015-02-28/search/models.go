@@ -25,63 +25,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/search/mgmt/2015-02-28/search"
 
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Failed ...
-	Failed ProvisioningState = "failed"
-	// Provisioning ...
-	Provisioning ProvisioningState = "provisioning"
-	// Succeeded ...
-	Succeeded ProvisioningState = "succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Failed, Provisioning, Succeeded}
-}
-
-// ServiceStatus enumerates the values for service status.
-type ServiceStatus string
-
-const (
-	// ServiceStatusDegraded ...
-	ServiceStatusDegraded ServiceStatus = "degraded"
-	// ServiceStatusDeleting ...
-	ServiceStatusDeleting ServiceStatus = "deleting"
-	// ServiceStatusDisabled ...
-	ServiceStatusDisabled ServiceStatus = "disabled"
-	// ServiceStatusError ...
-	ServiceStatusError ServiceStatus = "error"
-	// ServiceStatusProvisioning ...
-	ServiceStatusProvisioning ServiceStatus = "provisioning"
-	// ServiceStatusRunning ...
-	ServiceStatusRunning ServiceStatus = "running"
-)
-
-// PossibleServiceStatusValues returns an array of possible values for the ServiceStatus const type.
-func PossibleServiceStatusValues() []ServiceStatus {
-	return []ServiceStatus{ServiceStatusDegraded, ServiceStatusDeleting, ServiceStatusDisabled, ServiceStatusError, ServiceStatusProvisioning, ServiceStatusRunning}
-}
-
-// SkuType enumerates the values for sku type.
-type SkuType string
-
-const (
-	// Free ...
-	Free SkuType = "free"
-	// Standard ...
-	Standard SkuType = "standard"
-	// Standard2 ...
-	Standard2 SkuType = "standard2"
-)
-
-// PossibleSkuTypeValues returns an array of possible values for the SkuType const type.
-func PossibleSkuTypeValues() []SkuType {
-	return []SkuType{Free, Standard, Standard2}
-}
-
 // AdminKeyResult response containing the primary and secondary API keys for a given Azure Search service.
 type AdminKeyResult struct {
 	autorest.Response `json:"-"`
@@ -91,11 +34,23 @@ type AdminKeyResult struct {
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AdminKeyResult.
+func (akr AdminKeyResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ListQueryKeysResult response containing the query API keys for a given Azure Search service.
 type ListQueryKeysResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The query keys for the Azure Search service.
 	Value *[]QueryKey `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListQueryKeysResult.
+func (lqkr ListQueryKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // QueryKey describes an API key for a given Azure Search service that has permissions for query operations
@@ -105,6 +60,12 @@ type QueryKey struct {
 	Name *string `json:"name,omitempty"`
 	// Key - READ-ONLY; The value of the query API key.
 	Key *string `json:"key,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryKey.
+func (qk QueryKey) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Resource ...
@@ -165,6 +126,12 @@ type ServiceListResult struct {
 	Value *[]ServiceResource `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServiceListResult.
+func (slr ServiceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ServiceProperties defines properties of an Azure Search service that can be modified.
 type ServiceProperties struct {
 	// Sku - The SKU of the Search Service, which determines price tier and capacity limits.
@@ -189,6 +156,21 @@ type ServiceReadableProperties struct {
 	ReplicaCount *int32 `json:"replicaCount,omitempty"`
 	// PartitionCount - The number of partitions in the Search service; if specified, it can be 1, 2, 3, 4, 6, or 12.
 	PartitionCount *int32 `json:"partitionCount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceReadableProperties.
+func (srp ServiceReadableProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if srp.Sku != nil {
+		objectMap["sku"] = srp.Sku
+	}
+	if srp.ReplicaCount != nil {
+		objectMap["replicaCount"] = srp.ReplicaCount
+	}
+	if srp.PartitionCount != nil {
+		objectMap["partitionCount"] = srp.PartitionCount
+	}
+	return json.Marshal(objectMap)
 }
 
 // ServiceResource describes an Azure Search service and its current state.

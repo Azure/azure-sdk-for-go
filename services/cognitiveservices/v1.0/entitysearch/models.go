@@ -25,348 +25,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/entitysearch"
 
-// AnswerType enumerates the values for answer type.
-type AnswerType string
-
-const (
-	// AnswerTypeEntities ...
-	AnswerTypeEntities AnswerType = "Entities"
-	// AnswerTypePlaces ...
-	AnswerTypePlaces AnswerType = "Places"
-)
-
-// PossibleAnswerTypeValues returns an array of possible values for the AnswerType const type.
-func PossibleAnswerTypeValues() []AnswerType {
-	return []AnswerType{AnswerTypeEntities, AnswerTypePlaces}
-}
-
-// EntityQueryScenario enumerates the values for entity query scenario.
-type EntityQueryScenario string
-
-const (
-	// Disambiguation ...
-	Disambiguation EntityQueryScenario = "Disambiguation"
-	// DominantEntity ...
-	DominantEntity EntityQueryScenario = "DominantEntity"
-	// DominantEntityWithDisambiguation ...
-	DominantEntityWithDisambiguation EntityQueryScenario = "DominantEntityWithDisambiguation"
-	// List ...
-	List EntityQueryScenario = "List"
-	// ListWithPivot ...
-	ListWithPivot EntityQueryScenario = "ListWithPivot"
-)
-
-// PossibleEntityQueryScenarioValues returns an array of possible values for the EntityQueryScenario const type.
-func PossibleEntityQueryScenarioValues() []EntityQueryScenario {
-	return []EntityQueryScenario{Disambiguation, DominantEntity, DominantEntityWithDisambiguation, List, ListWithPivot}
-}
-
-// EntityScenario enumerates the values for entity scenario.
-type EntityScenario string
-
-const (
-	// EntityScenarioDisambiguationItem ...
-	EntityScenarioDisambiguationItem EntityScenario = "DisambiguationItem"
-	// EntityScenarioDominantEntity ...
-	EntityScenarioDominantEntity EntityScenario = "DominantEntity"
-	// EntityScenarioListItem ...
-	EntityScenarioListItem EntityScenario = "ListItem"
-)
-
-// PossibleEntityScenarioValues returns an array of possible values for the EntityScenario const type.
-func PossibleEntityScenarioValues() []EntityScenario {
-	return []EntityScenario{EntityScenarioDisambiguationItem, EntityScenarioDominantEntity, EntityScenarioListItem}
-}
-
-// EntityType enumerates the values for entity type.
-type EntityType string
-
-const (
-	// EntityTypeActor ...
-	EntityTypeActor EntityType = "Actor"
-	// EntityTypeAnimal ...
-	EntityTypeAnimal EntityType = "Animal"
-	// EntityTypeArtist ...
-	EntityTypeArtist EntityType = "Artist"
-	// EntityTypeAttorney ...
-	EntityTypeAttorney EntityType = "Attorney"
-	// EntityTypeAttraction ...
-	EntityTypeAttraction EntityType = "Attraction"
-	// EntityTypeBook ...
-	EntityTypeBook EntityType = "Book"
-	// EntityTypeCar ...
-	EntityTypeCar EntityType = "Car"
-	// EntityTypeCity ...
-	EntityTypeCity EntityType = "City"
-	// EntityTypeCollegeOrUniversity ...
-	EntityTypeCollegeOrUniversity EntityType = "CollegeOrUniversity"
-	// EntityTypeComposition ...
-	EntityTypeComposition EntityType = "Composition"
-	// EntityTypeContinent ...
-	EntityTypeContinent EntityType = "Continent"
-	// EntityTypeCountry ...
-	EntityTypeCountry EntityType = "Country"
-	// EntityTypeDrug ...
-	EntityTypeDrug EntityType = "Drug"
-	// EntityTypeEvent ...
-	EntityTypeEvent EntityType = "Event"
-	// EntityTypeFood ...
-	EntityTypeFood EntityType = "Food"
-	// EntityTypeGeneric ...
-	EntityTypeGeneric EntityType = "Generic"
-	// EntityTypeHotel ...
-	EntityTypeHotel EntityType = "Hotel"
-	// EntityTypeHouse ...
-	EntityTypeHouse EntityType = "House"
-	// EntityTypeLocalBusiness ...
-	EntityTypeLocalBusiness EntityType = "LocalBusiness"
-	// EntityTypeLocality ...
-	EntityTypeLocality EntityType = "Locality"
-	// EntityTypeMedia ...
-	EntityTypeMedia EntityType = "Media"
-	// EntityTypeMinorRegion ...
-	EntityTypeMinorRegion EntityType = "MinorRegion"
-	// EntityTypeMovie ...
-	EntityTypeMovie EntityType = "Movie"
-	// EntityTypeMusicAlbum ...
-	EntityTypeMusicAlbum EntityType = "MusicAlbum"
-	// EntityTypeMusicGroup ...
-	EntityTypeMusicGroup EntityType = "MusicGroup"
-	// EntityTypeMusicRecording ...
-	EntityTypeMusicRecording EntityType = "MusicRecording"
-	// EntityTypeNeighborhood ...
-	EntityTypeNeighborhood EntityType = "Neighborhood"
-	// EntityTypeOrganization ...
-	EntityTypeOrganization EntityType = "Organization"
-	// EntityTypeOther ...
-	EntityTypeOther EntityType = "Other"
-	// EntityTypePerson ...
-	EntityTypePerson EntityType = "Person"
-	// EntityTypePlace ...
-	EntityTypePlace EntityType = "Place"
-	// EntityTypePointOfInterest ...
-	EntityTypePointOfInterest EntityType = "PointOfInterest"
-	// EntityTypePostalCode ...
-	EntityTypePostalCode EntityType = "PostalCode"
-	// EntityTypeProduct ...
-	EntityTypeProduct EntityType = "Product"
-	// EntityTypeRadioStation ...
-	EntityTypeRadioStation EntityType = "RadioStation"
-	// EntityTypeRegion ...
-	EntityTypeRegion EntityType = "Region"
-	// EntityTypeRestaurant ...
-	EntityTypeRestaurant EntityType = "Restaurant"
-	// EntityTypeSchool ...
-	EntityTypeSchool EntityType = "School"
-	// EntityTypeSpeciality ...
-	EntityTypeSpeciality EntityType = "Speciality"
-	// EntityTypeSportsTeam ...
-	EntityTypeSportsTeam EntityType = "SportsTeam"
-	// EntityTypeState ...
-	EntityTypeState EntityType = "State"
-	// EntityTypeStreetAddress ...
-	EntityTypeStreetAddress EntityType = "StreetAddress"
-	// EntityTypeSubRegion ...
-	EntityTypeSubRegion EntityType = "SubRegion"
-	// EntityTypeTelevisionSeason ...
-	EntityTypeTelevisionSeason EntityType = "TelevisionSeason"
-	// EntityTypeTelevisionShow ...
-	EntityTypeTelevisionShow EntityType = "TelevisionShow"
-	// EntityTypeTheaterPlay ...
-	EntityTypeTheaterPlay EntityType = "TheaterPlay"
-	// EntityTypeTouristAttraction ...
-	EntityTypeTouristAttraction EntityType = "TouristAttraction"
-	// EntityTypeTravel ...
-	EntityTypeTravel EntityType = "Travel"
-	// EntityTypeVideoGame ...
-	EntityTypeVideoGame EntityType = "VideoGame"
-)
-
-// PossibleEntityTypeValues returns an array of possible values for the EntityType const type.
-func PossibleEntityTypeValues() []EntityType {
-	return []EntityType{EntityTypeActor, EntityTypeAnimal, EntityTypeArtist, EntityTypeAttorney, EntityTypeAttraction, EntityTypeBook, EntityTypeCar, EntityTypeCity, EntityTypeCollegeOrUniversity, EntityTypeComposition, EntityTypeContinent, EntityTypeCountry, EntityTypeDrug, EntityTypeEvent, EntityTypeFood, EntityTypeGeneric, EntityTypeHotel, EntityTypeHouse, EntityTypeLocalBusiness, EntityTypeLocality, EntityTypeMedia, EntityTypeMinorRegion, EntityTypeMovie, EntityTypeMusicAlbum, EntityTypeMusicGroup, EntityTypeMusicRecording, EntityTypeNeighborhood, EntityTypeOrganization, EntityTypeOther, EntityTypePerson, EntityTypePlace, EntityTypePointOfInterest, EntityTypePostalCode, EntityTypeProduct, EntityTypeRadioStation, EntityTypeRegion, EntityTypeRestaurant, EntityTypeSchool, EntityTypeSpeciality, EntityTypeSportsTeam, EntityTypeState, EntityTypeStreetAddress, EntityTypeSubRegion, EntityTypeTelevisionSeason, EntityTypeTelevisionShow, EntityTypeTheaterPlay, EntityTypeTouristAttraction, EntityTypeTravel, EntityTypeVideoGame}
-}
-
-// ErrorCode enumerates the values for error code.
-type ErrorCode string
-
-const (
-	// InsufficientAuthorization ...
-	InsufficientAuthorization ErrorCode = "InsufficientAuthorization"
-	// InvalidAuthorization ...
-	InvalidAuthorization ErrorCode = "InvalidAuthorization"
-	// InvalidRequest ...
-	InvalidRequest ErrorCode = "InvalidRequest"
-	// None ...
-	None ErrorCode = "None"
-	// RateLimitExceeded ...
-	RateLimitExceeded ErrorCode = "RateLimitExceeded"
-	// ServerError ...
-	ServerError ErrorCode = "ServerError"
-)
-
-// PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
-func PossibleErrorCodeValues() []ErrorCode {
-	return []ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
-}
-
-// ErrorSubCode enumerates the values for error sub code.
-type ErrorSubCode string
-
-const (
-	// AuthorizationDisabled ...
-	AuthorizationDisabled ErrorSubCode = "AuthorizationDisabled"
-	// AuthorizationExpired ...
-	AuthorizationExpired ErrorSubCode = "AuthorizationExpired"
-	// AuthorizationMissing ...
-	AuthorizationMissing ErrorSubCode = "AuthorizationMissing"
-	// AuthorizationRedundancy ...
-	AuthorizationRedundancy ErrorSubCode = "AuthorizationRedundancy"
-	// Blocked ...
-	Blocked ErrorSubCode = "Blocked"
-	// HTTPNotAllowed ...
-	HTTPNotAllowed ErrorSubCode = "HttpNotAllowed"
-	// NotImplemented ...
-	NotImplemented ErrorSubCode = "NotImplemented"
-	// ParameterInvalidValue ...
-	ParameterInvalidValue ErrorSubCode = "ParameterInvalidValue"
-	// ParameterMissing ...
-	ParameterMissing ErrorSubCode = "ParameterMissing"
-	// ResourceError ...
-	ResourceError ErrorSubCode = "ResourceError"
-	// UnexpectedError ...
-	UnexpectedError ErrorSubCode = "UnexpectedError"
-)
-
-// PossibleErrorSubCodeValues returns an array of possible values for the ErrorSubCode const type.
-func PossibleErrorSubCodeValues() []ErrorSubCode {
-	return []ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
-}
-
-// ResponseFormat enumerates the values for response format.
-type ResponseFormat string
-
-const (
-	// JSON ...
-	JSON ResponseFormat = "Json"
-	// JSONLd ...
-	JSONLd ResponseFormat = "JsonLd"
-)
-
-// PossibleResponseFormatValues returns an array of possible values for the ResponseFormat const type.
-func PossibleResponseFormatValues() []ResponseFormat {
-	return []ResponseFormat{JSON, JSONLd}
-}
-
-// SafeSearch enumerates the values for safe search.
-type SafeSearch string
-
-const (
-	// Moderate ...
-	Moderate SafeSearch = "Moderate"
-	// Off ...
-	Off SafeSearch = "Off"
-	// Strict ...
-	Strict SafeSearch = "Strict"
-)
-
-// PossibleSafeSearchValues returns an array of possible values for the SafeSearch const type.
-func PossibleSafeSearchValues() []SafeSearch {
-	return []SafeSearch{Moderate, Off, Strict}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeContractualRulesAttribution ...
-	TypeContractualRulesAttribution Type = "ContractualRules/Attribution"
-	// TypeContractualRulesContractualRule ...
-	TypeContractualRulesContractualRule Type = "ContractualRules/ContractualRule"
-	// TypeContractualRulesLicenseAttribution ...
-	TypeContractualRulesLicenseAttribution Type = "ContractualRules/LicenseAttribution"
-	// TypeContractualRulesLinkAttribution ...
-	TypeContractualRulesLinkAttribution Type = "ContractualRules/LinkAttribution"
-	// TypeContractualRulesMediaAttribution ...
-	TypeContractualRulesMediaAttribution Type = "ContractualRules/MediaAttribution"
-	// TypeContractualRulesTextAttribution ...
-	TypeContractualRulesTextAttribution Type = "ContractualRules/TextAttribution"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeContractualRulesAttribution, TypeContractualRulesContractualRule, TypeContractualRulesLicenseAttribution, TypeContractualRulesLinkAttribution, TypeContractualRulesMediaAttribution, TypeContractualRulesTextAttribution}
-}
-
-// TypeBasicResponseBase enumerates the values for type basic response base.
-type TypeBasicResponseBase string
-
-const (
-	// TypeAirport ...
-	TypeAirport TypeBasicResponseBase = "Airport"
-	// TypeAnswer ...
-	TypeAnswer TypeBasicResponseBase = "Answer"
-	// TypeCivicStructure ...
-	TypeCivicStructure TypeBasicResponseBase = "CivicStructure"
-	// TypeCreativeWork ...
-	TypeCreativeWork TypeBasicResponseBase = "CreativeWork"
-	// TypeEntertainmentBusiness ...
-	TypeEntertainmentBusiness TypeBasicResponseBase = "EntertainmentBusiness"
-	// TypeEntities ...
-	TypeEntities TypeBasicResponseBase = "Entities"
-	// TypeErrorResponse ...
-	TypeErrorResponse TypeBasicResponseBase = "ErrorResponse"
-	// TypeFoodEstablishment ...
-	TypeFoodEstablishment TypeBasicResponseBase = "FoodEstablishment"
-	// TypeHotel ...
-	TypeHotel TypeBasicResponseBase = "Hotel"
-	// TypeIdentifiable ...
-	TypeIdentifiable TypeBasicResponseBase = "Identifiable"
-	// TypeImageObject ...
-	TypeImageObject TypeBasicResponseBase = "ImageObject"
-	// TypeIntangible ...
-	TypeIntangible TypeBasicResponseBase = "Intangible"
-	// TypeLicense ...
-	TypeLicense TypeBasicResponseBase = "License"
-	// TypeLocalBusiness ...
-	TypeLocalBusiness TypeBasicResponseBase = "LocalBusiness"
-	// TypeLodgingBusiness ...
-	TypeLodgingBusiness TypeBasicResponseBase = "LodgingBusiness"
-	// TypeMediaObject ...
-	TypeMediaObject TypeBasicResponseBase = "MediaObject"
-	// TypeMovieTheater ...
-	TypeMovieTheater TypeBasicResponseBase = "MovieTheater"
-	// TypeOrganization ...
-	TypeOrganization TypeBasicResponseBase = "Organization"
-	// TypePlace ...
-	TypePlace TypeBasicResponseBase = "Place"
-	// TypePlaces ...
-	TypePlaces TypeBasicResponseBase = "Places"
-	// TypePostalAddress ...
-	TypePostalAddress TypeBasicResponseBase = "PostalAddress"
-	// TypeResponse ...
-	TypeResponse TypeBasicResponseBase = "Response"
-	// TypeResponseBase ...
-	TypeResponseBase TypeBasicResponseBase = "ResponseBase"
-	// TypeRestaurant ...
-	TypeRestaurant TypeBasicResponseBase = "Restaurant"
-	// TypeSearchResponse ...
-	TypeSearchResponse TypeBasicResponseBase = "SearchResponse"
-	// TypeSearchResultsAnswer ...
-	TypeSearchResultsAnswer TypeBasicResponseBase = "SearchResultsAnswer"
-	// TypeStructuredValue ...
-	TypeStructuredValue TypeBasicResponseBase = "StructuredValue"
-	// TypeThing ...
-	TypeThing TypeBasicResponseBase = "Thing"
-	// TypeTouristAttraction ...
-	TypeTouristAttraction TypeBasicResponseBase = "TouristAttraction"
-)
-
-// PossibleTypeBasicResponseBaseValues returns an array of possible values for the TypeBasicResponseBase const type.
-func PossibleTypeBasicResponseBaseValues() []TypeBasicResponseBase {
-	return []TypeBasicResponseBase{TypeAirport, TypeAnswer, TypeCivicStructure, TypeCreativeWork, TypeEntertainmentBusiness, TypeEntities, TypeErrorResponse, TypeFoodEstablishment, TypeHotel, TypeIdentifiable, TypeImageObject, TypeIntangible, TypeLicense, TypeLocalBusiness, TypeLodgingBusiness, TypeMediaObject, TypeMovieTheater, TypeOrganization, TypePlace, TypePlaces, TypePostalAddress, TypeResponse, TypeResponseBase, TypeRestaurant, TypeSearchResponse, TypeSearchResultsAnswer, TypeStructuredValue, TypeThing, TypeTouristAttraction}
-}
-
 // Airport ...
 type Airport struct {
 	// IataCode - READ-ONLY
@@ -3321,6 +2979,15 @@ type EntitiesEntityPresentationInfo struct {
 	EntityTypeDisplayHint *string `json:"entityTypeDisplayHint,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EntitiesEntityPresentationInfo.
+func (eepi EntitiesEntityPresentationInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if eepi.EntityScenario != "" {
+		objectMap["entityScenario"] = eepi.EntityScenario
+	}
+	return json.Marshal(objectMap)
+}
+
 // Error defines the error that occurred.
 type Error struct {
 	// Code - The error code that identifies the category of error. Possible values include: 'None', 'ServerError', 'InvalidRequest', 'RateLimitExceeded', 'InvalidAuthorization', 'InsufficientAuthorization'
@@ -3335,6 +3002,18 @@ type Error struct {
 	Parameter *string `json:"parameter,omitempty"`
 	// Value - READ-ONLY; The parameter's value in the request that was not valid.
 	Value *string `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if e.Code != "" {
+		objectMap["code"] = e.Code
+	}
+	if e.Message != nil {
+		objectMap["message"] = e.Message
+	}
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse the top-level response that represents a failed request.
@@ -9810,6 +9489,15 @@ type QueryContext struct {
 	AdultIntent *bool `json:"adultIntent,omitempty"`
 	// AskUserForLocation - READ-ONLY; A Boolean value that indicates whether Bing requires the user's location to provide accurate results. If you specified the user's location by using the X-MSEdge-ClientIP and X-Search-Location headers, you can ignore this field. For location aware queries, such as "today's weather" or "restaurants near me" that need the user's location to provide accurate results, this field is set to true. For location aware queries that include the location (for example, "Seattle weather"), this field is set to false. This field is also set to false for queries that are not location aware, such as "best sellers".
 	AskUserForLocation *bool `json:"askUserForLocation,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryContext.
+func (qc QueryContext) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if qc.OriginalQuery != nil {
+		objectMap["originalQuery"] = qc.OriginalQuery
+	}
+	return json.Marshal(objectMap)
 }
 
 // BasicResponse defines a response. All schemas that could be returned at the root of a response should inherit from

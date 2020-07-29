@@ -407,6 +407,9 @@ func (client EventSubscriptionsClient) ListByDomainTopic(ctx context.Context, re
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListByDomainTopic", resp, "Failure responding to request")
 	}
+	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -535,6 +538,9 @@ func (client EventSubscriptionsClient) ListByResource(ctx context.Context, resou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListByResource", resp, "Failure responding to request")
 	}
+	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -661,6 +667,9 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroup(ctx context.Con
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -786,6 +795,9 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupForTopicType(ctx
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalByResourceGroupForTopicType", resp, "Failure responding to request")
 	}
+	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -909,6 +921,9 @@ func (client EventSubscriptionsClient) ListGlobalBySubscription(ctx context.Cont
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalBySubscription", resp, "Failure responding to request")
 	}
+	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1031,6 +1046,9 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionForTopicType(ctx 
 	result.eslr, err = client.ListGlobalBySubscriptionForTopicTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalBySubscriptionForTopicType", resp, "Failure responding to request")
+	}
+	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -1156,6 +1174,9 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroup(ctx context.C
 	result.eslr, err = client.ListRegionalByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -1284,6 +1305,9 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupForTopicType(c
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalByResourceGroupForTopicType", resp, "Failure responding to request")
 	}
+	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1409,6 +1433,9 @@ func (client EventSubscriptionsClient) ListRegionalBySubscription(ctx context.Co
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalBySubscription", resp, "Failure responding to request")
 	}
+	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1533,6 +1560,9 @@ func (client EventSubscriptionsClient) ListRegionalBySubscriptionForTopicType(ct
 	result.eslr, err = client.ListRegionalBySubscriptionForTopicTypeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalBySubscriptionForTopicType", resp, "Failure responding to request")
+	}
+	if result.eslr.hasNextLink() && result.eslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

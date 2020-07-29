@@ -42,6 +42,12 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CloudError an error response from the ManagedServiceIdentity service.
 type CloudError struct {
 	// Error - A list of additional details about the error.
@@ -352,10 +358,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -383,11 +394,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -432,6 +448,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource ...
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -440,6 +462,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SystemAssignedIdentity describes a system assigned identity resource.
@@ -552,6 +580,12 @@ type SystemAssignedIdentityProperties struct {
 	ClientSecretURL *string `json:"clientSecretUrl,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SystemAssignedIdentityProperties.
+func (saip SystemAssignedIdentityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // TrackedResource the resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
 	// Tags - Resource tags.
@@ -655,10 +689,15 @@ func (uailr UserAssignedIdentitiesListResult) IsEmpty() bool {
 	return uailr.Value == nil || len(*uailr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (uailr UserAssignedIdentitiesListResult) hasNextLink() bool {
+	return uailr.NextLink != nil && len(*uailr.NextLink) != 0
+}
+
 // userAssignedIdentitiesListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (uailr UserAssignedIdentitiesListResult) userAssignedIdentitiesListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if uailr.NextLink == nil || len(to.String(uailr.NextLink)) < 1 {
+	if !uailr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -686,11 +725,16 @@ func (page *UserAssignedIdentitiesListResultPage) NextWithContext(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.uailr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.uailr)
+		if err != nil {
+			return err
+		}
+		page.uailr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.uailr = next
 	return nil
 }
 
@@ -732,4 +776,10 @@ type UserAssignedIdentityProperties struct {
 	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
 	// ClientID - READ-ONLY; The id of the app associated with the identity. This is a random generated UUID by MSI.
 	ClientID *uuid.UUID `json:"clientId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UserAssignedIdentityProperties.
+func (uaip UserAssignedIdentityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

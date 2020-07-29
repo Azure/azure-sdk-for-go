@@ -30,53 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2016-05-01-preview/commitmentplans"
 
-// ResourceSkuRestrictionsReasonCode enumerates the values for resource sku restrictions reason code.
-type ResourceSkuRestrictionsReasonCode string
-
-const (
-	// NotAvailableForSubscription ...
-	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = "NotAvailableForSubscription"
-	// QuotaID ...
-	QuotaID ResourceSkuRestrictionsReasonCode = "QuotaId"
-)
-
-// PossibleResourceSkuRestrictionsReasonCodeValues returns an array of possible values for the ResourceSkuRestrictionsReasonCode const type.
-func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
-	return []ResourceSkuRestrictionsReasonCode{NotAvailableForSubscription, QuotaID}
-}
-
-// ResourceSkuRestrictionsType enumerates the values for resource sku restrictions type.
-type ResourceSkuRestrictionsType string
-
-const (
-	// Location ...
-	Location ResourceSkuRestrictionsType = "location"
-	// Zone ...
-	Zone ResourceSkuRestrictionsType = "zone"
-)
-
-// PossibleResourceSkuRestrictionsTypeValues returns an array of possible values for the ResourceSkuRestrictionsType const type.
-func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
-	return []ResourceSkuRestrictionsType{Location, Zone}
-}
-
-// SkuCapacityScaleType enumerates the values for sku capacity scale type.
-type SkuCapacityScaleType string
-
-const (
-	// Automatic ...
-	Automatic SkuCapacityScaleType = "Automatic"
-	// Manual ...
-	Manual SkuCapacityScaleType = "Manual"
-	// None ...
-	None SkuCapacityScaleType = "None"
-)
-
-// PossibleSkuCapacityScaleTypeValues returns an array of possible values for the SkuCapacityScaleType const type.
-func PossibleSkuCapacityScaleTypeValues() []SkuCapacityScaleType {
-	return []SkuCapacityScaleType{Automatic, Manual, None}
-}
-
 // CatalogSku details of a commitment plan SKU.
 type CatalogSku struct {
 	// ResourceType - READ-ONLY; Resource type name
@@ -97,8 +50,14 @@ type CatalogSku struct {
 	Restrictions *[]SkuRestrictions `json:"restrictions,omitempty"`
 }
 
-// CommitmentAssociation represents the association between a commitment plan and some other resource, such
-// as a Machine Learning web service.
+// MarshalJSON is the custom marshaler for CatalogSku.
+func (cs CatalogSku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// CommitmentAssociation represents the association between a commitment plan and some other resource, such as
+// a Machine Learning web service.
 type CommitmentAssociation struct {
 	autorest.Response `json:"-"`
 	// Etag - An entity tag used to enforce optimistic concurrency.
@@ -213,10 +172,15 @@ func (calr CommitmentAssociationListResult) IsEmpty() bool {
 	return calr.Value == nil || len(*calr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (calr CommitmentAssociationListResult) hasNextLink() bool {
+	return calr.NextLink != nil && len(*calr.NextLink) != 0
+}
+
 // commitmentAssociationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (calr CommitmentAssociationListResult) commitmentAssociationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if calr.NextLink == nil || len(to.String(calr.NextLink)) < 1 {
+	if !calr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -244,11 +208,16 @@ func (page *CommitmentAssociationListResultPage) NextWithContext(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.calr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.calr)
+		if err != nil {
+			return err
+		}
+		page.calr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.calr = next
 	return nil
 }
 
@@ -290,6 +259,12 @@ type CommitmentAssociationProperties struct {
 	CommitmentPlanID *string `json:"commitmentPlanId,omitempty"`
 	// CreationDate - READ-ONLY; The date at which this commitment association was created, in ISO 8601 format.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CommitmentAssociationProperties.
+func (capVar CommitmentAssociationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CommitmentPlan an Azure ML commitment plan resource.
@@ -408,10 +383,15 @@ func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -439,11 +419,16 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lr = next
 	return nil
 }
 
@@ -477,8 +462,7 @@ func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult
 	return ListResultPage{fn: getNextPage}
 }
 
-// MoveCommitmentAssociationRequest specifies the destination Azure ML commitment plan for a move
-// operation.
+// MoveCommitmentAssociationRequest specifies the destination Azure ML commitment plan for a move operation.
 type MoveCommitmentAssociationRequest struct {
 	// DestinationPlanID - The ARM ID of the commitment plan to re-parent the commitment association to.
 	DestinationPlanID *string `json:"destinationPlanId,omitempty"`
@@ -496,6 +480,12 @@ type OperationDisplayInfo struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplayInfo.
+func (odi OperationDisplayInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationEntity an API operation.
 type OperationEntity struct {
 	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
@@ -504,11 +494,26 @@ type OperationEntity struct {
 	Display *OperationDisplayInfo `json:"display,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationEntity.
+func (oe OperationEntity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if oe.Display != nil {
+		objectMap["display"] = oe.Display
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationEntityListResult the list of REST API operations.
 type OperationEntityListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of operations.
 	Value *[]OperationEntity `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationEntityListResult.
+func (oelr OperationEntityListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PatchPayload the properties of a commitment plan which may be updated via PATCH.
@@ -541,6 +546,12 @@ type PlanQuantity struct {
 	IncludedQuantityMeter *string `json:"includedQuantityMeter,omitempty"`
 	// OverageMeter - READ-ONLY; The Azure meter for usage which exceeds included quantities.
 	OverageMeter *string `json:"overageMeter,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PlanQuantity.
+func (pq PlanQuantity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PlanUsageHistory represents historical information about usage of the Azure resources associated with a
@@ -666,10 +677,15 @@ func (puhlr PlanUsageHistoryListResult) IsEmpty() bool {
 	return puhlr.Value == nil || len(*puhlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (puhlr PlanUsageHistoryListResult) hasNextLink() bool {
+	return puhlr.NextLink != nil && len(*puhlr.NextLink) != 0
+}
+
 // planUsageHistoryListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (puhlr PlanUsageHistoryListResult) planUsageHistoryListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if puhlr.NextLink == nil || len(to.String(puhlr.NextLink)) < 1 {
+	if !puhlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -697,11 +713,16 @@ func (page *PlanUsageHistoryListResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.puhlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.puhlr)
+		if err != nil {
+			return err
+		}
+		page.puhlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.puhlr = next
 	return nil
 }
 
@@ -809,6 +830,12 @@ type SkuCapability struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuCapability.
+func (sc SkuCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuCapacity describes scaling information of a SKU.
 type SkuCapacity struct {
 	// Minimum - READ-ONLY; The minimum capacity.
@@ -821,6 +848,12 @@ type SkuCapacity struct {
 	ScaleType SkuCapacityScaleType `json:"scaleType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuCapacity.
+func (sc SkuCapacity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuCost describes metadata for SKU cost info.
 type SkuCost struct {
 	// MeterID - READ-ONLY; The meter used for this part of a SKU's cost.
@@ -831,11 +864,23 @@ type SkuCost struct {
 	ExtendedUnit *string `json:"extendedUnit,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuCost.
+func (sc SkuCost) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuListResult the list of commitment plan SKUs.
 type SkuListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY
 	Value *[]CatalogSku `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuListResult.
+func (slr SkuListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SkuRestrictions describes restrictions which would prevent a SKU from being used.
@@ -846,4 +891,10 @@ type SkuRestrictions struct {
 	Values *[]string `json:"values,omitempty"`
 	// ReasonCode - READ-ONLY; The reason for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
 	ReasonCode ResourceSkuRestrictionsReasonCode `json:"reasonCode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuRestrictions.
+func (sr SkuRestrictions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

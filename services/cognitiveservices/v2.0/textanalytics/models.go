@@ -48,12 +48,24 @@ type EntitiesBatchResult struct {
 	Errors *[]ErrorRecord `json:"errors,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EntitiesBatchResult.
+func (ebr EntitiesBatchResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // EntitiesBatchResultItem ...
 type EntitiesBatchResultItem struct {
 	// ID - READ-ONLY; Unique document identifier.
 	ID *string `json:"id,omitempty"`
 	// Entities - READ-ONLY; Recognized entities in the document.
 	Entities *[]EntityRecord `json:"entities,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EntitiesBatchResultItem.
+func (ebri EntitiesBatchResultItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // EntityRecord ...
@@ -70,6 +82,24 @@ type EntityRecord struct {
 	WikipediaURL *string `json:"wikipediaUrl,omitempty"`
 	// BingID - Bing unique identifier of the recognized entity. Use in conjunction with the Bing Entity Search API to fetch additional relevant information.
 	BingID *string `json:"bingId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EntityRecord.
+func (er EntityRecord) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if er.Name != nil {
+		objectMap["name"] = er.Name
+	}
+	if er.WikipediaLanguage != nil {
+		objectMap["wikipediaLanguage"] = er.WikipediaLanguage
+	}
+	if er.WikipediaID != nil {
+		objectMap["wikipediaId"] = er.WikipediaID
+	}
+	if er.BingID != nil {
+		objectMap["bingId"] = er.BingID
+	}
+	return json.Marshal(objectMap)
 }
 
 // ErrorRecord ...
@@ -111,12 +141,24 @@ type KeyPhraseBatchResult struct {
 	Errors *[]ErrorRecord `json:"errors,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for KeyPhraseBatchResult.
+func (kpbr KeyPhraseBatchResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // KeyPhraseBatchResultItem ...
 type KeyPhraseBatchResultItem struct {
 	// KeyPhrases - READ-ONLY; A list of representative words or phrases. The number of key phrases returned is proportional to the number of words in the input document.
 	KeyPhrases *[]string `json:"keyPhrases,omitempty"`
 	// ID - READ-ONLY; Unique document identifier.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for KeyPhraseBatchResultItem.
+func (kpbri KeyPhraseBatchResultItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // LanguageBatchResult ...
@@ -128,12 +170,24 @@ type LanguageBatchResult struct {
 	Errors *[]ErrorRecord `json:"errors,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LanguageBatchResult.
+func (lbr LanguageBatchResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // LanguageBatchResultItem ...
 type LanguageBatchResultItem struct {
 	// ID - READ-ONLY; Unique document identifier.
 	ID *string `json:"id,omitempty"`
 	// DetectedLanguages - READ-ONLY; A list of extracted languages.
 	DetectedLanguages *[]DetectedLanguage `json:"detectedLanguages,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LanguageBatchResultItem.
+func (lbri LanguageBatchResultItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MatchRecord ...
@@ -169,10 +223,22 @@ type SentimentBatchResult struct {
 	Errors *[]ErrorRecord `json:"errors,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SentimentBatchResult.
+func (sbr SentimentBatchResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SentimentBatchResultItem ...
 type SentimentBatchResultItem struct {
 	// Score - READ-ONLY; A decimal number between 0 and 1 denoting the sentiment of the document. A score above 0.7 usually refers to a positive document while a score below 0.3 normally has a negative connotation. Mid values refer to neutral text.
 	Score *float64 `json:"score,omitempty"`
 	// ID - READ-ONLY; Unique document identifier.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SentimentBatchResultItem.
+func (sbri SentimentBatchResultItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

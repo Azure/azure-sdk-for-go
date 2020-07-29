@@ -31,736 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2019-07-01/databoxedge"
 
-// AccountType enumerates the values for account type.
-type AccountType string
-
-const (
-	// BlobStorage ...
-	BlobStorage AccountType = "BlobStorage"
-	// GeneralPurposeStorage ...
-	GeneralPurposeStorage AccountType = "GeneralPurposeStorage"
-)
-
-// PossibleAccountTypeValues returns an array of possible values for the AccountType const type.
-func PossibleAccountTypeValues() []AccountType {
-	return []AccountType{BlobStorage, GeneralPurposeStorage}
-}
-
-// AlertSeverity enumerates the values for alert severity.
-type AlertSeverity string
-
-const (
-	// Critical ...
-	Critical AlertSeverity = "Critical"
-	// Informational ...
-	Informational AlertSeverity = "Informational"
-	// Warning ...
-	Warning AlertSeverity = "Warning"
-)
-
-// PossibleAlertSeverityValues returns an array of possible values for the AlertSeverity const type.
-func PossibleAlertSeverityValues() []AlertSeverity {
-	return []AlertSeverity{Critical, Informational, Warning}
-}
-
-// AuthenticationType enumerates the values for authentication type.
-type AuthenticationType string
-
-const (
-	// AzureActiveDirectory ...
-	AzureActiveDirectory AuthenticationType = "AzureActiveDirectory"
-	// Invalid ...
-	Invalid AuthenticationType = "Invalid"
-)
-
-// PossibleAuthenticationTypeValues returns an array of possible values for the AuthenticationType const type.
-func PossibleAuthenticationTypeValues() []AuthenticationType {
-	return []AuthenticationType{AzureActiveDirectory, Invalid}
-}
-
-// AzureContainerDataFormat enumerates the values for azure container data format.
-type AzureContainerDataFormat string
-
-const (
-	// AzureFile ...
-	AzureFile AzureContainerDataFormat = "AzureFile"
-	// BlockBlob ...
-	BlockBlob AzureContainerDataFormat = "BlockBlob"
-	// PageBlob ...
-	PageBlob AzureContainerDataFormat = "PageBlob"
-)
-
-// PossibleAzureContainerDataFormatValues returns an array of possible values for the AzureContainerDataFormat const type.
-func PossibleAzureContainerDataFormatValues() []AzureContainerDataFormat {
-	return []AzureContainerDataFormat{AzureFile, BlockBlob, PageBlob}
-}
-
-// ClientPermissionType enumerates the values for client permission type.
-type ClientPermissionType string
-
-const (
-	// NoAccess ...
-	NoAccess ClientPermissionType = "NoAccess"
-	// ReadOnly ...
-	ReadOnly ClientPermissionType = "ReadOnly"
-	// ReadWrite ...
-	ReadWrite ClientPermissionType = "ReadWrite"
-)
-
-// PossibleClientPermissionTypeValues returns an array of possible values for the ClientPermissionType const type.
-func PossibleClientPermissionTypeValues() []ClientPermissionType {
-	return []ClientPermissionType{NoAccess, ReadOnly, ReadWrite}
-}
-
-// DataPolicy enumerates the values for data policy.
-type DataPolicy string
-
-const (
-	// Cloud ...
-	Cloud DataPolicy = "Cloud"
-	// Local ...
-	Local DataPolicy = "Local"
-)
-
-// PossibleDataPolicyValues returns an array of possible values for the DataPolicy const type.
-func PossibleDataPolicyValues() []DataPolicy {
-	return []DataPolicy{Cloud, Local}
-}
-
-// DayOfWeek enumerates the values for day of week.
-type DayOfWeek string
-
-const (
-	// Friday ...
-	Friday DayOfWeek = "Friday"
-	// Monday ...
-	Monday DayOfWeek = "Monday"
-	// Saturday ...
-	Saturday DayOfWeek = "Saturday"
-	// Sunday ...
-	Sunday DayOfWeek = "Sunday"
-	// Thursday ...
-	Thursday DayOfWeek = "Thursday"
-	// Tuesday ...
-	Tuesday DayOfWeek = "Tuesday"
-	// Wednesday ...
-	Wednesday DayOfWeek = "Wednesday"
-)
-
-// PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
-func PossibleDayOfWeekValues() []DayOfWeek {
-	return []DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
-}
-
-// DeviceStatus enumerates the values for device status.
-type DeviceStatus string
-
-const (
-	// Disconnected ...
-	Disconnected DeviceStatus = "Disconnected"
-	// Maintenance ...
-	Maintenance DeviceStatus = "Maintenance"
-	// NeedsAttention ...
-	NeedsAttention DeviceStatus = "NeedsAttention"
-	// Offline ...
-	Offline DeviceStatus = "Offline"
-	// Online ...
-	Online DeviceStatus = "Online"
-	// PartiallyDisconnected ...
-	PartiallyDisconnected DeviceStatus = "PartiallyDisconnected"
-	// ReadyToSetup ...
-	ReadyToSetup DeviceStatus = "ReadyToSetup"
-)
-
-// PossibleDeviceStatusValues returns an array of possible values for the DeviceStatus const type.
-func PossibleDeviceStatusValues() []DeviceStatus {
-	return []DeviceStatus{Disconnected, Maintenance, NeedsAttention, Offline, Online, PartiallyDisconnected, ReadyToSetup}
-}
-
-// DeviceType enumerates the values for device type.
-type DeviceType string
-
-const (
-	// DataBoxEdgeDevice ...
-	DataBoxEdgeDevice DeviceType = "DataBoxEdgeDevice"
-)
-
-// PossibleDeviceTypeValues returns an array of possible values for the DeviceType const type.
-func PossibleDeviceTypeValues() []DeviceType {
-	return []DeviceType{DataBoxEdgeDevice}
-}
-
-// DownloadPhase enumerates the values for download phase.
-type DownloadPhase string
-
-const (
-	// Downloading ...
-	Downloading DownloadPhase = "Downloading"
-	// Initializing ...
-	Initializing DownloadPhase = "Initializing"
-	// Unknown ...
-	Unknown DownloadPhase = "Unknown"
-	// Verifying ...
-	Verifying DownloadPhase = "Verifying"
-)
-
-// PossibleDownloadPhaseValues returns an array of possible values for the DownloadPhase const type.
-func PossibleDownloadPhaseValues() []DownloadPhase {
-	return []DownloadPhase{Downloading, Initializing, Unknown, Verifying}
-}
-
-// EncryptionAlgorithm enumerates the values for encryption algorithm.
-type EncryptionAlgorithm string
-
-const (
-	// AES256 ...
-	AES256 EncryptionAlgorithm = "AES256"
-	// None ...
-	None EncryptionAlgorithm = "None"
-	// RSAESPKCS1V15 ...
-	RSAESPKCS1V15 EncryptionAlgorithm = "RSAES_PKCS1_v_1_5"
-)
-
-// PossibleEncryptionAlgorithmValues returns an array of possible values for the EncryptionAlgorithm const type.
-func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
-	return []EncryptionAlgorithm{AES256, None, RSAESPKCS1V15}
-}
-
-// InstallRebootBehavior enumerates the values for install reboot behavior.
-type InstallRebootBehavior string
-
-const (
-	// NeverReboots ...
-	NeverReboots InstallRebootBehavior = "NeverReboots"
-	// RequestReboot ...
-	RequestReboot InstallRebootBehavior = "RequestReboot"
-	// RequiresReboot ...
-	RequiresReboot InstallRebootBehavior = "RequiresReboot"
-)
-
-// PossibleInstallRebootBehaviorValues returns an array of possible values for the InstallRebootBehavior const type.
-func PossibleInstallRebootBehaviorValues() []InstallRebootBehavior {
-	return []InstallRebootBehavior{NeverReboots, RequestReboot, RequiresReboot}
-}
-
-// JobStatus enumerates the values for job status.
-type JobStatus string
-
-const (
-	// JobStatusCanceled ...
-	JobStatusCanceled JobStatus = "Canceled"
-	// JobStatusFailed ...
-	JobStatusFailed JobStatus = "Failed"
-	// JobStatusInvalid ...
-	JobStatusInvalid JobStatus = "Invalid"
-	// JobStatusPaused ...
-	JobStatusPaused JobStatus = "Paused"
-	// JobStatusRunning ...
-	JobStatusRunning JobStatus = "Running"
-	// JobStatusScheduled ...
-	JobStatusScheduled JobStatus = "Scheduled"
-	// JobStatusSucceeded ...
-	JobStatusSucceeded JobStatus = "Succeeded"
-)
-
-// PossibleJobStatusValues returns an array of possible values for the JobStatus const type.
-func PossibleJobStatusValues() []JobStatus {
-	return []JobStatus{JobStatusCanceled, JobStatusFailed, JobStatusInvalid, JobStatusPaused, JobStatusRunning, JobStatusScheduled, JobStatusSucceeded}
-}
-
-// JobType enumerates the values for job type.
-type JobType string
-
-const (
-	// JobTypeDownloadUpdates ...
-	JobTypeDownloadUpdates JobType = "DownloadUpdates"
-	// JobTypeInstallUpdates ...
-	JobTypeInstallUpdates JobType = "InstallUpdates"
-	// JobTypeInvalid ...
-	JobTypeInvalid JobType = "Invalid"
-	// JobTypeRefreshShare ...
-	JobTypeRefreshShare JobType = "RefreshShare"
-	// JobTypeScanForUpdates ...
-	JobTypeScanForUpdates JobType = "ScanForUpdates"
-)
-
-// PossibleJobTypeValues returns an array of possible values for the JobType const type.
-func PossibleJobTypeValues() []JobType {
-	return []JobType{JobTypeDownloadUpdates, JobTypeInstallUpdates, JobTypeInvalid, JobTypeRefreshShare, JobTypeScanForUpdates}
-}
-
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// KindIOT ...
-	KindIOT Kind = "IOT"
-	// KindRole ...
-	KindRole Kind = "Role"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{KindIOT, KindRole}
-}
-
-// KindBasicTrigger enumerates the values for kind basic trigger.
-type KindBasicTrigger string
-
-const (
-	// KindFileEvent ...
-	KindFileEvent KindBasicTrigger = "FileEvent"
-	// KindPeriodicTimerEvent ...
-	KindPeriodicTimerEvent KindBasicTrigger = "PeriodicTimerEvent"
-	// KindTrigger ...
-	KindTrigger KindBasicTrigger = "Trigger"
-)
-
-// PossibleKindBasicTriggerValues returns an array of possible values for the KindBasicTrigger const type.
-func PossibleKindBasicTriggerValues() []KindBasicTrigger {
-	return []KindBasicTrigger{KindFileEvent, KindPeriodicTimerEvent, KindTrigger}
-}
-
-// MetricAggregationType enumerates the values for metric aggregation type.
-type MetricAggregationType string
-
-const (
-	// MetricAggregationTypeAverage ...
-	MetricAggregationTypeAverage MetricAggregationType = "Average"
-	// MetricAggregationTypeCount ...
-	MetricAggregationTypeCount MetricAggregationType = "Count"
-	// MetricAggregationTypeMaximum ...
-	MetricAggregationTypeMaximum MetricAggregationType = "Maximum"
-	// MetricAggregationTypeMinimum ...
-	MetricAggregationTypeMinimum MetricAggregationType = "Minimum"
-	// MetricAggregationTypeNone ...
-	MetricAggregationTypeNone MetricAggregationType = "None"
-	// MetricAggregationTypeNotSpecified ...
-	MetricAggregationTypeNotSpecified MetricAggregationType = "NotSpecified"
-	// MetricAggregationTypeTotal ...
-	MetricAggregationTypeTotal MetricAggregationType = "Total"
-)
-
-// PossibleMetricAggregationTypeValues returns an array of possible values for the MetricAggregationType const type.
-func PossibleMetricAggregationTypeValues() []MetricAggregationType {
-	return []MetricAggregationType{MetricAggregationTypeAverage, MetricAggregationTypeCount, MetricAggregationTypeMaximum, MetricAggregationTypeMinimum, MetricAggregationTypeNone, MetricAggregationTypeNotSpecified, MetricAggregationTypeTotal}
-}
-
-// MetricCategory enumerates the values for metric category.
-type MetricCategory string
-
-const (
-	// Capacity ...
-	Capacity MetricCategory = "Capacity"
-	// Transaction ...
-	Transaction MetricCategory = "Transaction"
-)
-
-// PossibleMetricCategoryValues returns an array of possible values for the MetricCategory const type.
-func PossibleMetricCategoryValues() []MetricCategory {
-	return []MetricCategory{Capacity, Transaction}
-}
-
-// MetricUnit enumerates the values for metric unit.
-type MetricUnit string
-
-const (
-	// Bytes ...
-	Bytes MetricUnit = "Bytes"
-	// BytesPerSecond ...
-	BytesPerSecond MetricUnit = "BytesPerSecond"
-	// Count ...
-	Count MetricUnit = "Count"
-	// CountPerSecond ...
-	CountPerSecond MetricUnit = "CountPerSecond"
-	// Milliseconds ...
-	Milliseconds MetricUnit = "Milliseconds"
-	// NotSpecified ...
-	NotSpecified MetricUnit = "NotSpecified"
-	// Percent ...
-	Percent MetricUnit = "Percent"
-	// Seconds ...
-	Seconds MetricUnit = "Seconds"
-)
-
-// PossibleMetricUnitValues returns an array of possible values for the MetricUnit const type.
-func PossibleMetricUnitValues() []MetricUnit {
-	return []MetricUnit{Bytes, BytesPerSecond, Count, CountPerSecond, Milliseconds, NotSpecified, Percent, Seconds}
-}
-
-// MonitoringStatus enumerates the values for monitoring status.
-type MonitoringStatus string
-
-const (
-	// Disabled ...
-	Disabled MonitoringStatus = "Disabled"
-	// Enabled ...
-	Enabled MonitoringStatus = "Enabled"
-)
-
-// PossibleMonitoringStatusValues returns an array of possible values for the MonitoringStatus const type.
-func PossibleMonitoringStatusValues() []MonitoringStatus {
-	return []MonitoringStatus{Disabled, Enabled}
-}
-
-// NetworkAdapterDHCPStatus enumerates the values for network adapter dhcp status.
-type NetworkAdapterDHCPStatus string
-
-const (
-	// NetworkAdapterDHCPStatusDisabled ...
-	NetworkAdapterDHCPStatusDisabled NetworkAdapterDHCPStatus = "Disabled"
-	// NetworkAdapterDHCPStatusEnabled ...
-	NetworkAdapterDHCPStatusEnabled NetworkAdapterDHCPStatus = "Enabled"
-)
-
-// PossibleNetworkAdapterDHCPStatusValues returns an array of possible values for the NetworkAdapterDHCPStatus const type.
-func PossibleNetworkAdapterDHCPStatusValues() []NetworkAdapterDHCPStatus {
-	return []NetworkAdapterDHCPStatus{NetworkAdapterDHCPStatusDisabled, NetworkAdapterDHCPStatusEnabled}
-}
-
-// NetworkAdapterRDMAStatus enumerates the values for network adapter rdma status.
-type NetworkAdapterRDMAStatus string
-
-const (
-	// Capable ...
-	Capable NetworkAdapterRDMAStatus = "Capable"
-	// Incapable ...
-	Incapable NetworkAdapterRDMAStatus = "Incapable"
-)
-
-// PossibleNetworkAdapterRDMAStatusValues returns an array of possible values for the NetworkAdapterRDMAStatus const type.
-func PossibleNetworkAdapterRDMAStatusValues() []NetworkAdapterRDMAStatus {
-	return []NetworkAdapterRDMAStatus{Capable, Incapable}
-}
-
-// NetworkAdapterStatus enumerates the values for network adapter status.
-type NetworkAdapterStatus string
-
-const (
-	// Active ...
-	Active NetworkAdapterStatus = "Active"
-	// Inactive ...
-	Inactive NetworkAdapterStatus = "Inactive"
-)
-
-// PossibleNetworkAdapterStatusValues returns an array of possible values for the NetworkAdapterStatus const type.
-func PossibleNetworkAdapterStatusValues() []NetworkAdapterStatus {
-	return []NetworkAdapterStatus{Active, Inactive}
-}
-
-// NetworkGroup enumerates the values for network group.
-type NetworkGroup string
-
-const (
-	// NetworkGroupNone ...
-	NetworkGroupNone NetworkGroup = "None"
-	// NetworkGroupNonRDMA ...
-	NetworkGroupNonRDMA NetworkGroup = "NonRDMA"
-	// NetworkGroupRDMA ...
-	NetworkGroupRDMA NetworkGroup = "RDMA"
-)
-
-// PossibleNetworkGroupValues returns an array of possible values for the NetworkGroup const type.
-func PossibleNetworkGroupValues() []NetworkGroup {
-	return []NetworkGroup{NetworkGroupNone, NetworkGroupNonRDMA, NetworkGroupRDMA}
-}
-
-// NodeStatus enumerates the values for node status.
-type NodeStatus string
-
-const (
-	// NodeStatusDown ...
-	NodeStatusDown NodeStatus = "Down"
-	// NodeStatusRebooting ...
-	NodeStatusRebooting NodeStatus = "Rebooting"
-	// NodeStatusShuttingDown ...
-	NodeStatusShuttingDown NodeStatus = "ShuttingDown"
-	// NodeStatusUnknown ...
-	NodeStatusUnknown NodeStatus = "Unknown"
-	// NodeStatusUp ...
-	NodeStatusUp NodeStatus = "Up"
-)
-
-// PossibleNodeStatusValues returns an array of possible values for the NodeStatus const type.
-func PossibleNodeStatusValues() []NodeStatus {
-	return []NodeStatus{NodeStatusDown, NodeStatusRebooting, NodeStatusShuttingDown, NodeStatusUnknown, NodeStatusUp}
-}
-
-// OrderState enumerates the values for order state.
-type OrderState string
-
-const (
-	// Arriving ...
-	Arriving OrderState = "Arriving"
-	// AwaitingFulfilment ...
-	AwaitingFulfilment OrderState = "AwaitingFulfilment"
-	// AwaitingPreparation ...
-	AwaitingPreparation OrderState = "AwaitingPreparation"
-	// AwaitingReturnShipment ...
-	AwaitingReturnShipment OrderState = "AwaitingReturnShipment"
-	// AwaitingShipment ...
-	AwaitingShipment OrderState = "AwaitingShipment"
-	// CollectedAtMicrosoft ...
-	CollectedAtMicrosoft OrderState = "CollectedAtMicrosoft"
-	// Declined ...
-	Declined OrderState = "Declined"
-	// Delivered ...
-	Delivered OrderState = "Delivered"
-	// LostDevice ...
-	LostDevice OrderState = "LostDevice"
-	// ReplacementRequested ...
-	ReplacementRequested OrderState = "ReplacementRequested"
-	// ReturnInitiated ...
-	ReturnInitiated OrderState = "ReturnInitiated"
-	// Shipped ...
-	Shipped OrderState = "Shipped"
-	// ShippedBack ...
-	ShippedBack OrderState = "ShippedBack"
-	// Untracked ...
-	Untracked OrderState = "Untracked"
-)
-
-// PossibleOrderStateValues returns an array of possible values for the OrderState const type.
-func PossibleOrderStateValues() []OrderState {
-	return []OrderState{Arriving, AwaitingFulfilment, AwaitingPreparation, AwaitingReturnShipment, AwaitingShipment, CollectedAtMicrosoft, Declined, Delivered, LostDevice, ReplacementRequested, ReturnInitiated, Shipped, ShippedBack, Untracked}
-}
-
-// PlatformType enumerates the values for platform type.
-type PlatformType string
-
-const (
-	// Linux ...
-	Linux PlatformType = "Linux"
-	// Windows ...
-	Windows PlatformType = "Windows"
-)
-
-// PossiblePlatformTypeValues returns an array of possible values for the PlatformType const type.
-func PossiblePlatformTypeValues() []PlatformType {
-	return []PlatformType{Linux, Windows}
-}
-
-// RoleStatus enumerates the values for role status.
-type RoleStatus string
-
-const (
-	// RoleStatusDisabled ...
-	RoleStatusDisabled RoleStatus = "Disabled"
-	// RoleStatusEnabled ...
-	RoleStatusEnabled RoleStatus = "Enabled"
-)
-
-// PossibleRoleStatusValues returns an array of possible values for the RoleStatus const type.
-func PossibleRoleStatusValues() []RoleStatus {
-	return []RoleStatus{RoleStatusDisabled, RoleStatusEnabled}
-}
-
-// RoleTypes enumerates the values for role types.
-type RoleTypes string
-
-const (
-	// ASA ...
-	ASA RoleTypes = "ASA"
-	// Cognitive ...
-	Cognitive RoleTypes = "Cognitive"
-	// Functions ...
-	Functions RoleTypes = "Functions"
-	// IOT ...
-	IOT RoleTypes = "IOT"
-)
-
-// PossibleRoleTypesValues returns an array of possible values for the RoleTypes const type.
-func PossibleRoleTypesValues() []RoleTypes {
-	return []RoleTypes{ASA, Cognitive, Functions, IOT}
-}
-
-// ShareAccessProtocol enumerates the values for share access protocol.
-type ShareAccessProtocol string
-
-const (
-	// NFS ...
-	NFS ShareAccessProtocol = "NFS"
-	// SMB ...
-	SMB ShareAccessProtocol = "SMB"
-)
-
-// PossibleShareAccessProtocolValues returns an array of possible values for the ShareAccessProtocol const type.
-func PossibleShareAccessProtocolValues() []ShareAccessProtocol {
-	return []ShareAccessProtocol{NFS, SMB}
-}
-
-// ShareAccessType enumerates the values for share access type.
-type ShareAccessType string
-
-const (
-	// Change ...
-	Change ShareAccessType = "Change"
-	// Custom ...
-	Custom ShareAccessType = "Custom"
-	// Read ...
-	Read ShareAccessType = "Read"
-)
-
-// PossibleShareAccessTypeValues returns an array of possible values for the ShareAccessType const type.
-func PossibleShareAccessTypeValues() []ShareAccessType {
-	return []ShareAccessType{Change, Custom, Read}
-}
-
-// ShareStatus enumerates the values for share status.
-type ShareStatus string
-
-const (
-	// ShareStatusNeedsAttention ...
-	ShareStatusNeedsAttention ShareStatus = "NeedsAttention"
-	// ShareStatusOffline ...
-	ShareStatusOffline ShareStatus = "Offline"
-	// ShareStatusOK ...
-	ShareStatusOK ShareStatus = "OK"
-	// ShareStatusUnknown ...
-	ShareStatusUnknown ShareStatus = "Unknown"
-	// ShareStatusUpdating ...
-	ShareStatusUpdating ShareStatus = "Updating"
-)
-
-// PossibleShareStatusValues returns an array of possible values for the ShareStatus const type.
-func PossibleShareStatusValues() []ShareStatus {
-	return []ShareStatus{ShareStatusNeedsAttention, ShareStatusOffline, ShareStatusOK, ShareStatusUnknown, ShareStatusUpdating}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// Edge ...
-	Edge SkuName = "Edge"
-	// Gateway ...
-	Gateway SkuName = "Gateway"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{Edge, Gateway}
-}
-
-// SkuTier enumerates the values for sku tier.
-type SkuTier string
-
-const (
-	// Standard ...
-	Standard SkuTier = "Standard"
-)
-
-// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() []SkuTier {
-	return []SkuTier{Standard}
-}
-
-// SSLStatus enumerates the values for ssl status.
-type SSLStatus string
-
-const (
-	// SSLStatusDisabled ...
-	SSLStatusDisabled SSLStatus = "Disabled"
-	// SSLStatusEnabled ...
-	SSLStatusEnabled SSLStatus = "Enabled"
-)
-
-// PossibleSSLStatusValues returns an array of possible values for the SSLStatus const type.
-func PossibleSSLStatusValues() []SSLStatus {
-	return []SSLStatus{SSLStatusDisabled, SSLStatusEnabled}
-}
-
-// TimeGrain enumerates the values for time grain.
-type TimeGrain string
-
-const (
-	// PT12H ...
-	PT12H TimeGrain = "PT12H"
-	// PT15M ...
-	PT15M TimeGrain = "PT15M"
-	// PT1D ...
-	PT1D TimeGrain = "PT1D"
-	// PT1H ...
-	PT1H TimeGrain = "PT1H"
-	// PT1M ...
-	PT1M TimeGrain = "PT1M"
-	// PT30M ...
-	PT30M TimeGrain = "PT30M"
-	// PT5M ...
-	PT5M TimeGrain = "PT5M"
-	// PT6H ...
-	PT6H TimeGrain = "PT6H"
-)
-
-// PossibleTimeGrainValues returns an array of possible values for the TimeGrain const type.
-func PossibleTimeGrainValues() []TimeGrain {
-	return []TimeGrain{PT12H, PT15M, PT1D, PT1H, PT1M, PT30M, PT5M, PT6H}
-}
-
-// UpdateOperation enumerates the values for update operation.
-type UpdateOperation string
-
-const (
-	// UpdateOperationDownload ...
-	UpdateOperationDownload UpdateOperation = "Download"
-	// UpdateOperationInstall ...
-	UpdateOperationInstall UpdateOperation = "Install"
-	// UpdateOperationNone ...
-	UpdateOperationNone UpdateOperation = "None"
-	// UpdateOperationScan ...
-	UpdateOperationScan UpdateOperation = "Scan"
-)
-
-// PossibleUpdateOperationValues returns an array of possible values for the UpdateOperation const type.
-func PossibleUpdateOperationValues() []UpdateOperation {
-	return []UpdateOperation{UpdateOperationDownload, UpdateOperationInstall, UpdateOperationNone, UpdateOperationScan}
-}
-
-// UpdateOperationStage enumerates the values for update operation stage.
-type UpdateOperationStage string
-
-const (
-	// UpdateOperationStageDownloadComplete ...
-	UpdateOperationStageDownloadComplete UpdateOperationStage = "DownloadComplete"
-	// UpdateOperationStageDownloadFailed ...
-	UpdateOperationStageDownloadFailed UpdateOperationStage = "DownloadFailed"
-	// UpdateOperationStageDownloadStarted ...
-	UpdateOperationStageDownloadStarted UpdateOperationStage = "DownloadStarted"
-	// UpdateOperationStageFailure ...
-	UpdateOperationStageFailure UpdateOperationStage = "Failure"
-	// UpdateOperationStageInitial ...
-	UpdateOperationStageInitial UpdateOperationStage = "Initial"
-	// UpdateOperationStageInstallComplete ...
-	UpdateOperationStageInstallComplete UpdateOperationStage = "InstallComplete"
-	// UpdateOperationStageInstallFailed ...
-	UpdateOperationStageInstallFailed UpdateOperationStage = "InstallFailed"
-	// UpdateOperationStageInstallStarted ...
-	UpdateOperationStageInstallStarted UpdateOperationStage = "InstallStarted"
-	// UpdateOperationStageRebootInitiated ...
-	UpdateOperationStageRebootInitiated UpdateOperationStage = "RebootInitiated"
-	// UpdateOperationStageRescanComplete ...
-	UpdateOperationStageRescanComplete UpdateOperationStage = "RescanComplete"
-	// UpdateOperationStageRescanFailed ...
-	UpdateOperationStageRescanFailed UpdateOperationStage = "RescanFailed"
-	// UpdateOperationStageRescanStarted ...
-	UpdateOperationStageRescanStarted UpdateOperationStage = "RescanStarted"
-	// UpdateOperationStageScanComplete ...
-	UpdateOperationStageScanComplete UpdateOperationStage = "ScanComplete"
-	// UpdateOperationStageScanFailed ...
-	UpdateOperationStageScanFailed UpdateOperationStage = "ScanFailed"
-	// UpdateOperationStageScanStarted ...
-	UpdateOperationStageScanStarted UpdateOperationStage = "ScanStarted"
-	// UpdateOperationStageSuccess ...
-	UpdateOperationStageSuccess UpdateOperationStage = "Success"
-	// UpdateOperationStageUnknown ...
-	UpdateOperationStageUnknown UpdateOperationStage = "Unknown"
-)
-
-// PossibleUpdateOperationStageValues returns an array of possible values for the UpdateOperationStage const type.
-func PossibleUpdateOperationStageValues() []UpdateOperationStage {
-	return []UpdateOperationStage{UpdateOperationStageDownloadComplete, UpdateOperationStageDownloadFailed, UpdateOperationStageDownloadStarted, UpdateOperationStageFailure, UpdateOperationStageInitial, UpdateOperationStageInstallComplete, UpdateOperationStageInstallFailed, UpdateOperationStageInstallStarted, UpdateOperationStageRebootInitiated, UpdateOperationStageRescanComplete, UpdateOperationStageRescanFailed, UpdateOperationStageRescanStarted, UpdateOperationStageScanComplete, UpdateOperationStageScanFailed, UpdateOperationStageScanStarted, UpdateOperationStageSuccess, UpdateOperationStageUnknown}
-}
-
 // Address the shipping address of the customer.
 type Address struct {
 	// AddressLine1 - The address line1.
@@ -859,6 +129,12 @@ type AlertErrorDetails struct {
 	Occurrences *int32 `json:"occurrences,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AlertErrorDetails.
+func (aed AlertErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AlertList collection of alerts.
 type AlertList struct {
 	autorest.Response `json:"-"`
@@ -866,6 +142,12 @@ type AlertList struct {
 	Value *[]Alert `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AlertList.
+func (al AlertList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AlertListIterator provides access to a complete listing of Alert values.
@@ -936,10 +218,15 @@ func (al AlertList) IsEmpty() bool {
 	return al.Value == nil || len(*al.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (al AlertList) hasNextLink() bool {
+	return al.NextLink != nil && len(*al.NextLink) != 0
+}
+
 // alertListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (al AlertList) alertListPreparer(ctx context.Context) (*http.Request, error) {
-	if al.NextLink == nil || len(to.String(al.NextLink)) < 1 {
+	if !al.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -967,11 +254,16 @@ func (page *AlertListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.al)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.al)
+		if err != nil {
+			return err
+		}
+		page.al = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.al = next
 	return nil
 }
 
@@ -1037,6 +329,12 @@ type ARMBaseModel struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ARMBaseModel.
+func (abm ARMBaseModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AsymmetricEncryptedSecret represent the secrets intended for encryption with asymmetric key pair.
@@ -1179,8 +477,8 @@ func (future *BandwidthSchedulesCreateOrUpdateFuture) Result(client BandwidthSch
 	return
 }
 
-// BandwidthSchedulesDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// BandwidthSchedulesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type BandwidthSchedulesDeleteFuture struct {
 	azure.Future
 }
@@ -1209,6 +507,12 @@ type BandwidthSchedulesList struct {
 	Value *[]BandwidthSchedule `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BandwidthSchedulesList.
+func (bsl BandwidthSchedulesList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BandwidthSchedulesListIterator provides access to a complete listing of BandwidthSchedule values.
@@ -1279,10 +583,15 @@ func (bsl BandwidthSchedulesList) IsEmpty() bool {
 	return bsl.Value == nil || len(*bsl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (bsl BandwidthSchedulesList) hasNextLink() bool {
+	return bsl.NextLink != nil && len(*bsl.NextLink) != 0
+}
+
 // bandwidthSchedulesListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (bsl BandwidthSchedulesList) bandwidthSchedulesListPreparer(ctx context.Context) (*http.Request, error) {
-	if bsl.NextLink == nil || len(to.String(bsl.NextLink)) < 1 {
+	if !bsl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1310,11 +619,16 @@ func (page *BandwidthSchedulesListPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.bsl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.bsl)
+		if err != nil {
+			return err
+		}
+		page.bsl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.bsl = next
 	return nil
 }
 
@@ -1348,8 +662,8 @@ func NewBandwidthSchedulesListPage(getNextPage func(context.Context, BandwidthSc
 	return BandwidthSchedulesListPage{fn: getNextPage}
 }
 
-// ClientAccessRight the mapping between a particular client IP and the type of access client has on the
-// NFS share.
+// ClientAccessRight the mapping between a particular client IP and the type of access client has on the NFS
+// share.
 type ClientAccessRight struct {
 	// Client - IP of the client.
 	Client *string `json:"client,omitempty"`
@@ -1597,6 +911,18 @@ type DeviceExtendedInfoProperties struct {
 	ResourceKey *string `json:"resourceKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DeviceExtendedInfoProperties.
+func (deip DeviceExtendedInfoProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if deip.EncryptionKeyThumbprint != nil {
+		objectMap["encryptionKeyThumbprint"] = deip.EncryptionKeyThumbprint
+	}
+	if deip.EncryptionKey != nil {
+		objectMap["encryptionKey"] = deip.EncryptionKey
+	}
+	return json.Marshal(objectMap)
+}
+
 // DeviceList the collection of Data Box Edge/Gateway devices.
 type DeviceList struct {
 	autorest.Response `json:"-"`
@@ -1604,6 +930,12 @@ type DeviceList struct {
 	Value *[]Device `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeviceList.
+func (dl DeviceList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DeviceListIterator provides access to a complete listing of Device values.
@@ -1674,10 +1006,15 @@ func (dl DeviceList) IsEmpty() bool {
 	return dl.Value == nil || len(*dl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dl DeviceList) hasNextLink() bool {
+	return dl.NextLink != nil && len(*dl.NextLink) != 0
+}
+
 // deviceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dl DeviceList) deviceListPreparer(ctx context.Context) (*http.Request, error) {
-	if dl.NextLink == nil || len(to.String(dl.NextLink)) < 1 {
+	if !dl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1705,11 +1042,16 @@ func (page *DeviceListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dl)
+		if err != nil {
+			return err
+		}
+		page.dl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dl = next
 	return nil
 }
 
@@ -1790,6 +1132,24 @@ type DeviceProperties struct {
 	NodeCount *int32 `json:"nodeCount,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DeviceProperties.
+func (dp DeviceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dp.DataBoxEdgeDeviceStatus != "" {
+		objectMap["dataBoxEdgeDeviceStatus"] = dp.DataBoxEdgeDeviceStatus
+	}
+	if dp.Description != nil {
+		objectMap["description"] = dp.Description
+	}
+	if dp.ModelDescription != nil {
+		objectMap["modelDescription"] = dp.ModelDescription
+	}
+	if dp.FriendlyName != nil {
+		objectMap["friendlyName"] = dp.FriendlyName
+	}
+	return json.Marshal(objectMap)
+}
+
 // DevicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DevicesCreateOrUpdateFuture struct {
@@ -1819,8 +1179,8 @@ func (future *DevicesCreateOrUpdateFuture) Result(client DevicesClient) (d Devic
 	return
 }
 
-// DevicesCreateOrUpdateSecuritySettingsFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// DevicesCreateOrUpdateSecuritySettingsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DevicesCreateOrUpdateSecuritySettingsFuture struct {
 	azure.Future
 }
@@ -1842,8 +1202,7 @@ func (future *DevicesCreateOrUpdateSecuritySettingsFuture) Result(client Devices
 	return
 }
 
-// DevicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DevicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DevicesDeleteFuture struct {
 	azure.Future
 }
@@ -2195,6 +1554,12 @@ type Ipv4Config struct {
 	Gateway *string `json:"gateway,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Ipv4Config.
+func (i4c Ipv4Config) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Ipv6Config details related to the IPv6 address configuration.
 type Ipv6Config struct {
 	// IPAddress - READ-ONLY; The IPv6 address of the network adapter.
@@ -2203,6 +1568,12 @@ type Ipv6Config struct {
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
 	// Gateway - READ-ONLY; The IPv6 gateway of the network adapter.
 	Gateway *string `json:"gateway,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Ipv6Config.
+func (i6c Ipv6Config) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Job a device job.
@@ -2340,6 +1711,12 @@ type JobErrorDetails struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobErrorDetails.
+func (jed JobErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // JobErrorItem the job error items.
 type JobErrorItem struct {
 	// Recommendations - READ-ONLY; The recommended actions.
@@ -2348,6 +1725,12 @@ type JobErrorItem struct {
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; The message that describes the error in detail.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobErrorItem.
+func (jei JobErrorItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // JobProperties the properties for the job.
@@ -2368,6 +1751,15 @@ type JobProperties struct {
 	ShareID *string `json:"shareId,omitempty"`
 	// Folder - If only subfolders need to be refreshed, then the subfolder path inside the share. (The path is empty if there are no subfolders.)
 	Folder *string `json:"folder,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobProperties.
+func (jp JobProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if jp.Folder != nil {
+		objectMap["folder"] = jp.Folder
+	}
+	return json.Marshal(objectMap)
 }
 
 // MetricDimensionV1 metric Dimension v1.
@@ -2418,6 +1810,15 @@ type MountPointMap struct {
 	RoleType RoleTypes `json:"roleType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MountPointMap.
+func (mpm MountPointMap) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mpm.ShareID != nil {
+		objectMap["shareId"] = mpm.ShareID
+	}
+	return json.Marshal(objectMap)
+}
+
 // NetworkAdapter represents the networkAdapter on a device.
 type NetworkAdapter struct {
 	// AdapterID - READ-ONLY; Instance ID of network adapter.
@@ -2452,12 +1853,30 @@ type NetworkAdapter struct {
 	DNSServers *[]string `json:"dnsServers,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NetworkAdapter.
+func (na NetworkAdapter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if na.RdmaStatus != "" {
+		objectMap["rdmaStatus"] = na.RdmaStatus
+	}
+	if na.DhcpStatus != "" {
+		objectMap["dhcpStatus"] = na.DhcpStatus
+	}
+	return json.Marshal(objectMap)
+}
+
 // NetworkAdapterPosition the network adapter position.
 type NetworkAdapterPosition struct {
 	// NetworkGroup - READ-ONLY; The network group. Possible values include: 'NetworkGroupNone', 'NetworkGroupNonRDMA', 'NetworkGroupRDMA'
 	NetworkGroup NetworkGroup `json:"networkGroup,omitempty"`
 	// Port - READ-ONLY; The port.
 	Port *int32 `json:"port,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NetworkAdapterPosition.
+func (nap NetworkAdapterPosition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // NetworkSettings the network settings of a device.
@@ -2534,6 +1953,12 @@ func (ns *NetworkSettings) UnmarshalJSON(body []byte) error {
 type NetworkSettingsProperties struct {
 	// NetworkAdapters - READ-ONLY; The network adapter list on the device.
 	NetworkAdapters *[]NetworkAdapter `json:"networkAdapters,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NetworkSettingsProperties.
+func (nsp NetworkSettingsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Node represents a single node in a Data box Edge/Gateway device
@@ -2614,6 +2039,12 @@ type NodeList struct {
 	Value *[]Node `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NodeList.
+func (nl NodeList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // NodeProperties this class represents the nodes in a highly available cluster
 type NodeProperties struct {
 	// NodeStatus - READ-ONLY; The current status of the individual node. Possible values include: 'NodeStatusUnknown', 'NodeStatusUp', 'NodeStatusDown', 'NodeStatusRebooting', 'NodeStatusShuttingDown'
@@ -2630,6 +2061,12 @@ type NodeProperties struct {
 	NodeHcsVersion *string `json:"nodeHcsVersion,omitempty"`
 	// NodeInstanceID - READ-ONLY; Guid instance id of the node
 	NodeInstanceID *string `json:"nodeInstanceId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NodeProperties.
+func (np NodeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Operation operations.
@@ -2808,10 +2245,15 @@ func (ol OperationsList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OperationsList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // operationsListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OperationsList) operationsListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2839,11 +2281,16 @@ func (page *OperationsListPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 
@@ -2959,6 +2406,12 @@ type OrderList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OrderList.
+func (ol OrderList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OrderListIterator provides access to a complete listing of Order values.
 type OrderListIterator struct {
 	i    int
@@ -3027,10 +2480,15 @@ func (ol OrderList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OrderList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // orderListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OrderList) orderListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3058,11 +2516,16 @@ func (page *OrderListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 
@@ -3112,6 +2575,21 @@ type OrderProperties struct {
 	DeliveryTrackingInfo *[]TrackingInfo `json:"deliveryTrackingInfo,omitempty"`
 	// ReturnTrackingInfo - READ-ONLY; Tracking information for the package returned from the customer whether it has an original or a replacement device.
 	ReturnTrackingInfo *[]TrackingInfo `json:"returnTrackingInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OrderProperties.
+func (op OrderProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if op.ContactInformation != nil {
+		objectMap["contactInformation"] = op.ContactInformation
+	}
+	if op.ShippingAddress != nil {
+		objectMap["shippingAddress"] = op.ShippingAddress
+	}
+	if op.CurrentStatus != nil {
+		objectMap["currentStatus"] = op.CurrentStatus
+	}
+	return json.Marshal(objectMap)
 }
 
 // OrdersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -3173,6 +2651,18 @@ type OrderStatus struct {
 	UpdateDateTime *date.Time `json:"updateDateTime,omitempty"`
 	// Comments - Comments related to this status change.
 	Comments *string `json:"comments,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OrderStatus.
+func (osVar OrderStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if osVar.Status != "" {
+		objectMap["status"] = osVar.Status
+	}
+	if osVar.Comments != nil {
+		objectMap["comments"] = osVar.Comments
+	}
+	return json.Marshal(objectMap)
 }
 
 // PeriodicTimerEventTrigger trigger details.
@@ -3412,6 +2902,12 @@ type RoleList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RoleList.
+func (rl RoleList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for RoleList struct.
 func (rl *RoleList) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3512,10 +3008,15 @@ func (rl RoleList) IsEmpty() bool {
 	return rl.Value == nil || len(*rl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rl RoleList) hasNextLink() bool {
+	return rl.NextLink != nil && len(*rl.NextLink) != 0
+}
+
 // roleListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rl RoleList) roleListPreparer(ctx context.Context) (*http.Request, error) {
-	if rl.NextLink == nil || len(to.String(rl.NextLink)) < 1 {
+	if !rl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3543,11 +3044,16 @@ func (page *RoleListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rl)
+		if err != nil {
+			return err
+		}
+		page.rl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rl = next
 	return nil
 }
 
@@ -3812,8 +3318,8 @@ func (s *Share) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ShareAccessRight specifies the mapping between this particular user and the type of access he has on
-// shares on this device.
+// ShareAccessRight specifies the mapping between this particular user and the type of access he has on shares
+// on this device.
 type ShareAccessRight struct {
 	// ShareID - The share ID.
 	ShareID *string `json:"shareId,omitempty"`
@@ -3828,6 +3334,12 @@ type ShareList struct {
 	Value *[]Share `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ShareList.
+func (sl ShareList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ShareListIterator provides access to a complete listing of Share values.
@@ -3898,10 +3410,15 @@ func (sl ShareList) IsEmpty() bool {
 	return sl.Value == nil || len(*sl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sl ShareList) hasNextLink() bool {
+	return sl.NextLink != nil && len(*sl.NextLink) != 0
+}
+
 // shareListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sl ShareList) shareListPreparer(ctx context.Context) (*http.Request, error) {
-	if sl.NextLink == nil || len(to.String(sl.NextLink)) < 1 {
+	if !sl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3929,11 +3446,16 @@ func (page *ShareListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sl)
+		if err != nil {
+			return err
+		}
+		page.sl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sl = next
 	return nil
 }
 
@@ -3991,6 +3513,39 @@ type ShareProperties struct {
 	DataPolicy DataPolicy `json:"dataPolicy,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ShareProperties.
+func (sp ShareProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.Description != nil {
+		objectMap["description"] = sp.Description
+	}
+	if sp.ShareStatus != "" {
+		objectMap["shareStatus"] = sp.ShareStatus
+	}
+	if sp.MonitoringStatus != "" {
+		objectMap["monitoringStatus"] = sp.MonitoringStatus
+	}
+	if sp.AzureContainerInfo != nil {
+		objectMap["azureContainerInfo"] = sp.AzureContainerInfo
+	}
+	if sp.AccessProtocol != "" {
+		objectMap["accessProtocol"] = sp.AccessProtocol
+	}
+	if sp.UserAccessRights != nil {
+		objectMap["userAccessRights"] = sp.UserAccessRights
+	}
+	if sp.ClientAccessRights != nil {
+		objectMap["clientAccessRights"] = sp.ClientAccessRights
+	}
+	if sp.RefreshDetails != nil {
+		objectMap["refreshDetails"] = sp.RefreshDetails
+	}
+	if sp.DataPolicy != "" {
+		objectMap["dataPolicy"] = sp.DataPolicy
+	}
+	return json.Marshal(objectMap)
+}
+
 // SharesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SharesCreateOrUpdateFuture struct {
@@ -4042,8 +3597,7 @@ func (future *SharesDeleteFuture) Result(client SharesClient) (ar autorest.Respo
 	return
 }
 
-// SharesRefreshFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// SharesRefreshFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SharesRefreshFuture struct {
 	azure.Future
 }
@@ -4155,6 +3709,12 @@ type StorageAccountCredentialList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StorageAccountCredentialList.
+func (sacl StorageAccountCredentialList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // StorageAccountCredentialListIterator provides access to a complete listing of StorageAccountCredential
 // values.
 type StorageAccountCredentialListIterator struct {
@@ -4224,10 +3784,15 @@ func (sacl StorageAccountCredentialList) IsEmpty() bool {
 	return sacl.Value == nil || len(*sacl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sacl StorageAccountCredentialList) hasNextLink() bool {
+	return sacl.NextLink != nil && len(*sacl.NextLink) != 0
+}
+
 // storageAccountCredentialListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sacl StorageAccountCredentialList) storageAccountCredentialListPreparer(ctx context.Context) (*http.Request, error) {
-	if sacl.NextLink == nil || len(to.String(sacl.NextLink)) < 1 {
+	if !sacl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4255,11 +3820,16 @@ func (page *StorageAccountCredentialListPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sacl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sacl)
+		if err != nil {
+			return err
+		}
+		page.sacl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sacl = next
 	return nil
 }
 
@@ -4313,8 +3883,8 @@ type StorageAccountCredentialProperties struct {
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
 }
 
-// StorageAccountCredentialsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// StorageAccountCredentialsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type StorageAccountCredentialsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -4483,6 +4053,12 @@ type TriggerList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TriggerList.
+func (tl TriggerList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for TriggerList struct.
 func (tl *TriggerList) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4583,10 +4159,15 @@ func (tl TriggerList) IsEmpty() bool {
 	return tl.Value == nil || len(*tl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tl TriggerList) hasNextLink() bool {
+	return tl.NextLink != nil && len(*tl.NextLink) != 0
+}
+
 // triggerListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tl TriggerList) triggerListPreparer(ctx context.Context) (*http.Request, error) {
-	if tl.NextLink == nil || len(to.String(tl.NextLink)) < 1 {
+	if !tl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4614,11 +4195,16 @@ func (page *TriggerListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tl)
+		if err != nil {
+			return err
+		}
+		page.tl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tl = next
 	return nil
 }
 
@@ -4698,8 +4284,7 @@ func (future *TriggersCreateOrUpdateFuture) Result(client TriggersClient) (tm Tr
 	return
 }
 
-// TriggersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// TriggersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type TriggersDeleteFuture struct {
 	azure.Future
 }
@@ -4737,6 +4322,12 @@ type UpdateDownloadProgress struct {
 	NumberOfUpdatesDownloaded *int32 `json:"numberOfUpdatesDownloaded,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UpdateDownloadProgress.
+func (UDP UpdateDownloadProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UpdateInstallProgress progress details during installation of updates.
 type UpdateInstallProgress struct {
 	// PercentComplete - READ-ONLY; Percentage completed.
@@ -4745,6 +4336,12 @@ type UpdateInstallProgress struct {
 	NumberOfUpdatesToInstall *int32 `json:"numberOfUpdatesToInstall,omitempty"`
 	// NumberOfUpdatesInstalled - READ-ONLY; Number of updates installed.
 	NumberOfUpdatesInstalled *int32 `json:"numberOfUpdatesInstalled,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UpdateInstallProgress.
+func (uip UpdateInstallProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UpdateSummary details about ongoing updates and availability of updates on the device.
@@ -4856,6 +4453,24 @@ type UpdateSummaryProperties struct {
 	UpdateTitles *[]string `json:"updateTitles,omitempty"`
 	// TotalUpdateSizeInBytes - READ-ONLY; The total size of updates available for download in bytes.
 	TotalUpdateSizeInBytes *float64 `json:"totalUpdateSizeInBytes,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UpdateSummaryProperties.
+func (usp UpdateSummaryProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if usp.DeviceVersionNumber != nil {
+		objectMap["deviceVersionNumber"] = usp.DeviceVersionNumber
+	}
+	if usp.FriendlyDeviceVersionName != nil {
+		objectMap["friendlyDeviceVersionName"] = usp.FriendlyDeviceVersionName
+	}
+	if usp.DeviceLastScannedDateTime != nil {
+		objectMap["deviceLastScannedDateTime"] = usp.DeviceLastScannedDateTime
+	}
+	if usp.LastCompletedScanJobDateTime != nil {
+		objectMap["lastCompletedScanJobDateTime"] = usp.LastCompletedScanJobDateTime
+	}
+	return json.Marshal(objectMap)
 }
 
 // UploadCertificateRequest the upload certificate request.
@@ -5006,6 +4621,12 @@ type UserList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UserList.
+func (ul UserList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UserListIterator provides access to a complete listing of User values.
 type UserListIterator struct {
 	i    int
@@ -5074,10 +4695,15 @@ func (ul UserList) IsEmpty() bool {
 	return ul.Value == nil || len(*ul.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ul UserList) hasNextLink() bool {
+	return ul.NextLink != nil && len(*ul.NextLink) != 0
+}
+
 // userListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ul UserList) userListPreparer(ctx context.Context) (*http.Request, error) {
-	if ul.NextLink == nil || len(to.String(ul.NextLink)) < 1 {
+	if !ul.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5105,11 +4731,16 @@ func (page *UserListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ul)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ul)
+		if err != nil {
+			return err
+		}
+		page.ul = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ul = next
 	return nil
 }
 

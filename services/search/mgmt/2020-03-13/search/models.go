@@ -30,186 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-03-13/search"
 
-// AdminKeyKind enumerates the values for admin key kind.
-type AdminKeyKind string
-
-const (
-	// Primary ...
-	Primary AdminKeyKind = "primary"
-	// Secondary ...
-	Secondary AdminKeyKind = "secondary"
-)
-
-// PossibleAdminKeyKindValues returns an array of possible values for the AdminKeyKind const type.
-func PossibleAdminKeyKindValues() []AdminKeyKind {
-	return []AdminKeyKind{Primary, Secondary}
-}
-
-// HostingMode enumerates the values for hosting mode.
-type HostingMode string
-
-const (
-	// Default ...
-	Default HostingMode = "default"
-	// HighDensity ...
-	HighDensity HostingMode = "highDensity"
-)
-
-// PossibleHostingModeValues returns an array of possible values for the HostingMode const type.
-func PossibleHostingModeValues() []HostingMode {
-	return []HostingMode{Default, HighDensity}
-}
-
-// IdentityType enumerates the values for identity type.
-type IdentityType string
-
-const (
-	// None ...
-	None IdentityType = "None"
-	// SystemAssigned ...
-	SystemAssigned IdentityType = "SystemAssigned"
-)
-
-// PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
-func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{None, SystemAssigned}
-}
-
-// PrivateLinkServiceConnectionStatus enumerates the values for private link service connection status.
-type PrivateLinkServiceConnectionStatus string
-
-const (
-	// Approved ...
-	Approved PrivateLinkServiceConnectionStatus = "Approved"
-	// Disconnected ...
-	Disconnected PrivateLinkServiceConnectionStatus = "Disconnected"
-	// Pending ...
-	Pending PrivateLinkServiceConnectionStatus = "Pending"
-	// Rejected ...
-	Rejected PrivateLinkServiceConnectionStatus = "Rejected"
-)
-
-// PossiblePrivateLinkServiceConnectionStatusValues returns an array of possible values for the PrivateLinkServiceConnectionStatus const type.
-func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
-	return []PrivateLinkServiceConnectionStatus{Approved, Disconnected, Pending, Rejected}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Failed ...
-	Failed ProvisioningState = "failed"
-	// Provisioning ...
-	Provisioning ProvisioningState = "provisioning"
-	// Succeeded ...
-	Succeeded ProvisioningState = "succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Failed, Provisioning, Succeeded}
-}
-
-// PublicNetworkAccess enumerates the values for public network access.
-type PublicNetworkAccess string
-
-const (
-	// Disabled ...
-	Disabled PublicNetworkAccess = "disabled"
-	// Enabled ...
-	Enabled PublicNetworkAccess = "enabled"
-)
-
-// PossiblePublicNetworkAccessValues returns an array of possible values for the PublicNetworkAccess const type.
-func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{Disabled, Enabled}
-}
-
-// ServiceStatus enumerates the values for service status.
-type ServiceStatus string
-
-const (
-	// ServiceStatusDegraded ...
-	ServiceStatusDegraded ServiceStatus = "degraded"
-	// ServiceStatusDeleting ...
-	ServiceStatusDeleting ServiceStatus = "deleting"
-	// ServiceStatusDisabled ...
-	ServiceStatusDisabled ServiceStatus = "disabled"
-	// ServiceStatusError ...
-	ServiceStatusError ServiceStatus = "error"
-	// ServiceStatusProvisioning ...
-	ServiceStatusProvisioning ServiceStatus = "provisioning"
-	// ServiceStatusRunning ...
-	ServiceStatusRunning ServiceStatus = "running"
-)
-
-// PossibleServiceStatusValues returns an array of possible values for the ServiceStatus const type.
-func PossibleServiceStatusValues() []ServiceStatus {
-	return []ServiceStatus{ServiceStatusDegraded, ServiceStatusDeleting, ServiceStatusDisabled, ServiceStatusError, ServiceStatusProvisioning, ServiceStatusRunning}
-}
-
-// SharedPrivateLinkResourceStatus enumerates the values for shared private link resource status.
-type SharedPrivateLinkResourceStatus string
-
-const (
-	// SharedPrivateLinkResourceStatusApproved ...
-	SharedPrivateLinkResourceStatusApproved SharedPrivateLinkResourceStatus = "Approved"
-	// SharedPrivateLinkResourceStatusDisconnected ...
-	SharedPrivateLinkResourceStatusDisconnected SharedPrivateLinkResourceStatus = "Disconnected"
-	// SharedPrivateLinkResourceStatusPending ...
-	SharedPrivateLinkResourceStatusPending SharedPrivateLinkResourceStatus = "Pending"
-	// SharedPrivateLinkResourceStatusRejected ...
-	SharedPrivateLinkResourceStatusRejected SharedPrivateLinkResourceStatus = "Rejected"
-	// SharedPrivateLinkResourceStatusTimeout ...
-	SharedPrivateLinkResourceStatusTimeout SharedPrivateLinkResourceStatus = "Timeout"
-)
-
-// PossibleSharedPrivateLinkResourceStatusValues returns an array of possible values for the SharedPrivateLinkResourceStatus const type.
-func PossibleSharedPrivateLinkResourceStatusValues() []SharedPrivateLinkResourceStatus {
-	return []SharedPrivateLinkResourceStatus{SharedPrivateLinkResourceStatusApproved, SharedPrivateLinkResourceStatusDisconnected, SharedPrivateLinkResourceStatusPending, SharedPrivateLinkResourceStatusRejected, SharedPrivateLinkResourceStatusTimeout}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// Basic ...
-	Basic SkuName = "basic"
-	// Free ...
-	Free SkuName = "free"
-	// Standard ...
-	Standard SkuName = "standard"
-	// Standard2 ...
-	Standard2 SkuName = "standard2"
-	// Standard3 ...
-	Standard3 SkuName = "standard3"
-	// StorageOptimizedL1 ...
-	StorageOptimizedL1 SkuName = "storage_optimized_l1"
-	// StorageOptimizedL2 ...
-	StorageOptimizedL2 SkuName = "storage_optimized_l2"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{Basic, Free, Standard, Standard2, Standard3, StorageOptimizedL1, StorageOptimizedL2}
-}
-
-// UnavailableNameReason enumerates the values for unavailable name reason.
-type UnavailableNameReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists UnavailableNameReason = "AlreadyExists"
-	// Invalid ...
-	Invalid UnavailableNameReason = "Invalid"
-)
-
-// PossibleUnavailableNameReasonValues returns an array of possible values for the UnavailableNameReason const type.
-func PossibleUnavailableNameReasonValues() []UnavailableNameReason {
-	return []UnavailableNameReason{AlreadyExists, Invalid}
-}
-
 // AdminKeyResult response containing the primary and secondary admin API keys for a given Azure Cognitive
 // Search service.
 type AdminKeyResult struct {
@@ -218,6 +38,12 @@ type AdminKeyResult struct {
 	PrimaryKey *string `json:"primaryKey,omitempty"`
 	// SecondaryKey - READ-ONLY; The secondary admin API key of the Search service.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AdminKeyResult.
+func (akr AdminKeyResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CheckNameAvailabilityInput input of check name availability API.
@@ -237,6 +63,12 @@ type CheckNameAvailabilityOutput struct {
 	Reason UnavailableNameReason `json:"reason,omitempty"`
 	// Message - READ-ONLY; A message that explains why the name is invalid and provides resource naming requirements. Available only if 'Invalid' is returned in the 'reason' property.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityOutput.
+func (cnao CheckNameAvailabilityOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CloudError contains information about an API error.
@@ -267,6 +99,15 @@ type Identity struct {
 	Type IdentityType `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // IPRule the IP restriction rule of the Azure Cognitive Search service.
 type IPRule struct {
 	// Value - Value corresponding to a single IPv4 address (eg., 123.1.2.3) or an IP range in CIDR format (eg., 123.1.2.3/24) to be allowed.
@@ -280,6 +121,12 @@ type ListQueryKeysResult struct {
 	Value *[]QueryKey `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Request URL that can be used to query next page of query keys. Returned when the total number of requested query keys exceed maximum page size.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListQueryKeysResult.
+func (lqkr ListQueryKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListQueryKeysResultIterator provides access to a complete listing of QueryKey values.
@@ -350,10 +197,15 @@ func (lqkr ListQueryKeysResult) IsEmpty() bool {
 	return lqkr.Value == nil || len(*lqkr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lqkr ListQueryKeysResult) hasNextLink() bool {
+	return lqkr.NextLink != nil && len(*lqkr.NextLink) != 0
+}
+
 // listQueryKeysResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lqkr ListQueryKeysResult) listQueryKeysResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lqkr.NextLink == nil || len(to.String(lqkr.NextLink)) < 1 {
+	if !lqkr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -381,11 +233,16 @@ func (page *ListQueryKeysResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lqkr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lqkr)
+		if err != nil {
+			return err
+		}
+		page.lqkr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lqkr = next
 	return nil
 }
 
@@ -419,8 +276,7 @@ func NewListQueryKeysResultPage(getNextPage func(context.Context, ListQueryKeysR
 	return ListQueryKeysResultPage{fn: getNextPage}
 }
 
-// NetworkRuleSet network specific rules that determine how the Azure Cognitive Search service may be
-// reached.
+// NetworkRuleSet network specific rules that determine how the Azure Cognitive Search service may be reached.
 type NetworkRuleSet struct {
 	// IPRules - A list of IP restriction rules that defines the inbound network(s) with allowing access to the search service endpoint. At the meantime, all other public IP networks are blocked by the firewall. These restriction rules are applied only when the 'publicNetworkAccess' of the search service is 'enabled'; otherwise, traffic over public interface is not allowed even with any public IP rules, and private endpoint connections would be the exclusive access method.
 	IPRules *[]IPRule `json:"ipRules,omitempty"`
@@ -432,6 +288,12 @@ type Operation struct {
 	Name *string `json:"name,omitempty"`
 	// Display - READ-ONLY; The object that describes the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the object that describes the operation.
@@ -446,8 +308,14 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult the result of the request to list REST API operations. It contains a list of
-// operations and a URL  to get the next set of results.
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// OperationListResult the result of the request to list REST API operations. It contains a list of operations
+// and a URL  to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of operations supported by the resource provider.
@@ -456,8 +324,14 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// PrivateEndpointConnection describes an existing Private Endpoint connection to the Azure Cognitive
-// Search service.
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// PrivateEndpointConnection describes an existing Private Endpoint connection to the Azure Cognitive Search
+// service.
 type PrivateEndpointConnection struct {
 	autorest.Response `json:"-"`
 	// ID - READ-ONLY; The ID of the private endpoint connection. This can be used with the Azure Resource Manager to link resources together.
@@ -470,6 +344,15 @@ type PrivateEndpointConnection struct {
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PrivateEndpointConnection.
+func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pec.Properties != nil {
+		objectMap["properties"] = pec.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // PrivateEndpointConnectionListResult response containing a list of Private Endpoint connections.
 type PrivateEndpointConnectionListResult struct {
 	autorest.Response `json:"-"`
@@ -477,6 +360,12 @@ type PrivateEndpointConnectionListResult struct {
 	Value *[]PrivateEndpointConnection `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Request URL that can be used to query next page of private endpoint connections. Returned when the total number of requested private endpoint connections exceed maximum page size.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpointConnectionListResult.
+func (peclr PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PrivateEndpointConnectionListResultIterator provides access to a complete listing of
@@ -548,10 +437,15 @@ func (peclr PrivateEndpointConnectionListResult) IsEmpty() bool {
 	return peclr.Value == nil || len(*peclr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (peclr PrivateEndpointConnectionListResult) hasNextLink() bool {
+	return peclr.NextLink != nil && len(*peclr.NextLink) != 0
+}
+
 // privateEndpointConnectionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (peclr PrivateEndpointConnectionListResult) privateEndpointConnectionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if peclr.NextLink == nil || len(to.String(peclr.NextLink)) < 1 {
+	if !peclr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -579,11 +473,16 @@ func (page *PrivateEndpointConnectionListResultPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.peclr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.peclr)
+		if err != nil {
+			return err
+		}
+		page.peclr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.peclr = next
 	return nil
 }
 
@@ -617,8 +516,8 @@ func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context
 	return PrivateEndpointConnectionListResultPage{fn: getNextPage}
 }
 
-// PrivateEndpointConnectionProperties describes the properties of an existing Private Endpoint connection
-// to the Azure Cognitive Search service.
+// PrivateEndpointConnectionProperties describes the properties of an existing Private Endpoint connection to
+// the Azure Cognitive Search service.
 type PrivateEndpointConnectionProperties struct {
 	// PrivateEndpoint - The private endpoint resource from Microsoft.Network provider.
 	PrivateEndpoint *PrivateEndpointConnectionPropertiesPrivateEndpoint `json:"privateEndpoint,omitempty"`
@@ -656,9 +555,15 @@ type PrivateLinkResource struct {
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
 }
 
-// PrivateLinkResourceProperties describes the properties of a supported private link resource for the
-// Azure Cognitive Search service. For a given API version, this represents the 'supported' groupIds when
-// creating a shared private link resource.
+// MarshalJSON is the custom marshaler for PrivateLinkResource.
+func (plr PrivateLinkResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// PrivateLinkResourceProperties describes the properties of a supported private link resource for the Azure
+// Cognitive Search service. For a given API version, this represents the 'supported' groupIds when creating a
+// shared private link resource.
 type PrivateLinkResourceProperties struct {
 	// GroupID - READ-ONLY; The group ID of the private link resource.
 	GroupID *string `json:"groupId,omitempty"`
@@ -670,11 +575,23 @@ type PrivateLinkResourceProperties struct {
 	ShareablePrivateLinkResourceTypes *[]ShareablePrivateLinkResourceType `json:"shareablePrivateLinkResourceTypes,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PrivateLinkResourceProperties.
+func (plrp PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PrivateLinkResourcesResult response containing a list of supported Private Link Resources.
 type PrivateLinkResourcesResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of supported Private Link Resources.
 	Value *[]PrivateLinkResource `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkResourcesResult.
+func (plrr PrivateLinkResourcesResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // QueryKey describes an API key for a given Azure Cognitive Search service that has permissions for query
@@ -685,6 +602,12 @@ type QueryKey struct {
 	Name *string `json:"name,omitempty"`
 	// Key - READ-ONLY; The value of the query API key.
 	Key *string `json:"key,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryKey.
+func (qk QueryKey) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Resource base type for all Azure resources.
@@ -856,6 +779,12 @@ type ServiceListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServiceListResult.
+func (slr ServiceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ServiceListResultIterator provides access to a complete listing of Service values.
 type ServiceListResultIterator struct {
 	i    int
@@ -924,10 +853,15 @@ func (slr ServiceListResult) IsEmpty() bool {
 	return slr.Value == nil || len(*slr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (slr ServiceListResult) hasNextLink() bool {
+	return slr.NextLink != nil && len(*slr.NextLink) != 0
+}
+
 // serviceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (slr ServiceListResult) serviceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if slr.NextLink == nil || len(to.String(slr.NextLink)) < 1 {
+	if !slr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -955,11 +889,16 @@ func (page *ServiceListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.slr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.slr)
+		if err != nil {
+			return err
+		}
+		page.slr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.slr = next
 	return nil
 }
 
@@ -1017,6 +956,27 @@ type ServiceProperties struct {
 	SharedPrivateLinkResources *[]SharedPrivateLinkResource `json:"sharedPrivateLinkResources,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServiceProperties.
+func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.ReplicaCount != nil {
+		objectMap["replicaCount"] = sp.ReplicaCount
+	}
+	if sp.PartitionCount != nil {
+		objectMap["partitionCount"] = sp.PartitionCount
+	}
+	if sp.HostingMode != "" {
+		objectMap["hostingMode"] = sp.HostingMode
+	}
+	if sp.PublicNetworkAccess != "" {
+		objectMap["publicNetworkAccess"] = sp.PublicNetworkAccess
+	}
+	if sp.NetworkRuleSet != nil {
+		objectMap["networkRuleSet"] = sp.NetworkRuleSet
+	}
+	return json.Marshal(objectMap)
+}
+
 // ServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServicesCreateOrUpdateFuture struct {
@@ -1046,8 +1006,8 @@ func (future *ServicesCreateOrUpdateFuture) Result(client ServicesClient) (s Ser
 	return
 }
 
-// ShareablePrivateLinkResourceProperties describes the properties of a resource type that has been
-// onboarded to private link service, supported by Azure Cognitive Search.
+// ShareablePrivateLinkResourceProperties describes the properties of a resource type that has been onboarded
+// to private link service, supported by Azure Cognitive Search.
 type ShareablePrivateLinkResourceProperties struct {
 	// Type - READ-ONLY; The resource provider type for the resource that has been onboarded to private link service, supported by Azure Cognitive Search.
 	Type *string `json:"type,omitempty"`
@@ -1057,13 +1017,25 @@ type ShareablePrivateLinkResourceProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// ShareablePrivateLinkResourceType describes an resource type that has been onboarded to private link
-// service, supported by Azure Cognitive Search.
+// MarshalJSON is the custom marshaler for ShareablePrivateLinkResourceProperties.
+func (splrp ShareablePrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ShareablePrivateLinkResourceType describes an resource type that has been onboarded to private link service,
+// supported by Azure Cognitive Search.
 type ShareablePrivateLinkResourceType struct {
 	// Name - READ-ONLY; The name of the resource type that has been onboarded to private link service, supported by Azure Cognitive Search.
 	Name *string `json:"name,omitempty"`
 	// Properties - READ-ONLY; Describes the properties of a resource type that has been onboarded to private link service, supported by Azure Cognitive Search.
 	Properties *ShareablePrivateLinkResourceProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ShareablePrivateLinkResourceType.
+func (splrt ShareablePrivateLinkResourceType) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SharedPrivateLinkResource describes a Shared Private Link Resource managed by the Azure Cognitive Search
@@ -1080,6 +1052,15 @@ type SharedPrivateLinkResource struct {
 	Properties *SharedPrivateLinkResourceProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SharedPrivateLinkResource.
+func (splr SharedPrivateLinkResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if splr.Properties != nil {
+		objectMap["properties"] = splr.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // SharedPrivateLinkResourceListResult response containing a list of Shared Private Link Resources.
 type SharedPrivateLinkResourceListResult struct {
 	autorest.Response `json:"-"`
@@ -1087,6 +1068,15 @@ type SharedPrivateLinkResourceListResult struct {
 	Value *[]SharedPrivateLinkResource `json:"value,omitempty"`
 	// NextLink - The URL to get the next set of shared private link resources, if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SharedPrivateLinkResourceListResult.
+func (splrlr SharedPrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if splrlr.NextLink != nil {
+		objectMap["nextLink"] = splrlr.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // SharedPrivateLinkResourceListResultIterator provides access to a complete listing of
@@ -1158,10 +1148,15 @@ func (splrlr SharedPrivateLinkResourceListResult) IsEmpty() bool {
 	return splrlr.Value == nil || len(*splrlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (splrlr SharedPrivateLinkResourceListResult) hasNextLink() bool {
+	return splrlr.NextLink != nil && len(*splrlr.NextLink) != 0
+}
+
 // sharedPrivateLinkResourceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (splrlr SharedPrivateLinkResourceListResult) sharedPrivateLinkResourceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if splrlr.NextLink == nil || len(to.String(splrlr.NextLink)) < 1 {
+	if !splrlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1189,11 +1184,16 @@ func (page *SharedPrivateLinkResourceListResultPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.splrlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.splrlr)
+		if err != nil {
+			return err
+		}
+		page.splrlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.splrlr = next
 	return nil
 }
 
@@ -1240,8 +1240,7 @@ type SharedPrivateLinkResourceProperties struct {
 	Status SharedPrivateLinkResourceStatus `json:"status,omitempty"`
 }
 
-// Sku defines the SKU of an Azure Cognitive Search Service, which determines price tier and capacity
-// limits.
+// Sku defines the SKU of an Azure Cognitive Search Service, which determines price tier and capacity limits.
 type Sku struct {
 	// Name - The SKU of the Search service. Valid values include: 'free': Shared service. 'basic': Dedicated service with up to 3 replicas. 'standard': Dedicated service with up to 12 partitions and 12 replicas. 'standard2': Similar to standard, but with more capacity per search unit. 'standard3': The largest Standard offering with up to 12 partitions and 12 replicas (or up to 3 partitions with more indexes if you also set the hostingMode property to 'highDensity'). 'storage_optimized_l1': Supports 1TB per partition, up to 12 partitions. 'storage_optimized_l2': Supports 2TB per partition, up to 12 partitions.'. Possible values include: 'Free', 'Basic', 'Standard', 'Standard2', 'Standard3', 'StorageOptimizedL1', 'StorageOptimizedL2'
 	Name SkuName `json:"name,omitempty"`

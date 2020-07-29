@@ -495,6 +495,9 @@ func (client PoolClient) ListByBatchAccount(ctx context.Context, resourceGroupNa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "ListByBatchAccount", resp, "Failure responding to request")
 	}
+	if result.lpr.hasNextLink() && result.lpr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

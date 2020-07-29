@@ -30,943 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql"
 
-// AdvisorStatus enumerates the values for advisor status.
-type AdvisorStatus string
-
-const (
-	// GA ...
-	GA AdvisorStatus = "GA"
-	// LimitedPublicPreview ...
-	LimitedPublicPreview AdvisorStatus = "LimitedPublicPreview"
-	// PrivatePreview ...
-	PrivatePreview AdvisorStatus = "PrivatePreview"
-	// PublicPreview ...
-	PublicPreview AdvisorStatus = "PublicPreview"
-)
-
-// PossibleAdvisorStatusValues returns an array of possible values for the AdvisorStatus const type.
-func PossibleAdvisorStatusValues() []AdvisorStatus {
-	return []AdvisorStatus{GA, LimitedPublicPreview, PrivatePreview, PublicPreview}
-}
-
-// AuthenticationType enumerates the values for authentication type.
-type AuthenticationType string
-
-const (
-	// ADPassword ...
-	ADPassword AuthenticationType = "ADPassword"
-	// SQL ...
-	SQL AuthenticationType = "SQL"
-)
-
-// PossibleAuthenticationTypeValues returns an array of possible values for the AuthenticationType const type.
-func PossibleAuthenticationTypeValues() []AuthenticationType {
-	return []AuthenticationType{ADPassword, SQL}
-}
-
-// AutoExecuteStatus enumerates the values for auto execute status.
-type AutoExecuteStatus string
-
-const (
-	// Default ...
-	Default AutoExecuteStatus = "Default"
-	// Disabled ...
-	Disabled AutoExecuteStatus = "Disabled"
-	// Enabled ...
-	Enabled AutoExecuteStatus = "Enabled"
-)
-
-// PossibleAutoExecuteStatusValues returns an array of possible values for the AutoExecuteStatus const type.
-func PossibleAutoExecuteStatusValues() []AutoExecuteStatus {
-	return []AutoExecuteStatus{Default, Disabled, Enabled}
-}
-
-// CapabilityStatus enumerates the values for capability status.
-type CapabilityStatus string
-
-const (
-	// CapabilityStatusAvailable ...
-	CapabilityStatusAvailable CapabilityStatus = "Available"
-	// CapabilityStatusDefault ...
-	CapabilityStatusDefault CapabilityStatus = "Default"
-	// CapabilityStatusDisabled ...
-	CapabilityStatusDisabled CapabilityStatus = "Disabled"
-	// CapabilityStatusVisible ...
-	CapabilityStatusVisible CapabilityStatus = "Visible"
-)
-
-// PossibleCapabilityStatusValues returns an array of possible values for the CapabilityStatus const type.
-func PossibleCapabilityStatusValues() []CapabilityStatus {
-	return []CapabilityStatus{CapabilityStatusAvailable, CapabilityStatusDefault, CapabilityStatusDisabled, CapabilityStatusVisible}
-}
-
-// CheckNameAvailabilityReason enumerates the values for check name availability reason.
-type CheckNameAvailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid CheckNameAvailabilityReason = "Invalid"
-)
-
-// PossibleCheckNameAvailabilityReasonValues returns an array of possible values for the CheckNameAvailabilityReason const type.
-func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
-	return []CheckNameAvailabilityReason{AlreadyExists, Invalid}
-}
-
-// CreateMode enumerates the values for create mode.
-type CreateMode string
-
-const (
-	// CreateModeCopy ...
-	CreateModeCopy CreateMode = "Copy"
-	// CreateModeDefault ...
-	CreateModeDefault CreateMode = "Default"
-	// CreateModeNonReadableSecondary ...
-	CreateModeNonReadableSecondary CreateMode = "NonReadableSecondary"
-	// CreateModeOnlineSecondary ...
-	CreateModeOnlineSecondary CreateMode = "OnlineSecondary"
-	// CreateModePointInTimeRestore ...
-	CreateModePointInTimeRestore CreateMode = "PointInTimeRestore"
-	// CreateModeRecovery ...
-	CreateModeRecovery CreateMode = "Recovery"
-	// CreateModeRestore ...
-	CreateModeRestore CreateMode = "Restore"
-	// CreateModeRestoreLongTermRetentionBackup ...
-	CreateModeRestoreLongTermRetentionBackup CreateMode = "RestoreLongTermRetentionBackup"
-)
-
-// PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
-func PossibleCreateModeValues() []CreateMode {
-	return []CreateMode{CreateModeCopy, CreateModeDefault, CreateModeNonReadableSecondary, CreateModeOnlineSecondary, CreateModePointInTimeRestore, CreateModeRecovery, CreateModeRestore, CreateModeRestoreLongTermRetentionBackup}
-}
-
-// DatabaseEdition enumerates the values for database edition.
-type DatabaseEdition string
-
-const (
-	// Basic ...
-	Basic DatabaseEdition = "Basic"
-	// Business ...
-	Business DatabaseEdition = "Business"
-	// BusinessCritical ...
-	BusinessCritical DatabaseEdition = "BusinessCritical"
-	// DataWarehouse ...
-	DataWarehouse DatabaseEdition = "DataWarehouse"
-	// Free ...
-	Free DatabaseEdition = "Free"
-	// GeneralPurpose ...
-	GeneralPurpose DatabaseEdition = "GeneralPurpose"
-	// Hyperscale ...
-	Hyperscale DatabaseEdition = "Hyperscale"
-	// Premium ...
-	Premium DatabaseEdition = "Premium"
-	// PremiumRS ...
-	PremiumRS DatabaseEdition = "PremiumRS"
-	// Standard ...
-	Standard DatabaseEdition = "Standard"
-	// Stretch ...
-	Stretch DatabaseEdition = "Stretch"
-	// System ...
-	System DatabaseEdition = "System"
-	// System2 ...
-	System2 DatabaseEdition = "System2"
-	// Web ...
-	Web DatabaseEdition = "Web"
-)
-
-// PossibleDatabaseEditionValues returns an array of possible values for the DatabaseEdition const type.
-func PossibleDatabaseEditionValues() []DatabaseEdition {
-	return []DatabaseEdition{Basic, Business, BusinessCritical, DataWarehouse, Free, GeneralPurpose, Hyperscale, Premium, PremiumRS, Standard, Stretch, System, System2, Web}
-}
-
-// DataMaskingFunction enumerates the values for data masking function.
-type DataMaskingFunction string
-
-const (
-	// DataMaskingFunctionCCN ...
-	DataMaskingFunctionCCN DataMaskingFunction = "CCN"
-	// DataMaskingFunctionDefault ...
-	DataMaskingFunctionDefault DataMaskingFunction = "Default"
-	// DataMaskingFunctionEmail ...
-	DataMaskingFunctionEmail DataMaskingFunction = "Email"
-	// DataMaskingFunctionNumber ...
-	DataMaskingFunctionNumber DataMaskingFunction = "Number"
-	// DataMaskingFunctionSSN ...
-	DataMaskingFunctionSSN DataMaskingFunction = "SSN"
-	// DataMaskingFunctionText ...
-	DataMaskingFunctionText DataMaskingFunction = "Text"
-)
-
-// PossibleDataMaskingFunctionValues returns an array of possible values for the DataMaskingFunction const type.
-func PossibleDataMaskingFunctionValues() []DataMaskingFunction {
-	return []DataMaskingFunction{DataMaskingFunctionCCN, DataMaskingFunctionDefault, DataMaskingFunctionEmail, DataMaskingFunctionNumber, DataMaskingFunctionSSN, DataMaskingFunctionText}
-}
-
-// DataMaskingRuleState enumerates the values for data masking rule state.
-type DataMaskingRuleState string
-
-const (
-	// DataMaskingRuleStateDisabled ...
-	DataMaskingRuleStateDisabled DataMaskingRuleState = "Disabled"
-	// DataMaskingRuleStateEnabled ...
-	DataMaskingRuleStateEnabled DataMaskingRuleState = "Enabled"
-)
-
-// PossibleDataMaskingRuleStateValues returns an array of possible values for the DataMaskingRuleState const type.
-func PossibleDataMaskingRuleStateValues() []DataMaskingRuleState {
-	return []DataMaskingRuleState{DataMaskingRuleStateDisabled, DataMaskingRuleStateEnabled}
-}
-
-// DataMaskingState enumerates the values for data masking state.
-type DataMaskingState string
-
-const (
-	// DataMaskingStateDisabled ...
-	DataMaskingStateDisabled DataMaskingState = "Disabled"
-	// DataMaskingStateEnabled ...
-	DataMaskingStateEnabled DataMaskingState = "Enabled"
-)
-
-// PossibleDataMaskingStateValues returns an array of possible values for the DataMaskingState const type.
-func PossibleDataMaskingStateValues() []DataMaskingState {
-	return []DataMaskingState{DataMaskingStateDisabled, DataMaskingStateEnabled}
-}
-
-// DisasterRecoveryConfigurationAutoFailover enumerates the values for disaster recovery configuration auto
-// failover.
-type DisasterRecoveryConfigurationAutoFailover string
-
-const (
-	// Off ...
-	Off DisasterRecoveryConfigurationAutoFailover = "Off"
-	// On ...
-	On DisasterRecoveryConfigurationAutoFailover = "On"
-)
-
-// PossibleDisasterRecoveryConfigurationAutoFailoverValues returns an array of possible values for the DisasterRecoveryConfigurationAutoFailover const type.
-func PossibleDisasterRecoveryConfigurationAutoFailoverValues() []DisasterRecoveryConfigurationAutoFailover {
-	return []DisasterRecoveryConfigurationAutoFailover{Off, On}
-}
-
-// DisasterRecoveryConfigurationFailoverPolicy enumerates the values for disaster recovery configuration
-// failover policy.
-type DisasterRecoveryConfigurationFailoverPolicy string
-
-const (
-	// Automatic ...
-	Automatic DisasterRecoveryConfigurationFailoverPolicy = "Automatic"
-	// Manual ...
-	Manual DisasterRecoveryConfigurationFailoverPolicy = "Manual"
-)
-
-// PossibleDisasterRecoveryConfigurationFailoverPolicyValues returns an array of possible values for the DisasterRecoveryConfigurationFailoverPolicy const type.
-func PossibleDisasterRecoveryConfigurationFailoverPolicyValues() []DisasterRecoveryConfigurationFailoverPolicy {
-	return []DisasterRecoveryConfigurationFailoverPolicy{Automatic, Manual}
-}
-
-// DisasterRecoveryConfigurationRole enumerates the values for disaster recovery configuration role.
-type DisasterRecoveryConfigurationRole string
-
-const (
-	// None ...
-	None DisasterRecoveryConfigurationRole = "None"
-	// Primary ...
-	Primary DisasterRecoveryConfigurationRole = "Primary"
-	// Secondary ...
-	Secondary DisasterRecoveryConfigurationRole = "Secondary"
-)
-
-// PossibleDisasterRecoveryConfigurationRoleValues returns an array of possible values for the DisasterRecoveryConfigurationRole const type.
-func PossibleDisasterRecoveryConfigurationRoleValues() []DisasterRecoveryConfigurationRole {
-	return []DisasterRecoveryConfigurationRole{None, Primary, Secondary}
-}
-
-// DisasterRecoveryConfigurationStatus enumerates the values for disaster recovery configuration status.
-type DisasterRecoveryConfigurationStatus string
-
-const (
-	// Creating ...
-	Creating DisasterRecoveryConfigurationStatus = "Creating"
-	// Dropping ...
-	Dropping DisasterRecoveryConfigurationStatus = "Dropping"
-	// FailingOver ...
-	FailingOver DisasterRecoveryConfigurationStatus = "FailingOver"
-	// Ready ...
-	Ready DisasterRecoveryConfigurationStatus = "Ready"
-)
-
-// PossibleDisasterRecoveryConfigurationStatusValues returns an array of possible values for the DisasterRecoveryConfigurationStatus const type.
-func PossibleDisasterRecoveryConfigurationStatusValues() []DisasterRecoveryConfigurationStatus {
-	return []DisasterRecoveryConfigurationStatus{Creating, Dropping, FailingOver, Ready}
-}
-
-// ElasticPoolEdition enumerates the values for elastic pool edition.
-type ElasticPoolEdition string
-
-const (
-	// ElasticPoolEditionBasic ...
-	ElasticPoolEditionBasic ElasticPoolEdition = "Basic"
-	// ElasticPoolEditionBusinessCritical ...
-	ElasticPoolEditionBusinessCritical ElasticPoolEdition = "BusinessCritical"
-	// ElasticPoolEditionGeneralPurpose ...
-	ElasticPoolEditionGeneralPurpose ElasticPoolEdition = "GeneralPurpose"
-	// ElasticPoolEditionPremium ...
-	ElasticPoolEditionPremium ElasticPoolEdition = "Premium"
-	// ElasticPoolEditionStandard ...
-	ElasticPoolEditionStandard ElasticPoolEdition = "Standard"
-)
-
-// PossibleElasticPoolEditionValues returns an array of possible values for the ElasticPoolEdition const type.
-func PossibleElasticPoolEditionValues() []ElasticPoolEdition {
-	return []ElasticPoolEdition{ElasticPoolEditionBasic, ElasticPoolEditionBusinessCritical, ElasticPoolEditionGeneralPurpose, ElasticPoolEditionPremium, ElasticPoolEditionStandard}
-}
-
-// ElasticPoolState enumerates the values for elastic pool state.
-type ElasticPoolState string
-
-const (
-	// ElasticPoolStateCreating ...
-	ElasticPoolStateCreating ElasticPoolState = "Creating"
-	// ElasticPoolStateDisabled ...
-	ElasticPoolStateDisabled ElasticPoolState = "Disabled"
-	// ElasticPoolStateReady ...
-	ElasticPoolStateReady ElasticPoolState = "Ready"
-)
-
-// PossibleElasticPoolStateValues returns an array of possible values for the ElasticPoolState const type.
-func PossibleElasticPoolStateValues() []ElasticPoolState {
-	return []ElasticPoolState{ElasticPoolStateCreating, ElasticPoolStateDisabled, ElasticPoolStateReady}
-}
-
-// GeoBackupPolicyState enumerates the values for geo backup policy state.
-type GeoBackupPolicyState string
-
-const (
-	// GeoBackupPolicyStateDisabled ...
-	GeoBackupPolicyStateDisabled GeoBackupPolicyState = "Disabled"
-	// GeoBackupPolicyStateEnabled ...
-	GeoBackupPolicyStateEnabled GeoBackupPolicyState = "Enabled"
-)
-
-// PossibleGeoBackupPolicyStateValues returns an array of possible values for the GeoBackupPolicyState const type.
-func PossibleGeoBackupPolicyStateValues() []GeoBackupPolicyState {
-	return []GeoBackupPolicyState{GeoBackupPolicyStateDisabled, GeoBackupPolicyStateEnabled}
-}
-
-// MaxSizeUnits enumerates the values for max size units.
-type MaxSizeUnits string
-
-const (
-	// Gigabytes ...
-	Gigabytes MaxSizeUnits = "Gigabytes"
-	// Megabytes ...
-	Megabytes MaxSizeUnits = "Megabytes"
-	// Petabytes ...
-	Petabytes MaxSizeUnits = "Petabytes"
-	// Terabytes ...
-	Terabytes MaxSizeUnits = "Terabytes"
-)
-
-// PossibleMaxSizeUnitsValues returns an array of possible values for the MaxSizeUnits const type.
-func PossibleMaxSizeUnitsValues() []MaxSizeUnits {
-	return []MaxSizeUnits{Gigabytes, Megabytes, Petabytes, Terabytes}
-}
-
-// PerformanceLevelUnit enumerates the values for performance level unit.
-type PerformanceLevelUnit string
-
-const (
-	// DTU ...
-	DTU PerformanceLevelUnit = "DTU"
-)
-
-// PossiblePerformanceLevelUnitValues returns an array of possible values for the PerformanceLevelUnit const type.
-func PossiblePerformanceLevelUnitValues() []PerformanceLevelUnit {
-	return []PerformanceLevelUnit{DTU}
-}
-
-// PrimaryAggregationType enumerates the values for primary aggregation type.
-type PrimaryAggregationType string
-
-const (
-	// PrimaryAggregationTypeAverage ...
-	PrimaryAggregationTypeAverage PrimaryAggregationType = "Average"
-	// PrimaryAggregationTypeCount ...
-	PrimaryAggregationTypeCount PrimaryAggregationType = "Count"
-	// PrimaryAggregationTypeMaximum ...
-	PrimaryAggregationTypeMaximum PrimaryAggregationType = "Maximum"
-	// PrimaryAggregationTypeMinimum ...
-	PrimaryAggregationTypeMinimum PrimaryAggregationType = "Minimum"
-	// PrimaryAggregationTypeNone ...
-	PrimaryAggregationTypeNone PrimaryAggregationType = "None"
-	// PrimaryAggregationTypeTotal ...
-	PrimaryAggregationTypeTotal PrimaryAggregationType = "Total"
-)
-
-// PossiblePrimaryAggregationTypeValues returns an array of possible values for the PrimaryAggregationType const type.
-func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
-	return []PrimaryAggregationType{PrimaryAggregationTypeAverage, PrimaryAggregationTypeCount, PrimaryAggregationTypeMaximum, PrimaryAggregationTypeMinimum, PrimaryAggregationTypeNone, PrimaryAggregationTypeTotal}
-}
-
-// QueryAggregationFunction enumerates the values for query aggregation function.
-type QueryAggregationFunction string
-
-const (
-	// Avg ...
-	Avg QueryAggregationFunction = "avg"
-	// Max ...
-	Max QueryAggregationFunction = "max"
-	// Min ...
-	Min QueryAggregationFunction = "min"
-	// Sum ...
-	Sum QueryAggregationFunction = "sum"
-)
-
-// PossibleQueryAggregationFunctionValues returns an array of possible values for the QueryAggregationFunction const type.
-func PossibleQueryAggregationFunctionValues() []QueryAggregationFunction {
-	return []QueryAggregationFunction{Avg, Max, Min, Sum}
-}
-
-// QueryExecutionType enumerates the values for query execution type.
-type QueryExecutionType string
-
-const (
-	// Aborted ...
-	Aborted QueryExecutionType = "aborted"
-	// Any ...
-	Any QueryExecutionType = "any"
-	// Exception ...
-	Exception QueryExecutionType = "exception"
-	// Irregular ...
-	Irregular QueryExecutionType = "irregular"
-	// Regular ...
-	Regular QueryExecutionType = "regular"
-)
-
-// PossibleQueryExecutionTypeValues returns an array of possible values for the QueryExecutionType const type.
-func PossibleQueryExecutionTypeValues() []QueryExecutionType {
-	return []QueryExecutionType{Aborted, Any, Exception, Irregular, Regular}
-}
-
-// QueryMetricUnit enumerates the values for query metric unit.
-type QueryMetricUnit string
-
-const (
-	// KB ...
-	KB QueryMetricUnit = "KB"
-	// Microseconds ...
-	Microseconds QueryMetricUnit = "microseconds"
-	// Percentage ...
-	Percentage QueryMetricUnit = "percentage"
-)
-
-// PossibleQueryMetricUnitValues returns an array of possible values for the QueryMetricUnit const type.
-func PossibleQueryMetricUnitValues() []QueryMetricUnit {
-	return []QueryMetricUnit{KB, Microseconds, Percentage}
-}
-
-// QueryObservedMetricType enumerates the values for query observed metric type.
-type QueryObservedMetricType string
-
-const (
-	// CPU ...
-	CPU QueryObservedMetricType = "cpu"
-	// Duration ...
-	Duration QueryObservedMetricType = "duration"
-	// ExecutionCount ...
-	ExecutionCount QueryObservedMetricType = "executionCount"
-	// Io ...
-	Io QueryObservedMetricType = "io"
-	// Logio ...
-	Logio QueryObservedMetricType = "logio"
-)
-
-// PossibleQueryObservedMetricTypeValues returns an array of possible values for the QueryObservedMetricType const type.
-func PossibleQueryObservedMetricTypeValues() []QueryObservedMetricType {
-	return []QueryObservedMetricType{CPU, Duration, ExecutionCount, Io, Logio}
-}
-
-// ReadScale enumerates the values for read scale.
-type ReadScale string
-
-const (
-	// ReadScaleDisabled ...
-	ReadScaleDisabled ReadScale = "Disabled"
-	// ReadScaleEnabled ...
-	ReadScaleEnabled ReadScale = "Enabled"
-)
-
-// PossibleReadScaleValues returns an array of possible values for the ReadScale const type.
-func PossibleReadScaleValues() []ReadScale {
-	return []ReadScale{ReadScaleDisabled, ReadScaleEnabled}
-}
-
-// RecommendedIndexAction enumerates the values for recommended index action.
-type RecommendedIndexAction string
-
-const (
-	// Create ...
-	Create RecommendedIndexAction = "Create"
-	// Drop ...
-	Drop RecommendedIndexAction = "Drop"
-	// Rebuild ...
-	Rebuild RecommendedIndexAction = "Rebuild"
-)
-
-// PossibleRecommendedIndexActionValues returns an array of possible values for the RecommendedIndexAction const type.
-func PossibleRecommendedIndexActionValues() []RecommendedIndexAction {
-	return []RecommendedIndexAction{Create, Drop, Rebuild}
-}
-
-// RecommendedIndexState enumerates the values for recommended index state.
-type RecommendedIndexState string
-
-const (
-	// Active ...
-	Active RecommendedIndexState = "Active"
-	// Blocked ...
-	Blocked RecommendedIndexState = "Blocked"
-	// Executing ...
-	Executing RecommendedIndexState = "Executing"
-	// Expired ...
-	Expired RecommendedIndexState = "Expired"
-	// Ignored ...
-	Ignored RecommendedIndexState = "Ignored"
-	// Pending ...
-	Pending RecommendedIndexState = "Pending"
-	// PendingRevert ...
-	PendingRevert RecommendedIndexState = "Pending Revert"
-	// Reverted ...
-	Reverted RecommendedIndexState = "Reverted"
-	// Reverting ...
-	Reverting RecommendedIndexState = "Reverting"
-	// Success ...
-	Success RecommendedIndexState = "Success"
-	// Verifying ...
-	Verifying RecommendedIndexState = "Verifying"
-)
-
-// PossibleRecommendedIndexStateValues returns an array of possible values for the RecommendedIndexState const type.
-func PossibleRecommendedIndexStateValues() []RecommendedIndexState {
-	return []RecommendedIndexState{Active, Blocked, Executing, Expired, Ignored, Pending, PendingRevert, Reverted, Reverting, Success, Verifying}
-}
-
-// RecommendedIndexType enumerates the values for recommended index type.
-type RecommendedIndexType string
-
-const (
-	// CLUSTERED ...
-	CLUSTERED RecommendedIndexType = "CLUSTERED"
-	// CLUSTEREDCOLUMNSTORE ...
-	CLUSTEREDCOLUMNSTORE RecommendedIndexType = "CLUSTERED COLUMNSTORE"
-	// COLUMNSTORE ...
-	COLUMNSTORE RecommendedIndexType = "COLUMNSTORE"
-	// NONCLUSTERED ...
-	NONCLUSTERED RecommendedIndexType = "NONCLUSTERED"
-)
-
-// PossibleRecommendedIndexTypeValues returns an array of possible values for the RecommendedIndexType const type.
-func PossibleRecommendedIndexTypeValues() []RecommendedIndexType {
-	return []RecommendedIndexType{CLUSTERED, CLUSTEREDCOLUMNSTORE, COLUMNSTORE, NONCLUSTERED}
-}
-
-// ReplicationRole enumerates the values for replication role.
-type ReplicationRole string
-
-const (
-	// ReplicationRoleCopy ...
-	ReplicationRoleCopy ReplicationRole = "Copy"
-	// ReplicationRoleNonReadableSecondary ...
-	ReplicationRoleNonReadableSecondary ReplicationRole = "NonReadableSecondary"
-	// ReplicationRolePrimary ...
-	ReplicationRolePrimary ReplicationRole = "Primary"
-	// ReplicationRoleSecondary ...
-	ReplicationRoleSecondary ReplicationRole = "Secondary"
-	// ReplicationRoleSource ...
-	ReplicationRoleSource ReplicationRole = "Source"
-)
-
-// PossibleReplicationRoleValues returns an array of possible values for the ReplicationRole const type.
-func PossibleReplicationRoleValues() []ReplicationRole {
-	return []ReplicationRole{ReplicationRoleCopy, ReplicationRoleNonReadableSecondary, ReplicationRolePrimary, ReplicationRoleSecondary, ReplicationRoleSource}
-}
-
-// ReplicationState enumerates the values for replication state.
-type ReplicationState string
-
-const (
-	// CATCHUP ...
-	CATCHUP ReplicationState = "CATCH_UP"
-	// PENDING ...
-	PENDING ReplicationState = "PENDING"
-	// SEEDING ...
-	SEEDING ReplicationState = "SEEDING"
-	// SUSPENDED ...
-	SUSPENDED ReplicationState = "SUSPENDED"
-)
-
-// PossibleReplicationStateValues returns an array of possible values for the ReplicationState const type.
-func PossibleReplicationStateValues() []ReplicationState {
-	return []ReplicationState{CATCHUP, PENDING, SEEDING, SUSPENDED}
-}
-
-// RestorePointType enumerates the values for restore point type.
-type RestorePointType string
-
-const (
-	// CONTINUOUS ...
-	CONTINUOUS RestorePointType = "CONTINUOUS"
-	// DISCRETE ...
-	DISCRETE RestorePointType = "DISCRETE"
-)
-
-// PossibleRestorePointTypeValues returns an array of possible values for the RestorePointType const type.
-func PossibleRestorePointTypeValues() []RestorePointType {
-	return []RestorePointType{CONTINUOUS, DISCRETE}
-}
-
-// SampleName enumerates the values for sample name.
-type SampleName string
-
-const (
-	// AdventureWorksLT ...
-	AdventureWorksLT SampleName = "AdventureWorksLT"
-)
-
-// PossibleSampleNameValues returns an array of possible values for the SampleName const type.
-func PossibleSampleNameValues() []SampleName {
-	return []SampleName{AdventureWorksLT}
-}
-
-// SecurityAlertPolicyEmailAccountAdmins enumerates the values for security alert policy email account admins.
-type SecurityAlertPolicyEmailAccountAdmins string
-
-const (
-	// SecurityAlertPolicyEmailAccountAdminsDisabled ...
-	SecurityAlertPolicyEmailAccountAdminsDisabled SecurityAlertPolicyEmailAccountAdmins = "Disabled"
-	// SecurityAlertPolicyEmailAccountAdminsEnabled ...
-	SecurityAlertPolicyEmailAccountAdminsEnabled SecurityAlertPolicyEmailAccountAdmins = "Enabled"
-)
-
-// PossibleSecurityAlertPolicyEmailAccountAdminsValues returns an array of possible values for the SecurityAlertPolicyEmailAccountAdmins const type.
-func PossibleSecurityAlertPolicyEmailAccountAdminsValues() []SecurityAlertPolicyEmailAccountAdmins {
-	return []SecurityAlertPolicyEmailAccountAdmins{SecurityAlertPolicyEmailAccountAdminsDisabled, SecurityAlertPolicyEmailAccountAdminsEnabled}
-}
-
-// SecurityAlertPolicyState enumerates the values for security alert policy state.
-type SecurityAlertPolicyState string
-
-const (
-	// SecurityAlertPolicyStateDisabled ...
-	SecurityAlertPolicyStateDisabled SecurityAlertPolicyState = "Disabled"
-	// SecurityAlertPolicyStateEnabled ...
-	SecurityAlertPolicyStateEnabled SecurityAlertPolicyState = "Enabled"
-	// SecurityAlertPolicyStateNew ...
-	SecurityAlertPolicyStateNew SecurityAlertPolicyState = "New"
-)
-
-// PossibleSecurityAlertPolicyStateValues returns an array of possible values for the SecurityAlertPolicyState const type.
-func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
-	return []SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled, SecurityAlertPolicyStateNew}
-}
-
-// SecurityAlertPolicyUseServerDefault enumerates the values for security alert policy use server default.
-type SecurityAlertPolicyUseServerDefault string
-
-const (
-	// SecurityAlertPolicyUseServerDefaultDisabled ...
-	SecurityAlertPolicyUseServerDefaultDisabled SecurityAlertPolicyUseServerDefault = "Disabled"
-	// SecurityAlertPolicyUseServerDefaultEnabled ...
-	SecurityAlertPolicyUseServerDefaultEnabled SecurityAlertPolicyUseServerDefault = "Enabled"
-)
-
-// PossibleSecurityAlertPolicyUseServerDefaultValues returns an array of possible values for the SecurityAlertPolicyUseServerDefault const type.
-func PossibleSecurityAlertPolicyUseServerDefaultValues() []SecurityAlertPolicyUseServerDefault {
-	return []SecurityAlertPolicyUseServerDefault{SecurityAlertPolicyUseServerDefaultDisabled, SecurityAlertPolicyUseServerDefaultEnabled}
-}
-
-// ServerConnectionType enumerates the values for server connection type.
-type ServerConnectionType string
-
-const (
-	// ServerConnectionTypeDefault ...
-	ServerConnectionTypeDefault ServerConnectionType = "Default"
-	// ServerConnectionTypeProxy ...
-	ServerConnectionTypeProxy ServerConnectionType = "Proxy"
-	// ServerConnectionTypeRedirect ...
-	ServerConnectionTypeRedirect ServerConnectionType = "Redirect"
-)
-
-// PossibleServerConnectionTypeValues returns an array of possible values for the ServerConnectionType const type.
-func PossibleServerConnectionTypeValues() []ServerConnectionType {
-	return []ServerConnectionType{ServerConnectionTypeDefault, ServerConnectionTypeProxy, ServerConnectionTypeRedirect}
-}
-
-// ServerState enumerates the values for server state.
-type ServerState string
-
-const (
-	// ServerStateDisabled ...
-	ServerStateDisabled ServerState = "Disabled"
-	// ServerStateReady ...
-	ServerStateReady ServerState = "Ready"
-)
-
-// PossibleServerStateValues returns an array of possible values for the ServerState const type.
-func PossibleServerStateValues() []ServerState {
-	return []ServerState{ServerStateDisabled, ServerStateReady}
-}
-
-// ServerVersion enumerates the values for server version.
-type ServerVersion string
-
-const (
-	// OneTwoFullStopZero ...
-	OneTwoFullStopZero ServerVersion = "12.0"
-	// TwoFullStopZero ...
-	TwoFullStopZero ServerVersion = "2.0"
-)
-
-// PossibleServerVersionValues returns an array of possible values for the ServerVersion const type.
-func PossibleServerVersionValues() []ServerVersion {
-	return []ServerVersion{OneTwoFullStopZero, TwoFullStopZero}
-}
-
-// ServiceObjectiveName enumerates the values for service objective name.
-type ServiceObjectiveName string
-
-const (
-	// ServiceObjectiveNameBasic ...
-	ServiceObjectiveNameBasic ServiceObjectiveName = "Basic"
-	// ServiceObjectiveNameDS100 ...
-	ServiceObjectiveNameDS100 ServiceObjectiveName = "DS100"
-	// ServiceObjectiveNameDS1000 ...
-	ServiceObjectiveNameDS1000 ServiceObjectiveName = "DS1000"
-	// ServiceObjectiveNameDS1200 ...
-	ServiceObjectiveNameDS1200 ServiceObjectiveName = "DS1200"
-	// ServiceObjectiveNameDS1500 ...
-	ServiceObjectiveNameDS1500 ServiceObjectiveName = "DS1500"
-	// ServiceObjectiveNameDS200 ...
-	ServiceObjectiveNameDS200 ServiceObjectiveName = "DS200"
-	// ServiceObjectiveNameDS2000 ...
-	ServiceObjectiveNameDS2000 ServiceObjectiveName = "DS2000"
-	// ServiceObjectiveNameDS300 ...
-	ServiceObjectiveNameDS300 ServiceObjectiveName = "DS300"
-	// ServiceObjectiveNameDS400 ...
-	ServiceObjectiveNameDS400 ServiceObjectiveName = "DS400"
-	// ServiceObjectiveNameDS500 ...
-	ServiceObjectiveNameDS500 ServiceObjectiveName = "DS500"
-	// ServiceObjectiveNameDS600 ...
-	ServiceObjectiveNameDS600 ServiceObjectiveName = "DS600"
-	// ServiceObjectiveNameDW100 ...
-	ServiceObjectiveNameDW100 ServiceObjectiveName = "DW100"
-	// ServiceObjectiveNameDW1000 ...
-	ServiceObjectiveNameDW1000 ServiceObjectiveName = "DW1000"
-	// ServiceObjectiveNameDW10000c ...
-	ServiceObjectiveNameDW10000c ServiceObjectiveName = "DW10000c"
-	// ServiceObjectiveNameDW1000c ...
-	ServiceObjectiveNameDW1000c ServiceObjectiveName = "DW1000c"
-	// ServiceObjectiveNameDW1200 ...
-	ServiceObjectiveNameDW1200 ServiceObjectiveName = "DW1200"
-	// ServiceObjectiveNameDW1500 ...
-	ServiceObjectiveNameDW1500 ServiceObjectiveName = "DW1500"
-	// ServiceObjectiveNameDW15000c ...
-	ServiceObjectiveNameDW15000c ServiceObjectiveName = "DW15000c"
-	// ServiceObjectiveNameDW1500c ...
-	ServiceObjectiveNameDW1500c ServiceObjectiveName = "DW1500c"
-	// ServiceObjectiveNameDW200 ...
-	ServiceObjectiveNameDW200 ServiceObjectiveName = "DW200"
-	// ServiceObjectiveNameDW2000 ...
-	ServiceObjectiveNameDW2000 ServiceObjectiveName = "DW2000"
-	// ServiceObjectiveNameDW2000c ...
-	ServiceObjectiveNameDW2000c ServiceObjectiveName = "DW2000c"
-	// ServiceObjectiveNameDW2500c ...
-	ServiceObjectiveNameDW2500c ServiceObjectiveName = "DW2500c"
-	// ServiceObjectiveNameDW300 ...
-	ServiceObjectiveNameDW300 ServiceObjectiveName = "DW300"
-	// ServiceObjectiveNameDW3000 ...
-	ServiceObjectiveNameDW3000 ServiceObjectiveName = "DW3000"
-	// ServiceObjectiveNameDW30000c ...
-	ServiceObjectiveNameDW30000c ServiceObjectiveName = "DW30000c"
-	// ServiceObjectiveNameDW3000c ...
-	ServiceObjectiveNameDW3000c ServiceObjectiveName = "DW3000c"
-	// ServiceObjectiveNameDW400 ...
-	ServiceObjectiveNameDW400 ServiceObjectiveName = "DW400"
-	// ServiceObjectiveNameDW500 ...
-	ServiceObjectiveNameDW500 ServiceObjectiveName = "DW500"
-	// ServiceObjectiveNameDW5000c ...
-	ServiceObjectiveNameDW5000c ServiceObjectiveName = "DW5000c"
-	// ServiceObjectiveNameDW600 ...
-	ServiceObjectiveNameDW600 ServiceObjectiveName = "DW600"
-	// ServiceObjectiveNameDW6000 ...
-	ServiceObjectiveNameDW6000 ServiceObjectiveName = "DW6000"
-	// ServiceObjectiveNameDW6000c ...
-	ServiceObjectiveNameDW6000c ServiceObjectiveName = "DW6000c"
-	// ServiceObjectiveNameDW7500c ...
-	ServiceObjectiveNameDW7500c ServiceObjectiveName = "DW7500c"
-	// ServiceObjectiveNameElasticPool ...
-	ServiceObjectiveNameElasticPool ServiceObjectiveName = "ElasticPool"
-	// ServiceObjectiveNameFree ...
-	ServiceObjectiveNameFree ServiceObjectiveName = "Free"
-	// ServiceObjectiveNameP1 ...
-	ServiceObjectiveNameP1 ServiceObjectiveName = "P1"
-	// ServiceObjectiveNameP11 ...
-	ServiceObjectiveNameP11 ServiceObjectiveName = "P11"
-	// ServiceObjectiveNameP15 ...
-	ServiceObjectiveNameP15 ServiceObjectiveName = "P15"
-	// ServiceObjectiveNameP2 ...
-	ServiceObjectiveNameP2 ServiceObjectiveName = "P2"
-	// ServiceObjectiveNameP3 ...
-	ServiceObjectiveNameP3 ServiceObjectiveName = "P3"
-	// ServiceObjectiveNameP4 ...
-	ServiceObjectiveNameP4 ServiceObjectiveName = "P4"
-	// ServiceObjectiveNameP6 ...
-	ServiceObjectiveNameP6 ServiceObjectiveName = "P6"
-	// ServiceObjectiveNamePRS1 ...
-	ServiceObjectiveNamePRS1 ServiceObjectiveName = "PRS1"
-	// ServiceObjectiveNamePRS2 ...
-	ServiceObjectiveNamePRS2 ServiceObjectiveName = "PRS2"
-	// ServiceObjectiveNamePRS4 ...
-	ServiceObjectiveNamePRS4 ServiceObjectiveName = "PRS4"
-	// ServiceObjectiveNamePRS6 ...
-	ServiceObjectiveNamePRS6 ServiceObjectiveName = "PRS6"
-	// ServiceObjectiveNameS0 ...
-	ServiceObjectiveNameS0 ServiceObjectiveName = "S0"
-	// ServiceObjectiveNameS1 ...
-	ServiceObjectiveNameS1 ServiceObjectiveName = "S1"
-	// ServiceObjectiveNameS12 ...
-	ServiceObjectiveNameS12 ServiceObjectiveName = "S12"
-	// ServiceObjectiveNameS2 ...
-	ServiceObjectiveNameS2 ServiceObjectiveName = "S2"
-	// ServiceObjectiveNameS3 ...
-	ServiceObjectiveNameS3 ServiceObjectiveName = "S3"
-	// ServiceObjectiveNameS4 ...
-	ServiceObjectiveNameS4 ServiceObjectiveName = "S4"
-	// ServiceObjectiveNameS6 ...
-	ServiceObjectiveNameS6 ServiceObjectiveName = "S6"
-	// ServiceObjectiveNameS7 ...
-	ServiceObjectiveNameS7 ServiceObjectiveName = "S7"
-	// ServiceObjectiveNameS9 ...
-	ServiceObjectiveNameS9 ServiceObjectiveName = "S9"
-	// ServiceObjectiveNameSystem ...
-	ServiceObjectiveNameSystem ServiceObjectiveName = "System"
-	// ServiceObjectiveNameSystem0 ...
-	ServiceObjectiveNameSystem0 ServiceObjectiveName = "System0"
-	// ServiceObjectiveNameSystem1 ...
-	ServiceObjectiveNameSystem1 ServiceObjectiveName = "System1"
-	// ServiceObjectiveNameSystem2 ...
-	ServiceObjectiveNameSystem2 ServiceObjectiveName = "System2"
-	// ServiceObjectiveNameSystem2L ...
-	ServiceObjectiveNameSystem2L ServiceObjectiveName = "System2L"
-	// ServiceObjectiveNameSystem3 ...
-	ServiceObjectiveNameSystem3 ServiceObjectiveName = "System3"
-	// ServiceObjectiveNameSystem3L ...
-	ServiceObjectiveNameSystem3L ServiceObjectiveName = "System3L"
-	// ServiceObjectiveNameSystem4 ...
-	ServiceObjectiveNameSystem4 ServiceObjectiveName = "System4"
-	// ServiceObjectiveNameSystem4L ...
-	ServiceObjectiveNameSystem4L ServiceObjectiveName = "System4L"
-)
-
-// PossibleServiceObjectiveNameValues returns an array of possible values for the ServiceObjectiveName const type.
-func PossibleServiceObjectiveNameValues() []ServiceObjectiveName {
-	return []ServiceObjectiveName{ServiceObjectiveNameBasic, ServiceObjectiveNameDS100, ServiceObjectiveNameDS1000, ServiceObjectiveNameDS1200, ServiceObjectiveNameDS1500, ServiceObjectiveNameDS200, ServiceObjectiveNameDS2000, ServiceObjectiveNameDS300, ServiceObjectiveNameDS400, ServiceObjectiveNameDS500, ServiceObjectiveNameDS600, ServiceObjectiveNameDW100, ServiceObjectiveNameDW1000, ServiceObjectiveNameDW10000c, ServiceObjectiveNameDW1000c, ServiceObjectiveNameDW1200, ServiceObjectiveNameDW1500, ServiceObjectiveNameDW15000c, ServiceObjectiveNameDW1500c, ServiceObjectiveNameDW200, ServiceObjectiveNameDW2000, ServiceObjectiveNameDW2000c, ServiceObjectiveNameDW2500c, ServiceObjectiveNameDW300, ServiceObjectiveNameDW3000, ServiceObjectiveNameDW30000c, ServiceObjectiveNameDW3000c, ServiceObjectiveNameDW400, ServiceObjectiveNameDW500, ServiceObjectiveNameDW5000c, ServiceObjectiveNameDW600, ServiceObjectiveNameDW6000, ServiceObjectiveNameDW6000c, ServiceObjectiveNameDW7500c, ServiceObjectiveNameElasticPool, ServiceObjectiveNameFree, ServiceObjectiveNameP1, ServiceObjectiveNameP11, ServiceObjectiveNameP15, ServiceObjectiveNameP2, ServiceObjectiveNameP3, ServiceObjectiveNameP4, ServiceObjectiveNameP6, ServiceObjectiveNamePRS1, ServiceObjectiveNamePRS2, ServiceObjectiveNamePRS4, ServiceObjectiveNamePRS6, ServiceObjectiveNameS0, ServiceObjectiveNameS1, ServiceObjectiveNameS12, ServiceObjectiveNameS2, ServiceObjectiveNameS3, ServiceObjectiveNameS4, ServiceObjectiveNameS6, ServiceObjectiveNameS7, ServiceObjectiveNameS9, ServiceObjectiveNameSystem, ServiceObjectiveNameSystem0, ServiceObjectiveNameSystem1, ServiceObjectiveNameSystem2, ServiceObjectiveNameSystem2L, ServiceObjectiveNameSystem3, ServiceObjectiveNameSystem3L, ServiceObjectiveNameSystem4, ServiceObjectiveNameSystem4L}
-}
-
-// StorageKeyType enumerates the values for storage key type.
-type StorageKeyType string
-
-const (
-	// SharedAccessKey ...
-	SharedAccessKey StorageKeyType = "SharedAccessKey"
-	// StorageAccessKey ...
-	StorageAccessKey StorageKeyType = "StorageAccessKey"
-)
-
-// PossibleStorageKeyTypeValues returns an array of possible values for the StorageKeyType const type.
-func PossibleStorageKeyTypeValues() []StorageKeyType {
-	return []StorageKeyType{SharedAccessKey, StorageAccessKey}
-}
-
-// TransparentDataEncryptionActivityStatus enumerates the values for transparent data encryption activity
-// status.
-type TransparentDataEncryptionActivityStatus string
-
-const (
-	// Decrypting ...
-	Decrypting TransparentDataEncryptionActivityStatus = "Decrypting"
-	// Encrypting ...
-	Encrypting TransparentDataEncryptionActivityStatus = "Encrypting"
-)
-
-// PossibleTransparentDataEncryptionActivityStatusValues returns an array of possible values for the TransparentDataEncryptionActivityStatus const type.
-func PossibleTransparentDataEncryptionActivityStatusValues() []TransparentDataEncryptionActivityStatus {
-	return []TransparentDataEncryptionActivityStatus{Decrypting, Encrypting}
-}
-
-// TransparentDataEncryptionStatus enumerates the values for transparent data encryption status.
-type TransparentDataEncryptionStatus string
-
-const (
-	// TransparentDataEncryptionStatusDisabled ...
-	TransparentDataEncryptionStatusDisabled TransparentDataEncryptionStatus = "Disabled"
-	// TransparentDataEncryptionStatusEnabled ...
-	TransparentDataEncryptionStatusEnabled TransparentDataEncryptionStatus = "Enabled"
-)
-
-// PossibleTransparentDataEncryptionStatusValues returns an array of possible values for the TransparentDataEncryptionStatus const type.
-func PossibleTransparentDataEncryptionStatusValues() []TransparentDataEncryptionStatus {
-	return []TransparentDataEncryptionStatus{TransparentDataEncryptionStatusDisabled, TransparentDataEncryptionStatusEnabled}
-}
-
-// UnitDefinitionType enumerates the values for unit definition type.
-type UnitDefinitionType string
-
-const (
-	// Bytes ...
-	Bytes UnitDefinitionType = "Bytes"
-	// BytesPerSecond ...
-	BytesPerSecond UnitDefinitionType = "BytesPerSecond"
-	// Count ...
-	Count UnitDefinitionType = "Count"
-	// CountPerSecond ...
-	CountPerSecond UnitDefinitionType = "CountPerSecond"
-	// Percent ...
-	Percent UnitDefinitionType = "Percent"
-	// Seconds ...
-	Seconds UnitDefinitionType = "Seconds"
-)
-
-// PossibleUnitDefinitionTypeValues returns an array of possible values for the UnitDefinitionType const type.
-func PossibleUnitDefinitionTypeValues() []UnitDefinitionType {
-	return []UnitDefinitionType{Bytes, BytesPerSecond, Count, CountPerSecond, Percent, Seconds}
-}
-
-// UnitType enumerates the values for unit type.
-type UnitType string
-
-const (
-	// UnitTypeBytes ...
-	UnitTypeBytes UnitType = "bytes"
-	// UnitTypeBytesPerSecond ...
-	UnitTypeBytesPerSecond UnitType = "bytesPerSecond"
-	// UnitTypeCount ...
-	UnitTypeCount UnitType = "count"
-	// UnitTypeCountPerSecond ...
-	UnitTypeCountPerSecond UnitType = "countPerSecond"
-	// UnitTypePercent ...
-	UnitTypePercent UnitType = "percent"
-	// UnitTypeSeconds ...
-	UnitTypeSeconds UnitType = "seconds"
-)
-
-// PossibleUnitTypeValues returns an array of possible values for the UnitType const type.
-func PossibleUnitTypeValues() []UnitType {
-	return []UnitType{UnitTypeBytes, UnitTypeBytesPerSecond, UnitTypeCount, UnitTypeCountPerSecond, UnitTypePercent, UnitTypeSeconds}
-}
-
 // Advisor database Advisor.
 type Advisor struct {
 	autorest.Response `json:"-"`
@@ -1081,6 +144,15 @@ type AdvisorProperties struct {
 	LastChecked *date.Time `json:"lastChecked,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AdvisorProperties.
+func (ap AdvisorProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.AutoExecuteValue != "" {
+		objectMap["autoExecuteValue"] = ap.AutoExecuteValue
+	}
+	return json.Marshal(objectMap)
+}
+
 // CheckNameAvailabilityRequest a request to check whether the specified name for a resource is available.
 type CheckNameAvailabilityRequest struct {
 	// Name - The name whose availability is to be checked.
@@ -1089,8 +161,7 @@ type CheckNameAvailabilityRequest struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// CheckNameAvailabilityResponse a response indicating whether the specified name for a resource is
-// available.
+// CheckNameAvailabilityResponse a response indicating whether the specified name for a resource is available.
 type CheckNameAvailabilityResponse struct {
 	autorest.Response `json:"-"`
 	// Available - READ-ONLY; True if the name is available, otherwise false.
@@ -1101,6 +172,12 @@ type CheckNameAvailabilityResponse struct {
 	Name *string `json:"name,omitempty"`
 	// Reason - READ-ONLY; The reason code explaining why the name is unavailable. Will be null if the name is available. Possible values include: 'Invalid', 'AlreadyExists'
 	Reason CheckNameAvailabilityReason `json:"reason,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResponse.
+func (cnar CheckNameAvailabilityResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Database represents a database.
@@ -1423,6 +500,54 @@ type DatabaseProperties struct {
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DatabaseProperties.
+func (dp DatabaseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dp.Collation != nil {
+		objectMap["collation"] = dp.Collation
+	}
+	if dp.CreateMode != "" {
+		objectMap["createMode"] = dp.CreateMode
+	}
+	if dp.SourceDatabaseID != nil {
+		objectMap["sourceDatabaseId"] = dp.SourceDatabaseID
+	}
+	if dp.SourceDatabaseDeletionDate != nil {
+		objectMap["sourceDatabaseDeletionDate"] = dp.SourceDatabaseDeletionDate
+	}
+	if dp.RestorePointInTime != nil {
+		objectMap["restorePointInTime"] = dp.RestorePointInTime
+	}
+	if dp.RecoveryServicesRecoveryPointResourceID != nil {
+		objectMap["recoveryServicesRecoveryPointResourceId"] = dp.RecoveryServicesRecoveryPointResourceID
+	}
+	if dp.Edition != "" {
+		objectMap["edition"] = dp.Edition
+	}
+	if dp.MaxSizeBytes != nil {
+		objectMap["maxSizeBytes"] = dp.MaxSizeBytes
+	}
+	if dp.RequestedServiceObjectiveID != nil {
+		objectMap["requestedServiceObjectiveId"] = dp.RequestedServiceObjectiveID
+	}
+	if dp.RequestedServiceObjectiveName != "" {
+		objectMap["requestedServiceObjectiveName"] = dp.RequestedServiceObjectiveName
+	}
+	if dp.ElasticPoolName != nil {
+		objectMap["elasticPoolName"] = dp.ElasticPoolName
+	}
+	if dp.ReadScale != "" {
+		objectMap["readScale"] = dp.ReadScale
+	}
+	if dp.SampleName != "" {
+		objectMap["sampleName"] = dp.SampleName
+	}
+	if dp.ZoneRedundant != nil {
+		objectMap["zoneRedundant"] = dp.ZoneRedundant
+	}
+	return json.Marshal(objectMap)
+}
+
 // DatabasesCreateImportOperationFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DatabasesCreateImportOperationFuture struct {
@@ -1599,8 +724,7 @@ type DatabaseSecurityAlertPolicyProperties struct {
 	UseServerDefault SecurityAlertPolicyUseServerDefault `json:"useServerDefault,omitempty"`
 }
 
-// DatabasesExportFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabasesExportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DatabasesExportFuture struct {
 	azure.Future
 }
@@ -1628,8 +752,7 @@ func (future *DatabasesExportFuture) Result(client DatabasesClient) (ier ImportE
 	return
 }
 
-// DatabasesImportFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabasesImportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DatabasesImportFuture struct {
 	azure.Future
 }
@@ -1657,8 +780,7 @@ func (future *DatabasesImportFuture) Result(client DatabasesClient) (ier ImportE
 	return
 }
 
-// DatabasesPauseFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabasesPauseFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DatabasesPauseFuture struct {
 	azure.Future
 }
@@ -1680,8 +802,7 @@ func (future *DatabasesPauseFuture) Result(client DatabasesClient) (ar autorest.
 	return
 }
 
-// DatabasesResumeFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabasesResumeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DatabasesResumeFuture struct {
 	azure.Future
 }
@@ -1703,8 +824,7 @@ func (future *DatabasesResumeFuture) Result(client DatabasesClient) (ar autorest
 	return
 }
 
-// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DatabasesUpdateFuture struct {
 	azure.Future
 }
@@ -1967,6 +1087,12 @@ type DatabaseUsage struct {
 	NextResetTime *date.Time `json:"nextResetTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DatabaseUsage.
+func (du DatabaseUsage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DatabaseUsageListResult the response to a list database metrics request.
 type DatabaseUsageListResult struct {
 	autorest.Response `json:"-"`
@@ -2079,6 +1205,18 @@ type DataMaskingPolicyProperties struct {
 	ApplicationPrincipals *string `json:"applicationPrincipals,omitempty"`
 	// MaskingLevel - READ-ONLY; The masking level. This is a legacy parameter and is no longer used.
 	MaskingLevel *string `json:"maskingLevel,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataMaskingPolicyProperties.
+func (dmpp DataMaskingPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dmpp.DataMaskingState != "" {
+		objectMap["dataMaskingState"] = dmpp.DataMaskingState
+	}
+	if dmpp.ExemptPrincipals != nil {
+		objectMap["exemptPrincipals"] = dmpp.ExemptPrincipals
+	}
+	return json.Marshal(objectMap)
 }
 
 // DataMaskingRule represents a database data masking rule.
@@ -2211,6 +1349,45 @@ type DataMaskingRuleProperties struct {
 	ReplacementString *string `json:"replacementString,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DataMaskingRuleProperties.
+func (dmrp DataMaskingRuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dmrp.AliasName != nil {
+		objectMap["aliasName"] = dmrp.AliasName
+	}
+	if dmrp.RuleState != "" {
+		objectMap["ruleState"] = dmrp.RuleState
+	}
+	if dmrp.SchemaName != nil {
+		objectMap["schemaName"] = dmrp.SchemaName
+	}
+	if dmrp.TableName != nil {
+		objectMap["tableName"] = dmrp.TableName
+	}
+	if dmrp.ColumnName != nil {
+		objectMap["columnName"] = dmrp.ColumnName
+	}
+	if dmrp.MaskingFunction != "" {
+		objectMap["maskingFunction"] = dmrp.MaskingFunction
+	}
+	if dmrp.NumberFrom != nil {
+		objectMap["numberFrom"] = dmrp.NumberFrom
+	}
+	if dmrp.NumberTo != nil {
+		objectMap["numberTo"] = dmrp.NumberTo
+	}
+	if dmrp.PrefixSize != nil {
+		objectMap["prefixSize"] = dmrp.PrefixSize
+	}
+	if dmrp.SuffixSize != nil {
+		objectMap["suffixSize"] = dmrp.SuffixSize
+	}
+	if dmrp.ReplacementString != nil {
+		objectMap["replacementString"] = dmrp.ReplacementString
+	}
+	return json.Marshal(objectMap)
+}
+
 // DisasterRecoveryConfiguration represents a disaster recovery configuration.
 type DisasterRecoveryConfiguration struct {
 	autorest.Response `json:"-"`
@@ -2295,8 +1472,8 @@ func (drc *DisasterRecoveryConfiguration) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DisasterRecoveryConfigurationListResult represents the response to a List disaster recovery
-// configuration request.
+// DisasterRecoveryConfigurationListResult represents the response to a List disaster recovery configuration
+// request.
 type DisasterRecoveryConfigurationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of disaster recovery configurations housed under the server.
@@ -2321,8 +1498,23 @@ type DisasterRecoveryConfigurationProperties struct {
 	Role DisasterRecoveryConfigurationRole `json:"role,omitempty"`
 }
 
-// DisasterRecoveryConfigurationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// MarshalJSON is the custom marshaler for DisasterRecoveryConfigurationProperties.
+func (drcp DisasterRecoveryConfigurationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if drcp.AutoFailover != "" {
+		objectMap["autoFailover"] = drcp.AutoFailover
+	}
+	if drcp.FailoverPolicy != "" {
+		objectMap["failoverPolicy"] = drcp.FailoverPolicy
+	}
+	if drcp.PartnerServerID != nil {
+		objectMap["partnerServerId"] = drcp.PartnerServerID
+	}
+	return json.Marshal(objectMap)
+}
+
+// DisasterRecoveryConfigurationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type DisasterRecoveryConfigurationsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2373,8 +1565,8 @@ func (future *DisasterRecoveryConfigurationsDeleteFuture) Result(client Disaster
 	return
 }
 
-// DisasterRecoveryConfigurationsFailoverAllowDataLossFuture an abstraction for monitoring and retrieving
-// the results of a long-running operation.
+// DisasterRecoveryConfigurationsFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type DisasterRecoveryConfigurationsFailoverAllowDataLossFuture struct {
 	azure.Future
 }
@@ -2396,8 +1588,8 @@ func (future *DisasterRecoveryConfigurationsFailoverAllowDataLossFuture) Result(
 	return
 }
 
-// DisasterRecoveryConfigurationsFailoverFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// DisasterRecoveryConfigurationsFailoverFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DisasterRecoveryConfigurationsFailoverFuture struct {
 	azure.Future
 }
@@ -2429,6 +1621,12 @@ type EditionCapability struct {
 	SupportedServiceLevelObjectives *[]ServiceObjectiveCapability `json:"supportedServiceLevelObjectives,omitempty"`
 	// ZoneRedundant - READ-ONLY; Whether or not zone redundancy is supported for the edition.
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EditionCapability.
+func (ec EditionCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ElasticPool represents a database elastic pool.
@@ -2680,6 +1878,12 @@ type ElasticPoolActivityProperties struct {
 	RequestedDtuGuarantee *int32 `json:"requestedDtuGuarantee,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ElasticPoolActivityProperties.
+func (epap ElasticPoolActivityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ElasticPoolDatabaseActivity represents the activity on an elastic pool.
 type ElasticPoolDatabaseActivity struct {
 	// Location - The geo-location where the resource lives
@@ -2808,6 +2012,12 @@ type ElasticPoolDatabaseActivityProperties struct {
 	State *string `json:"state,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ElasticPoolDatabaseActivityProperties.
+func (epdap ElasticPoolDatabaseActivityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ElasticPoolDtuCapability the Elastic Pool DTU capability.
 type ElasticPoolDtuCapability struct {
 	// Limit - READ-ONLY; The maximum size of the database (see 'unit' for the units).
@@ -2826,6 +2036,12 @@ type ElasticPoolDtuCapability struct {
 	SupportedPerDatabaseMaxDtus *[]ElasticPoolPerDatabaseMaxDtuCapability `json:"supportedPerDatabaseMaxDtus,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ElasticPoolDtuCapability.
+func (epdc ElasticPoolDtuCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ElasticPoolEditionCapability the elastic pool edition capabilities.
 type ElasticPoolEditionCapability struct {
 	// Name - READ-ONLY; The elastic pool edition name.
@@ -2836,6 +2052,12 @@ type ElasticPoolEditionCapability struct {
 	SupportedElasticPoolDtus *[]ElasticPoolDtuCapability `json:"supportedElasticPoolDtus,omitempty"`
 	// ZoneRedundant - READ-ONLY; Whether or not zone redundancy is supported for the edition.
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ElasticPoolEditionCapability.
+func (epec ElasticPoolEditionCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ElasticPoolListResult represents the response to a list elastic pool request.
@@ -2855,12 +2077,24 @@ type ElasticPoolPerDatabaseMaxDtuCapability struct {
 	SupportedPerDatabaseMinDtus *[]ElasticPoolPerDatabaseMinDtuCapability `json:"supportedPerDatabaseMinDtus,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ElasticPoolPerDatabaseMaxDtuCapability.
+func (eppdmdc ElasticPoolPerDatabaseMaxDtuCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ElasticPoolPerDatabaseMinDtuCapability the minimum per-database DTU capability.
 type ElasticPoolPerDatabaseMinDtuCapability struct {
 	// Limit - READ-ONLY; The maximum DTUs per database.
 	Limit *int64 `json:"limit,omitempty"`
 	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ElasticPoolPerDatabaseMinDtuCapability.
+func (eppdmdc ElasticPoolPerDatabaseMinDtuCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ElasticPoolProperties represents the properties of an elastic pool.
@@ -2883,8 +2117,32 @@ type ElasticPoolProperties struct {
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 }
 
-// ElasticPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// MarshalJSON is the custom marshaler for ElasticPoolProperties.
+func (epp ElasticPoolProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if epp.Edition != "" {
+		objectMap["edition"] = epp.Edition
+	}
+	if epp.Dtu != nil {
+		objectMap["dtu"] = epp.Dtu
+	}
+	if epp.DatabaseDtuMax != nil {
+		objectMap["databaseDtuMax"] = epp.DatabaseDtuMax
+	}
+	if epp.DatabaseDtuMin != nil {
+		objectMap["databaseDtuMin"] = epp.DatabaseDtuMin
+	}
+	if epp.StorageMB != nil {
+		objectMap["storageMB"] = epp.StorageMB
+	}
+	if epp.ZoneRedundant != nil {
+		objectMap["zoneRedundant"] = epp.ZoneRedundant
+	}
+	return json.Marshal(objectMap)
+}
+
+// ElasticPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ElasticPoolsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -3270,6 +2528,15 @@ type GeoBackupPolicyProperties struct {
 	StorageType *string `json:"storageType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GeoBackupPolicyProperties.
+func (gbpp GeoBackupPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gbpp.State != "" {
+		objectMap["state"] = gbpp.State
+	}
+	return json.Marshal(objectMap)
+}
+
 // ImportExportResponse response for Import/Export Get operation.
 type ImportExportResponse struct {
 	autorest.Response `json:"-"`
@@ -3363,6 +2630,12 @@ type ImportExportResponseProperties struct {
 	BlobURI *string `json:"blobUri,omitempty"`
 	// ErrorMessage - READ-ONLY; The error message returned from the server.
 	ErrorMessage *string `json:"errorMessage,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImportExportResponseProperties.
+func (ierp ImportExportResponseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ImportExtensionProperties represents the properties for an import operation
@@ -3496,6 +2769,12 @@ type LocationCapabilities struct {
 	SupportedServerVersions *[]ServerVersionCapability `json:"supportedServerVersions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LocationCapabilities.
+func (lc LocationCapabilities) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MaxSizeCapability the maximum size limits for a database.
 type MaxSizeCapability struct {
 	// Limit - READ-ONLY; The maximum size of the database (see 'unit' for the units).
@@ -3504,6 +2783,12 @@ type MaxSizeCapability struct {
 	Unit MaxSizeUnits `json:"unit,omitempty"`
 	// Status - READ-ONLY; The status of the maximum size capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MaxSizeCapability.
+func (msc MaxSizeCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Metric database metrics.
@@ -3522,12 +2807,24 @@ type Metric struct {
 	MetricValues *[]MetricValue `json:"metricValues,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Metric.
+func (mVar Metric) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MetricAvailability a metric availability value.
 type MetricAvailability struct {
 	// Retention - READ-ONLY; The length of retention for the database metric.
 	Retention *string `json:"retention,omitempty"`
 	// TimeGrain - READ-ONLY; The granularity of the database metric.
 	TimeGrain *string `json:"timeGrain,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricAvailability.
+func (ma MetricAvailability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MetricDefinition a database metric definition.
@@ -3542,6 +2839,12 @@ type MetricDefinition struct {
 	Unit UnitDefinitionType `json:"unit,omitempty"`
 	// MetricAvailabilities - READ-ONLY; The list of database metric availabilities for the metric.
 	MetricAvailabilities *[]MetricAvailability `json:"metricAvailabilities,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricDefinition.
+func (md MetricDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MetricDefinitionListResult the response to a list database metric definitions request.
@@ -3566,6 +2869,12 @@ type MetricName struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MetricName.
+func (mn MetricName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MetricValue represents database metrics.
 type MetricValue struct {
 	// Count - READ-ONLY; The number of values for the metric.
@@ -3580,6 +2889,12 @@ type MetricValue struct {
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Total - READ-ONLY; The total value of the metric.
 	Total *float64 `json:"total,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricValue.
+func (mv MetricValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Operation SQL REST API operation definition.
@@ -3612,8 +2927,14 @@ type OperationImpact struct {
 	ChangeValueRelative *float64 `json:"changeValueRelative,omitempty"`
 }
 
-// OperationListResult result of the request to list SQL operations. It contains a list of operations and a
-// URL link to get the next set of results.
+// MarshalJSON is the custom marshaler for OperationImpact.
+func (oi OperationImpact) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// OperationListResult result of the request to list SQL operations. It contains a list of operations and a URL
+// link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of SQL operations supported by the SQL resource provider.
@@ -3630,6 +2951,12 @@ type PerformanceLevel struct {
 	Value *int32 `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PerformanceLevel.
+func (pl PerformanceLevel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ProxyResource ARM proxy resource.
 type ProxyResource struct {
 	// ID - READ-ONLY; Resource ID.
@@ -3640,6 +2967,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // QueryInterval a database query.
 type QueryInterval struct {
 	// IntervalStartTime - READ-ONLY; The start time of the measurement interval (ISO8601 format).
@@ -3648,6 +2981,12 @@ type QueryInterval struct {
 	ExecutionCount *float64 `json:"executionCount,omitempty"`
 	// Metrics - READ-ONLY; The list of query metrics during this interval.
 	Metrics *[]QueryMetric `json:"metrics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryInterval.
+func (qi QueryInterval) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // QueryMetric a database query.
@@ -3662,12 +3001,24 @@ type QueryMetric struct {
 	Value *float64 `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for QueryMetric.
+func (qm QueryMetric) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // QueryStatistic a database query.
 type QueryStatistic struct {
 	// QueryID - READ-ONLY; The id of the query
 	QueryID *string `json:"queryId,omitempty"`
 	// Intervals - READ-ONLY; The list of query intervals.
 	Intervals *[]QueryInterval `json:"intervals,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryStatistic.
+func (qs QueryStatistic) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // QueryStatisticListResult represents the response to a get query request.
@@ -3685,6 +3036,12 @@ type QueryText struct {
 	Type *string `json:"type,omitempty"`
 	// QueryText - READ-ONLY; Query text.
 	QueryText *string `json:"queryText,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryText.
+func (qt QueryText) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // QueryTextListResult represents the response to a get query text request.
@@ -3767,8 +3124,8 @@ func (rep *RecommendedElasticPool) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RecommendedElasticPoolListMetricsResult represents the response to a list recommended elastic pool
-// metrics request.
+// RecommendedElasticPoolListMetricsResult represents the response to a list recommended elastic pool metrics
+// request.
 type RecommendedElasticPoolListMetricsResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of recommended elastic pools metrics.
@@ -3816,6 +3173,24 @@ type RecommendedElasticPoolProperties struct {
 	Databases *[]Database `json:"databases,omitempty"`
 	// Metrics - READ-ONLY; The list of databases housed in the server. Expanded property
 	Metrics *[]RecommendedElasticPoolMetric `json:"metrics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecommendedElasticPoolProperties.
+func (repp RecommendedElasticPoolProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if repp.Dtu != nil {
+		objectMap["dtu"] = repp.Dtu
+	}
+	if repp.DatabaseDtuMin != nil {
+		objectMap["databaseDtuMin"] = repp.DatabaseDtuMin
+	}
+	if repp.DatabaseDtuMax != nil {
+		objectMap["databaseDtuMax"] = repp.DatabaseDtuMax
+	}
+	if repp.StorageMB != nil {
+		objectMap["storageMB"] = repp.StorageMB
+	}
+	return json.Marshal(objectMap)
 }
 
 // RecommendedIndex represents a database recommended index.
@@ -3915,6 +3290,12 @@ type RecommendedIndexProperties struct {
 	ReportedImpact *[]OperationImpact `json:"reportedImpact,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RecommendedIndexProperties.
+func (rip RecommendedIndexProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RecoverableDatabase a recoverable database
 type RecoverableDatabase struct {
 	autorest.Response `json:"-"`
@@ -4005,6 +3386,12 @@ type RecoverableDatabaseProperties struct {
 	ElasticPoolName *string `json:"elasticPoolName,omitempty"`
 	// LastAvailableBackupDate - READ-ONLY; The last available backup date of the database (ISO8601 format)
 	LastAvailableBackupDate *date.Time `json:"lastAvailableBackupDate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecoverableDatabaseProperties.
+func (rdp RecoverableDatabaseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ReplicationLink represents a database replication link.
@@ -4122,8 +3509,14 @@ type ReplicationLinkProperties struct {
 	ReplicationState ReplicationState `json:"replicationState,omitempty"`
 }
 
-// ReplicationLinksFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// MarshalJSON is the custom marshaler for ReplicationLinkProperties.
+func (rlp ReplicationLinkProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ReplicationLinksFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ReplicationLinksFailoverAllowDataLossFuture struct {
 	azure.Future
 }
@@ -4145,8 +3538,8 @@ func (future *ReplicationLinksFailoverAllowDataLossFuture) Result(client Replica
 	return
 }
 
-// ReplicationLinksFailoverFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ReplicationLinksFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ReplicationLinksFailoverFuture struct {
 	azure.Future
 }
@@ -4199,6 +3592,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RestorableDroppedDatabase a restorable dropped database
@@ -4312,6 +3711,12 @@ type RestorableDroppedDatabaseProperties struct {
 	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RestorableDroppedDatabaseProperties.
+func (rddp RestorableDroppedDatabaseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RestorePoint a database restore point.
 type RestorePoint struct {
 	// RestorePointProperties - The properties of the restore point.
@@ -4399,6 +3804,12 @@ type RestorePointProperties struct {
 	RestorePointCreationDate *date.Time `json:"restorePointCreationDate,omitempty"`
 	// EarliestRestoreDate - READ-ONLY; Earliest restore time (ISO8601 format). Populated when restorePointType = DISCRETE. Null otherwise.
 	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RestorePointProperties.
+func (rpp RestorePointProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Server represents a server.
@@ -4605,8 +4016,8 @@ func (saaa *ServerAzureADAdministrator) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServerAzureADAdministratorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// ServerAzureADAdministratorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type ServerAzureADAdministratorsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -4773,8 +4184,17 @@ type ServerCommunicationLinkProperties struct {
 	PartnerServer *string `json:"partnerServer,omitempty"`
 }
 
-// ServerCommunicationLinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// MarshalJSON is the custom marshaler for ServerCommunicationLinkProperties.
+func (sclp ServerCommunicationLinkProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sclp.PartnerServer != nil {
+		objectMap["partnerServer"] = sclp.PartnerServer
+	}
+	return json.Marshal(objectMap)
+}
+
+// ServerCommunicationLinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ServerCommunicationLinksCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -4926,6 +4346,21 @@ type ServerProperties struct {
 	ExternalAdministratorLogin *string `json:"externalAdministratorLogin,omitempty"`
 	// State - READ-ONLY; The state of the server. Possible values include: 'ServerStateReady', 'ServerStateDisabled'
 	State ServerState `json:"state,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerProperties.
+func (sp ServerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.Version != "" {
+		objectMap["version"] = sp.Version
+	}
+	if sp.AdministratorLogin != nil {
+		objectMap["administratorLogin"] = sp.AdministratorLogin
+	}
+	if sp.AdministratorLoginPassword != nil {
+		objectMap["administratorLoginPassword"] = sp.AdministratorLoginPassword
+	}
+	return json.Marshal(objectMap)
 }
 
 // ServerTableAuditingPolicy a server table auditing policy.
@@ -5161,6 +4596,12 @@ type ServerUsage struct {
 	NextResetTime *date.Time `json:"nextResetTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServerUsage.
+func (su ServerUsage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ServerUsageListResult represents the response to a list server metrics request.
 type ServerUsageListResult struct {
 	autorest.Response `json:"-"`
@@ -5178,6 +4619,12 @@ type ServerVersionCapability struct {
 	SupportedEditions *[]EditionCapability `json:"supportedEditions,omitempty"`
 	// SupportedElasticPoolEditions - READ-ONLY; The list of supported elastic pool editions.
 	SupportedElasticPoolEditions *[]ElasticPoolEditionCapability `json:"supportedElasticPoolEditions,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerVersionCapability.
+func (svc ServerVersionCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServiceObjective represents a database service objective.
@@ -5365,6 +4812,12 @@ type ServiceObjectiveProperties struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServiceObjectiveProperties.
+func (sop ServiceObjectiveProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ServiceTierAdvisor represents a Service Tier Advisor.
 type ServiceTierAdvisor struct {
 	autorest.Response `json:"-"`
@@ -5484,6 +4937,12 @@ type ServiceTierAdvisorProperties struct {
 	Confidence *float64 `json:"confidence,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServiceTierAdvisorProperties.
+func (stap ServiceTierAdvisorProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SloUsageMetric a Slo Usage Metric.
 type SloUsageMetric struct {
 	// ServiceLevelObjective - READ-ONLY; The serviceLevelObjective for SLO usage metric. Possible values include: 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem0', 'ServiceObjectiveNameSystem1', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameSystem3', 'ServiceObjectiveNameSystem4', 'ServiceObjectiveNameSystem2L', 'ServiceObjectiveNameSystem3L', 'ServiceObjectiveNameSystem4L', 'ServiceObjectiveNameFree', 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameS4', 'ServiceObjectiveNameS6', 'ServiceObjectiveNameS7', 'ServiceObjectiveNameS9', 'ServiceObjectiveNameS12', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNamePRS1', 'ServiceObjectiveNamePRS2', 'ServiceObjectiveNamePRS4', 'ServiceObjectiveNamePRS6', 'ServiceObjectiveNameDW100', 'ServiceObjectiveNameDW200', 'ServiceObjectiveNameDW300', 'ServiceObjectiveNameDW400', 'ServiceObjectiveNameDW500', 'ServiceObjectiveNameDW600', 'ServiceObjectiveNameDW1000', 'ServiceObjectiveNameDW1200', 'ServiceObjectiveNameDW1000c', 'ServiceObjectiveNameDW1500', 'ServiceObjectiveNameDW1500c', 'ServiceObjectiveNameDW2000', 'ServiceObjectiveNameDW2000c', 'ServiceObjectiveNameDW3000', 'ServiceObjectiveNameDW2500c', 'ServiceObjectiveNameDW3000c', 'ServiceObjectiveNameDW6000', 'ServiceObjectiveNameDW5000c', 'ServiceObjectiveNameDW6000c', 'ServiceObjectiveNameDW7500c', 'ServiceObjectiveNameDW10000c', 'ServiceObjectiveNameDW15000c', 'ServiceObjectiveNameDW30000c', 'ServiceObjectiveNameDS100', 'ServiceObjectiveNameDS200', 'ServiceObjectiveNameDS300', 'ServiceObjectiveNameDS400', 'ServiceObjectiveNameDS500', 'ServiceObjectiveNameDS600', 'ServiceObjectiveNameDS1000', 'ServiceObjectiveNameDS1200', 'ServiceObjectiveNameDS1500', 'ServiceObjectiveNameDS2000', 'ServiceObjectiveNameElasticPool'
@@ -5492,6 +4951,12 @@ type SloUsageMetric struct {
 	ServiceLevelObjectiveID *uuid.UUID `json:"serviceLevelObjectiveId,omitempty"`
 	// InRangeTimeRatio - READ-ONLY; Gets or sets inRangeTimeRatio for SLO usage metric.
 	InRangeTimeRatio *float64 `json:"inRangeTimeRatio,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SloUsageMetric.
+func (sum SloUsageMetric) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TableAuditingPolicyProperties properties of a table auditing policy.
@@ -5538,6 +5003,12 @@ type TopQueries struct {
 	ObservedMetric QueryObservedMetricType `json:"observedMetric,omitempty"`
 	// Queries - READ-ONLY; The list of queries.
 	Queries *[]QueryStatistic `json:"queries,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TopQueries.
+func (tq TopQueries) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TopQueriesListResult represents the response to a get top queries request.
@@ -5755,6 +5226,12 @@ type TransparentDataEncryptionActivityProperties struct {
 	Status TransparentDataEncryptionActivityStatus `json:"status,omitempty"`
 	// PercentComplete - READ-ONLY; The percent complete of the transparent data encryption scan for a database.
 	PercentComplete *float64 `json:"percentComplete,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TransparentDataEncryptionActivityProperties.
+func (tdeap TransparentDataEncryptionActivityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TransparentDataEncryptionListResult represents the response to a list transparent data encryption

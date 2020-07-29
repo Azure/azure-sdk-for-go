@@ -74,6 +74,9 @@ func (client ListClient) IPAddressAggregatesByService(ctx context.Context, servi
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ListClient", "IPAddressAggregatesByService", resp, "Failure responding to request")
 	}
+	if result.iaa.hasNextLink() && result.iaa.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

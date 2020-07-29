@@ -246,6 +246,13 @@ const (
 	ScaleDirectionNone     ScaleDirection = original.ScaleDirectionNone
 )
 
+type ScaleRuleMetricDimensionOperationType = original.ScaleRuleMetricDimensionOperationType
+
+const (
+	ScaleRuleMetricDimensionOperationTypeEquals    ScaleRuleMetricDimensionOperationType = original.ScaleRuleMetricDimensionOperationTypeEquals
+	ScaleRuleMetricDimensionOperationTypeNotEquals ScaleRuleMetricDimensionOperationType = original.ScaleRuleMetricDimensionOperationTypeNotEquals
+)
+
 type ScaleType = original.ScaleType
 
 const (
@@ -443,6 +450,7 @@ type RuleWebhookAction = original.RuleWebhookAction
 type ScaleAction = original.ScaleAction
 type ScaleCapacity = original.ScaleCapacity
 type ScaleRule = original.ScaleRule
+type ScaleRuleMetricDimension = original.ScaleRuleMetricDimension
 type Schedule = original.Schedule
 type ScheduledQueryRulesClient = original.ScheduledQueryRulesClient
 type SenderAuthorization = original.SenderAuthorization
@@ -659,6 +667,9 @@ func PossibleResultTypeValues() []ResultType {
 }
 func PossibleScaleDirectionValues() []ScaleDirection {
 	return original.PossibleScaleDirectionValues()
+}
+func PossibleScaleRuleMetricDimensionOperationTypeValues() []ScaleRuleMetricDimensionOperationType {
+	return original.PossibleScaleRuleMetricDimensionOperationTypeValues()
 }
 func PossibleScaleTypeValues() []ScaleType {
 	return original.PossibleScaleTypeValues()

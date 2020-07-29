@@ -299,6 +299,9 @@ func (client HanaInstancesClient) List(ctx context.Context) (result HanaInstance
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "List", resp, "Failure responding to request")
 	}
+	if result.hilr.hasNextLink() && result.hilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -409,6 +412,9 @@ func (client HanaInstancesClient) ListByResourceGroup(ctx context.Context, resou
 	result.hilr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.hilr.hasNextLink() && result.hilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

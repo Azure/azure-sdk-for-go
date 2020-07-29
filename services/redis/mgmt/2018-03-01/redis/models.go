@@ -31,166 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis"
 
-// DayOfWeek enumerates the values for day of week.
-type DayOfWeek string
-
-const (
-	// Everyday ...
-	Everyday DayOfWeek = "Everyday"
-	// Friday ...
-	Friday DayOfWeek = "Friday"
-	// Monday ...
-	Monday DayOfWeek = "Monday"
-	// Saturday ...
-	Saturday DayOfWeek = "Saturday"
-	// Sunday ...
-	Sunday DayOfWeek = "Sunday"
-	// Thursday ...
-	Thursday DayOfWeek = "Thursday"
-	// Tuesday ...
-	Tuesday DayOfWeek = "Tuesday"
-	// Wednesday ...
-	Wednesday DayOfWeek = "Wednesday"
-	// Weekend ...
-	Weekend DayOfWeek = "Weekend"
-)
-
-// PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
-func PossibleDayOfWeekValues() []DayOfWeek {
-	return []DayOfWeek{Everyday, Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday, Weekend}
-}
-
-// KeyType enumerates the values for key type.
-type KeyType string
-
-const (
-	// Primary ...
-	Primary KeyType = "Primary"
-	// Secondary ...
-	Secondary KeyType = "Secondary"
-)
-
-// PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
-func PossibleKeyTypeValues() []KeyType {
-	return []KeyType{Primary, Secondary}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Disabled ...
-	Disabled ProvisioningState = "Disabled"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Linking ...
-	Linking ProvisioningState = "Linking"
-	// Provisioning ...
-	Provisioning ProvisioningState = "Provisioning"
-	// RecoveringScaleFailure ...
-	RecoveringScaleFailure ProvisioningState = "RecoveringScaleFailure"
-	// Scaling ...
-	Scaling ProvisioningState = "Scaling"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Unlinking ...
-	Unlinking ProvisioningState = "Unlinking"
-	// Unprovisioning ...
-	Unprovisioning ProvisioningState = "Unprovisioning"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Creating, Deleting, Disabled, Failed, Linking, Provisioning, RecoveringScaleFailure, Scaling, Succeeded, Unlinking, Unprovisioning, Updating}
-}
-
-// RebootType enumerates the values for reboot type.
-type RebootType string
-
-const (
-	// AllNodes ...
-	AllNodes RebootType = "AllNodes"
-	// PrimaryNode ...
-	PrimaryNode RebootType = "PrimaryNode"
-	// SecondaryNode ...
-	SecondaryNode RebootType = "SecondaryNode"
-)
-
-// PossibleRebootTypeValues returns an array of possible values for the RebootType const type.
-func PossibleRebootTypeValues() []RebootType {
-	return []RebootType{AllNodes, PrimaryNode, SecondaryNode}
-}
-
-// ReplicationRole enumerates the values for replication role.
-type ReplicationRole string
-
-const (
-	// ReplicationRolePrimary ...
-	ReplicationRolePrimary ReplicationRole = "Primary"
-	// ReplicationRoleSecondary ...
-	ReplicationRoleSecondary ReplicationRole = "Secondary"
-)
-
-// PossibleReplicationRoleValues returns an array of possible values for the ReplicationRole const type.
-func PossibleReplicationRoleValues() []ReplicationRole {
-	return []ReplicationRole{ReplicationRolePrimary, ReplicationRoleSecondary}
-}
-
-// SkuFamily enumerates the values for sku family.
-type SkuFamily string
-
-const (
-	// C ...
-	C SkuFamily = "C"
-	// P ...
-	P SkuFamily = "P"
-)
-
-// PossibleSkuFamilyValues returns an array of possible values for the SkuFamily const type.
-func PossibleSkuFamilyValues() []SkuFamily {
-	return []SkuFamily{C, P}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// Basic ...
-	Basic SkuName = "Basic"
-	// Premium ...
-	Premium SkuName = "Premium"
-	// Standard ...
-	Standard SkuName = "Standard"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{Basic, Premium, Standard}
-}
-
-// TLSVersion enumerates the values for tls version.
-type TLSVersion string
-
-const (
-	// OneFullStopOne ...
-	OneFullStopOne TLSVersion = "1.1"
-	// OneFullStopTwo ...
-	OneFullStopTwo TLSVersion = "1.2"
-	// OneFullStopZero ...
-	OneFullStopZero TLSVersion = "1.0"
-)
-
-// PossibleTLSVersionValues returns an array of possible values for the TLSVersion const type.
-func PossibleTLSVersionValues() []TLSVersion {
-	return []TLSVersion{OneFullStopOne, OneFullStopTwo, OneFullStopZero}
-}
-
 // AccessKeys redis cache access keys.
 type AccessKeys struct {
 	autorest.Response `json:"-"`
@@ -198,6 +38,12 @@ type AccessKeys struct {
 	PrimaryKey *string `json:"primaryKey,omitempty"`
 	// SecondaryKey - READ-ONLY; The current secondary key that clients can use to authenticate with Redis cache.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccessKeys.
+func (ak AccessKeys) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CheckNameAvailabilityParameters parameters body to pass for resource name availability check.
@@ -456,8 +302,8 @@ type ExportRDBParameters struct {
 	Container *string `json:"container,omitempty"`
 }
 
-// FirewallRule a firewall rule on a redis cache has a name, and describes a contiguous range of IP
-// addresses permitted to connect
+// FirewallRule a firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses
+// permitted to connect
 type FirewallRule struct {
 	autorest.Response `json:"-"`
 	// FirewallRuleProperties - redis cache firewall rule properties
@@ -578,6 +424,15 @@ type FirewallRuleListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FirewallRuleListResult.
+func (frlr FirewallRuleListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if frlr.Value != nil {
+		objectMap["value"] = frlr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // FirewallRuleListResultIterator provides access to a complete listing of FirewallRule values.
 type FirewallRuleListResultIterator struct {
 	i    int
@@ -646,10 +501,15 @@ func (frlr FirewallRuleListResult) IsEmpty() bool {
 	return frlr.Value == nil || len(*frlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (frlr FirewallRuleListResult) hasNextLink() bool {
+	return frlr.NextLink != nil && len(*frlr.NextLink) != 0
+}
+
 // firewallRuleListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (frlr FirewallRuleListResult) firewallRuleListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if frlr.NextLink == nil || len(to.String(frlr.NextLink)) < 1 {
+	if !frlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -677,11 +537,16 @@ func (page *FirewallRuleListResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.frlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.frlr)
+		if err != nil {
+			return err
+		}
+		page.frlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.frlr = next
 	return nil
 }
 
@@ -730,6 +595,12 @@ type ForceRebootResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ForceRebootResponse.
+func (frr ForceRebootResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImportDataFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ImportDataFuture struct {
 	azure.Future
@@ -764,6 +635,12 @@ type ImportRDBParameters struct {
 type LinkedServer struct {
 	// ID - READ-ONLY; Linked server Id.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LinkedServer.
+func (ls LinkedServer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // LinkedServerCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -856,6 +733,21 @@ type LinkedServerProperties struct {
 	ServerRole ReplicationRole `json:"serverRole,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LinkedServerProperties.
+func (lsp LinkedServerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lsp.LinkedRedisCacheID != nil {
+		objectMap["linkedRedisCacheId"] = lsp.LinkedRedisCacheID
+	}
+	if lsp.LinkedRedisCacheLocation != nil {
+		objectMap["linkedRedisCacheLocation"] = lsp.LinkedRedisCacheLocation
+	}
+	if lsp.ServerRole != "" {
+		objectMap["serverRole"] = lsp.ServerRole
+	}
+	return json.Marshal(objectMap)
+}
+
 // LinkedServerWithProperties response to put/get linked server (with properties) for Redis cache.
 type LinkedServerWithProperties struct {
 	autorest.Response `json:"-"`
@@ -938,8 +830,17 @@ type LinkedServerWithPropertiesList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// LinkedServerWithPropertiesListIterator provides access to a complete listing of
-// LinkedServerWithProperties values.
+// MarshalJSON is the custom marshaler for LinkedServerWithPropertiesList.
+func (lswpl LinkedServerWithPropertiesList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lswpl.Value != nil {
+		objectMap["value"] = lswpl.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// LinkedServerWithPropertiesListIterator provides access to a complete listing of LinkedServerWithProperties
+// values.
 type LinkedServerWithPropertiesListIterator struct {
 	i    int
 	page LinkedServerWithPropertiesListPage
@@ -1007,10 +908,15 @@ func (lswpl LinkedServerWithPropertiesList) IsEmpty() bool {
 	return lswpl.Value == nil || len(*lswpl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lswpl LinkedServerWithPropertiesList) hasNextLink() bool {
+	return lswpl.NextLink != nil && len(*lswpl.NextLink) != 0
+}
+
 // linkedServerWithPropertiesListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lswpl LinkedServerWithPropertiesList) linkedServerWithPropertiesListPreparer(ctx context.Context) (*http.Request, error) {
-	if lswpl.NextLink == nil || len(to.String(lswpl.NextLink)) < 1 {
+	if !lswpl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1038,11 +944,16 @@ func (page *LinkedServerWithPropertiesListPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lswpl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lswpl)
+		if err != nil {
+			return err
+		}
+		page.lswpl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lswpl = next
 	return nil
 }
 
@@ -1083,6 +994,15 @@ type ListResult struct {
 	Value *[]ResourceType `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link for next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListResult.
+func (lr ListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lr.Value != nil {
+		objectMap["value"] = lr.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // ListResultIterator provides access to a complete listing of ResourceType values.
@@ -1153,10 +1073,15 @@ func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1184,11 +1109,16 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lr = next
 	return nil
 }
 
@@ -1231,6 +1161,15 @@ type NotificationListResponse struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NotificationListResponse.
+func (nlr NotificationListResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nlr.Value != nil {
+		objectMap["value"] = nlr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // Operation REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
@@ -1251,14 +1190,23 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult result of the request to list REST API operations. It contains a list of operations
-// and a URL nextLink to get the next set of results.
+// OperationListResult result of the request to list REST API operations. It contains a list of operations and
+// a URL nextLink to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of operations supported by the resource provider.
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if olr.Value != nil {
+		objectMap["value"] = olr.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -1329,10 +1277,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1360,11 +1313,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -1480,6 +1438,15 @@ type PatchScheduleListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PatchScheduleListResult.
+func (pslr PatchScheduleListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pslr.Value != nil {
+		objectMap["value"] = pslr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // PatchScheduleListResultIterator provides access to a complete listing of PatchSchedule values.
 type PatchScheduleListResultIterator struct {
 	i    int
@@ -1548,10 +1515,15 @@ func (pslr PatchScheduleListResult) IsEmpty() bool {
 	return pslr.Value == nil || len(*pslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pslr PatchScheduleListResult) hasNextLink() bool {
+	return pslr.NextLink != nil && len(*pslr.NextLink) != 0
+}
+
 // patchScheduleListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pslr PatchScheduleListResult) patchScheduleListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if pslr.NextLink == nil || len(to.String(pslr.NextLink)) < 1 {
+	if !pslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1579,11 +1551,16 @@ func (page *PatchScheduleListResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pslr)
+		if err != nil {
+			return err
+		}
+		page.pslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pslr = next
 	return nil
 }
 
@@ -1692,6 +1669,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RebootParameters specifies which Redis node(s) to reboot.
 type RebootParameters struct {
 	// RebootType - Which Redis node(s) to reboot. Depending on this value data loss is possible. Possible values include: 'PrimaryNode', 'SecondaryNode', 'AllNodes'
@@ -1714,6 +1697,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceType a single Redis item in List or Get Operation.
@@ -1837,7 +1826,7 @@ type ScheduleEntries struct {
 	ScheduleEntries *[]ScheduleEntry `json:"scheduleEntries,omitempty"`
 }
 
-// ScheduleEntry patch schedule entry for a Premium Redis Cache.
+// ScheduleEntry patch schedule entry for a Redis Cache.
 type ScheduleEntry struct {
 	// DayOfWeek - Day of the week when a cache can be patched. Possible values include: 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Everyday', 'Weekend'
 	DayOfWeek DayOfWeek `json:"dayOfWeek,omitempty"`

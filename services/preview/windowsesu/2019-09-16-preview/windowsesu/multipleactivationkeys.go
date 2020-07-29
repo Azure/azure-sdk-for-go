@@ -344,6 +344,9 @@ func (client MultipleActivationKeysClient) List(ctx context.Context) (result Mul
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "List", resp, "Failure responding to request")
 	}
+	if result.makl.hasNextLink() && result.makl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -463,6 +466,9 @@ func (client MultipleActivationKeysClient) ListByResourceGroup(ctx context.Conte
 	result.makl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.makl.hasNextLink() && result.makl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

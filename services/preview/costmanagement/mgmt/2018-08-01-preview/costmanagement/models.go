@@ -30,242 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/costmanagement/mgmt/2018-08-01-preview/costmanagement"
 
-// AlertCategory enumerates the values for alert category.
-type AlertCategory string
-
-const (
-	// Billing ...
-	Billing AlertCategory = "Billing"
-	// Cost ...
-	Cost AlertCategory = "Cost"
-	// Usage ...
-	Usage AlertCategory = "Usage"
-)
-
-// PossibleAlertCategoryValues returns an array of possible values for the AlertCategory const type.
-func PossibleAlertCategoryValues() []AlertCategory {
-	return []AlertCategory{Billing, Cost, Usage}
-}
-
-// AlertCriteria enumerates the values for alert criteria.
-type AlertCriteria string
-
-const (
-	// CostThresholdExceeded ...
-	CostThresholdExceeded AlertCriteria = "CostThresholdExceeded"
-	// CreditThresholdReached ...
-	CreditThresholdReached AlertCriteria = "CreditThresholdReached"
-	// UsageThresholdExceeded ...
-	UsageThresholdExceeded AlertCriteria = "UsageThresholdExceeded"
-)
-
-// PossibleAlertCriteriaValues returns an array of possible values for the AlertCriteria const type.
-func PossibleAlertCriteriaValues() []AlertCriteria {
-	return []AlertCriteria{CostThresholdExceeded, CreditThresholdReached, UsageThresholdExceeded}
-}
-
-// AlertSource enumerates the values for alert source.
-type AlertSource string
-
-const (
-	// Preset ...
-	Preset AlertSource = "Preset"
-	// User ...
-	User AlertSource = "User"
-)
-
-// PossibleAlertSourceValues returns an array of possible values for the AlertSource const type.
-func PossibleAlertSourceValues() []AlertSource {
-	return []AlertSource{Preset, User}
-}
-
-// AlertStatus enumerates the values for alert status.
-type AlertStatus string
-
-const (
-	// Active ...
-	Active AlertStatus = "Active"
-	// Dismissed ...
-	Dismissed AlertStatus = "Dismissed"
-	// Overridden ...
-	Overridden AlertStatus = "Overridden"
-	// Resolved ...
-	Resolved AlertStatus = "Resolved"
-)
-
-// PossibleAlertStatusValues returns an array of possible values for the AlertStatus const type.
-func PossibleAlertStatusValues() []AlertStatus {
-	return []AlertStatus{Active, Dismissed, Overridden, Resolved}
-}
-
-// AlertType enumerates the values for alert type.
-type AlertType string
-
-const (
-	// Budget ...
-	Budget AlertType = "Budget"
-	// Credit ...
-	Credit AlertType = "Credit"
-	// Invoice ...
-	Invoice AlertType = "Invoice"
-)
-
-// PossibleAlertTypeValues returns an array of possible values for the AlertType const type.
-func PossibleAlertTypeValues() []AlertType {
-	return []AlertType{Budget, Credit, Invoice}
-}
-
-// ConnectorStatus enumerates the values for connector status.
-type ConnectorStatus string
-
-const (
-	// ConnectorStatusActive ...
-	ConnectorStatusActive ConnectorStatus = "active"
-	// ConnectorStatusError ...
-	ConnectorStatusError ConnectorStatus = "error"
-	// ConnectorStatusSuspended ...
-	ConnectorStatusSuspended ConnectorStatus = "suspended"
-)
-
-// PossibleConnectorStatusValues returns an array of possible values for the ConnectorStatus const type.
-func PossibleConnectorStatusValues() []ConnectorStatus {
-	return []ConnectorStatus{ConnectorStatusActive, ConnectorStatusError, ConnectorStatusSuspended}
-}
-
-// ExecutionStatus enumerates the values for execution status.
-type ExecutionStatus string
-
-const (
-	// Completed ...
-	Completed ExecutionStatus = "Completed"
-	// DataNotAvailable ...
-	DataNotAvailable ExecutionStatus = "DataNotAvailable"
-	// Failed ...
-	Failed ExecutionStatus = "Failed"
-	// InProgress ...
-	InProgress ExecutionStatus = "InProgress"
-	// NewDataNotAvailable ...
-	NewDataNotAvailable ExecutionStatus = "NewDataNotAvailable"
-	// Queued ...
-	Queued ExecutionStatus = "Queued"
-	// Timeout ...
-	Timeout ExecutionStatus = "Timeout"
-)
-
-// PossibleExecutionStatusValues returns an array of possible values for the ExecutionStatus const type.
-func PossibleExecutionStatusValues() []ExecutionStatus {
-	return []ExecutionStatus{Completed, DataNotAvailable, Failed, InProgress, NewDataNotAvailable, Queued, Timeout}
-}
-
-// ExecutionType enumerates the values for execution type.
-type ExecutionType string
-
-const (
-	// OnDemand ...
-	OnDemand ExecutionType = "OnDemand"
-	// Scheduled ...
-	Scheduled ExecutionType = "Scheduled"
-)
-
-// PossibleExecutionTypeValues returns an array of possible values for the ExecutionType const type.
-func PossibleExecutionTypeValues() []ExecutionType {
-	return []ExecutionType{OnDemand, Scheduled}
-}
-
-// FormatType enumerates the values for format type.
-type FormatType string
-
-const (
-	// Csv ...
-	Csv FormatType = "Csv"
-)
-
-// PossibleFormatTypeValues returns an array of possible values for the FormatType const type.
-func PossibleFormatTypeValues() []FormatType {
-	return []FormatType{Csv}
-}
-
-// GranularityType enumerates the values for granularity type.
-type GranularityType string
-
-const (
-	// Daily ...
-	Daily GranularityType = "Daily"
-	// Hourly ...
-	Hourly GranularityType = "Hourly"
-)
-
-// PossibleGranularityTypeValues returns an array of possible values for the GranularityType const type.
-func PossibleGranularityTypeValues() []GranularityType {
-	return []GranularityType{Daily, Hourly}
-}
-
-// RecurrenceType enumerates the values for recurrence type.
-type RecurrenceType string
-
-const (
-	// RecurrenceTypeAnnually ...
-	RecurrenceTypeAnnually RecurrenceType = "Annually"
-	// RecurrenceTypeDaily ...
-	RecurrenceTypeDaily RecurrenceType = "Daily"
-	// RecurrenceTypeMonthly ...
-	RecurrenceTypeMonthly RecurrenceType = "Monthly"
-	// RecurrenceTypeWeekly ...
-	RecurrenceTypeWeekly RecurrenceType = "Weekly"
-)
-
-// PossibleRecurrenceTypeValues returns an array of possible values for the RecurrenceType const type.
-func PossibleRecurrenceTypeValues() []RecurrenceType {
-	return []RecurrenceType{RecurrenceTypeAnnually, RecurrenceTypeDaily, RecurrenceTypeMonthly, RecurrenceTypeWeekly}
-}
-
-// ReportColumnType enumerates the values for report column type.
-type ReportColumnType string
-
-const (
-	// ReportColumnTypeDimension ...
-	ReportColumnTypeDimension ReportColumnType = "Dimension"
-	// ReportColumnTypeTag ...
-	ReportColumnTypeTag ReportColumnType = "Tag"
-)
-
-// PossibleReportColumnTypeValues returns an array of possible values for the ReportColumnType const type.
-func PossibleReportColumnTypeValues() []ReportColumnType {
-	return []ReportColumnType{ReportColumnTypeDimension, ReportColumnTypeTag}
-}
-
-// StatusType enumerates the values for status type.
-type StatusType string
-
-const (
-	// StatusTypeActive ...
-	StatusTypeActive StatusType = "Active"
-	// StatusTypeInactive ...
-	StatusTypeInactive StatusType = "Inactive"
-)
-
-// PossibleStatusTypeValues returns an array of possible values for the StatusType const type.
-func PossibleStatusTypeValues() []StatusType {
-	return []StatusType{StatusTypeActive, StatusTypeInactive}
-}
-
-// TimeframeType enumerates the values for timeframe type.
-type TimeframeType string
-
-const (
-	// Custom ...
-	Custom TimeframeType = "Custom"
-	// MonthToDate ...
-	MonthToDate TimeframeType = "MonthToDate"
-	// WeekToDate ...
-	WeekToDate TimeframeType = "WeekToDate"
-)
-
-// PossibleTimeframeTypeValues returns an array of possible values for the TimeframeType const type.
-func PossibleTimeframeTypeValues() []TimeframeType {
-	return []TimeframeType{Custom, MonthToDate, WeekToDate}
-}
-
 // Alert the Alert model definition
 type Alert struct {
 	autorest.Response `json:"-"`
@@ -349,6 +113,12 @@ type AlertDefinition struct {
 	Criteria AlertCriteria `json:"criteria,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AlertDefinition.
+func (ad AlertDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AlertListResult result of listing alerts. It contains a list of available alerts in the scope provided.
 type AlertListResult struct {
 	autorest.Response `json:"-"`
@@ -356,6 +126,12 @@ type AlertListResult struct {
 	Value *[]Alert `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URI to fetch the next page of Alerts.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AlertListResult.
+func (alr AlertListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AlertListResultIterator provides access to a complete listing of Alert values.
@@ -426,10 +202,15 @@ func (alr AlertListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (alr AlertListResult) hasNextLink() bool {
+	return alr.NextLink != nil && len(*alr.NextLink) != 0
+}
+
 // alertListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (alr AlertListResult) alertListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
+	if !alr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -457,11 +238,16 @@ func (page *AlertListResultPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.alr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.alr)
+		if err != nil {
+			return err
+		}
+		page.alr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.alr = next
 	return nil
 }
 
@@ -552,6 +338,12 @@ type ConnectorCollectionErrorInfo struct {
 	ErrorStartTime *date.Time `json:"errorStartTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ConnectorCollectionErrorInfo.
+func (ccei ConnectorCollectionErrorInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ConnectorCollectionInfo collection and ingestion information
 type ConnectorCollectionInfo struct {
 	// LastRun - READ-ONLY; Last time the data acquisition process completed (even if no new data was found)
@@ -562,6 +354,15 @@ type ConnectorCollectionInfo struct {
 	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
 	// Error - Error information of last collection
 	Error *ConnectorCollectionErrorInfo `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectorCollectionInfo.
+func (cci ConnectorCollectionInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cci.Error != nil {
+		objectMap["error"] = cci.Error
+	}
+	return json.Marshal(objectMap)
 }
 
 // ConnectorDefinition the Connector model definition
@@ -687,6 +488,12 @@ type ConnectorDefinitionListResult struct {
 	Value *[]ConnectorDefinition `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ConnectorDefinitionListResult.
+func (cdlr ConnectorDefinitionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ConnectorProperties the properties of a Connector
 type ConnectorProperties struct {
 	// DisplayName - Connector DisplayName (defaults to Name)
@@ -707,6 +514,27 @@ type ConnectorProperties struct {
 	Status ConnectorStatus `json:"status,omitempty"`
 	// Collection - READ-ONLY; Collection information
 	Collection *ConnectorCollectionInfo `json:"collection,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectorProperties.
+func (cp ConnectorProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.DisplayName != nil {
+		objectMap["displayName"] = cp.DisplayName
+	}
+	if cp.CredentialsKey != nil {
+		objectMap["credentialsKey"] = cp.CredentialsKey
+	}
+	if cp.CredentialsSecret != nil {
+		objectMap["credentialsSecret"] = cp.CredentialsSecret
+	}
+	if cp.ReportID != nil {
+		objectMap["reportId"] = cp.ReportID
+	}
+	if cp.Status != "" {
+		objectMap["status"] = cp.Status
+	}
+	return json.Marshal(objectMap)
 }
 
 // Dimension ...
@@ -808,6 +636,12 @@ type DimensionsListResult struct {
 	Value *[]Dimension `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DimensionsListResult.
+func (dlr DimensionsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorBase the details of the error.
 type ErrorBase struct {
 	// Code - READ-ONLY; A machine readable error code.
@@ -816,6 +650,12 @@ type ErrorBase struct {
 	Message *string `json:"message,omitempty"`
 	// Target - READ-ONLY; Indicates which property in the request is responsible for the error.
 	Target *string `json:"target,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorBase.
+func (eb ErrorBase) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorDetails the details of the error.
@@ -828,6 +668,18 @@ type ErrorDetails struct {
 	Target *string `json:"target,omitempty"`
 	// Details - error details.
 	Details *[]ErrorBase `json:"details,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ed.Target != nil {
+		objectMap["target"] = ed.Target
+	}
+	if ed.Details != nil {
+		objectMap["details"] = ed.Details
+	}
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse error response indicates that the service is not able to process the incoming request. The
@@ -845,6 +697,15 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
 	// Provider - READ-ONLY; Service provider: Microsoft.CostManagement.
@@ -855,14 +716,26 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of listing CostManagement operations. It contains a list of operations and a
-// URL link to get the next set of results.
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// OperationListResult result of listing CostManagement operations. It contains a list of operations and a URL
+// link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of CostManagement operations supported by the Microsoft.CostManagement resource provider.
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -933,10 +806,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -964,11 +842,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -1103,6 +986,12 @@ type QueryResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of usage data.
 	Value *[]Query `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryResult.
+func (qr QueryResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Report a report resource.
@@ -1364,6 +1253,12 @@ type ReportExecutionListResult struct {
 	Value *[]ReportExecution `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ReportExecutionListResult.
+func (relr ReportExecutionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ReportExecutionProperties the properties of the report execution.
 type ReportExecutionProperties struct {
 	// ExecutionType - The type of the report execution. Possible values include: 'OnDemand', 'Scheduled'
@@ -1405,12 +1300,17 @@ type ReportGrouping struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// ReportListResult result of listing reports. It contains a list of available reports in the scope
-// provided.
+// ReportListResult result of listing reports. It contains a list of available reports in the scope provided.
 type ReportListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of reports.
 	Value *[]Report `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReportListResult.
+func (rlr ReportListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ReportProperties the properties of the report.

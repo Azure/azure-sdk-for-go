@@ -26,72 +26,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/personalizer/v1.0/personalizer"
 
-// ErrorCode enumerates the values for error code.
-type ErrorCode string
-
-const (
-	// BadRequest Request could not be understood by the server.
-	BadRequest ErrorCode = "BadRequest"
-	// EvaluationNotFound Evaluation not found.
-	EvaluationNotFound ErrorCode = "EvaluationNotFound"
-	// FrontEndNotFound Front end not found.
-	FrontEndNotFound ErrorCode = "FrontEndNotFound"
-	// InternalServerError A generic error has occurred on the server.
-	InternalServerError ErrorCode = "InternalServerError"
-	// InvalidContainer SAS Uri must be the Uri to a container that has write permissions.
-	InvalidContainer ErrorCode = "InvalidContainer"
-	// InvalidEvaluationContract Invalid evaluation contract.
-	InvalidEvaluationContract ErrorCode = "InvalidEvaluationContract"
-	// InvalidEventIDToActivate Invalid activate event request.
-	InvalidEventIDToActivate ErrorCode = "InvalidEventIdToActivate"
-	// InvalidExportLogsRequest Invalid export logs request.
-	InvalidExportLogsRequest ErrorCode = "InvalidExportLogsRequest"
-	// InvalidPolicyConfiguration Invalid policy configuration.
-	InvalidPolicyConfiguration ErrorCode = "InvalidPolicyConfiguration"
-	// InvalidPolicyContract Invalid policy contract.
-	InvalidPolicyContract ErrorCode = "InvalidPolicyContract"
-	// InvalidRankRequest Invalid rank request.
-	InvalidRankRequest ErrorCode = "InvalidRankRequest"
-	// InvalidRewardRequest Invalid reward request.
-	InvalidRewardRequest ErrorCode = "InvalidRewardRequest"
-	// InvalidServiceConfiguration Invalid service configuration.
-	InvalidServiceConfiguration ErrorCode = "InvalidServiceConfiguration"
-	// LogsPropertiesNotFound Logs properties not found.
-	LogsPropertiesNotFound ErrorCode = "LogsPropertiesNotFound"
-	// ModelResetFailed Model reset failed.
-	ModelResetFailed ErrorCode = "ModelResetFailed"
-	// RankNullResponse Rank call returned null response.
-	RankNullResponse ErrorCode = "RankNullResponse"
-	// ResourceNotFound Requested resource does not exist on the server.
-	ResourceNotFound ErrorCode = "ResourceNotFound"
-	// UpdateConfigurationFailed Failed to update configuration.
-	UpdateConfigurationFailed ErrorCode = "UpdateConfigurationFailed"
-)
-
-// PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
-func PossibleErrorCodeValues() []ErrorCode {
-	return []ErrorCode{BadRequest, EvaluationNotFound, FrontEndNotFound, InternalServerError, InvalidContainer, InvalidEvaluationContract, InvalidEventIDToActivate, InvalidExportLogsRequest, InvalidPolicyConfiguration, InvalidPolicyContract, InvalidRankRequest, InvalidRewardRequest, InvalidServiceConfiguration, LogsPropertiesNotFound, ModelResetFailed, RankNullResponse, ResourceNotFound, UpdateConfigurationFailed}
-}
-
-// EvaluationJobStatus enumerates the values for evaluation job status.
-type EvaluationJobStatus string
-
-const (
-	// Completed ...
-	Completed EvaluationJobStatus = "completed"
-	// Failed ...
-	Failed EvaluationJobStatus = "failed"
-	// NotSubmitted ...
-	NotSubmitted EvaluationJobStatus = "notSubmitted"
-	// Pending ...
-	Pending EvaluationJobStatus = "pending"
-)
-
-// PossibleEvaluationJobStatusValues returns an array of possible values for the EvaluationJobStatus const type.
-func PossibleEvaluationJobStatusValues() []EvaluationJobStatus {
-	return []EvaluationJobStatus{Completed, Failed, NotSubmitted, Pending}
-}
-
 // ContainerStatus ...
 type ContainerStatus struct {
 	Service          *string `json:"service,omitempty"`
@@ -105,6 +39,12 @@ type DateRange struct {
 	From *date.Time `json:"from,omitempty"`
 	// To - READ-ONLY
 	To *date.Time `json:"to,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DateRange.
+func (dr DateRange) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Error the error object.
@@ -146,6 +86,18 @@ type Evaluation struct {
 	FeatureImportance *[][]string         `json:"featureImportance,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Evaluation.
+func (e Evaluation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if e.PolicyResults != nil {
+		objectMap["policyResults"] = e.PolicyResults
+	}
+	if e.FeatureImportance != nil {
+		objectMap["featureImportance"] = e.FeatureImportance
+	}
+	return json.Marshal(objectMap)
+}
+
 // EvaluationContract a counterfactual evaluation.
 type EvaluationContract struct {
 	// EnableOfflineExperimentation - True if the evaluation should explore for a more optimal Learning settings.
@@ -181,12 +133,24 @@ type LogsProperties struct {
 	DateRange *LogsPropertiesDateRange `json:"dateRange,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LogsProperties.
+func (lp LogsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // LogsPropertiesDateRange ...
 type LogsPropertiesDateRange struct {
 	// From - READ-ONLY
 	From *date.Time `json:"from,omitempty"`
 	// To - READ-ONLY
 	To *date.Time `json:"to,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LogsPropertiesDateRange.
+func (lpR LogsPropertiesDateRange) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ModelProperties ...
@@ -196,6 +160,12 @@ type ModelProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - READ-ONLY
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ModelProperties.
+func (mp ModelProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PolicyContract learning settings specifying how to train the model.
@@ -219,6 +189,12 @@ type PolicyResult struct {
 	TotalSummary *PolicyResultTotalSummary `json:"totalSummary,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PolicyResult.
+func (pr PolicyResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PolicyResultSummary ...
 type PolicyResultSummary struct {
 	// TimeStamp - READ-ONLY
@@ -236,6 +212,15 @@ type PolicyResultSummary struct {
 	ConfidenceInterval *float64 `json:"confidenceInterval,omitempty"`
 	// SumOfSquares - READ-ONLY
 	SumOfSquares *float64 `json:"sumOfSquares,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PolicyResultSummary.
+func (prs PolicyResultSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if prs.NonZeroProbability != nil {
+		objectMap["nonZeroProbability"] = prs.NonZeroProbability
+	}
+	return json.Marshal(objectMap)
 }
 
 // PolicyResultTotalSummary ...
@@ -257,6 +242,15 @@ type PolicyResultTotalSummary struct {
 	SumOfSquares *float64 `json:"sumOfSquares,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PolicyResultTotalSummary.
+func (prS PolicyResultTotalSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if prS.NonZeroProbability != nil {
+		objectMap["nonZeroProbability"] = prS.NonZeroProbability
+	}
+	return json.Marshal(objectMap)
+}
+
 // RankableAction an action with it's associated features used for ranking.
 type RankableAction struct {
 	// ID - Id of the action.
@@ -271,6 +265,12 @@ type RankedAction struct {
 	ID *string `json:"id,omitempty"`
 	// Probability - READ-ONLY; Probability of the action
 	Probability *float64 `json:"probability,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RankedAction.
+func (ra RankedAction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RankRequest request a set of actions to be ranked by the Personalizer service.
@@ -303,8 +303,8 @@ type RankRequest struct {
 	DeferActivation *bool `json:"deferActivation,omitempty"`
 }
 
-// RankResponse returns which action to use as rewardActionId, and additional information about each action
-// as a result of a Rank request.
+// RankResponse returns which action to use as rewardActionId, and additional information about each action as
+// a result of a Rank request.
 type RankResponse struct {
 	autorest.Response `json:"-"`
 	// Ranking - READ-ONLY; The calculated ranking for the current request.
@@ -314,6 +314,12 @@ type RankResponse struct {
 	// RewardActionID - READ-ONLY; The action chosen by the Personalizer service. This is the action your application should display, and for which to report the reward. This might not be the
 	// first found in 'ranking' if an action in the request in first position was part of the excluded ids.
 	RewardActionID *string `json:"rewardActionId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RankResponse.
+func (rr RankResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ReadCloser ...

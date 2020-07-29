@@ -349,6 +349,9 @@ func (client PrivateEndpointConnectionsClient) ListByConfigurationStore(ctx cont
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.PrivateEndpointConnectionsClient", "ListByConfigurationStore", resp, "Failure responding to request")
 	}
+	if result.peclr.hasNextLink() && result.peclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

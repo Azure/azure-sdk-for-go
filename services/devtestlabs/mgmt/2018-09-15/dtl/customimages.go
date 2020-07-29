@@ -322,6 +322,9 @@ func (client CustomImagesClient) List(ctx context.Context, resourceGroupName str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CustomImagesClient", "List", resp, "Failure responding to request")
 	}
+	if result.cil.hasNextLink() && result.cil.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

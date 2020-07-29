@@ -31,299 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2019-10-01/storagesync"
 
-// ChangeDetectionMode enumerates the values for change detection mode.
-type ChangeDetectionMode string
-
-const (
-	// Default ...
-	Default ChangeDetectionMode = "Default"
-	// Recursive ...
-	Recursive ChangeDetectionMode = "Recursive"
-)
-
-// PossibleChangeDetectionModeValues returns an array of possible values for the ChangeDetectionMode const type.
-func PossibleChangeDetectionModeValues() []ChangeDetectionMode {
-	return []ChangeDetectionMode{Default, Recursive}
-}
-
-// CloudTiering enumerates the values for cloud tiering.
-type CloudTiering string
-
-const (
-	// Off ...
-	Off CloudTiering = "off"
-	// On ...
-	On CloudTiering = "on"
-)
-
-// PossibleCloudTieringValues returns an array of possible values for the CloudTiering const type.
-func PossibleCloudTieringValues() []CloudTiering {
-	return []CloudTiering{Off, On}
-}
-
-// CloudTiering1 enumerates the values for cloud tiering 1.
-type CloudTiering1 string
-
-const (
-	// CloudTiering1Off ...
-	CloudTiering1Off CloudTiering1 = "off"
-	// CloudTiering1On ...
-	CloudTiering1On CloudTiering1 = "on"
-)
-
-// PossibleCloudTiering1Values returns an array of possible values for the CloudTiering1 const type.
-func PossibleCloudTiering1Values() []CloudTiering1 {
-	return []CloudTiering1{CloudTiering1Off, CloudTiering1On}
-}
-
-// CloudTiering2 enumerates the values for cloud tiering 2.
-type CloudTiering2 string
-
-const (
-	// CloudTiering2Off ...
-	CloudTiering2Off CloudTiering2 = "off"
-	// CloudTiering2On ...
-	CloudTiering2On CloudTiering2 = "on"
-)
-
-// PossibleCloudTiering2Values returns an array of possible values for the CloudTiering2 const type.
-func PossibleCloudTiering2Values() []CloudTiering2 {
-	return []CloudTiering2{CloudTiering2Off, CloudTiering2On}
-}
-
-// CombinedHealth enumerates the values for combined health.
-type CombinedHealth string
-
-const (
-	// CombinedHealthError ...
-	CombinedHealthError CombinedHealth = "Error"
-	// CombinedHealthHealthy ...
-	CombinedHealthHealthy CombinedHealth = "Healthy"
-	// CombinedHealthNoActivity ...
-	CombinedHealthNoActivity CombinedHealth = "NoActivity"
-	// CombinedHealthSyncBlockedForChangeDetectionPostRestore ...
-	CombinedHealthSyncBlockedForChangeDetectionPostRestore CombinedHealth = "SyncBlockedForChangeDetectionPostRestore"
-	// CombinedHealthSyncBlockedForRestore ...
-	CombinedHealthSyncBlockedForRestore CombinedHealth = "SyncBlockedForRestore"
-)
-
-// PossibleCombinedHealthValues returns an array of possible values for the CombinedHealth const type.
-func PossibleCombinedHealthValues() []CombinedHealth {
-	return []CombinedHealth{CombinedHealthError, CombinedHealthHealthy, CombinedHealthNoActivity, CombinedHealthSyncBlockedForChangeDetectionPostRestore, CombinedHealthSyncBlockedForRestore}
-}
-
-// DownloadHealth enumerates the values for download health.
-type DownloadHealth string
-
-const (
-	// DownloadHealthError ...
-	DownloadHealthError DownloadHealth = "Error"
-	// DownloadHealthHealthy ...
-	DownloadHealthHealthy DownloadHealth = "Healthy"
-	// DownloadHealthNoActivity ...
-	DownloadHealthNoActivity DownloadHealth = "NoActivity"
-	// DownloadHealthSyncBlockedForChangeDetectionPostRestore ...
-	DownloadHealthSyncBlockedForChangeDetectionPostRestore DownloadHealth = "SyncBlockedForChangeDetectionPostRestore"
-	// DownloadHealthSyncBlockedForRestore ...
-	DownloadHealthSyncBlockedForRestore DownloadHealth = "SyncBlockedForRestore"
-)
-
-// PossibleDownloadHealthValues returns an array of possible values for the DownloadHealth const type.
-func PossibleDownloadHealthValues() []DownloadHealth {
-	return []DownloadHealth{DownloadHealthError, DownloadHealthHealthy, DownloadHealthNoActivity, DownloadHealthSyncBlockedForChangeDetectionPostRestore, DownloadHealthSyncBlockedForRestore}
-}
-
-// Health enumerates the values for health.
-type Health string
-
-const (
-	// HealthError ...
-	HealthError Health = "Error"
-	// HealthHealthy ...
-	HealthHealthy Health = "Healthy"
-)
-
-// PossibleHealthValues returns an array of possible values for the Health const type.
-func PossibleHealthValues() []Health {
-	return []Health{HealthError, HealthHealthy}
-}
-
-// NameAvailabilityReason enumerates the values for name availability reason.
-type NameAvailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists NameAvailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid NameAvailabilityReason = "Invalid"
-)
-
-// PossibleNameAvailabilityReasonValues returns an array of possible values for the NameAvailabilityReason const type.
-func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
-	return []NameAvailabilityReason{AlreadyExists, Invalid}
-}
-
-// OfflineDataTransfer enumerates the values for offline data transfer.
-type OfflineDataTransfer string
-
-const (
-	// OfflineDataTransferOff ...
-	OfflineDataTransferOff OfflineDataTransfer = "off"
-	// OfflineDataTransferOn ...
-	OfflineDataTransferOn OfflineDataTransfer = "on"
-)
-
-// PossibleOfflineDataTransferValues returns an array of possible values for the OfflineDataTransfer const type.
-func PossibleOfflineDataTransferValues() []OfflineDataTransfer {
-	return []OfflineDataTransfer{OfflineDataTransferOff, OfflineDataTransferOn}
-}
-
-// OfflineDataTransfer1 enumerates the values for offline data transfer 1.
-type OfflineDataTransfer1 string
-
-const (
-	// OfflineDataTransfer1Off ...
-	OfflineDataTransfer1Off OfflineDataTransfer1 = "off"
-	// OfflineDataTransfer1On ...
-	OfflineDataTransfer1On OfflineDataTransfer1 = "on"
-)
-
-// PossibleOfflineDataTransfer1Values returns an array of possible values for the OfflineDataTransfer1 const type.
-func PossibleOfflineDataTransfer1Values() []OfflineDataTransfer1 {
-	return []OfflineDataTransfer1{OfflineDataTransfer1Off, OfflineDataTransfer1On}
-}
-
-// OfflineDataTransfer2 enumerates the values for offline data transfer 2.
-type OfflineDataTransfer2 string
-
-const (
-	// OfflineDataTransfer2Off ...
-	OfflineDataTransfer2Off OfflineDataTransfer2 = "off"
-	// OfflineDataTransfer2On ...
-	OfflineDataTransfer2On OfflineDataTransfer2 = "on"
-)
-
-// PossibleOfflineDataTransfer2Values returns an array of possible values for the OfflineDataTransfer2 const type.
-func PossibleOfflineDataTransfer2Values() []OfflineDataTransfer2 {
-	return []OfflineDataTransfer2{OfflineDataTransfer2Off, OfflineDataTransfer2On}
-}
-
-// OfflineDataTransferStatus enumerates the values for offline data transfer status.
-type OfflineDataTransferStatus string
-
-const (
-	// Complete ...
-	Complete OfflineDataTransferStatus = "Complete"
-	// InProgress ...
-	InProgress OfflineDataTransferStatus = "InProgress"
-	// NotRunning ...
-	NotRunning OfflineDataTransferStatus = "NotRunning"
-	// Stopping ...
-	Stopping OfflineDataTransferStatus = "Stopping"
-)
-
-// PossibleOfflineDataTransferStatusValues returns an array of possible values for the OfflineDataTransferStatus const type.
-func PossibleOfflineDataTransferStatusValues() []OfflineDataTransferStatus {
-	return []OfflineDataTransferStatus{Complete, InProgress, NotRunning, Stopping}
-}
-
-// Operation enumerates the values for operation.
-type Operation string
-
-const (
-	// Cancel ...
-	Cancel Operation = "cancel"
-	// Do ...
-	Do Operation = "do"
-	// Undo ...
-	Undo Operation = "undo"
-)
-
-// PossibleOperationValues returns an array of possible values for the Operation const type.
-func PossibleOperationValues() []Operation {
-	return []Operation{Cancel, Do, Undo}
-}
-
-// Reason enumerates the values for reason.
-type Reason string
-
-const (
-	// Deleted ...
-	Deleted Reason = "Deleted"
-	// Registered ...
-	Registered Reason = "Registered"
-	// Suspended ...
-	Suspended Reason = "Suspended"
-	// Unregistered ...
-	Unregistered Reason = "Unregistered"
-	// Warned ...
-	Warned Reason = "Warned"
-)
-
-// PossibleReasonValues returns an array of possible values for the Reason const type.
-func PossibleReasonValues() []Reason {
-	return []Reason{Deleted, Registered, Suspended, Unregistered, Warned}
-}
-
-// Status enumerates the values for status.
-type Status string
-
-const (
-	// Aborted ...
-	Aborted Status = "aborted"
-	// Active ...
-	Active Status = "active"
-	// Expired ...
-	Expired Status = "expired"
-	// Failed ...
-	Failed Status = "failed"
-	// Succeeded ...
-	Succeeded Status = "succeeded"
-)
-
-// PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{Aborted, Active, Expired, Failed, Succeeded}
-}
-
-// SyncActivity enumerates the values for sync activity.
-type SyncActivity string
-
-const (
-	// Download ...
-	Download SyncActivity = "Download"
-	// Upload ...
-	Upload SyncActivity = "Upload"
-	// UploadAndDownload ...
-	UploadAndDownload SyncActivity = "UploadAndDownload"
-)
-
-// PossibleSyncActivityValues returns an array of possible values for the SyncActivity const type.
-func PossibleSyncActivityValues() []SyncActivity {
-	return []SyncActivity{Download, Upload, UploadAndDownload}
-}
-
-// UploadHealth enumerates the values for upload health.
-type UploadHealth string
-
-const (
-	// UploadHealthError ...
-	UploadHealthError UploadHealth = "Error"
-	// UploadHealthHealthy ...
-	UploadHealthHealthy UploadHealth = "Healthy"
-	// UploadHealthNoActivity ...
-	UploadHealthNoActivity UploadHealth = "NoActivity"
-	// UploadHealthSyncBlockedForChangeDetectionPostRestore ...
-	UploadHealthSyncBlockedForChangeDetectionPostRestore UploadHealth = "SyncBlockedForChangeDetectionPostRestore"
-	// UploadHealthSyncBlockedForRestore ...
-	UploadHealthSyncBlockedForRestore UploadHealth = "SyncBlockedForRestore"
-)
-
-// PossibleUploadHealthValues returns an array of possible values for the UploadHealth const type.
-func PossibleUploadHealthValues() []UploadHealth {
-	return []UploadHealth{UploadHealthError, UploadHealthHealthy, UploadHealthNoActivity, UploadHealthSyncBlockedForChangeDetectionPostRestore, UploadHealthSyncBlockedForRestore}
-}
-
 // APIError error type
 type APIError struct {
 	// Code - Error code of the given entry.
@@ -346,6 +53,12 @@ type AzureEntityResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BackupRequest backup request
@@ -371,6 +84,12 @@ type CheckNameAvailabilityResult struct {
 	Reason NameAvailabilityReason `json:"reason,omitempty"`
 	// Message - READ-ONLY; Gets an error message explaining the Reason value in more detail.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResult.
+func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CloudEndpoint cloud Endpoint object.
@@ -559,6 +278,36 @@ type CloudEndpointProperties struct {
 	LastOperationName *string `json:"lastOperationName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CloudEndpointProperties.
+func (cep CloudEndpointProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cep.StorageAccountResourceID != nil {
+		objectMap["storageAccountResourceId"] = cep.StorageAccountResourceID
+	}
+	if cep.AzureFileShareName != nil {
+		objectMap["azureFileShareName"] = cep.AzureFileShareName
+	}
+	if cep.StorageAccountTenantID != nil {
+		objectMap["storageAccountTenantId"] = cep.StorageAccountTenantID
+	}
+	if cep.PartnershipID != nil {
+		objectMap["partnershipId"] = cep.PartnershipID
+	}
+	if cep.FriendlyName != nil {
+		objectMap["friendlyName"] = cep.FriendlyName
+	}
+	if cep.ProvisioningState != nil {
+		objectMap["provisioningState"] = cep.ProvisioningState
+	}
+	if cep.LastWorkflowID != nil {
+		objectMap["lastWorkflowId"] = cep.LastWorkflowID
+	}
+	if cep.LastOperationName != nil {
+		objectMap["lastOperationName"] = cep.LastOperationName
+	}
+	return json.Marshal(objectMap)
+}
+
 // CloudEndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type CloudEndpointsCreateFuture struct {
@@ -611,8 +360,8 @@ func (future *CloudEndpointsDeleteFuture) Result(client CloudEndpointsClient) (a
 	return
 }
 
-// CloudEndpointsPostBackupFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// CloudEndpointsPostBackupFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CloudEndpointsPostBackupFuture struct {
 	azure.Future
 }
@@ -640,8 +389,8 @@ func (future *CloudEndpointsPostBackupFuture) Result(client CloudEndpointsClient
 	return
 }
 
-// CloudEndpointsPostRestoreFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// CloudEndpointsPostRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CloudEndpointsPostRestoreFuture struct {
 	azure.Future
 }
@@ -686,8 +435,8 @@ func (future *CloudEndpointsPreBackupFuture) Result(client CloudEndpointsClient)
 	return
 }
 
-// CloudEndpointsPreRestoreFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// CloudEndpointsPreRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CloudEndpointsPreRestoreFuture struct {
 	azure.Future
 }
@@ -744,12 +493,24 @@ type CloudTieringCachePerformance struct {
 	CacheHitBytesPercent *int32 `json:"cacheHitBytesPercent,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CloudTieringCachePerformance.
+func (ctcp CloudTieringCachePerformance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CloudTieringDatePolicyStatus status of the date policy
 type CloudTieringDatePolicyStatus struct {
 	// LastUpdatedTimestamp - READ-ONLY; Last updated timestamp
 	LastUpdatedTimestamp *date.Time `json:"lastUpdatedTimestamp,omitempty"`
 	// TieredFilesMostRecentAccessTimestamp - READ-ONLY; Most recent access time of tiered files
 	TieredFilesMostRecentAccessTimestamp *date.Time `json:"tieredFilesMostRecentAccessTimestamp,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudTieringDatePolicyStatus.
+func (ctdps CloudTieringDatePolicyStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CloudTieringFilesNotTiering server endpoint cloud tiering status object.
@@ -760,6 +521,12 @@ type CloudTieringFilesNotTiering struct {
 	TotalFileCount *int64 `json:"totalFileCount,omitempty"`
 	// Errors - READ-ONLY; Array of tiering errors
 	Errors *[]FilesNotTieringError `json:"errors,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudTieringFilesNotTiering.
+func (ctfnt CloudTieringFilesNotTiering) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CloudTieringSpaceSavings server endpoint cloud tiering status object.
@@ -778,6 +545,12 @@ type CloudTieringSpaceSavings struct {
 	SpaceSavingsBytes *int64 `json:"spaceSavingsBytes,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CloudTieringSpaceSavings.
+func (ctss CloudTieringSpaceSavings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CloudTieringVolumeFreeSpacePolicyStatus status of the volume free space policy
 type CloudTieringVolumeFreeSpacePolicyStatus struct {
 	// LastUpdatedTimestamp - READ-ONLY; Last updated timestamp
@@ -786,6 +559,12 @@ type CloudTieringVolumeFreeSpacePolicyStatus struct {
 	EffectiveVolumeFreeSpacePolicy *int32 `json:"effectiveVolumeFreeSpacePolicy,omitempty"`
 	// CurrentVolumeFreeSpacePercent - READ-ONLY; Current volume free space percentage.
 	CurrentVolumeFreeSpacePercent *int32 `json:"currentVolumeFreeSpacePercent,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudTieringVolumeFreeSpacePolicyStatus.
+func (ctvfsps CloudTieringVolumeFreeSpacePolicyStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Error error type
@@ -812,6 +591,12 @@ type FilesNotTieringError struct {
 	ErrorCode *int32 `json:"errorCode,omitempty"`
 	// FileCount - READ-ONLY; Count of files with this error
 	FileCount *int64 `json:"fileCount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FilesNotTieringError.
+func (fnte FilesNotTieringError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplayInfo the operation supported by storage sync.
@@ -925,10 +710,15 @@ func (oelr OperationEntityListResult) IsEmpty() bool {
 	return oelr.Value == nil || len(*oelr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (oelr OperationEntityListResult) hasNextLink() bool {
+	return oelr.NextLink != nil && len(*oelr.NextLink) != 0
+}
+
 // operationEntityListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (oelr OperationEntityListResult) operationEntityListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if oelr.NextLink == nil || len(to.String(oelr.NextLink)) < 1 {
+	if !oelr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -956,11 +746,16 @@ func (page *OperationEntityListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.oelr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.oelr)
+		if err != nil {
+			return err
+		}
+		page.oelr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.oelr = next
 	return nil
 }
 
@@ -1009,6 +804,12 @@ type OperationStatus struct {
 	Error *APIError `json:"error,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationStatus.
+func (osVar OperationStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PostBackupResponse post Backup Response
 type PostBackupResponse struct {
 	autorest.Response `json:"-"`
@@ -1053,6 +854,12 @@ func (pbr *PostBackupResponse) UnmarshalJSON(body []byte) error {
 type PostBackupResponseProperties struct {
 	// CloudEndpointName - READ-ONLY; cloud endpoint Name.
 	CloudEndpointName *string `json:"cloudEndpointName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PostBackupResponseProperties.
+func (pbrp PostBackupResponseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PostRestoreRequest post Restore Request
@@ -1106,6 +913,12 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RecallActionParameters the parameters used when calling recall action on server endpoint.
@@ -1417,6 +1230,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourcesMoveInfo resource Move Info.
 type ResourcesMoveInfo struct {
 	// TargetResourceGroup - Target resource group.
@@ -1537,6 +1356,12 @@ type ServerEndpointCloudTieringStatus struct {
 	DatePolicyStatus *CloudTieringDatePolicyStatus `json:"datePolicyStatus,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServerEndpointCloudTieringStatus.
+func (sects ServerEndpointCloudTieringStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ServerEndpointCreateParameters the parameters used when creating a server endpoint.
 type ServerEndpointCreateParameters struct {
 	// ServerEndpointCreateParametersProperties - The parameters used to create the server endpoint.
@@ -1639,6 +1464,12 @@ type ServerEndpointFilesNotSyncingError struct {
 	TransientCount *int64 `json:"transientCount,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServerEndpointFilesNotSyncingError.
+func (sefnse ServerEndpointFilesNotSyncingError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ServerEndpointProperties serverEndpoint Properties object.
 type ServerEndpointProperties struct {
 	// ServerLocalPath - Server Local path.
@@ -1675,12 +1506,48 @@ type ServerEndpointProperties struct {
 	RecallStatus *ServerEndpointRecallStatus `json:"recallStatus,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServerEndpointProperties.
+func (sep ServerEndpointProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sep.ServerLocalPath != nil {
+		objectMap["serverLocalPath"] = sep.ServerLocalPath
+	}
+	if sep.CloudTiering != "" {
+		objectMap["cloudTiering"] = sep.CloudTiering
+	}
+	if sep.VolumeFreeSpacePercent != nil {
+		objectMap["volumeFreeSpacePercent"] = sep.VolumeFreeSpacePercent
+	}
+	if sep.TierFilesOlderThanDays != nil {
+		objectMap["tierFilesOlderThanDays"] = sep.TierFilesOlderThanDays
+	}
+	if sep.FriendlyName != nil {
+		objectMap["friendlyName"] = sep.FriendlyName
+	}
+	if sep.ServerResourceID != nil {
+		objectMap["serverResourceId"] = sep.ServerResourceID
+	}
+	if sep.OfflineDataTransfer != "" {
+		objectMap["offlineDataTransfer"] = sep.OfflineDataTransfer
+	}
+	if sep.OfflineDataTransferShareName != nil {
+		objectMap["offlineDataTransferShareName"] = sep.OfflineDataTransferShareName
+	}
+	return json.Marshal(objectMap)
+}
+
 // ServerEndpointRecallError server endpoint recall error object
 type ServerEndpointRecallError struct {
 	// ErrorCode - READ-ONLY; Error code (HResult)
 	ErrorCode *int32 `json:"errorCode,omitempty"`
 	// Count - READ-ONLY; Count of occurences of the error
 	Count *int64 `json:"count,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerEndpointRecallError.
+func (sere ServerEndpointRecallError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServerEndpointRecallStatus server endpoint recall status object.
@@ -1691,6 +1558,12 @@ type ServerEndpointRecallStatus struct {
 	TotalRecallErrorsCount *int64 `json:"totalRecallErrorsCount,omitempty"`
 	// RecallErrors - READ-ONLY; Array of recall errors
 	RecallErrors *[]ServerEndpointRecallError `json:"recallErrors,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerEndpointRecallStatus.
+func (sers ServerEndpointRecallStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServerEndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1745,8 +1618,8 @@ func (future *ServerEndpointsDeleteFuture) Result(client ServerEndpointsClient) 
 	return
 }
 
-// ServerEndpointsRecallActionFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ServerEndpointsRecallActionFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServerEndpointsRecallActionFuture struct {
 	azure.Future
 }
@@ -1821,6 +1694,12 @@ type ServerEndpointSyncStatus struct {
 	DownloadActivity *SyncActivityStatus `json:"downloadActivity,omitempty"`
 	// OfflineDataTransferStatus - READ-ONLY; Offline Data Transfer State. Possible values include: 'InProgress', 'Stopping', 'NotRunning', 'Complete'
 	OfflineDataTransferStatus OfflineDataTransferStatus `json:"offlineDataTransferStatus,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerEndpointSyncStatus.
+func (sess ServerEndpointSyncStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServerEndpointUpdateParameters parameters for updating an Server Endpoint.
@@ -2016,6 +1895,12 @@ type ServiceProperties struct {
 	StorageSyncServiceUID *string `json:"storageSyncServiceUid,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServiceProperties.
+func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ServiceUpdateParameters parameters for updating an Storage sync service.
 type ServiceUpdateParameters struct {
 	// Tags - The user-specified tags associated with the storage sync service.
@@ -2046,6 +1931,18 @@ type SubscriptionState struct {
 	Properties interface{} `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SubscriptionState.
+func (ss SubscriptionState) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ss.State != "" {
+		objectMap["state"] = ss.State
+	}
+	if ss.Properties != nil {
+		objectMap["properties"] = ss.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // SyncActivityStatus sync Session status object.
 type SyncActivityStatus struct {
 	// Timestamp - READ-ONLY; Timestamp when properties were updated
@@ -2060,6 +1957,12 @@ type SyncActivityStatus struct {
 	AppliedBytes *int64 `json:"appliedBytes,omitempty"`
 	// TotalBytes - READ-ONLY; Total bytes (if available)
 	TotalBytes *int64 `json:"totalBytes,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SyncActivityStatus.
+func (sas SyncActivityStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SyncGroup sync Group object.
@@ -2154,12 +2057,27 @@ type SyncGroupCreateParameters struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SyncGroupCreateParameters.
+func (sgcp SyncGroupCreateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sgcp.Properties != nil {
+		objectMap["properties"] = sgcp.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // SyncGroupProperties syncGroup Properties object.
 type SyncGroupProperties struct {
 	// UniqueID - READ-ONLY; Unique Id
 	UniqueID *string `json:"uniqueId,omitempty"`
 	// SyncGroupStatus - READ-ONLY; Sync group status
 	SyncGroupStatus *string `json:"syncGroupStatus,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SyncGroupProperties.
+func (sgp SyncGroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SyncSessionStatus sync Session status object.
@@ -2178,6 +2096,12 @@ type SyncSessionStatus struct {
 	TransientFilesNotSyncingCount *int64 `json:"transientFilesNotSyncingCount,omitempty"`
 	// FilesNotSyncingErrors - READ-ONLY; Array of per-item errors coming from the last sync session.
 	FilesNotSyncingErrors *[]ServerEndpointFilesNotSyncingError `json:"filesNotSyncingErrors,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SyncSessionStatus.
+func (sss SyncSessionStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource
@@ -2206,8 +2130,8 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TriggerChangeDetectionParameters the parameters used when calling trigger change detection action on
-// cloud endpoint.
+// TriggerChangeDetectionParameters the parameters used when calling trigger change detection action on cloud
+// endpoint.
 type TriggerChangeDetectionParameters struct {
 	// DirectoryPath - Relative path to a directory Azure File share for which change detection is to be performed.
 	DirectoryPath *string `json:"directoryPath,omitempty"`

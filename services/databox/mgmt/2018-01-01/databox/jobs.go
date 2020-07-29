@@ -531,6 +531,9 @@ func (client JobsClient) List(ctx context.Context, skipToken string) (result Job
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsClient", "List", resp, "Failure responding to request")
 	}
+	if result.jrl.hasNextLink() && result.jrl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -644,6 +647,9 @@ func (client JobsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	result.jrl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.jrl.hasNextLink() && result.jrl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

@@ -100,6 +100,9 @@ func (client MarketplacesClient) List(ctx context.Context, scope string, filter 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "List", resp, "Failure responding to request")
 	}
+	if result.mlr.hasNextLink() && result.mlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -22,6 +22,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/subscriptions"
 )
 
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
+	CheckResourceName(ctx context.Context, resourceNameDefinition *subscriptions.ResourceName) (result subscriptions.CheckResourceNameResult, err error)
+}
+
+var _ BaseClientAPI = (*subscriptions.BaseClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result subscriptions.OperationListResultPage, err error)

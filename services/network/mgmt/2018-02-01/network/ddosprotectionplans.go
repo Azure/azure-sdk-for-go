@@ -300,6 +300,9 @@ func (client DdosProtectionPlansClient) List(ctx context.Context) (result DdosPr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansClient", "List", resp, "Failure responding to request")
 	}
+	if result.dpplr.hasNextLink() && result.dpplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -409,6 +412,9 @@ func (client DdosProtectionPlansClient) ListByResourceGroup(ctx context.Context,
 	result.dpplr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.dpplr.hasNextLink() && result.dpplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

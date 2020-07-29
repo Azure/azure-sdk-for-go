@@ -148,6 +148,9 @@ func (client PrivateCloudsClient) List(ctx context.Context, regionID string) (re
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.PrivateCloudsClient", "List", resp, "Failure responding to request")
 	}
+	if result.pcl.hasNextLink() && result.pcl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

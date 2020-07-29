@@ -75,6 +75,9 @@ func (client GalleryImageClient) List(ctx context.Context, resourceGroupName str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.GalleryImageClient", "List", resp, "Failure responding to request")
 	}
+	if result.rwcgi.hasNextLink() && result.rwcgi.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

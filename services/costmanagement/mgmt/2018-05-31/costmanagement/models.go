@@ -30,100 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/costmanagement/mgmt/2018-05-31/costmanagement"
 
-// FormatType enumerates the values for format type.
-type FormatType string
-
-const (
-	// Csv ...
-	Csv FormatType = "Csv"
-)
-
-// PossibleFormatTypeValues returns an array of possible values for the FormatType const type.
-func PossibleFormatTypeValues() []FormatType {
-	return []FormatType{Csv}
-}
-
-// GranularityType enumerates the values for granularity type.
-type GranularityType string
-
-const (
-	// Daily ...
-	Daily GranularityType = "Daily"
-)
-
-// PossibleGranularityTypeValues returns an array of possible values for the GranularityType const type.
-func PossibleGranularityTypeValues() []GranularityType {
-	return []GranularityType{Daily}
-}
-
-// RecurrenceType enumerates the values for recurrence type.
-type RecurrenceType string
-
-const (
-	// RecurrenceTypeAnnually ...
-	RecurrenceTypeAnnually RecurrenceType = "Annually"
-	// RecurrenceTypeDaily ...
-	RecurrenceTypeDaily RecurrenceType = "Daily"
-	// RecurrenceTypeMonthly ...
-	RecurrenceTypeMonthly RecurrenceType = "Monthly"
-	// RecurrenceTypeWeekly ...
-	RecurrenceTypeWeekly RecurrenceType = "Weekly"
-)
-
-// PossibleRecurrenceTypeValues returns an array of possible values for the RecurrenceType const type.
-func PossibleRecurrenceTypeValues() []RecurrenceType {
-	return []RecurrenceType{RecurrenceTypeAnnually, RecurrenceTypeDaily, RecurrenceTypeMonthly, RecurrenceTypeWeekly}
-}
-
-// ReportConfigColumnType enumerates the values for report config column type.
-type ReportConfigColumnType string
-
-const (
-	// ReportConfigColumnTypeDimension ...
-	ReportConfigColumnTypeDimension ReportConfigColumnType = "Dimension"
-	// ReportConfigColumnTypeTag ...
-	ReportConfigColumnTypeTag ReportConfigColumnType = "Tag"
-)
-
-// PossibleReportConfigColumnTypeValues returns an array of possible values for the ReportConfigColumnType const type.
-func PossibleReportConfigColumnTypeValues() []ReportConfigColumnType {
-	return []ReportConfigColumnType{ReportConfigColumnTypeDimension, ReportConfigColumnTypeTag}
-}
-
-// StatusType enumerates the values for status type.
-type StatusType string
-
-const (
-	// Active ...
-	Active StatusType = "Active"
-	// Inactive ...
-	Inactive StatusType = "Inactive"
-)
-
-// PossibleStatusTypeValues returns an array of possible values for the StatusType const type.
-func PossibleStatusTypeValues() []StatusType {
-	return []StatusType{Active, Inactive}
-}
-
-// TimeframeType enumerates the values for timeframe type.
-type TimeframeType string
-
-const (
-	// Custom ...
-	Custom TimeframeType = "Custom"
-	// MonthToDate ...
-	MonthToDate TimeframeType = "MonthToDate"
-	// WeekToDate ...
-	WeekToDate TimeframeType = "WeekToDate"
-	// YearToDate ...
-	YearToDate TimeframeType = "YearToDate"
-)
-
-// PossibleTimeframeTypeValues returns an array of possible values for the TimeframeType const type.
-func PossibleTimeframeTypeValues() []TimeframeType {
-	return []TimeframeType{Custom, MonthToDate, WeekToDate, YearToDate}
-}
-
 // Dimension ...
 type Dimension struct {
 	*DimensionProperties `json:"properties,omitempty"`
@@ -223,12 +129,24 @@ type DimensionsListResult struct {
 	Value *[]Dimension `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DimensionsListResult.
+func (dlr DimensionsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
 	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse error response indicates that the service is not able to process the incoming request. The
@@ -246,6 +164,15 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
 	// Provider - READ-ONLY; Service provider: Microsoft.CostManagement.
@@ -256,14 +183,26 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of listing cost management operations. It contains a list of operations and a
-// URL link to get the next set of results.
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// OperationListResult result of listing cost management operations. It contains a list of operations and a URL
+// link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of cost management operations supported by the Microsoft.CostManagement resource provider.
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -334,10 +273,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -365,11 +309,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -504,6 +453,12 @@ type QueryResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of usage data.
 	Value *[]Query `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryResult.
+func (qr QueryResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ReportConfig a report config resource.
@@ -704,6 +659,12 @@ type ReportConfigListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of report configs.
 	Value *[]ReportConfig `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReportConfigListResult.
+func (rclr ReportConfigListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ReportConfigProperties the properties of the report config.

@@ -356,6 +356,9 @@ func (client WorkspacesClient) ListByAccounts(ctx context.Context, accountName s
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "experimentation.WorkspacesClient", "ListByAccounts", resp, "Failure responding to request")
 	}
+	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

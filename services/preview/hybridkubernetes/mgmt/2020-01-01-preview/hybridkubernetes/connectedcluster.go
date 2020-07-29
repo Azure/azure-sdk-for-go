@@ -353,6 +353,9 @@ func (client ConnectedClusterClient) ListByResourceGroup(ctx context.Context, re
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.ccl.hasNextLink() && result.ccl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -467,6 +470,9 @@ func (client ConnectedClusterClient) ListBySubscription(ctx context.Context) (re
 	result.ccl, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.ccl.hasNextLink() && result.ccl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

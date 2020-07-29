@@ -27,21 +27,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/datacatalog/mgmt/2016-03-30/datacatalog"
 
-// SkuType enumerates the values for sku type.
-type SkuType string
-
-const (
-	// Free ...
-	Free SkuType = "Free"
-	// Standard ...
-	Standard SkuType = "Standard"
-)
-
-// PossibleSkuTypeValues returns an array of possible values for the SkuType const type.
-func PossibleSkuTypeValues() []SkuType {
-	return []SkuType{Free, Standard}
-}
-
 // ADCCatalog azure Data Catalog.
 type ADCCatalog struct {
 	autorest.Response `json:"-"`

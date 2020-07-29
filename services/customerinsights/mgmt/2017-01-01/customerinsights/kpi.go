@@ -328,6 +328,9 @@ func (client KpiClient) ListByHub(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "ListByHub", resp, "Failure responding to request")
 	}
+	if result.klr.hasNextLink() && result.klr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -615,7 +615,7 @@ var _ ReportsClientAPI = (*apimanagement.ReportsClient)(nil)
 
 // SubscriptionClientAPI contains the set of methods on the SubscriptionClient type.
 type SubscriptionClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, sid string, parameters apimanagement.SubscriptionCreateParameters, notify *bool, ifMatch string) (result apimanagement.SubscriptionContract, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, sid string, parameters apimanagement.SubscriptionCreateParameters, notify *bool, ifMatch string, appType apimanagement.AppType) (result apimanagement.SubscriptionContract, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, sid string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, sid string) (result apimanagement.SubscriptionContract, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, sid string) (result autorest.Response, err error)
@@ -623,7 +623,7 @@ type SubscriptionClientAPI interface {
 	ListComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.SubscriptionCollectionIterator, err error)
 	RegeneratePrimaryKey(ctx context.Context, resourceGroupName string, serviceName string, sid string) (result autorest.Response, err error)
 	RegenerateSecondaryKey(ctx context.Context, resourceGroupName string, serviceName string, sid string) (result autorest.Response, err error)
-	Update(ctx context.Context, resourceGroupName string, serviceName string, sid string, parameters apimanagement.SubscriptionUpdateParameters, ifMatch string, notify *bool) (result autorest.Response, err error)
+	Update(ctx context.Context, resourceGroupName string, serviceName string, sid string, parameters apimanagement.SubscriptionUpdateParameters, ifMatch string, notify *bool, appType apimanagement.AppType) (result autorest.Response, err error)
 }
 
 var _ SubscriptionClientAPI = (*apimanagement.SubscriptionClient)(nil)
@@ -668,8 +668,8 @@ var _ TenantConfigurationClientAPI = (*apimanagement.TenantConfigurationClient)(
 
 // UserClientAPI contains the set of methods on the UserClient type.
 type UserClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, userID string, parameters apimanagement.UserCreateParameters, ifMatch string) (result apimanagement.UserContract, err error)
-	Delete(ctx context.Context, resourceGroupName string, serviceName string, userID string, ifMatch string, deleteSubscriptions *bool, notify *bool) (result autorest.Response, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, userID string, parameters apimanagement.UserCreateParameters, notify *bool, ifMatch string) (result apimanagement.UserContract, err error)
+	Delete(ctx context.Context, resourceGroupName string, serviceName string, userID string, ifMatch string, deleteSubscriptions *bool, notify *bool, appType apimanagement.AppType) (result autorest.Response, err error)
 	GenerateSsoURL(ctx context.Context, resourceGroupName string, serviceName string, userID string) (result apimanagement.GenerateSsoURLResult, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, userID string) (result apimanagement.UserContract, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, userID string) (result autorest.Response, err error)
@@ -707,7 +707,7 @@ var _ UserIdentitiesClientAPI = (*apimanagement.UserIdentitiesClient)(nil)
 
 // UserConfirmationPasswordClientAPI contains the set of methods on the UserConfirmationPasswordClient type.
 type UserConfirmationPasswordClientAPI interface {
-	SendMethod(ctx context.Context, resourceGroupName string, serviceName string, userID string) (result autorest.Response, err error)
+	SendMethod(ctx context.Context, resourceGroupName string, serviceName string, userID string, appType apimanagement.AppType) (result autorest.Response, err error)
 }
 
 var _ UserConfirmationPasswordClientAPI = (*apimanagement.UserConfirmationPasswordClient)(nil)

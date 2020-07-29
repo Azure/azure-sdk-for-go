@@ -339,6 +339,9 @@ func (client ConnectorMappingsClient) ListByConnector(ctx context.Context, resou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "ListByConnector", resp, "Failure responding to request")
 	}
+	if result.cmlr.hasNextLink() && result.cmlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

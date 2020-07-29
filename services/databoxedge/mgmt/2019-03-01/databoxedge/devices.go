@@ -768,6 +768,9 @@ func (client DevicesClient) ListByResourceGroup(ctx context.Context, resourceGro
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.dl.hasNextLink() && result.dl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -882,6 +885,9 @@ func (client DevicesClient) ListBySubscription(ctx context.Context, expand strin
 	result.dl, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.dl.hasNextLink() && result.dl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

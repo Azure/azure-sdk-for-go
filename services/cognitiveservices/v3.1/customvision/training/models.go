@@ -27,433 +27,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.1/customvision/training"
 
-// Classifier enumerates the values for classifier.
-type Classifier string
-
-const (
-	// Multiclass ...
-	Multiclass Classifier = "Multiclass"
-	// Multilabel ...
-	Multilabel Classifier = "Multilabel"
-)
-
-// PossibleClassifierValues returns an array of possible values for the Classifier const type.
-func PossibleClassifierValues() []Classifier {
-	return []Classifier{Multiclass, Multilabel}
-}
-
-// CustomVisionErrorCodes enumerates the values for custom vision error codes.
-type CustomVisionErrorCodes string
-
-const (
-	// BadRequest ...
-	BadRequest CustomVisionErrorCodes = "BadRequest"
-	// BadRequestCannotMigrateProjectWithName ...
-	BadRequestCannotMigrateProjectWithName CustomVisionErrorCodes = "BadRequestCannotMigrateProjectWithName"
-	// BadRequestClassificationTrainingValidationFailed ...
-	BadRequestClassificationTrainingValidationFailed CustomVisionErrorCodes = "BadRequestClassificationTrainingValidationFailed"
-	// BadRequestDetectionTrainingNotAllowNegativeTag ...
-	BadRequestDetectionTrainingNotAllowNegativeTag CustomVisionErrorCodes = "BadRequestDetectionTrainingNotAllowNegativeTag"
-	// BadRequestDetectionTrainingValidationFailed ...
-	BadRequestDetectionTrainingValidationFailed CustomVisionErrorCodes = "BadRequestDetectionTrainingValidationFailed"
-	// BadRequestDomainNotSupportedForAdvancedTraining ...
-	BadRequestDomainNotSupportedForAdvancedTraining CustomVisionErrorCodes = "BadRequestDomainNotSupportedForAdvancedTraining"
-	// BadRequestExceededBatchSize ...
-	BadRequestExceededBatchSize CustomVisionErrorCodes = "BadRequestExceededBatchSize"
-	// BadRequestExceededQuota ...
-	BadRequestExceededQuota CustomVisionErrorCodes = "BadRequestExceededQuota"
-	// BadRequestExceedIterationPerProjectLimit ...
-	BadRequestExceedIterationPerProjectLimit CustomVisionErrorCodes = "BadRequestExceedIterationPerProjectLimit"
-	// BadRequestExceedProjectLimit ...
-	BadRequestExceedProjectLimit CustomVisionErrorCodes = "BadRequestExceedProjectLimit"
-	// BadRequestExceedTagPerImageLimit ...
-	BadRequestExceedTagPerImageLimit CustomVisionErrorCodes = "BadRequestExceedTagPerImageLimit"
-	// BadRequestExceedTagPerProjectLimit ...
-	BadRequestExceedTagPerProjectLimit CustomVisionErrorCodes = "BadRequestExceedTagPerProjectLimit"
-	// BadRequestExportAlreadyInProgress ...
-	BadRequestExportAlreadyInProgress CustomVisionErrorCodes = "BadRequestExportAlreadyInProgress"
-	// BadRequestExportPlatformNotSupportedForAdvancedTraining ...
-	BadRequestExportPlatformNotSupportedForAdvancedTraining CustomVisionErrorCodes = "BadRequestExportPlatformNotSupportedForAdvancedTraining"
-	// BadRequestExportValidationFailed ...
-	BadRequestExportValidationFailed CustomVisionErrorCodes = "BadRequestExportValidationFailed"
-	// BadRequestImageBatch ...
-	BadRequestImageBatch CustomVisionErrorCodes = "BadRequestImageBatch"
-	// BadRequestImageExceededCount ...
-	BadRequestImageExceededCount CustomVisionErrorCodes = "BadRequestImageExceededCount"
-	// BadRequestImageFormat ...
-	BadRequestImageFormat CustomVisionErrorCodes = "BadRequestImageFormat"
-	// BadRequestImageRegions ...
-	BadRequestImageRegions CustomVisionErrorCodes = "BadRequestImageRegions"
-	// BadRequestImageSizeBytes ...
-	BadRequestImageSizeBytes CustomVisionErrorCodes = "BadRequestImageSizeBytes"
-	// BadRequestImageStream ...
-	BadRequestImageStream CustomVisionErrorCodes = "BadRequestImageStream"
-	// BadRequestImageTags ...
-	BadRequestImageTags CustomVisionErrorCodes = "BadRequestImageTags"
-	// BadRequestImageURL ...
-	BadRequestImageURL CustomVisionErrorCodes = "BadRequestImageUrl"
-	// BadRequestInvalid ...
-	BadRequestInvalid CustomVisionErrorCodes = "BadRequestInvalid"
-	// BadRequestInvalidEmailAddress ...
-	BadRequestInvalidEmailAddress CustomVisionErrorCodes = "BadRequestInvalidEmailAddress"
-	// BadRequestInvalidIds ...
-	BadRequestInvalidIds CustomVisionErrorCodes = "BadRequestInvalidIds"
-	// BadRequestInvalidPublishName ...
-	BadRequestInvalidPublishName CustomVisionErrorCodes = "BadRequestInvalidPublishName"
-	// BadRequestInvalidPublishTarget ...
-	BadRequestInvalidPublishTarget CustomVisionErrorCodes = "BadRequestInvalidPublishTarget"
-	// BadRequestIterationDescription ...
-	BadRequestIterationDescription CustomVisionErrorCodes = "BadRequestIterationDescription"
-	// BadRequestIterationIsNotTrained ...
-	BadRequestIterationIsNotTrained CustomVisionErrorCodes = "BadRequestIterationIsNotTrained"
-	// BadRequestIterationIsPublished ...
-	BadRequestIterationIsPublished CustomVisionErrorCodes = "BadRequestIterationIsPublished"
-	// BadRequestIterationName ...
-	BadRequestIterationName CustomVisionErrorCodes = "BadRequestIterationName"
-	// BadRequestIterationNameNotUnique ...
-	BadRequestIterationNameNotUnique CustomVisionErrorCodes = "BadRequestIterationNameNotUnique"
-	// BadRequestIterationNotPublished ...
-	BadRequestIterationNotPublished CustomVisionErrorCodes = "BadRequestIterationNotPublished"
-	// BadRequestMultiClassClassificationTrainingValidationFailed ...
-	BadRequestMultiClassClassificationTrainingValidationFailed CustomVisionErrorCodes = "BadRequestMultiClassClassificationTrainingValidationFailed"
-	// BadRequestMultiLabelClassificationTrainingValidationFailed ...
-	BadRequestMultiLabelClassificationTrainingValidationFailed CustomVisionErrorCodes = "BadRequestMultiLabelClassificationTrainingValidationFailed"
-	// BadRequestMultipleNegativeTag ...
-	BadRequestMultipleNegativeTag CustomVisionErrorCodes = "BadRequestMultipleNegativeTag"
-	// BadRequestNegativeAndRegularTagOnSameImage ...
-	BadRequestNegativeAndRegularTagOnSameImage CustomVisionErrorCodes = "BadRequestNegativeAndRegularTagOnSameImage"
-	// BadRequestNotLimitedTrial ...
-	BadRequestNotLimitedTrial CustomVisionErrorCodes = "BadRequestNotLimitedTrial"
-	// BadRequestNotSupported ...
-	BadRequestNotSupported CustomVisionErrorCodes = "BadRequestNotSupported"
-	// BadRequestPredictionIdsExceededCount ...
-	BadRequestPredictionIdsExceededCount CustomVisionErrorCodes = "BadRequestPredictionIdsExceededCount"
-	// BadRequestPredictionIdsMissing ...
-	BadRequestPredictionIdsMissing CustomVisionErrorCodes = "BadRequestPredictionIdsMissing"
-	// BadRequestPredictionInvalidApplicationName ...
-	BadRequestPredictionInvalidApplicationName CustomVisionErrorCodes = "BadRequestPredictionInvalidApplicationName"
-	// BadRequestPredictionInvalidQueryParameters ...
-	BadRequestPredictionInvalidQueryParameters CustomVisionErrorCodes = "BadRequestPredictionInvalidQueryParameters"
-	// BadRequestPredictionResultsExceededCount ...
-	BadRequestPredictionResultsExceededCount CustomVisionErrorCodes = "BadRequestPredictionResultsExceededCount"
-	// BadRequestPredictionTagsExceededCount ...
-	BadRequestPredictionTagsExceededCount CustomVisionErrorCodes = "BadRequestPredictionTagsExceededCount"
-	// BadRequestProjectDescription ...
-	BadRequestProjectDescription CustomVisionErrorCodes = "BadRequestProjectDescription"
-	// BadRequestProjectImagePreprocessingSettings ...
-	BadRequestProjectImagePreprocessingSettings CustomVisionErrorCodes = "BadRequestProjectImagePreprocessingSettings"
-	// BadRequestProjectName ...
-	BadRequestProjectName CustomVisionErrorCodes = "BadRequestProjectName"
-	// BadRequestProjectNameNotUnique ...
-	BadRequestProjectNameNotUnique CustomVisionErrorCodes = "BadRequestProjectNameNotUnique"
-	// BadRequestProjectUnknownClassification ...
-	BadRequestProjectUnknownClassification CustomVisionErrorCodes = "BadRequestProjectUnknownClassification"
-	// BadRequestProjectUnknownDomain ...
-	BadRequestProjectUnknownDomain CustomVisionErrorCodes = "BadRequestProjectUnknownDomain"
-	// BadRequestProjectUnsupportedDomainTypeChange ...
-	BadRequestProjectUnsupportedDomainTypeChange CustomVisionErrorCodes = "BadRequestProjectUnsupportedDomainTypeChange"
-	// BadRequestProjectUnsupportedExportPlatform ...
-	BadRequestProjectUnsupportedExportPlatform CustomVisionErrorCodes = "BadRequestProjectUnsupportedExportPlatform"
-	// BadRequestRequiredParamIsNull ...
-	BadRequestRequiredParamIsNull CustomVisionErrorCodes = "BadRequestRequiredParamIsNull"
-	// BadRequestReservedBudgetInHoursNotEnoughForAdvancedTraining ...
-	BadRequestReservedBudgetInHoursNotEnoughForAdvancedTraining CustomVisionErrorCodes = "BadRequestReservedBudgetInHoursNotEnoughForAdvancedTraining"
-	// BadRequestSubscriptionAPI ...
-	BadRequestSubscriptionAPI CustomVisionErrorCodes = "BadRequestSubscriptionApi"
-	// BadRequestTagDescription ...
-	BadRequestTagDescription CustomVisionErrorCodes = "BadRequestTagDescription"
-	// BadRequestTagName ...
-	BadRequestTagName CustomVisionErrorCodes = "BadRequestTagName"
-	// BadRequestTagNameNotUnique ...
-	BadRequestTagNameNotUnique CustomVisionErrorCodes = "BadRequestTagNameNotUnique"
-	// BadRequestTagType ...
-	BadRequestTagType CustomVisionErrorCodes = "BadRequestTagType"
-	// BadRequestTrainingAlreadyInProgress ...
-	BadRequestTrainingAlreadyInProgress CustomVisionErrorCodes = "BadRequestTrainingAlreadyInProgress"
-	// BadRequestTrainingNotNeeded ...
-	BadRequestTrainingNotNeeded CustomVisionErrorCodes = "BadRequestTrainingNotNeeded"
-	// BadRequestTrainingNotNeededButTrainingPipelineUpdated ...
-	BadRequestTrainingNotNeededButTrainingPipelineUpdated CustomVisionErrorCodes = "BadRequestTrainingNotNeededButTrainingPipelineUpdated"
-	// BadRequestTrainingValidationFailed ...
-	BadRequestTrainingValidationFailed CustomVisionErrorCodes = "BadRequestTrainingValidationFailed"
-	// BadRequestUnpublishFailed ...
-	BadRequestUnpublishFailed CustomVisionErrorCodes = "BadRequestUnpublishFailed"
-	// BadRequestWorkspaceCannotBeModified ...
-	BadRequestWorkspaceCannotBeModified CustomVisionErrorCodes = "BadRequestWorkspaceCannotBeModified"
-	// BadRequestWorkspaceNotDeletable ...
-	BadRequestWorkspaceNotDeletable CustomVisionErrorCodes = "BadRequestWorkspaceNotDeletable"
-	// Conflict ...
-	Conflict CustomVisionErrorCodes = "Conflict"
-	// ConflictInvalid ...
-	ConflictInvalid CustomVisionErrorCodes = "ConflictInvalid"
-	// ErrorExporterInvalidClassifier ...
-	ErrorExporterInvalidClassifier CustomVisionErrorCodes = "ErrorExporterInvalidClassifier"
-	// ErrorExporterInvalidFeaturizer ...
-	ErrorExporterInvalidFeaturizer CustomVisionErrorCodes = "ErrorExporterInvalidFeaturizer"
-	// ErrorExporterInvalidPlatform ...
-	ErrorExporterInvalidPlatform CustomVisionErrorCodes = "ErrorExporterInvalidPlatform"
-	// ErrorFeaturizationAugmentationError ...
-	ErrorFeaturizationAugmentationError CustomVisionErrorCodes = "ErrorFeaturizationAugmentationError"
-	// ErrorFeaturizationAugmentationUnavailable ...
-	ErrorFeaturizationAugmentationUnavailable CustomVisionErrorCodes = "ErrorFeaturizationAugmentationUnavailable"
-	// ErrorFeaturizationInvalidFeaturizer ...
-	ErrorFeaturizationInvalidFeaturizer CustomVisionErrorCodes = "ErrorFeaturizationInvalidFeaturizer"
-	// ErrorFeaturizationQueueTimeout ...
-	ErrorFeaturizationQueueTimeout CustomVisionErrorCodes = "ErrorFeaturizationQueueTimeout"
-	// ErrorFeaturizationServiceUnavailable ...
-	ErrorFeaturizationServiceUnavailable CustomVisionErrorCodes = "ErrorFeaturizationServiceUnavailable"
-	// ErrorFeaturizationUnrecognizedJob ...
-	ErrorFeaturizationUnrecognizedJob CustomVisionErrorCodes = "ErrorFeaturizationUnrecognizedJob"
-	// ErrorInvalid ...
-	ErrorInvalid CustomVisionErrorCodes = "ErrorInvalid"
-	// ErrorPrediction ...
-	ErrorPrediction CustomVisionErrorCodes = "ErrorPrediction"
-	// ErrorPredictionModelNotCached ...
-	ErrorPredictionModelNotCached CustomVisionErrorCodes = "ErrorPredictionModelNotCached"
-	// ErrorPredictionModelNotFound ...
-	ErrorPredictionModelNotFound CustomVisionErrorCodes = "ErrorPredictionModelNotFound"
-	// ErrorPredictionServiceUnavailable ...
-	ErrorPredictionServiceUnavailable CustomVisionErrorCodes = "ErrorPredictionServiceUnavailable"
-	// ErrorPredictionStorage ...
-	ErrorPredictionStorage CustomVisionErrorCodes = "ErrorPredictionStorage"
-	// ErrorProjectExportRequestFailed ...
-	ErrorProjectExportRequestFailed CustomVisionErrorCodes = "ErrorProjectExportRequestFailed"
-	// ErrorProjectInvalidDomain ...
-	ErrorProjectInvalidDomain CustomVisionErrorCodes = "ErrorProjectInvalidDomain"
-	// ErrorProjectInvalidPipelineConfiguration ...
-	ErrorProjectInvalidPipelineConfiguration CustomVisionErrorCodes = "ErrorProjectInvalidPipelineConfiguration"
-	// ErrorProjectInvalidWorkspace ...
-	ErrorProjectInvalidWorkspace CustomVisionErrorCodes = "ErrorProjectInvalidWorkspace"
-	// ErrorProjectTrainingRequestFailed ...
-	ErrorProjectTrainingRequestFailed CustomVisionErrorCodes = "ErrorProjectTrainingRequestFailed"
-	// ErrorRegionProposal ...
-	ErrorRegionProposal CustomVisionErrorCodes = "ErrorRegionProposal"
-	// ErrorUnknown ...
-	ErrorUnknown CustomVisionErrorCodes = "ErrorUnknown"
-	// Forbidden ...
-	Forbidden CustomVisionErrorCodes = "Forbidden"
-	// ForbiddenDRModeEnabled ...
-	ForbiddenDRModeEnabled CustomVisionErrorCodes = "ForbiddenDRModeEnabled"
-	// ForbiddenInvalid ...
-	ForbiddenInvalid CustomVisionErrorCodes = "ForbiddenInvalid"
-	// ForbiddenUser ...
-	ForbiddenUser CustomVisionErrorCodes = "ForbiddenUser"
-	// ForbiddenUserDisabled ...
-	ForbiddenUserDisabled CustomVisionErrorCodes = "ForbiddenUserDisabled"
-	// ForbiddenUserDoesNotExist ...
-	ForbiddenUserDoesNotExist CustomVisionErrorCodes = "ForbiddenUserDoesNotExist"
-	// ForbiddenUserInsufficientCapability ...
-	ForbiddenUserInsufficientCapability CustomVisionErrorCodes = "ForbiddenUserInsufficientCapability"
-	// ForbiddenUserResource ...
-	ForbiddenUserResource CustomVisionErrorCodes = "ForbiddenUserResource"
-	// ForbiddenUserSignupAllowanceExceeded ...
-	ForbiddenUserSignupAllowanceExceeded CustomVisionErrorCodes = "ForbiddenUserSignupAllowanceExceeded"
-	// ForbiddenUserSignupDisabled ...
-	ForbiddenUserSignupDisabled CustomVisionErrorCodes = "ForbiddenUserSignupDisabled"
-	// NoError ...
-	NoError CustomVisionErrorCodes = "NoError"
-	// NotFound ...
-	NotFound CustomVisionErrorCodes = "NotFound"
-	// NotFoundApimSubscription ...
-	NotFoundApimSubscription CustomVisionErrorCodes = "NotFoundApimSubscription"
-	// NotFoundDomain ...
-	NotFoundDomain CustomVisionErrorCodes = "NotFoundDomain"
-	// NotFoundImage ...
-	NotFoundImage CustomVisionErrorCodes = "NotFoundImage"
-	// NotFoundInvalid ...
-	NotFoundInvalid CustomVisionErrorCodes = "NotFoundInvalid"
-	// NotFoundIteration ...
-	NotFoundIteration CustomVisionErrorCodes = "NotFoundIteration"
-	// NotFoundIterationPerformance ...
-	NotFoundIterationPerformance CustomVisionErrorCodes = "NotFoundIterationPerformance"
-	// NotFoundProject ...
-	NotFoundProject CustomVisionErrorCodes = "NotFoundProject"
-	// NotFoundProjectDefaultIteration ...
-	NotFoundProjectDefaultIteration CustomVisionErrorCodes = "NotFoundProjectDefaultIteration"
-	// NotFoundTag ...
-	NotFoundTag CustomVisionErrorCodes = "NotFoundTag"
-	// UnsupportedMediaType ...
-	UnsupportedMediaType CustomVisionErrorCodes = "UnsupportedMediaType"
-)
-
-// PossibleCustomVisionErrorCodesValues returns an array of possible values for the CustomVisionErrorCodes const type.
-func PossibleCustomVisionErrorCodesValues() []CustomVisionErrorCodes {
-	return []CustomVisionErrorCodes{BadRequest, BadRequestCannotMigrateProjectWithName, BadRequestClassificationTrainingValidationFailed, BadRequestDetectionTrainingNotAllowNegativeTag, BadRequestDetectionTrainingValidationFailed, BadRequestDomainNotSupportedForAdvancedTraining, BadRequestExceededBatchSize, BadRequestExceededQuota, BadRequestExceedIterationPerProjectLimit, BadRequestExceedProjectLimit, BadRequestExceedTagPerImageLimit, BadRequestExceedTagPerProjectLimit, BadRequestExportAlreadyInProgress, BadRequestExportPlatformNotSupportedForAdvancedTraining, BadRequestExportValidationFailed, BadRequestImageBatch, BadRequestImageExceededCount, BadRequestImageFormat, BadRequestImageRegions, BadRequestImageSizeBytes, BadRequestImageStream, BadRequestImageTags, BadRequestImageURL, BadRequestInvalid, BadRequestInvalidEmailAddress, BadRequestInvalidIds, BadRequestInvalidPublishName, BadRequestInvalidPublishTarget, BadRequestIterationDescription, BadRequestIterationIsNotTrained, BadRequestIterationIsPublished, BadRequestIterationName, BadRequestIterationNameNotUnique, BadRequestIterationNotPublished, BadRequestMultiClassClassificationTrainingValidationFailed, BadRequestMultiLabelClassificationTrainingValidationFailed, BadRequestMultipleNegativeTag, BadRequestNegativeAndRegularTagOnSameImage, BadRequestNotLimitedTrial, BadRequestNotSupported, BadRequestPredictionIdsExceededCount, BadRequestPredictionIdsMissing, BadRequestPredictionInvalidApplicationName, BadRequestPredictionInvalidQueryParameters, BadRequestPredictionResultsExceededCount, BadRequestPredictionTagsExceededCount, BadRequestProjectDescription, BadRequestProjectImagePreprocessingSettings, BadRequestProjectName, BadRequestProjectNameNotUnique, BadRequestProjectUnknownClassification, BadRequestProjectUnknownDomain, BadRequestProjectUnsupportedDomainTypeChange, BadRequestProjectUnsupportedExportPlatform, BadRequestRequiredParamIsNull, BadRequestReservedBudgetInHoursNotEnoughForAdvancedTraining, BadRequestSubscriptionAPI, BadRequestTagDescription, BadRequestTagName, BadRequestTagNameNotUnique, BadRequestTagType, BadRequestTrainingAlreadyInProgress, BadRequestTrainingNotNeeded, BadRequestTrainingNotNeededButTrainingPipelineUpdated, BadRequestTrainingValidationFailed, BadRequestUnpublishFailed, BadRequestWorkspaceCannotBeModified, BadRequestWorkspaceNotDeletable, Conflict, ConflictInvalid, ErrorExporterInvalidClassifier, ErrorExporterInvalidFeaturizer, ErrorExporterInvalidPlatform, ErrorFeaturizationAugmentationError, ErrorFeaturizationAugmentationUnavailable, ErrorFeaturizationInvalidFeaturizer, ErrorFeaturizationQueueTimeout, ErrorFeaturizationServiceUnavailable, ErrorFeaturizationUnrecognizedJob, ErrorInvalid, ErrorPrediction, ErrorPredictionModelNotCached, ErrorPredictionModelNotFound, ErrorPredictionServiceUnavailable, ErrorPredictionStorage, ErrorProjectExportRequestFailed, ErrorProjectInvalidDomain, ErrorProjectInvalidPipelineConfiguration, ErrorProjectInvalidWorkspace, ErrorProjectTrainingRequestFailed, ErrorRegionProposal, ErrorUnknown, Forbidden, ForbiddenDRModeEnabled, ForbiddenInvalid, ForbiddenUser, ForbiddenUserDisabled, ForbiddenUserDoesNotExist, ForbiddenUserInsufficientCapability, ForbiddenUserResource, ForbiddenUserSignupAllowanceExceeded, ForbiddenUserSignupDisabled, NoError, NotFound, NotFoundApimSubscription, NotFoundDomain, NotFoundImage, NotFoundInvalid, NotFoundIteration, NotFoundIterationPerformance, NotFoundProject, NotFoundProjectDefaultIteration, NotFoundTag, UnsupportedMediaType}
-}
-
-// DomainType enumerates the values for domain type.
-type DomainType string
-
-const (
-	// Classification ...
-	Classification DomainType = "Classification"
-	// ObjectDetection ...
-	ObjectDetection DomainType = "ObjectDetection"
-)
-
-// PossibleDomainTypeValues returns an array of possible values for the DomainType const type.
-func PossibleDomainTypeValues() []DomainType {
-	return []DomainType{Classification, ObjectDetection}
-}
-
-// ExportFlavor enumerates the values for export flavor.
-type ExportFlavor string
-
-const (
-	// ARM ...
-	ARM ExportFlavor = "ARM"
-	// Linux ...
-	Linux ExportFlavor = "Linux"
-	// ONNX10 ...
-	ONNX10 ExportFlavor = "ONNX10"
-	// ONNX12 ...
-	ONNX12 ExportFlavor = "ONNX12"
-	// TensorFlowLite ...
-	TensorFlowLite ExportFlavor = "TensorFlowLite"
-	// TensorFlowNormal ...
-	TensorFlowNormal ExportFlavor = "TensorFlowNormal"
-	// Windows ...
-	Windows ExportFlavor = "Windows"
-)
-
-// PossibleExportFlavorValues returns an array of possible values for the ExportFlavor const type.
-func PossibleExportFlavorValues() []ExportFlavor {
-	return []ExportFlavor{ARM, Linux, ONNX10, ONNX12, TensorFlowLite, TensorFlowNormal, Windows}
-}
-
-// ExportPlatform enumerates the values for export platform.
-type ExportPlatform string
-
-const (
-	// CoreML ...
-	CoreML ExportPlatform = "CoreML"
-	// DockerFile ...
-	DockerFile ExportPlatform = "DockerFile"
-	// ONNX ...
-	ONNX ExportPlatform = "ONNX"
-	// TensorFlow ...
-	TensorFlow ExportPlatform = "TensorFlow"
-	// VAIDK ...
-	VAIDK ExportPlatform = "VAIDK"
-)
-
-// PossibleExportPlatformValues returns an array of possible values for the ExportPlatform const type.
-func PossibleExportPlatformValues() []ExportPlatform {
-	return []ExportPlatform{CoreML, DockerFile, ONNX, TensorFlow, VAIDK}
-}
-
-// ExportStatus enumerates the values for export status.
-type ExportStatus string
-
-const (
-	// Done ...
-	Done ExportStatus = "Done"
-	// Exporting ...
-	Exporting ExportStatus = "Exporting"
-	// Failed ...
-	Failed ExportStatus = "Failed"
-)
-
-// PossibleExportStatusValues returns an array of possible values for the ExportStatus const type.
-func PossibleExportStatusValues() []ExportStatus {
-	return []ExportStatus{Done, Exporting, Failed}
-}
-
-// ImageCreateStatus enumerates the values for image create status.
-type ImageCreateStatus string
-
-const (
-	// ImageCreateStatusErrorImageFormat ...
-	ImageCreateStatusErrorImageFormat ImageCreateStatus = "ErrorImageFormat"
-	// ImageCreateStatusErrorImageSize ...
-	ImageCreateStatusErrorImageSize ImageCreateStatus = "ErrorImageSize"
-	// ImageCreateStatusErrorLimitExceed ...
-	ImageCreateStatusErrorLimitExceed ImageCreateStatus = "ErrorLimitExceed"
-	// ImageCreateStatusErrorNegativeAndRegularTagOnSameImage ...
-	ImageCreateStatusErrorNegativeAndRegularTagOnSameImage ImageCreateStatus = "ErrorNegativeAndRegularTagOnSameImage"
-	// ImageCreateStatusErrorRegionLimitExceed ...
-	ImageCreateStatusErrorRegionLimitExceed ImageCreateStatus = "ErrorRegionLimitExceed"
-	// ImageCreateStatusErrorSource ...
-	ImageCreateStatusErrorSource ImageCreateStatus = "ErrorSource"
-	// ImageCreateStatusErrorStorage ...
-	ImageCreateStatusErrorStorage ImageCreateStatus = "ErrorStorage"
-	// ImageCreateStatusErrorTagLimitExceed ...
-	ImageCreateStatusErrorTagLimitExceed ImageCreateStatus = "ErrorTagLimitExceed"
-	// ImageCreateStatusErrorUnknown ...
-	ImageCreateStatusErrorUnknown ImageCreateStatus = "ErrorUnknown"
-	// ImageCreateStatusOK ...
-	ImageCreateStatusOK ImageCreateStatus = "OK"
-	// ImageCreateStatusOKDuplicate ...
-	ImageCreateStatusOKDuplicate ImageCreateStatus = "OKDuplicate"
-)
-
-// PossibleImageCreateStatusValues returns an array of possible values for the ImageCreateStatus const type.
-func PossibleImageCreateStatusValues() []ImageCreateStatus {
-	return []ImageCreateStatus{ImageCreateStatusErrorImageFormat, ImageCreateStatusErrorImageSize, ImageCreateStatusErrorLimitExceed, ImageCreateStatusErrorNegativeAndRegularTagOnSameImage, ImageCreateStatusErrorRegionLimitExceed, ImageCreateStatusErrorSource, ImageCreateStatusErrorStorage, ImageCreateStatusErrorTagLimitExceed, ImageCreateStatusErrorUnknown, ImageCreateStatusOK, ImageCreateStatusOKDuplicate}
-}
-
-// OrderBy enumerates the values for order by.
-type OrderBy string
-
-const (
-	// Newest ...
-	Newest OrderBy = "Newest"
-	// Oldest ...
-	Oldest OrderBy = "Oldest"
-	// Suggested ...
-	Suggested OrderBy = "Suggested"
-)
-
-// PossibleOrderByValues returns an array of possible values for the OrderBy const type.
-func PossibleOrderByValues() []OrderBy {
-	return []OrderBy{Newest, Oldest, Suggested}
-}
-
-// SortBy enumerates the values for sort by.
-type SortBy string
-
-const (
-	// UncertaintyAscending ...
-	UncertaintyAscending SortBy = "UncertaintyAscending"
-	// UncertaintyDescending ...
-	UncertaintyDescending SortBy = "UncertaintyDescending"
-)
-
-// PossibleSortByValues returns an array of possible values for the SortBy const type.
-func PossibleSortByValues() []SortBy {
-	return []SortBy{UncertaintyAscending, UncertaintyDescending}
-}
-
-// TagType enumerates the values for tag type.
-type TagType string
-
-const (
-	// Negative ...
-	Negative TagType = "Negative"
-	// Regular ...
-	Regular TagType = "Regular"
-)
-
-// PossibleTagTypeValues returns an array of possible values for the TagType const type.
-func PossibleTagTypeValues() []TagType {
-	return []TagType{Negative, Regular}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeAdvanced ...
-	TypeAdvanced Type = "Advanced"
-	// TypeRegular ...
-	TypeRegular Type = "Regular"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeAdvanced, TypeRegular}
-}
-
 // Bool ...
 type Bool struct {
 	autorest.Response `json:"-"`
@@ -495,6 +68,12 @@ type Domain struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Domain.
+func (d Domain) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Export ...
 type Export struct {
 	autorest.Response `json:"-"`
@@ -508,6 +87,12 @@ type Export struct {
 	Flavor ExportFlavor `json:"flavor,omitempty"`
 	// NewerVersionAvailable - READ-ONLY; Indicates an updated version of the export package is available and should be re-exported for the latest changes.
 	NewerVersionAvailable *bool `json:"newerVersionAvailable,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Export.
+func (e Export) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Image image model to be sent as JSON.
@@ -532,6 +117,12 @@ type Image struct {
 	Regions *[]ImageRegion `json:"regions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Image.
+func (i Image) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageCreateResult ...
 type ImageCreateResult struct {
 	// SourceURL - READ-ONLY; Source URL of the image.
@@ -542,6 +133,12 @@ type ImageCreateResult struct {
 	Image *Image `json:"image,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImageCreateResult.
+func (icr ImageCreateResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageCreateSummary ...
 type ImageCreateSummary struct {
 	autorest.Response `json:"-"`
@@ -549,6 +146,12 @@ type ImageCreateSummary struct {
 	IsBatchSuccessful *bool `json:"isBatchSuccessful,omitempty"`
 	// Images - READ-ONLY; List of the image creation results.
 	Images *[]ImageCreateResult `json:"images,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageCreateSummary.
+func (ics ImageCreateSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ImageFileCreateBatch ...
@@ -601,6 +204,12 @@ type ImagePerformance struct {
 	Regions *[]ImageRegion `json:"regions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImagePerformance.
+func (IP ImagePerformance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImagePrediction result of an image prediction request.
 type ImagePrediction struct {
 	autorest.Response `json:"-"`
@@ -614,6 +223,12 @@ type ImagePrediction struct {
 	Created *date.Time `json:"created,omitempty"`
 	// Predictions - READ-ONLY; List of predictions.
 	Predictions *[]Prediction `json:"predictions,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImagePrediction.
+func (IP ImagePrediction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ImageProcessingSettings represents image preprocessing settings used by image augmentation.
@@ -650,6 +265,27 @@ type ImageRegion struct {
 	Width *float64 `json:"width,omitempty"`
 	// Height - Height.
 	Height *float64 `json:"height,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageRegion.
+func (ir ImageRegion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ir.TagID != nil {
+		objectMap["tagId"] = ir.TagID
+	}
+	if ir.Left != nil {
+		objectMap["left"] = ir.Left
+	}
+	if ir.Top != nil {
+		objectMap["top"] = ir.Top
+	}
+	if ir.Width != nil {
+		objectMap["width"] = ir.Width
+	}
+	if ir.Height != nil {
+		objectMap["height"] = ir.Height
+	}
+	return json.Marshal(objectMap)
 }
 
 // ImageRegionCreateBatch batch of image region information to create.
@@ -695,6 +331,27 @@ type ImageRegionCreateResult struct {
 	Height *float64 `json:"height,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImageRegionCreateResult.
+func (ircr ImageRegionCreateResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ircr.TagID != nil {
+		objectMap["tagId"] = ircr.TagID
+	}
+	if ircr.Left != nil {
+		objectMap["left"] = ircr.Left
+	}
+	if ircr.Top != nil {
+		objectMap["top"] = ircr.Top
+	}
+	if ircr.Width != nil {
+		objectMap["width"] = ircr.Width
+	}
+	if ircr.Height != nil {
+		objectMap["height"] = ircr.Height
+	}
+	return json.Marshal(objectMap)
+}
+
 // ImageRegionCreateSummary ...
 type ImageRegionCreateSummary struct {
 	autorest.Response `json:"-"`
@@ -714,6 +371,12 @@ type ImageRegionProposal struct {
 	Proposals *[]RegionProposal `json:"proposals,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImageRegionProposal.
+func (irp ImageRegionProposal) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageTag ...
 type ImageTag struct {
 	// TagID - READ-ONLY
@@ -722,6 +385,12 @@ type ImageTag struct {
 	TagName *string `json:"tagName,omitempty"`
 	// Created - READ-ONLY
 	Created *date.Time `json:"created,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageTag.
+func (it ImageTag) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ImageTagCreateBatch batch of image tags.
@@ -809,6 +478,15 @@ type Iteration struct {
 	OriginalPublishResourceID *string `json:"originalPublishResourceId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Iteration.
+func (i Iteration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Name != nil {
+		objectMap["name"] = i.Name
+	}
+	return json.Marshal(objectMap)
+}
+
 // IterationPerformance represents the detailed performance data for a trained iteration.
 type IterationPerformance struct {
 	autorest.Response `json:"-"`
@@ -824,6 +502,12 @@ type IterationPerformance struct {
 	RecallStdDeviation *float64 `json:"recallStdDeviation,omitempty"`
 	// AveragePrecision - READ-ONLY; Gets the average precision when applicable.
 	AveragePrecision *float64 `json:"averagePrecision,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IterationPerformance.
+func (IP IterationPerformance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListDomain ...
@@ -886,6 +570,12 @@ type Prediction struct {
 	BoundingBox *BoundingBox `json:"boundingBox,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Prediction.
+func (p Prediction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PredictionQueryResult query result of the prediction images that were sent to your prediction endpoint.
 type PredictionQueryResult struct {
 	autorest.Response `json:"-"`
@@ -893,6 +583,15 @@ type PredictionQueryResult struct {
 	Token *PredictionQueryToken `json:"token,omitempty"`
 	// Results - READ-ONLY; Result of an prediction request.
 	Results *[]StoredImagePrediction `json:"results,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PredictionQueryResult.
+func (pqr PredictionQueryResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pqr.Token != nil {
+		objectMap["token"] = pqr.Token
+	}
+	return json.Marshal(objectMap)
 }
 
 // PredictionQueryTag ...
@@ -937,6 +636,21 @@ type Project struct {
 	DrModeEnabled *bool `json:"drModeEnabled,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Project.
+func (p Project) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.Name != nil {
+		objectMap["name"] = p.Name
+	}
+	if p.Description != nil {
+		objectMap["description"] = p.Description
+	}
+	if p.Settings != nil {
+		objectMap["settings"] = p.Settings
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProjectSettings represents settings associated with a project.
 type ProjectSettings struct {
 	// DomainID - Gets or sets the id of the Domain to use with this project.
@@ -951,6 +665,24 @@ type ProjectSettings struct {
 	DetectionParameters *string `json:"detectionParameters,omitempty"`
 	// ImageProcessingSettings - Gets or sets image preprocessing settings.
 	ImageProcessingSettings *ImageProcessingSettings `json:"imageProcessingSettings,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProjectSettings.
+func (ps ProjectSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ps.DomainID != nil {
+		objectMap["domainId"] = ps.DomainID
+	}
+	if ps.ClassificationType != "" {
+		objectMap["classificationType"] = ps.ClassificationType
+	}
+	if ps.TargetExportPlatforms != nil {
+		objectMap["targetExportPlatforms"] = ps.TargetExportPlatforms
+	}
+	if ps.ImageProcessingSettings != nil {
+		objectMap["imageProcessingSettings"] = ps.ImageProcessingSettings
+	}
+	return json.Marshal(objectMap)
 }
 
 // Region ...
@@ -973,6 +705,12 @@ type RegionProposal struct {
 	Confidence *float64 `json:"confidence,omitempty"`
 	// BoundingBox - READ-ONLY
 	BoundingBox *BoundingBox `json:"boundingBox,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RegionProposal.
+func (rp RegionProposal) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SetInt32 ...
@@ -1012,6 +750,12 @@ type StoredImagePrediction struct {
 	Predictions *[]Prediction `json:"predictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StoredImagePrediction.
+func (sip StoredImagePrediction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // StoredSuggestedTagAndRegion result of a suggested tags and regions request of the untagged image.
 type StoredSuggestedTagAndRegion struct {
 	// Width - READ-ONLY; Width of the resized image.
@@ -1040,6 +784,12 @@ type StoredSuggestedTagAndRegion struct {
 	PredictionUncertainty *float64 `json:"predictionUncertainty,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StoredSuggestedTagAndRegion.
+func (sstar StoredSuggestedTagAndRegion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SuggestedTagAndRegion result of a suggested tags and regions request.
 type SuggestedTagAndRegion struct {
 	// ID - READ-ONLY; Prediction Id.
@@ -1056,8 +806,14 @@ type SuggestedTagAndRegion struct {
 	PredictionUncertainty *float64 `json:"predictionUncertainty,omitempty"`
 }
 
-// SuggestedTagAndRegionQuery the array of result images and token containing session and continuation Ids
-// for the next query.
+// MarshalJSON is the custom marshaler for SuggestedTagAndRegion.
+func (star SuggestedTagAndRegion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// SuggestedTagAndRegionQuery the array of result images and token containing session and continuation Ids for
+// the next query.
 type SuggestedTagAndRegionQuery struct {
 	autorest.Response `json:"-"`
 	// Token - Contains properties we need to fetch suggested tags for.
@@ -1066,10 +822,19 @@ type SuggestedTagAndRegionQuery struct {
 	Results *[]StoredSuggestedTagAndRegion `json:"results,omitempty"`
 }
 
-// SuggestedTagAndRegionQueryToken contains properties we need to fetch suggested tags for. For the first
-// call, Session and continuation set to null.
-// Then on subsequent calls, uses the session/continuation from the previous SuggestedTagAndRegionQuery
-// result to fetch additional results.
+// MarshalJSON is the custom marshaler for SuggestedTagAndRegionQuery.
+func (starq SuggestedTagAndRegionQuery) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if starq.Token != nil {
+		objectMap["token"] = starq.Token
+	}
+	return json.Marshal(objectMap)
+}
+
+// SuggestedTagAndRegionQueryToken contains properties we need to fetch suggested tags for. For the first call,
+// Session and continuation set to null.
+// Then on subsequent calls, uses the session/continuation from the previous SuggestedTagAndRegionQuery result
+// to fetch additional results.
 type SuggestedTagAndRegionQueryToken struct {
 	// TagIds - Existing TagIds in project to filter suggested tags on.
 	TagIds *[]uuid.UUID `json:"tagIds,omitempty"`
@@ -1100,6 +865,21 @@ type Tag struct {
 	ImageCount *int32 `json:"imageCount,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Tag.
+func (t Tag) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if t.Name != nil {
+		objectMap["name"] = t.Name
+	}
+	if t.Description != nil {
+		objectMap["description"] = t.Description
+	}
+	if t.Type != "" {
+		objectMap["type"] = t.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // TagFilter model that query for counting of images whose suggested tags match given tags and their
 // probability are greater than or equal to the given threshold.
 type TagFilter struct {
@@ -1125,4 +905,10 @@ type TagPerformance struct {
 	RecallStdDeviation *float64 `json:"recallStdDeviation,omitempty"`
 	// AveragePrecision - READ-ONLY; Gets the average precision when applicable.
 	AveragePrecision *float64 `json:"averagePrecision,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TagPerformance.
+func (tp TagPerformance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

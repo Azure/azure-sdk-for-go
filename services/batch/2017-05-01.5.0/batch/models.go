@@ -30,605 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/batch/2017-05-01.5.0/batch"
 
-// AccessScope enumerates the values for access scope.
-type AccessScope string
-
-const (
-	// Job ...
-	Job AccessScope = "job"
-)
-
-// PossibleAccessScopeValues returns an array of possible values for the AccessScope const type.
-func PossibleAccessScopeValues() []AccessScope {
-	return []AccessScope{Job}
-}
-
-// AllocationState enumerates the values for allocation state.
-type AllocationState string
-
-const (
-	// Resizing ...
-	Resizing AllocationState = "resizing"
-	// Steady ...
-	Steady AllocationState = "steady"
-	// Stopping ...
-	Stopping AllocationState = "stopping"
-)
-
-// PossibleAllocationStateValues returns an array of possible values for the AllocationState const type.
-func PossibleAllocationStateValues() []AllocationState {
-	return []AllocationState{Resizing, Steady, Stopping}
-}
-
-// AutoUserScope enumerates the values for auto user scope.
-type AutoUserScope string
-
-const (
-	// Pool ...
-	Pool AutoUserScope = "pool"
-	// Task ...
-	Task AutoUserScope = "task"
-)
-
-// PossibleAutoUserScopeValues returns an array of possible values for the AutoUserScope const type.
-func PossibleAutoUserScopeValues() []AutoUserScope {
-	return []AutoUserScope{Pool, Task}
-}
-
-// CachingType enumerates the values for caching type.
-type CachingType string
-
-const (
-	// None ...
-	None CachingType = "none"
-	// ReadOnly ...
-	ReadOnly CachingType = "readOnly"
-	// ReadWrite ...
-	ReadWrite CachingType = "readWrite"
-)
-
-// PossibleCachingTypeValues returns an array of possible values for the CachingType const type.
-func PossibleCachingTypeValues() []CachingType {
-	return []CachingType{None, ReadOnly, ReadWrite}
-}
-
-// CertificateFormat enumerates the values for certificate format.
-type CertificateFormat string
-
-const (
-	// Cer ...
-	Cer CertificateFormat = "cer"
-	// Pfx ...
-	Pfx CertificateFormat = "pfx"
-)
-
-// PossibleCertificateFormatValues returns an array of possible values for the CertificateFormat const type.
-func PossibleCertificateFormatValues() []CertificateFormat {
-	return []CertificateFormat{Cer, Pfx}
-}
-
-// CertificateState enumerates the values for certificate state.
-type CertificateState string
-
-const (
-	// Active ...
-	Active CertificateState = "active"
-	// DeleteFailed ...
-	DeleteFailed CertificateState = "deleteFailed"
-	// Deleting ...
-	Deleting CertificateState = "deleting"
-)
-
-// PossibleCertificateStateValues returns an array of possible values for the CertificateState const type.
-func PossibleCertificateStateValues() []CertificateState {
-	return []CertificateState{Active, DeleteFailed, Deleting}
-}
-
-// CertificateStoreLocation enumerates the values for certificate store location.
-type CertificateStoreLocation string
-
-const (
-	// CurrentUser ...
-	CurrentUser CertificateStoreLocation = "currentUser"
-	// LocalMachine ...
-	LocalMachine CertificateStoreLocation = "localMachine"
-)
-
-// PossibleCertificateStoreLocationValues returns an array of possible values for the CertificateStoreLocation const type.
-func PossibleCertificateStoreLocationValues() []CertificateStoreLocation {
-	return []CertificateStoreLocation{CurrentUser, LocalMachine}
-}
-
-// CertificateVisibility enumerates the values for certificate visibility.
-type CertificateVisibility string
-
-const (
-	// CertificateVisibilityRemoteUser ...
-	CertificateVisibilityRemoteUser CertificateVisibility = "remoteUser"
-	// CertificateVisibilityStartTask ...
-	CertificateVisibilityStartTask CertificateVisibility = "startTask"
-	// CertificateVisibilityTask ...
-	CertificateVisibilityTask CertificateVisibility = "task"
-)
-
-// PossibleCertificateVisibilityValues returns an array of possible values for the CertificateVisibility const type.
-func PossibleCertificateVisibilityValues() []CertificateVisibility {
-	return []CertificateVisibility{CertificateVisibilityRemoteUser, CertificateVisibilityStartTask, CertificateVisibilityTask}
-}
-
-// ComputeNodeDeallocationOption enumerates the values for compute node deallocation option.
-type ComputeNodeDeallocationOption string
-
-const (
-	// Requeue ...
-	Requeue ComputeNodeDeallocationOption = "requeue"
-	// RetainedData ...
-	RetainedData ComputeNodeDeallocationOption = "retainedData"
-	// TaskCompletion ...
-	TaskCompletion ComputeNodeDeallocationOption = "taskCompletion"
-	// Terminate ...
-	Terminate ComputeNodeDeallocationOption = "terminate"
-)
-
-// PossibleComputeNodeDeallocationOptionValues returns an array of possible values for the ComputeNodeDeallocationOption const type.
-func PossibleComputeNodeDeallocationOptionValues() []ComputeNodeDeallocationOption {
-	return []ComputeNodeDeallocationOption{Requeue, RetainedData, TaskCompletion, Terminate}
-}
-
-// ComputeNodeFillType enumerates the values for compute node fill type.
-type ComputeNodeFillType string
-
-const (
-	// Pack ...
-	Pack ComputeNodeFillType = "pack"
-	// Spread ...
-	Spread ComputeNodeFillType = "spread"
-)
-
-// PossibleComputeNodeFillTypeValues returns an array of possible values for the ComputeNodeFillType const type.
-func PossibleComputeNodeFillTypeValues() []ComputeNodeFillType {
-	return []ComputeNodeFillType{Pack, Spread}
-}
-
-// ComputeNodeRebootOption enumerates the values for compute node reboot option.
-type ComputeNodeRebootOption string
-
-const (
-	// ComputeNodeRebootOptionRequeue ...
-	ComputeNodeRebootOptionRequeue ComputeNodeRebootOption = "requeue"
-	// ComputeNodeRebootOptionRetainedData ...
-	ComputeNodeRebootOptionRetainedData ComputeNodeRebootOption = "retainedData"
-	// ComputeNodeRebootOptionTaskCompletion ...
-	ComputeNodeRebootOptionTaskCompletion ComputeNodeRebootOption = "taskCompletion"
-	// ComputeNodeRebootOptionTerminate ...
-	ComputeNodeRebootOptionTerminate ComputeNodeRebootOption = "terminate"
-)
-
-// PossibleComputeNodeRebootOptionValues returns an array of possible values for the ComputeNodeRebootOption const type.
-func PossibleComputeNodeRebootOptionValues() []ComputeNodeRebootOption {
-	return []ComputeNodeRebootOption{ComputeNodeRebootOptionRequeue, ComputeNodeRebootOptionRetainedData, ComputeNodeRebootOptionTaskCompletion, ComputeNodeRebootOptionTerminate}
-}
-
-// ComputeNodeReimageOption enumerates the values for compute node reimage option.
-type ComputeNodeReimageOption string
-
-const (
-	// ComputeNodeReimageOptionRequeue ...
-	ComputeNodeReimageOptionRequeue ComputeNodeReimageOption = "requeue"
-	// ComputeNodeReimageOptionRetainedData ...
-	ComputeNodeReimageOptionRetainedData ComputeNodeReimageOption = "retainedData"
-	// ComputeNodeReimageOptionTaskCompletion ...
-	ComputeNodeReimageOptionTaskCompletion ComputeNodeReimageOption = "taskCompletion"
-	// ComputeNodeReimageOptionTerminate ...
-	ComputeNodeReimageOptionTerminate ComputeNodeReimageOption = "terminate"
-)
-
-// PossibleComputeNodeReimageOptionValues returns an array of possible values for the ComputeNodeReimageOption const type.
-func PossibleComputeNodeReimageOptionValues() []ComputeNodeReimageOption {
-	return []ComputeNodeReimageOption{ComputeNodeReimageOptionRequeue, ComputeNodeReimageOptionRetainedData, ComputeNodeReimageOptionTaskCompletion, ComputeNodeReimageOptionTerminate}
-}
-
-// ComputeNodeState enumerates the values for compute node state.
-type ComputeNodeState string
-
-const (
-	// Creating ...
-	Creating ComputeNodeState = "creating"
-	// Idle ...
-	Idle ComputeNodeState = "idle"
-	// LeavingPool ...
-	LeavingPool ComputeNodeState = "leavingPool"
-	// Offline ...
-	Offline ComputeNodeState = "offline"
-	// Preempted ...
-	Preempted ComputeNodeState = "preempted"
-	// Rebooting ...
-	Rebooting ComputeNodeState = "rebooting"
-	// Reimaging ...
-	Reimaging ComputeNodeState = "reimaging"
-	// Running ...
-	Running ComputeNodeState = "running"
-	// Starting ...
-	Starting ComputeNodeState = "starting"
-	// StartTaskFailed ...
-	StartTaskFailed ComputeNodeState = "startTaskFailed"
-	// Unknown ...
-	Unknown ComputeNodeState = "unknown"
-	// Unusable ...
-	Unusable ComputeNodeState = "unusable"
-	// WaitingForStartTask ...
-	WaitingForStartTask ComputeNodeState = "waitingForStartTask"
-)
-
-// PossibleComputeNodeStateValues returns an array of possible values for the ComputeNodeState const type.
-func PossibleComputeNodeStateValues() []ComputeNodeState {
-	return []ComputeNodeState{Creating, Idle, LeavingPool, Offline, Preempted, Rebooting, Reimaging, Running, Starting, StartTaskFailed, Unknown, Unusable, WaitingForStartTask}
-}
-
-// DependencyAction enumerates the values for dependency action.
-type DependencyAction string
-
-const (
-	// Block ...
-	Block DependencyAction = "block"
-	// Satisfy ...
-	Satisfy DependencyAction = "satisfy"
-)
-
-// PossibleDependencyActionValues returns an array of possible values for the DependencyAction const type.
-func PossibleDependencyActionValues() []DependencyAction {
-	return []DependencyAction{Block, Satisfy}
-}
-
-// DisableComputeNodeSchedulingOption enumerates the values for disable compute node scheduling option.
-type DisableComputeNodeSchedulingOption string
-
-const (
-	// DisableComputeNodeSchedulingOptionRequeue ...
-	DisableComputeNodeSchedulingOptionRequeue DisableComputeNodeSchedulingOption = "requeue"
-	// DisableComputeNodeSchedulingOptionTaskCompletion ...
-	DisableComputeNodeSchedulingOptionTaskCompletion DisableComputeNodeSchedulingOption = "taskCompletion"
-	// DisableComputeNodeSchedulingOptionTerminate ...
-	DisableComputeNodeSchedulingOptionTerminate DisableComputeNodeSchedulingOption = "terminate"
-)
-
-// PossibleDisableComputeNodeSchedulingOptionValues returns an array of possible values for the DisableComputeNodeSchedulingOption const type.
-func PossibleDisableComputeNodeSchedulingOptionValues() []DisableComputeNodeSchedulingOption {
-	return []DisableComputeNodeSchedulingOption{DisableComputeNodeSchedulingOptionRequeue, DisableComputeNodeSchedulingOptionTaskCompletion, DisableComputeNodeSchedulingOptionTerminate}
-}
-
-// DisableJobOption enumerates the values for disable job option.
-type DisableJobOption string
-
-const (
-	// DisableJobOptionRequeue ...
-	DisableJobOptionRequeue DisableJobOption = "requeue"
-	// DisableJobOptionTerminate ...
-	DisableJobOptionTerminate DisableJobOption = "terminate"
-	// DisableJobOptionWait ...
-	DisableJobOptionWait DisableJobOption = "wait"
-)
-
-// PossibleDisableJobOptionValues returns an array of possible values for the DisableJobOption const type.
-func PossibleDisableJobOptionValues() []DisableJobOption {
-	return []DisableJobOption{DisableJobOptionRequeue, DisableJobOptionTerminate, DisableJobOptionWait}
-}
-
-// ElevationLevel enumerates the values for elevation level.
-type ElevationLevel string
-
-const (
-	// Admin ...
-	Admin ElevationLevel = "admin"
-	// NonAdmin ...
-	NonAdmin ElevationLevel = "nonAdmin"
-)
-
-// PossibleElevationLevelValues returns an array of possible values for the ElevationLevel const type.
-func PossibleElevationLevelValues() []ElevationLevel {
-	return []ElevationLevel{Admin, NonAdmin}
-}
-
-// ErrorCategory enumerates the values for error category.
-type ErrorCategory string
-
-const (
-	// ServerError ...
-	ServerError ErrorCategory = "serverError"
-	// UserError ...
-	UserError ErrorCategory = "userError"
-)
-
-// PossibleErrorCategoryValues returns an array of possible values for the ErrorCategory const type.
-func PossibleErrorCategoryValues() []ErrorCategory {
-	return []ErrorCategory{ServerError, UserError}
-}
-
-// JobAction enumerates the values for job action.
-type JobAction string
-
-const (
-	// JobActionDisable ...
-	JobActionDisable JobAction = "disable"
-	// JobActionNone ...
-	JobActionNone JobAction = "none"
-	// JobActionTerminate ...
-	JobActionTerminate JobAction = "terminate"
-)
-
-// PossibleJobActionValues returns an array of possible values for the JobAction const type.
-func PossibleJobActionValues() []JobAction {
-	return []JobAction{JobActionDisable, JobActionNone, JobActionTerminate}
-}
-
-// JobPreparationTaskState enumerates the values for job preparation task state.
-type JobPreparationTaskState string
-
-const (
-	// JobPreparationTaskStateCompleted ...
-	JobPreparationTaskStateCompleted JobPreparationTaskState = "completed"
-	// JobPreparationTaskStateRunning ...
-	JobPreparationTaskStateRunning JobPreparationTaskState = "running"
-)
-
-// PossibleJobPreparationTaskStateValues returns an array of possible values for the JobPreparationTaskState const type.
-func PossibleJobPreparationTaskStateValues() []JobPreparationTaskState {
-	return []JobPreparationTaskState{JobPreparationTaskStateCompleted, JobPreparationTaskStateRunning}
-}
-
-// JobReleaseTaskState enumerates the values for job release task state.
-type JobReleaseTaskState string
-
-const (
-	// JobReleaseTaskStateCompleted ...
-	JobReleaseTaskStateCompleted JobReleaseTaskState = "completed"
-	// JobReleaseTaskStateRunning ...
-	JobReleaseTaskStateRunning JobReleaseTaskState = "running"
-)
-
-// PossibleJobReleaseTaskStateValues returns an array of possible values for the JobReleaseTaskState const type.
-func PossibleJobReleaseTaskStateValues() []JobReleaseTaskState {
-	return []JobReleaseTaskState{JobReleaseTaskStateCompleted, JobReleaseTaskStateRunning}
-}
-
-// JobScheduleState enumerates the values for job schedule state.
-type JobScheduleState string
-
-const (
-	// JobScheduleStateActive ...
-	JobScheduleStateActive JobScheduleState = "active"
-	// JobScheduleStateCompleted ...
-	JobScheduleStateCompleted JobScheduleState = "completed"
-	// JobScheduleStateDeleting ...
-	JobScheduleStateDeleting JobScheduleState = "deleting"
-	// JobScheduleStateDisabled ...
-	JobScheduleStateDisabled JobScheduleState = "disabled"
-	// JobScheduleStateTerminating ...
-	JobScheduleStateTerminating JobScheduleState = "terminating"
-)
-
-// PossibleJobScheduleStateValues returns an array of possible values for the JobScheduleState const type.
-func PossibleJobScheduleStateValues() []JobScheduleState {
-	return []JobScheduleState{JobScheduleStateActive, JobScheduleStateCompleted, JobScheduleStateDeleting, JobScheduleStateDisabled, JobScheduleStateTerminating}
-}
-
-// JobState enumerates the values for job state.
-type JobState string
-
-const (
-	// JobStateActive ...
-	JobStateActive JobState = "active"
-	// JobStateCompleted ...
-	JobStateCompleted JobState = "completed"
-	// JobStateDeleting ...
-	JobStateDeleting JobState = "deleting"
-	// JobStateDisabled ...
-	JobStateDisabled JobState = "disabled"
-	// JobStateDisabling ...
-	JobStateDisabling JobState = "disabling"
-	// JobStateEnabling ...
-	JobStateEnabling JobState = "enabling"
-	// JobStateTerminating ...
-	JobStateTerminating JobState = "terminating"
-)
-
-// PossibleJobStateValues returns an array of possible values for the JobState const type.
-func PossibleJobStateValues() []JobState {
-	return []JobState{JobStateActive, JobStateCompleted, JobStateDeleting, JobStateDisabled, JobStateDisabling, JobStateEnabling, JobStateTerminating}
-}
-
-// OnAllTasksComplete enumerates the values for on all tasks complete.
-type OnAllTasksComplete string
-
-const (
-	// NoAction ...
-	NoAction OnAllTasksComplete = "noAction"
-	// TerminateJob ...
-	TerminateJob OnAllTasksComplete = "terminateJob"
-)
-
-// PossibleOnAllTasksCompleteValues returns an array of possible values for the OnAllTasksComplete const type.
-func PossibleOnAllTasksCompleteValues() []OnAllTasksComplete {
-	return []OnAllTasksComplete{NoAction, TerminateJob}
-}
-
-// OnTaskFailure enumerates the values for on task failure.
-type OnTaskFailure string
-
-const (
-	// OnTaskFailureNoAction ...
-	OnTaskFailureNoAction OnTaskFailure = "noAction"
-	// OnTaskFailurePerformExitOptionsJobAction ...
-	OnTaskFailurePerformExitOptionsJobAction OnTaskFailure = "performExitOptionsJobAction"
-)
-
-// PossibleOnTaskFailureValues returns an array of possible values for the OnTaskFailure const type.
-func PossibleOnTaskFailureValues() []OnTaskFailure {
-	return []OnTaskFailure{OnTaskFailureNoAction, OnTaskFailurePerformExitOptionsJobAction}
-}
-
-// OSType enumerates the values for os type.
-type OSType string
-
-const (
-	// Linux ...
-	Linux OSType = "linux"
-	// Windows ...
-	Windows OSType = "windows"
-)
-
-// PossibleOSTypeValues returns an array of possible values for the OSType const type.
-func PossibleOSTypeValues() []OSType {
-	return []OSType{Linux, Windows}
-}
-
-// OutputFileUploadCondition enumerates the values for output file upload condition.
-type OutputFileUploadCondition string
-
-const (
-	// OutputFileUploadConditionTaskCompletion ...
-	OutputFileUploadConditionTaskCompletion OutputFileUploadCondition = "taskCompletion"
-	// OutputFileUploadConditionTaskFailure ...
-	OutputFileUploadConditionTaskFailure OutputFileUploadCondition = "taskFailure"
-	// OutputFileUploadConditionTaskSuccess ...
-	OutputFileUploadConditionTaskSuccess OutputFileUploadCondition = "taskSuccess"
-)
-
-// PossibleOutputFileUploadConditionValues returns an array of possible values for the OutputFileUploadCondition const type.
-func PossibleOutputFileUploadConditionValues() []OutputFileUploadCondition {
-	return []OutputFileUploadCondition{OutputFileUploadConditionTaskCompletion, OutputFileUploadConditionTaskFailure, OutputFileUploadConditionTaskSuccess}
-}
-
-// PoolLifetimeOption enumerates the values for pool lifetime option.
-type PoolLifetimeOption string
-
-const (
-	// PoolLifetimeOptionJob ...
-	PoolLifetimeOptionJob PoolLifetimeOption = "job"
-	// PoolLifetimeOptionJobSchedule ...
-	PoolLifetimeOptionJobSchedule PoolLifetimeOption = "jobSchedule"
-)
-
-// PossiblePoolLifetimeOptionValues returns an array of possible values for the PoolLifetimeOption const type.
-func PossiblePoolLifetimeOptionValues() []PoolLifetimeOption {
-	return []PoolLifetimeOption{PoolLifetimeOptionJob, PoolLifetimeOptionJobSchedule}
-}
-
-// PoolState enumerates the values for pool state.
-type PoolState string
-
-const (
-	// PoolStateActive ...
-	PoolStateActive PoolState = "active"
-	// PoolStateDeleting ...
-	PoolStateDeleting PoolState = "deleting"
-	// PoolStateUpgrading ...
-	PoolStateUpgrading PoolState = "upgrading"
-)
-
-// PossiblePoolStateValues returns an array of possible values for the PoolState const type.
-func PossiblePoolStateValues() []PoolState {
-	return []PoolState{PoolStateActive, PoolStateDeleting, PoolStateUpgrading}
-}
-
-// SchedulingState enumerates the values for scheduling state.
-type SchedulingState string
-
-const (
-	// Disabled ...
-	Disabled SchedulingState = "disabled"
-	// Enabled ...
-	Enabled SchedulingState = "enabled"
-)
-
-// PossibleSchedulingStateValues returns an array of possible values for the SchedulingState const type.
-func PossibleSchedulingStateValues() []SchedulingState {
-	return []SchedulingState{Disabled, Enabled}
-}
-
-// StartTaskState enumerates the values for start task state.
-type StartTaskState string
-
-const (
-	// StartTaskStateCompleted ...
-	StartTaskStateCompleted StartTaskState = "completed"
-	// StartTaskStateRunning ...
-	StartTaskStateRunning StartTaskState = "running"
-)
-
-// PossibleStartTaskStateValues returns an array of possible values for the StartTaskState const type.
-func PossibleStartTaskStateValues() []StartTaskState {
-	return []StartTaskState{StartTaskStateCompleted, StartTaskStateRunning}
-}
-
-// SubtaskState enumerates the values for subtask state.
-type SubtaskState string
-
-const (
-	// SubtaskStateCompleted ...
-	SubtaskStateCompleted SubtaskState = "completed"
-	// SubtaskStatePreparing ...
-	SubtaskStatePreparing SubtaskState = "preparing"
-	// SubtaskStateRunning ...
-	SubtaskStateRunning SubtaskState = "running"
-)
-
-// PossibleSubtaskStateValues returns an array of possible values for the SubtaskState const type.
-func PossibleSubtaskStateValues() []SubtaskState {
-	return []SubtaskState{SubtaskStateCompleted, SubtaskStatePreparing, SubtaskStateRunning}
-}
-
-// TaskAddStatus enumerates the values for task add status.
-type TaskAddStatus string
-
-const (
-	// TaskAddStatusClientError ...
-	TaskAddStatusClientError TaskAddStatus = "clientError"
-	// TaskAddStatusServerError ...
-	TaskAddStatusServerError TaskAddStatus = "serverError"
-	// TaskAddStatusSuccess ...
-	TaskAddStatusSuccess TaskAddStatus = "success"
-)
-
-// PossibleTaskAddStatusValues returns an array of possible values for the TaskAddStatus const type.
-func PossibleTaskAddStatusValues() []TaskAddStatus {
-	return []TaskAddStatus{TaskAddStatusClientError, TaskAddStatusServerError, TaskAddStatusSuccess}
-}
-
-// TaskExecutionResult enumerates the values for task execution result.
-type TaskExecutionResult string
-
-const (
-	// Failure ...
-	Failure TaskExecutionResult = "failure"
-	// Success ...
-	Success TaskExecutionResult = "success"
-)
-
-// PossibleTaskExecutionResultValues returns an array of possible values for the TaskExecutionResult const type.
-func PossibleTaskExecutionResultValues() []TaskExecutionResult {
-	return []TaskExecutionResult{Failure, Success}
-}
-
-// TaskState enumerates the values for task state.
-type TaskState string
-
-const (
-	// TaskStateActive ...
-	TaskStateActive TaskState = "active"
-	// TaskStateCompleted ...
-	TaskStateCompleted TaskState = "completed"
-	// TaskStatePreparing ...
-	TaskStatePreparing TaskState = "preparing"
-	// TaskStateRunning ...
-	TaskStateRunning TaskState = "running"
-)
-
-// PossibleTaskStateValues returns an array of possible values for the TaskState const type.
-func PossibleTaskStateValues() []TaskState {
-	return []TaskState{TaskStateActive, TaskStateCompleted, TaskStatePreparing, TaskStateRunning}
-}
-
 // AccountListNodeAgentSkusResult ...
 type AccountListNodeAgentSkusResult struct {
 	autorest.Response `json:"-"`
@@ -704,10 +105,15 @@ func (alnasr AccountListNodeAgentSkusResult) IsEmpty() bool {
 	return alnasr.Value == nil || len(*alnasr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (alnasr AccountListNodeAgentSkusResult) hasNextLink() bool {
+	return alnasr.OdataNextLink != nil && len(*alnasr.OdataNextLink) != 0
+}
+
 // accountListNodeAgentSkusResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (alnasr AccountListNodeAgentSkusResult) accountListNodeAgentSkusResultPreparer(ctx context.Context) (*http.Request, error) {
-	if alnasr.OdataNextLink == nil || len(to.String(alnasr.OdataNextLink)) < 1 {
+	if !alnasr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -735,11 +141,16 @@ func (page *AccountListNodeAgentSkusResultPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.alnasr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.alnasr)
+		if err != nil {
+			return err
+		}
+		page.alnasr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.alnasr = next
 	return nil
 }
 
@@ -854,10 +265,15 @@ func (alr ApplicationListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (alr ApplicationListResult) hasNextLink() bool {
+	return alr.OdataNextLink != nil && len(*alr.OdataNextLink) != 0
+}
+
 // applicationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (alr ApplicationListResult) applicationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if alr.OdataNextLink == nil || len(to.String(alr.OdataNextLink)) < 1 {
+	if !alr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -885,11 +301,16 @@ func (page *ApplicationListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.alr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.alr)
+		if err != nil {
+			return err
+		}
+		page.alr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.alr = next
 	return nil
 }
 
@@ -979,8 +400,8 @@ type AutoUserSpecification struct {
 	ElevationLevel ElevationLevel `json:"elevationLevel,omitempty"`
 }
 
-// Certificate a certificate that can be installed on compute nodes and can be used to authenticate
-// operations on the machine.
+// Certificate a certificate that can be installed on compute nodes and can be used to authenticate operations
+// on the machine.
 type Certificate struct {
 	autorest.Response   `json:"-"`
 	Thumbprint          *string `json:"thumbprint,omitempty"`
@@ -1084,10 +505,15 @@ func (clr CertificateListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (clr CertificateListResult) hasNextLink() bool {
+	return clr.OdataNextLink != nil && len(*clr.OdataNextLink) != 0
+}
+
 // certificateListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (clr CertificateListResult) certificateListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if clr.OdataNextLink == nil || len(to.String(clr.OdataNextLink)) < 1 {
+	if !clr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1115,11 +541,16 @@ func (page *CertificateListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.clr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.clr)
+		if err != nil {
+			return err
+		}
+		page.clr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.clr = next
 	return nil
 }
 
@@ -1281,10 +712,15 @@ func (cjlpartsr CloudJobListPreparationAndReleaseTaskStatusResult) IsEmpty() boo
 	return cjlpartsr.Value == nil || len(*cjlpartsr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cjlpartsr CloudJobListPreparationAndReleaseTaskStatusResult) hasNextLink() bool {
+	return cjlpartsr.OdataNextLink != nil && len(*cjlpartsr.OdataNextLink) != 0
+}
+
 // cloudJobListPreparationAndReleaseTaskStatusResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cjlpartsr CloudJobListPreparationAndReleaseTaskStatusResult) cloudJobListPreparationAndReleaseTaskStatusResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cjlpartsr.OdataNextLink == nil || len(to.String(cjlpartsr.OdataNextLink)) < 1 {
+	if !cjlpartsr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1313,11 +749,16 @@ func (page *CloudJobListPreparationAndReleaseTaskStatusResultPage) NextWithConte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cjlpartsr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cjlpartsr)
+		if err != nil {
+			return err
+		}
+		page.cjlpartsr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cjlpartsr = next
 	return nil
 }
 
@@ -1426,10 +867,15 @@ func (cjlr CloudJobListResult) IsEmpty() bool {
 	return cjlr.Value == nil || len(*cjlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cjlr CloudJobListResult) hasNextLink() bool {
+	return cjlr.OdataNextLink != nil && len(*cjlr.OdataNextLink) != 0
+}
+
 // cloudJobListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cjlr CloudJobListResult) cloudJobListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cjlr.OdataNextLink == nil || len(to.String(cjlr.OdataNextLink)) < 1 {
+	if !cjlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1457,11 +903,16 @@ func (page *CloudJobListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cjlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cjlr)
+		if err != nil {
+			return err
+		}
+		page.cjlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cjlr = next
 	return nil
 }
 
@@ -1597,10 +1048,15 @@ func (cjslr CloudJobScheduleListResult) IsEmpty() bool {
 	return cjslr.Value == nil || len(*cjslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cjslr CloudJobScheduleListResult) hasNextLink() bool {
+	return cjslr.OdataNextLink != nil && len(*cjslr.OdataNextLink) != 0
+}
+
 // cloudJobScheduleListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cjslr CloudJobScheduleListResult) cloudJobScheduleListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cjslr.OdataNextLink == nil || len(to.String(cjslr.OdataNextLink)) < 1 {
+	if !cjslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1628,11 +1084,16 @@ func (page *CloudJobScheduleListResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cjslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cjslr)
+		if err != nil {
+			return err
+		}
+		page.cjslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cjslr = next
 	return nil
 }
 
@@ -1799,10 +1260,15 @@ func (cplr CloudPoolListResult) IsEmpty() bool {
 	return cplr.Value == nil || len(*cplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cplr CloudPoolListResult) hasNextLink() bool {
+	return cplr.OdataNextLink != nil && len(*cplr.OdataNextLink) != 0
+}
+
 // cloudPoolListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cplr CloudPoolListResult) cloudPoolListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cplr.OdataNextLink == nil || len(to.String(cplr.OdataNextLink)) < 1 {
+	if !cplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1830,11 +1296,16 @@ func (page *CloudPoolListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cplr)
+		if err != nil {
+			return err
+		}
+		page.cplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cplr = next
 	return nil
 }
 
@@ -1996,10 +1467,15 @@ func (ctlr CloudTaskListResult) IsEmpty() bool {
 	return ctlr.Value == nil || len(*ctlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ctlr CloudTaskListResult) hasNextLink() bool {
+	return ctlr.OdataNextLink != nil && len(*ctlr.OdataNextLink) != 0
+}
+
 // cloudTaskListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ctlr CloudTaskListResult) cloudTaskListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ctlr.OdataNextLink == nil || len(to.String(ctlr.OdataNextLink)) < 1 {
+	if !ctlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2027,11 +1503,16 @@ func (page *CloudTaskListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ctlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ctlr)
+		if err != nil {
+			return err
+		}
+		page.ctlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ctlr = next
 	return nil
 }
 
@@ -2201,10 +1682,15 @@ func (cnlr ComputeNodeListResult) IsEmpty() bool {
 	return cnlr.Value == nil || len(*cnlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cnlr ComputeNodeListResult) hasNextLink() bool {
+	return cnlr.OdataNextLink != nil && len(*cnlr.OdataNextLink) != 0
+}
+
 // computeNodeListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cnlr ComputeNodeListResult) computeNodeListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cnlr.OdataNextLink == nil || len(to.String(cnlr.OdataNextLink)) < 1 {
+	if !cnlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2232,11 +1718,16 @@ func (page *ComputeNodeListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cnlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cnlr)
+		if err != nil {
+			return err
+		}
+		page.cnlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cnlr = next
 	return nil
 }
 
@@ -2725,8 +2216,8 @@ type NetworkConfiguration struct {
 }
 
 // NodeAgentSku the Batch node agent is a program that runs on each node in the pool, and provides the
-// command-and-control interface between the node and the Batch service. There are different
-// implementations of the node agent, known as SKUs, for different operating systems.
+// command-and-control interface between the node and the Batch service. There are different implementations of
+// the node agent, known as SKUs, for different operating systems.
 type NodeAgentSku struct {
 	ID *string `json:"id,omitempty"`
 	// VerifiedImageReferences - This collection is not exhaustive (the node agent may be compatible with other images).
@@ -2824,10 +2315,15 @@ func (nflr NodeFileListResult) IsEmpty() bool {
 	return nflr.Value == nil || len(*nflr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (nflr NodeFileListResult) hasNextLink() bool {
+	return nflr.OdataNextLink != nil && len(*nflr.OdataNextLink) != 0
+}
+
 // nodeFileListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (nflr NodeFileListResult) nodeFileListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if nflr.OdataNextLink == nil || len(to.String(nflr.OdataNextLink)) < 1 {
+	if !nflr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2855,11 +2351,16 @@ func (page *NodeFileListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.nflr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.nflr)
+		if err != nil {
+			return err
+		}
+		page.nflr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.nflr = next
 	return nil
 }
 
@@ -3099,10 +2600,15 @@ func (plumr PoolListUsageMetricsResult) IsEmpty() bool {
 	return plumr.Value == nil || len(*plumr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (plumr PoolListUsageMetricsResult) hasNextLink() bool {
+	return plumr.OdataNextLink != nil && len(*plumr.OdataNextLink) != 0
+}
+
 // poolListUsageMetricsResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (plumr PoolListUsageMetricsResult) poolListUsageMetricsResultPreparer(ctx context.Context) (*http.Request, error) {
-	if plumr.OdataNextLink == nil || len(to.String(plumr.OdataNextLink)) < 1 {
+	if !plumr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3130,11 +2636,16 @@ func (page *PoolListUsageMetricsResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.plumr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.plumr)
+		if err != nil {
+			return err
+		}
+		page.plumr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.plumr = next
 	return nil
 }
 
@@ -3480,8 +2991,8 @@ type TaskFailureInformation struct {
 	Details  *[]NameValuePair `json:"details,omitempty"`
 }
 
-// TaskIDRange the start and end of the range are inclusive. For example, if a range has start 9 and end
-// 12, then it represents tasks '9', '10', '11' and '12'.
+// TaskIDRange the start and end of the range are inclusive. For example, if a range has start 9 and end 12,
+// then it represents tasks '9', '10', '11' and '12'.
 type TaskIDRange struct {
 	Start *int32 `json:"start,omitempty"`
 	End   *int32 `json:"end,omitempty"`

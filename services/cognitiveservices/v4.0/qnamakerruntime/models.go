@@ -24,45 +24,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v4.0/qnamakerruntime"
 
-// ErrorCodeType enumerates the values for error code type.
-type ErrorCodeType string
-
-const (
-	// BadArgument ...
-	BadArgument ErrorCodeType = "BadArgument"
-	// EndpointKeysError ...
-	EndpointKeysError ErrorCodeType = "EndpointKeysError"
-	// ExtractionFailure ...
-	ExtractionFailure ErrorCodeType = "ExtractionFailure"
-	// Forbidden ...
-	Forbidden ErrorCodeType = "Forbidden"
-	// KbNotFound ...
-	KbNotFound ErrorCodeType = "KbNotFound"
-	// NotFound ...
-	NotFound ErrorCodeType = "NotFound"
-	// OperationNotFound ...
-	OperationNotFound ErrorCodeType = "OperationNotFound"
-	// QnaRuntimeError ...
-	QnaRuntimeError ErrorCodeType = "QnaRuntimeError"
-	// QuotaExceeded ...
-	QuotaExceeded ErrorCodeType = "QuotaExceeded"
-	// ServiceError ...
-	ServiceError ErrorCodeType = "ServiceError"
-	// SKULimitExceeded ...
-	SKULimitExceeded ErrorCodeType = "SKULimitExceeded"
-	// Unauthorized ...
-	Unauthorized ErrorCodeType = "Unauthorized"
-	// Unspecified ...
-	Unspecified ErrorCodeType = "Unspecified"
-	// ValidationFailure ...
-	ValidationFailure ErrorCodeType = "ValidationFailure"
-)
-
-// PossibleErrorCodeTypeValues returns an array of possible values for the ErrorCodeType const type.
-func PossibleErrorCodeTypeValues() []ErrorCodeType {
-	return []ErrorCodeType{BadArgument, EndpointKeysError, ExtractionFailure, Forbidden, KbNotFound, NotFound, OperationNotFound, QnaRuntimeError, QuotaExceeded, ServiceError, SKULimitExceeded, Unauthorized, Unspecified, ValidationFailure}
-}
-
 // ContextDTO context associated with Qna.
 type ContextDTO struct {
 	// IsContextOnly - To mark if a prompt is relevant only with a previous question or not.
@@ -260,6 +221,8 @@ type QueryDTO struct {
 	RankerType *string `json:"rankerType,omitempty"`
 	// StrictFilters - Find only answers that contain these metadata.
 	StrictFilters *[]MetadataDTO `json:"strictFilters,omitempty"`
+	// StrictFiltersCompoundOperationType - Optional field. Set to OR for using OR as Operation for Strict Filters. Possible values include: 'AND', 'OR'
+	StrictFiltersCompoundOperationType StrictFiltersCompoundOperationType `json:"strictFiltersCompoundOperationType,omitempty"`
 }
 
 // QueryDTOContext context object with previous QnA's information.

@@ -32,59 +32,18 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-05-31/consumption"
 
-// Bound enumerates the values for bound.
-type Bound string
-
-const (
-	// Lower ...
-	Lower Bound = "Lower"
-	// Upper ...
-	Upper Bound = "Upper"
-)
-
-// PossibleBoundValues returns an array of possible values for the Bound const type.
-func PossibleBoundValues() []Bound {
-	return []Bound{Lower, Upper}
-}
-
-// ChargeType enumerates the values for charge type.
-type ChargeType string
-
-const (
-	// ChargeTypeActual ...
-	ChargeTypeActual ChargeType = "Actual"
-	// ChargeTypeForecast ...
-	ChargeTypeForecast ChargeType = "Forecast"
-)
-
-// PossibleChargeTypeValues returns an array of possible values for the ChargeType const type.
-func PossibleChargeTypeValues() []ChargeType {
-	return []ChargeType{ChargeTypeActual, ChargeTypeForecast}
-}
-
-// Grain enumerates the values for grain.
-type Grain string
-
-const (
-	// Daily ...
-	Daily Grain = "Daily"
-	// Monthly ...
-	Monthly Grain = "Monthly"
-	// Yearly ...
-	Yearly Grain = "Yearly"
-)
-
-// PossibleGrainValues returns an array of possible values for the Grain const type.
-func PossibleGrainValues() []Grain {
-	return []Grain{Daily, Monthly, Yearly}
-}
-
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
 	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse error response indicates that the service is not able to process the incoming request. The
@@ -192,6 +151,18 @@ type ForecastProperties struct {
 	ConfidenceLevels *[]ForecastPropertiesConfidenceLevelsItem `json:"confidenceLevels,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ForecastProperties.
+func (fp ForecastProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fp.Grain != "" {
+		objectMap["grain"] = fp.Grain
+	}
+	if fp.ChargeType != "" {
+		objectMap["chargeType"] = fp.ChargeType
+	}
+	return json.Marshal(objectMap)
+}
+
 // ForecastPropertiesConfidenceLevelsItem ...
 type ForecastPropertiesConfidenceLevelsItem struct {
 	// Percentage - READ-ONLY; The percentage level of the confidence
@@ -202,11 +173,26 @@ type ForecastPropertiesConfidenceLevelsItem struct {
 	Value *decimal.Decimal `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ForecastPropertiesConfidenceLevelsItem.
+func (fpLi ForecastPropertiesConfidenceLevelsItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fpLi.Bound != "" {
+		objectMap["bound"] = fpLi.Bound
+	}
+	return json.Marshal(objectMap)
+}
+
 // ForecastsListResult result of listing forecasts. It contains a list of available forecasts.
 type ForecastsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of forecasts.
 	Value *[]Forecast `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ForecastsListResult.
+func (flr ForecastsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MeterDetails the properties of the meter detail.
@@ -227,12 +213,27 @@ type MeterDetails struct {
 	PretaxStandardRate *decimal.Decimal `json:"pretaxStandardRate,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MeterDetails.
+func (md MeterDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Operation a Consumption REST API operation.
 type Operation struct {
 	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the object that represents the operation.
@@ -245,6 +246,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult result of listing consumption operations. It contains a list of operations and a URL
 // link to get the next set of results.
 type OperationListResult struct {
@@ -253,6 +260,12 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -323,10 +336,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -354,11 +372,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -400,6 +423,12 @@ type PriceSheetModel struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PriceSheetModel.
+func (psm PriceSheetModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PriceSheetProperties the properties of the price sheet.
 type PriceSheetProperties struct {
 	// BillingPeriodID - READ-ONLY; The id of the billing period resource that the usage belongs to.
@@ -420,6 +449,12 @@ type PriceSheetProperties struct {
 	CurrencyCode *string `json:"currencyCode,omitempty"`
 	// OfferID - READ-ONLY; Offer Id
 	OfferID *string `json:"offerId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PriceSheetProperties.
+func (psp PriceSheetProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PriceSheetResult an pricesheet resource.
@@ -661,6 +696,12 @@ type UsageDetailProperties struct {
 	AdditionalProperties *string `json:"additionalProperties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UsageDetailProperties.
+func (UDP UsageDetailProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UsageDetailsListResult result of listing usage details. It contains a list of available usage details in
 // reverse chronological order by billing period.
 type UsageDetailsListResult struct {
@@ -669,6 +710,12 @@ type UsageDetailsListResult struct {
 	Value *[]UsageDetail `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageDetailsListResult.
+func (udlr UsageDetailsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UsageDetailsListResultIterator provides access to a complete listing of UsageDetail values.
@@ -739,10 +786,15 @@ func (udlr UsageDetailsListResult) IsEmpty() bool {
 	return udlr.Value == nil || len(*udlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (udlr UsageDetailsListResult) hasNextLink() bool {
+	return udlr.NextLink != nil && len(*udlr.NextLink) != 0
+}
+
 // usageDetailsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (udlr UsageDetailsListResult) usageDetailsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if udlr.NextLink == nil || len(to.String(udlr.NextLink)) < 1 {
+	if !udlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -770,11 +822,16 @@ func (page *UsageDetailsListResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.udlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.udlr)
+		if err != nil {
+			return err
+		}
+		page.udlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.udlr = next
 	return nil
 }
 

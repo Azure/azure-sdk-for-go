@@ -32,15 +32,15 @@ type GremlinResourcesClient struct {
 }
 
 // NewGremlinResourcesClient creates an instance of the GremlinResourcesClient client.
-func NewGremlinResourcesClient(subscriptionID string) GremlinResourcesClient {
-	return NewGremlinResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewGremlinResourcesClient(subscriptionID string, subscriptionID1 string) GremlinResourcesClient {
+	return NewGremlinResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewGremlinResourcesClientWithBaseURI creates an instance of the GremlinResourcesClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewGremlinResourcesClientWithBaseURI(baseURI string, subscriptionID string) GremlinResourcesClient {
-	return GremlinResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewGremlinResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) GremlinResourcesClient {
+	return GremlinResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // CreateUpdateGremlinDatabase create or update an Azure Cosmos DB Gremlin database
@@ -134,7 +134,6 @@ func (client GremlinResourcesClient) CreateUpdateGremlinDatabaseSender(req *http
 func (client GremlinResourcesClient) CreateUpdateGremlinDatabaseResponder(resp *http.Response) (result GremlinDatabaseGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -242,7 +241,6 @@ func (client GremlinResourcesClient) CreateUpdateGremlinGraphSender(req *http.Re
 func (client GremlinResourcesClient) CreateUpdateGremlinGraphResponder(resp *http.Response) (result GremlinGraphGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -332,7 +330,6 @@ func (client GremlinResourcesClient) DeleteGremlinDatabaseSender(req *http.Reque
 func (client GremlinResourcesClient) DeleteGremlinDatabaseResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -423,7 +420,6 @@ func (client GremlinResourcesClient) DeleteGremlinGraphSender(req *http.Request)
 func (client GremlinResourcesClient) DeleteGremlinGraphResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -513,7 +509,6 @@ func (client GremlinResourcesClient) GetGremlinDatabaseSender(req *http.Request)
 func (client GremlinResourcesClient) GetGremlinDatabaseResponder(resp *http.Response) (result GremlinDatabaseGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -604,7 +599,6 @@ func (client GremlinResourcesClient) GetGremlinDatabaseThroughputSender(req *htt
 func (client GremlinResourcesClient) GetGremlinDatabaseThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -696,7 +690,6 @@ func (client GremlinResourcesClient) GetGremlinGraphSender(req *http.Request) (*
 func (client GremlinResourcesClient) GetGremlinGraphResponder(resp *http.Response) (result GremlinGraphGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -789,7 +782,6 @@ func (client GremlinResourcesClient) GetGremlinGraphThroughputSender(req *http.R
 func (client GremlinResourcesClient) GetGremlinGraphThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -877,7 +869,6 @@ func (client GremlinResourcesClient) ListGremlinDatabasesSender(req *http.Reques
 func (client GremlinResourcesClient) ListGremlinDatabasesResponder(resp *http.Response) (result GremlinDatabaseListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -967,7 +958,6 @@ func (client GremlinResourcesClient) ListGremlinGraphsSender(req *http.Request) 
 func (client GremlinResourcesClient) ListGremlinGraphsResponder(resp *http.Response) (result GremlinGraphListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1066,7 +1056,6 @@ func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughputSender(req *
 func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1166,7 +1155,6 @@ func (client GremlinResourcesClient) UpdateGremlinGraphThroughputSender(req *htt
 func (client GremlinResourcesClient) UpdateGremlinGraphThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

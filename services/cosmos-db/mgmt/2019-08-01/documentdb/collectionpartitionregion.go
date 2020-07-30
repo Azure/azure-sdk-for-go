@@ -32,15 +32,15 @@ type CollectionPartitionRegionClient struct {
 }
 
 // NewCollectionPartitionRegionClient creates an instance of the CollectionPartitionRegionClient client.
-func NewCollectionPartitionRegionClient(subscriptionID string) CollectionPartitionRegionClient {
-	return NewCollectionPartitionRegionClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewCollectionPartitionRegionClient(subscriptionID string, subscriptionID1 string) CollectionPartitionRegionClient {
+	return NewCollectionPartitionRegionClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewCollectionPartitionRegionClientWithBaseURI creates an instance of the CollectionPartitionRegionClient client
 // using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
 // clouds, Azure stack).
-func NewCollectionPartitionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionPartitionRegionClient {
-	return CollectionPartitionRegionClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewCollectionPartitionRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionPartitionRegionClient {
+	return CollectionPartitionRegionClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given collection and region, split by
@@ -134,7 +134,6 @@ func (client CollectionPartitionRegionClient) ListMetricsSender(req *http.Reques
 func (client CollectionPartitionRegionClient) ListMetricsResponder(resp *http.Response) (result PartitionMetricListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

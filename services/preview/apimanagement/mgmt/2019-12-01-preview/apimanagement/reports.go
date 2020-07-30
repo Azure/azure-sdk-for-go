@@ -93,6 +93,9 @@ func (client ReportsClient) ListByAPI(ctx context.Context, resourceGroupName str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "ListByAPI", resp, "Failure responding to request")
 	}
+	if result.rc.hasNextLink() && result.rc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -131,8 +134,7 @@ func (client ReportsClient) ListByAPIPreparer(ctx context.Context, resourceGroup
 // ListByAPISender sends the ListByAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByAPISender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByAPIResponder handles the response to the ListByAPI request. The method always
@@ -140,7 +142,6 @@ func (client ReportsClient) ListByAPISender(req *http.Request) (*http.Response, 
 func (client ReportsClient) ListByAPIResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -245,6 +246,9 @@ func (client ReportsClient) ListByGeo(ctx context.Context, resourceGroupName str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "ListByGeo", resp, "Failure responding to request")
 	}
+	if result.rc.hasNextLink() && result.rc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -280,8 +284,7 @@ func (client ReportsClient) ListByGeoPreparer(ctx context.Context, resourceGroup
 // ListByGeoSender sends the ListByGeo request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByGeoSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByGeoResponder handles the response to the ListByGeo request. The method always
@@ -289,7 +292,6 @@ func (client ReportsClient) ListByGeoSender(req *http.Request) (*http.Response, 
 func (client ReportsClient) ListByGeoResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -396,6 +398,9 @@ func (client ReportsClient) ListByOperation(ctx context.Context, resourceGroupNa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "ListByOperation", resp, "Failure responding to request")
 	}
+	if result.rc.hasNextLink() && result.rc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -434,8 +439,7 @@ func (client ReportsClient) ListByOperationPreparer(ctx context.Context, resourc
 // ListByOperationSender sends the ListByOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByOperationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByOperationResponder handles the response to the ListByOperation request. The method always
@@ -443,7 +447,6 @@ func (client ReportsClient) ListByOperationSender(req *http.Request) (*http.Resp
 func (client ReportsClient) ListByOperationResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -549,6 +552,9 @@ func (client ReportsClient) ListByProduct(ctx context.Context, resourceGroupName
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "ListByProduct", resp, "Failure responding to request")
 	}
+	if result.rc.hasNextLink() && result.rc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -587,8 +593,7 @@ func (client ReportsClient) ListByProductPreparer(ctx context.Context, resourceG
 // ListByProductSender sends the ListByProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByProductSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByProductResponder handles the response to the ListByProduct request. The method always
@@ -596,7 +601,6 @@ func (client ReportsClient) ListByProductSender(req *http.Request) (*http.Respon
 func (client ReportsClient) ListByProductResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -729,8 +733,7 @@ func (client ReportsClient) ListByRequestPreparer(ctx context.Context, resourceG
 // ListByRequestSender sends the ListByRequest request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByRequestSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByRequestResponder handles the response to the ListByRequest request. The method always
@@ -738,7 +741,6 @@ func (client ReportsClient) ListByRequestSender(req *http.Request) (*http.Respon
 func (client ReportsClient) ListByRequestResponder(resp *http.Response) (result RequestReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -807,6 +809,9 @@ func (client ReportsClient) ListBySubscription(ctx context.Context, resourceGrou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "ListBySubscription", resp, "Failure responding to request")
 	}
+	if result.rc.hasNextLink() && result.rc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -845,8 +850,7 @@ func (client ReportsClient) ListBySubscriptionPreparer(ctx context.Context, reso
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
@@ -854,7 +858,6 @@ func (client ReportsClient) ListBySubscriptionSender(req *http.Request) (*http.R
 func (client ReportsClient) ListBySubscriptionResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -963,6 +966,9 @@ func (client ReportsClient) ListByTime(ctx context.Context, resourceGroupName st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "ListByTime", resp, "Failure responding to request")
 	}
+	if result.rc.hasNextLink() && result.rc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1002,8 +1008,7 @@ func (client ReportsClient) ListByTimePreparer(ctx context.Context, resourceGrou
 // ListByTimeSender sends the ListByTime request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByTimeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByTimeResponder handles the response to the ListByTime request. The method always
@@ -1011,7 +1016,6 @@ func (client ReportsClient) ListByTimeSender(req *http.Request) (*http.Response,
 func (client ReportsClient) ListByTimeResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1118,6 +1122,9 @@ func (client ReportsClient) ListByUser(ctx context.Context, resourceGroupName st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "ListByUser", resp, "Failure responding to request")
 	}
+	if result.rc.hasNextLink() && result.rc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1156,8 +1163,7 @@ func (client ReportsClient) ListByUserPreparer(ctx context.Context, resourceGrou
 // ListByUserSender sends the ListByUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByUserSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByUserResponder handles the response to the ListByUser request. The method always
@@ -1165,7 +1171,6 @@ func (client ReportsClient) ListByUserSender(req *http.Request) (*http.Response,
 func (client ReportsClient) ListByUserResponder(resp *http.Response) (result ReportCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

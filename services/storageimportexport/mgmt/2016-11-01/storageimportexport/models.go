@@ -29,31 +29,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport"
 
-// DriveState enumerates the values for drive state.
-type DriveState string
-
-const (
-	// Completed ...
-	Completed DriveState = "Completed"
-	// CompletedMoreInfo ...
-	CompletedMoreInfo DriveState = "CompletedMoreInfo"
-	// NeverReceived ...
-	NeverReceived DriveState = "NeverReceived"
-	// Received ...
-	Received DriveState = "Received"
-	// ShippedBack ...
-	ShippedBack DriveState = "ShippedBack"
-	// Specified ...
-	Specified DriveState = "Specified"
-	// Transferring ...
-	Transferring DriveState = "Transferring"
-)
-
-// PossibleDriveStateValues returns an array of possible values for the DriveState const type.
-func PossibleDriveStateValues() []DriveState {
-	return []DriveState{Completed, CompletedMoreInfo, NeverReceived, Received, ShippedBack, Specified, Transferring}
-}
-
 // DriveBitLockerKey bitLocker recovery key or password to the specified drive
 type DriveBitLockerKey struct {
 	// BitLockerKey - BitLocker recovery key or password
@@ -153,8 +128,8 @@ type ErrorResponseErrorDetailsItem struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Export a property containing information about the blobs to be exported for an export job. This property
-// is required for export jobs, but must not be specified for import jobs.
+// Export a property containing information about the blobs to be exported for an export job. This property is
+// required for export jobs, but must not be specified for import jobs.
 type Export struct {
 	// ExportBlobList - A list of the blobs to be exported.
 	*ExportBlobList `json:"blobList,omitempty"`
@@ -277,6 +252,21 @@ type JobResponse struct {
 	Properties *JobDetails `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobResponse.
+func (jr JobResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if jr.Location != nil {
+		objectMap["location"] = jr.Location
+	}
+	if jr.Tags != nil {
+		objectMap["tags"] = jr.Tags
+	}
+	if jr.Properties != nil {
+		objectMap["properties"] = jr.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // ListJobsResponse list jobs response
 type ListJobsResponse struct {
 	autorest.Response `json:"-"`
@@ -354,10 +344,15 @@ func (ljr ListJobsResponse) IsEmpty() bool {
 	return ljr.Value == nil || len(*ljr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ljr ListJobsResponse) hasNextLink() bool {
+	return ljr.NextLink != nil && len(*ljr.NextLink) != 0
+}
+
 // listJobsResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ljr ListJobsResponse) listJobsResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if ljr.NextLink == nil || len(to.String(ljr.NextLink)) < 1 {
+	if !ljr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -385,11 +380,16 @@ func (page *ListJobsResponsePage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ljr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ljr)
+		if err != nil {
+			return err
+		}
+		page.ljr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ljr = next
 	return nil
 }
 
@@ -608,8 +608,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// PackageInfomation contains information about the package being shipped by the customer to the Microsoft
-// data center.
+// PackageInfomation contains information about the package being shipped by the customer to the Microsoft data
+// center.
 type PackageInfomation struct {
 	// CarrierName - The name of the carrier that is used to ship the import or export drives.
 	CarrierName *string `json:"carrierName,omitempty"`

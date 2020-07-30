@@ -163,7 +163,6 @@ func (client JobsClient) CreateSender(req *http.Request) (*http.Response, error)
 func (client JobsClient) CreateResponder(resp *http.Response) (result JobResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -244,7 +243,6 @@ func (client JobsClient) DeleteSender(req *http.Request) (*http.Response, error)
 func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -324,7 +322,6 @@ func (client JobsClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client JobsClient) GetResponder(resp *http.Response) (result JobResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -366,6 +363,9 @@ func (client JobsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	result.ljr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.ljr.hasNextLink() && result.ljr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -412,7 +412,6 @@ func (client JobsClient) ListByResourceGroupSender(req *http.Request) (*http.Res
 func (client JobsClient) ListByResourceGroupResponder(resp *http.Response) (result ListJobsResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -490,6 +489,9 @@ func (client JobsClient) ListBySubscription(ctx context.Context, top *int32, fil
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBySubscription", resp, "Failure responding to request")
 	}
+	if result.ljr.hasNextLink() && result.ljr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -534,7 +536,6 @@ func (client JobsClient) ListBySubscriptionSender(req *http.Request) (*http.Resp
 func (client JobsClient) ListBySubscriptionResponder(resp *http.Response) (result ListJobsResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -657,7 +658,6 @@ func (client JobsClient) UpdateSender(req *http.Request) (*http.Response, error)
 func (client JobsClient) UpdateResponder(resp *http.Response) (result JobResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
